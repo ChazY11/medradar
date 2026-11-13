@@ -1,0 +1,15 @@
+# PHOENIX-003 experiment-local ignores.
+# Smoke artefacts are deliberately never committed: a partial corpus must not be mistaken
+# for data. The full compact corpora and every results artefact *are* committed.
+_smoke_*
+__pycache__/
+*.pyc
+
+# Verifier working artefacts: the snapshot directories duplicate the committed corpora and are
+# pinned by sha256 in docs/phoenix003/INDEPENDENT_VERIFICATION.md, so they are not re-committed.
+# The verifier's scripts, consoles and run log *are* committed.
+verify/*_snapshot/
+verify/out_links.json
+verify/out_novelty.json
+verify/out_case_live.json
+verify/out_attribution.json

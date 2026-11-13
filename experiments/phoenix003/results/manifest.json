@@ -1,0 +1,144 @@
+{
+  "db": "D:\\DEPPSKK\\medradar\\data\\medradar.sqlite",
+  "files": [
+    {
+      "bytes": 7787,
+      "path": "experiments/phoenix003/FROZEN_RULES.json",
+      "sha256": "b99f03fb4571bb7372e9dba46855510096e847f8f2fd34a47f5ddae84e4432e4"
+    },
+    {
+      "bytes": 7170,
+      "path": "experiments/phoenix003/dataset/firm_lineage.json",
+      "sha256": "0106e49b4cd2a23bc65291e978b150a98a98079d3886fcf93884bf09d8b38b2b"
+    },
+    {
+      "bytes": 1209358,
+      "path": "experiments/phoenix003/dataset/frozen_vocab.json",
+      "sha256": "416125b6e56da83ac6527d11a60044022810c3534e5dc067f98686a4ec3ca55e"
+    },
+    {
+      "bytes": 6138,
+      "path": "experiments/phoenix003/dataset/name_stoplist_extra.txt",
+      "sha256": "58d1924a211d2024cf0057d97a4fbed412016a8323bd303ecf2438b891fccf35"
+    },
+    {
+      "bytes": 753213,
+      "path": "experiments/phoenix003/dataset/epmc_rare_tokens.txt",
+      "sha256": "8dc5e28f1daf4168f20620aebe6722a764c2624043bb969de1b8b029bdf46cc4"
+    },
+    {
+      "bytes": 1325,
+      "path": "experiments/phoenix003/dataset/epmc_df_meta.json",
+      "sha256": "3f00f94ea713ba8a9ea4de2d8bf4b943e715a488287f792526390066f53b4259"
+    },
+    {
+      "bytes": 453443,
+      "path": "experiments/phoenix003/REGULATORY_ANCHORS.jsonl",
+      "sha256": "095ecab61c2022fa0c1305e994f9c404700ba33a0913a7db284738b410c7ffac"
+    },
+    {
+      "bytes": 15463845,
+      "path": "experiments/phoenix003/EVIDENCE_LINKS.jsonl",
+      "sha256": "b7f130da55cc8bd9f732c6f4b77365e27897b9e4f84de027c761f1526720c6eb"
+    },
+    {
+      "bytes": 576500,
+      "path": "experiments/phoenix003/dataset/_smoke_ctgov_ext_compact.jsonl.gz",
+      "sha256": "0f235c024ed3189e89f79abe4ff50c214999581c65887312a409390da730e580"
+    },
+    {
+      "bytes": 2703569,
+      "path": "experiments/phoenix003/dataset/_smoke_epmc_compact.jsonl.gz",
+      "sha256": "69543fb1b947d18f2a10e7352aea58ed12a569390fa9011c38db501ab1123a4a"
+    },
+    {
+      "bytes": 5429709,
+      "path": "experiments/phoenix003/dataset/_smoke_epmc_ext_compact.jsonl.gz",
+      "sha256": "3d21c26e2a13779855a24137ea058e0e71c8ea7d541543005b465895de4aeaee"
+    },
+    {
+      "bytes": 452148,
+      "path": "experiments/phoenix003/dataset/ctgov_compact.jsonl.gz",
+      "sha256": "19cf58313fa89b3e9903b2d4eb8b9aadc9155e56c37cfc4138e10500ffde0816"
+    },
+    {
+      "bytes": 738860,
+      "path": "experiments/phoenix003/dataset/ctgov_ext_compact.jsonl.gz",
+      "sha256": "633b3b36b54eaac93a325da3f03ba1a8f8776c8da3e9aab8ef339a80e57eb0a4"
+    },
+    {
+      "bytes": 11804771,
+      "path": "experiments/phoenix003/dataset/epmc_compact.jsonl.gz",
+      "sha256": "e1ef5841bcfc9c64eb1d524efc83a78f040827b77d0cf695ea803d6118baeac8"
+    },
+    {
+      "bytes": 18594603,
+      "path": "experiments/phoenix003/dataset/epmc_ext_compact.jsonl.gz",
+      "sha256": "340c5c4a37b6558cbad9bb52086830129d1c33aa4fa862562a8a5f4c93d8060f"
+    },
+    {
+      "bytes": 4482,
+      "path": "experiments/phoenix003/results/a1_canonical.json",
+      "sha256": "63f1a30ead5bf40979371d55321d65d92678b909be02c0ba4556771bb634f6e0"
+    },
+    {
+      "bytes": 31067,
+      "path": "experiments/phoenix003/results/b2_novelty.json",
+      "sha256": "990c59d29529bfcf78e45db8497187e316519fe8aa65fcd598c957540e4f78f1"
+    },
+    {
+      "bytes": 229697,
+      "path": "experiments/phoenix003/results/b_links.json",
+      "sha256": "89fc10b7324bcf56d848896ebbee0e680ccc5efc8ae2e91403c3f521363dc4af"
+    },
+    {
+      "bytes": 134814,
+      "path": "experiments/phoenix003/results/c_controls.json",
+      "sha256": "5ea40407e4ce3a151e77f5de2483c5f4fbed7ea454f0e16d8b2891d0b29f1da3"
+    },
+    {
+      "bytes": 74475,
+      "path": "experiments/phoenix003/results/d_leadtime.json",
+      "sha256": "82830d51cbcaf92355e5129212f3c7eeccf4f5a816a9ca3ee549419efcf15a6b"
+    },
+    {
+      "bytes": 2429,
+      "path": "experiments/phoenix003/results/verdict.json",
+      "sha256": "c998ad16b0319a35b4dec101927c4f16d2f5c332705bb9ecd5a3225acaaf2850"
+    }
+  ],
+  "generated_at": "2026-11-08T21:38:41+00:00",
+  "platform": "win32",
+  "python": "3.12.10",
+  "stages": {
+    "a1_anchors": {
+      "returncode": 0,
+      "seconds": 10.14
+    },
+    "b2_novelty": {
+      "returncode": 0,
+      "seconds": 8.32
+    },
+    "b_links": {
+      "returncode": 0,
+      "seconds": 48.03
+    },
+    "c_controls": {
+      "returncode": 0,
+      "seconds": 58.89
+    },
+    "d_leadtime": {
+      "returncode": 0,
+      "seconds": 48.93
+    },
+    "freeze_epmc_df": {
+      "returncode": 0,
+      "seconds": 11.36
+    },
+    "freeze_vocab": {
+      "returncode": 0,
+      "seconds": 15.71
+    }
+  },
+  "total_seconds": 201.37
+}

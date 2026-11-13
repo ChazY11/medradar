@@ -1,0 +1,620 @@
+{
+  "generated_at": "2026-11-08T20:43:55Z",
+  "experiment": "PHOENIX-003",
+  "dataset_kind": "extension_stratum_external_sources",
+  "stratum": "extension",
+  "mode": "full",
+  "endpoint": "https://clinicaltrials.gov/api/v2/studies + https://www.ebi.ac.uk/europepmc/webservices/rest/search",
+  "endpoints": {
+    "ctgov": "https://clinicaltrials.gov/api/v2/studies",
+    "epmc": "https://www.ebi.ac.uk/europepmc/webservices/rest/search"
+  },
+  "user_agent": "MedRadar-PHOENIX003/1.0 (research; contact chazy11@users.noreply.github.com)",
+  "window": {
+    "ctgov_client_side_first_posted": [
+      "2010-01-01",
+      "2025-12-31"
+    ],
+    "epmc_server_side_first_pdate": "FIRST_PDATE:[2012-01-01 TO 2025-12-31]"
+  },
+  "firms": [
+    {
+      "key": "abbott",
+      "display": "Abbott",
+      "stratum": "extension",
+      "ctgov_queries": [
+        "Abbott"
+      ],
+      "epmc_query": "AFF:\"Abbott\" AND (FIRST_PDATE:[2012-01-01 TO 2025-12-31])"
+    },
+    {
+      "key": "baxter",
+      "display": "Baxter",
+      "stratum": "extension",
+      "ctgov_queries": [
+        "Baxter"
+      ],
+      "epmc_query": "AFF:\"Baxter\" AND (FIRST_PDATE:[2012-01-01 TO 2025-12-31])"
+    },
+    {
+      "key": "bd",
+      "display": "Becton Dickinson (BD)",
+      "stratum": "extension",
+      "ctgov_queries": [
+        "Becton Dickinson",
+        "BD"
+      ],
+      "epmc_query": "(AFF:\"Becton Dickinson\" OR AFF:\"BD\") AND (FIRST_PDATE:[2012-01-01 TO 2025-12-31])"
+    },
+    {
+      "key": "boston_scientific",
+      "display": "Boston Scientific",
+      "stratum": "extension",
+      "ctgov_queries": [
+        "Boston Scientific"
+      ],
+      "epmc_query": "AFF:\"Boston Scientific\" AND (FIRST_PDATE:[2012-01-01 TO 2025-12-31])"
+    },
+    {
+      "key": "edwards_lifesciences",
+      "display": "Edwards Lifesciences",
+      "stratum": "extension",
+      "ctgov_queries": [
+        "Edwards Lifesciences"
+      ],
+      "epmc_query": "AFF:\"Edwards Lifesciences\" AND (FIRST_PDATE:[2012-01-01 TO 2025-12-31])"
+    },
+    {
+      "key": "stryker",
+      "display": "Stryker",
+      "stratum": "extension",
+      "ctgov_queries": [
+        "Stryker"
+      ],
+      "epmc_query": "AFF:\"Stryker\" AND (FIRST_PDATE:[2012-01-01 TO 2025-12-31])"
+    },
+    {
+      "key": "siemens_healthineers",
+      "display": "Siemens Healthineers",
+      "stratum": "extension",
+      "ctgov_queries": [
+        "Siemens Healthineers"
+      ],
+      "epmc_query": "AFF:\"Siemens Healthineers\" AND (FIRST_PDATE:[2012-01-01 TO 2025-12-31])"
+    },
+    {
+      "key": "zimmer_biomet",
+      "display": "Zimmer Biomet",
+      "stratum": "extension",
+      "ctgov_queries": [
+        "Zimmer Biomet"
+      ],
+      "epmc_query": "AFF:\"Zimmer Biomet\" AND (FIRST_PDATE:[2012-01-01 TO 2025-12-31])"
+    }
+  ],
+  "queries": [
+    {
+      "source": "ctgov",
+      "firm": "abbott",
+      "api_query": "Abbott",
+      "http_status": 200,
+      "requests": 3,
+      "pages": 3,
+      "reported_hit_count": 2099,
+      "records_returned": 2099,
+      "records_retained": 1332,
+      "started_at": "2026-11-08T20:33:39Z",
+      "finished_at": "2026-11-08T20:33:47Z"
+    },
+    {
+      "source": "ctgov",
+      "firm": "baxter",
+      "api_query": "Baxter",
+      "http_status": 200,
+      "requests": 1,
+      "pages": 1,
+      "reported_hit_count": 359,
+      "records_returned": 359,
+      "records_retained": 261,
+      "started_at": "2026-11-08T20:33:47Z",
+      "finished_at": "2026-11-08T20:33:51Z"
+    },
+    {
+      "source": "ctgov",
+      "firm": "bd",
+      "api_query": "Becton Dickinson",
+      "http_status": 200,
+      "requests": 1,
+      "pages": 1,
+      "reported_hit_count": 91,
+      "records_returned": 91,
+      "records_retained": 79,
+      "started_at": "2026-11-08T20:33:51Z",
+      "finished_at": "2026-11-08T20:33:52Z"
+    },
+    {
+      "source": "ctgov",
+      "firm": "bd",
+      "api_query": "BD",
+      "http_status": 200,
+      "requests": 1,
+      "pages": 1,
+      "reported_hit_count": 1,
+      "records_returned": 1,
+      "records_retained": 0,
+      "started_at": "2026-11-08T20:33:52Z",
+      "finished_at": "2026-11-08T20:33:52Z"
+    },
+    {
+      "source": "ctgov",
+      "firm": "boston_scientific",
+      "api_query": "Boston Scientific",
+      "http_status": 200,
+      "requests": 1,
+      "pages": 1,
+      "reported_hit_count": 853,
+      "records_returned": 853,
+      "records_retained": 640,
+      "started_at": "2026-11-08T20:33:52Z",
+      "finished_at": "2026-11-08T20:33:55Z"
+    },
+    {
+      "source": "ctgov",
+      "firm": "edwards_lifesciences",
+      "api_query": "Edwards Lifesciences",
+      "http_status": 200,
+      "requests": 1,
+      "pages": 1,
+      "reported_hit_count": 213,
+      "records_returned": 213,
+      "records_retained": 190,
+      "started_at": "2026-11-08T20:33:55Z",
+      "finished_at": "2026-11-08T20:33:56Z"
+    },
+    {
+      "source": "ctgov",
+      "firm": "stryker",
+      "api_query": "Stryker",
+      "http_status": 200,
+      "requests": 1,
+      "pages": 1,
+      "reported_hit_count": 296,
+      "records_returned": 296,
+      "records_retained": 238,
+      "started_at": "2026-11-08T20:33:56Z",
+      "finished_at": "2026-11-08T20:33:59Z"
+    },
+    {
+      "source": "ctgov",
+      "firm": "siemens_healthineers",
+      "api_query": "Siemens Healthineers",
+      "http_status": 200,
+      "requests": 1,
+      "pages": 1,
+      "reported_hit_count": 71,
+      "records_returned": 71,
+      "records_retained": 59,
+      "started_at": "2026-11-08T20:33:59Z",
+      "finished_at": "2026-11-08T20:34:00Z"
+    },
+    {
+      "source": "ctgov",
+      "firm": "zimmer_biomet",
+      "api_query": "Zimmer Biomet",
+      "http_status": 200,
+      "requests": 1,
+      "pages": 1,
+      "reported_hit_count": 393,
+      "records_returned": 393,
+      "records_retained": 276,
+      "started_at": "2026-11-08T20:34:00Z",
+      "finished_at": "2026-11-08T20:34:03Z"
+    },
+    {
+      "source": "epmc",
+      "firm": "abbott",
+      "api_query": "AFF:\"Abbott\" AND (FIRST_PDATE:[2012-01-01 TO 2025-12-31])",
+      "http_status": 200,
+      "requests": 7,
+      "pages": 7,
+      "reported_hit_count": 5356,
+      "records_returned": 5356,
+      "records_retained": 5356,
+      "started_at": "2026-11-08T20:34:03Z",
+      "finished_at": "2026-11-08T20:39:03Z"
+    },
+    {
+      "source": "epmc",
+      "firm": "baxter",
+      "api_query": "AFF:\"Baxter\" AND (FIRST_PDATE:[2012-01-01 TO 2025-12-31])",
+      "http_status": 200,
+      "requests": 3,
+      "pages": 3,
+      "reported_hit_count": 1609,
+      "records_returned": 1609,
+      "records_retained": 1609,
+      "started_at": "2026-11-08T20:39:03Z",
+      "finished_at": "2026-11-08T20:39:57Z"
+    },
+    {
+      "source": "epmc",
+      "firm": "bd",
+      "api_query": "(AFF:\"Becton Dickinson\" OR AFF:\"BD\") AND (FIRST_PDATE:[2012-01-01 TO 2025-12-31])",
+      "http_status": 200,
+      "requests": 11,
+      "pages": 11,
+      "reported_hit_count": 9303,
+      "records_returned": 9303,
+      "records_retained": 9303,
+      "started_at": "2026-11-08T20:39:57Z",
+      "finished_at": "2026-11-08T20:42:28Z"
+    },
+    {
+      "source": "epmc",
+      "firm": "boston_scientific",
+      "api_query": "AFF:\"Boston Scientific\" AND (FIRST_PDATE:[2012-01-01 TO 2025-12-31])",
+      "http_status": 200,
+      "requests": 3,
+      "pages": 3,
+      "reported_hit_count": 1305,
+      "records_returned": 1305,
+      "records_retained": 1305,
+      "started_at": "2026-11-08T20:42:28Z",
+      "finished_at": "2026-11-08T20:42:44Z"
+    },
+    {
+      "source": "epmc",
+      "firm": "edwards_lifesciences",
+      "api_query": "AFF:\"Edwards Lifesciences\" AND (FIRST_PDATE:[2012-01-01 TO 2025-12-31])",
+      "http_status": 200,
+      "requests": 1,
+      "pages": 1,
+      "reported_hit_count": 720,
+      "records_returned": 720,
+      "records_retained": 720,
+      "started_at": "2026-11-08T20:42:44Z",
+      "finished_at": "2026-11-08T20:42:50Z"
+    },
+    {
+      "source": "epmc",
+      "firm": "stryker",
+      "api_query": "AFF:\"Stryker\" AND (FIRST_PDATE:[2012-01-01 TO 2025-12-31])",
+      "http_status": 200,
+      "requests": 4,
+      "pages": 4,
+      "reported_hit_count": 2037,
+      "records_returned": 2037,
+      "records_retained": 2037,
+      "started_at": "2026-11-08T20:42:50Z",
+      "finished_at": "2026-11-08T20:43:16Z"
+    },
+    {
+      "source": "epmc",
+      "firm": "siemens_healthineers",
+      "api_query": "AFF:\"Siemens Healthineers\" AND (FIRST_PDATE:[2012-01-01 TO 2025-12-31])",
+      "http_status": 200,
+      "requests": 4,
+      "pages": 4,
+      "reported_hit_count": 2296,
+      "records_returned": 2296,
+      "records_retained": 2296,
+      "started_at": "2026-11-08T20:43:16Z",
+      "finished_at": "2026-11-08T20:43:48Z"
+    },
+    {
+      "source": "epmc",
+      "firm": "zimmer_biomet",
+      "api_query": "AFF:\"Zimmer Biomet\" AND (FIRST_PDATE:[2012-01-01 TO 2025-12-31])",
+      "http_status": 200,
+      "requests": 1,
+      "pages": 1,
+      "reported_hit_count": 161,
+      "records_returned": 161,
+      "records_retained": 161,
+      "started_at": "2026-11-08T20:43:48Z",
+      "finished_at": "2026-11-08T20:43:50Z"
+    }
+  ],
+  "counts": {
+    "records_total": 27012,
+    "records_retained": 25718,
+    "per_field_nulls": {
+      "ctgov.brief_title": 0,
+      "ctgov.official_title": 23,
+      "ctgov.acronym": 1699,
+      "ctgov.overall_status": 0,
+      "ctgov.study_type": 0,
+      "ctgov.lead_sponsor": 0,
+      "ctgov.enrollment": 4,
+      "ctgov.start_date": 5,
+      "ctgov.primary_completion_date": 6,
+      "ctgov.completion_date": 27,
+      "ctgov.first_posted": 0,
+      "ctgov.last_update_posted": 0,
+      "ctgov.study_first_submitted": 0,
+      "ctgov.results_first_posted": 2008,
+      "ctgov.has_results": 0,
+      "ctgov.org_study_id": 0,
+      "ctgov.phases": 1172,
+      "ctgov.conditions": 0,
+      "ctgov.interventions": 375,
+      "ctgov.collaborators": 1693,
+      "ctgov.countries": 222,
+      "ctgov.secondary_ids": 2789,
+      "epmc.pmid": 378,
+      "epmc.pmcid": 12049,
+      "epmc.doi": 452,
+      "epmc.title": 0,
+      "epmc.author_string": 15,
+      "epmc.journal_title": 161,
+      "epmc.pub_year": 4,
+      "epmc.first_publication_date": 0,
+      "epmc.electronic_publication_date": 4088,
+      "epmc.first_index_date": 0,
+      "epmc.pub_types": 0,
+      "epmc.is_open_access": 0,
+      "epmc.cited_by_count": 0,
+      "epmc.firm_affiliations": 885,
+      "epmc.abstract": 2012,
+      "epmc.keywords": 7533,
+      "epmc.mesh_terms": 6070
+    },
+    "by_source": {
+      "ctgov": {
+        "records_fetched_all_queries": 4376,
+        "records_total": 4348,
+        "records_retained": 3054,
+        "records_dropped_first_posted_window": 1294,
+        "records_unparseable_first_posted": 0,
+        "records_retained_null_first_posted": 0,
+        "records_retained_with_device_intervention": 1719,
+        "distinct_nct_multi_query": 20,
+        "distinct_nct_multi_firm": 20,
+        "per_firm": {
+          "abbott": 1332,
+          "baxter": 260,
+          "bd": 79,
+          "boston_scientific": 623,
+          "edwards_lifesciences": 188,
+          "siemens_healthineers": 59,
+          "stryker": 237,
+          "zimmer_biomet": 276
+        },
+        "per_firm_membership": {
+          "abbott": 1332,
+          "baxter": 261,
+          "bd": 79,
+          "boston_scientific": 640,
+          "edwards_lifesciences": 190,
+          "siemens_healthineers": 59,
+          "stryker": 238,
+          "zimmer_biomet": 276
+        },
+        "per_query_retained": {
+          "abbott:Abbott": 1332,
+          "baxter:Baxter": 261,
+          "bd:Becton Dickinson": 79,
+          "bd:BD": 0,
+          "boston_scientific:Boston Scientific": 640,
+          "edwards_lifesciences:Edwards Lifesciences": 190,
+          "stryker:Stryker": 238,
+          "siemens_healthineers:Siemens Healthineers": 59,
+          "zimmer_biomet:Zimmer Biomet": 276
+        },
+        "per_field_nulls": {
+          "brief_title": 0,
+          "official_title": 23,
+          "acronym": 1699,
+          "overall_status": 0,
+          "study_type": 0,
+          "lead_sponsor": 0,
+          "enrollment": 4,
+          "start_date": 5,
+          "primary_completion_date": 6,
+          "completion_date": 27,
+          "first_posted": 0,
+          "last_update_posted": 0,
+          "study_first_submitted": 0,
+          "results_first_posted": 2008,
+          "has_results": 0,
+          "org_study_id": 0,
+          "phases": 1172,
+          "conditions": 0,
+          "interventions": 375,
+          "collaborators": 1693,
+          "countries": 222,
+          "secondary_ids": 2789
+        },
+        "skipped_queries": []
+      },
+      "epmc": {
+        "records_fetched_all_queries": 22787,
+        "records_total": 22664,
+        "records_retained": 22664,
+        "records_skipped_missing_id": 0,
+        "records_with_abstract": 20652,
+        "records_abstract_truncated": 4118,
+        "records_with_firm_affiliations": 21779,
+        "records_without_firm_affiliations": 885,
+        "records_null_publication_date": 0,
+        "date_basis_counts": {
+          "firstPublicationDate": 22664
+        },
+        "per_firm_date_basis": {
+          "abbott": {
+            "firstPublicationDate": 5280
+          },
+          "abbott+baxter": {
+            "firstPublicationDate": 1
+          },
+          "abbott+bd": {
+            "firstPublicationDate": 6
+          },
+          "abbott+bd+boston_scientific+edwards_lifesciences+stryker+zimmer_biomet": {
+            "firstPublicationDate": 2
+          },
+          "abbott+boston_scientific": {
+            "firstPublicationDate": 42
+          },
+          "abbott+boston_scientific+edwards_lifesciences": {
+            "firstPublicationDate": 6
+          },
+          "abbott+boston_scientific+stryker": {
+            "firstPublicationDate": 1
+          },
+          "abbott+edwards_lifesciences": {
+            "firstPublicationDate": 10
+          },
+          "abbott+siemens_healthineers": {
+            "firstPublicationDate": 5
+          },
+          "abbott+stryker": {
+            "firstPublicationDate": 1
+          },
+          "abbott+stryker+zimmer_biomet": {
+            "firstPublicationDate": 2
+          },
+          "baxter": {
+            "firstPublicationDate": 1603
+          },
+          "baxter+bd": {
+            "firstPublicationDate": 2
+          },
+          "baxter+bd+edwards_lifesciences": {
+            "firstPublicationDate": 1
+          },
+          "baxter+stryker": {
+            "firstPublicationDate": 2
+          },
+          "bd": {
+            "firstPublicationDate": 9282
+          },
+          "bd+boston_scientific": {
+            "firstPublicationDate": 5
+          },
+          "bd+edwards_lifesciences": {
+            "firstPublicationDate": 1
+          },
+          "bd+siemens_healthineers": {
+            "firstPublicationDate": 4
+          },
+          "boston_scientific": {
+            "firstPublicationDate": 1241
+          },
+          "boston_scientific+edwards_lifesciences": {
+            "firstPublicationDate": 3
+          },
+          "boston_scientific+siemens_healthineers": {
+            "firstPublicationDate": 4
+          },
+          "boston_scientific+stryker": {
+            "firstPublicationDate": 1
+          },
+          "edwards_lifesciences": {
+            "firstPublicationDate": 695
+          },
+          "edwards_lifesciences+siemens_healthineers": {
+            "firstPublicationDate": 2
+          },
+          "siemens_healthineers": {
+            "firstPublicationDate": 2279
+          },
+          "siemens_healthineers+stryker": {
+            "firstPublicationDate": 2
+          },
+          "stryker": {
+            "firstPublicationDate": 2024
+          },
+          "stryker+zimmer_biomet": {
+            "firstPublicationDate": 2
+          },
+          "zimmer_biomet": {
+            "firstPublicationDate": 155
+          }
+        },
+        "per_firm": {
+          "abbott": 5356,
+          "baxter": 1608,
+          "bd": 9292,
+          "boston_scientific": 1249,
+          "edwards_lifesciences": 697,
+          "siemens_healthineers": 2279,
+          "stryker": 2028,
+          "zimmer_biomet": 155
+        },
+        "per_firm_membership": {
+          "abbott": 5356,
+          "baxter": 1609,
+          "bd": 9303,
+          "boston_scientific": 1305,
+          "edwards_lifesciences": 720,
+          "siemens_healthineers": 2296,
+          "stryker": 2037,
+          "zimmer_biomet": 161
+        },
+        "per_query_retained": {
+          "abbott:AFF:\"Abbott\" AND (FIRST_PDATE:[2012-01-01 TO 2025-12-31])": 5356,
+          "baxter:AFF:\"Baxter\" AND (FIRST_PDATE:[2012-01-01 TO 2025-12-31])": 1609,
+          "bd:(AFF:\"Becton Dickinson\" OR AFF:\"BD\") AND (FIRST_PDATE:[2012-01-01 TO 2025-12-31])": 9303,
+          "boston_scientific:AFF:\"Boston Scientific\" AND (FIRST_PDATE:[2012-01-01 TO 2025-12-31])": 1305,
+          "edwards_lifesciences:AFF:\"Edwards Lifesciences\" AND (FIRST_PDATE:[2012-01-01 TO 2025-12-31])": 720,
+          "stryker:AFF:\"Stryker\" AND (FIRST_PDATE:[2012-01-01 TO 2025-12-31])": 2037,
+          "siemens_healthineers:AFF:\"Siemens Healthineers\" AND (FIRST_PDATE:[2012-01-01 TO 2025-12-31])": 2296,
+          "zimmer_biomet:AFF:\"Zimmer Biomet\" AND (FIRST_PDATE:[2012-01-01 TO 2025-12-31])": 161
+        },
+        "per_field_nulls": {
+          "pmid": 378,
+          "pmcid": 12049,
+          "doi": 452,
+          "title": 0,
+          "author_string": 15,
+          "journal_title": 161,
+          "pub_year": 4,
+          "first_publication_date": 0,
+          "electronic_publication_date": 4088,
+          "first_index_date": 0,
+          "pub_types": 0,
+          "is_open_access": 0,
+          "cited_by_count": 0,
+          "firm_affiliations": 885,
+          "abstract": 2012,
+          "keywords": 7533,
+          "mesh_terms": 6070
+        },
+        "skipped_queries": []
+      }
+    }
+  },
+  "files": [
+    {
+      "path": "experiments/phoenix003/dataset/ctgov_ext_compact.jsonl.gz",
+      "bytes": 738860,
+      "sha256": "633b3b36b54eaac93a325da3f03ba1a8f8776c8da3e9aab8ef339a80e57eb0a4",
+      "lines": 3054
+    },
+    {
+      "path": "experiments/phoenix003/dataset/epmc_ext_compact.jsonl.gz",
+      "bytes": 18594603,
+      "sha256": "340c5c4a37b6558cbad9bb52086830129d1c33aa4fa862562a8a5f4c93d8060f",
+      "lines": 22664
+    }
+  ],
+  "limitations": [
+    "EXTENSION STRATUM ONLY: these records cover the eight pre-registered extension firms (abbott, baxter, bd, boston_scientific, edwards_lifesciences, stryker, siemens_healthineers, zimmer_biomet) and carry stratum='extension'. They are a separate sample and must never be pooled with the core five in headline numbers.",
+    "Record schema is the frozen FETCH_SPEC.md compact schema plus 'stratum'. CT.gov rows use exactly the frozen list of 25 fields=; the compact file drops nothing else from the study object.",
+    "Harvest is firm-anchored (CT.gov query.spons / Europe PMC AFF:) and independent of any regulatory record; no milestone-dependent filter was used.",
+    "CT.gov date window is applied client-side to first_posted in [2010-01-01, 2025-12-31]; rows with null first_posted are retained. Upstream date strings are kept verbatim (YYYY-MM-DD or YYYY-MM); no day is invented.",
+    "Europe PMC date window is server-side, FIRST_PDATE:[2012-01-01 TO 2025-12-31], exactly as frozen.",
+    "CT.gov dedup is by nct_id: the first query that returned a study owns the record; additional query strings are appended to api_query joined by ' | ', and a study returned under different firms has its firm keys joined by '+' (sorted).",
+    "Europe PMC dedup is by (source, id): first record wins, api_query and source_firm joined with ' | ' and '+' respectively. firm_affiliations comes from the first record and is filtered with the first owning firm's terms only; the (rare) multi-firm rows are counted in counts.by_source.epmc.per_firm_membership.",
+    "firm_affiliations matching is case-insensitive word-token equality on the frozen AFF terms, never a bare substring: 'BD' therefore does not match inside a longer word (e.g. 'ABD'), and matching affiliation strings are kept verbatim and de-duplicated in first-seen order. A standalone 'Bd' token in a non-English affiliation string (the French boulevard abbreviation) still matches the 'BD' term; such strings are retained by the frozen matching rule rather than guessed away. An empty list means no affiliation on the retrieved record carried a frozen firm term (counted).",
+    "abstract is whitespace-collapsed (no day/HTML invention, HTML entities left as upstream) and truncated to 2000 characters; abstract_truncated marks truncation.",
+    "date basis for Europe PMC follows the frozen order firstPublicationDate -> electronicPublicationDate -> firstIndexDate -> pubYear + '-01-01'; date_basis records the source used and 'none' when no date component exists.",
+    "Pathological-volume rule: a query whose reported hit count exceeds 15000 is reported and NOT paged (it would otherwise emit a silently partial stratum).",
+    "Politeness: User-Agent 'MedRadar-PHOENIX003/1.0 (research; contact chazy11@users.noreply.github.com)', >= 0.35 s between request starts, 3 retries with (1.0, 2.0, 4.0)s backoff; the harvest aborts loudly instead of writing a partial file.",
+    "Transport only: responses were requested with Accept-Encoding: gzip and decoded before parsing; server-side query semantics, pagination and record content are identical to an uncompressed request (the smaller wire footprint also reduces load on the shared endpoint).",
+    "fetched_at is wall-clock time at page retrieval and is the only non-deterministic field; everything else is deterministic given identical upstream bytes. Gzip is written with mtime=0.",
+    "queried records_returned is the count returned by the API for that query (pre-filter, pre-dedup); records_retained is the count of that query's ids present in the final retained file, so a record returned by several queries counts under each of them. requests counts HTTP attempts including retries; pages counts successfully processed pages.",
+    "Read-back verification: the gzip files were reopened after writing; line count equals retained record count and every line parses as JSON."
+  ]
+}

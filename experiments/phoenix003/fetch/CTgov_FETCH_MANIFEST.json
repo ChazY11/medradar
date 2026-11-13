@@ -1,0 +1,175 @@
+{
+  "generated_at": "2026-11-08T20:14:10Z",
+  "endpoint": "https://clinicaltrials.gov/api/v2/studies",
+  "queries": [
+    {
+      "firm": "medtronic",
+      "api_query": "Medtronic",
+      "http_status": 200,
+      "requests": 2,
+      "pages": 2,
+      "reported_hit_count": 1675,
+      "records_returned": 1675,
+      "records_retained": 1215,
+      "started_at": "2026-11-08T20:12:47Z",
+      "finished_at": "2026-11-08T20:13:53Z"
+    },
+    {
+      "firm": "ge_healthcare",
+      "api_query": "GE HealthCare",
+      "http_status": 200,
+      "requests": 1,
+      "pages": 1,
+      "reported_hit_count": 343,
+      "records_returned": 343,
+      "records_retained": 258,
+      "started_at": "2026-11-08T20:13:53Z",
+      "finished_at": "2026-11-08T20:13:55Z"
+    },
+    {
+      "firm": "ge_healthcare",
+      "api_query": "GE Medical Systems",
+      "http_status": 200,
+      "requests": 1,
+      "pages": 1,
+      "reported_hit_count": 1,
+      "records_returned": 1,
+      "records_retained": 0,
+      "started_at": "2026-11-08T20:13:55Z",
+      "finished_at": "2026-11-08T20:13:56Z"
+    },
+    {
+      "firm": "ge_healthcare",
+      "api_query": "General Electric Medical Systems",
+      "http_status": 200,
+      "requests": 1,
+      "pages": 1,
+      "reported_hit_count": 1,
+      "records_returned": 1,
+      "records_retained": 0,
+      "started_at": "2026-11-08T20:13:56Z",
+      "finished_at": "2026-11-08T20:13:56Z"
+    },
+    {
+      "firm": "philips",
+      "api_query": "Philips",
+      "http_status": 200,
+      "requests": 1,
+      "pages": 1,
+      "reported_hit_count": 376,
+      "records_returned": 376,
+      "records_retained": 319,
+      "started_at": "2026-11-08T20:13:56Z",
+      "finished_at": "2026-11-08T20:14:03Z"
+    },
+    {
+      "firm": "draeger",
+      "api_query": "Draeger",
+      "http_status": 200,
+      "requests": 1,
+      "pages": 1,
+      "reported_hit_count": 8,
+      "records_returned": 8,
+      "records_retained": 7,
+      "started_at": "2026-11-08T20:14:03Z",
+      "finished_at": "2026-11-08T20:14:04Z"
+    },
+    {
+      "firm": "draeger",
+      "api_query": "Dräger",
+      "http_status": 200,
+      "requests": 1,
+      "pages": 1,
+      "reported_hit_count": 2,
+      "records_returned": 2,
+      "records_retained": 1,
+      "started_at": "2026-11-08T20:14:04Z",
+      "finished_at": "2026-11-08T20:14:08Z"
+    },
+    {
+      "firm": "mindray",
+      "api_query": "Mindray",
+      "http_status": 200,
+      "requests": 1,
+      "pages": 1,
+      "reported_hit_count": 6,
+      "records_returned": 6,
+      "records_retained": 5,
+      "started_at": "2026-11-08T20:14:08Z",
+      "finished_at": "2026-11-08T20:14:10Z"
+    }
+  ],
+  "counts": {
+    "records_total": 2407,
+    "records_retained": 1802,
+    "per_field_nulls": {
+      "brief_title": 0,
+      "official_title": 18,
+      "acronym": 1059,
+      "overall_status": 0,
+      "study_type": 0,
+      "lead_sponsor": 0,
+      "enrollment": 0,
+      "start_date": 2,
+      "primary_completion_date": 5,
+      "completion_date": 14,
+      "first_posted": 0,
+      "last_update_posted": 0,
+      "study_first_submitted": 0,
+      "results_first_posted": 1226,
+      "has_results": 0,
+      "org_study_id": 0,
+      "phases": 615,
+      "conditions": 0,
+      "interventions": 226,
+      "collaborators": 814,
+      "countries": 104,
+      "secondary_ids": 1659
+    },
+    "records_fetched_all_queries": 2412,
+    "records_dropped_first_posted_window": 605,
+    "records_retained_null_first_posted": 0,
+    "records_retained_with_device_intervention": 1073,
+    "distinct_nct_multi_query": 3,
+    "per_firm": {
+      "medtronic": 1215,
+      "ge_healthcare": 258,
+      "philips": 316,
+      "draeger": 8,
+      "mindray": 5
+    },
+    "per_query_retained": {
+      "medtronic:Medtronic": 1215,
+      "ge_healthcare:GE HealthCare": 258,
+      "ge_healthcare:GE Medical Systems": 0,
+      "ge_healthcare:General Electric Medical Systems": 0,
+      "philips:Philips": 319,
+      "draeger:Draeger": 7,
+      "draeger:Dräger": 1,
+      "mindray:Mindray": 5
+    }
+  },
+  "files": [
+    {
+      "path": "experiments/phoenix003/dataset/ctgov_compact.jsonl.gz",
+      "bytes": 452148,
+      "sha256": "19cf58313fa89b3e9903b2d4eb8b9aadc9155e56c37cfc4138e10500ffde0816",
+      "lines": 1802
+    }
+  ],
+  "limitations": [
+    "Harvest is firm-anchored (query.spons) and independent of any regulatory record; no server-side date filter was used.",
+    "fields= requested exactly the frozen list of 25 fields; compact file drops nothing else from the study object.",
+    "Date window filter applied client-side to first_posted in [2010-01-01, 2025-12-31]; rows with null first_posted are retained. Upstream date strings are kept verbatim (YYYY-MM-DD or YYYY-MM); no day is invented.",
+    "Dedup by nct_id: the first query that returned a study owns the record; additional query strings are appended to api_query joined by ' | '. Records returned by more than one query therefore keep the first record's source_firm and fetched_at.",
+    "Raw unique records before the window filter: 2407; dropped as out-of-window: 605; retained: 1802.",
+    "Retained records: 1802; per firm (first-owner attribution): medtronic=1215, ge_healthcare=258, philips=316, draeger=8, mindray=5.",
+    "Retained records with first_posted == null: 0.",
+    "Retained records with at least one interventions[] entry of type DEVICE: 1073.",
+    "Distinct nct_id returned by more than one query (retained set): 3.",
+    "per_field_nulls counts records whose value is null; for list-valued fields (phases, conditions, interventions, collaborators, countries, secondary_ids) an empty list is counted as null.",
+    "queried records_returned is the count of studies returned by the API for that query (pre-filter, pre-dedup); records_retained is the count of that query's nct_ids present in the final retained file, so a study returned by several queries counts under each of them. requests counts HTTP attempts including retries; pages counts successfully processed pages.",
+    "fetched_at is wall-clock time at page retrieval and is the only non-deterministic field; everything else is deterministic given identical upstream bytes. Gzip is written with mtime=0.",
+    "Politeness: 'MedRadar-PHOENIX003/1.0 (research; contact chazy11@users.noreply.github.com)', >= 0.35s between request starts, 3 retries with (1.0, 2.0, 4.0)s backoff; the harvest aborts loudly instead of writing a partial file."
+  ]
+}

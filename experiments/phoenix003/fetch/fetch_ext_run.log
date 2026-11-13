@@ -1,0 +1,131 @@
+PHOENIX-003 extension-stratum harvest starting: mode=full limit_pages=None firms=8/8
+  ctgov endpoint  https://clinicaltrials.gov/api/v2/studies
+  epmc  endpoint  https://www.ebi.ac.uk/europepmc/webservices/rest/search
+  ctgov dataset   D:\DEPPSKK\worktrees\phoenix003\experiments\phoenix003\dataset\ctgov_ext_compact.jsonl.gz
+  epmc  dataset   D:\DEPPSKK\worktrees\phoenix003\experiments\phoenix003\dataset\epmc_ext_compact.jsonl.gz
+  manifest        D:\DEPPSKK\worktrees\phoenix003\experiments\phoenix003\fetch\EXT_FETCH_MANIFEST.json
+  fields          25 requested: NCTId,BriefTitle,OfficialTitle,Acronym,OverallStatus,StudyType,Phase,Condition,InterventionName,InterventionType,InterventionDescription,LeadSponsorName,CollaboratorName,EnrollmentCount,StartDate,PrimaryCompletionDate,CompletionDate,StudyFirstPostDate,LastUpdatePostDate,StudyFirstSubmitDate,ResultsFirstPostDate,HasResults,LocationCountry,OrgStudyId,SecondaryId
+  politeness      min_delay=0.35s retries=3 backoff=(1.0, 2.0, 4.0) timeouts=(120s, 180s)
+
+[ctgov] abbott               q='Abbott' starting
+  page=1 http=200 got=1000 total=2099 cum=1000 wire=263957B t=3.8s
+  page=2 http=200 got=1000 total=2099 cum=2000 wire=258893B t=3.1s
+  page=3 http=200 got=99 total=2099 cum=2099 wire=28802B t=0.7s
+[ctgov] abbott               q='Abbott' done: pages=3 returned=2099 reported_total=2099
+[ctgov] baxter               q='Baxter' starting
+  page=1 http=200 got=359 total=359 cum=359 wire=98496B t=4.5s
+[ctgov] baxter               q='Baxter' done: pages=1 returned=359 reported_total=359
+[ctgov] bd                   q='Becton Dickinson' starting
+  page=1 http=200 got=91 total=91 cum=91 wire=28123B t=0.6s
+[ctgov] bd                   q='Becton Dickinson' done: pages=1 returned=91 reported_total=91
+[ctgov] bd                   q='BD' starting
+  page=1 http=200 got=1 total=1 cum=1 wire=605B t=0.4s
+[ctgov] bd                   q='BD' done: pages=1 returned=1 reported_total=1
+[ctgov] boston_scientific    q='Boston Scientific' starting
+  page=1 http=200 got=853 total=853 cum=853 wire=227901B t=2.3s
+[ctgov] boston_scientific    q='Boston Scientific' done: pages=1 returned=853 reported_total=853
+[ctgov] edwards_lifesciences q='Edwards Lifesciences' starting
+  page=1 http=200 got=213 total=213 cum=213 wire=48558B t=1.5s
+[ctgov] edwards_lifesciences q='Edwards Lifesciences' done: pages=1 returned=213 reported_total=213
+[ctgov] stryker              q='Stryker' starting
+  page=1 http=200 got=296 total=296 cum=296 wire=78003B t=2.6s
+[ctgov] stryker              q='Stryker' done: pages=1 returned=296 reported_total=296
+[ctgov] siemens_healthineers q='Siemens Healthineers' starting
+  page=1 http=200 got=71 total=71 cum=71 wire=20773B t=0.9s
+[ctgov] siemens_healthineers q='Siemens Healthineers' done: pages=1 returned=71 reported_total=71
+[ctgov] zimmer_biomet        q='Zimmer Biomet' starting
+  page=1 http=200 got=393 total=393 cum=393 wire=88886B t=3.2s
+[ctgov] zimmer_biomet        q='Zimmer Biomet' done: pages=1 returned=393 reported_total=393
+
+[epmc]  abbott               clause='AFF:"Abbott"' starting
+  page=1 http=200 got=1000 hit=5356 cum=1000 wire=1410541B t=22.9s
+  page=2 http=200 got=1000 hit=5356 cum=2000 wire=1524923B t=26.4s
+  page=3 http=200 got=1000 hit=5356 cum=3000 wire=1593542B t=19.1s
+  page=4 http=200 got=1000 hit=5356 cum=4000 wire=1580658B t=192.4s
+  page=5 http=200 got=1000 hit=5356 cum=5000 wire=1855916B t=24.8s
+  page=6 http=200 got=356 hit=5356 cum=5356 wire=910223B t=11.9s
+  page=7 http=200 got=0 hit=5356 cum=5356 wire=234B t=1.3s
+[epmc]  abbott               done: pages=7 returned=5356 reported_total=5356
+[epmc]  baxter               clause='AFF:"Baxter"' starting
+  page=1 http=200 got=1000 hit=1609 cum=1000 wire=1498152B t=36.5s
+  page=2 http=200 got=609 hit=1609 cum=1609 wire=1109349B t=16.0s
+  page=3 http=200 got=0 hit=1609 cum=1609 wire=234B t=0.8s
+[epmc]  baxter               done: pages=3 returned=1609 reported_total=1609
+[epmc]  bd                   clause='(AFF:"Becton Dickinson" OR AFF:"BD")' starting
+  page=1 http=200 got=1000 hit=9303 cum=1000 wire=1421082B t=25.8s
+  page=2 http=200 got=1000 hit=9303 cum=2000 wire=1479818B t=19.4s
+  page=3 http=200 got=1000 hit=9303 cum=3000 wire=1559348B t=18.3s
+  page=4 http=200 got=1000 hit=9303 cum=4000 wire=1559543B t=10.0s
+  page=5 http=200 got=1000 hit=9303 cum=5000 wire=1595250B t=20.9s
+  page=6 http=200 got=1000 hit=9303 cum=6000 wire=1472668B t=14.7s
+  page=7 http=200 got=1000 hit=9303 cum=7000 wire=1446997B t=14.3s
+  page=8 http=200 got=1000 hit=9303 cum=8000 wire=1775146B t=10.4s
+  page=9 http=200 got=1000 hit=9303 cum=9000 wire=1918629B t=9.5s
+  page=10 http=200 got=303 hit=9303 cum=9303 wire=1323527B t=4.1s
+  page=11 http=200 got=0 hit=9303 cum=9303 wire=248B t=0.5s
+[epmc]  bd                   done: pages=11 returned=9303 reported_total=9303
+[epmc]  boston_scientific    clause='AFF:"Boston Scientific"' starting
+  page=1 http=200 got=1000 hit=1305 cum=1000 wire=1608598B t=8.2s
+  page=2 http=200 got=305 hit=1305 cum=1305 wire=642424B t=6.7s
+  page=3 http=200 got=0 hit=1305 cum=1305 wire=241B t=0.4s
+[epmc]  boston_scientific    done: pages=3 returned=1305 reported_total=1305
+[epmc]  edwards_lifesciences clause='AFF:"Edwards Lifesciences"' starting
+  page=1 http=200 got=720 hit=720 cum=720 wire=1221510B t=6.7s
+[epmc]  edwards_lifesciences done: pages=1 returned=720 reported_total=720
+[epmc]  stryker              clause='AFF:"Stryker"' starting
+  page=1 http=200 got=1000 hit=2037 cum=1000 wire=1205132B t=8.0s
+  page=2 http=200 got=1000 hit=2037 cum=2000 wire=1341674B t=15.2s
+  page=3 http=200 got=37 hit=2037 cum=2037 wire=136739B t=1.6s
+  page=4 http=200 got=0 hit=2037 cum=2037 wire=233B t=0.4s
+[epmc]  stryker              done: pages=4 returned=2037 reported_total=2037
+[epmc]  siemens_healthineers clause='AFF:"Siemens Healthineers"' starting
+  page=1 http=200 got=1000 hit=2296 cum=1000 wire=1536181B t=15.4s
+  page=2 http=200 got=1000 hit=2296 cum=2000 wire=1625055B t=8.2s
+  page=3 http=200 got=296 hit=2296 cum=2296 wire=692765B t=7.5s
+  page=4 http=200 got=0 hit=2296 cum=2296 wire=242B t=0.4s
+[epmc]  siemens_healthineers done: pages=4 returned=2296 reported_total=2296
+[epmc]  zimmer_biomet        clause='AFF:"Zimmer Biomet"' starting
+  page=1 http=200 got=161 hit=161 cum=161 wire=342475B t=1.9s
+[epmc]  zimmer_biomet        done: pages=1 returned=161 reported_total=161
+
+harvest complete in 611.3s: ctgov 3054 retained, epmc 22664 retained
+
+verified read-back: 3054 ctgov gzip lines == 3054 retained records; 22664 epmc gzip lines == 22664 retained records; all lines parse as JSON
+
+=== harvest summary (extension stratum) ===
+ctgov  retained records : 3054 (unique raw 4348, dropped out-of-window 1294)
+ctgov  per firm        : {'abbott': 1332, 'baxter': 260, 'bd': 79, 'boston_scientific': 623, 'edwards_lifesciences': 188, 'siemens_healthineers': 59, 'stryker': 237, 'zimmer_biomet': 276}
+ctgov  per firm (membership): {'abbott': 1332, 'baxter': 261, 'bd': 79, 'boston_scientific': 640, 'edwards_lifesciences': 190, 'siemens_healthineers': 59, 'stryker': 238, 'zimmer_biomet': 276}
+ctgov  first_posted null: 0
+ctgov  DEVICE intervention records: 1719
+ctgov  nct_id multi-query / multi-firm: 20 / 20
+epmc   retained records : 22664 (fetched 22787)
+epmc   per firm        : {'abbott': 5356, 'baxter': 1608, 'bd': 9292, 'boston_scientific': 1249, 'edwards_lifesciences': 697, 'siemens_healthineers': 2279, 'stryker': 2028, 'zimmer_biomet': 155}
+epmc   per firm (membership): {'abbott': 5356, 'baxter': 1609, 'bd': 9303, 'boston_scientific': 1305, 'edwards_lifesciences': 720, 'siemens_healthineers': 2296, 'stryker': 2037, 'zimmer_biomet': 161}
+epmc   date_basis       : {'firstPublicationDate': 22664}
+epmc   null publication date: 0
+epmc   with abstract: 20652 (truncated 4118)
+epmc   firm_affiliations empty: 885 (non-empty 21779)
+
+ctgov dataset : experiments/phoenix003/dataset/ctgov_ext_compact.jsonl.gz (738860 bytes, sha256=633b3b36b54eaac93a325da3f03ba1a8f8776c8da3e9aab8ef339a80e57eb0a4, lines=3054)
+epmc  dataset : experiments/phoenix003/dataset/epmc_ext_compact.jsonl.gz (18594603 bytes, sha256=340c5c4a37b6558cbad9bb52086830129d1c33aa4fa862562a8a5f4c93d8060f, lines=22664)
+manifest      : experiments/phoenix003/fetch/EXT_FETCH_MANIFEST.json (22162 bytes, sha256=6124370005280817124f9d1a25ccc1b1f3259374bee8c19d66415ce28cde897c)
+
+=== query detail ===
+  ctgov abbott               'Abbott'                                                               http=200 pages=3 returned=2099 retained=1332 reported_total=2099
+  ctgov baxter               'Baxter'                                                               http=200 pages=1 returned=359 retained=261 reported_total=359
+  ctgov bd                   'Becton Dickinson'                                                     http=200 pages=1 returned=91 retained=79 reported_total=91
+  ctgov bd                   'BD'                                                                   http=200 pages=1 returned=1 retained=0 reported_total=1
+  ctgov boston_scientific    'Boston Scientific'                                                    http=200 pages=1 returned=853 retained=640 reported_total=853
+  ctgov edwards_lifesciences 'Edwards Lifesciences'                                                 http=200 pages=1 returned=213 retained=190 reported_total=213
+  ctgov stryker              'Stryker'                                                              http=200 pages=1 returned=296 retained=238 reported_total=296
+  ctgov siemens_healthineers 'Siemens Healthineers'                                                 http=200 pages=1 returned=71 retained=59 reported_total=71
+  ctgov zimmer_biomet        'Zimmer Biomet'                                                        http=200 pages=1 returned=393 retained=276 reported_total=393
+  epmc  abbott               'AFF:"Abbott" AND (FIRST_PDATE:[2012-01-01 TO 2025-12-31])'            http=200 pages=7 returned=5356 retained=5356 reported_total=5356
+  epmc  baxter               'AFF:"Baxter" AND (FIRST_PDATE:[2012-01-01 TO 2025-12-31])'            http=200 pages=3 returned=1609 retained=1609 reported_total=1609
+  epmc  bd                   '(AFF:"Becton Dickinson" OR AFF:"BD") AND (FIRST_PDATE:[2012-01-01 TO 2025-12-31])' http=200 pages=11 returned=9303 retained=9303 reported_total=9303
+  epmc  boston_scientific    'AFF:"Boston Scientific" AND (FIRST_PDATE:[2012-01-01 TO 2025-12-31])' http=200 pages=3 returned=1305 retained=1305 reported_total=1305
+  epmc  edwards_lifesciences 'AFF:"Edwards Lifesciences" AND (FIRST_PDATE:[2012-01-01 TO 2025-12-31])' http=200 pages=1 returned=720 retained=720 reported_total=720
+  epmc  stryker              'AFF:"Stryker" AND (FIRST_PDATE:[2012-01-01 TO 2025-12-31])'           http=200 pages=4 returned=2037 retained=2037 reported_total=2037
+  epmc  siemens_healthineers 'AFF:"Siemens Healthineers" AND (FIRST_PDATE:[2012-01-01 TO 2025-12-31])' http=200 pages=4 returned=2296 retained=2296 reported_total=2296
+  epmc  zimmer_biomet        'AFF:"Zimmer Biomet" AND (FIRST_PDATE:[2012-01-01 TO 2025-12-31])'     http=200 pages=1 returned=161 retained=161 reported_total=161

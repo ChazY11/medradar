@@ -1,0 +1,53 @@
+PHOENIX-003 Europe PMC harvest (FULL)
+  endpoint : https://www.ebi.ac.uk/europepmc/webservices/rest/search
+  window   : FIRST_PDATE:[2012-01-01 TO 2025-12-31]
+  pageSize : 1000  socket timeout: 180s  min delay: 0.35s  retries: [1, 2, 4]
+  outputs  : experiments/phoenix003/dataset/epmc_compact.jsonl.gz / experiments/phoenix003/fetch/EPMC_FETCH_MANIFEST.json
+
+[medtronic] page 1: +1000 records, 1000 this query so far (hitCount 2892) 229.1s -> unique records so far: 0
+[medtronic] page 2: +1000 records, 2000 this query so far (hitCount 2892) 239.1s -> unique records so far: 0
+[medtronic] page 3: +892 records, 2892 this query so far (hitCount 2892) 213.8s -> unique records so far: 0
+[medtronic] page 4: +0 records, 2892 this query so far (hitCount 2892) 0.8s -> unique records so far: 0
+[medtronic] done: 2892 raw records in 4 page(s), 4 request(s), hitCount 2892
+[ge_healthcare] page 1: +1000 records, 1000 this query so far (hitCount 4286) 240.1s -> unique records so far: 2892
+[ge_healthcare] page 2: +1000 records, 2000 this query so far (hitCount 4286) 132.9s -> unique records so far: 2892
+[ge_healthcare] page 3: +1000 records, 3000 this query so far (hitCount 4286) 58.5s -> unique records so far: 2892
+[ge_healthcare] page 4: +1000 records, 4000 this query so far (hitCount 4286) 54.5s -> unique records so far: 2892
+[ge_healthcare] page 5: +286 records, 4286 this query so far (hitCount 4286) 13.2s -> unique records so far: 2892
+[ge_healthcare] page 6: +0 records, 4286 this query so far (hitCount 4286) 1.8s -> unique records so far: 2892
+[ge_healthcare] done: 4286 raw records in 6 page(s), 6 request(s), hitCount 4286
+[philips] page 1: +1000 records, 1000 this query so far (hitCount 6615) 78.0s -> unique records so far: 7166
+[philips] page 2: +1000 records, 2000 this query so far (hitCount 6615) 14.9s -> unique records so far: 7166
+[philips] page 3: +1000 records, 3000 this query so far (hitCount 6615) 70.1s -> unique records so far: 7166
+[philips] page 4: +1000 records, 4000 this query so far (hitCount 6615) 14.7s -> unique records so far: 7166
+[philips] page 5: +1000 records, 5000 this query so far (hitCount 6615) 107.8s -> unique records so far: 7166
+[philips] page 6: +1000 records, 6000 this query so far (hitCount 6615) 79.0s -> unique records so far: 7166
+[philips] page 7: +615 records, 6615 this query so far (hitCount 6615) 67.2s -> unique records so far: 7166
+[philips] page 8: +0 records, 6615 this query so far (hitCount 6615) 1.4s -> unique records so far: 7166
+[philips] done: 6615 raw records in 8 page(s), 8 request(s), hitCount 6615
+[draeger] page 1: +42 records, 42 this query so far (hitCount 42) 5.9s -> unique records so far: 13707
+[draeger] done: 42 raw records in 1 page(s), 1 request(s), hitCount 42
+[mindray] page 1: +234 records, 234 this query so far (hitCount 234) 16.6s -> unique records so far: 13747
+[mindray] done: 234 raw records in 1 page(s), 1 request(s), hitCount 234
+
+retained 13980 unique records from 14069 returned (multi-firm: 78)
+per-firm retained: {'medtronic': 2892, 'ge_healthcare': 4286, 'philips': 6615, 'draeger': 42, 'mindray': 234}
+date_basis: {'firstPublicationDate': 13980}
+source: {'MED': 13661, 'PAT': 5, 'PMC': 282, 'PPR': 32}
+empty firm_affiliations: 521
+
+writing experiments/phoenix003/dataset/epmc_compact.jsonl.gz ...
+  wrote 13980 lines, 11804797 bytes, sha256 616361a01806b2edcabba988be404dbcd7f4548aaf56d2ede3c9f278f088fd4b
+writing experiments/phoenix003/fetch/EPMC_FETCH_MANIFEST.json ...
+  wrote 7501 bytes, sha256 5756ef1f6e022529a76a0b024a91a9cf8f864d6e0b0f471479791d4ee13f1349
+
+DONE (FULL): experiments/phoenix003/dataset/epmc_compact.jsonl.gz sha256=616361a01806b2edcabba988be404dbcd7f4548aaf56d2ede3c9f278f088fd4b
+---
+Post-run provenance note (appended by the harvester; not part of the captured stdout):
+after this run the gz was re-emitted once, using the fixed gzip writer, to remove an
+FNAME header leak (gzip.GzipFile had stored the temporary ".tmp" basename in the
+header, making the container irreproducible). Decompressed JSONL bytes are unchanged:
+sha256 dc4cd489f1f4a317ebafb057ca2c4fdd1db98d021098e0bfc08b8ed45b9bef8e (40628342 bytes).
+Final artefact: experiments/phoenix003/dataset/epmc_compact.jsonl.gz
+11804771 bytes, sha256 e1ef5841bcfc9c64eb1d524efc83a78f040827b77d0cf695ea803d6118baeac8.
+EPMC_FETCH_MANIFEST.json records these final values in files[].
