@@ -1,0 +1,17 @@
+# CODEOWNERS — MedRadar
+#
+# SOLO-MAINTAINER draft. The owner (ChazY11) is the only maintainer, so this
+# file exists for routing and notification, NOT to create a review requirement.
+#
+# Branch protection is planned WITHOUT "require approving reviews" (see
+# docs/governance/BRANCH_PROTECTION_PLAN.md). Do not rely on CODEOWNERS to
+# force a second reviewer: there is no second maintainer, and pretending there
+# is would either block every change or be bypassed silently.
+#
+# Ownership of the governance surface itself:
+*                     @ChazY11
+
+/PROJECT_STATE.yaml   @ChazY11
+/docs/governance/     @ChazY11
+/tools/governance/    @ChazY11
+/.github/workflows/   @ChazY11

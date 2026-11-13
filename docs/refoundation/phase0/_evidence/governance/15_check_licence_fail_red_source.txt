@@ -1,0 +1,100 @@
+# command: python tools/governance/check_licence.py   # fake tracked file matching the RED source pattern
+# exit code: 1
+
+[ok]   licences.schema: expected medradar.data_licenses.v1, found 'medradar.data_licenses.v1'
+[ok]   licences.policy.default_status: default_status='RED'
+[ok]   licences.policy.rule: rule is documented
+[ok]   licences.tracked_files: 1178 tracked files scanned
+[ok]   licences.sources.nonempty: 10 sources
+[ok]   policy.raw_root: raw data root='data/' (RED content may only live under data/)
+[ok]   policy.raw_root.gitignored: data/ is ignored by .gitignore
+[ok]   sources[0].source_id: 'openfda_device'
+[ok]   sources[0].status: 'GREEN'
+[ok]   sources[0].attribution: 'U.S. Food and Drug Administration openFDA (510(k), PMA and device-recall endpoints). U.S. Government work; not endorsed by the FDA.'
+[ok]   sources[0].may_redistribute.type: True
+[ok]   sources[0].may_redistribute.consistent: GREEN source 'openfda_device' must have may_redistribute: true, found True
+[ok]   sources[0].raw_patterns.under_data: 1 raw patterns under data/
+[ok]   sources[1].source_id: 'openfda_drug'
+[ok]   sources[1].status: 'GREEN'
+[ok]   sources[1].attribution: 'U.S. Food and Drug Administration openFDA Drugs@FDA endpoints (drug approvals). U.S. Government work; not endorsed by the FDA.'
+[ok]   sources[1].may_redistribute.type: True
+[ok]   sources[1].may_redistribute.consistent: GREEN source 'openfda_drug' must have may_redistribute: true, found True
+[ok]   sources[1].raw_patterns.under_data: 1 raw patterns under data/
+[ok]   sources[2].source_id: 'ctgov'
+[ok]   sources[2].status: 'GREEN'
+[ok]   sources[2].attribution: 'ClinicalTrials.gov API v2 (U.S. National Library of Medicine, NIH). U.S. Government work; not endorsed by NLM.'
+[ok]   sources[2].may_redistribute.type: True
+[ok]   sources[2].may_redistribute.consistent: GREEN source 'ctgov' must have may_redistribute: true, found True
+[ok]   sources[2].raw_patterns.under_data: 1 raw patterns under data/
+[ok]   sources[3].source_id: 'sec_edgar'
+[ok]   sources[3].status: 'GREEN'
+[ok]   sources[3].attribution: 'SEC EDGAR 8-K filings. U.S. Government work; no endorsement by the SEC.'
+[ok]   sources[3].may_redistribute.type: True
+[ok]   sources[3].may_redistribute.consistent: GREEN source 'sec_edgar' must have may_redistribute: true, found True
+[ok]   sources[3].raw_patterns.under_data: 1 raw patterns under data/
+[ok]   sources[4].source_id: 'openalex'
+[ok]   sources[4].status: 'GREEN'
+[ok]   sources[4].attribution: 'OpenAlex works metadata, CC0 1.0 (https://openalex.org). Attribution appreciated.'
+[ok]   sources[4].may_redistribute.type: True
+[ok]   sources[4].may_redistribute.consistent: GREEN source 'openalex' must have may_redistribute: true, found True
+[ok]   sources[4].raw_patterns.under_data: 1 raw patterns under data/
+[ok]   sources[5].source_id: 'uspto'
+[ok]   sources[5].status: 'GREEN'
+[ok]   sources[5].attribution: 'USPTO Open Data Portal. U.S. Government work. The adapter is implemented but not evaluated; no patent numbers are reported.'
+[ok]   sources[5].may_redistribute.type: True
+[ok]   sources[5].may_redistribute.consistent: GREEN source 'uspto' must have may_redistribute: true, found True
+[ok]   sources[5].raw_patterns.under_data: 1 raw patterns under data/
+[ok]   sources[6].source_id: 'nmpa_demo_seed'
+[ok]   sources[6].status: 'GREEN'
+[ok]   sources[6].attribution: 'Synthetic demonstration rows authored for this repository (虚构演示数据); not NMPA records and not third-party content.'
+[ok]   sources[6].may_redistribute.type: True
+[ok]   sources[6].may_redistribute.consistent: GREEN source 'nmpa_demo_seed' must have may_redistribute: true, found True
+[ok]   sources[7].source_id: 'sec_8k_hand_labels'
+[ok]   sources[7].status: 'GREEN'
+[ok]   sources[7].attribution: 'Hand-labelled 8-K calibration set derived from SEC EDGAR filings (GREEN source).'
+[ok]   sources[7].may_redistribute.type: True
+[ok]   sources[7].may_redistribute.consistent: GREEN source 'sec_8k_hand_labels' must have may_redistribute: true, found True
+[ok]   sources[8].source_id: 'yahoo_chart_bars'
+[ok]   sources[8].status: 'RED'
+[ok]   sources[8].attribution: 'Yahoo Finance public chart endpoint. This is a research import, not a licensed market-data feed; the source terms do not permit redistribution of raw bars.'
+[ok]   sources[8].may_redistribute.type: False
+[ok]   sources[8].may_redistribute.consistent: RED source 'yahoo_chart_bars' must have may_redistribute: false, found False
+[ok]   sources[8].raw_patterns.under_data: 1 raw patterns under data/
+[ok]   sources[9].source_id: 'internet_archive_cdx'
+[ok]   sources[9].status: 'AMBER'
+[ok]   sources[9].attribution: 'Internet Archive Wayback Machine CDX index and archived third-party pages; page content belongs to the original publishers and is not redistributed.'
+[ok]   sources[9].may_redistribute.type: False
+[ok]   sources[9].may_redistribute.consistent: AMBER source 'internet_archive_cdx' must have may_redistribute: false, found False
+[ok]   sources[9].raw_patterns.under_data: 2 raw patterns under data/
+[ok]   licences.policy_entries.count: 4 explicit entries
+[ok]   policy_entries[0].source_id.known: 'internet_archive_cdx' is known
+[ok]   policy_entries[0].red_source_forbidden: RED sources may not have redistribution entries
+[ok]   policy_entries[0].kind: expected one of ['claims', 'derived-aggregate', 'derived-report', 'index', 'metadata'], found 'derived-aggregate'
+[ok]   policy_entries[0].reason: Derived ATS/hiring depth counts and coverage panels computed from the archived index; no archived pa
+[ok]   policy_entries[0].path_xor_pattern: declare exactly one of path or path_pattern
+[ok]   policy_entries[0].path_pattern_matches: 'experiments/b030/*.json' matches 8 tracked file(s)
+[ok]   policy_entries[1].source_id.known: 'internet_archive_cdx' is known
+[ok]   policy_entries[1].red_source_forbidden: RED sources may not have redistribution entries
+[ok]   policy_entries[1].kind: expected one of ['claims', 'derived-aggregate', 'derived-report', 'index', 'metadata'], found 'derived-report'
+[ok]   policy_entries[1].reason: Human-readable report of the derived coverage/depth measurements; contains aggregate numbers, not ar
+[ok]   policy_entries[1].path_xor_pattern: declare exactly one of path or path_pattern
+[ok]   policy_entries[1].path_pattern_matches: 'experiments/b030/*.md' matches 1 tracked file(s)
+[ok]   policy_entries[2].source_id.known: 'internet_archive_cdx' is known
+[ok]   policy_entries[2].red_source_forbidden: RED sources may not have redistribution entries
+[ok]   policy_entries[2].kind: expected one of ['claims', 'derived-aggregate', 'derived-report', 'index', 'metadata'], found 'derived-report'
+[ok]   policy_entries[2].reason: Run logs of the derived measurements (counts and errors only); no archived page text is retained.
+[ok]   policy_entries[2].path_xor_pattern: declare exactly one of path or path_pattern
+[ok]   policy_entries[2].path_pattern_matches: 'experiments/b030/*.log' matches 8 tracked file(s)
+[ok]   policy_entries[3].source_id.known: 'internet_archive_cdx' is known
+[ok]   policy_entries[3].red_source_forbidden: RED sources may not have redistribution entries
+[ok]   policy_entries[3].kind: expected one of ['claims', 'derived-aggregate', 'derived-report', 'index', 'metadata'], found 'derived-aggregate'
+[ok]   policy_entries[3].reason: Second-domain validation metrics for the promotion rule, computed from the hiring lane; aggregate co
+[ok]   policy_entries[3].path_xor_pattern: declare exactly one of path or path_pattern
+[ok]   policy_entries[3].path_is_tracked: 'experiments/b026/validate_hiring_domain.json' is a tracked file
+[ok]   tracked.green_files: 5 tracked file/source matches are GREEN (redistributable with attribution)
+[FAIL] tracked.red_violation: RED source 'yahoo_chart_bars' has a tracked file outside data/: docs/governance/_tmp_red_source/prices_2019.csv (RED content may only live under the gitignored data/ tree)
+[ok]   tracked.amber_policy: 18 AMBER file match(es) are all covered by explicit policy entries
+[ok]   sources.yahoo_chart_bars.tracked_patterns: AMBER/RED source 'yahoo_chart_bars' declares 4 tracked pattern(s)
+[ok]   sources.internet_archive_cdx.tracked_patterns: AMBER/RED source 'internet_archive_cdx' declares 4 tracked pattern(s)
+[ok]   licences.review_notes: 4 review note(s)
+FAIL check_licence (96 checks, 1 failures, 0 warnings)

@@ -1,0 +1,1827 @@
+{
+ "generated_by": "docs/refoundation/phase3/_evidence/collect_pr_triage.py",
+ "collected_from": "https://api.github.com/repos/ChazY11/medradar",
+ "repo": "ChazY11/medradar",
+ "main_head": "b2a14c0a92332c004445de686daee97754cf94cb",
+ "open_pr_count_api": 27,
+ "prs": [
+  {
+   "number": 1,
+   "title": "Add frontier device intelligence and research safeguards",
+   "state": "open",
+   "draft": false,
+   "base_ref": "main",
+   "base_is_main": true,
+   "head_ref": "feat/frontier-device-radar",
+   "head_sha": "94c6a10004dfbc4d8add974669be54d6cc8679ff",
+   "created_at": "2026-11-01T01:44:54Z",
+   "updated_at": "2026-11-01T23:32:39Z",
+   "additions": 2709,
+   "deletions": 234,
+   "changed_files": 44,
+   "mergeable": false,
+   "mergeable_state": "dirty",
+   "local_ref_present": true,
+   "labels": [],
+   "tip_date": "2026-11-01T09:41:51+08:00",
+   "diff_vs_main": {
+    "files": 44,
+    "additions": 2709,
+    "deletions": 234
+   },
+   "divergence_vs_main": {
+    "ahead": 13,
+    "behind": 154
+   },
+   "diff_vs_declared_base": {
+    "files": 44,
+    "additions": 2709,
+    "deletions": 234
+   },
+   "merge_probe_main": {
+    "local_clean": false,
+    "conflict_count": 11,
+    "conflicts": [
+     "CHANGELOG.md",
+     "README.md",
+     "README.zh-CN.md",
+     "docs/DATA.md",
+     "docs/docs/ASSUMPTIONS.md",
+     "medradar/__init__.py",
+     "medradar/adcom.py",
+     "pyproject.toml",
+     "tests/test_frontier.py",
+     "verifier/README.md",
+     "verifier/v1/verify.py"
+    ]
+   },
+   "changed_path_count": 44,
+   "risk_path_hits": {},
+   "status": "SUPERSEDED",
+   "status_reason": "Content is already on main (8 of 13 added files byte-identical; only 5 historical verifier artefacts net-new); 13 ahead / 154 behind; 11-path conflict.",
+   "status_evidence": "mergeable=false/dirty; merge-tree conflicts: CHANGELOG.md, README*.md, docs/DATA.md, docs/docs/ASSUMPTIONS.md, medradar/__init__.py, medradar/adcom.py, pyproject.toml, tests/test_frontier.py, verifier/README.md, verifier/v1/verify.py; RF001 BRANCH_PR_AUDIT §7.1",
+   "recommended_action": "Close as superseded after copying the 5 verifier artefacts to a preservation branch. Do not merge.",
+   "files_vs_main": 44,
+   "additions_vs_main": 2709,
+   "deletions_vs_main": 234,
+   "ahead_of_main": 13,
+   "behind_main": 154,
+   "risk_level": "NONE"
+  },
+  {
+   "number": 12,
+   "title": "MedRadar 2.0 MVP: evidence-driven company, radar, analyst and evidence product",
+   "state": "open",
+   "draft": true,
+   "base_ref": "main",
+   "base_is_main": true,
+   "head_ref": "feat/medradar-2.0-mvp",
+   "head_sha": "ee7d0118466429c91a2031ca9db6279a78133d27",
+   "created_at": "2026-11-03T04:02:59Z",
+   "updated_at": "2026-11-03T14:00:51Z",
+   "additions": 17646,
+   "deletions": 1,
+   "changed_files": 57,
+   "mergeable": true,
+   "mergeable_state": "unstable",
+   "local_ref_present": true,
+   "labels": [],
+   "tip_date": "2026-11-03T22:00:42+08:00",
+   "diff_vs_main": {
+    "files": 57,
+    "additions": 17646,
+    "deletions": 1
+   },
+   "divergence_vs_main": {
+    "ahead": 8,
+    "behind": 0
+   },
+   "diff_vs_declared_base": {
+    "files": 57,
+    "additions": 17646,
+    "deletions": 1
+   },
+   "merge_probe_main": {
+    "local_clean": true,
+    "conflicts": []
+   },
+   "changed_path_count": 57,
+   "risk_path_hits": {
+    "large_binary": {
+     "count": 8,
+     "examples": [
+      "docs/product/analyst.png",
+      "docs/product/company-mindray.png",
+      "docs/product/compare.png",
+      "docs/product/evidence-empty.png",
+      "docs/product/evidence-trace.png"
+     ]
+    }
+   },
+   "status": "NEEDS_REWORK",
+   "status_reason": "Product-stack draft and the base of 10 open PRs; 57 files/+17,646 but never accepted under refoundation governance; mergeable state unstable.",
+   "status_evidence": "draft=true; mergeable_state=unstable; ancestor of #13,#14,#15,#16,#21,#22 (collector ancestry matrix)",
+   "recommended_action": "Keep open; product-scope decision + rebase under Phase-0 governance, then re-review as stage 1 of the product stack.",
+   "files_vs_main": 57,
+   "additions_vs_main": 17646,
+   "deletions_vs_main": 1,
+   "ahead_of_main": 8,
+   "behind_main": 0,
+   "risk_level": "NONE"
+  },
+  {
+   "number": 13,
+   "title": "MedRadar Live Observatory v1: append-only observation ledger, official-source adapters, and the Live Observatory product",
+   "state": "open",
+   "draft": true,
+   "base_ref": "feat/medradar-2.0-mvp",
+   "base_is_main": false,
+   "head_ref": "feat/live-observatory-v1",
+   "head_sha": "5335dfde39dca0db1a634c6913eef4668dee15a1",
+   "created_at": "2026-11-03T15:01:34Z",
+   "updated_at": "2026-11-03T15:09:26Z",
+   "additions": 31301,
+   "deletions": 7,
+   "changed_files": 57,
+   "mergeable": true,
+   "mergeable_state": "clean",
+   "local_ref_present": true,
+   "labels": [],
+   "tip_date": "2026-11-03T23:09:22+08:00",
+   "diff_vs_main": {
+    "files": 101,
+    "additions": 48941,
+    "deletions": 2
+   },
+   "divergence_vs_main": {
+    "ahead": 16,
+    "behind": 0
+   },
+   "diff_vs_declared_base": {
+    "files": 57,
+    "additions": 31301,
+    "deletions": 7
+   },
+   "merge_probe_main": {
+    "local_clean": true,
+    "conflicts": []
+   },
+   "changed_path_count": 101,
+   "risk_path_hits": {
+    "large_binary": {
+     "count": 8,
+     "examples": [
+      "docs/product/analyst.png",
+      "docs/product/company-mindray.png",
+      "docs/product/compare.png",
+      "docs/product/evidence-empty.png",
+      "docs/product/evidence-trace.png"
+     ]
+    }
+   },
+   "status": "NEEDS_REWORK",
+   "status_reason": "Product observatory draft stacked on #12; 101 files/+48,941 vs main but only 57 files/+31,301 vs its declared base.",
+   "status_evidence": "draft=true; base=feat/medradar-2.0-mvp; ancestry contains #12",
+   "recommended_action": "Keep open behind #12; re-review only after #12 is accepted.",
+   "files_vs_main": 101,
+   "additions_vs_main": 48941,
+   "deletions_vs_main": 2,
+   "ahead_of_main": 16,
+   "behind_main": 0,
+   "risk_level": "NONE"
+  },
+  {
+   "number": 14,
+   "title": "MedRadar Observatory Reliability: durable persistence, verified backups, supervised operation and seven-day continuous validation",
+   "state": "open",
+   "draft": true,
+   "base_ref": "feat/live-observatory-v1",
+   "base_is_main": false,
+   "head_ref": "feat/observatory-reliability-v1",
+   "head_sha": "d05fc81ff79bf83eaf9161e89781ddf486a5297f",
+   "created_at": "2026-11-03T16:05:29Z",
+   "updated_at": "2026-11-03T16:05:29Z",
+   "additions": 22899,
+   "deletions": 71,
+   "changed_files": 54,
+   "mergeable": true,
+   "mergeable_state": "clean",
+   "local_ref_present": true,
+   "labels": [],
+   "tip_date": "2026-11-04T00:05:01+08:00",
+   "diff_vs_main": {
+    "files": 139,
+    "additions": 71769,
+    "deletions": 2
+   },
+   "divergence_vs_main": {
+    "ahead": 22,
+    "behind": 0
+   },
+   "diff_vs_declared_base": {
+    "files": 54,
+    "additions": 22899,
+    "deletions": 71
+   },
+   "merge_probe_main": {
+    "local_clean": true,
+    "conflicts": []
+   },
+   "changed_path_count": 139,
+   "risk_path_hits": {
+    "large_binary": {
+     "count": 8,
+     "examples": [
+      "docs/product/analyst.png",
+      "docs/product/company-mindray.png",
+      "docs/product/compare.png",
+      "docs/product/evidence-empty.png",
+      "docs/product/evidence-trace.png"
+     ]
+    }
+   },
+   "status": "NEEDS_REWORK",
+   "status_reason": "Reliability draft stacked on #13; the last reviewable product PR (54 files/+22,899 vs base) and the base of the research stack.",
+   "status_evidence": "draft=true; base=feat/live-observatory-v1; ancestor of #15,#16,#21,#22",
+   "recommended_action": "Keep open; merge order #12→#13→#14 only if the product line is funded.",
+   "files_vs_main": 139,
+   "additions_vs_main": 71769,
+   "deletions_vs_main": 2,
+   "ahead_of_main": 22,
+   "behind_main": 0,
+   "risk_level": "NONE"
+  },
+  {
+   "number": 15,
+   "title": "S-028: temporal company-technology graph early-signal study (DRAFT, negative result, do not merge)",
+   "state": "open",
+   "draft": true,
+   "base_ref": "feat/observatory-reliability-v1",
+   "base_is_main": false,
+   "head_ref": "research/s028-temporal-graph-early-signal",
+   "head_sha": "4c6686f45fd88ce324da1befb368f3cd6e415c18",
+   "created_at": "2026-11-03T17:58:20Z",
+   "updated_at": "2026-11-03T19:05:41Z",
+   "additions": 114442,
+   "deletions": 0,
+   "changed_files": 86,
+   "mergeable": true,
+   "mergeable_state": "clean",
+   "local_ref_present": true,
+   "labels": [],
+   "tip_date": "2026-11-04T03:05:10+08:00",
+   "diff_vs_main": {
+    "files": 225,
+    "additions": 186211,
+    "deletions": 2
+   },
+   "divergence_vs_main": {
+    "ahead": 26,
+    "behind": 0
+   },
+   "diff_vs_declared_base": {
+    "files": 86,
+    "additions": 114442,
+    "deletions": 0
+   },
+   "merge_probe_main": {
+    "local_clean": true,
+    "conflicts": []
+   },
+   "changed_path_count": 225,
+   "risk_path_hits": {
+    "large_binary": {
+     "count": 10,
+     "examples": [
+      "docs/product/analyst.png",
+      "docs/product/company-mindray.png",
+      "docs/product/compare.png",
+      "docs/product/evidence-empty.png",
+      "docs/product/evidence-trace.png"
+     ]
+    }
+   },
+   "status": "RESEARCH_ARCHIVE",
+   "status_reason": "S-028 early-signal study, explicitly a negative result and \"do not merge\"; its tip is an ancestor of phase4-base/#21/#22 (so it would land anyway).",
+   "status_evidence": "draft=true; PR title says do-not-merge; is-ancestor of origin/integration/phase4-base and #21/#22",
+   "recommended_action": "Keep branch; close/mark as research archive. No merge.",
+   "files_vs_main": 225,
+   "additions_vs_main": 186211,
+   "deletions_vs_main": 2,
+   "ahead_of_main": 26,
+   "behind_main": 0,
+   "risk_level": "NONE"
+  },
+  {
+   "number": 16,
+   "title": "S-029: evidence-based temporal relation reconstruction — measured evidence base, NO-GO verdict (research, draft)",
+   "state": "open",
+   "draft": true,
+   "base_ref": "feat/observatory-reliability-v1",
+   "base_is_main": false,
+   "head_ref": "research/s029-evidence-based-relations",
+   "head_sha": "10f25d190a748d5a255215debe9cacccb11e2c45",
+   "created_at": "2026-11-03T20:48:01Z",
+   "updated_at": "2026-11-03T21:09:27Z",
+   "additions": 133237,
+   "deletions": 0,
+   "changed_files": 205,
+   "mergeable": true,
+   "mergeable_state": "clean",
+   "local_ref_present": true,
+   "labels": [],
+   "tip_date": "2026-11-04T05:09:14+08:00",
+   "diff_vs_main": {
+    "files": 344,
+    "additions": 205006,
+    "deletions": 2
+   },
+   "divergence_vs_main": {
+    "ahead": 34,
+    "behind": 0
+   },
+   "diff_vs_declared_base": {
+    "files": 205,
+    "additions": 133237,
+    "deletions": 0
+   },
+   "merge_probe_main": {
+    "local_clean": true,
+    "conflicts": []
+   },
+   "changed_path_count": 344,
+   "risk_path_hits": {
+    "restricted_exports": {
+     "count": 130,
+     "examples": [
+      "research/studies/relation_network_s029/data/raw/ctgov_draeger_draeger.json.gz",
+      "research/studies/relation_network_s029/data/raw/ctgov_draeger_draegerwerk.json.gz",
+      "\"research/studies/relation_network_s029/data/raw/ctgov_draeger_dr\\303\\244ger.json.gz\"",
+      "\"research/studies/relation_network_s029/data/raw/ctgov_draeger_dr\\303\\244ger_medical.json.gz\"",
+      "\"research/studies/relation_network_s029/data/raw/ctgov_draeger_dr\\303\\244gerwerk.json.gz\""
+     ]
+    },
+    "large_binary": {
+     "count": 134,
+     "examples": [
+      "docs/product/analyst.png",
+      "docs/product/company-mindray.png",
+      "docs/product/compare.png",
+      "docs/product/evidence-empty.png",
+      "docs/product/evidence-trace.png"
+     ]
+    }
+   },
+   "status": "RESEARCH_ARCHIVE",
+   "status_reason": "S-029 NO-GO study; 344 files/+205,006 vs main including 130 raw ClinicalTrials.gov .json.gz dumps that should not enter main.",
+   "status_evidence": "draft=true; changed paths include research/studies/relation_network_s029/data/raw/*.json.gz (130 files)",
+   "recommended_action": "Keep branch; close/mark archive; do not merge bulk raw data.",
+   "files_vs_main": 344,
+   "additions_vs_main": 205006,
+   "deletions_vs_main": 2,
+   "ahead_of_main": 34,
+   "behind_main": 0,
+   "risk_level": "NONE"
+  },
+  {
+   "number": 17,
+   "title": "Repository consolidation: documentation, research index, and data asset governance",
+   "state": "open",
+   "draft": true,
+   "base_ref": "main",
+   "base_is_main": true,
+   "head_ref": "maintenance/repository-consolidation",
+   "head_sha": "b4a6af3fc60ef73a0c3c6f67b4cb16b7cbcf3ec4",
+   "created_at": "2026-11-03T22:18:12Z",
+   "updated_at": "2026-11-03T22:19:07Z",
+   "additions": 947,
+   "deletions": 805,
+   "changed_files": 6,
+   "mergeable": true,
+   "mergeable_state": "clean",
+   "local_ref_present": true,
+   "labels": [],
+   "tip_date": "2026-11-04T06:19:03+08:00",
+   "diff_vs_main": {
+    "files": 6,
+    "additions": 947,
+    "deletions": 805
+   },
+   "divergence_vs_main": {
+    "ahead": 2,
+    "behind": 0
+   },
+   "diff_vs_declared_base": {
+    "files": 6,
+    "additions": 947,
+    "deletions": 805
+   },
+   "merge_probe_main": {
+    "local_clean": true,
+    "conflicts": []
+   },
+   "changed_path_count": 6,
+   "risk_path_hits": {},
+   "status": "SUPERSEDED",
+   "status_reason": "Stale pre-refoundation consolidation docs; its README edits are superseded by #34 and its status/audit docs by #31/#32 governance state source.",
+   "status_evidence": "draft=true; 6 files (README.md, README.zh-CN.md, docs/{DATA_ASSET_REGISTER,PROJECT_STATUS,REPOSITORY_AUDIT}.md, tests/test_release.py); README blob differs from #34",
+   "recommended_action": "Close as superseded; preserve DATA_ASSET_REGISTER content if DATA_GOVERNANCE_AUDIT does not cover it.",
+   "files_vs_main": 6,
+   "additions_vs_main": 947,
+   "deletions_vs_main": 805,
+   "ahead_of_main": 2,
+   "behind_main": 0,
+   "risk_level": "NONE"
+  },
+  {
+   "number": 18,
+   "title": "AI evidence review of the 69 early-signal packets (machine review, not human truth)",
+   "state": "open",
+   "draft": true,
+   "base_ref": "main",
+   "base_is_main": true,
+   "head_ref": "research/ai-evidence-review",
+   "head_sha": "b68af122a7791c2c96f57d3cdae7a901f67ee0f4",
+   "created_at": "2026-11-03T23:20:35Z",
+   "updated_at": "2026-11-03T23:20:35Z",
+   "additions": 575,
+   "deletions": 0,
+   "changed_files": 4,
+   "mergeable": true,
+   "mergeable_state": "clean",
+   "local_ref_present": true,
+   "labels": [],
+   "tip_date": "2026-11-04T07:20:26+08:00",
+   "diff_vs_main": {
+    "files": 4,
+    "additions": 575,
+    "deletions": 0
+   },
+   "divergence_vs_main": {
+    "ahead": 1,
+    "behind": 0
+   },
+   "diff_vs_declared_base": {
+    "files": 4,
+    "additions": 575,
+    "deletions": 0
+   },
+   "merge_probe_main": {
+    "local_clean": true,
+    "conflicts": []
+   },
+   "changed_path_count": 4,
+   "risk_path_hits": {},
+   "status": "RESEARCH_ARCHIVE",
+   "status_reason": "Independent AI review of the 69 packets, explicitly a machine review (not human truth); 4 files/+575.",
+   "status_evidence": "draft=true; PR title",
+   "recommended_action": "Keep branch; mark archive. No merge.",
+   "files_vs_main": 4,
+   "additions_vs_main": 575,
+   "deletions_vs_main": 0,
+   "ahead_of_main": 1,
+   "behind_main": 0,
+   "risk_level": "NONE"
+  },
+  {
+   "number": 19,
+   "title": "research(local-llm): Phase 2 — first real local GPU run (Qwen3-4B-Instruct vs rules on 19 real documents, QLoRA pipeline verified, formal training blocked)",
+   "state": "open",
+   "draft": true,
+   "base_ref": "main",
+   "base_is_main": true,
+   "head_ref": "research/local-llm-foundation",
+   "head_sha": "d4c4e43c9afa353b9b4af6f4f020a959024a07bd",
+   "created_at": "2026-11-03T23:49:35Z",
+   "updated_at": "2026-11-04T01:25:51Z",
+   "additions": 32464,
+   "deletions": 0,
+   "changed_files": 110,
+   "mergeable": true,
+   "mergeable_state": "unstable",
+   "local_ref_present": true,
+   "labels": [],
+   "tip_date": "2026-11-04T09:25:48+08:00",
+   "diff_vs_main": {
+    "files": 110,
+    "additions": 32464,
+    "deletions": 0
+   },
+   "divergence_vs_main": {
+    "ahead": 9,
+    "behind": 0
+   },
+   "diff_vs_declared_base": {
+    "files": 110,
+    "additions": 32464,
+    "deletions": 0
+   },
+   "merge_probe_main": {
+    "local_clean": true,
+    "conflicts": []
+   },
+   "changed_path_count": 110,
+   "risk_path_hits": {},
+   "status": "RESEARCH_ARCHIVE",
+   "status_reason": "Local-LLM Phase-2 research (GPU run claims not verifiable from git objects); 110 files/+32,464; ancestor of #20/#21/#22.",
+   "status_evidence": "draft=true; mergeable_state=unstable; is-ancestor of #20",
+   "recommended_action": "Keep branch; mark archive. No merge until a funded LLM workstream.",
+   "files_vs_main": 110,
+   "additions_vs_main": 32464,
+   "deletions_vs_main": 0,
+   "ahead_of_main": 9,
+   "behind_main": 0,
+   "risk_level": "NONE"
+  },
+  {
+   "number": 20,
+   "title": "research(overnight): 隔夜探索性 QLoRA 训练与四臂独立评价（Draft，不合并）",
+   "state": "open",
+   "draft": true,
+   "base_ref": "research/local-llm-foundation",
+   "base_is_main": false,
+   "head_ref": "research/overnight-qlora-s030",
+   "head_sha": "5954d7d81bc47ec5143fa7504fbe61debe51c29c",
+   "created_at": "2026-11-04T03:33:57Z",
+   "updated_at": "2026-11-04T03:33:57Z",
+   "additions": 16826,
+   "deletions": 55,
+   "changed_files": 147,
+   "mergeable": true,
+   "mergeable_state": "unstable",
+   "local_ref_present": true,
+   "labels": [],
+   "tip_date": "2026-11-04T11:33:32+08:00",
+   "diff_vs_main": {
+    "files": 248,
+    "additions": 49235,
+    "deletions": 0
+   },
+   "divergence_vs_main": {
+    "ahead": 11,
+    "behind": 0
+   },
+   "diff_vs_declared_base": {
+    "files": 147,
+    "additions": 16826,
+    "deletions": 55
+   },
+   "merge_probe_main": {
+    "local_clean": true,
+    "conflicts": []
+   },
+   "changed_path_count": 248,
+   "risk_path_hits": {},
+   "status": "RESEARCH_ARCHIVE",
+   "status_reason": "Overnight QLoRA exploration whose own title says 不合并 (do not merge); 248 files/+49,235 vs main.",
+   "status_evidence": "draft=true; base=research/local-llm-foundation; is-ancestor of #21/#22",
+   "recommended_action": "Keep branch; mark archive. Do not merge.",
+   "files_vs_main": 248,
+   "additions_vs_main": 49235,
+   "deletions_vs_main": 0,
+   "ahead_of_main": 11,
+   "behind_main": 0,
+   "risk_level": "NONE"
+  },
+  {
+   "number": 21,
+   "title": "Phase 4: Innovation Signals Observatory — recruitment lane, real collection, and the honest limits of hiring as an early signal",
+   "state": "open",
+   "draft": true,
+   "base_ref": "integration/phase4-base",
+   "base_is_main": false,
+   "head_ref": "research/innovation-signals-observatory",
+   "head_sha": "c4327ce44c6aafe0e4af5a73df7f356dfffcb438",
+   "created_at": "2026-11-04T14:41:38Z",
+   "updated_at": "2026-11-04T14:42:05Z",
+   "additions": 64441,
+   "deletions": 0,
+   "changed_files": 96,
+   "mergeable": true,
+   "mergeable_state": "clean",
+   "local_ref_present": true,
+   "labels": [],
+   "tip_date": "2026-11-04T22:37:55+08:00",
+   "diff_vs_main": {
+    "files": 567,
+    "additions": 299894,
+    "deletions": 2
+   },
+   "divergence_vs_main": {
+    "ahead": 46,
+    "behind": 0
+   },
+   "diff_vs_declared_base": {
+    "files": 96,
+    "additions": 64441,
+    "deletions": 0
+   },
+   "merge_probe_main": {
+    "local_clean": true,
+    "conflicts": []
+   },
+   "changed_path_count": 567,
+   "risk_path_hits": {
+    "large_binary": {
+     "count": 10,
+     "examples": [
+      "docs/product/analyst.png",
+      "docs/product/company-mindray.png",
+      "docs/product/compare.png",
+      "docs/product/evidence-empty.png",
+      "docs/product/evidence-trace.png"
+     ]
+    }
+   },
+   "status": "NEEDS_REWORK",
+   "status_reason": "Phase-4 observatory targets a base branch with no PR and carries the full product+S-028+LLM ancestry; cannot be reviewed as a standalone study.",
+   "status_evidence": "draft=true; base=integration/phase4-base (no PR); ancestry contains #12,#13,#14,#15,#19,#20",
+   "recommended_action": "Split: open a phase4-base PR or retarget to #14; rebase the 7 phase-4 commits; re-review.",
+   "files_vs_main": 567,
+   "additions_vs_main": 299894,
+   "deletions_vs_main": 2,
+   "ahead_of_main": 46,
+   "behind_main": 0,
+   "risk_level": "NONE"
+  },
+  {
+   "number": 22,
+   "title": "S-031: hiring capability & R&D evidence study - 100 AI preliminary labels, 8 deliverables, verifier v2 (research, do not merge)",
+   "state": "open",
+   "draft": true,
+   "base_ref": "main",
+   "base_is_main": true,
+   "head_ref": "research/s031-hiring-capability-study",
+   "head_sha": "e3e39d59e897fb9507dafd8ea44e5912e18545bb",
+   "created_at": "2026-11-05T20:33:06Z",
+   "updated_at": "2026-11-05T20:58:09Z",
+   "additions": 303926,
+   "deletions": 2,
+   "changed_files": 600,
+   "mergeable": true,
+   "mergeable_state": "clean",
+   "local_ref_present": true,
+   "labels": [],
+   "tip_date": "2026-11-06T04:57:36+08:00",
+   "diff_vs_main": {
+    "files": 600,
+    "additions": 303926,
+    "deletions": 2
+   },
+   "divergence_vs_main": {
+    "ahead": 83,
+    "behind": 0
+   },
+   "diff_vs_declared_base": {
+    "files": 600,
+    "additions": 303926,
+    "deletions": 2
+   },
+   "merge_probe_main": {
+    "local_clean": true,
+    "conflicts": []
+   },
+   "changed_path_count": 600,
+   "risk_path_hits": {
+    "large_binary": {
+     "count": 10,
+     "examples": [
+      "docs/product/analyst.png",
+      "docs/product/company-mindray.png",
+      "docs/product/compare.png",
+      "docs/product/evidence-empty.png",
+      "docs/product/evidence-trace.png"
+     ]
+    }
+   },
+   "status": "RESEARCH_ARCHIVE",
+   "status_reason": "S-031 hiring study: 560 of 600 changed files are byte-identical to #21; only 33 files/+4,032 are its own; explicit do-not-merge.",
+   "status_evidence": "draft=true; #21 is an ancestor; blob-identity 560/600 (RF001 audit); diff vs #21 = 33 files/+4,032",
+   "recommended_action": "Keep branch; mark archive. Salvage the 33 genuine files as a separate small PR only if funded.",
+   "files_vs_main": 600,
+   "additions_vs_main": 303926,
+   "deletions_vs_main": 2,
+   "ahead_of_main": 83,
+   "behind_main": 0,
+   "risk_level": "NONE"
+  },
+  {
+   "number": 23,
+   "title": "PHOENIX-001: External methods audit and reproducible experiments",
+   "state": "open",
+   "draft": true,
+   "base_ref": "main",
+   "base_is_main": true,
+   "head_ref": "research/phoenix-001-external-methods",
+   "head_sha": "bd2f839033b507bba312fb23ad024ee27fc3dabb",
+   "created_at": "2026-11-05T23:32:53Z",
+   "updated_at": "2026-11-06T01:16:11Z",
+   "additions": 6075,
+   "deletions": 0,
+   "changed_files": 40,
+   "mergeable": true,
+   "mergeable_state": "clean",
+   "local_ref_present": true,
+   "labels": [],
+   "tip_date": "2026-11-06T01:15:07Z",
+   "diff_vs_main": {
+    "files": 40,
+    "additions": 6075,
+    "deletions": 0
+   },
+   "divergence_vs_main": {
+    "ahead": 16,
+    "behind": 0
+   },
+   "diff_vs_declared_base": {
+    "files": 40,
+    "additions": 6075,
+    "deletions": 0
+   },
+   "merge_probe_main": {
+    "local_clean": true,
+    "conflicts": []
+   },
+   "changed_path_count": 40,
+   "risk_path_hits": {},
+   "status": "SUPERSEDED",
+   "status_reason": "PHOENIX-001 round 1 is superseded in content by #24 round 2 (same register/licence/reproduction docs), and its remote is stale versus the local branch (33 ahead/16 behind, 7 unique commits).",
+   "status_evidence": "draft=true; #24 contains PHOENIX_EXTERNAL_PROJECT_REGISTER.md, PHOENIX_LICENSE_AUDIT.md, PHOENIX_REPRODUCTION_REPORT.md; local divergence measured in RF001 audit §7.4",
+   "recommended_action": "Rescue the 7 unique local commits first, then close as superseded by #24.",
+   "files_vs_main": 40,
+   "additions_vs_main": 6075,
+   "deletions_vs_main": 0,
+   "ahead_of_main": 16,
+   "behind_main": 0,
+   "risk_level": "NONE"
+  },
+  {
+   "number": 24,
+   "title": "PHOENIX-001 round 2: frozen protocol, ten pre-registered experiments, 13-project register, and an entity-attribution prototype (research, do not merge)",
+   "state": "open",
+   "draft": true,
+   "base_ref": "main",
+   "base_is_main": true,
+   "head_ref": "research/phoenix-001-round2",
+   "head_sha": "cd63c7245b13e8278b4dd0a228ff327d18d0d3f7",
+   "created_at": "2026-11-08T17:16:16Z",
+   "updated_at": "2026-11-08T17:16:16Z",
+   "additions": 158731,
+   "deletions": 0,
+   "changed_files": 166,
+   "mergeable": true,
+   "mergeable_state": "clean",
+   "local_ref_present": true,
+   "labels": [],
+   "tip_date": "2026-11-09T01:13:26+08:00",
+   "diff_vs_main": {
+    "files": 166,
+    "additions": 158731,
+    "deletions": 0
+   },
+   "divergence_vs_main": {
+    "ahead": 7,
+    "behind": 0
+   },
+   "diff_vs_declared_base": {
+    "files": 166,
+    "additions": 158731,
+    "deletions": 0
+   },
+   "merge_probe_main": {
+    "local_clean": true,
+    "conflicts": []
+   },
+   "changed_path_count": 166,
+   "risk_path_hits": {
+    "sqlite_db": {
+     "count": 1,
+     "examples": [
+      "experiments/phoenix/rea/fixtures/sample.sqlite"
+     ]
+    }
+   },
+   "status": "RESEARCH_ARCHIVE",
+   "status_reason": "PHOENIX-001 round-2 research bundle (frozen protocol / ten experiments), explicitly \"do not merge\"; 166 files/+158,731.",
+   "status_evidence": "draft=true; PR title says do-not-merge",
+   "recommended_action": "Keep branch; mark archive. No merge.",
+   "files_vs_main": 166,
+   "additions_vs_main": 158731,
+   "deletions_vs_main": 0,
+   "ahead_of_main": 7,
+   "behind_main": 0,
+   "risk_level": "NONE"
+  },
+  {
+   "number": 25,
+   "title": "PHOENIX-002: independent H8 re-validation - methodology audit and a NO-GO verdict (research, do not merge)",
+   "state": "open",
+   "draft": true,
+   "base_ref": "research/phoenix-001-round2",
+   "base_is_main": false,
+   "head_ref": "research/phoenix-002-h8-validation",
+   "head_sha": "c826703126f7a26ce5671e800bcc2882e2c9c101",
+   "created_at": "2026-11-08T19:39:09Z",
+   "updated_at": "2026-11-08T19:44:27Z",
+   "additions": 58438,
+   "deletions": 0,
+   "changed_files": 59,
+   "mergeable": true,
+   "mergeable_state": "clean",
+   "local_ref_present": true,
+   "labels": [],
+   "tip_date": "2026-11-09T03:44:23+08:00",
+   "diff_vs_main": {
+    "files": 225,
+    "additions": 217169,
+    "deletions": 0
+   },
+   "divergence_vs_main": {
+    "ahead": 10,
+    "behind": 0
+   },
+   "diff_vs_declared_base": {
+    "files": 59,
+    "additions": 58438,
+    "deletions": 0
+   },
+   "merge_probe_main": {
+    "local_clean": true,
+    "conflicts": []
+   },
+   "changed_path_count": 225,
+   "risk_path_hits": {
+    "sqlite_db": {
+     "count": 1,
+     "examples": [
+      "experiments/phoenix/rea/fixtures/sample.sqlite"
+     ]
+    }
+   },
+   "status": "RESEARCH_ARCHIVE",
+   "status_reason": "PHOENIX-002 re-validation NO-GO, stacked on #24; 225 files/+217,169 vs main (59 files/+58,438 vs base).",
+   "status_evidence": "draft=true; base=research/phoenix-001-round2",
+   "recommended_action": "Keep branch; mark archive. No merge.",
+   "files_vs_main": 225,
+   "additions_vs_main": 217169,
+   "deletions_vs_main": 0,
+   "ahead_of_main": 10,
+   "behind_main": 0,
+   "risk_level": "NONE"
+  },
+  {
+   "number": 26,
+   "title": "PHOENIX-003: regulatory-anchored early-evidence discovery - rigorous NO-GO, a reusable control battery, and a 28-case pre-regulatory series (research, do not merge)",
+   "state": "open",
+   "draft": true,
+   "base_ref": "main",
+   "base_is_main": true,
+   "head_ref": "research/phoenix-003-early-evidence",
+   "head_sha": "91495bce95bd7e78231c91f1ea33d6aed851682c",
+   "created_at": "2026-11-08T21:19:44Z",
+   "updated_at": "2026-11-08T21:38:58Z",
+   "additions": 197464,
+   "deletions": 0,
+   "changed_files": 104,
+   "mergeable": true,
+   "mergeable_state": "clean",
+   "local_ref_present": true,
+   "labels": [],
+   "tip_date": "2026-11-09T05:38:50+08:00",
+   "diff_vs_main": {
+    "files": 104,
+    "additions": 197464,
+    "deletions": 0
+   },
+   "divergence_vs_main": {
+    "ahead": 4,
+    "behind": 0
+   },
+   "diff_vs_declared_base": {
+    "files": 104,
+    "additions": 197464,
+    "deletions": 0
+   },
+   "merge_probe_main": {
+    "local_clean": true,
+    "conflicts": []
+   },
+   "changed_path_count": 104,
+   "risk_path_hits": {
+    "credentials": {
+     "count": 1,
+     "examples": [
+      "experiments/phoenix003/dataset/epmc_rare_tokens.txt"
+     ]
+    },
+    "large_binary": {
+     "count": 4,
+     "examples": [
+      "experiments/phoenix003/dataset/ctgov_compact.jsonl.gz",
+      "experiments/phoenix003/dataset/ctgov_ext_compact.jsonl.gz",
+      "experiments/phoenix003/dataset/epmc_compact.jsonl.gz",
+      "experiments/phoenix003/dataset/epmc_ext_compact.jsonl.gz"
+     ]
+    }
+   },
+   "status": "RESEARCH_ARCHIVE",
+   "status_reason": "PHOENIX-003 early-evidence NO-GO; 104 files/+197,464 including compressed study datasets.",
+   "status_evidence": "draft=true; changed paths include experiments/phoenix003/dataset/*.jsonl.gz",
+   "recommended_action": "Keep branch; mark archive. No merge.",
+   "files_vs_main": 104,
+   "additions_vs_main": 197464,
+   "deletions_vs_main": 0,
+   "ahead_of_main": 4,
+   "behind_main": 0,
+   "risk_level": "NONE"
+  },
+  {
+   "number": 27,
+   "title": "DATA-EXPANSION-001: global data-source discovery, live access verification, and increment experiments (DRAFT, do not merge)",
+   "state": "open",
+   "draft": true,
+   "base_ref": "main",
+   "base_is_main": true,
+   "head_ref": "research/data-expansion-001",
+   "head_sha": "192085e781976778f1e1638935c365e0a0ad5a5e",
+   "created_at": "2026-11-08T22:18:22Z",
+   "updated_at": "2026-11-08T22:19:38Z",
+   "additions": 260389,
+   "deletions": 0,
+   "changed_files": 916,
+   "mergeable": true,
+   "mergeable_state": "clean",
+   "local_ref_present": true,
+   "labels": [],
+   "tip_date": "2026-11-09T06:19:29+08:00",
+   "diff_vs_main": {
+    "files": 916,
+    "additions": 260389,
+    "deletions": 0
+   },
+   "divergence_vs_main": {
+    "ahead": 7,
+    "behind": 0
+   },
+   "diff_vs_declared_base": {
+    "files": 916,
+    "additions": 260389,
+    "deletions": 0
+   },
+   "merge_probe_main": {
+    "local_clean": true,
+    "conflicts": []
+   },
+   "changed_path_count": 916,
+   "risk_path_hits": {
+    "un_comtrade": {
+     "count": 11,
+     "examples": [
+      "medradar/external_sources/trade/un_comtrade.py",
+      "research/data_expansion/experiments/collection/requests_un_comtrade.jsonl",
+      "research/data_expansion/probes/un_comtrade/NOTES.md",
+      "research/data_expansion/probes/un_comtrade/PROBE_RESULT.json",
+      "research/data_expansion/probes/un_comtrade/requests.jsonl"
+     ]
+    },
+    "uk_find_a_tender": {
+     "count": 12,
+     "examples": [
+      "medradar/external_sources/procurement/uk_find_a_tender.py",
+      "research/data_expansion/experiments/collection/requests_uk_find_a_tender.jsonl",
+      "research/data_expansion/probes/uk_find_a_tender/NOTES.md",
+      "research/data_expansion/probes/uk_find_a_tender/PROBE_RESULT.json",
+      "research/data_expansion/probes/uk_find_a_tender/probe.py"
+     ]
+    },
+    "large_binary": {
+     "count": 2,
+     "examples": [
+      "research/data_expansion/samples/fda_gudid_download/daily_release_zip.zip",
+      "research/data_expansion/samples/openfda_bulk_download/classification_export_zip.zip"
+     ]
+    }
+   },
+   "status": "BLOCKED_LEGAL",
+   "status_reason": "Ships UN Comtrade preview payload samples (3 JSON + developer-portal HTML) from a source whose own register says redistribution is only PARTIAL; UK Find a Tender samples are OGL-permitted.",
+   "status_evidence": "branch licence register: un_comtrade \"redistribution_allowed\": \"PARTIAL\" (\"bulk redistribution restricted\"); changed paths: research/data_expansion/samples/un_comtrade/preview_{9018,9022,9402}.json, developer_portal.html; uk_find_a_tender register: \"redistribution_allowed\": \"YES\"",
+   "recommended_action": "Do not merge. Strip the 4 Comtrade sample artefacts; reclassify to NEEDS_REWORK after licence sign-off.",
+   "files_vs_main": 916,
+   "additions_vs_main": 260389,
+   "deletions_vs_main": 0,
+   "ahead_of_main": 7,
+   "behind_main": 0,
+   "risk_level": "BLOCKED"
+  },
+  {
+   "number": 28,
+   "title": "ATLAS-001: identity, evidence and graph foundation (identity pilot + independent verification)",
+   "state": "open",
+   "draft": true,
+   "base_ref": "main",
+   "base_is_main": true,
+   "head_ref": "foundation/atlas-001",
+   "head_sha": "c63683631a1b277e2d27cfbe3adf6e133cf55e83",
+   "created_at": "2026-11-09T23:23:24Z",
+   "updated_at": "2026-11-10T17:50:09Z",
+   "additions": 18648,
+   "deletions": 0,
+   "changed_files": 70,
+   "mergeable": true,
+   "mergeable_state": "clean",
+   "local_ref_present": true,
+   "labels": [],
+   "tip_date": "2026-11-11T01:49:23+08:00",
+   "diff_vs_main": {
+    "files": 70,
+    "additions": 18648,
+    "deletions": 0
+   },
+   "divergence_vs_main": {
+    "ahead": 4,
+    "behind": 0
+   },
+   "diff_vs_declared_base": {
+    "files": 70,
+    "additions": 18648,
+    "deletions": 0
+   },
+   "merge_probe_main": {
+    "local_clean": true,
+    "conflicts": []
+   },
+   "changed_path_count": 70,
+   "risk_path_hits": {},
+   "status": "NEEDS_REWORK",
+   "status_reason": "ATLAS foundation is clean (4 commits/70 files) but the ADR-001 canon decision is still open (zero main consumers; E2 portability unproven).",
+   "status_evidence": "draft=true; mergeable=clean; #33 compares ATLAS as option B and gates it on E1/E2; #28 is an ancestor of #30",
+   "recommended_action": "Keep open; decide ADR-001 (E2 portability test). If B is chosen, merge as the canon foundation; if C, archive.",
+   "files_vs_main": 70,
+   "additions_vs_main": 18648,
+   "deletions_vs_main": 0,
+   "ahead_of_main": 4,
+   "behind_main": 0,
+   "risk_level": "NONE"
+  },
+  {
+   "number": 29,
+   "title": "HORIZON-001: 全球数据前沿 — 两条免密专利通道、真实证据导出与三项实测实验（Draft）",
+   "state": "open",
+   "draft": true,
+   "base_ref": "main",
+   "base_is_main": true,
+   "head_ref": "research/horizon-001",
+   "head_sha": "2dcdc995102f094d723005c79bb9b0ec7d9737f7",
+   "created_at": "2026-11-09T23:34:57Z",
+   "updated_at": "2026-11-10T17:37:59Z",
+   "additions": 692975,
+   "deletions": 0,
+   "changed_files": 691,
+   "mergeable": true,
+   "mergeable_state": "clean",
+   "local_ref_present": true,
+   "labels": [],
+   "tip_date": "2026-11-11T01:37:46+08:00",
+   "diff_vs_main": {
+    "files": 691,
+    "additions": 692975,
+    "deletions": 0
+   },
+   "divergence_vs_main": {
+    "ahead": 4,
+    "behind": 0
+   },
+   "diff_vs_declared_base": {
+    "files": 691,
+    "additions": 692975,
+    "deletions": 0
+   },
+   "merge_probe_main": {
+    "local_clean": true,
+    "conflicts": []
+   },
+   "changed_path_count": 691,
+   "risk_path_hits": {
+    "un_comtrade": {
+     "count": 35,
+     "examples": [
+      "research/horizon/CONNECTORS/industry/un_comtrade.py",
+      "research/horizon/DATASETS/industry/un_comtrade/PROVENANCE.json",
+      "research/horizon/DATASETS/industry/un_comtrade/raw/annual_2015.json",
+      "research/horizon/DATASETS/industry/un_comtrade/raw/annual_2016.json",
+      "research/horizon/DATASETS/industry/un_comtrade/raw/annual_2017.json"
+     ]
+    },
+    "uk_find_a_tender": {
+     "count": 10,
+     "examples": [
+      "research/horizon/CONNECTORS/industry/uk_find_a_tender.py",
+      "research/horizon/DATASETS/industry/uk_find_a_tender/PROVENANCE.json",
+      "research/horizon/DATASETS/industry/uk_find_a_tender/raw/award_packages_p1.json",
+      "research/horizon/DATASETS/industry/uk_find_a_tender/raw/award_packages_p2.json",
+      "research/horizon/DATASETS/industry/uk_find_a_tender/raw/award_packages_p3.json"
+     ]
+    },
+    "restricted_exports": {
+     "count": 356,
+     "examples": [
+      "research/horizon/DATASETS/industry/descartes_datamyne/raw/legal_compliance.html",
+      "research/horizon/DATASETS/industry/descartes_datamyne/raw/robots.txt",
+      "research/horizon/DATASETS/industry/eu_ted/raw/api_docs_index.html",
+      "research/horizon/DATASETS/industry/eu_ted/raw/diag_division_33100000.json",
+      "research/horizon/DATASETS/industry/eu_ted/raw/diag_subfamily_33140000.json"
+     ]
+    }
+   },
+   "status": "BLOCKED_LEGAL",
+   "status_reason": "Contains the redistribution-restricted bulk UN Comtrade payload: 27 raw annual/monthly JSON + 3 Comtrade JSONL + 3 UK Find a Tender raw award packages + 4 derived reports that quote them (37 files).",
+   "status_evidence": "changed paths research/horizon/DATASETS/industry/un_comtrade/raw/annual_2015-2024.json, monthly_202501-202512.json, summary.json, hs.json, reporters.json; exports/.../un_comtrade.jsonl(.sha256); CONVERGENCE licence review (docs/convergence/LICENCE_AND_SECURITY_REVIEW.md) says payload is redistribution-blocked and reachable from this branch",
+   "recommended_action": "Do not merge as published. Either strip the payload (then rework) or close as superseded by #30's sanitised copy; escalate the public exposure to the owner.",
+   "files_vs_main": 691,
+   "additions_vs_main": 692975,
+   "deletions_vs_main": 0,
+   "ahead_of_main": 4,
+   "behind_main": 0,
+   "risk_level": "BLOCKED"
+  },
+  {
+   "number": 30,
+   "title": "CONVERGENCE-001: ATLAS x HORIZON end-to-end integration, P0 reconciliation and scientific gates (Draft)",
+   "state": "open",
+   "draft": true,
+   "base_ref": "main",
+   "base_is_main": true,
+   "head_ref": "integration/convergence-001",
+   "head_sha": "c6606c301b5aee254a30286f41d75c42339c5f98",
+   "created_at": "2026-11-10T21:11:36Z",
+   "updated_at": "2026-11-11T16:40:39Z",
+   "additions": 690079,
+   "deletions": 0,
+   "changed_files": 815,
+   "mergeable": true,
+   "mergeable_state": "clean",
+   "local_ref_present": true,
+   "labels": [],
+   "tip_date": "2026-11-12T00:34:30+08:00",
+   "diff_vs_main": {
+    "files": 815,
+    "additions": 690079,
+    "deletions": 0
+   },
+   "divergence_vs_main": {
+    "ahead": 9,
+    "behind": 0
+   },
+   "diff_vs_declared_base": {
+    "files": 815,
+    "additions": 690079,
+    "deletions": 0
+   },
+   "merge_probe_main": {
+    "local_clean": true,
+    "conflicts": []
+   },
+   "changed_path_count": 815,
+   "risk_path_hits": {
+    "un_comtrade": {
+     "count": 5,
+     "examples": [
+      "research/horizon/CONNECTORS/industry/un_comtrade.py",
+      "research/horizon/DATASETS/industry/un_comtrade/PROVENANCE.json",
+      "research/horizon/DATASETS/industry/un_comtrade/raw/comtrade_license.html",
+      "research/horizon/DATASETS/industry/un_comtrade/raw/terms_of_use.html",
+      "research/horizon/registry/sources/un_comtrade.json"
+     ]
+    },
+    "uk_find_a_tender": {
+     "count": 7,
+     "examples": [
+      "research/horizon/CONNECTORS/industry/uk_find_a_tender.py",
+      "research/horizon/DATASETS/industry/uk_find_a_tender/PROVENANCE.json",
+      "research/horizon/DATASETS/industry/uk_find_a_tender/summary.json",
+      "research/horizon/experiments/industry/evidence/uk_find_a_tender.jsonl",
+      "research/horizon/exports/horizon-2026-11-10/uk_find_a_tender.jsonl"
+     ]
+    },
+    "restricted_exports": {
+     "count": 325,
+     "examples": [
+      "research/horizon/DATASETS/industry/descartes_datamyne/raw/legal_compliance.html",
+      "research/horizon/DATASETS/industry/descartes_datamyne/raw/robots.txt",
+      "research/horizon/DATASETS/industry/eu_ted/raw/api_docs_index.html",
+      "research/horizon/DATASETS/industry/eu_ted/raw/diag_division_33100000.json",
+      "research/horizon/DATASETS/industry/eu_ted/raw/diag_subfamily_33140000.json"
+     ]
+    },
+    "credentials": {
+     "count": 3,
+     "examples": [
+      "research/convergence/h2/explore_tokens.py",
+      "research/convergence/licence/secrets_scan.json",
+      "tools/convergence/licence/secrets_scan.py"
+     ]
+    }
+   },
+   "status": "NEEDS_REWORK",
+   "status_reason": "CONVERGENCE is legally sanitised (no Comtrade raw payload) but 721 of 813 added files duplicate #29/#28 (654 horizon copies + 67 atlas), and 92 files are net-new.",
+   "status_evidence": "draft=true; blob identity 721/813 duplicate; #28 is ancestor (legit), #29 is not ancestor (copy); changed paths show only comtrade licence/terms html + provenance",
+   "recommended_action": "Keep open behind #28; rebase, drop 654 horizon copies, merge the 92-file delta.",
+   "files_vs_main": 815,
+   "additions_vs_main": 690079,
+   "deletions_vs_main": 0,
+   "ahead_of_main": 9,
+   "behind_main": 0,
+   "risk_level": "NONE"
+  },
+  {
+   "number": 31,
+   "title": "docs(refoundation): REFOUNDATION-001 repository audit (sanitized)",
+   "state": "open",
+   "draft": true,
+   "base_ref": "main",
+   "base_is_main": true,
+   "head_ref": "publish/refoundation-001",
+   "head_sha": "f682be0f83830215146f74cf8e321a7defc6fad4",
+   "created_at": "2026-11-12T16:08:09Z",
+   "updated_at": "2026-11-12T16:08:09Z",
+   "additions": 54732,
+   "deletions": 0,
+   "changed_files": 179,
+   "mergeable": true,
+   "mergeable_state": "clean",
+   "local_ref_present": true,
+   "labels": [],
+   "tip_date": "2026-11-12T23:52:14+08:00",
+   "diff_vs_main": {
+    "files": 179,
+    "additions": 54732,
+    "deletions": 0
+   },
+   "divergence_vs_main": {
+    "ahead": 1,
+    "behind": 0
+   },
+   "diff_vs_declared_base": {
+    "files": 179,
+    "additions": 54732,
+    "deletions": 0
+   },
+   "merge_probe_main": {
+    "local_clean": true,
+    "conflicts": []
+   },
+   "changed_path_count": 179,
+   "risk_path_hits": {},
+   "status": "READY_TO_INTEGRATE",
+   "status_reason": "Docs-only sanitised publication of the REFOUNDATION-001 audit (179 files, all under docs/refoundation; SANITIZATION_LOG.json included); clean and conflict-free.",
+   "status_evidence": "draft=true; mergeable=clean; changed top-level only docs/refoundation; no risk-path hits",
+   "recommended_action": "Mark ready-for-review; merge after owner read-through (no code).",
+   "files_vs_main": 179,
+   "additions_vs_main": 54732,
+   "deletions_vs_main": 0,
+   "ahead_of_main": 1,
+   "behind_main": 0,
+   "risk_level": "NONE"
+  },
+  {
+   "number": 32,
+   "title": "feat(governance): Phase 0 governance MVP - state source, 5 gates, CI draft",
+   "state": "open",
+   "draft": true,
+   "base_ref": "main",
+   "base_is_main": true,
+   "head_ref": "governance/refoundation-002",
+   "head_sha": "beacd1115a7bfea6e144cae9ca18fc2b1d4a7233",
+   "created_at": "2026-11-12T16:08:17Z",
+   "updated_at": "2026-11-12T19:15:06Z",
+   "additions": 10676,
+   "deletions": 17,
+   "changed_files": 74,
+   "mergeable": true,
+   "mergeable_state": "clean",
+   "local_ref_present": true,
+   "labels": [],
+   "tip_date": "2026-11-13T03:14:50+08:00",
+   "diff_vs_main": {
+    "files": 74,
+    "additions": 10676,
+    "deletions": 17
+   },
+   "divergence_vs_main": {
+    "ahead": 6,
+    "behind": 0
+   },
+   "diff_vs_declared_base": {
+    "files": 74,
+    "additions": 10676,
+    "deletions": 17
+   },
+   "merge_probe_main": {
+    "local_clean": true,
+    "conflicts": []
+   },
+   "changed_path_count": 74,
+   "risk_path_hits": {
+    "sqlite_db": {
+     "count": 1,
+     "examples": [
+      "tests/governance/fixtures/fake_market.sqlite"
+     ]
+    },
+    "large_binary": {
+     "count": 1,
+     "examples": [
+      "tests/governance/fixtures/fake_archive.gz"
+     ]
+    }
+   },
+   "status": "READY_TO_INTEGRATE",
+   "status_reason": "Phase-0 governance MVP (single state source, 5 gates, CI draft, 43 new tests); verified locally, no GitHub settings changed.",
+   "status_evidence": "draft=true; 74 files/+10,676/-17; PR body: 240 state checks/0 failures, full suite 1,071 passed/3 skipped; mergeable=clean",
+   "recommended_action": "Mark ready; merge first in Cycle 1 (it defines the state-bump flow for every later merge).",
+   "files_vs_main": 74,
+   "additions_vs_main": 10676,
+   "deletions_vs_main": 17,
+   "ahead_of_main": 6,
+   "behind_main": 0,
+   "risk_level": "NONE"
+  },
+  {
+   "number": 33,
+   "title": "research(evidence): Phase 0 evidence-store comparison and three architecture options",
+   "state": "open",
+   "draft": true,
+   "base_ref": "main",
+   "base_is_main": true,
+   "head_ref": "research/evidence-architecture-002",
+   "head_sha": "b88a455aece9eca2452b29fcee7a0a18a95366b6",
+   "created_at": "2026-11-12T16:08:19Z",
+   "updated_at": "2026-11-12T16:08:19Z",
+   "additions": 12049,
+   "deletions": 0,
+   "changed_files": 4,
+   "mergeable": true,
+   "mergeable_state": "clean",
+   "local_ref_present": true,
+   "labels": [],
+   "tip_date": "2026-11-12T23:42:46+08:00",
+   "diff_vs_main": {
+    "files": 4,
+    "additions": 12049,
+    "deletions": 0
+   },
+   "divergence_vs_main": {
+    "ahead": 1,
+    "behind": 0
+   },
+   "diff_vs_declared_base": {
+    "files": 4,
+    "additions": 12049,
+    "deletions": 0
+   },
+   "merge_probe_main": {
+    "local_clean": true,
+    "conflicts": []
+   },
+   "changed_path_count": 4,
+   "risk_path_hits": {},
+   "status": "READY_TO_INTEGRATE",
+   "status_reason": "Evidence-store comparison and three-option decision document; adopts no canon, changes no code/data; 4 files.",
+   "status_evidence": "draft=true; changed paths all docs/refoundation/phase0; mergeable=clean",
+   "recommended_action": "Mark ready; merge before #35 (it is the decision record for option C).",
+   "files_vs_main": 4,
+   "additions_vs_main": 12049,
+   "deletions_vs_main": 0,
+   "ahead_of_main": 1,
+   "behind_main": 0,
+   "risk_level": "NONE"
+  },
+  {
+   "number": 34,
+   "title": "docs(readme): truth revision - mission, main-vs-draft status, event-time limitation",
+   "state": "open",
+   "draft": true,
+   "base_ref": "main",
+   "base_is_main": true,
+   "head_ref": "docs/readme-truth-phase2",
+   "head_sha": "6a95a5b019f60812cd5872f9a2b1056146dc3005",
+   "created_at": "2026-11-12T18:43:50Z",
+   "updated_at": "2026-11-12T19:18:14Z",
+   "additions": 263,
+   "deletions": 22,
+   "changed_files": 4,
+   "mergeable": true,
+   "mergeable_state": "clean",
+   "local_ref_present": true,
+   "labels": [],
+   "tip_date": "2026-11-13T03:18:10+08:00",
+   "diff_vs_main": {
+    "files": 4,
+    "additions": 263,
+    "deletions": 22
+   },
+   "divergence_vs_main": {
+    "ahead": 2,
+    "behind": 0
+   },
+   "diff_vs_declared_base": {
+    "files": 4,
+    "additions": 263,
+    "deletions": 22
+   },
+   "merge_probe_main": {
+    "local_clean": true,
+    "conflicts": []
+   },
+   "changed_path_count": 4,
+   "risk_path_hits": {},
+   "status": "READY_TO_INTEGRATE",
+   "status_reason": "README truth revision (mission, main-vs-draft status, event-time limitation); 4 files/+263/-22, no anatomy of the product.",
+   "status_evidence": "draft=true; changed paths README*.md, docs/refoundation/phase2/README_TRUTH_UPDATE.md, tests/test_release.py; mergeable=clean",
+   "recommended_action": "Mark ready; merge in Cycle 1.",
+   "files_vs_main": 4,
+   "additions_vs_main": 263,
+   "deletions_vs_main": 22,
+   "ahead_of_main": 2,
+   "behind_main": 0,
+   "risk_level": "NONE"
+  },
+  {
+   "number": 35,
+   "title": "feat(evidence-core): append-only event_revision ledger + versioned migrations (ADR-001 option C)",
+   "state": "open",
+   "draft": true,
+   "base_ref": "main",
+   "base_is_main": true,
+   "head_ref": "feature/evidence-core-v1",
+   "head_sha": "f088e370db265799596c5e9a04f273f5814ece8e",
+   "created_at": "2026-11-12T19:13:22Z",
+   "updated_at": "2026-11-12T19:13:22Z",
+   "additions": 2383,
+   "deletions": 49,
+   "changed_files": 9,
+   "mergeable": true,
+   "mergeable_state": "clean",
+   "local_ref_present": true,
+   "labels": [],
+   "tip_date": "2026-11-13T03:12:57+08:00",
+   "diff_vs_main": {
+    "files": 9,
+    "additions": 2383,
+    "deletions": 49
+   },
+   "divergence_vs_main": {
+    "ahead": 1,
+    "behind": 0
+   },
+   "diff_vs_declared_base": {
+    "files": 9,
+    "additions": 2383,
+    "deletions": 49
+   },
+   "merge_probe_main": {
+    "local_clean": true,
+    "conflicts": []
+   },
+   "changed_path_count": 9,
+   "risk_path_hits": {},
+   "status": "READY_TO_INTEGRATE",
+   "status_reason": "Evidence Core v1 implements ADR-001 option C (append-only event_revision ledger + versioned migrations); 9 files, 28 new tests, migration exercised on a copy only.",
+   "status_evidence": "draft=true; changed paths medradar/{db.py,evidence_core/*}, tests/test_event_revision.py, tests/test_evidence_core.py; mergeable=clean; integration/ref003 already merges it",
+   "recommended_action": "Mark ready; merge after #33 in Cycle 1.",
+   "files_vs_main": 9,
+   "additions_vs_main": 2383,
+   "deletions_vs_main": 49,
+   "ahead_of_main": 1,
+   "behind_main": 0,
+   "risk_level": "NONE"
+  },
+  {
+   "number": 36,
+   "title": "research(e1b): source recovery - retrospective public availability vs prospective observation",
+   "state": "open",
+   "draft": true,
+   "base_ref": "main",
+   "base_is_main": true,
+   "head_ref": "research/e1b-source-recovery",
+   "head_sha": "6ffe7e7f150f33b0e426ab0dab4da3e8498add56",
+   "created_at": "2026-11-12T19:13:25Z",
+   "updated_at": "2026-11-12T19:13:25Z",
+   "additions": 1543,
+   "deletions": 0,
+   "changed_files": 8,
+   "mergeable": true,
+   "mergeable_state": "clean",
+   "local_ref_present": true,
+   "labels": [],
+   "tip_date": "2026-11-13T03:12:57+08:00",
+   "diff_vs_main": {
+    "files": 8,
+    "additions": 1543,
+    "deletions": 0
+   },
+   "divergence_vs_main": {
+    "ahead": 1,
+    "behind": 0
+   },
+   "diff_vs_declared_base": {
+    "files": 8,
+    "additions": 1543,
+    "deletions": 0
+   },
+   "merge_probe_main": {
+    "local_clean": true,
+    "conflicts": []
+   },
+   "changed_path_count": 8,
+   "risk_path_hits": {},
+   "status": "READY_TO_INTEGRATE",
+   "status_reason": "E1b source-recovery experiment (28 requests, hashes only, no raw documents); 8 files, independent of the other PRs.",
+   "status_evidence": "draft=true; changed paths docs/refoundation/phase2/E1B_SOURCE_RECOVERY.md, research/e1b/*, evidence JSON/JSONL; mergeable=clean",
+   "recommended_action": "Mark ready; merge in Cycle 1.",
+   "files_vs_main": 8,
+   "additions_vs_main": 1543,
+   "deletions_vs_main": 0,
+   "ahead_of_main": 1,
+   "behind_main": 0,
+   "risk_level": "NONE"
+  },
+  {
+   "number": 37,
+   "title": "docs(refoundation): Phase 2 acceptance - governance, evidence core v1, E1b recovery, README truth",
+   "state": "open",
+   "draft": true,
+   "base_ref": "main",
+   "base_is_main": true,
+   "head_ref": "refoundation/phase2-acceptance",
+   "head_sha": "8c23a3a1e57903b7119e14e075bf8f714ac8307b",
+   "created_at": "2026-11-12T19:15:59Z",
+   "updated_at": "2026-11-12T19:22:07Z",
+   "additions": 890,
+   "deletions": 0,
+   "changed_files": 5,
+   "mergeable": true,
+   "mergeable_state": "clean",
+   "local_ref_present": true,
+   "labels": [],
+   "tip_date": "2026-11-13T03:22:03+08:00",
+   "diff_vs_main": {
+    "files": 5,
+    "additions": 890,
+    "deletions": 0
+   },
+   "divergence_vs_main": {
+    "ahead": 2,
+    "behind": 0
+   },
+   "diff_vs_declared_base": {
+    "files": 5,
+    "additions": 890,
+    "deletions": 0
+   },
+   "merge_probe_main": {
+    "local_clean": true,
+    "conflicts": []
+   },
+   "changed_path_count": 5,
+   "risk_path_hits": {},
+   "status": "SUPERSEDED",
+   "status_reason": "Four of its five files are byte-identical copies of reports already delivered by #32/#34/#35/#36; only PHASE2_ACCEPTANCE.md is unique and belongs in the integration PR.",
+   "status_evidence": "blob identity: GOVERNANCE_HARDENING.md (#32), EVIDENCE_CORE_V1.md (#35), E1B_SOURCE_RECOVERY.md (#36), README_TRUTH_UPDATE.md (#34) all identical; local integration/ref003 is the consolidation vehicle",
+   "recommended_action": "Fold PHASE2_ACCEPTANCE.md into integration/ref003; close #37 as superseded. Do not merge a duplicate bundle.",
+   "files_vs_main": 5,
+   "additions_vs_main": 890,
+   "deletions_vs_main": 0,
+   "ahead_of_main": 2,
+   "behind_main": 0,
+   "risk_level": "NONE"
+  }
+ ],
+ "ancestry": {
+  "1": {},
+  "12": {
+   "13": true,
+   "14": true,
+   "15": true,
+   "16": true,
+   "21": true,
+   "22": true
+  },
+  "13": {
+   "14": true,
+   "15": true,
+   "16": true,
+   "21": true,
+   "22": true
+  },
+  "14": {
+   "15": true,
+   "16": true,
+   "21": true,
+   "22": true
+  },
+  "15": {
+   "21": true,
+   "22": true
+  },
+  "16": {},
+  "17": {},
+  "18": {},
+  "19": {
+   "20": true,
+   "21": true,
+   "22": true
+  },
+  "20": {
+   "21": true,
+   "22": true
+  },
+  "21": {
+   "22": true
+  },
+  "22": {},
+  "23": {},
+  "24": {
+   "25": true
+  },
+  "25": {},
+  "26": {},
+  "27": {},
+  "28": {
+   "30": true
+  },
+  "29": {},
+  "30": {},
+  "31": {},
+  "32": {},
+  "33": {},
+  "34": {},
+  "35": {},
+  "36": {},
+  "37": {}
+ },
+ "notes": [],
+ "schema": "refoundation003.pr_triage.v1",
+ "status_counts": {
+  "SUPERSEDED": 4,
+  "NEEDS_REWORK": 6,
+  "RESEARCH_ARCHIVE": 9,
+  "BLOCKED_LEGAL": 2,
+  "READY_TO_INTEGRATE": 6
+ },
+ "status_legend": {
+  "READY_TO_INTEGRATE": "Can be merged after normal review; no known blocker.",
+  "NEEDS_REWORK": "Keep open; must be rebased/split/redesigned before it can merge.",
+  "RESEARCH_ARCHIVE": "Research record; keep the branch, close/mark the PR, do not merge to main.",
+  "BLOCKED_LEGAL": "Contains restricted/licence-encumbered data; must not merge until stripped or cleared.",
+  "SUPERSEDED": "Its content is already on main, or replaced by a newer PR/branch; close."
+ },
+ "topology": {
+  "chains": [
+   {
+    "name": "product",
+    "order": [
+     12,
+     13,
+     14
+    ],
+    "note": "clean stack; #14 is the base of the research stack"
+   },
+   {
+    "name": "S-028-study",
+    "order": [
+     15,
+     21,
+     22
+    ],
+    "note": "#15 tip is an ancestor of phase4-base (no PR) and of #21/#22"
+   },
+   {
+    "name": "LLM-lane",
+    "order": [
+     19,
+     20,
+     21,
+     22
+    ],
+    "note": "#19/#20 are ancestors of #21/#22 (verified)"
+   },
+   {
+    "name": "PHOENIX",
+    "order": [
+     24,
+     25
+    ],
+    "note": "#23 is not an ancestor of #24 but is superseded in content"
+   },
+   {
+    "name": "evidence-canon",
+    "order": [
+     28,
+     30
+    ],
+    "note": "#28 is an ancestor of #30"
+   }
+  ],
+  "overlaps": [
+   {
+    "pair": "#21/#22",
+    "kind": "ancestry + duplication",
+    "evidence": "#21 ancestor of #22; 560/600 files identical; #22 net-new = 33 files/+4,032"
+   },
+   {
+    "pair": "#29/#30",
+    "kind": "copy, no ancestry",
+    "evidence": "654/813 identical; horizon-001 is NOT an ancestor; #30 removes the 37 restricted/derived files"
+   },
+   {
+    "pair": "#28/#30",
+    "kind": "ancestry",
+    "evidence": "atlas-001 IS an ancestor of convergence-001; 67 identical files are legitimate inheritance"
+   },
+   {
+    "pair": "#37 vs #32/#34/#35/#36",
+    "kind": "byte-identical copies",
+    "evidence": "4 of 5 files identical blobs; only PHASE2_ACCEPTANCE.md unique"
+   },
+   {
+    "pair": "#17 vs #34",
+    "kind": "same files",
+    "evidence": "both modify README.md, README.zh-CN.md, tests/test_release.py; #34 is the newer truth revision"
+   },
+   {
+    "pair": "#27 vs #29/#30",
+    "kind": "same restricted source family",
+    "evidence": "UN Comtrade / UK Find a Tender; #27 carries previews, #29 bulk raw, #30 sanitised"
+   }
+  ]
+ },
+ "consolidation_plan": {
+  "active_queue_keep_open": [
+   31,
+   32,
+   33,
+   34,
+   35,
+   36
+  ],
+  "rework_queue": [
+   12,
+   13,
+   14,
+   21,
+   28,
+   30
+  ],
+  "research_archive": [
+   15,
+   16,
+   18,
+   19,
+   20,
+   22,
+   24,
+   25,
+   26
+  ],
+  "blocked_legal": [
+   27,
+   29
+  ],
+  "supersede_close": [
+   1,
+   17,
+   23,
+   37
+  ],
+  "cycle_1_merge_order": [
+   32,
+   33,
+   35,
+   31,
+   34,
+   36
+  ],
+  "cycle_1_note": "After each merge, bump PROJECT_STATE.yaml head/tracked-file count (the #32 designed merge-gate flow). Full suite must stay green: baseline 1,074 collected on b2a14c0; #32 measured 1,071 passed + 3 skipped.",
+  "cycle_2": [
+   "Refresh/land the integration/ref003 PR: it already merges #32+#35; fold in #37 PHASE2_ACCEPTANCE.md and the four workstream reports, update state, then close #37 as superseded.",
+   "Decide ADR-001 canon (E2 portability test for #28). If option B: rework #28 then #30 (dedupe 654 horizon copies) in a later cycle. If option C (the #33 recommendation): archive #28/#30 as research.",
+   "Legal remediation: strip UN Comtrade payloads from #27 (4 artefacts) and #29 (30 raw + 3 jsonl). Reclassify only after licence sign-off; #29 is a public-exposure escalation.",
+   "Archive the nine research PRs (keep branches); close #1/#17/#23 after #23 local-commit rescue."
+  ],
+  "top_5_actions": [
+   "Merge Cycle 1 in order #32 -> #33 -> #35 -> #31 -> #34 -> #36, bumping the governance state after each.",
+   "Do not merge #29 (bulk restricted Comtrade payload) or #27 (Comtrade previews) until stripped; escalate the public exposure.",
+   "Fold #37 into integration/ref003 and close it: 4 of its 5 files are byte-identical copies of #32/#34/#35/#36 reports.",
+   "Rescue the 7 unique local PHOENIX commits, then close #23 (superseded by #24) and #17 (superseded by #31/#34).",
+   "Mark the nine research PRs RESEARCH_ARCHIVE (branches kept, PRs closed/labelled); no research merges in the next two cycles."
+  ]
+ },
+ "limits": [
+  "PR metadata (draft/base/mergeable/mergeable_state) from GitHub API /pulls on 2026-11-13; not re-queried after collection.",
+  "Branch code was not executed; test claims are quoted from PR bodies, not re-run.",
+  "Mergeability is the API mergeable field plus local git merge-tree; both are textual/merge-graph signals, not semantic review.",
+  "Licence classification uses the branch-committed registers and the convergence licence review; it is not a legal opinion.",
+  "Restricted-payload detection is path-based plus the two committed licence documents; binary/encoded payloads were not content-scanned."
+ ]
+}

@@ -1,0 +1,19 @@
+# command: gen_views.py with a changed state timestamp; restore the state; gen_views.py again; git diff --exit-code
+# exit code: 0
+
+--- state changed: regenerate stale views ---
+PASS readme-status (README.md): generated from an older PROJECT_STATE.yaml (d71d68a3d775)
+PASS research-index (docs/RESEARCH_INDEX.md): generated from an older state
+PASS changelog-unreleased (CHANGELOG.md): generated from an older PROJECT_STATE.yaml (d71d68a3d775)
+PASS gen_views (3 targets)
+--- worktree differs from staged state (expected non-empty) ---
+ CHANGELOG.md           | 6 +++---
+ README.md              | 6 +++---
+ docs/RESEARCH_INDEX.md | 6 +++---
+ 3 files changed, 9 insertions(+), 9 deletions(-)
+--- state restored: regenerate back ---
+PASS readme-status (README.md): generated from an older PROJECT_STATE.yaml (002440b35ece)
+PASS research-index (docs/RESEARCH_INDEX.md): generated from an older state
+PASS changelog-unreleased (CHANGELOG.md): generated from an older PROJECT_STATE.yaml (002440b35ece)
+PASS gen_views (3 targets)
+--- git diff --exit-code after restore ---

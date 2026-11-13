@@ -1,0 +1,218 @@
+# MedRadar — DATA LICENCES and redistribution policy
+#
+# One entry per external data source. The governance gate
+# `python tools/governance/check_licence.py` enforces this file against the
+# final git tree, a positive data inventory and a PR-diff scan.
+#
+#   GREEN  redistributable with attribution; may be committed anywhere.
+#   AMBER  raw content must stay in gitignored data/; a committed file that is
+#          attributable to the source needs an explicit `policy_entries` record
+#          naming the derived artefact and why it is safe.
+#   RED    not redistributable at all: raw bytes may only live under data/.
+#          ANY tracked file matching `tracked_patterns` is a gate failure; a
+#          policy entry cannot override a RED source.
+#
+# `raw_patterns` must stay under `policy.raw_root` (data/), which the gate
+# verifies is actually gitignored. `tracked_patterns` describe repository files
+# that would be attributable to the source if they ever appeared.
+#
+# Positive inventory (hardening, Phase 2)
+# ---------------------------------------
+# Every tracked file with a data extension, and every file whose content is a
+# restricted binary format, must appear in `docs/governance/DATA_INVENTORY.yaml`
+# with its source and detected content kind. The inventory is generated with
+#   python tools/governance/check_licence.py --write-inventory
+# and reviewed in the commit diff. A moved, renamed, or newly created data file
+# has no entry and fails; a declared file whose bytes change format fails.
+#
+# This is a repository consistency control, NOT a legal guarantee: a human still
+# reviews every inventory change and owns the licence judgement.
+
+schema: medradar.data_licenses.v2
+updated: "2026-11-13"
+
+policy:
+  default_status: RED
+  raw_root: data/
+  rule: "GREEN may be redistributed with attribution. AMBER may contribute only explicitly listed derived artefacts. RED may not be committed at all. Unlisted sources are RED."
+  tracked_source: "git ls-files (final tree: committed + staged); untracked data files fail separately"
+
+inventory:
+  file: docs/governance/DATA_INVENTORY.yaml
+  schema: medradar.data_inventory.v1
+  # Generated evidence artefacts under docs/refoundation/**/_evidence/ are
+  # produced by our own reproducible scripts and are reviewed in the PR diff.
+  # They are exempt from the per-file inventory (which exists to catch
+  # third-party data), but their CONTENT is still classified: a restricted
+  # binary format under an exempt path still fails. See RC-0002 / GOV-0002.
+  exempt_patterns:
+    - "docs/refoundation/*/_evidence/*"
+  data_extensions:
+    - .csv
+    - .tsv
+    - .json
+    - .jsonl
+    - .ndjson
+    - .parquet
+    - .arrow
+    - .feather
+    - .sqlite
+    - .db
+    - .duckdb
+    - .h5
+    - .hdf5
+    - .npy
+    - .npz
+    - .bin
+    - .gz
+    - .gzip
+    - .zip
+  restricted_content_kinds:
+    - sqlite
+    - parquet
+    - hdf5
+    - gzip
+    - zip
+    - elf
+    - binary
+  manual_review: "Run `python tools/governance/check_licence.py --write-inventory`, then review every added/changed entry in the PR diff; --summary prints the classification for a human. Licence judgement stays human."
+  disclaimer: "This gate is a repository consistency control, not a legal guarantee: it detects known restricted formats and undeclared data files, not the lawfulness of a particular bytes-to-licence combination."
+
+sources:
+  - source_id: openfda_device
+    status: GREEN
+    may_redistribute: true
+    attribution: "U.S. Food and Drug Administration openFDA (510(k), PMA and device-recall endpoints). U.S. Government work; not endorsed by the FDA."
+    raw_patterns:
+      - data/**
+    docs: docs/DATA.md
+  - source_id: openfda_drug
+    status: GREEN
+    may_redistribute: true
+    attribution: "U.S. Food and Drug Administration openFDA Drugs@FDA endpoints (drug approvals). U.S. Government work; not endorsed by the FDA."
+    raw_patterns:
+      - data/**
+    docs: docs/DATA.md
+  - source_id: ctgov
+    status: GREEN
+    may_redistribute: true
+    attribution: "ClinicalTrials.gov API v2 (U.S. National Library of Medicine, NIH). U.S. Government work; not endorsed by NLM."
+    raw_patterns:
+      - data/**
+    docs: docs/DATA.md
+  - source_id: sec_edgar
+    status: GREEN
+    may_redistribute: true
+    attribution: "SEC EDGAR 8-K filings. U.S. Government work; no endorsement by the SEC."
+    raw_patterns:
+      - data/**
+    docs: docs/DATA.md
+  - source_id: openalex
+    status: GREEN
+    may_redistribute: true
+    attribution: "OpenAlex works metadata, CC0 1.0 (https://openalex.org). Attribution appreciated."
+    raw_patterns:
+      - data/cache/openalex/**
+    docs: docs/PUBLICATION_PATENT_DATA.md
+  - source_id: uspto
+    status: GREEN
+    may_redistribute: true
+    attribution: "USPTO Open Data Portal. U.S. Government work. The adapter is implemented but not evaluated; no patent numbers are reported."
+    raw_patterns:
+      - data/cache/uspto/**
+    docs: docs/PUBLICATION_PATENT_DATA.md
+  - source_id: nmpa_demo_seed
+    status: GREEN
+    may_redistribute: true
+    attribution: "Synthetic demonstration rows authored for this repository (虚构演示数据); not NMPA records and not third-party content."
+    tracked_patterns:
+      - config/nmpa_demo_seed.csv
+    docs: docs/DATA.md
+  - source_id: sec_8k_hand_labels
+    status: GREEN
+    may_redistribute: true
+    attribution: "Hand-labelled 8-K calibration set derived from SEC EDGAR filings (GREEN source)."
+    tracked_patterns:
+      - docs/calibration/*.csv
+      - docs/calibration/*.json
+    docs: docs/CALIBRATION.md
+  - source_id: medradar_derived_artifacts
+    status: GREEN
+    may_redistribute: true
+    attribution: "Derived aggregates and research artifacts generated by this repository from GREEN public sources (openFDA, ClinicalTrials.gov, SEC EDGAR, OpenAlex) or synthetic data; no third-party raw content is redistributed."
+    tracked_patterns:
+      - experiments/**
+      - research/**
+      - papers/**
+      - docs/*.json
+      - docs/*.csv
+      - docs/research/**
+      - docs/refoundation/**
+      - tools/*.json
+    docs: docs/DATA.md
+  - source_id: curated_configuration
+    status: GREEN
+    may_redistribute: true
+    attribution: "Hand-maintained repository configuration (company/track mappings, curated product catalog); identifiers only, no third-party bulk content."
+    tracked_patterns:
+      - config/**
+    docs: README.md
+  - source_id: synthetic_fixtures
+    status: GREEN
+    may_redistribute: true
+    synthetic: true
+    attribution: "Synthetic fixtures authored for offline tests (fake formats, fake identifiers, no real data); no third-party rights are involved."
+    tracked_patterns:
+      - tests/**
+    docs: tests/governance/fixtures/README.md
+  - source_id: yahoo_chart_bars
+    status: RED
+    may_redistribute: false
+    attribution: "Yahoo Finance public chart endpoint. This is a research import, not a licensed market-data feed; the source terms do not permit redistribution of raw bars."
+    raw_patterns:
+      - data/**
+    tracked_patterns:
+      - '**/prices_*.csv'
+      - '**/prices_*.json'
+      - '**/raw_bars_*.json'
+      - '**/yahoo_bars_*.json'
+    docs: docs/MARKET_DATA.md
+    note: "Only coverage counts and evaluation metrics may be committed; they are not raw bars and do not match these patterns."
+  - source_id: internet_archive_cdx
+    status: AMBER
+    may_redistribute: false
+    attribution: "Internet Archive Wayback Machine CDX index and archived third-party pages; page content belongs to the original publishers and is not redistributed."
+    raw_patterns:
+      - data/cache/**
+      - data/wayback/**
+    tracked_patterns:
+      - experiments/b030/*.json
+      - experiments/b030/*.md
+      - experiments/b030/*.log
+      - experiments/b026/validate_hiring_domain.json
+    note: "Derived counts and run logs only; no archived page text, page bodies or raw snapshots are committed."
+
+policy_entries:
+  - source_id: internet_archive_cdx
+    path_pattern: experiments/b030/*.json
+    kind: derived-aggregate
+    reason: "Derived ATS/hiring depth counts and coverage panels computed from the archived index; no archived page text, page-body URLs or raw snapshots are committed."
+  - source_id: internet_archive_cdx
+    path_pattern: experiments/b030/*.md
+    kind: derived-report
+    reason: "Human-readable report of the derived coverage/depth measurements; contains aggregate numbers, not archived page content."
+  - source_id: internet_archive_cdx
+    path_pattern: experiments/b030/*.log
+    kind: derived-report
+    reason: "Run logs of the derived measurements (counts and errors only); no archived page text is retained."
+  - source_id: internet_archive_cdx
+    path: experiments/b026/validate_hiring_domain.json
+    kind: derived-aggregate
+    reason: "Second-domain validation metrics for the promotion rule, computed from the hiring lane; aggregate confusion counts and rates only."
+
+review_notes:
+  - "Residual risk recorded rather than silently allowed: docs/replay_intraday.html and the offline demo embed a small intraday price window derived from the Yahoo lane for demonstration. No full raw dataset is committed and no licensed feed is claimed; Phase 1 should decide whether to regenerate this page from a synthetic fixture."
+  - "The market-data lane commits only coverage counts and evaluation metrics; raw bars stay in gitignored data/ (docs/MARKET_DATA.md)."
+  - "NMPA remains honestly unavailable: there is no licensed bulk route, so only synthetic demo rows are committed (docs/DATA.md)."
+  - "Unknown or unlisted sources default to RED: nothing derived from them may be committed until they are classified in this file."
+  - "The inventory is a repository control, not a legal guarantee; licence judgement stays human and is recorded in the PR that changes an inventory entry."

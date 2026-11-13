@@ -1,0 +1,125 @@
+# MedRadar governance workflow — Phase 2 (hardened).
+#
+# Each job runs the same stdlib-only gate a maintainer runs locally, so a PR
+# cannot merge with a false state file, hand-edited generated views, a changed
+# frozen artifact, an unlicensed/undeclared data file, or a silently weakened
+# gate. The `rule-audit` job makes changes to this file and the gate tools
+# require an approved decision id.
+#
+# The workflow is a merge gate for pull requests (plus manual dispatch). It
+# deliberately does not run on push to main: PROJECT_STATE.yaml describes the
+# PR's base main, so a post-merge push run would be red by design until the next
+# PR carries the state bump. `ci` covers main pushes.
+#
+# Jobs needing git history for a base-ref comparison (`state`, `frozen`,
+# `licence`, `rule-audit`) check out with fetch-depth: 0 so origin/main exists.
+#
+# Job names are the status-check names the branch-protection plan refers to:
+#   governance / state, governance / views, governance / frozen,
+#   governance / licence, governance / links, governance / rule-audit
+name: governance
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: governance-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  state:
+    name: state
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Check out the repository (full history: the gate resolves origin/main)"
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Validate PROJECT_STATE.yaml against git and its measurement artifact
+        run: python tools/governance/check_state.py
+
+  views:
+    name: views
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Regenerate the views derived from PROJECT_STATE.yaml
+        run: python tools/governance/gen_views.py
+      - name: Fail if a generated view is stale or was hand-edited
+        run: |
+          if ! git diff --exit-code -- README.md CHANGELOG.md docs/RESEARCH_INDEX.md; then
+            echo "::error::Generated views were stale or hand-edited. Run 'python tools/governance/gen_views.py' locally and commit the regenerated files."
+            exit 1
+          fi
+          echo "Generated views are fresh and untampered."
+
+  frozen:
+    name: frozen
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repository (full history for the rebalance audit base)
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Verify per-file freeze digests, manifests and approved rebalances
+        run: python tools/governance/check_frozen.py --base origin/main
+
+  licence:
+    name: licence
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repository (full history for the PR-diff scan)
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Verify the data inventory and content classification
+        run: python tools/governance/check_licence.py --base origin/main
+
+  links:
+    name: links
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Verify relative Markdown links under docs/
+        run: python tools/governance/check_links.py
+
+  rule-audit:
+    name: rule-audit
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repository (full history for the base rule-change set)
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Fail if the governance surface changed without an approved decision
+        run: python tools/governance/check_rule_audit.py --base origin/main

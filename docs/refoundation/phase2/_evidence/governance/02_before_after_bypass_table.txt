@@ -1,0 +1,22 @@
+# command: old check_licence.py (8d7fd62, sanitized fixture policy) vs hardened gate on identical fixture repos; 4 bypasses + control + masquerade/rename/untracked
+# exit code: 0
+
+baseline (no bypass): old exit=0 new exit=0
+
+=== before/after: same bypass staged in the old-code repo and the new-code repo ===
+old code = 8d7fd62:tools/governance/check_licence.py; new code = working tree
+
+bypass                                               old exit  new exit  leak   new failure ids
+-----------------------------------------------------------------------------------------------
+A new source / new location (CSV) (data_exports/vendor_flight_feed_2026.csv) 0         1         False  diff.changed_data_file, inventory.coverage
+B known AMBER source, undeclared path (JSON) (research/RESULTS/wayback_monthly_counts.json) 0         1         False  diff.changed_data_file, inventory.coverage
+C binary SQLite under docs/ (docs/market_data.sqlite) 0         1         False  content.restricted_kind, diff.changed_data_file, inventory.coverage
+D CSV data under docs/ (docs/market_bars_2026.csv)   0         1         False  diff.changed_data_file, inventory.coverage
+E control: declared RED pattern (prices_*.csv) (docs/prices_2019.csv) 1         1         False  diff.changed_data_file, inventory.coverage, source.pattern
+H untracked data file (not in final tree) (data_exports/hidden.csv) 0         1         False  untracked.data_file
+F extension masquerade (.csv is really SQLite) (docs/market.csv) 0         1         False  inventory.content_match
+G renamed declared data file (docs/metrics_renamed.json) 0         1         False  inventory.coverage, inventory.stale_entry
+
+legend: old exit 0 = old pattern-only gate MISSED the bypass; new exit 1 = hardened gate CAUGHT it
+leak=False means the synthetic marker inside fixture bytes never appeared in gate logs
+masquerade/rename scenarios are checked by new code only; old code has no inventory

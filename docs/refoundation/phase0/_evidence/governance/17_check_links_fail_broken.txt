@@ -1,0 +1,7 @@
+# command: python tools/governance/check_links.py   # temporary page with a broken relative link
+# exit code: 1
+
+[ok]   docs.markdown_files: 42 Markdown files under docs
+[ok]   links.checked: 80 relative link(s) resolved against the filesystem
+[FAIL] links.docs/governance/_tmp_broken_link.md:3: 'does-not-exist.md' — target does not exist
+FAIL check_links (3 checks, 1 failures, 0 warnings)

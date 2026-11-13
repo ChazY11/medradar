@@ -1,0 +1,842 @@
+# MedRadar data inventory — generated; review every change in the PR.
+# Regenerate only with: python tools/governance/check_licence.py --write-inventory
+# This is a repository consistency control, not a legal guarantee.
+schema: medradar.data_inventory.v1
+generated_by: tools/governance/check_licence.py --write-inventory
+note: "Positive inventory of committed data files. Any added, moved, renamed or content-changed data file must update this file in the same PR. This is a repository control, not a legal guarantee."
+entries:
+  - path: config/companies_device.json
+    source_id: curated_configuration
+    status: GREEN
+    content: json
+    synthetic: false
+  - path: config/companies_drug.json
+    source_id: curated_configuration
+    status: GREEN
+    content: json
+    synthetic: false
+  - path: config/nmpa_demo_seed.csv
+    source_id: nmpa_demo_seed
+    status: GREEN
+    content: csv
+    synthetic: false
+  - path: config/product_catalog_zh.json
+    source_id: curated_configuration
+    status: GREEN
+    content: json
+    synthetic: false
+  - path: config/product_code_tracks.json
+    source_id: curated_configuration
+    status: GREEN
+    content: json
+    synthetic: false
+  - path: config/product_families.json
+    source_id: curated_configuration
+    status: GREEN
+    content: json
+    synthetic: false
+  - path: config/sources.json
+    source_id: curated_configuration
+    status: GREEN
+    content: json
+    synthetic: false
+  - path: config/tracks_device.json
+    source_id: curated_configuration
+    status: GREEN
+    content: json
+    synthetic: false
+  - path: config/tracks_drug.json
+    source_id: curated_configuration
+    status: GREEN
+    content: json
+    synthetic: false
+  - path: config/universe_v1.json
+    source_id: curated_configuration
+    status: GREEN
+    content: json
+    synthetic: false
+  - path: docs/calibration/ground_truth.csv
+    source_id: sec_8k_hand_labels
+    status: GREEN
+    content: csv
+    synthetic: false
+  - path: docs/calibration/heuristic_verdicts.json
+    source_id: sec_8k_hand_labels
+    status: GREEN
+    content: json
+    synthetic: false
+  - path: docs/calibration/llm_verdicts.json
+    source_id: sec_8k_hand_labels
+    status: GREEN
+    content: json
+    synthetic: false
+  - path: docs/calibration/metrics.json
+    source_id: sec_8k_hand_labels
+    status: GREEN
+    content: json
+    synthetic: false
+  - path: docs/metrics.json
+    source_id: medradar_derived_artifacts
+    status: GREEN
+    content: json
+    synthetic: false
+  - path: docs/refoundation/phase0/_evidence/governance/pytest_count.json
+    source_id: medradar_derived_artifacts
+    status: GREEN
+    content: json
+    synthetic: false
+  - path: docs/research/tkg_bench_synthetic.json
+    source_id: medradar_derived_artifacts
+    status: GREEN
+    content: text
+    synthetic: false
+  - path: docs/summary.csv
+    source_id: medradar_derived_artifacts
+    status: GREEN
+    content: csv
+    synthetic: false
+  - path: experiments/b026/confirm_entity_cells.json
+    source_id: medradar_derived_artifacts
+    status: GREEN
+    content: json
+    synthetic: false
+  - path: experiments/b026/confirm_window.json
+    source_id: medradar_derived_artifacts
+    status: GREEN
+    content: json
+    synthetic: false
+  - path: experiments/b026/density_confirm.json
+    source_id: medradar_derived_artifacts
+    status: GREEN
+    content: json
+    synthetic: false
+  - path: experiments/b026/density_experiment.json
+    source_id: medradar_derived_artifacts
+    status: GREEN
+    content: json
+    synthetic: false
+  - path: experiments/b026/spike_vs_shift.json
+    source_id: medradar_derived_artifacts
+    status: GREEN
+    content: json
+    synthetic: false
+  - path: experiments/b026/validate_hiring_domain.json
+    source_id: internet_archive_cdx
+    status: AMBER
+    content: json
+    synthetic: false
+  - path: experiments/b026/validate_track_domain.json
+    source_id: medradar_derived_artifacts
+    status: GREEN
+    content: json
+    synthetic: false
+  - path: experiments/b026/window_tradeoff.json
+    source_id: medradar_derived_artifacts
+    status: GREEN
+    content: json
+    synthetic: false
+  - path: experiments/b027/momentum_calibration.json
+    source_id: medradar_derived_artifacts
+    status: GREEN
+    content: json
+    synthetic: false
+  - path: experiments/b027/profiles.json
+    source_id: medradar_derived_artifacts
+    status: GREEN
+    content: json
+    synthetic: false
+  - path: experiments/b027/snapshot_diff.json
+    source_id: medradar_derived_artifacts
+    status: GREEN
+    content: json
+    synthetic: false
+  - path: experiments/b027/snapshots/2020-12-31/manifest.json
+    source_id: medradar_derived_artifacts
+    status: GREEN
+    content: json
+    synthetic: false
+  - path: experiments/b027/snapshots/2020-12-31/profiles.json
+    source_id: medradar_derived_artifacts
+    status: GREEN
+    content: json
+    synthetic: false
+  - path: experiments/b027/snapshots/2020-12-31/summary.json
+    source_id: medradar_derived_artifacts
+    status: GREEN
+    content: json
+    synthetic: false
+  - path: experiments/b027/snapshots/2022-12-31/manifest.json
+    source_id: medradar_derived_artifacts
+    status: GREEN
+    content: json
+    synthetic: false
+  - path: experiments/b027/snapshots/2022-12-31/profiles.json
+    source_id: medradar_derived_artifacts
+    status: GREEN
+    content: json
+    synthetic: false
+  - path: experiments/b027/snapshots/2022-12-31/summary.json
+    source_id: medradar_derived_artifacts
+    status: GREEN
+    content: json
+    synthetic: false
+  - path: experiments/b027/snapshots/2024-12-31/manifest.json
+    source_id: medradar_derived_artifacts
+    status: GREEN
+    content: json
+    synthetic: false
+  - path: experiments/b027/snapshots/2024-12-31/profiles.json
+    source_id: medradar_derived_artifacts
+    status: GREEN
+    content: json
+    synthetic: false
+  - path: experiments/b027/snapshots/2024-12-31/summary.json
+    source_id: medradar_derived_artifacts
+    status: GREEN
+    content: json
+    synthetic: false
+  - path: experiments/b027/snapshots/2026-11-02/manifest.json
+    source_id: medradar_derived_artifacts
+    status: GREEN
+    content: json
+    synthetic: false
+  - path: experiments/b027/snapshots/2026-11-02/profiles.json
+    source_id: medradar_derived_artifacts
+    status: GREEN
+    content: json
+    synthetic: false
+  - path: experiments/b027/snapshots/2026-11-02/summary.json
+    source_id: medradar_derived_artifacts
+    status: GREEN
+    content: json
+    synthetic: false
+  - path: experiments/b027/snapshots/2026-11-03-policy-v2/manifest.json
+    source_id: medradar_derived_artifacts
+    status: GREEN
+    content: json
+    synthetic: false
+  - path: experiments/b027/snapshots/2026-11-03-policy-v2/profiles.json
+    source_id: medradar_derived_artifacts
+    status: GREEN
+    content: json
+    synthetic: false
+  - path: experiments/b027/snapshots/2026-11-03-policy-v2/summary.json
+    source_id: medradar_derived_artifacts
+    status: GREEN
+    content: json
+    synthetic: false
+  - path: experiments/b027/snapshots/2026-11-03/manifest.json
+    source_id: medradar_derived_artifacts
+    status: GREEN
+    content: json
+    synthetic: false
+  - path: experiments/b027/snapshots/2026-11-03/profiles.json
+    source_id: medradar_derived_artifacts
+    status: GREEN
+    content: json
+    synthetic: false
+  - path: experiments/b027/snapshots/2026-11-03/summary.json
+    source_id: medradar_derived_artifacts
+    status: GREEN
+    content: json
+    synthetic: false
+  - path: experiments/b027/verdict_stability.json
+    source_id: medradar_derived_artifacts
+    status: GREEN
+    content: json
+    synthetic: false
+  - path: experiments/b030/ats_battery_b048.json
+    source_id: internet_archive_cdx
+    status: AMBER
+    content: json
+    synthetic: false
+  - path: experiments/b030/depth_b048.json
+    source_id: internet_archive_cdx
+    status: AMBER
+    content: json
+    synthetic: false
+  - path: experiments/b030/discovery_b048.json
+    source_id: internet_archive_cdx
+    status: AMBER
+    content: json
+    synthetic: false
+  - path: experiments/b030/hiring_panel.json
+    source_id: internet_archive_cdx
+    status: AMBER
+    content: json
+    synthetic: false
+  - path: experiments/b030/hiring_panel_v2.json
+    source_id: internet_archive_cdx
+    status: AMBER
+    content: json
+    synthetic: false
+  - path: experiments/b030/host_depth.json
+    source_id: internet_archive_cdx
+    status: AMBER
+    content: json
+    synthetic: false
+  - path: experiments/b030/lag_analysis.json
+    source_id: internet_archive_cdx
+    status: AMBER
+    content: json
+    synthetic: false
+  - path: experiments/b030/lag_analysis_v2.json
+    source_id: internet_archive_cdx
+    status: AMBER
+    content: json
+    synthetic: false
+  - path: experiments/b039/deployment_resolution.json
+    source_id: medradar_derived_artifacts
+    status: GREEN
+    content: json
+    synthetic: false
+  - path: experiments/b040/collection_manifest.json
+    source_id: medradar_derived_artifacts
+    status: GREEN
+    content: json
+    synthetic: false
+  - path: experiments/b040/lag_analysis.json
+    source_id: medradar_derived_artifacts
+    status: GREEN
+    content: json
+    synthetic: false
+  - path: experiments/b050/rolling_origin.json
+    source_id: medradar_derived_artifacts
+    status: GREEN
+    content: json
+    synthetic: false
+  - path: experiments/b067/promotion_rolling_origin.json
+    source_id: medradar_derived_artifacts
+    status: GREEN
+    content: json
+    synthetic: false
+  - path: experiments/b068/maturation.json
+    source_id: medradar_derived_artifacts
+    status: GREEN
+    content: json
+    synthetic: false
+  - path: experiments/b073/lane_inventory.json
+    source_id: medradar_derived_artifacts
+    status: GREEN
+    content: json
+    synthetic: false
+  - path: experiments/b074/seasonality.json
+    source_id: medradar_derived_artifacts
+    status: GREEN
+    content: json
+    synthetic: false
+  - path: experiments/b080/store_characterisation.json
+    source_id: medradar_derived_artifacts
+    status: GREEN
+    content: json
+    synthetic: false
+  - path: experiments/b080/store_schema.json
+    source_id: medradar_derived_artifacts
+    status: GREEN
+    content: json
+    synthetic: false
+  - path: experiments/cycle2_coverage/analysis.json
+    source_id: medradar_derived_artifacts
+    status: GREEN
+    content: json
+    synthetic: false
+  - path: experiments/cycle2_coverage/backtest_p1_same_spec.json
+    source_id: medradar_derived_artifacts
+    status: GREEN
+    content: json
+    synthetic: false
+  - path: experiments/cycle2_coverage/backtest_p2.json
+    source_id: medradar_derived_artifacts
+    status: GREEN
+    content: json
+    synthetic: false
+  - path: experiments/cycle2_coverage/panel_p1.json
+    source_id: medradar_derived_artifacts
+    status: GREEN
+    content: json
+    synthetic: false
+  - path: experiments/cycle2_coverage/panel_p2.json
+    source_id: medradar_derived_artifacts
+    status: GREEN
+    content: json
+    synthetic: false
+  - path: experiments/cycle2_coverage/run_config.json
+    source_id: medradar_derived_artifacts
+    status: GREEN
+    content: json
+    synthetic: false
+  - path: experiments/cycle2_coverage/selfcheck_p1.json
+    source_id: medradar_derived_artifacts
+    status: GREEN
+    content: json
+    synthetic: false
+  - path: experiments/detect_v1/aesthetics_holdout.json
+    source_id: medradar_derived_artifacts
+    status: GREEN
+    content: json
+    synthetic: false
+  - path: experiments/detect_v1/benchmark.json
+    source_id: medradar_derived_artifacts
+    status: GREEN
+    content: json
+    synthetic: false
+  - path: experiments/detect_v1/bin_sweep.json
+    source_id: medradar_derived_artifacts
+    status: GREEN
+    content: json
+    synthetic: false
+  - path: experiments/detect_v1/comovement.json
+    source_id: medradar_derived_artifacts
+    status: GREEN
+    content: json
+    synthetic: false
+  - path: experiments/detect_v1/entries.json
+    source_id: medradar_derived_artifacts
+    status: GREEN
+    content: json
+    synthetic: false
+  - path: experiments/detect_v1/entries_churn.json
+    source_id: medradar_derived_artifacts
+    status: GREEN
+    content: json
+    synthetic: false
+  - path: experiments/detect_v1/entries_priorfiler.json
+    source_id: medradar_derived_artifacts
+    status: GREEN
+    content: json
+    synthetic: false
+  - path: experiments/detect_v1/entries_priorfiler_churn.json
+    source_id: medradar_derived_artifacts
+    status: GREEN
+    content: json
+    synthetic: false
+  - path: experiments/detect_v1/realdetect.json
+    source_id: medradar_derived_artifacts
+    status: GREEN
+    content: json
+    synthetic: false
+  - path: experiments/detect_v1/reassignment_audit.json
+    source_id: medradar_derived_artifacts
+    status: GREEN
+    content: json
+    synthetic: false
+  - path: experiments/detect_v1/streams.json
+    source_id: medradar_derived_artifacts
+    status: GREEN
+    content: json
+    synthetic: false
+  - path: experiments/detect_v1/streams_ext.json
+    source_id: medradar_derived_artifacts
+    status: GREEN
+    content: json
+    synthetic: false
+  - path: experiments/detect_v1/track_assignment_audit.json
+    source_id: medradar_derived_artifacts
+    status: GREEN
+    content: json
+    synthetic: false
+  - path: experiments/detect_v1/widths.json
+    source_id: medradar_derived_artifacts
+    status: GREEN
+    content: json
+    synthetic: false
+  - path: experiments/detect_v1_verify/results.json
+    source_id: medradar_derived_artifacts
+    status: GREEN
+    content: json
+    synthetic: false
+  - path: experiments/reverse_rd_v1/config.json
+    source_id: medradar_derived_artifacts
+    status: GREEN
+    content: json
+    synthetic: false
+  - path: experiments/reverse_rd_v1/data_provenance.json
+    source_id: medradar_derived_artifacts
+    status: GREEN
+    content: json
+    synthetic: false
+  - path: experiments/reverse_rd_v1/forecasts.json
+    source_id: medradar_derived_artifacts
+    status: GREEN
+    content: json
+    synthetic: false
+  - path: experiments/reverse_rd_v1/metrics.json
+    source_id: medradar_derived_artifacts
+    status: GREEN
+    content: json
+    synthetic: false
+  - path: experiments/reverse_rd_v1/procurement_summary.json
+    source_id: medradar_derived_artifacts
+    status: GREEN
+    content: json
+    synthetic: false
+  - path: experiments/reverse_rd_v2/ablation_metrics.json
+    source_id: medradar_derived_artifacts
+    status: GREEN
+    content: json
+    synthetic: false
+  - path: experiments/reverse_rd_v2/agent_demo.json
+    source_id: medradar_derived_artifacts
+    status: GREEN
+    content: json
+    synthetic: false
+  - path: experiments/reverse_rd_v2/config.json
+    source_id: medradar_derived_artifacts
+    status: GREEN
+    content: json
+    synthetic: false
+  - path: experiments/reverse_rd_v2/continuation_metrics.json
+    source_id: medradar_derived_artifacts
+    status: GREEN
+    content: json
+    synthetic: false
+  - path: experiments/reverse_rd_v2/data_provenance.json
+    source_id: medradar_derived_artifacts
+    status: GREEN
+    content: json
+    synthetic: false
+  - path: experiments/reverse_rd_v2/entry_metrics.json
+    source_id: medradar_derived_artifacts
+    status: GREEN
+    content: json
+    synthetic: false
+  - path: experiments/reverse_rd_v2/forecast_cycle_report.json
+    source_id: medradar_derived_artifacts
+    status: GREEN
+    content: json
+    synthetic: false
+  - path: experiments/reverse_rd_v2/market_metrics.json
+    source_id: medradar_derived_artifacts
+    status: GREEN
+    content: json
+    synthetic: false
+  - path: experiments/reverse_rd_v2/publication_metrics.json
+    source_id: medradar_derived_artifacts
+    status: GREEN
+    content: json
+    synthetic: false
+  - path: experiments/reverse_rd_v2/publication_provenance.json
+    source_id: medradar_derived_artifacts
+    status: GREEN
+    content: json
+    synthetic: false
+  - path: experiments/reverse_rd_v2/run_timings.json
+    source_id: medradar_derived_artifacts
+    status: GREEN
+    content: json
+    synthetic: false
+  - path: experiments/reverse_rd_v2/tkg_import_report.json
+    source_id: medradar_derived_artifacts
+    status: GREEN
+    content: json
+    synthetic: false
+  - path: papers/CLAIMS.json
+    source_id: medradar_derived_artifacts
+    status: GREEN
+    content: json
+    synthetic: false
+  - path: papers/CLAIMS_METHODS.json
+    source_id: medradar_derived_artifacts
+    status: GREEN
+    content: json
+    synthetic: false
+  - path: papers/CLAIMS_NEGATIVE.json
+    source_id: medradar_derived_artifacts
+    status: GREEN
+    content: json
+    synthetic: false
+  - path: papers/figures/figures_data.json
+    source_id: medradar_derived_artifacts
+    status: GREEN
+    content: json
+    synthetic: false
+  - path: research/AUDIT.json
+    source_id: medradar_derived_artifacts
+    status: GREEN
+    content: json
+    synthetic: false
+  - path: research/FINAL_AUDIT.json
+    source_id: medradar_derived_artifacts
+    status: GREEN
+    content: json
+    synthetic: false
+  - path: research/STATE.json
+    source_id: medradar_derived_artifacts
+    status: GREEN
+    content: json
+    synthetic: false
+  - path: research/forecasts/FORECAST_SET_2026-11-03.json
+    source_id: medradar_derived_artifacts
+    status: GREEN
+    content: json
+    synthetic: false
+  - path: research/forecasts/FORECAST_SET_2026-11-03_prospective.json
+    source_id: medradar_derived_artifacts
+    status: GREEN
+    content: json
+    synthetic: false
+  - path: research/studies/early_signal_5firms/ADJUDICATION_AGENT_V1.json
+    source_id: medradar_derived_artifacts
+    status: GREEN
+    content: json
+    synthetic: false
+  - path: research/studies/early_signal_5firms/CASE_CANDIDATES.json
+    source_id: medradar_derived_artifacts
+    status: GREEN
+    content: json
+    synthetic: false
+  - path: research/studies/early_signal_5firms/CASE_PACKETS_SMALL_SAMPLE.json
+    source_id: medradar_derived_artifacts
+    status: GREEN
+    content: json
+    synthetic: false
+  - path: research/studies/early_signal_5firms/CASE_PACKETS_SMALL_SAMPLE_V2.json
+    source_id: medradar_derived_artifacts
+    status: GREEN
+    content: json
+    synthetic: false
+  - path: research/studies/early_signal_5firms/CELL_INVENTORY.json
+    source_id: medradar_derived_artifacts
+    status: GREEN
+    content: json
+    synthetic: false
+  - path: research/studies/early_signal_5firms/CLAIMS_EVIDENCE.json
+    source_id: medradar_derived_artifacts
+    status: GREEN
+    content: json
+    synthetic: false
+  - path: research/studies/early_signal_5firms/CONCURRENT_DETECTION.json
+    source_id: medradar_derived_artifacts
+    status: GREEN
+    content: json
+    synthetic: false
+  - path: research/studies/early_signal_5firms/CONCURRENT_DETECTION_EXPANDED.json
+    source_id: medradar_derived_artifacts
+    status: GREEN
+    content: json
+    synthetic: false
+  - path: research/studies/early_signal_5firms/COVERAGE_MATRIX.json
+    source_id: medradar_derived_artifacts
+    status: GREEN
+    content: json
+    synthetic: false
+  - path: research/studies/early_signal_5firms/CROSSWALK.json
+    source_id: medradar_derived_artifacts
+    status: GREEN
+    content: json
+    synthetic: false
+  - path: research/studies/early_signal_5firms/EARLIER_SOURCE_AUDIT.json
+    source_id: medradar_derived_artifacts
+    status: GREEN
+    content: json
+    synthetic: false
+  - path: research/studies/early_signal_5firms/ENTITY_AND_DOMAIN_AUDIT.json
+    source_id: medradar_derived_artifacts
+    status: GREEN
+    content: json
+    synthetic: false
+  - path: research/studies/early_signal_5firms/EVENT_SEQUENCE_DETECTION.json
+    source_id: medradar_derived_artifacts
+    status: GREEN
+    content: json
+    synthetic: false
+  - path: research/studies/early_signal_5firms/EVIDENCE_TIME_AUDIT.json
+    source_id: medradar_derived_artifacts
+    status: GREEN
+    content: json
+    synthetic: false
+  - path: research/studies/early_signal_5firms/EXTERNAL_SOURCE_PROBE.json
+    source_id: medradar_derived_artifacts
+    status: GREEN
+    content: json
+    synthetic: false
+  - path: research/studies/early_signal_5firms/HUMAN_REVIEW_WORKSHEET.csv
+    source_id: medradar_derived_artifacts
+    status: GREEN
+    content: text
+    synthetic: false
+  - path: research/studies/early_signal_5firms/LEAD_LAG_PROBE.json
+    source_id: medradar_derived_artifacts
+    status: GREEN
+    content: json
+    synthetic: false
+  - path: research/studies/early_signal_5firms/LEAD_LAG_PROBE_CROSSWALK.json
+    source_id: medradar_derived_artifacts
+    status: GREEN
+    content: json
+    synthetic: false
+  - path: research/studies/early_signal_5firms/LEAD_TIME_SMALL_SAMPLE.json
+    source_id: medradar_derived_artifacts
+    status: GREEN
+    content: json
+    synthetic: false
+  - path: research/studies/early_signal_5firms/ONSET_LADDER.json
+    source_id: medradar_derived_artifacts
+    status: GREEN
+    content: json
+    synthetic: false
+  - path: research/studies/early_signal_5firms/PILOT_RESULTS.json
+    source_id: medradar_derived_artifacts
+    status: GREEN
+    content: json
+    synthetic: false
+  - path: research/studies/early_signal_5firms/THIRD_SOURCE_CROSSWALK.json
+    source_id: medradar_derived_artifacts
+    status: GREEN
+    content: json
+    synthetic: false
+  - path: tests/fixtures/calibration/heuristic/responses.json
+    source_id: synthetic_fixtures
+    status: GREEN
+    content: json
+    synthetic: true
+  - path: tests/fixtures/calibration/llm/responses.json
+    source_id: synthetic_fixtures
+    status: GREEN
+    content: json
+    synthetic: true
+  - path: tests/fixtures/calibration/manifest.json
+    source_id: synthetic_fixtures
+    status: GREEN
+    content: json
+    synthetic: true
+  - path: tests/fixtures/dashboard/audit.json
+    source_id: synthetic_fixtures
+    status: GREEN
+    content: json
+    synthetic: true
+  - path: tests/fixtures/dashboard/cases.json
+    source_id: synthetic_fixtures
+    status: GREEN
+    content: json
+    synthetic: true
+  - path: tests/fixtures/dashboard/data_stats.json
+    source_id: synthetic_fixtures
+    status: GREEN
+    content: json
+    synthetic: true
+  - path: tests/fixtures/dashboard/metrics.json
+    source_id: synthetic_fixtures
+    status: GREEN
+    content: json
+    synthetic: true
+  - path: tests/fixtures/dashboard/replay.json
+    source_id: synthetic_fixtures
+    status: GREEN
+    content: json
+    synthetic: true
+  - path: tests/fixtures/device/291a84e7bf9d7746c2690fa8.json
+    source_id: synthetic_fixtures
+    status: GREEN
+    content: json
+    synthetic: true
+  - path: tests/fixtures/device/3a567d2a37c43abeec665049.json
+    source_id: synthetic_fixtures
+    status: GREEN
+    content: json
+    synthetic: true
+  - path: tests/fixtures/device/3b59e472a68db79d59311ab6.json
+    source_id: synthetic_fixtures
+    status: GREEN
+    content: json
+    synthetic: true
+  - path: tests/fixtures/device/52124ae78e5d0bb22a3d0826.json
+    source_id: synthetic_fixtures
+    status: GREEN
+    content: json
+    synthetic: true
+  - path: tests/fixtures/device/53b8afe2386bfa605497dc56.json
+    source_id: synthetic_fixtures
+    status: GREEN
+    content: json
+    synthetic: true
+  - path: tests/fixtures/device/71140d15d65492ac2d003e71.json
+    source_id: synthetic_fixtures
+    status: GREEN
+    content: json
+    synthetic: true
+  - path: tests/fixtures/device/74f92cdd049216096ba66946.json
+    source_id: synthetic_fixtures
+    status: GREEN
+    content: json
+    synthetic: true
+  - path: tests/fixtures/device/8da0fb2beb7e8de0c11d36fb.json
+    source_id: synthetic_fixtures
+    status: GREEN
+    content: json
+    synthetic: true
+  - path: tests/fixtures/device/bb9baa20eed99c56d11fdee5.json
+    source_id: synthetic_fixtures
+    status: GREEN
+    content: json
+    synthetic: true
+  - path: tests/fixtures/device/c10ffce78252fcd01a7167d8.json
+    source_id: synthetic_fixtures
+    status: GREEN
+    content: json
+    synthetic: true
+  - path: tests/fixtures/device/cef62ffc3c26f4ce72a5dc3a.json
+    source_id: synthetic_fixtures
+    status: GREEN
+    content: json
+    synthetic: true
+  - path: tests/fixtures/drug/drugsfda_page1.json
+    source_id: synthetic_fixtures
+    status: GREEN
+    content: json
+    synthetic: true
+  - path: tests/fixtures/drug/drugsfda_page2.json
+    source_id: synthetic_fixtures
+    status: GREEN
+    content: json
+    synthetic: true
+  - path: tests/fixtures/metrics_sample.json
+    source_id: synthetic_fixtures
+    status: GREEN
+    content: json
+    synthetic: true
+  - path: tests/fixtures/prices/yahoo_chart_MDT_1y_trimmed.json
+    source_id: synthetic_fixtures
+    status: GREEN
+    content: json
+    synthetic: true
+  - path: tests/fixtures/prices/yahoo_chart_error.json
+    source_id: synthetic_fixtures
+    status: GREEN
+    content: json
+    synthetic: true
+  - path: tests/fixtures/replay/yahoo_chart_MDT_1m_sample.json
+    source_id: synthetic_fixtures
+    status: GREEN
+    content: json
+    synthetic: true
+  - path: tests/fixtures/stats/mini_events.json
+    source_id: synthetic_fixtures
+    status: GREEN
+    content: json
+    synthetic: true
+  - path: tests/governance/fixtures/fake_archive.gz
+    source_id: synthetic_fixtures
+    status: GREEN
+    content: gzip
+    synthetic: true
+  - path: tests/governance/fixtures/fake_market.csv
+    source_id: synthetic_fixtures
+    status: GREEN
+    content: csv
+    synthetic: true
+  - path: tests/governance/fixtures/fake_market.json
+    source_id: synthetic_fixtures
+    status: GREEN
+    content: json
+    synthetic: true
+  - path: tests/governance/fixtures/fake_market.sqlite
+    source_id: synthetic_fixtures
+    status: GREEN
+    content: sqlite
+    synthetic: true
+  - path: tools/round_end.json
+    source_id: medradar_derived_artifacts
+    status: GREEN
+    content: json
+    synthetic: false

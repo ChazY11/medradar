@@ -1,0 +1,92 @@
+# Static minimal PROJECT_STATE fixture for the state-scheme tests.
+#
+# Deliberately NOT a copy of the live repository state: the tests must not depend
+# on mutable repo-root files. It is schema-compatible with
+# `medradar.project_state.v2`; only the `git`, `verified`, `release` and
+# `generated_at` values are rewritten by bump_state.py, so the placeholder commit
+# ids below are fine for the fixture's purpose.
+schema: medradar.project_state.v2
+generated_at: "2026-01-01T00:00:00+00:00"
+
+project:
+  name: GovernanceFixture
+  owner: fixture
+  repository: https://example.invalid/governance-fixture
+  licence: MIT
+  mission: "Static fixture state for governance tests; no real data."
+  pages_source: docs/
+
+git:
+  ref: origin/main
+  head: "0000000000000000000000000000000000000000"
+  short: "0000000"
+  committed_at: "2026-01-01T00:00:00+00:00"
+  commit_subject: "fixture placeholder"
+  observed_at: "2026-01-01T00:00:00+00:00"
+  tracked_files: 1
+  workflows: []
+
+verified:
+  commit: "0000000000000000000000000000000000000000"
+  verified_at: "2026-01-01T00:00:00+00:00"
+  note: "fixture placeholder"
+
+release:
+  version: "9.9.9"
+  commit: null
+
+tests:
+  collected: 3
+  passed: 3
+  skipped: 0
+  failed: 0
+  subtests_passed: 0
+  command: 'python -m pytest -q -o addopts=""'
+  measured_at: "2026-01-01T00:00:00+00:00"
+  artifact: docs/fixture_artifact.json
+  tested_head: "0000000000000000000000000000000000000000"
+  policy: strict
+  note: "static fixture"
+
+data_snapshot:
+  date: "2026-01-01"
+  generated_at: "2026-01-01T00:00:00Z"
+  events: 1
+  database_size: "0 B"
+  evidence: docs/fixture.md
+  storage: "fixture only"
+  sources:
+    - id: fixture
+      rows: 1
+
+capabilities: []
+research_studies: []
+
+open_work:
+  prs:
+    merged_count: 0
+    merged_range: "none"
+    open_count: 0
+    open_range: "none"
+    draft_count: 0
+    measured_from: "fixture"
+  branches:
+    verified: false
+    local_refs: 1
+    remote_refs: 0
+    measured_from: "fixture"
+  branches_note: "fixture"
+
+governance:
+  branch_protection_applied: false
+  required_status_checks: []
+  plan: docs/fixture.md
+  note: "fixture"
+
+decisions:
+  source: research/DECISIONS.md
+  count: 0
+  format: "fixture"
+  index: []
+
+not_claimed: []

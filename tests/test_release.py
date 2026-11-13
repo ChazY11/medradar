@@ -43,11 +43,11 @@ class VersionTests(unittest.TestCase):
         the "402 vs 427" class of release-note drift.
         """
         readme = (ROOT / "README.md").read_text(encoding="utf-8")
-        match = re.search(r"(\d{3})\s*offline tests", readme)
+        match = re.search(r"([\d,]{3,})\s*offline tests", readme)
         self.assertIsNotNone(match)
-        advertised = int(match.group(1))
+        advertised = int(match.group(1).replace(",", ""))
         self.assertGreaterEqual(advertised, 400)
-        self.assertLessEqual(advertised, 900)
+        self.assertLessEqual(advertised, 5000)
 
     def test_docs_do_not_link_missing_local_pages(self) -> None:
         index = ROOT / "docs" / "index.html"

@@ -1,0 +1,6279 @@
+{
+ "generated_by": "docs/refoundation/phase3/_evidence/collect_pr_triage.py",
+ "collected_from": "https://api.github.com/repos/ChazY11/medradar",
+ "repo": "ChazY11/medradar",
+ "main_head": "b2a14c0a92332c004445de686daee97754cf94cb",
+ "open_pr_count_api": 27,
+ "prs": [
+  {
+   "number": 1,
+   "title": "Add frontier device intelligence and research safeguards",
+   "state": "open",
+   "draft": false,
+   "base_ref": "main",
+   "base_is_main": true,
+   "head_ref": "feat/frontier-device-radar",
+   "head_sha": "94c6a10004dfbc4d8add974669be54d6cc8679ff",
+   "created_at": "2026-11-01T01:44:54Z",
+   "updated_at": "2026-11-01T23:32:39Z",
+   "additions": 2709,
+   "deletions": 234,
+   "changed_files": 44,
+   "mergeable": false,
+   "mergeable_state": "dirty",
+   "local_ref_present": true,
+   "labels": [],
+   "body_excerpt": "## 本次改造\n\n### 前沿医疗器械情报\n- 新增 FDA Advisory Committee Calendar 采集器，解析会议详情、议程与简报材料；页面更新时间只作为估算可见时间，不冒充精确公开时间。\n- 扩展 ClinicalTrials.gov API v2 采集，保留干预类型并按 `DEVICE` / `DIAGNOSTIC_TEST` 识别器械试验，避免纯药物试验混入器械前沿报告。\n- 将 SEC 8-K 中的 pre-submission、资格认定等公开信号纳入前沿层，同时明确：依法保密的 pending 510(k)/PMA 不可监测，本 PR 不虚构该能力。\n- 新增 `frontier` 子命令及 `frontier.json` / `frontier.md` 输出，完整 `run` 会自动生成并发布前沿报告。\n\n### 更细的器械分类\n- 器械 taxonomy 升级为 schema 2：50 个细分赛道、23 个领域。\n- 覆盖生命支持、ECMO、氧疗、急救复苏、IVD、NGS、液体活检、MRD、伴随诊断、微生物、生化、血液、数字病理、BCI、神经调控、神经介入、影像、机器人与 SaMD/AI 等方向。\n- 配置、CLI、器械试验分类和报告共用同一 registry，避免各模块口径漂移。\n\n### 研究完整性与防前视\n- 分离 `event_date`、",
+   "tip_date": "2026-11-01T09:41:51+08:00",
+   "diff_vs_main": {
+    "files": 44,
+    "additions": 2709,
+    "deletions": 234
+   },
+   "divergence_vs_main": {
+    "ahead": 13,
+    "behind": 154
+   },
+   "diff_vs_declared_base": {
+    "files": 44,
+    "additions": 2709,
+    "deletions": 234
+   },
+   "merge_probe_main": {
+    "local_clean": false,
+    "conflict_count": 11,
+    "conflicts": [
+     "CHANGELOG.md",
+     "README.md",
+     "README.zh-CN.md",
+     "docs/DATA.md",
+     "docs/docs/ASSUMPTIONS.md",
+     "medradar/__init__.py",
+     "medradar/adcom.py",
+     "pyproject.toml",
+     "tests/test_frontier.py",
+     "verifier/README.md",
+     "verifier/v1/verify.py"
+    ]
+   },
+   "changed_paths_sample": [
+    {
+     "status": "M",
+     "path": "CHANGELOG.md"
+    },
+    {
+     "status": "M",
+     "path": "README.md"
+    },
+    {
+     "status": "M",
+     "path": "README.zh-CN.md"
+    },
+    {
+     "status": "M",
+     "path": "ROADMAP.md"
+    },
+    {
+     "status": "M",
+     "path": "config/tracks_device.json"
+    },
+    {
+     "status": "M",
+     "path": "docs/ASSUMPTIONS.md"
+    },
+    {
+     "status": "M",
+     "path": "docs/CALIBRATION.md"
+    },
+    {
+     "status": "M",
+     "path": "docs/DATA.md"
+    },
+    {
+     "status": "M",
+     "path": "docs/METHODS.md"
+    },
+    {
+     "status": "M",
+     "path": "docs/RESEARCH.md"
+    },
+    {
+     "status": "M",
+     "path": "docs/SCHEMA.md"
+    },
+    {
+     "status": "M",
+     "path": "docs/docs/ASSUMPTIONS.md"
+    },
+    {
+     "status": "M",
+     "path": "medradar/__init__.py"
+    },
+    {
+     "status": "M",
+     "path": "medradar/__main__.py"
+    },
+    {
+     "status": "A",
+     "path": "medradar/adcom.py"
+    },
+    {
+     "status": "M",
+     "path": "medradar/analyze.py"
+    },
+    {
+     "status": "M",
+     "path": "medradar/cases.py"
+    },
+    {
+     "status": "M",
+     "path": "medradar/clinical.py"
+    },
+    {
+     "status": "M",
+     "path": "medradar/collect_device.py"
+    },
+    {
+     "status": "M",
+     "path": "medradar/config.py"
+    },
+    {
+     "status": "M",
+     "path": "medradar/corpus.py"
+    },
+    {
+     "status": "M",
+     "path": "medradar/db.py"
+    },
+    {
+     "status": "M",
+     "path": "medradar/eventstudy.py"
+    },
+    {
+     "status": "A",
+     "path": "medradar/frontier.py"
+    },
+    {
+     "status": "M",
+     "path": "medradar/replay.py"
+    },
+    {
+     "status": "M",
+     "path": "medradar/report.py"
+    },
+    {
+     "status": "M",
+     "path": "medradar/util.py"
+    },
+    {
+     "status": "M",
+     "path": "pyproject.toml"
+    },
+    {
+     "status": "A",
+     "path": "tests/fixtures/adcom_calendar.html"
+    },
+    {
+     "status": "A",
+     "path": "tests/fixtures/adcom_detail.html"
+    },
+    {
+     "status": "M",
+     "path": "tests/fixtures/stats/mini_events.json"
+    },
+    {
+     "status": "M",
+     "path": "tests/test_corpus.py"
+    },
+    {
+     "status": "M",
+     "path": "tests/test_drug.py"
+    },
+    {
+     "status": "M",
+     "path": "tests/test_foundation.py"
+    },
+    {
+     "status": "A",
+     "path": "tests/test_frontier.py"
+    },
+    {
+     "status": "A",
+     "path": "tests/test_research_integrity.py"
+    },
+    {
+     "status": "M",
+     "path": "tests/test_stats_cmd.py"
+    },
+    {
+     "status": "A",
+     "path": "verifier/README.md"
+    },
+    {
+     "status": "A",
+     "path": "verifier/runs/2026-10-31T06-30-00Z-v1-baseline.json"
+    },
+    {
+     "status": "A",
+     "path": "verifier/runs/2026-10-31T18-53-30Z-v1-final.json"
+    },
+    {
+     "status": "A",
+     "path": "verifier/runs/2026-10-31T22-40-02Z-v1-merged-final.json"
+    },
+    {
+     "status": "A",
+     "path": "verifier/runs/index.ndjson"
+    },
+    {
+     "status": "A",
+     "path": "verifier/v1/acceptance.md"
+    },
+    {
+     "status": "A",
+     "path": "verifier/v1/verify.py"
+    }
+   ],
+   "changed_path_count": 44,
+   "risk_path_hits": {}
+  },
+  {
+   "number": 12,
+   "title": "MedRadar 2.0 MVP: evidence-driven company, radar, analyst and evidence product",
+   "state": "open",
+   "draft": true,
+   "base_ref": "main",
+   "base_is_main": true,
+   "head_ref": "feat/medradar-2.0-mvp",
+   "head_sha": "ee7d0118466429c91a2031ca9db6279a78133d27",
+   "created_at": "2026-11-03T04:02:59Z",
+   "updated_at": "2026-11-03T14:00:51Z",
+   "additions": 17646,
+   "deletions": 1,
+   "changed_files": 57,
+   "mergeable": true,
+   "mergeable_state": "unstable",
+   "local_ref_present": true,
+   "labels": [],
+   "body_excerpt": "## MedRadar 2.0 — Evidence-Driven Medical Technology Intelligence (MVP)\r\n\r\nThis PR turns the existing research pipeline into a **real, running web product**. It does not rebuild or delete the science: the product layer is read-only over the same `data/medradar.sqlite`, the same company roster, the same product-code→track taxonomy, and the same frozen research artifacts.\r\n\r\n### What a user can now do\r\n\r\n1. **Research a company** — `#/companies/mindray` (also Medtronic, GE HealthCare, Philips, Dräger): technology distribution, historical activity, evidence-linked observed-change claims, mileston",
+   "tip_date": "2026-11-03T22:00:42+08:00",
+   "diff_vs_main": {
+    "files": 57,
+    "additions": 17646,
+    "deletions": 1
+   },
+   "divergence_vs_main": {
+    "ahead": 8,
+    "behind": 0
+   },
+   "diff_vs_declared_base": {
+    "files": 57,
+    "additions": 17646,
+    "deletions": 1
+   },
+   "merge_probe_main": {
+    "local_clean": true,
+    "conflicts": []
+   },
+   "changed_paths_sample": [
+    {
+     "status": "M",
+     "path": ".github/workflows/ci.yml"
+    },
+    {
+     "status": "M",
+     "path": "README.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/PRODUCT_ACCEPTANCE.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/PRODUCT_ARCHITECTURE.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/PRODUCT_ROADMAP.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/PRODUCT_STATISTICAL_AUDIT.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/PRODUCT_USER_GUIDE.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/PRODUCT_VISION.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/product/analyst.png"
+    },
+    {
+     "status": "A",
+     "path": "docs/product/company-mindray.png"
+    },
+    {
+     "status": "A",
+     "path": "docs/product/compare.png"
+    },
+    {
+     "status": "A",
+     "path": "docs/product/evidence-empty.png"
+    },
+    {
+     "status": "A",
+     "path": "docs/product/evidence-trace.png"
+    },
+    {
+     "status": "A",
+     "path": "docs/product/mobile-company.png"
+    },
+    {
+     "status": "A",
+     "path": "docs/product/overview.png"
+    },
+    {
+     "status": "A",
+     "path": "docs/product/radar-respiratory.png"
+    },
+    {
+     "status": "M",
+     "path": "medradar/__main__.py"
+    },
+    {
+     "status": "A",
+     "path": "medradar/product/__init__.py"
+    },
+    {
+     "status": "A",
+     "path": "medradar/product/analyst.py"
+    },
+    {
+     "status": "A",
+     "path": "medradar/product/artifacts/cycle43_full_history_2026-11-03.md"
+    },
+    {
+     "status": "A",
+     "path": "medradar/product/artifacts/five_firm_timeline.json"
+    },
+    {
+     "status": "A",
+     "path": "medradar/product/catalog.py"
+    },
+    {
+     "status": "A",
+     "path": "medradar/product/entities.py"
+    },
+    {
+     "status": "A",
+     "path": "medradar/product/entity_aliases.json"
+    },
+    {
+     "status": "A",
+     "path": "medradar/product/lab.py"
+    },
+    {
+     "status": "A",
+     "path": "medradar/product/store.py"
+    },
+    {
+     "status": "A",
+     "path": "medradar/web/__init__.py"
+    },
+    {
+     "status": "A",
+     "path": "medradar/web/__main__.py"
+    },
+    {
+     "status": "A",
+     "path": "medradar/web/app.py"
+    },
+    {
+     "status": "A",
+     "path": "medradar/web/routes_analyst.py"
+    },
+    {
+     "status": "A",
+     "path": "medradar/web/routes_lab.py"
+    },
+    {
+     "status": "M",
+     "path": "pyproject.toml"
+    },
+    {
+     "status": "A",
+     "path": "scripts/product_e2e.cjs"
+    },
+    {
+     "status": "A",
+     "path": "tests/product_fixture.py"
+    },
+    {
+     "status": "A",
+     "path": "tests/test_product_analyst.py"
+    },
+    {
+     "status": "A",
+     "path": "tests/test_product_api.py"
+    },
+    {
+     "status": "A",
+     "path": "tests/test_product_statistics.py"
+    },
+    {
+     "status": "A",
+     "path": "tests/test_product_store.py"
+    },
+    {
+     "status": "A",
+     "path": "web/CONTRACT.md"
+    },
+    {
+     "status": "A",
+     "path": "web/app.js"
+    },
+    {
+     "status": "A",
+     "path": "web/favicon.svg"
+    },
+    {
+     "status": "A",
+     "path": "web/index.html"
+    },
+    {
+     "status": "A",
+     "path": "web/js/api.js"
+    },
+    {
+     "status": "A",
+     "path": "web/js/charts.js"
+    },
+    {
+     "status": "A",
+     "path": "web/js/components.js"
+    },
+    {
+     "status": "A",
+     "path": "web/js/event.js"
+    },
+    {
+     "status": "A",
+     "path": "web/js/pages/analyst.js"
+    },
+    {
+     "status": "A",
+     "path": "web/js/pages/companies.js"
+    },
+    {
+     "status": "A",
+     "path": "web/js/pages/company.js"
+    },
+    {
+     "status": "A",
+     "path": "web/js/pages/compare.js"
+    },
+    {
+     "status": "A",
+     "path": "web/js/pages/evidence.js"
+    },
+    {
+     "status": "A",
+     "path": "web/js/pages/lab.js"
+    },
+    {
+     "status": "A",
+     "path": "web/js/pages/overview.js"
+    },
+    {
+     "status": "A",
+     "path": "web/js/pages/radar.js"
+    },
+    {
+     "status": "A",
+     "path": "web/js/pages/track.js"
+    },
+    {
+     "status": "A",
+     "path": "web/js/util.js"
+    },
+    {
+     "status": "A",
+     "path": "web/styles.css"
+    }
+   ],
+   "changed_path_count": 57,
+   "risk_path_hits": {
+    "large_binary": {
+     "count": 8,
+     "examples": [
+      "docs/product/analyst.png",
+      "docs/product/company-mindray.png",
+      "docs/product/compare.png",
+      "docs/product/evidence-empty.png",
+      "docs/product/evidence-trace.png"
+     ]
+    }
+   }
+  },
+  {
+   "number": 13,
+   "title": "MedRadar Live Observatory v1: append-only observation ledger, official-source adapters, and the Live Observatory product",
+   "state": "open",
+   "draft": true,
+   "base_ref": "feat/medradar-2.0-mvp",
+   "base_is_main": false,
+   "head_ref": "feat/live-observatory-v1",
+   "head_sha": "5335dfde39dca0db1a634c6913eef4668dee15a1",
+   "created_at": "2026-11-03T15:01:34Z",
+   "updated_at": "2026-11-03T15:09:26Z",
+   "additions": 31301,
+   "deletions": 7,
+   "changed_files": 57,
+   "mergeable": true,
+   "mergeable_state": "clean",
+   "local_ref_present": true,
+   "labels": [],
+   "body_excerpt": "## MedRadar Live Observatory v1 — continuous, auditable observation\n\n**From historical analysis to continuous scientific observation.**\nThis PR makes the system able to answer the one question a snapshot pipeline cannot:\n*what information was actually observable at a given point in time, and when did we first see it?*\n\nBase: accepted MedRadar 2.0 MVP HEAD `ee7d011` (PR #12 is still DRAFT — not merged).\nThis PR is **Draft** and is stacked on `feat/medradar-2.0-mvp`; after #12 merges to `main`,\nrebase onto `main` (or retarget this PR to `main`) and re-run the acceptance harness. No merge\nwithout",
+   "tip_date": "2026-11-03T23:09:22+08:00",
+   "diff_vs_main": {
+    "files": 101,
+    "additions": 48941,
+    "deletions": 2
+   },
+   "divergence_vs_main": {
+    "ahead": 16,
+    "behind": 0
+   },
+   "diff_vs_declared_base": {
+    "files": 57,
+    "additions": 31301,
+    "deletions": 7
+   },
+   "merge_probe_main": {
+    "local_clean": true,
+    "conflicts": []
+   },
+   "changed_paths_sample": [
+    {
+     "status": "M",
+     "path": ".github/workflows/ci.yml"
+    },
+    {
+     "status": "A",
+     "path": ".github/workflows/observatory.yml"
+    },
+    {
+     "status": "M",
+     "path": "README.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/LIVE_OBSERVATORY.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/LIVE_OBSERVATORY_ACCEPTANCE.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/LIVE_OBSERVATORY_DESIGN.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/PRODUCT_ACCEPTANCE.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/PRODUCT_ARCHITECTURE.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/PRODUCT_ROADMAP.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/PRODUCT_STATISTICAL_AUDIT.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/PRODUCT_USER_GUIDE.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/PRODUCT_VISION.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/PROSPECTIVE_OBSERVATION_REGISTRY.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/observatory/evidence/02_sec_second_run_idempotent_20261103T143958Z.json"
+    },
+    {
+     "status": "A",
+     "path": "docs/observatory/evidence/05_replay_before_20261103T144351Z.json"
+    },
+    {
+     "status": "A",
+     "path": "docs/observatory/evidence/06_replay_after_20261103T144351Z.json"
+    },
+    {
+     "status": "A",
+     "path": "docs/observatory/evidence/08_full_sync_20261103T144424Z.json"
+    },
+    {
+     "status": "A",
+     "path": "docs/observatory/evidence/09_final_ledger_evidence.json"
+    },
+    {
+     "status": "A",
+     "path": "docs/observatory/evidence/10_replay_demo.json"
+    },
+    {
+     "status": "A",
+     "path": "docs/observatory/evidence/11_sec_observation_timeline.json"
+    },
+    {
+     "status": "A",
+     "path": "docs/observatory/evidence/12_final_sync_pass1.json"
+    },
+    {
+     "status": "A",
+     "path": "docs/observatory/evidence/13_final_sync_pass2.json"
+    },
+    {
+     "status": "A",
+     "path": "docs/observatory/evidence/14_final_sync_pass3.json"
+    },
+    {
+     "status": "A",
+     "path": "docs/observatory/evidence/15_structure_stable_pass6.json"
+    },
+    {
+     "status": "A",
+     "path": "docs/observatory/evidence/16_acceptance_report_full.json"
+    },
+    {
+     "status": "A",
+     "path": "docs/observatory/evidence/17_product_e2e_report.json"
+    },
+    {
+     "status": "A",
+     "path": "docs/product/analyst.png"
+    },
+    {
+     "status": "A",
+     "path": "docs/product/company-mindray.png"
+    },
+    {
+     "status": "A",
+     "path": "docs/product/compare.png"
+    },
+    {
+     "status": "A",
+     "path": "docs/product/evidence-empty.png"
+    },
+    {
+     "status": "A",
+     "path": "docs/product/evidence-trace.png"
+    },
+    {
+     "status": "A",
+     "path": "docs/product/mobile-company.png"
+    },
+    {
+     "status": "A",
+     "path": "docs/product/overview.png"
+    },
+    {
+     "status": "A",
+     "path": "docs/product/radar-respiratory.png"
+    },
+    {
+     "status": "M",
+     "path": "medradar/__main__.py"
+    },
+    {
+     "status": "A",
+     "path": "medradar/observatory/__init__.py"
+    },
+    {
+     "status": "A",
+     "path": "medradar/observatory/adapter.py"
+    },
+    {
+     "status": "A",
+     "path": "medradar/observatory/adapters/__init__.py"
+    },
+    {
+     "status": "A",
+     "path": "medradar/observatory/adapters/ctgov.py"
+    },
+    {
+     "status": "A",
+     "path": "medradar/observatory/adapters/europepmc.py"
+    },
+    {
+     "status": "A",
+     "path": "medradar/observatory/adapters/sec_edgar.py"
+    },
+    {
+     "status": "A",
+     "path": "medradar/observatory/lag.py"
+    },
+    {
+     "status": "A",
+     "path": "medradar/observatory/ledger.py"
+    },
+    {
+     "status": "A",
+     "path": "medradar/observatory/mapping.py"
+    },
+    {
+     "status": "A",
+     "path": "medradar/observatory/prospective.py"
+    },
+    {
+     "status": "A",
+     "path": "medradar/observatory/records.py"
+    },
+    {
+     "status": "A",
+     "path": "medradar/observatory/runner.py"
+    },
+    {
+     "status": "A",
+     "path": "medradar/observatory/scheduler.py"
+    },
+    {
+     "status": "A",
+     "path": "medradar/product/__init__.py"
+    },
+    {
+     "status": "A",
+     "path": "medradar/product/analyst.py"
+    },
+    {
+     "status": "A",
+     "path": "medradar/product/artifacts/cycle43_full_history_2026-11-03.md"
+    },
+    {
+     "status": "A",
+     "path": "medradar/product/artifacts/five_firm_timeline.json"
+    },
+    {
+     "status": "A",
+     "path": "medradar/product/catalog.py"
+    },
+    {
+     "status": "A",
+     "path": "medradar/product/entities.py"
+    },
+    {
+     "status": "A",
+     "path": "medradar/product/entity_aliases.json"
+    },
+    {
+     "status": "A",
+     "path": "medradar/product/lab.py"
+    },
+    {
+     "status": "A",
+     "path": "medradar/product/observatory.py"
+    },
+    {
+     "status": "A",
+     "path": "medradar/product/prospective.py"
+    },
+    {
+     "status": "A",
+     "path": "medradar/product/store.py"
+    },
+    {
+     "status": "A",
+     "path": "medradar/web/__init__.py"
+    }
+   ],
+   "changed_path_count": 101,
+   "risk_path_hits": {
+    "large_binary": {
+     "count": 8,
+     "examples": [
+      "docs/product/analyst.png",
+      "docs/product/company-mindray.png",
+      "docs/product/compare.png",
+      "docs/product/evidence-empty.png",
+      "docs/product/evidence-trace.png"
+     ]
+    }
+   }
+  },
+  {
+   "number": 14,
+   "title": "MedRadar Observatory Reliability: durable persistence, verified backups, supervised operation and seven-day continuous validation",
+   "state": "open",
+   "draft": true,
+   "base_ref": "feat/live-observatory-v1",
+   "base_is_main": false,
+   "head_ref": "feat/observatory-reliability-v1",
+   "head_sha": "d05fc81ff79bf83eaf9161e89781ddf486a5297f",
+   "created_at": "2026-11-03T16:05:29Z",
+   "updated_at": "2026-11-03T16:05:29Z",
+   "additions": 22899,
+   "deletions": 71,
+   "changed_files": 54,
+   "mergeable": true,
+   "mergeable_state": "clean",
+   "local_ref_present": true,
+   "labels": [],
+   "body_excerpt": "## MedRadar Observatory Reliability — built to preserve evidence for years\n\nStacked on PR #13 (`feat/observatory-reliability-v1` ← `feat/live-observatory-v1`, base commit `5335dfd`).\n**Draft. Not merged. PR #12 and #13 are untouched.** No paid resource was created and no\nproduction deployment is claimed.\n\nThe question this round answers: *if MedRadar runs for five years, can it still prove what it\nobserved on a given day?* It adds persistence, supervision, audit and continuous validation\naround the same append-only ledger — no new predictors, no new sources, no rewrite of the product.\n\n---\n\n##",
+   "tip_date": "2026-11-04T00:05:01+08:00",
+   "diff_vs_main": {
+    "files": 139,
+    "additions": 71769,
+    "deletions": 2
+   },
+   "divergence_vs_main": {
+    "ahead": 22,
+    "behind": 0
+   },
+   "diff_vs_declared_base": {
+    "files": 54,
+    "additions": 22899,
+    "deletions": 71
+   },
+   "merge_probe_main": {
+    "local_clean": true,
+    "conflicts": []
+   },
+   "changed_paths_sample": [
+    {
+     "status": "M",
+     "path": ".github/workflows/ci.yml"
+    },
+    {
+     "status": "A",
+     "path": ".github/workflows/observatory.yml"
+    },
+    {
+     "status": "M",
+     "path": ".gitignore"
+    },
+    {
+     "status": "M",
+     "path": "README.md"
+    },
+    {
+     "status": "A",
+     "path": "deploy/systemd/README.md"
+    },
+    {
+     "status": "A",
+     "path": "deploy/systemd/medradar-observatory.service"
+    },
+    {
+     "status": "A",
+     "path": "deploy/systemd/medradar-observatory.timer"
+    },
+    {
+     "status": "A",
+     "path": "deploy/windows/README.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/BACKUP_AND_RECOVERY.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/CONTINUOUS_VALIDATION_PROTOCOL.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/DEPLOYMENT.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/HEALTH_AND_VALIDATION.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/LIVE_OBSERVATORY.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/LIVE_OBSERVATORY_ACCEPTANCE.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/LIVE_OBSERVATORY_DESIGN.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/PRODUCT_ACCEPTANCE.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/PRODUCT_ARCHITECTURE.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/PRODUCT_ROADMAP.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/PRODUCT_STATISTICAL_AUDIT.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/PRODUCT_USER_GUIDE.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/PRODUCT_VISION.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/PROSPECTIVE_OBSERVATION_REGISTRY.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/RELIABILITY_ACCEPTANCE.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/RELIABILITY_DESIGN.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/audit_report_example.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/observatory/evidence/02_sec_second_run_idempotent_20261103T143958Z.json"
+    },
+    {
+     "status": "A",
+     "path": "docs/observatory/evidence/05_replay_before_20261103T144351Z.json"
+    },
+    {
+     "status": "A",
+     "path": "docs/observatory/evidence/06_replay_after_20261103T144351Z.json"
+    },
+    {
+     "status": "A",
+     "path": "docs/observatory/evidence/08_full_sync_20261103T144424Z.json"
+    },
+    {
+     "status": "A",
+     "path": "docs/observatory/evidence/09_final_ledger_evidence.json"
+    },
+    {
+     "status": "A",
+     "path": "docs/observatory/evidence/10_replay_demo.json"
+    },
+    {
+     "status": "A",
+     "path": "docs/observatory/evidence/11_sec_observation_timeline.json"
+    },
+    {
+     "status": "A",
+     "path": "docs/observatory/evidence/12_final_sync_pass1.json"
+    },
+    {
+     "status": "A",
+     "path": "docs/observatory/evidence/13_final_sync_pass2.json"
+    },
+    {
+     "status": "A",
+     "path": "docs/observatory/evidence/14_final_sync_pass3.json"
+    },
+    {
+     "status": "A",
+     "path": "docs/observatory/evidence/15_structure_stable_pass6.json"
+    },
+    {
+     "status": "A",
+     "path": "docs/observatory/evidence/16_acceptance_report_full.json"
+    },
+    {
+     "status": "A",
+     "path": "docs/observatory/evidence/17_product_e2e_report.json"
+    },
+    {
+     "status": "A",
+     "path": "docs/product/analyst.png"
+    },
+    {
+     "status": "A",
+     "path": "docs/product/company-mindray.png"
+    },
+    {
+     "status": "A",
+     "path": "docs/product/compare.png"
+    },
+    {
+     "status": "A",
+     "path": "docs/product/evidence-empty.png"
+    },
+    {
+     "status": "A",
+     "path": "docs/product/evidence-trace.png"
+    },
+    {
+     "status": "A",
+     "path": "docs/product/mobile-company.png"
+    },
+    {
+     "status": "A",
+     "path": "docs/product/overview.png"
+    },
+    {
+     "status": "A",
+     "path": "docs/product/radar-respiratory.png"
+    },
+    {
+     "status": "A",
+     "path": "docs/reliability/evidence/audit_report.json"
+    },
+    {
+     "status": "A",
+     "path": "docs/reliability/evidence/audit_report.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/reliability/evidence/backup_and_restore.json"
+    },
+    {
+     "status": "A",
+     "path": "docs/reliability/evidence/concurrency_refusal_live.json"
+    },
+    {
+     "status": "A",
+     "path": "docs/reliability/evidence/dependency_health_and_validation.json"
+    },
+    {
+     "status": "A",
+     "path": "docs/reliability/evidence/final_acceptance_evidence.json"
+    },
+    {
+     "status": "A",
+     "path": "docs/reliability/evidence/full_bundle.json"
+    },
+    {
+     "status": "A",
+     "path": "docs/reliability/evidence/product_e2e_report.json"
+    },
+    {
+     "status": "A",
+     "path": "docs/reliability/evidence/runs_and_outcomes.json"
+    },
+    {
+     "status": "M",
+     "path": "medradar/__main__.py"
+    },
+    {
+     "status": "A",
+     "path": "medradar/observatory/__init__.py"
+    },
+    {
+     "status": "A",
+     "path": "medradar/observatory/adapter.py"
+    },
+    {
+     "status": "A",
+     "path": "medradar/observatory/adapters/__init__.py"
+    },
+    {
+     "status": "A",
+     "path": "medradar/observatory/adapters/ctgov.py"
+    }
+   ],
+   "changed_path_count": 139,
+   "risk_path_hits": {
+    "large_binary": {
+     "count": 8,
+     "examples": [
+      "docs/product/analyst.png",
+      "docs/product/company-mindray.png",
+      "docs/product/compare.png",
+      "docs/product/evidence-empty.png",
+      "docs/product/evidence-trace.png"
+     ]
+    }
+   }
+  },
+  {
+   "number": 15,
+   "title": "S-028: temporal company-technology graph early-signal study (DRAFT, negative result, do not merge)",
+   "state": "open",
+   "draft": true,
+   "base_ref": "feat/observatory-reliability-v1",
+   "base_is_main": false,
+   "head_ref": "research/s028-temporal-graph-early-signal",
+   "head_sha": "4c6686f45fd88ce324da1befb368f3cd6e415c18",
+   "created_at": "2026-11-03T17:58:20Z",
+   "updated_at": "2026-11-03T19:05:41Z",
+   "additions": 114442,
+   "deletions": 0,
+   "changed_files": 86,
+   "mergeable": true,
+   "mergeable_state": "clean",
+   "local_ref_present": true,
+   "labels": [],
+   "body_excerpt": "## What this PR is\r\n\r\n> **UPDATE 2026-11-04 — `S-028-CORRECTION-1` is appended at the end of this description.**\r\n> An independent methodological review found (a) the randomised null model did **not** preserve\r\n> degrees/weights/timing (72/72 invariant failures), (b) the \"well-powered\" MDE label was wrong,\r\n> (c) the \"Yale paper does not exist\" claim was false, and (d) the three holdout windows overlap.\r\n> The original artifacts are preserved unchanged; the corrected nulls and 40-draw re-runs are additive.\r\n> See the new section at the bottom. **Still a draft; do not merge.**\r\n\r\n**S-028 first ",
+   "tip_date": "2026-11-04T03:05:10+08:00",
+   "diff_vs_main": {
+    "files": 225,
+    "additions": 186211,
+    "deletions": 2
+   },
+   "divergence_vs_main": {
+    "ahead": 26,
+    "behind": 0
+   },
+   "diff_vs_declared_base": {
+    "files": 86,
+    "additions": 114442,
+    "deletions": 0
+   },
+   "merge_probe_main": {
+    "local_clean": true,
+    "conflicts": []
+   },
+   "changed_paths_sample": [
+    {
+     "status": "M",
+     "path": ".github/workflows/ci.yml"
+    },
+    {
+     "status": "A",
+     "path": ".github/workflows/observatory.yml"
+    },
+    {
+     "status": "M",
+     "path": ".gitignore"
+    },
+    {
+     "status": "M",
+     "path": "README.md"
+    },
+    {
+     "status": "A",
+     "path": "deploy/systemd/README.md"
+    },
+    {
+     "status": "A",
+     "path": "deploy/systemd/medradar-observatory.service"
+    },
+    {
+     "status": "A",
+     "path": "deploy/systemd/medradar-observatory.timer"
+    },
+    {
+     "status": "A",
+     "path": "deploy/windows/README.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/BACKUP_AND_RECOVERY.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/CONTINUOUS_VALIDATION_PROTOCOL.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/DEPLOYMENT.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/HEALTH_AND_VALIDATION.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/LIVE_OBSERVATORY.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/LIVE_OBSERVATORY_ACCEPTANCE.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/LIVE_OBSERVATORY_DESIGN.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/PRODUCT_ACCEPTANCE.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/PRODUCT_ARCHITECTURE.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/PRODUCT_ROADMAP.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/PRODUCT_STATISTICAL_AUDIT.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/PRODUCT_USER_GUIDE.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/PRODUCT_VISION.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/PROSPECTIVE_OBSERVATION_REGISTRY.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/RELIABILITY_ACCEPTANCE.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/RELIABILITY_DESIGN.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/audit_report_example.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/observatory/evidence/02_sec_second_run_idempotent_20261103T143958Z.json"
+    },
+    {
+     "status": "A",
+     "path": "docs/observatory/evidence/05_replay_before_20261103T144351Z.json"
+    },
+    {
+     "status": "A",
+     "path": "docs/observatory/evidence/06_replay_after_20261103T144351Z.json"
+    },
+    {
+     "status": "A",
+     "path": "docs/observatory/evidence/08_full_sync_20261103T144424Z.json"
+    },
+    {
+     "status": "A",
+     "path": "docs/observatory/evidence/09_final_ledger_evidence.json"
+    },
+    {
+     "status": "A",
+     "path": "docs/observatory/evidence/10_replay_demo.json"
+    },
+    {
+     "status": "A",
+     "path": "docs/observatory/evidence/11_sec_observation_timeline.json"
+    },
+    {
+     "status": "A",
+     "path": "docs/observatory/evidence/12_final_sync_pass1.json"
+    },
+    {
+     "status": "A",
+     "path": "docs/observatory/evidence/13_final_sync_pass2.json"
+    },
+    {
+     "status": "A",
+     "path": "docs/observatory/evidence/14_final_sync_pass3.json"
+    },
+    {
+     "status": "A",
+     "path": "docs/observatory/evidence/15_structure_stable_pass6.json"
+    },
+    {
+     "status": "A",
+     "path": "docs/observatory/evidence/16_acceptance_report_full.json"
+    },
+    {
+     "status": "A",
+     "path": "docs/observatory/evidence/17_product_e2e_report.json"
+    },
+    {
+     "status": "A",
+     "path": "docs/product/analyst.png"
+    },
+    {
+     "status": "A",
+     "path": "docs/product/company-mindray.png"
+    },
+    {
+     "status": "A",
+     "path": "docs/product/compare.png"
+    },
+    {
+     "status": "A",
+     "path": "docs/product/evidence-empty.png"
+    },
+    {
+     "status": "A",
+     "path": "docs/product/evidence-trace.png"
+    },
+    {
+     "status": "A",
+     "path": "docs/product/mobile-company.png"
+    },
+    {
+     "status": "A",
+     "path": "docs/product/overview.png"
+    },
+    {
+     "status": "A",
+     "path": "docs/product/radar-respiratory.png"
+    },
+    {
+     "status": "A",
+     "path": "docs/reliability/evidence/audit_report.json"
+    },
+    {
+     "status": "A",
+     "path": "docs/reliability/evidence/audit_report.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/reliability/evidence/backup_and_restore.json"
+    },
+    {
+     "status": "A",
+     "path": "docs/reliability/evidence/concurrency_refusal_live.json"
+    },
+    {
+     "status": "A",
+     "path": "docs/reliability/evidence/dependency_health_and_validation.json"
+    },
+    {
+     "status": "A",
+     "path": "docs/reliability/evidence/final_acceptance_evidence.json"
+    },
+    {
+     "status": "A",
+     "path": "docs/reliability/evidence/full_bundle.json"
+    },
+    {
+     "status": "A",
+     "path": "docs/reliability/evidence/product_e2e_report.json"
+    },
+    {
+     "status": "A",
+     "path": "docs/reliability/evidence/runs_and_outcomes.json"
+    },
+    {
+     "status": "M",
+     "path": "medradar/__main__.py"
+    },
+    {
+     "status": "A",
+     "path": "medradar/observatory/__init__.py"
+    },
+    {
+     "status": "A",
+     "path": "medradar/observatory/adapter.py"
+    },
+    {
+     "status": "A",
+     "path": "medradar/observatory/adapters/__init__.py"
+    },
+    {
+     "status": "A",
+     "path": "medradar/observatory/adapters/ctgov.py"
+    }
+   ],
+   "changed_path_count": 225,
+   "risk_path_hits": {
+    "large_binary": {
+     "count": 10,
+     "examples": [
+      "docs/product/analyst.png",
+      "docs/product/company-mindray.png",
+      "docs/product/compare.png",
+      "docs/product/evidence-empty.png",
+      "docs/product/evidence-trace.png"
+     ]
+    }
+   }
+  },
+  {
+   "number": 16,
+   "title": "S-029: evidence-based temporal relation reconstruction — measured evidence base, NO-GO verdict (research, draft)",
+   "state": "open",
+   "draft": true,
+   "base_ref": "feat/observatory-reliability-v1",
+   "base_is_main": false,
+   "head_ref": "research/s029-evidence-based-relations",
+   "head_sha": "10f25d190a748d5a255215debe9cacccb11e2c45",
+   "created_at": "2026-11-03T20:48:01Z",
+   "updated_at": "2026-11-03T21:09:27Z",
+   "additions": 133237,
+   "deletions": 0,
+   "changed_files": 205,
+   "mergeable": true,
+   "mergeable_state": "clean",
+   "local_ref_present": true,
+   "labels": [],
+   "body_excerpt": "﻿## S-029 — Reconstructing Evidence-Based Temporal Networks of Medical Technology Development\n\n**Draft, research only.** No model is trained and no prediction is reported. This PR delivers the\nevidence base and the pre-registered feasibility verdict for the next round.\n\n### Verdict\n**`NO-GO FOR PREDICTION`** — T1 (volume/diversity) and T2 (evidence traceability) pass; T3, T4, T5, T6\nfail. The decisive failures are T4 (**0 of 20,563 claims has genuine point-in-time observation**) and\nT6 (**no human adjudication**). Thresholds were frozen in `GO_NO_GO_CRITERIA.md` *before* measurement\n(sha256 re",
+   "tip_date": "2026-11-04T05:09:14+08:00",
+   "diff_vs_main": {
+    "files": 344,
+    "additions": 205006,
+    "deletions": 2
+   },
+   "divergence_vs_main": {
+    "ahead": 34,
+    "behind": 0
+   },
+   "diff_vs_declared_base": {
+    "files": 205,
+    "additions": 133237,
+    "deletions": 0
+   },
+   "merge_probe_main": {
+    "local_clean": true,
+    "conflicts": []
+   },
+   "changed_paths_sample": [
+    {
+     "status": "M",
+     "path": ".github/workflows/ci.yml"
+    },
+    {
+     "status": "A",
+     "path": ".github/workflows/observatory.yml"
+    },
+    {
+     "status": "M",
+     "path": ".gitignore"
+    },
+    {
+     "status": "M",
+     "path": "README.md"
+    },
+    {
+     "status": "A",
+     "path": "deploy/systemd/README.md"
+    },
+    {
+     "status": "A",
+     "path": "deploy/systemd/medradar-observatory.service"
+    },
+    {
+     "status": "A",
+     "path": "deploy/systemd/medradar-observatory.timer"
+    },
+    {
+     "status": "A",
+     "path": "deploy/windows/README.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/BACKUP_AND_RECOVERY.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/CONTINUOUS_VALIDATION_PROTOCOL.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/DEPLOYMENT.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/HEALTH_AND_VALIDATION.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/LIVE_OBSERVATORY.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/LIVE_OBSERVATORY_ACCEPTANCE.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/LIVE_OBSERVATORY_DESIGN.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/PRODUCT_ACCEPTANCE.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/PRODUCT_ARCHITECTURE.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/PRODUCT_ROADMAP.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/PRODUCT_STATISTICAL_AUDIT.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/PRODUCT_USER_GUIDE.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/PRODUCT_VISION.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/PROSPECTIVE_OBSERVATION_REGISTRY.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/RELIABILITY_ACCEPTANCE.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/RELIABILITY_DESIGN.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/audit_report_example.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/observatory/evidence/02_sec_second_run_idempotent_20261103T143958Z.json"
+    },
+    {
+     "status": "A",
+     "path": "docs/observatory/evidence/05_replay_before_20261103T144351Z.json"
+    },
+    {
+     "status": "A",
+     "path": "docs/observatory/evidence/06_replay_after_20261103T144351Z.json"
+    },
+    {
+     "status": "A",
+     "path": "docs/observatory/evidence/08_full_sync_20261103T144424Z.json"
+    },
+    {
+     "status": "A",
+     "path": "docs/observatory/evidence/09_final_ledger_evidence.json"
+    },
+    {
+     "status": "A",
+     "path": "docs/observatory/evidence/10_replay_demo.json"
+    },
+    {
+     "status": "A",
+     "path": "docs/observatory/evidence/11_sec_observation_timeline.json"
+    },
+    {
+     "status": "A",
+     "path": "docs/observatory/evidence/12_final_sync_pass1.json"
+    },
+    {
+     "status": "A",
+     "path": "docs/observatory/evidence/13_final_sync_pass2.json"
+    },
+    {
+     "status": "A",
+     "path": "docs/observatory/evidence/14_final_sync_pass3.json"
+    },
+    {
+     "status": "A",
+     "path": "docs/observatory/evidence/15_structure_stable_pass6.json"
+    },
+    {
+     "status": "A",
+     "path": "docs/observatory/evidence/16_acceptance_report_full.json"
+    },
+    {
+     "status": "A",
+     "path": "docs/observatory/evidence/17_product_e2e_report.json"
+    },
+    {
+     "status": "A",
+     "path": "docs/product/analyst.png"
+    },
+    {
+     "status": "A",
+     "path": "docs/product/company-mindray.png"
+    },
+    {
+     "status": "A",
+     "path": "docs/product/compare.png"
+    },
+    {
+     "status": "A",
+     "path": "docs/product/evidence-empty.png"
+    },
+    {
+     "status": "A",
+     "path": "docs/product/evidence-trace.png"
+    },
+    {
+     "status": "A",
+     "path": "docs/product/mobile-company.png"
+    },
+    {
+     "status": "A",
+     "path": "docs/product/overview.png"
+    },
+    {
+     "status": "A",
+     "path": "docs/product/radar-respiratory.png"
+    },
+    {
+     "status": "A",
+     "path": "docs/reliability/evidence/audit_report.json"
+    },
+    {
+     "status": "A",
+     "path": "docs/reliability/evidence/audit_report.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/reliability/evidence/backup_and_restore.json"
+    },
+    {
+     "status": "A",
+     "path": "docs/reliability/evidence/concurrency_refusal_live.json"
+    },
+    {
+     "status": "A",
+     "path": "docs/reliability/evidence/dependency_health_and_validation.json"
+    },
+    {
+     "status": "A",
+     "path": "docs/reliability/evidence/final_acceptance_evidence.json"
+    },
+    {
+     "status": "A",
+     "path": "docs/reliability/evidence/full_bundle.json"
+    },
+    {
+     "status": "A",
+     "path": "docs/reliability/evidence/product_e2e_report.json"
+    },
+    {
+     "status": "A",
+     "path": "docs/reliability/evidence/runs_and_outcomes.json"
+    },
+    {
+     "status": "M",
+     "path": "medradar/__main__.py"
+    },
+    {
+     "status": "A",
+     "path": "medradar/observatory/__init__.py"
+    },
+    {
+     "status": "A",
+     "path": "medradar/observatory/adapter.py"
+    },
+    {
+     "status": "A",
+     "path": "medradar/observatory/adapters/__init__.py"
+    },
+    {
+     "status": "A",
+     "path": "medradar/observatory/adapters/ctgov.py"
+    }
+   ],
+   "changed_path_count": 344,
+   "risk_path_hits": {
+    "restricted_exports": {
+     "count": 130,
+     "examples": [
+      "research/studies/relation_network_s029/data/raw/ctgov_draeger_draeger.json.gz",
+      "research/studies/relation_network_s029/data/raw/ctgov_draeger_draegerwerk.json.gz",
+      "\"research/studies/relation_network_s029/data/raw/ctgov_draeger_dr\\303\\244ger.json.gz\"",
+      "\"research/studies/relation_network_s029/data/raw/ctgov_draeger_dr\\303\\244ger_medical.json.gz\"",
+      "\"research/studies/relation_network_s029/data/raw/ctgov_draeger_dr\\303\\244gerwerk.json.gz\""
+     ]
+    },
+    "large_binary": {
+     "count": 134,
+     "examples": [
+      "docs/product/analyst.png",
+      "docs/product/company-mindray.png",
+      "docs/product/compare.png",
+      "docs/product/evidence-empty.png",
+      "docs/product/evidence-trace.png"
+     ]
+    }
+   }
+  },
+  {
+   "number": 17,
+   "title": "Repository consolidation: documentation, research index, and data asset governance",
+   "state": "open",
+   "draft": true,
+   "base_ref": "main",
+   "base_is_main": true,
+   "head_ref": "maintenance/repository-consolidation",
+   "head_sha": "b4a6af3fc60ef73a0c3c6f67b4cb16b7cbcf3ec4",
+   "created_at": "2026-11-03T22:18:12Z",
+   "updated_at": "2026-11-03T22:19:07Z",
+   "additions": 947,
+   "deletions": 805,
+   "changed_files": 6,
+   "mergeable": true,
+   "mergeable_state": "clean",
+   "local_ref_present": true,
+   "labels": [],
+   "body_excerpt": "## What this PR is\n\nA **documentation and governance consolidation** of the repository, built from `main` (`b2a14c0`) on\n`maintenance/repository-consolidation`. It does not add features, start research, or touch data. Its\njob is to make the repository's state accurate and maintainable: what MedRadar is, what it can actually\ndo, what it found, what is unproven, and what happens next.\n\n**Draft on purpose.** Nothing below requires a merge decision now. Please review for accuracy and for\nanything that contradicts the studies' own records.\n\n## Why the front page had to change\n\nThe README was a prod",
+   "tip_date": "2026-11-04T06:19:03+08:00",
+   "diff_vs_main": {
+    "files": 6,
+    "additions": 947,
+    "deletions": 805
+   },
+   "divergence_vs_main": {
+    "ahead": 2,
+    "behind": 0
+   },
+   "diff_vs_declared_base": {
+    "files": 6,
+    "additions": 947,
+    "deletions": 805
+   },
+   "merge_probe_main": {
+    "local_clean": true,
+    "conflicts": []
+   },
+   "changed_paths_sample": [
+    {
+     "status": "M",
+     "path": "README.md"
+    },
+    {
+     "status": "M",
+     "path": "README.zh-CN.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/DATA_ASSET_REGISTER.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/PROJECT_STATUS.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/REPOSITORY_AUDIT.md"
+    },
+    {
+     "status": "M",
+     "path": "tests/test_release.py"
+    }
+   ],
+   "changed_path_count": 6,
+   "risk_path_hits": {}
+  },
+  {
+   "number": 18,
+   "title": "AI evidence review of the 69 early-signal packets (machine review, not human truth)",
+   "state": "open",
+   "draft": true,
+   "base_ref": "main",
+   "base_is_main": true,
+   "head_ref": "research/ai-evidence-review",
+   "head_sha": "b68af122a7791c2c96f57d3cdae7a901f67ee0f4",
+   "created_at": "2026-11-03T23:20:35Z",
+   "updated_at": "2026-11-03T23:20:35Z",
+   "additions": 575,
+   "deletions": 0,
+   "changed_files": 4,
+   "mergeable": true,
+   "mergeable_state": "clean",
+   "local_ref_present": true,
+   "labels": [],
+   "body_excerpt": "## What this PR is\n\nAn **independent, source-checked AI review of the 69 evidence packets** of the five-firm early-signal\nstudy. It does the first-pass evidence work — verify the record, hunt counter-evidence, separate the\ntiming clocks, classify, and say what is still unknown — **without** pretending to be the human label it\ndoes not replace.\n\nBranched from `main` (`b2a14c0`) as `research/ai-evidence-review`. **Draft, not for merge as a result.**\nPR #17 is not touched.\n\n## Files (all new, one directory)\n\n| File | Content |\n|---|---|\n| `research/studies/early_signal_5firms/ai_review/AI_EVIDENC",
+   "tip_date": "2026-11-04T07:20:26+08:00",
+   "diff_vs_main": {
+    "files": 4,
+    "additions": 575,
+    "deletions": 0
+   },
+   "divergence_vs_main": {
+    "ahead": 1,
+    "behind": 0
+   },
+   "diff_vs_declared_base": {
+    "files": 4,
+    "additions": 575,
+    "deletions": 0
+   },
+   "merge_probe_main": {
+    "local_clean": true,
+    "conflicts": []
+   },
+   "changed_paths_sample": [
+    {
+     "status": "A",
+     "path": "research/studies/early_signal_5firms/ai_review/AI_EVIDENCE_REVIEW.jsonl"
+    },
+    {
+     "status": "A",
+     "path": "research/studies/early_signal_5firms/ai_review/AI_REVIEW_GUIDE_ZH.md"
+    },
+    {
+     "status": "A",
+     "path": "research/studies/early_signal_5firms/ai_review/AI_REVIEW_SUMMARY.md"
+    },
+    {
+     "status": "A",
+     "path": "research/studies/early_signal_5firms/ai_review/verify_ai_review.py"
+    }
+   ],
+   "changed_path_count": 4,
+   "risk_path_hits": {}
+  },
+  {
+   "number": 19,
+   "title": "research(local-llm): Phase 2 — first real local GPU run (Qwen3-4B-Instruct vs rules on 19 real documents, QLoRA pipeline verified, formal training blocked)",
+   "state": "open",
+   "draft": true,
+   "base_ref": "main",
+   "base_is_main": true,
+   "head_ref": "research/local-llm-foundation",
+   "head_sha": "d4c4e43c9afa353b9b4af6f4f020a959024a07bd",
+   "created_at": "2026-11-03T23:49:35Z",
+   "updated_at": "2026-11-04T01:25:51Z",
+   "additions": 32464,
+   "deletions": 0,
+   "changed_files": 110,
+   "mergeable": true,
+   "mergeable_state": "unstable",
+   "local_ref_present": true,
+   "labels": [],
+   "body_excerpt": "﻿# Local small-LM research foundation — Phase 2: first real GPU extraction run\n\nDraft. Research-only: nothing here touches the `medradar` product, `main`, any frozen study\nartifact, or any existing database.\n\n## What this PR now contains\n\n| Phase | Status |\n| --- | --- |\n| Independent audit of the Phase-1 code (26 findings, 2 blockers) | **done** — the blockers are fixed here |\n| Isolated CUDA environment on the RTX 5080 Laptop (sm_120) | **VERIFIED** by real tensor/autograd computation |\n| Pinned Qwen3-4B-Instruct weights, downloaded and hash-verified | **VERIFIED** (13/13 files re-hashed aga",
+   "tip_date": "2026-11-04T09:25:48+08:00",
+   "diff_vs_main": {
+    "files": 110,
+    "additions": 32464,
+    "deletions": 0
+   },
+   "divergence_vs_main": {
+    "ahead": 9,
+    "behind": 0
+   },
+   "diff_vs_declared_base": {
+    "files": 110,
+    "additions": 32464,
+    "deletions": 0
+   },
+   "merge_probe_main": {
+    "local_clean": true,
+    "conflicts": []
+   },
+   "changed_paths_sample": [
+    {
+     "status": "A",
+     "path": "experiments/__init__.py"
+    },
+    {
+     "status": "A",
+     "path": "experiments/local_llm_event_extraction/.gitignore"
+    },
+    {
+     "status": "A",
+     "path": "experiments/local_llm_event_extraction/README.md"
+    },
+    {
+     "status": "A",
+     "path": "experiments/local_llm_event_extraction/__init__.py"
+    },
+    {
+     "status": "A",
+     "path": "experiments/local_llm_event_extraction/adapters/__init__.py"
+    },
+    {
+     "status": "A",
+     "path": "experiments/local_llm_event_extraction/adapters/base.py"
+    },
+    {
+     "status": "A",
+     "path": "experiments/local_llm_event_extraction/adapters/config/__init__.py"
+    },
+    {
+     "status": "A",
+     "path": "experiments/local_llm_event_extraction/adapters/config/models.example.json"
+    },
+    {
+     "status": "A",
+     "path": "experiments/local_llm_event_extraction/adapters/hf_local.py"
+    },
+    {
+     "status": "A",
+     "path": "experiments/local_llm_event_extraction/adapters/mock.py"
+    },
+    {
+     "status": "A",
+     "path": "experiments/local_llm_event_extraction/adapters/openai_compat.py"
+    },
+    {
+     "status": "A",
+     "path": "experiments/local_llm_event_extraction/adapters/rule_based.py"
+    },
+    {
+     "status": "A",
+     "path": "experiments/local_llm_event_extraction/benchmark/__init__.py"
+    },
+    {
+     "status": "A",
+     "path": "experiments/local_llm_event_extraction/benchmark/metrics.py"
+    },
+    {
+     "status": "A",
+     "path": "experiments/local_llm_event_extraction/benchmark/report.py"
+    },
+    {
+     "status": "A",
+     "path": "experiments/local_llm_event_extraction/benchmark/runner.py"
+    },
+    {
+     "status": "A",
+     "path": "experiments/local_llm_event_extraction/contracts.py"
+    },
+    {
+     "status": "A",
+     "path": "experiments/local_llm_event_extraction/datasets/__init__.py"
+    },
+    {
+     "status": "A",
+     "path": "experiments/local_llm_event_extraction/datasets/fixtures/cases_v0.json"
+    },
+    {
+     "status": "A",
+     "path": "experiments/local_llm_event_extraction/datasets/fixtures/responses_v0.json"
+    },
+    {
+     "status": "A",
+     "path": "experiments/local_llm_event_extraction/datasets/real/corpus/.gitattributes"
+    },
+    {
+     "status": "A",
+     "path": "experiments/local_llm_event_extraction/datasets/real/corpus/2026-11-04/MANIFEST.json"
+    },
+    {
+     "status": "A",
+     "path": "experiments/local_llm_event_extraction/datasets/real/corpus/2026-11-04/collect.py"
+    },
+    {
+     "status": "A",
+     "path": "experiments/local_llm_event_extraction/datasets/real/corpus/2026-11-04/documents/ctgov-NCT02445040.json"
+    },
+    {
+     "status": "A",
+     "path": "experiments/local_llm_event_extraction/datasets/real/corpus/2026-11-04/documents/ctgov-NCT04950192.json"
+    },
+    {
+     "status": "A",
+     "path": "experiments/local_llm_event_extraction/datasets/real/corpus/2026-11-04/documents/ctgov-NCT05634538.json"
+    },
+    {
+     "status": "A",
+     "path": "experiments/local_llm_event_extraction/datasets/real/corpus/2026-11-04/documents/ctgov-NCT06398730.json"
+    },
+    {
+     "status": "A",
+     "path": "experiments/local_llm_event_extraction/datasets/real/corpus/2026-11-04/documents/ctgov-NCT06678841.json"
+    },
+    {
+     "status": "A",
+     "path": "experiments/local_llm_event_extraction/datasets/real/corpus/2026-11-04/documents/fda510k-k260579.json"
+    },
+    {
+     "status": "A",
+     "path": "experiments/local_llm_event_extraction/datasets/real/corpus/2026-11-04/documents/fda510k-k260656.json"
+    },
+    {
+     "status": "A",
+     "path": "experiments/local_llm_event_extraction/datasets/real/corpus/2026-11-04/documents/fda510k-k262548.json"
+    },
+    {
+     "status": "A",
+     "path": "experiments/local_llm_event_extraction/datasets/real/corpus/2026-11-04/documents/fda510k-k262913.json"
+    },
+    {
+     "status": "A",
+     "path": "experiments/local_llm_event_extraction/datasets/real/corpus/2026-11-04/documents/fda510k-k263048.json"
+    },
+    {
+     "status": "A",
+     "path": "experiments/local_llm_event_extraction/datasets/real/corpus/2026-11-04/documents/fdapma-p060005-s027.json"
+    },
+    {
+     "status": "A",
+     "path": "experiments/local_llm_event_extraction/datasets/real/corpus/2026-11-04/documents/fdapma-p130020-s005.json"
+    },
+    {
+     "status": "A",
+     "path": "experiments/local_llm_event_extraction/datasets/real/corpus/2026-11-04/documents/fdapma-p230021-s003.json"
+    },
+    {
+     "status": "A",
+     "path": "experiments/local_llm_event_extraction/datasets/real/corpus/2026-11-04/documents/fdapma-p980035-s848.json"
+    },
+    {
+     "status": "A",
+     "path": "experiments/local_llm_event_extraction/datasets/real/corpus/2026-11-04/documents/fdarecall-z-0292-2027.json"
+    },
+    {
+     "status": "A",
+     "path": "experiments/local_llm_event_extraction/datasets/real/corpus/2026-11-04/documents/fdarecall-z-0302-2027.json"
+    },
+    {
+     "status": "A",
+     "path": "experiments/local_llm_event_extraction/datasets/real/corpus/2026-11-04/documents/fdarecall-z-3166-2026.json"
+    },
+    {
+     "status": "A",
+     "path": "experiments/local_llm_event_extraction/datasets/real/corpus/2026-11-04/documents/fdarecall-z-3252-2026.json"
+    },
+    {
+     "status": "A",
+     "path": "experiments/local_llm_event_extraction/datasets/real/corpus/2026-11-04/documents/fdarecall-z-3335-2026.json"
+    },
+    {
+     "status": "A",
+     "path": "experiments/local_llm_event_extraction/datasets/real_documents.py"
+    },
+    {
+     "status": "A",
+     "path": "experiments/local_llm_event_extraction/datasets/splits.py"
+    },
+    {
+     "status": "A",
+     "path": "experiments/local_llm_event_extraction/datasets/synthetic.py"
+    },
+    {
+     "status": "A",
+     "path": "experiments/local_llm_event_extraction/docs/ARCHITECTURE.md"
+    },
+    {
+     "status": "A",
+     "path": "experiments/local_llm_event_extraction/docs/DATA_ADAPTER.md"
+    },
+    {
+     "status": "A",
+     "path": "experiments/local_llm_event_extraction/docs/EXISTING_SYSTEM_AUDIT.md"
+    },
+    {
+     "status": "A",
+     "path": "experiments/local_llm_event_extraction/docs/HARDWARE_COMPATIBILITY.md"
+    },
+    {
+     "status": "A",
+     "path": "experiments/local_llm_event_extraction/docs/INSTALL_WSL2_RTX5080.md"
+    },
+    {
+     "status": "A",
+     "path": "experiments/local_llm_event_extraction/docs/PHASE2_ENVIRONMENT.md"
+    },
+    {
+     "status": "A",
+     "path": "experiments/local_llm_event_extraction/docs/PHASE2_REAL_RUN.md"
+    },
+    {
+     "status": "A",
+     "path": "experiments/local_llm_event_extraction/docs/PHASE2_SUMMARY.zh-CN.md"
+    },
+    {
+     "status": "A",
+     "path": "experiments/local_llm_event_extraction/docs/PROTOCOL.md"
+    },
+    {
+     "status": "A",
+     "path": "experiments/local_llm_event_extraction/docs/READINESS_CHECKLIST.md"
+    },
+    {
+     "status": "A",
+     "path": "experiments/local_llm_event_extraction/docs/RISK_REGISTER.md"
+    },
+    {
+     "status": "A",
+     "path": "experiments/local_llm_event_extraction/labels.py"
+    },
+    {
+     "status": "A",
+     "path": "experiments/local_llm_event_extraction/parsing.py"
+    },
+    {
+     "status": "A",
+     "path": "experiments/local_llm_event_extraction/prompting.py"
+    },
+    {
+     "status": "A",
+     "path": "experiments/local_llm_event_extraction/results/phase2-2026-11-04/environment/gpu_verification.json"
+    }
+   ],
+   "changed_path_count": 110,
+   "risk_path_hits": {}
+  },
+  {
+   "number": 20,
+   "title": "research(overnight): 隔夜探索性 QLoRA 训练与四臂独立评价（Draft，不合并）",
+   "state": "open",
+   "draft": true,
+   "base_ref": "research/local-llm-foundation",
+   "base_is_main": false,
+   "head_ref": "research/overnight-qlora-s030",
+   "head_sha": "5954d7d81bc47ec5143fa7504fbe61debe51c29c",
+   "created_at": "2026-11-04T03:33:57Z",
+   "updated_at": "2026-11-04T03:33:57Z",
+   "additions": 16826,
+   "deletions": 55,
+   "changed_files": 147,
+   "mergeable": true,
+   "mergeable_state": "unstable",
+   "local_ref_present": true,
+   "labels": [],
+   "body_excerpt": "## 隔夜探索性 QLoRA 运行（Draft，不合并）\n\n本 PR 是一次**完整的隔夜自主科研运行**的交付物：修复 Phase 2 缺陷 → 采集并冻结可追溯语料 →\n构建银标签数据集 → 真实 QLoRA 训练 → 四臂独立评价 → 消融 → 中文晨间报告。\n\n**它不会自动合并，也不包含任何模型权重。**\n\n### 成果分级（必须在评审时先看这一段）\n\n| 项目 | 状态 |\n|---|---|\n| 数据标签 | `SOURCE_DERIVED_SILVER`（源记录派生，非人工） |\n| 训练层级 | `EXPLORATORY_WEAK_SUPERVISION` |\n| 正式科研训练 | **`RESEARCH_TRAINING_BLOCKED`（未解除）** |\n| Precision / Recall / F1 | **`NOT_EVALUABLE`** |\n\n本 PR 中所有\"一致率\"都是**探索性一致率**，不是准确率。没有任何人工金标准产生。\n\n### 实际跑出来的东西\n\n* 语料：104 篇公开监管记录（openFDA 510(k)/PMA/召回、ClinicalTrials.gov），12 家公司，\n  含 3 篇负对照；每篇有 `content_sha256`、`raw_sha256`、`text_origin`。\n* 划分：train/val/test",
+   "tip_date": "2026-11-04T11:33:32+08:00",
+   "diff_vs_main": {
+    "files": 248,
+    "additions": 49235,
+    "deletions": 0
+   },
+   "divergence_vs_main": {
+    "ahead": 11,
+    "behind": 0
+   },
+   "diff_vs_declared_base": {
+    "files": 147,
+    "additions": 16826,
+    "deletions": 55
+   },
+   "merge_probe_main": {
+    "local_clean": true,
+    "conflicts": []
+   },
+   "changed_paths_sample": [
+    {
+     "status": "A",
+     "path": "OVERNIGHT_RESEARCH_REPORT.zh-CN.md"
+    },
+    {
+     "status": "A",
+     "path": "experiments/__init__.py"
+    },
+    {
+     "status": "A",
+     "path": "experiments/local_llm_event_extraction/.gitignore"
+    },
+    {
+     "status": "A",
+     "path": "experiments/local_llm_event_extraction/README.md"
+    },
+    {
+     "status": "A",
+     "path": "experiments/local_llm_event_extraction/__init__.py"
+    },
+    {
+     "status": "A",
+     "path": "experiments/local_llm_event_extraction/adapters/__init__.py"
+    },
+    {
+     "status": "A",
+     "path": "experiments/local_llm_event_extraction/adapters/base.py"
+    },
+    {
+     "status": "A",
+     "path": "experiments/local_llm_event_extraction/adapters/config/__init__.py"
+    },
+    {
+     "status": "A",
+     "path": "experiments/local_llm_event_extraction/adapters/config/models.example.json"
+    },
+    {
+     "status": "A",
+     "path": "experiments/local_llm_event_extraction/adapters/hf_local.py"
+    },
+    {
+     "status": "A",
+     "path": "experiments/local_llm_event_extraction/adapters/mock.py"
+    },
+    {
+     "status": "A",
+     "path": "experiments/local_llm_event_extraction/adapters/openai_compat.py"
+    },
+    {
+     "status": "A",
+     "path": "experiments/local_llm_event_extraction/adapters/rule_based.py"
+    },
+    {
+     "status": "A",
+     "path": "experiments/local_llm_event_extraction/adapters/rule_based_locale.py"
+    },
+    {
+     "status": "A",
+     "path": "experiments/local_llm_event_extraction/benchmark/__init__.py"
+    },
+    {
+     "status": "A",
+     "path": "experiments/local_llm_event_extraction/benchmark/metrics.py"
+    },
+    {
+     "status": "A",
+     "path": "experiments/local_llm_event_extraction/benchmark/report.py"
+    },
+    {
+     "status": "A",
+     "path": "experiments/local_llm_event_extraction/benchmark/runner.py"
+    },
+    {
+     "status": "A",
+     "path": "experiments/local_llm_event_extraction/contracts.py"
+    },
+    {
+     "status": "A",
+     "path": "experiments/local_llm_event_extraction/datasets/__init__.py"
+    },
+    {
+     "status": "A",
+     "path": "experiments/local_llm_event_extraction/datasets/components.py"
+    },
+    {
+     "status": "A",
+     "path": "experiments/local_llm_event_extraction/datasets/fixtures/cases_v0.json"
+    },
+    {
+     "status": "A",
+     "path": "experiments/local_llm_event_extraction/datasets/fixtures/responses_v0.json"
+    },
+    {
+     "status": "A",
+     "path": "experiments/local_llm_event_extraction/datasets/overnight_corpus.py"
+    },
+    {
+     "status": "A",
+     "path": "experiments/local_llm_event_extraction/datasets/real/corpus/.gitattributes"
+    },
+    {
+     "status": "A",
+     "path": "experiments/local_llm_event_extraction/datasets/real/corpus/2026-11-04/MANIFEST.json"
+    },
+    {
+     "status": "A",
+     "path": "experiments/local_llm_event_extraction/datasets/real/corpus/2026-11-04/collect.py"
+    },
+    {
+     "status": "A",
+     "path": "experiments/local_llm_event_extraction/datasets/real/corpus/2026-11-04/documents/ctgov-NCT02445040.json"
+    },
+    {
+     "status": "A",
+     "path": "experiments/local_llm_event_extraction/datasets/real/corpus/2026-11-04/documents/ctgov-NCT04950192.json"
+    },
+    {
+     "status": "A",
+     "path": "experiments/local_llm_event_extraction/datasets/real/corpus/2026-11-04/documents/ctgov-NCT05634538.json"
+    },
+    {
+     "status": "A",
+     "path": "experiments/local_llm_event_extraction/datasets/real/corpus/2026-11-04/documents/ctgov-NCT06398730.json"
+    },
+    {
+     "status": "A",
+     "path": "experiments/local_llm_event_extraction/datasets/real/corpus/2026-11-04/documents/ctgov-NCT06678841.json"
+    },
+    {
+     "status": "A",
+     "path": "experiments/local_llm_event_extraction/datasets/real/corpus/2026-11-04/documents/fda510k-k260579.json"
+    },
+    {
+     "status": "A",
+     "path": "experiments/local_llm_event_extraction/datasets/real/corpus/2026-11-04/documents/fda510k-k260656.json"
+    },
+    {
+     "status": "A",
+     "path": "experiments/local_llm_event_extraction/datasets/real/corpus/2026-11-04/documents/fda510k-k262548.json"
+    },
+    {
+     "status": "A",
+     "path": "experiments/local_llm_event_extraction/datasets/real/corpus/2026-11-04/documents/fda510k-k262913.json"
+    },
+    {
+     "status": "A",
+     "path": "experiments/local_llm_event_extraction/datasets/real/corpus/2026-11-04/documents/fda510k-k263048.json"
+    },
+    {
+     "status": "A",
+     "path": "experiments/local_llm_event_extraction/datasets/real/corpus/2026-11-04/documents/fdapma-p060005-s027.json"
+    },
+    {
+     "status": "A",
+     "path": "experiments/local_llm_event_extraction/datasets/real/corpus/2026-11-04/documents/fdapma-p130020-s005.json"
+    },
+    {
+     "status": "A",
+     "path": "experiments/local_llm_event_extraction/datasets/real/corpus/2026-11-04/documents/fdapma-p230021-s003.json"
+    },
+    {
+     "status": "A",
+     "path": "experiments/local_llm_event_extraction/datasets/real/corpus/2026-11-04/documents/fdapma-p980035-s848.json"
+    },
+    {
+     "status": "A",
+     "path": "experiments/local_llm_event_extraction/datasets/real/corpus/2026-11-04/documents/fdarecall-z-0292-2027.json"
+    },
+    {
+     "status": "A",
+     "path": "experiments/local_llm_event_extraction/datasets/real/corpus/2026-11-04/documents/fdarecall-z-0302-2027.json"
+    },
+    {
+     "status": "A",
+     "path": "experiments/local_llm_event_extraction/datasets/real/corpus/2026-11-04/documents/fdarecall-z-3166-2026.json"
+    },
+    {
+     "status": "A",
+     "path": "experiments/local_llm_event_extraction/datasets/real/corpus/2026-11-04/documents/fdarecall-z-3252-2026.json"
+    },
+    {
+     "status": "A",
+     "path": "experiments/local_llm_event_extraction/datasets/real/corpus/2026-11-04/documents/fdarecall-z-3335-2026.json"
+    },
+    {
+     "status": "A",
+     "path": "experiments/local_llm_event_extraction/datasets/real/overnight_corpus/ovn-2026-11-04/.gitattributes"
+    },
+    {
+     "status": "A",
+     "path": "experiments/local_llm_event_extraction/datasets/real/overnight_corpus/ovn-2026-11-04/MANIFEST.json"
+    },
+    {
+     "status": "A",
+     "path": "experiments/local_llm_event_extraction/datasets/real/overnight_corpus/ovn-2026-11-04/documents/ovn-ctgov-NCT01026805-results.json"
+    },
+    {
+     "status": "A",
+     "path": "experiments/local_llm_event_extraction/datasets/real/overnight_corpus/ovn-2026-11-04/documents/ovn-ctgov-NCT01445171-results.json"
+    },
+    {
+     "status": "A",
+     "path": "experiments/local_llm_event_extraction/datasets/real/overnight_corpus/ovn-2026-11-04/documents/ovn-ctgov-NCT02897453-completion.json"
+    },
+    {
+     "status": "A",
+     "path": "experiments/local_llm_event_extraction/datasets/real/overnight_corpus/ovn-2026-11-04/documents/ovn-ctgov-NCT02897453-start.json"
+    },
+    {
+     "status": "A",
+     "path": "experiments/local_llm_event_extraction/datasets/real/overnight_corpus/ovn-2026-11-04/documents/ovn-ctgov-NCT03232645-completion.json"
+    },
+    {
+     "status": "A",
+     "path": "experiments/local_llm_event_extraction/datasets/real/overnight_corpus/ovn-2026-11-04/documents/ovn-ctgov-NCT03232645-results.json"
+    },
+    {
+     "status": "A",
+     "path": "experiments/local_llm_event_extraction/datasets/real/overnight_corpus/ovn-2026-11-04/documents/ovn-ctgov-NCT03232645-start.json"
+    },
+    {
+     "status": "A",
+     "path": "experiments/local_llm_event_extraction/datasets/real/overnight_corpus/ovn-2026-11-04/documents/ovn-ctgov-NCT03267264-completion.json"
+    },
+    {
+     "status": "A",
+     "path": "experiments/local_llm_event_extraction/datasets/real/overnight_corpus/ovn-2026-11-04/documents/ovn-ctgov-NCT03267264-results.json"
+    },
+    {
+     "status": "A",
+     "path": "experiments/local_llm_event_extraction/datasets/real/overnight_corpus/ovn-2026-11-04/documents/ovn-ctgov-NCT03267264-start.json"
+    },
+    {
+     "status": "A",
+     "path": "experiments/local_llm_event_extraction/datasets/real/overnight_corpus/ovn-2026-11-04/documents/ovn-ctgov-NCT03517436-completion.json"
+    },
+    {
+     "status": "A",
+     "path": "experiments/local_llm_event_extraction/datasets/real/overnight_corpus/ovn-2026-11-04/documents/ovn-ctgov-NCT03517436-results.json"
+    }
+   ],
+   "changed_path_count": 248,
+   "risk_path_hits": {}
+  },
+  {
+   "number": 21,
+   "title": "Phase 4: Innovation Signals Observatory — recruitment lane, real collection, and the honest limits of hiring as an early signal",
+   "state": "open",
+   "draft": true,
+   "base_ref": "integration/phase4-base",
+   "base_is_main": false,
+   "head_ref": "research/innovation-signals-observatory",
+   "head_sha": "c4327ce44c6aafe0e4af5a73df7f356dfffcb438",
+   "created_at": "2026-11-04T14:41:38Z",
+   "updated_at": "2026-11-04T14:42:05Z",
+   "additions": 64441,
+   "deletions": 0,
+   "changed_files": 96,
+   "mergeable": true,
+   "mergeable_state": "clean",
+   "local_ref_present": true,
+   "labels": [],
+   "body_excerpt": "# Phase 4 · Innovation Signals Observatory — the recruitment lane, measured end to end\r\n\r\n**Draft. Do not merge.** Base branch is `integration/phase4-base` (see \"Baseline\" below), not `main`.\r\n\r\n---\r\n\r\n## What this PR is\r\n\r\nThe first auditable, extensible implementation of MedRadar **Phase 4**: can publicly observable\r\n*technical hiring activity* provide credible, traceable early evidence of an emerging R&D direction in\r\nleading medical-device companies?\r\n\r\nThe deliverable is not a dashboard and not a claim of discovery. It is the research chain itself —\r\nand, just as importantly, a measured a",
+   "tip_date": "2026-11-04T22:37:55+08:00",
+   "diff_vs_main": {
+    "files": 567,
+    "additions": 299894,
+    "deletions": 2
+   },
+   "divergence_vs_main": {
+    "ahead": 46,
+    "behind": 0
+   },
+   "diff_vs_declared_base": {
+    "files": 96,
+    "additions": 64441,
+    "deletions": 0
+   },
+   "merge_probe_main": {
+    "local_clean": true,
+    "conflicts": []
+   },
+   "changed_paths_sample": [
+    {
+     "status": "M",
+     "path": ".gitattributes"
+    },
+    {
+     "status": "M",
+     "path": ".github/workflows/ci.yml"
+    },
+    {
+     "status": "A",
+     "path": ".github/workflows/observatory.yml"
+    },
+    {
+     "status": "M",
+     "path": ".gitignore"
+    },
+    {
+     "status": "M",
+     "path": "CHANGELOG.md"
+    },
+    {
+     "status": "A",
+     "path": "OVERNIGHT_RESEARCH_REPORT.zh-CN.md"
+    },
+    {
+     "status": "A",
+     "path": "PHASE4_RESEARCH_REPORT.zh-CN.md"
+    },
+    {
+     "status": "M",
+     "path": "README.md"
+    },
+    {
+     "status": "A",
+     "path": "config/recruitment_function_classes.json"
+    },
+    {
+     "status": "A",
+     "path": "deploy/systemd/README.md"
+    },
+    {
+     "status": "A",
+     "path": "deploy/systemd/medradar-observatory.service"
+    },
+    {
+     "status": "A",
+     "path": "deploy/systemd/medradar-observatory.timer"
+    },
+    {
+     "status": "A",
+     "path": "deploy/windows/README.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/BACKUP_AND_RECOVERY.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/CONTINUOUS_VALIDATION_PROTOCOL.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/DEPLOYMENT.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/HEALTH_AND_VALIDATION.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/LIVE_OBSERVATORY.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/LIVE_OBSERVATORY_ACCEPTANCE.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/LIVE_OBSERVATORY_DESIGN.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/PRODUCT_ACCEPTANCE.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/PRODUCT_ARCHITECTURE.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/PRODUCT_ROADMAP.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/PRODUCT_STATISTICAL_AUDIT.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/PRODUCT_USER_GUIDE.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/PRODUCT_VISION.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/PROSPECTIVE_OBSERVATION_REGISTRY.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/RELIABILITY_ACCEPTANCE.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/RELIABILITY_DESIGN.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/audit_report_example.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/observatory/evidence/02_sec_second_run_idempotent_20261103T143958Z.json"
+    },
+    {
+     "status": "A",
+     "path": "docs/observatory/evidence/05_replay_before_20261103T144351Z.json"
+    },
+    {
+     "status": "A",
+     "path": "docs/observatory/evidence/06_replay_after_20261103T144351Z.json"
+    },
+    {
+     "status": "A",
+     "path": "docs/observatory/evidence/08_full_sync_20261103T144424Z.json"
+    },
+    {
+     "status": "A",
+     "path": "docs/observatory/evidence/09_final_ledger_evidence.json"
+    },
+    {
+     "status": "A",
+     "path": "docs/observatory/evidence/10_replay_demo.json"
+    },
+    {
+     "status": "A",
+     "path": "docs/observatory/evidence/11_sec_observation_timeline.json"
+    },
+    {
+     "status": "A",
+     "path": "docs/observatory/evidence/12_final_sync_pass1.json"
+    },
+    {
+     "status": "A",
+     "path": "docs/observatory/evidence/13_final_sync_pass2.json"
+    },
+    {
+     "status": "A",
+     "path": "docs/observatory/evidence/14_final_sync_pass3.json"
+    },
+    {
+     "status": "A",
+     "path": "docs/observatory/evidence/15_structure_stable_pass6.json"
+    },
+    {
+     "status": "A",
+     "path": "docs/observatory/evidence/16_acceptance_report_full.json"
+    },
+    {
+     "status": "A",
+     "path": "docs/observatory/evidence/17_product_e2e_report.json"
+    },
+    {
+     "status": "A",
+     "path": "docs/product/analyst.png"
+    },
+    {
+     "status": "A",
+     "path": "docs/product/company-mindray.png"
+    },
+    {
+     "status": "A",
+     "path": "docs/product/compare.png"
+    },
+    {
+     "status": "A",
+     "path": "docs/product/evidence-empty.png"
+    },
+    {
+     "status": "A",
+     "path": "docs/product/evidence-trace.png"
+    },
+    {
+     "status": "A",
+     "path": "docs/product/mobile-company.png"
+    },
+    {
+     "status": "A",
+     "path": "docs/product/overview.png"
+    },
+    {
+     "status": "A",
+     "path": "docs/product/radar-respiratory.png"
+    },
+    {
+     "status": "A",
+     "path": "docs/reliability/evidence/audit_report.json"
+    },
+    {
+     "status": "A",
+     "path": "docs/reliability/evidence/audit_report.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/reliability/evidence/backup_and_restore.json"
+    },
+    {
+     "status": "A",
+     "path": "docs/reliability/evidence/concurrency_refusal_live.json"
+    },
+    {
+     "status": "A",
+     "path": "docs/reliability/evidence/dependency_health_and_validation.json"
+    },
+    {
+     "status": "A",
+     "path": "docs/reliability/evidence/final_acceptance_evidence.json"
+    },
+    {
+     "status": "A",
+     "path": "docs/reliability/evidence/full_bundle.json"
+    },
+    {
+     "status": "A",
+     "path": "docs/reliability/evidence/product_e2e_report.json"
+    },
+    {
+     "status": "A",
+     "path": "docs/reliability/evidence/runs_and_outcomes.json"
+    }
+   ],
+   "changed_path_count": 567,
+   "risk_path_hits": {
+    "large_binary": {
+     "count": 10,
+     "examples": [
+      "docs/product/analyst.png",
+      "docs/product/company-mindray.png",
+      "docs/product/compare.png",
+      "docs/product/evidence-empty.png",
+      "docs/product/evidence-trace.png"
+     ]
+    }
+   }
+  },
+  {
+   "number": 22,
+   "title": "S-031: hiring capability & R&D evidence study - 100 AI preliminary labels, 8 deliverables, verifier v2 (research, do not merge)",
+   "state": "open",
+   "draft": true,
+   "base_ref": "main",
+   "base_is_main": true,
+   "head_ref": "research/s031-hiring-capability-study",
+   "head_sha": "e3e39d59e897fb9507dafd8ea44e5912e18545bb",
+   "created_at": "2026-11-05T20:33:06Z",
+   "updated_at": "2026-11-05T20:58:09Z",
+   "additions": 303926,
+   "deletions": 2,
+   "changed_files": 600,
+   "mergeable": true,
+   "mergeable_state": "clean",
+   "local_ref_present": true,
+   "labels": [],
+   "body_excerpt": "## What this is\n\n**S-031 — Technical Hiring Capability & R&D Evidence Study.** An audit-first study of **100 real hiring postings** from five medtech careers sites (Medtronic, GE HealthCare, Philips, Dräger, Mindray), asking one narrow question: *how far can a public job ad be read as evidence of a technical capability requirement, without turning sales activity, product context or ordinary hiring into a claim about R&D strategy?*\n\nThis PR completes the branch Kimi produced. The earlier push stalled on the two large text artifacts: `S031_AI_PRELABELS.jsonl` and `audit/legacy_rule_comparison.js",
+   "tip_date": "2026-11-06T04:57:36+08:00",
+   "diff_vs_main": {
+    "files": 600,
+    "additions": 303926,
+    "deletions": 2
+   },
+   "divergence_vs_main": {
+    "ahead": 83,
+    "behind": 0
+   },
+   "diff_vs_declared_base": {
+    "files": 600,
+    "additions": 303926,
+    "deletions": 2
+   },
+   "merge_probe_main": {
+    "local_clean": true,
+    "conflicts": []
+   },
+   "changed_paths_sample": [
+    {
+     "status": "M",
+     "path": ".gitattributes"
+    },
+    {
+     "status": "M",
+     "path": ".github/workflows/ci.yml"
+    },
+    {
+     "status": "A",
+     "path": ".github/workflows/observatory.yml"
+    },
+    {
+     "status": "M",
+     "path": ".gitignore"
+    },
+    {
+     "status": "M",
+     "path": "CHANGELOG.md"
+    },
+    {
+     "status": "A",
+     "path": "OVERNIGHT_RESEARCH_REPORT.zh-CN.md"
+    },
+    {
+     "status": "A",
+     "path": "PHASE4_RESEARCH_REPORT.zh-CN.md"
+    },
+    {
+     "status": "M",
+     "path": "README.md"
+    },
+    {
+     "status": "A",
+     "path": "S031_DELIVERY_MANIFEST.json"
+    },
+    {
+     "status": "A",
+     "path": "config/recruitment_function_classes.json"
+    },
+    {
+     "status": "A",
+     "path": "deploy/systemd/README.md"
+    },
+    {
+     "status": "A",
+     "path": "deploy/systemd/medradar-observatory.service"
+    },
+    {
+     "status": "A",
+     "path": "deploy/systemd/medradar-observatory.timer"
+    },
+    {
+     "status": "A",
+     "path": "deploy/windows/README.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/BACKUP_AND_RECOVERY.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/CONTINUOUS_VALIDATION_PROTOCOL.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/DEPLOYMENT.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/HEALTH_AND_VALIDATION.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/LIVE_OBSERVATORY.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/LIVE_OBSERVATORY_ACCEPTANCE.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/LIVE_OBSERVATORY_DESIGN.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/PRODUCT_ACCEPTANCE.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/PRODUCT_ARCHITECTURE.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/PRODUCT_ROADMAP.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/PRODUCT_STATISTICAL_AUDIT.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/PRODUCT_USER_GUIDE.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/PRODUCT_VISION.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/PROSPECTIVE_OBSERVATION_REGISTRY.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/RELIABILITY_ACCEPTANCE.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/RELIABILITY_DESIGN.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/audit_report_example.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/observatory/evidence/02_sec_second_run_idempotent_20261103T143958Z.json"
+    },
+    {
+     "status": "A",
+     "path": "docs/observatory/evidence/05_replay_before_20261103T144351Z.json"
+    },
+    {
+     "status": "A",
+     "path": "docs/observatory/evidence/06_replay_after_20261103T144351Z.json"
+    },
+    {
+     "status": "A",
+     "path": "docs/observatory/evidence/08_full_sync_20261103T144424Z.json"
+    },
+    {
+     "status": "A",
+     "path": "docs/observatory/evidence/09_final_ledger_evidence.json"
+    },
+    {
+     "status": "A",
+     "path": "docs/observatory/evidence/10_replay_demo.json"
+    },
+    {
+     "status": "A",
+     "path": "docs/observatory/evidence/11_sec_observation_timeline.json"
+    },
+    {
+     "status": "A",
+     "path": "docs/observatory/evidence/12_final_sync_pass1.json"
+    },
+    {
+     "status": "A",
+     "path": "docs/observatory/evidence/13_final_sync_pass2.json"
+    },
+    {
+     "status": "A",
+     "path": "docs/observatory/evidence/14_final_sync_pass3.json"
+    },
+    {
+     "status": "A",
+     "path": "docs/observatory/evidence/15_structure_stable_pass6.json"
+    },
+    {
+     "status": "A",
+     "path": "docs/observatory/evidence/16_acceptance_report_full.json"
+    },
+    {
+     "status": "A",
+     "path": "docs/observatory/evidence/17_product_e2e_report.json"
+    },
+    {
+     "status": "A",
+     "path": "docs/product/analyst.png"
+    },
+    {
+     "status": "A",
+     "path": "docs/product/company-mindray.png"
+    },
+    {
+     "status": "A",
+     "path": "docs/product/compare.png"
+    },
+    {
+     "status": "A",
+     "path": "docs/product/evidence-empty.png"
+    },
+    {
+     "status": "A",
+     "path": "docs/product/evidence-trace.png"
+    },
+    {
+     "status": "A",
+     "path": "docs/product/mobile-company.png"
+    },
+    {
+     "status": "A",
+     "path": "docs/product/overview.png"
+    },
+    {
+     "status": "A",
+     "path": "docs/product/radar-respiratory.png"
+    },
+    {
+     "status": "A",
+     "path": "docs/reliability/evidence/audit_report.json"
+    },
+    {
+     "status": "A",
+     "path": "docs/reliability/evidence/audit_report.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/reliability/evidence/backup_and_restore.json"
+    },
+    {
+     "status": "A",
+     "path": "docs/reliability/evidence/concurrency_refusal_live.json"
+    },
+    {
+     "status": "A",
+     "path": "docs/reliability/evidence/dependency_health_and_validation.json"
+    },
+    {
+     "status": "A",
+     "path": "docs/reliability/evidence/final_acceptance_evidence.json"
+    },
+    {
+     "status": "A",
+     "path": "docs/reliability/evidence/full_bundle.json"
+    },
+    {
+     "status": "A",
+     "path": "docs/reliability/evidence/product_e2e_report.json"
+    }
+   ],
+   "changed_path_count": 600,
+   "risk_path_hits": {
+    "large_binary": {
+     "count": 10,
+     "examples": [
+      "docs/product/analyst.png",
+      "docs/product/company-mindray.png",
+      "docs/product/compare.png",
+      "docs/product/evidence-empty.png",
+      "docs/product/evidence-trace.png"
+     ]
+    }
+   }
+  },
+  {
+   "number": 23,
+   "title": "PHOENIX-001: External methods audit and reproducible experiments",
+   "state": "open",
+   "draft": true,
+   "base_ref": "main",
+   "base_is_main": true,
+   "head_ref": "research/phoenix-001-external-methods",
+   "head_sha": "bd2f839033b507bba312fb23ad024ee27fc3dabb",
+   "created_at": "2026-11-05T23:32:53Z",
+   "updated_at": "2026-11-06T01:16:11Z",
+   "additions": 6075,
+   "deletions": 0,
+   "changed_files": 40,
+   "mergeable": true,
+   "mergeable_state": "clean",
+   "local_ref_present": true,
+   "labels": [],
+   "body_excerpt": "## 研究总结\n\nPHOENIX-001 已完成：审计 13 个外部项目，复现可迁移方法，并在相同三个 holdout 原点下比较 20 个方法。工作仅在 `research/phoenix-001-external-methods`，未修改 `main`、历史数据库、冻结模型或既有结果，不自动合并。\n\n核心结果：\n\n- **H1 supported**：pair persistence AP=0.791259，高于发生率 0.420195、公司 0.570689、赛道 0.506832。\n- **H9 refuted（当前协议范围）**：多源融合未稳定超过最强单源。Continuation 监管单源 AP=0.793476，全源融合 0.786696；entry 共享财务 0.116347，全源融合 0.097863。\n- **H5/H6 blocked**：缺试验→FDA 成熟目标和 MedRadar HHI→扩散面板。\n- **H2/H3/H4/H7/H8/H10 inconclusive**：联合特征不能替代单列消融，变化检测无正新颖性证据，复杂模型未稳定超过持续性基线。\n- 所有预测结果均为**类别 3：历史模拟预测**，不是类别 4 独立前瞻验证。\n\n## 交付清单\n\n### A. 全球项目技术图谱\n\n- `docs/PHOENIX_EXTERNAL_PROJECT_R",
+   "tip_date": "2026-11-06T01:15:07Z",
+   "diff_vs_main": {
+    "files": 40,
+    "additions": 6075,
+    "deletions": 0
+   },
+   "divergence_vs_main": {
+    "ahead": 16,
+    "behind": 0
+   },
+   "diff_vs_declared_base": {
+    "files": 40,
+    "additions": 6075,
+    "deletions": 0
+   },
+   "merge_probe_main": {
+    "local_clean": true,
+    "conflicts": []
+   },
+   "changed_paths_sample": [
+    {
+     "status": "A",
+     "path": "docs/PHOENIX_CANDIDATE_MODULES.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/PHOENIX_EXTERNAL_PROJECT_REGISTER.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/PHOENIX_INNOVATION_OPPORTUNITIES.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/PHOENIX_LICENSE_AUDIT.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/PHOENIX_METHOD_COMPARISON.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/PHOENIX_NEXT_ROADMAP.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/PHOENIX_REA_AUDIT.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/PHOENIX_REPRODUCTION_REPORT.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/PHOENIX_RESEARCH_PROTOCOL.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/PHOENIX_SUMMARY.md"
+    },
+    {
+     "status": "A",
+     "path": "experiments/phoenix_001/asset_audit.json"
+    },
+    {
+     "status": "A",
+     "path": "experiments/phoenix_001/audit_assets.py"
+    },
+    {
+     "status": "A",
+     "path": "experiments/phoenix_001/build_method_comparison.py"
+    },
+    {
+     "status": "A",
+     "path": "experiments/phoenix_001/delivery.json"
+    },
+    {
+     "status": "A",
+     "path": "experiments/phoenix_001/evidence_contract.py"
+    },
+    {
+     "status": "A",
+     "path": "experiments/phoenix_001/external_projects.json"
+    },
+    {
+     "status": "A",
+     "path": "experiments/phoenix_001/fda_ai_longitudinal.py"
+    },
+    {
+     "status": "A",
+     "path": "experiments/phoenix_001/fda_ai_longitudinal_results.json"
+    },
+    {
+     "status": "A",
+     "path": "experiments/phoenix_001/hypotheses.json"
+    },
+    {
+     "status": "A",
+     "path": "experiments/phoenix_001/logs/index.json"
+    },
+    {
+     "status": "A",
+     "path": "experiments/phoenix_001/method_comparison.json"
+    },
+    {
+     "status": "A",
+     "path": "experiments/phoenix_001/pubtrends_smoke.py"
+    },
+    {
+     "status": "A",
+     "path": "experiments/phoenix_001/pubtrends_smoke_results.json"
+    },
+    {
+     "status": "A",
+     "path": "experiments/phoenix_001/rea_audit.json"
+    },
+    {
+     "status": "A",
+     "path": "experiments/phoenix_001/run_logged.py"
+    },
+    {
+     "status": "A",
+     "path": "experiments/phoenix_001/scitreands_crispr_lags.json"
+    },
+    {
+     "status": "A",
+     "path": "experiments/phoenix_001/scitreands_crispr_lags.py"
+    },
+    {
+     "status": "A",
+     "path": "experiments/phoenix_001/scitreands_reproduce.py"
+    },
+    {
+     "status": "A",
+     "path": "experiments/phoenix_001/scitreands_results.json"
+    },
+    {
+     "status": "A",
+     "path": "experiments/phoenix_001/stage_002_results.json"
+    },
+    {
+     "status": "A",
+     "path": "experiments/phoenix_001/stage_003_results.json"
+    },
+    {
+     "status": "A",
+     "path": "experiments/phoenix_001/stage_004_results.json"
+    },
+    {
+     "status": "A",
+     "path": "experiments/phoenix_001/stage_005_results.json"
+    },
+    {
+     "status": "A",
+     "path": "experiments/phoenix_001/stage_006_results.json"
+    },
+    {
+     "status": "A",
+     "path": "tests/test_phoenix_001.py"
+    },
+    {
+     "status": "M",
+     "path": "verifier/README.md"
+    },
+    {
+     "status": "A",
+     "path": "verifier/run_v2.py"
+    },
+    {
+     "status": "A",
+     "path": "verifier/runs/v2_index.json"
+    },
+    {
+     "status": "A",
+     "path": "verifier/v2/criteria.md"
+    },
+    {
+     "status": "A",
+     "path": "verifier/v2/verify.py"
+    }
+   ],
+   "changed_path_count": 40,
+   "risk_path_hits": {}
+  },
+  {
+   "number": 24,
+   "title": "PHOENIX-001 round 2: frozen protocol, ten pre-registered experiments, 13-project register, and an entity-attribution prototype (research, do not merge)",
+   "state": "open",
+   "draft": true,
+   "base_ref": "main",
+   "base_is_main": true,
+   "head_ref": "research/phoenix-001-round2",
+   "head_sha": "cd63c7245b13e8278b4dd0a228ff327d18d0d3f7",
+   "created_at": "2026-11-08T17:16:16Z",
+   "updated_at": "2026-11-08T17:16:16Z",
+   "additions": 158731,
+   "deletions": 0,
+   "changed_files": 166,
+   "mergeable": true,
+   "mergeable_state": "clean",
+   "local_ref_present": true,
+   "labels": [],
+   "body_excerpt": "# PHOENIX-001 · Round 2 — external methods, a frozen protocol, and ten pre-registered experiments\n\n> **Draft. Do not merge.** Independent research branch, no changes to `main`.\n> **Relationship to PR #23**: #23 is Round 1 of PHOENIX-001 (branch `research/phoenix-001-external-methods`, 16 commits). This PR is a **separate Round 2** and does not modify, revert or rebase Round 1. Round 1's files (`docs/PHOENIX_*.md`, `experiments/phoenix_001/`) remain untouched. This round adds `docs/phoenix/` and `experiments/phoenix/` and does not collide with them.\n> Why a second round: Round 1 organised the a",
+   "tip_date": "2026-11-09T01:13:26+08:00",
+   "diff_vs_main": {
+    "files": 166,
+    "additions": 158731,
+    "deletions": 0
+   },
+   "divergence_vs_main": {
+    "ahead": 7,
+    "behind": 0
+   },
+   "diff_vs_declared_base": {
+    "files": 166,
+    "additions": 158731,
+    "deletions": 0
+   },
+   "merge_probe_main": {
+    "local_clean": true,
+    "conflicts": []
+   },
+   "changed_paths_sample": [
+    {
+     "status": "A",
+     "path": "docs/PHOENIX_EXTERNAL_PROJECT_REGISTER.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/PHOENIX_LICENSE_AUDIT.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/PHOENIX_REPRODUCTION_REPORT.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/phoenix/EXPERIMENTS_CELL_H1_H2_H4_H5_H10.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/phoenix/EXPERIMENTS_TRACK_H3_H6_H7_H8_H9.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/phoenix/INNOVATION_RAEA.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/phoenix/PHOENIX_FROZEN_PROTOCOL.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/phoenix/PHOENIX_GAP_AND_OPPORTUNITY.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/phoenix/PHOENIX_ROADMAP.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/phoenix/README.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/phoenix/REA_VALIDATION.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/phoenix/audits/A00_commercial_synthesis.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/phoenix/audits/A01_scitrends.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/phoenix/audits/A02_pubtrends.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/phoenix/audits/A03_nih_isearch.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/phoenix/audits/A04_the_lens.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/phoenix/audits/A05_ptns.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/phoenix/audits/A06_fda_ai_device_longitudinal.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/phoenix/audits/A07_clarivate_drg_medtech.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/phoenix/audits/A08_medvantage.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/phoenix/audits/A09_cmop.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/phoenix/audits/A10_nextdevice.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/phoenix/audits/A11_gbi_devint.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/phoenix/audits/A12_devicepro.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/phoenix/audits/A13_joinchain.md"
+    },
+    {
+     "status": "A",
+     "path": "experiments/phoenix/.gitignore"
+    },
+    {
+     "status": "A",
+     "path": "experiments/phoenix/baseline_bridge/results/baseline_bridge.json"
+    },
+    {
+     "status": "A",
+     "path": "experiments/phoenix/baseline_bridge/run_bridge.py"
+    },
+    {
+     "status": "A",
+     "path": "experiments/phoenix/baseline_bridge/show.py"
+    },
+    {
+     "status": "A",
+     "path": "experiments/phoenix/common/phoenix_common.py"
+    },
+    {
+     "status": "A",
+     "path": "experiments/phoenix/evidence/05_validity_run.log"
+    },
+    {
+     "status": "A",
+     "path": "experiments/phoenix/evidence/baseline_bridge.log"
+    },
+    {
+     "status": "A",
+     "path": "experiments/phoenix/evidence/pytest_full.log"
+    },
+    {
+     "status": "A",
+     "path": "experiments/phoenix/evidence/raea_distinct_review.log"
+    },
+    {
+     "status": "A",
+     "path": "experiments/phoenix/evidence/raea_run.log"
+    },
+    {
+     "status": "A",
+     "path": "experiments/phoenix/evidence/raea_run2.log"
+    },
+    {
+     "status": "A",
+     "path": "experiments/phoenix/evidence/raea_run3.log"
+    },
+    {
+     "status": "A",
+     "path": "experiments/phoenix/evidence/raea_selftest.log"
+    },
+    {
+     "status": "A",
+     "path": "experiments/phoenix/evidence/raea_summary.log"
+    },
+    {
+     "status": "A",
+     "path": "experiments/phoenix/external/commercial_audit_summary.json"
+    },
+    {
+     "status": "A",
+     "path": "experiments/phoenix/external/methods/build_records.py"
+    },
+    {
+     "status": "A",
+     "path": "experiments/phoenix/external/methods/era_stats.py"
+    },
+    {
+     "status": "A",
+     "path": "experiments/phoenix/external/methods/evidence.json"
+    },
+    {
+     "status": "A",
+     "path": "experiments/phoenix/external/methods/hhi.py"
+    },
+    {
+     "status": "A",
+     "path": "experiments/phoenix/external/methods/selftest_synthetic.py"
+    },
+    {
+     "status": "A",
+     "path": "experiments/phoenix/external/methods/trajectory_features.py"
+    },
+    {
+     "status": "A",
+     "path": "experiments/phoenix/external/methods_audit_summary.json"
+    },
+    {
+     "status": "A",
+     "path": "experiments/phoenix/external/oss_audit_summary.json"
+    },
+    {
+     "status": "A",
+     "path": "experiments/phoenix/external/pubtrends/evidence.json"
+    },
+    {
+     "status": "A",
+     "path": "experiments/phoenix/external/pubtrends/pt_repro.py"
+    },
+    {
+     "status": "A",
+     "path": "experiments/phoenix/external/pubtrends/pt_results.json"
+    },
+    {
+     "status": "A",
+     "path": "experiments/phoenix/external/scitrends/evidence.json"
+    },
+    {
+     "status": "A",
+     "path": "experiments/phoenix/external/scitrends/sci_repro.py"
+    },
+    {
+     "status": "A",
+     "path": "experiments/phoenix/external/scitrends/sci_results.json"
+    },
+    {
+     "status": "A",
+     "path": "experiments/phoenix/hypotheses/cell/audit_cell.py"
+    },
+    {
+     "status": "A",
+     "path": "experiments/phoenix/hypotheses/cell/build_panel.py"
+    },
+    {
+     "status": "A",
+     "path": "experiments/phoenix/hypotheses/cell/cache/cell_metrics_L000.json"
+    },
+    {
+     "status": "A",
+     "path": "experiments/phoenix/hypotheses/cell/cache/cell_metrics_L090.json"
+    },
+    {
+     "status": "A",
+     "path": "experiments/phoenix/hypotheses/cell/cache/cell_metrics_L180.json"
+    },
+    {
+     "status": "A",
+     "path": "experiments/phoenix/hypotheses/cell/cache/panel_meta.json"
+    }
+   ],
+   "changed_path_count": 166,
+   "risk_path_hits": {
+    "sqlite_db": {
+     "count": 1,
+     "examples": [
+      "experiments/phoenix/rea/fixtures/sample.sqlite"
+     ]
+    }
+   }
+  },
+  {
+   "number": 25,
+   "title": "PHOENIX-002: independent H8 re-validation - methodology audit and a NO-GO verdict (research, do not merge)",
+   "state": "open",
+   "draft": true,
+   "base_ref": "research/phoenix-001-round2",
+   "base_is_main": false,
+   "head_ref": "research/phoenix-002-h8-validation",
+   "head_sha": "c826703126f7a26ce5671e800bcc2882e2c9c101",
+   "created_at": "2026-11-08T19:39:09Z",
+   "updated_at": "2026-11-08T19:44:27Z",
+   "additions": 58438,
+   "deletions": 0,
+   "changed_files": 59,
+   "mergeable": true,
+   "mergeable_state": "clean",
+   "local_ref_present": true,
+   "labels": [],
+   "body_excerpt": "## PHOENIX-002：MedRadar 历史规律独立验证与技术早期信号研究（Draft，不合并）\n\n本 PR 以 **PR #24 的研究分支 `research/phoenix-001-round2` 为比较基准**（PR #23/#24 均为 Draft 且未合并）。\n它**不修改 PHOENIX-001 的任何冻结文件**，不写数据库，不新增依赖，不做实时采集/前端/大模型训练。\n目标只有一个：**尽可能严格地尝试推翻 PHOENIX-001 唯一成立的预测结论 H8**，并如实报告结果。\n\n### 一、方法学审计（三个独立审计者 + 可重跑脚本）\n\n| 审计 | 核心发现 |\n|---|---|\n| **A 训练标签成熟时间** | 每个实际执行的 walk-forward 折都存在未成熟训练标签。T-TRACK 在 L=90 下 **7.82%（2,553/32,632）** 的训练行使用其标签在测试决策时尚未可观测，且同比例标签由**测试期内事件**决定；T-CELL 同缺陷（8.89%）。另有第二个问题：v1 把 2024Q3–2025Q2 的 236 个可标注测试行截断丢弃，实际只跑 **11 折**（文档写 12 折）。 |\n| **B 历史风险集** | 59 赛道 = 38 器械赛道 + **21 个整库从未有器械事件的 `t_*` 试验赛道**（占面",
+   "tip_date": "2026-11-09T03:44:23+08:00",
+   "diff_vs_main": {
+    "files": 225,
+    "additions": 217169,
+    "deletions": 0
+   },
+   "divergence_vs_main": {
+    "ahead": 10,
+    "behind": 0
+   },
+   "diff_vs_declared_base": {
+    "files": 59,
+    "additions": 58438,
+    "deletions": 0
+   },
+   "merge_probe_main": {
+    "local_clean": true,
+    "conflicts": []
+   },
+   "changed_paths_sample": [
+    {
+     "status": "A",
+     "path": "docs/PHOENIX_EXTERNAL_PROJECT_REGISTER.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/PHOENIX_LICENSE_AUDIT.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/PHOENIX_REPRODUCTION_REPORT.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/phoenix/EXPERIMENTS_CELL_H1_H2_H4_H5_H10.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/phoenix/EXPERIMENTS_TRACK_H3_H6_H7_H8_H9.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/phoenix/INNOVATION_RAEA.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/phoenix/PHOENIX_002_CONCLUSION_AND_NEXT_STEPS.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/phoenix/PHOENIX_002_H8_RESULTS.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/phoenix/PHOENIX_002_METHOD_AUDIT.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/phoenix/PHOENIX_002_PROTOCOL.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/phoenix/PHOENIX_FROZEN_PROTOCOL.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/phoenix/PHOENIX_GAP_AND_OPPORTUNITY.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/phoenix/PHOENIX_ROADMAP.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/phoenix/README.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/phoenix/REA_VALIDATION.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/phoenix/audits/A00_commercial_synthesis.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/phoenix/audits/A01_scitrends.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/phoenix/audits/A02_pubtrends.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/phoenix/audits/A03_nih_isearch.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/phoenix/audits/A04_the_lens.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/phoenix/audits/A05_ptns.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/phoenix/audits/A06_fda_ai_device_longitudinal.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/phoenix/audits/A07_clarivate_drg_medtech.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/phoenix/audits/A08_medvantage.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/phoenix/audits/A09_cmop.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/phoenix/audits/A10_nextdevice.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/phoenix/audits/A11_gbi_devint.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/phoenix/audits/A12_devicepro.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/phoenix/audits/A13_joinchain.md"
+    },
+    {
+     "status": "A",
+     "path": "experiments/phoenix/.gitignore"
+    },
+    {
+     "status": "A",
+     "path": "experiments/phoenix/baseline_bridge/results/baseline_bridge.json"
+    },
+    {
+     "status": "A",
+     "path": "experiments/phoenix/baseline_bridge/run_bridge.py"
+    },
+    {
+     "status": "A",
+     "path": "experiments/phoenix/baseline_bridge/show.py"
+    },
+    {
+     "status": "A",
+     "path": "experiments/phoenix/common/phoenix_common.py"
+    },
+    {
+     "status": "A",
+     "path": "experiments/phoenix/evidence/05_validity_run.log"
+    },
+    {
+     "status": "A",
+     "path": "experiments/phoenix/evidence/baseline_bridge.log"
+    },
+    {
+     "status": "A",
+     "path": "experiments/phoenix/evidence/pytest_full.log"
+    },
+    {
+     "status": "A",
+     "path": "experiments/phoenix/evidence/raea_distinct_review.log"
+    },
+    {
+     "status": "A",
+     "path": "experiments/phoenix/evidence/raea_run.log"
+    },
+    {
+     "status": "A",
+     "path": "experiments/phoenix/evidence/raea_run2.log"
+    },
+    {
+     "status": "A",
+     "path": "experiments/phoenix/evidence/raea_run3.log"
+    },
+    {
+     "status": "A",
+     "path": "experiments/phoenix/evidence/raea_selftest.log"
+    },
+    {
+     "status": "A",
+     "path": "experiments/phoenix/evidence/raea_summary.log"
+    },
+    {
+     "status": "A",
+     "path": "experiments/phoenix/external/commercial_audit_summary.json"
+    },
+    {
+     "status": "A",
+     "path": "experiments/phoenix/external/methods/build_records.py"
+    },
+    {
+     "status": "A",
+     "path": "experiments/phoenix/external/methods/era_stats.py"
+    },
+    {
+     "status": "A",
+     "path": "experiments/phoenix/external/methods/evidence.json"
+    },
+    {
+     "status": "A",
+     "path": "experiments/phoenix/external/methods/hhi.py"
+    },
+    {
+     "status": "A",
+     "path": "experiments/phoenix/external/methods/selftest_synthetic.py"
+    },
+    {
+     "status": "A",
+     "path": "experiments/phoenix/external/methods/trajectory_features.py"
+    },
+    {
+     "status": "A",
+     "path": "experiments/phoenix/external/methods_audit_summary.json"
+    },
+    {
+     "status": "A",
+     "path": "experiments/phoenix/external/oss_audit_summary.json"
+    },
+    {
+     "status": "A",
+     "path": "experiments/phoenix/external/pubtrends/evidence.json"
+    },
+    {
+     "status": "A",
+     "path": "experiments/phoenix/external/pubtrends/pt_repro.py"
+    },
+    {
+     "status": "A",
+     "path": "experiments/phoenix/external/pubtrends/pt_results.json"
+    },
+    {
+     "status": "A",
+     "path": "experiments/phoenix/external/scitrends/evidence.json"
+    },
+    {
+     "status": "A",
+     "path": "experiments/phoenix/external/scitrends/sci_repro.py"
+    },
+    {
+     "status": "A",
+     "path": "experiments/phoenix/external/scitrends/sci_results.json"
+    },
+    {
+     "status": "A",
+     "path": "experiments/phoenix/h8_validation_v2/README.md"
+    },
+    {
+     "status": "A",
+     "path": "experiments/phoenix/h8_validation_v2/_smoke_replication.py"
+    }
+   ],
+   "changed_path_count": 225,
+   "risk_path_hits": {
+    "sqlite_db": {
+     "count": 1,
+     "examples": [
+      "experiments/phoenix/rea/fixtures/sample.sqlite"
+     ]
+    }
+   }
+  },
+  {
+   "number": 26,
+   "title": "PHOENIX-003: regulatory-anchored early-evidence discovery - rigorous NO-GO, a reusable control battery, and a 28-case pre-regulatory series (research, do not merge)",
+   "state": "open",
+   "draft": true,
+   "base_ref": "main",
+   "base_is_main": true,
+   "head_ref": "research/phoenix-003-early-evidence",
+   "head_sha": "91495bce95bd7e78231c91f1ea33d6aed851682c",
+   "created_at": "2026-11-08T21:19:44Z",
+   "updated_at": "2026-11-08T21:38:58Z",
+   "additions": 197464,
+   "deletions": 0,
+   "changed_files": 104,
+   "mergeable": true,
+   "mergeable_state": "clean",
+   "local_ref_present": true,
+   "labels": [],
+   "body_excerpt": "# PHOENIX-003 — Regulatory-anchored early-evidence discovery\n\n**Draft, do not merge.** Research branch; main is protected from research artefacts by the\nproject's own convention (PRs #15, #16, #20–#25 are all Draft for the same reason).\n\n**Verdict: `NO-GO`.** Reported as the result, not as a failure. The positive deliverable is a\nreusable anchor-and-control instrument plus a bounded 28-case evidence series, not a signal.\n\n---\n\n## What the round asked\n\n> Before a medical-device firm reaches an important regulatory milestone, does an independent\n> public source already describe the related techn",
+   "tip_date": "2026-11-09T05:38:50+08:00",
+   "diff_vs_main": {
+    "files": 104,
+    "additions": 197464,
+    "deletions": 0
+   },
+   "divergence_vs_main": {
+    "ahead": 4,
+    "behind": 0
+   },
+   "diff_vs_declared_base": {
+    "files": 104,
+    "additions": 197464,
+    "deletions": 0
+   },
+   "merge_probe_main": {
+    "local_clean": true,
+    "conflicts": []
+   },
+   "changed_paths_sample": [
+    {
+     "status": "M",
+     "path": ".github/workflows/ci.yml"
+    },
+    {
+     "status": "A",
+     "path": "docs/phoenix003/DATA_INTEGRITY_AUDIT.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/phoenix003/EXPERIMENT_RESULTS.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/phoenix003/FROZEN_PROTOCOL.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/phoenix003/INDEPENDENT_VERIFICATION.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/phoenix003/NEXT_EXPERIMENT.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/phoenix003/SCIENTIFIC_CONCLUSION.md"
+    },
+    {
+     "status": "A",
+     "path": "experiments/phoenix003/.gitignore"
+    },
+    {
+     "status": "A",
+     "path": "experiments/phoenix003/EVIDENCE_LINKS.jsonl"
+    },
+    {
+     "status": "A",
+     "path": "experiments/phoenix003/FROZEN_RULES.json"
+    },
+    {
+     "status": "A",
+     "path": "experiments/phoenix003/HUMAN_REVIEW_QUEUE.csv"
+    },
+    {
+     "status": "A",
+     "path": "experiments/phoenix003/HUMAN_REVIEW_QUEUE.md"
+    },
+    {
+     "status": "A",
+     "path": "experiments/phoenix003/README.md"
+    },
+    {
+     "status": "A",
+     "path": "experiments/phoenix003/REGULATORY_ANCHORS.jsonl"
+    },
+    {
+     "status": "A",
+     "path": "experiments/phoenix003/code/a1_anchors.py"
+    },
+    {
+     "status": "A",
+     "path": "experiments/phoenix003/code/b2_novelty.py"
+    },
+    {
+     "status": "A",
+     "path": "experiments/phoenix003/code/b_links.py"
+    },
+    {
+     "status": "A",
+     "path": "experiments/phoenix003/code/c_controls.py"
+    },
+    {
+     "status": "A",
+     "path": "experiments/phoenix003/code/d_leadtime.py"
+    },
+    {
+     "status": "A",
+     "path": "experiments/phoenix003/code/e_review_queue.py"
+    },
+    {
+     "status": "A",
+     "path": "experiments/phoenix003/code/freeze_epmc_df.py"
+    },
+    {
+     "status": "A",
+     "path": "experiments/phoenix003/code/freeze_vocab.py"
+    },
+    {
+     "status": "A",
+     "path": "experiments/phoenix003/code/phoenix003_common.py"
+    },
+    {
+     "status": "A",
+     "path": "experiments/phoenix003/code/run_pipeline.py"
+    },
+    {
+     "status": "A",
+     "path": "experiments/phoenix003/code/selftest_offline.py"
+    },
+    {
+     "status": "A",
+     "path": "experiments/phoenix003/dataset/ctgov_compact.jsonl.gz"
+    },
+    {
+     "status": "A",
+     "path": "experiments/phoenix003/dataset/ctgov_ext_compact.jsonl.gz"
+    },
+    {
+     "status": "A",
+     "path": "experiments/phoenix003/dataset/epmc_compact.jsonl.gz"
+    },
+    {
+     "status": "A",
+     "path": "experiments/phoenix003/dataset/epmc_df_meta.json"
+    },
+    {
+     "status": "A",
+     "path": "experiments/phoenix003/dataset/epmc_ext_compact.jsonl.gz"
+    },
+    {
+     "status": "A",
+     "path": "experiments/phoenix003/dataset/epmc_rare_tokens.txt"
+    },
+    {
+     "status": "A",
+     "path": "experiments/phoenix003/dataset/firm_lineage.json"
+    },
+    {
+     "status": "A",
+     "path": "experiments/phoenix003/dataset/frozen_vocab.json"
+    },
+    {
+     "status": "A",
+     "path": "experiments/phoenix003/dataset/name_stoplist_extra.txt"
+    },
+    {
+     "status": "A",
+     "path": "experiments/phoenix003/fetch/CTgov_FETCH_MANIFEST.json"
+    },
+    {
+     "status": "A",
+     "path": "experiments/phoenix003/fetch/EPMC_FETCH_MANIFEST.json"
+    },
+    {
+     "status": "A",
+     "path": "experiments/phoenix003/fetch/EXT_FETCH_MANIFEST.json"
+    },
+    {
+     "status": "A",
+     "path": "experiments/phoenix003/fetch/FETCH_SPEC.md"
+    },
+    {
+     "status": "A",
+     "path": "experiments/phoenix003/fetch/fetch_ctgov.py"
+    },
+    {
+     "status": "A",
+     "path": "experiments/phoenix003/fetch/fetch_ctgov_run.log"
+    },
+    {
+     "status": "A",
+     "path": "experiments/phoenix003/fetch/fetch_epmc.py"
+    },
+    {
+     "status": "A",
+     "path": "experiments/phoenix003/fetch/fetch_epmc_run.log"
+    },
+    {
+     "status": "A",
+     "path": "experiments/phoenix003/fetch/fetch_ext.py"
+    },
+    {
+     "status": "A",
+     "path": "experiments/phoenix003/fetch/fetch_ext_run.log"
+    },
+    {
+     "status": "A",
+     "path": "experiments/phoenix003/results/a1_canonical.json"
+    },
+    {
+     "status": "A",
+     "path": "experiments/phoenix003/results/b2_novelty.json"
+    },
+    {
+     "status": "A",
+     "path": "experiments/phoenix003/results/b_links.json"
+    },
+    {
+     "status": "A",
+     "path": "experiments/phoenix003/results/c_controls.json"
+    },
+    {
+     "status": "A",
+     "path": "experiments/phoenix003/results/d_leadtime.json"
+    },
+    {
+     "status": "A",
+     "path": "experiments/phoenix003/results/manifest.json"
+    },
+    {
+     "status": "A",
+     "path": "experiments/phoenix003/results/pipeline.log"
+    },
+    {
+     "status": "A",
+     "path": "experiments/phoenix003/results/verdict.json"
+    },
+    {
+     "status": "A",
+     "path": "experiments/phoenix003/verify/_anchor_state_console.txt"
+    },
+    {
+     "status": "A",
+     "path": "experiments/phoenix003/verify/_anchors_console.txt"
+    },
+    {
+     "status": "A",
+     "path": "experiments/phoenix003/verify/_attribution_console.txt"
+    },
+    {
+     "status": "A",
+     "path": "experiments/phoenix003/verify/_attribution_live_console.txt"
+    },
+    {
+     "status": "A",
+     "path": "experiments/phoenix003/verify/_case_console.txt"
+    },
+    {
+     "status": "A",
+     "path": "experiments/phoenix003/verify/_case_live_console.txt"
+    },
+    {
+     "status": "A",
+     "path": "experiments/phoenix003/verify/_final_console.txt"
+    },
+    {
+     "status": "A",
+     "path": "experiments/phoenix003/verify/_final_probe.py"
+    }
+   ],
+   "changed_path_count": 104,
+   "risk_path_hits": {
+    "credentials": {
+     "count": 1,
+     "examples": [
+      "experiments/phoenix003/dataset/epmc_rare_tokens.txt"
+     ]
+    },
+    "large_binary": {
+     "count": 4,
+     "examples": [
+      "experiments/phoenix003/dataset/ctgov_compact.jsonl.gz",
+      "experiments/phoenix003/dataset/ctgov_ext_compact.jsonl.gz",
+      "experiments/phoenix003/dataset/epmc_compact.jsonl.gz",
+      "experiments/phoenix003/dataset/epmc_ext_compact.jsonl.gz"
+     ]
+    }
+   }
+  },
+  {
+   "number": 27,
+   "title": "DATA-EXPANSION-001: global data-source discovery, live access verification, and increment experiments (DRAFT, do not merge)",
+   "state": "open",
+   "draft": true,
+   "base_ref": "main",
+   "base_is_main": true,
+   "head_ref": "research/data-expansion-001",
+   "head_sha": "192085e781976778f1e1638935c365e0a0ad5a5e",
+   "created_at": "2026-11-08T22:18:22Z",
+   "updated_at": "2026-11-08T22:19:38Z",
+   "additions": 260389,
+   "deletions": 0,
+   "changed_files": 916,
+   "mergeable": true,
+   "mergeable_state": "clean",
+   "local_ref_present": true,
+   "labels": [],
+   "body_excerpt": "# DATA-EXPANSION-001 · 全球医疗技术数据源发现、接入、整合与科研价值验证\n\n**状态：Draft（不合并）** · 分支 `research/data-expansion-001` 基于 `main` = `b2a14c0`（已核实的 main HEAD）\n**不修改 `main`、不修改 PHOENIX-001/002/003 的任何冻结资产、不修改既有科研数据库。**\n\n---\n\n## 本轮做了什么（一句话）\n\n调查 59 个全球数据源，**31 个在没有注册、没有付费、没有绕过任何访问控制的前提下用真实请求验证成功**；\n建立可重放的注册表、证据模型、连接器与三个预注册实验；最后的科学结论是**一个诚实的负面结果**。\n\n---\n\n## 交付物\n\n| 文件 | 内容 |\n|---|---|\n| `research/data_expansion/GLOBAL_DATA_SOURCE_REGISTER.json` | 59 源结构化注册表（文档层 + 探针层分离合并，0 validation problem） |\n| `research/data_expansion/GLOBAL_DATA_SOURCE_REPORT.md` | 中文综合报告，按 A–I 九大领域逐源分析 |\n| `research/data_expansion/ACCESS_VERIFIC",
+   "tip_date": "2026-11-09T06:19:29+08:00",
+   "diff_vs_main": {
+    "files": 916,
+    "additions": 260389,
+    "deletions": 0
+   },
+   "divergence_vs_main": {
+    "ahead": 7,
+    "behind": 0
+   },
+   "diff_vs_declared_base": {
+    "files": 916,
+    "additions": 260389,
+    "deletions": 0
+   },
+   "merge_probe_main": {
+    "local_clean": true,
+    "conflicts": []
+   },
+   "changed_paths_sample": [
+    {
+     "status": "M",
+     "path": ".gitignore"
+    },
+    {
+     "status": "A",
+     "path": "medradar/external_sources/__init__.py"
+    },
+    {
+     "status": "A",
+     "path": "medradar/external_sources/base.py"
+    },
+    {
+     "status": "A",
+     "path": "medradar/external_sources/identity.py"
+    },
+    {
+     "status": "A",
+     "path": "medradar/external_sources/procurement/__init__.py"
+    },
+    {
+     "status": "A",
+     "path": "medradar/external_sources/procurement/common.py"
+    },
+    {
+     "status": "A",
+     "path": "medradar/external_sources/procurement/greenhouse.py"
+    },
+    {
+     "status": "A",
+     "path": "medradar/external_sources/procurement/lever.py"
+    },
+    {
+     "status": "A",
+     "path": "medradar/external_sources/procurement/uk_find_a_tender.py"
+    },
+    {
+     "status": "A",
+     "path": "medradar/external_sources/procurement/usaspending.py"
+    },
+    {
+     "status": "A",
+     "path": "medradar/external_sources/registry.py"
+    },
+    {
+     "status": "A",
+     "path": "medradar/external_sources/regulatory/__init__.py"
+    },
+    {
+     "status": "A",
+     "path": "medradar/external_sources/regulatory/_common.py"
+    },
+    {
+     "status": "A",
+     "path": "medradar/external_sources/regulatory/accessgudid.py"
+    },
+    {
+     "status": "A",
+     "path": "medradar/external_sources/regulatory/canada_mdall.py"
+    },
+    {
+     "status": "A",
+     "path": "medradar/external_sources/regulatory/fda_gudid_download.py"
+    },
+    {
+     "status": "A",
+     "path": "medradar/external_sources/regulatory/openfda_bulk_download.py"
+    },
+    {
+     "status": "A",
+     "path": "medradar/external_sources/regulatory/openfda_device_510k.py"
+    },
+    {
+     "status": "A",
+     "path": "medradar/external_sources/regulatory/openfda_device_classification.py"
+    },
+    {
+     "status": "A",
+     "path": "medradar/external_sources/regulatory/openfda_device_pma.py"
+    },
+    {
+     "status": "A",
+     "path": "medradar/external_sources/regulatory/openfda_device_registrationlisting.py"
+    },
+    {
+     "status": "A",
+     "path": "medradar/external_sources/regulatory/postmarket_common.py"
+    },
+    {
+     "status": "A",
+     "path": "medradar/external_sources/regulatory/postmarket_fda_device_shortages.py"
+    },
+    {
+     "status": "A",
+     "path": "medradar/external_sources/regulatory/postmarket_fda_import_alerts.py"
+    },
+    {
+     "status": "A",
+     "path": "medradar/external_sources/regulatory/postmarket_openfda_device_maude.py"
+    },
+    {
+     "status": "A",
+     "path": "medradar/external_sources/regulatory/postmarket_openfda_device_recall.py"
+    },
+    {
+     "status": "A",
+     "path": "medradar/external_sources/regulatory/postmarket_series.py"
+    },
+    {
+     "status": "A",
+     "path": "medradar/external_sources/regulatory/probes.py"
+    },
+    {
+     "status": "A",
+     "path": "medradar/external_sources/schema.py"
+    },
+    {
+     "status": "A",
+     "path": "medradar/external_sources/scholarly/__init__.py"
+    },
+    {
+     "status": "A",
+     "path": "medradar/external_sources/scholarly/_common.py"
+    },
+    {
+     "status": "A",
+     "path": "medradar/external_sources/scholarly/crossref.py"
+    },
+    {
+     "status": "A",
+     "path": "medradar/external_sources/scholarly/dedupe.py"
+    },
+    {
+     "status": "A",
+     "path": "medradar/external_sources/scholarly/europepmc.py"
+    },
+    {
+     "status": "A",
+     "path": "medradar/external_sources/scholarly/linking.py"
+    },
+    {
+     "status": "A",
+     "path": "medradar/external_sources/scholarly/openalex.py"
+    },
+    {
+     "status": "A",
+     "path": "medradar/external_sources/scholarly/pubmed_eutils.py"
+    },
+    {
+     "status": "A",
+     "path": "medradar/external_sources/store.py"
+    },
+    {
+     "status": "A",
+     "path": "medradar/external_sources/timeq.py"
+    },
+    {
+     "status": "A",
+     "path": "medradar/external_sources/trade/__init__.py"
+    },
+    {
+     "status": "A",
+     "path": "medradar/external_sources/trade/eurostat_comext.py"
+    },
+    {
+     "status": "A",
+     "path": "medradar/external_sources/trade/uk_hmrc_trade.py"
+    },
+    {
+     "status": "A",
+     "path": "medradar/external_sources/trade/un_comtrade.py"
+    },
+    {
+     "status": "A",
+     "path": "medradar/external_sources/trials/__init__.py"
+    },
+    {
+     "status": "A",
+     "path": "medradar/external_sources/trials/_common.py"
+    },
+    {
+     "status": "A",
+     "path": "medradar/external_sources/trials/clinicaltrials_gov.py"
+    },
+    {
+     "status": "A",
+     "path": "medradar/external_sources/trials/nih_reporter.py"
+    },
+    {
+     "status": "A",
+     "path": "research/data_expansion/ACCESS_VERIFICATION.json"
+    },
+    {
+     "status": "A",
+     "path": "research/data_expansion/COLLECTION_PROTOCOL.md"
+    },
+    {
+     "status": "A",
+     "path": "research/data_expansion/CONNECTORS/README.md"
+    },
+    {
+     "status": "A",
+     "path": "research/data_expansion/DATA_QUALITY_REPORT.md"
+    },
+    {
+     "status": "A",
+     "path": "research/data_expansion/EXECUTIVE_SUMMARY_ZH.md"
+    },
+    {
+     "status": "A",
+     "path": "research/data_expansion/EXPERIMENT_DESIGN.md"
+    },
+    {
+     "status": "A",
+     "path": "research/data_expansion/EXTERNAL_EVIDENCE_SCHEMA.md"
+    },
+    {
+     "status": "A",
+     "path": "research/data_expansion/GLOBAL_DATA_SOURCE_REGISTER.json"
+    },
+    {
+     "status": "A",
+     "path": "research/data_expansion/GLOBAL_DATA_SOURCE_REPORT.md"
+    },
+    {
+     "status": "A",
+     "path": "research/data_expansion/LICENCE_AND_COST_AUDIT.md"
+    },
+    {
+     "status": "A",
+     "path": "research/data_expansion/PRIORITY_ROADMAP.md"
+    },
+    {
+     "status": "A",
+     "path": "research/data_expansion/SOURCE_INCREMENT_EXPERIMENT.md"
+    },
+    {
+     "status": "A",
+     "path": "research/data_expansion/experiments/RESULTS_TABLES.md"
+    }
+   ],
+   "changed_path_count": 916,
+   "risk_path_hits": {
+    "un_comtrade": {
+     "count": 11,
+     "examples": [
+      "medradar/external_sources/trade/un_comtrade.py",
+      "research/data_expansion/experiments/collection/requests_un_comtrade.jsonl",
+      "research/data_expansion/probes/un_comtrade/NOTES.md",
+      "research/data_expansion/probes/un_comtrade/PROBE_RESULT.json",
+      "research/data_expansion/probes/un_comtrade/requests.jsonl"
+     ]
+    },
+    "uk_find_a_tender": {
+     "count": 12,
+     "examples": [
+      "medradar/external_sources/procurement/uk_find_a_tender.py",
+      "research/data_expansion/experiments/collection/requests_uk_find_a_tender.jsonl",
+      "research/data_expansion/probes/uk_find_a_tender/NOTES.md",
+      "research/data_expansion/probes/uk_find_a_tender/PROBE_RESULT.json",
+      "research/data_expansion/probes/uk_find_a_tender/probe.py"
+     ]
+    },
+    "large_binary": {
+     "count": 2,
+     "examples": [
+      "research/data_expansion/samples/fda_gudid_download/daily_release_zip.zip",
+      "research/data_expansion/samples/openfda_bulk_download/classification_export_zip.zip"
+     ]
+    }
+   }
+  },
+  {
+   "number": 28,
+   "title": "ATLAS-001: identity, evidence and graph foundation (identity pilot + independent verification)",
+   "state": "open",
+   "draft": true,
+   "base_ref": "main",
+   "base_is_main": true,
+   "head_ref": "foundation/atlas-001",
+   "head_sha": "c63683631a1b277e2d27cfbe3adf6e133cf55e83",
+   "created_at": "2026-11-09T23:23:24Z",
+   "updated_at": "2026-11-10T17:50:09Z",
+   "additions": 18648,
+   "deletions": 0,
+   "changed_files": 70,
+   "mergeable": true,
+   "mergeable_state": "clean",
+   "local_ref_present": true,
+   "labels": [],
+   "body_excerpt": "## ATLAS-001 — research foundation: product identity, evidence, graph, historical state\n\n**Draft. Do not merge.** Additive: no existing table, frozen PHOENIX result, research database\nor `main` commit is modified. Cut from verified `main` `b2a14c0a92332c004445de686daee97754cf94cb`.\n\n### Why this branch exists\n\n`main` is a working research pipeline (1,074 offline tests green), but it has no canonical\ncompany/manufacturer/device model, no cross-registry identifier store, and no append-only\nevidence database outside the TKG module. Without those, a \"cross-source signal\" cannot be\ndistinguished fr",
+   "tip_date": "2026-11-11T01:49:23+08:00",
+   "diff_vs_main": {
+    "files": 70,
+    "additions": 18648,
+    "deletions": 0
+   },
+   "divergence_vs_main": {
+    "ahead": 4,
+    "behind": 0
+   },
+   "diff_vs_declared_base": {
+    "files": 70,
+    "additions": 18648,
+    "deletions": 0
+   },
+   "merge_probe_main": {
+    "local_clean": true,
+    "conflicts": []
+   },
+   "changed_paths_sample": [
+    {
+     "status": "A",
+     "path": ".github/workflows/atlas.yml"
+    },
+    {
+     "status": "M",
+     "path": ".gitignore"
+    },
+    {
+     "status": "M",
+     "path": "README.md"
+    },
+    {
+     "status": "A",
+     "path": "config/atlas_firms.json"
+    },
+    {
+     "status": "A",
+     "path": "config/atlas_sources.json"
+    },
+    {
+     "status": "A",
+     "path": "docs/atlas/ARCHITECTURE.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/atlas/DATA_SOURCE_INTEGRATION.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/atlas/EVIDENCE_MODEL.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/atlas/EXECUTIVE_SUMMARY_ZH.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/atlas/FOUNDATION_AUDIT.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/atlas/IDENTITY_MODEL.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/atlas/KNOWLEDGE_GRAPH.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/atlas/QUALITY_REPORT.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/atlas/RESEARCH_VALIDATION.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/atlas/ROADMAP.md"
+    },
+    {
+     "status": "A",
+     "path": "medradar/atlas/__init__.py"
+    },
+    {
+     "status": "A",
+     "path": "medradar/atlas/__main__.py"
+    },
+    {
+     "status": "A",
+     "path": "medradar/atlas/cli.py"
+    },
+    {
+     "status": "A",
+     "path": "medradar/atlas/config.py"
+    },
+    {
+     "status": "A",
+     "path": "medradar/atlas/connectors/__init__.py"
+    },
+    {
+     "status": "A",
+     "path": "medradar/atlas/connectors/accessgudid.py"
+    },
+    {
+     "status": "A",
+     "path": "medradar/atlas/connectors/base.py"
+    },
+    {
+     "status": "A",
+     "path": "medradar/atlas/connectors/canada_mdall.py"
+    },
+    {
+     "status": "A",
+     "path": "medradar/atlas/connectors/openfda_510k.py"
+    },
+    {
+     "status": "A",
+     "path": "medradar/atlas/connectors/openfda_udi.py"
+    },
+    {
+     "status": "A",
+     "path": "medradar/atlas/db/__init__.py"
+    },
+    {
+     "status": "A",
+     "path": "medradar/atlas/db/migrations.py"
+    },
+    {
+     "status": "A",
+     "path": "medradar/atlas/evidence/__init__.py"
+    },
+    {
+     "status": "A",
+     "path": "medradar/atlas/evidence/http.py"
+    },
+    {
+     "status": "A",
+     "path": "medradar/atlas/evidence/schema.py"
+    },
+    {
+     "status": "A",
+     "path": "medradar/atlas/evidence/timeq.py"
+    },
+    {
+     "status": "A",
+     "path": "medradar/atlas/graph/__init__.py"
+    },
+    {
+     "status": "A",
+     "path": "medradar/atlas/graph/build.py"
+    },
+    {
+     "status": "A",
+     "path": "medradar/atlas/graph/query.py"
+    },
+    {
+     "status": "A",
+     "path": "medradar/atlas/identity/__init__.py"
+    },
+    {
+     "status": "A",
+     "path": "medradar/atlas/identity/companies.py"
+    },
+    {
+     "status": "A",
+     "path": "medradar/atlas/identity/models.py"
+    },
+    {
+     "status": "A",
+     "path": "medradar/atlas/identity/normalize.py"
+    },
+    {
+     "status": "A",
+     "path": "medradar/atlas/identity/pilot.py"
+    },
+    {
+     "status": "A",
+     "path": "medradar/atlas/identity/resolver.py"
+    },
+    {
+     "status": "A",
+     "path": "medradar/atlas/quality/__init__.py"
+    },
+    {
+     "status": "A",
+     "path": "medradar/atlas/quality/checks.py"
+    },
+    {
+     "status": "A",
+     "path": "medradar/atlas/research/__init__.py"
+    },
+    {
+     "status": "A",
+     "path": "medradar/atlas/research/asof.py"
+    },
+    {
+     "status": "A",
+     "path": "medradar/atlas/research/prospective.py"
+    },
+    {
+     "status": "A",
+     "path": "medradar/atlas/store.py"
+    },
+    {
+     "status": "A",
+     "path": "research/atlas/reports/examples/as_of_observed_2026-11-10.json"
+    },
+    {
+     "status": "A",
+     "path": "research/atlas/reports/examples/as_of_public_2019-01-01.json"
+    },
+    {
+     "status": "A",
+     "path": "research/atlas/reports/examples/graph_build.json"
+    },
+    {
+     "status": "A",
+     "path": "research/atlas/reports/examples/prospective_list.json"
+    },
+    {
+     "status": "A",
+     "path": "research/atlas/reports/examples/prospective_register.json"
+    },
+    {
+     "status": "A",
+     "path": "research/atlas/reports/examples/query_company_medtronic.json"
+    },
+    {
+     "status": "A",
+     "path": "research/atlas/reports/examples/query_path_medtronic.json"
+    },
+    {
+     "status": "A",
+     "path": "research/atlas/reports/examples/query_rejections.json"
+    },
+    {
+     "status": "A",
+     "path": "research/atlas/reports/examples/query_relation_confirmed.json"
+    },
+    {
+     "status": "A",
+     "path": "research/atlas/reports/examples/query_research_candidates.json"
+    },
+    {
+     "status": "A",
+     "path": "research/atlas/reports/examples/query_tech_IYN.json"
+    },
+    {
+     "status": "A",
+     "path": "research/atlas/reports/identity_baseline_eval.json"
+    },
+    {
+     "status": "A",
+     "path": "research/atlas/reports/identity_pilot.json"
+    },
+    {
+     "status": "A",
+     "path": "research/atlas/reports/quality_report.json"
+    }
+   ],
+   "changed_path_count": 70,
+   "risk_path_hits": {}
+  },
+  {
+   "number": 29,
+   "title": "HORIZON-001: 全球数据前沿 — 两条免密专利通道、真实证据导出与三项实测实验（Draft）",
+   "state": "open",
+   "draft": true,
+   "base_ref": "main",
+   "base_is_main": true,
+   "head_ref": "research/horizon-001",
+   "head_sha": "2dcdc995102f094d723005c79bb9b0ec7d9737f7",
+   "created_at": "2026-11-09T23:34:57Z",
+   "updated_at": "2026-11-10T17:37:59Z",
+   "additions": 692975,
+   "deletions": 0,
+   "changed_files": 691,
+   "mergeable": true,
+   "mergeable_state": "clean",
+   "local_ref_present": true,
+   "labels": [],
+   "body_excerpt": "# HORIZON-001 — 全球医疗技术数据前沿探索与真实数据资产\n\n**Draft PR。不要自动合并。** 与 ATLAS-001 严格隔离：独立 worktree、独立分支、从\n`main` 的已核实 HEAD `b2a14c0` 起，只改 `research/horizon/`，不动 `medradar/`、\n`tests/`、`docs/`、PHOENIX 产物，不改 main。\n\n---\n\n## 一句话结论\n\n**专利缺口被补上了，而且是两次——两条都不需要 Key。** 同时测出了一个会毁掉四时钟模型\n的硬事实：**60% 的论文在不同数据库里\"发表日期\"不一致，36.7% 相差超过 30 天**，而\nDOI/PMID/PMCID 完全一致。\n\n---\n\n## 1. 专利突破\n\n此前被反复调查的 EPO OPS / USPTO ODP / PatentsView / Lens / Espacenet **全部需要免费\nKey 或被 WAF 拦住**。真正的通道不在这些 API 上：\n\n### (a) EPO 欧洲公布服务器 — 写在 EPO 自己的 robots.txt 里\n\n```\nSitemap: https://data.epo.org/publication-server/sitemap.xml\n```\n\n按周切分的完整 EP 公布清单（1978-12-2",
+   "tip_date": "2026-11-11T01:37:46+08:00",
+   "diff_vs_main": {
+    "files": 691,
+    "additions": 692975,
+    "deletions": 0
+   },
+   "divergence_vs_main": {
+    "ahead": 4,
+    "behind": 0
+   },
+   "diff_vs_declared_base": {
+    "files": 691,
+    "additions": 692975,
+    "deletions": 0
+   },
+   "merge_probe_main": {
+    "local_clean": true,
+    "conflicts": []
+   },
+   "changed_paths_sample": [
+    {
+     "status": "A",
+     "path": "research/horizon/.gitignore"
+    },
+    {
+     "status": "A",
+     "path": "research/horizon/ATLAS_HANDOFF.md"
+    },
+    {
+     "status": "A",
+     "path": "research/horizon/CONNECTORS/industry/_licence.py"
+    },
+    {
+     "status": "A",
+     "path": "research/horizon/CONNECTORS/industry/_util.py"
+    },
+    {
+     "status": "A",
+     "path": "research/horizon/CONNECTORS/industry/eu_ted.py"
+    },
+    {
+     "status": "A",
+     "path": "research/horizon/CONNECTORS/industry/eurostat_comext.py"
+    },
+    {
+     "status": "A",
+     "path": "research/horizon/CONNECTORS/industry/uk_find_a_tender.py"
+    },
+    {
+     "status": "A",
+     "path": "research/horizon/CONNECTORS/industry/uk_hmrc_trade.py"
+    },
+    {
+     "status": "A",
+     "path": "research/horizon/CONNECTORS/industry/un_comtrade.py"
+    },
+    {
+     "status": "A",
+     "path": "research/horizon/CONNECTORS/industry/usaspending.py"
+    },
+    {
+     "status": "A",
+     "path": "research/horizon/CONNECTORS/patents/cipo_canada.py"
+    },
+    {
+     "status": "A",
+     "path": "research/horizon/CONNECTORS/patents/cipo_download.py"
+    },
+    {
+     "status": "A",
+     "path": "research/horizon/CONNECTORS/patents/cipo_download_subset.py"
+    },
+    {
+     "status": "A",
+     "path": "research/horizon/CONNECTORS/patents/epo_publication_server.py"
+    },
+    {
+     "status": "A",
+     "path": "research/horizon/CONNECTORS/patents/run_cipo_etl.py"
+    },
+    {
+     "status": "A",
+     "path": "research/horizon/CONNECTORS/patents/run_collect.py"
+    },
+    {
+     "status": "A",
+     "path": "research/horizon/CONNECTORS/regulatory/__init__.py"
+    },
+    {
+     "status": "A",
+     "path": "research/horizon/CONNECTORS/regulatory/_coverage.py"
+    },
+    {
+     "status": "A",
+     "path": "research/horizon/CONNECTORS/regulatory/_discover_round1.py"
+    },
+    {
+     "status": "A",
+     "path": "research/horizon/CONNECTORS/regulatory/_discover_round2.py"
+    },
+    {
+     "status": "A",
+     "path": "research/horizon/CONNECTORS/regulatory/_discover_round3.py"
+    },
+    {
+     "status": "A",
+     "path": "research/horizon/CONNECTORS/regulatory/_discover_round4.py"
+    },
+    {
+     "status": "A",
+     "path": "research/horizon/CONNECTORS/regulatory/_discover_round5.py"
+    },
+    {
+     "status": "A",
+     "path": "research/horizon/CONNECTORS/regulatory/_discover_round6.py"
+    },
+    {
+     "status": "A",
+     "path": "research/horizon/CONNECTORS/regulatory/_inspect_gudid.py"
+    },
+    {
+     "status": "A",
+     "path": "research/horizon/CONNECTORS/regulatory/_probe_reglist.py"
+    },
+    {
+     "status": "A",
+     "path": "research/horizon/CONNECTORS/regulatory/_util.py"
+    },
+    {
+     "status": "A",
+     "path": "research/horizon/CONNECTORS/regulatory/_verify_cache_integrity.py"
+    },
+    {
+     "status": "A",
+     "path": "research/horizon/CONNECTORS/regulatory/accessgudid.py"
+    },
+    {
+     "status": "A",
+     "path": "research/horizon/CONNECTORS/regulatory/build_registry.py"
+    },
+    {
+     "status": "A",
+     "path": "research/horizon/CONNECTORS/regulatory/canada_mdall.py"
+    },
+    {
+     "status": "A",
+     "path": "research/horizon/CONNECTORS/regulatory/openfda.py"
+    },
+    {
+     "status": "A",
+     "path": "research/horizon/CONNECTORS/regulatory/third_country.py"
+    },
+    {
+     "status": "A",
+     "path": "research/horizon/CONNECTORS/scholarly/_util.py"
+    },
+    {
+     "status": "A",
+     "path": "research/horizon/CONNECTORS/scholarly/clinicaltrials_gov.py"
+    },
+    {
+     "status": "A",
+     "path": "research/horizon/CONNECTORS/scholarly/crossref.py"
+    },
+    {
+     "status": "A",
+     "path": "research/horizon/CONNECTORS/scholarly/eu_cordis.py"
+    },
+    {
+     "status": "A",
+     "path": "research/horizon/CONNECTORS/scholarly/eu_ctis.py"
+    },
+    {
+     "status": "A",
+     "path": "research/horizon/CONNECTORS/scholarly/europepmc.py"
+    },
+    {
+     "status": "A",
+     "path": "research/horizon/CONNECTORS/scholarly/nih_reporter.py"
+    },
+    {
+     "status": "A",
+     "path": "research/horizon/CONNECTORS/scholarly/openaire.py"
+    },
+    {
+     "status": "A",
+     "path": "research/horizon/CONNECTORS/scholarly/openalex.py"
+    },
+    {
+     "status": "A",
+     "path": "research/horizon/CONNECTORS/scholarly/probe_post_endpoints.py"
+    },
+    {
+     "status": "A",
+     "path": "research/horizon/CONNECTORS/scholarly/pubmed_eutils.py"
+    },
+    {
+     "status": "A",
+     "path": "research/horizon/CONNECTORS/scholarly/semantic_scholar.py"
+    },
+    {
+     "status": "A",
+     "path": "research/horizon/CONNECTORS/scholarly/write_registry.py"
+    },
+    {
+     "status": "A",
+     "path": "research/horizon/DATASETS/industry/LICENCE_EVIDENCE.json"
+    },
+    {
+     "status": "A",
+     "path": "research/horizon/DATASETS/industry/descartes_datamyne/PROVENANCE.json"
+    },
+    {
+     "status": "A",
+     "path": "research/horizon/DATASETS/industry/descartes_datamyne/raw/legal_compliance.html"
+    },
+    {
+     "status": "A",
+     "path": "research/horizon/DATASETS/industry/descartes_datamyne/raw/robots.txt"
+    },
+    {
+     "status": "A",
+     "path": "research/horizon/DATASETS/industry/eu_ted/PROVENANCE.json"
+    },
+    {
+     "status": "A",
+     "path": "research/horizon/DATASETS/industry/eu_ted/raw/api_docs_index.html"
+    },
+    {
+     "status": "A",
+     "path": "research/horizon/DATASETS/industry/eu_ted/raw/diag_division_33100000.json"
+    },
+    {
+     "status": "A",
+     "path": "research/horizon/DATASETS/industry/eu_ted/raw/diag_subfamily_33140000.json"
+    },
+    {
+     "status": "A",
+     "path": "research/horizon/DATASETS/industry/eu_ted/raw/search_can_medical_p1.json"
+    },
+    {
+     "status": "A",
+     "path": "research/horizon/DATASETS/industry/eu_ted/raw/search_can_medical_p2.json"
+    },
+    {
+     "status": "A",
+     "path": "research/horizon/DATASETS/industry/eu_ted/summary.json"
+    },
+    {
+     "status": "A",
+     "path": "research/horizon/DATASETS/industry/eurostat_comext/PROVENANCE.json"
+    },
+    {
+     "status": "A",
+     "path": "research/horizon/DATASETS/industry/eurostat_comext/raw/copyright_notice.html"
+    },
+    {
+     "status": "A",
+     "path": "research/horizon/DATASETS/industry/eurostat_comext/raw/ds045409_DE.json"
+    }
+   ],
+   "changed_path_count": 691,
+   "risk_path_hits": {
+    "un_comtrade": {
+     "count": 35,
+     "examples": [
+      "research/horizon/CONNECTORS/industry/un_comtrade.py",
+      "research/horizon/DATASETS/industry/un_comtrade/PROVENANCE.json",
+      "research/horizon/DATASETS/industry/un_comtrade/raw/annual_2015.json",
+      "research/horizon/DATASETS/industry/un_comtrade/raw/annual_2016.json",
+      "research/horizon/DATASETS/industry/un_comtrade/raw/annual_2017.json"
+     ]
+    },
+    "uk_find_a_tender": {
+     "count": 10,
+     "examples": [
+      "research/horizon/CONNECTORS/industry/uk_find_a_tender.py",
+      "research/horizon/DATASETS/industry/uk_find_a_tender/PROVENANCE.json",
+      "research/horizon/DATASETS/industry/uk_find_a_tender/raw/award_packages_p1.json",
+      "research/horizon/DATASETS/industry/uk_find_a_tender/raw/award_packages_p2.json",
+      "research/horizon/DATASETS/industry/uk_find_a_tender/raw/award_packages_p3.json"
+     ]
+    },
+    "restricted_exports": {
+     "count": 356,
+     "examples": [
+      "research/horizon/DATASETS/industry/descartes_datamyne/raw/legal_compliance.html",
+      "research/horizon/DATASETS/industry/descartes_datamyne/raw/robots.txt",
+      "research/horizon/DATASETS/industry/eu_ted/raw/api_docs_index.html",
+      "research/horizon/DATASETS/industry/eu_ted/raw/diag_division_33100000.json",
+      "research/horizon/DATASETS/industry/eu_ted/raw/diag_subfamily_33140000.json"
+     ]
+    }
+   }
+  },
+  {
+   "number": 30,
+   "title": "CONVERGENCE-001: ATLAS x HORIZON end-to-end integration, P0 reconciliation and scientific gates (Draft)",
+   "state": "open",
+   "draft": true,
+   "base_ref": "main",
+   "base_is_main": true,
+   "head_ref": "integration/convergence-001",
+   "head_sha": "c6606c301b5aee254a30286f41d75c42339c5f98",
+   "created_at": "2026-11-10T21:11:36Z",
+   "updated_at": "2026-11-11T16:40:39Z",
+   "additions": 690079,
+   "deletions": 0,
+   "changed_files": 815,
+   "mergeable": true,
+   "mergeable_state": "clean",
+   "local_ref_present": true,
+   "labels": [],
+   "body_excerpt": "# CONVERGENCE-001 — ATLAS × HORIZON 首次联合集成与独立验收\r\n\r\n**Draft：请勿合并。** 本 PR 用于评审集成结果，不代表可以合入 `main`。\r\n\r\n## 这是什么\r\n\r\n把两个已独立完成的研究工作流真正连接成一个**可运行、可复现、可审计**的系统：\r\n\r\n```\r\nHORIZON 全球数据导出 → 校验 → 许可闸门 → 转换 → ATLAS 隔离证据库 → 跨源关系 → 科研查询\r\n```\r\n\r\n不是合并两份报告，而是让数据真正流动。\r\n\r\n## 基线（已核实，非历史快照）\r\n\r\n| ref | commit |\r\n|---|---|\r\n| `main` | `b2a14c0` |\r\n| PR #28 `foundation/atlas-001` | `c636836` (draft, mergeable=clean) |\r\n| PR #29 `research/horizon-001` | `2dcdc99` (draft, mergeable=clean) |\r\n\r\n## 为什么不是\"把两个 PR 合起来\"\r\n\r\nGitHub 显示两者 mergeable，但 PR #29 包含 **30 个路径 / 6,234,301 字节** 的 UN Comtrade 数据，其条款 §5 禁止再分发与出版。直接合并会在 `main`",
+   "tip_date": "2026-11-12T00:34:30+08:00",
+   "diff_vs_main": {
+    "files": 815,
+    "additions": 690079,
+    "deletions": 0
+   },
+   "divergence_vs_main": {
+    "ahead": 9,
+    "behind": 0
+   },
+   "diff_vs_declared_base": {
+    "files": 815,
+    "additions": 690079,
+    "deletions": 0
+   },
+   "merge_probe_main": {
+    "local_clean": true,
+    "conflicts": []
+   },
+   "changed_paths_sample": [
+    {
+     "status": "A",
+     "path": ".github/workflows/atlas.yml"
+    },
+    {
+     "status": "A",
+     "path": ".github/workflows/convergence.yml"
+    },
+    {
+     "status": "M",
+     "path": ".gitignore"
+    },
+    {
+     "status": "M",
+     "path": "README.md"
+    },
+    {
+     "status": "A",
+     "path": "config/atlas_firms.json"
+    },
+    {
+     "status": "A",
+     "path": "config/atlas_sources.json"
+    },
+    {
+     "status": "A",
+     "path": "config/convergence/licence_policy.json"
+    },
+    {
+     "status": "A",
+     "path": "docs/atlas/ARCHITECTURE.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/atlas/DATA_SOURCE_INTEGRATION.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/atlas/EVIDENCE_MODEL.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/atlas/EXECUTIVE_SUMMARY_ZH.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/atlas/FOUNDATION_AUDIT.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/atlas/IDENTITY_MODEL.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/atlas/KNOWLEDGE_GRAPH.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/atlas/QUALITY_REPORT.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/atlas/RESEARCH_VALIDATION.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/atlas/ROADMAP.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/convergence/EVIDENCE_CONTRACT.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/convergence/EXECUTIVE_SUMMARY_ZH.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/convergence/H2_RECONCILIATION.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/convergence/IDENTITY_RECONCILIATION.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/convergence/INDEPENDENT_VERIFICATION.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/convergence/INTEGRATION_AUDIT.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/convergence/INTEGRATION_EXPERIMENTS.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/convergence/KNOWLEDGE_GRAPH_DEMO.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/convergence/LICENCE_AND_SECURITY_REVIEW.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/convergence/SCHEMA_MAPPING.md"
+    },
+    {
+     "status": "A",
+     "path": "medradar/atlas/__init__.py"
+    },
+    {
+     "status": "A",
+     "path": "medradar/atlas/__main__.py"
+    },
+    {
+     "status": "A",
+     "path": "medradar/atlas/cli.py"
+    },
+    {
+     "status": "A",
+     "path": "medradar/atlas/config.py"
+    },
+    {
+     "status": "A",
+     "path": "medradar/atlas/connectors/__init__.py"
+    },
+    {
+     "status": "A",
+     "path": "medradar/atlas/connectors/accessgudid.py"
+    },
+    {
+     "status": "A",
+     "path": "medradar/atlas/connectors/base.py"
+    },
+    {
+     "status": "A",
+     "path": "medradar/atlas/connectors/canada_mdall.py"
+    },
+    {
+     "status": "A",
+     "path": "medradar/atlas/connectors/openfda_510k.py"
+    },
+    {
+     "status": "A",
+     "path": "medradar/atlas/connectors/openfda_udi.py"
+    },
+    {
+     "status": "A",
+     "path": "medradar/atlas/db/__init__.py"
+    },
+    {
+     "status": "A",
+     "path": "medradar/atlas/db/migrations.py"
+    },
+    {
+     "status": "A",
+     "path": "medradar/atlas/evidence/__init__.py"
+    },
+    {
+     "status": "A",
+     "path": "medradar/atlas/evidence/http.py"
+    },
+    {
+     "status": "A",
+     "path": "medradar/atlas/evidence/schema.py"
+    },
+    {
+     "status": "A",
+     "path": "medradar/atlas/evidence/timeq.py"
+    },
+    {
+     "status": "A",
+     "path": "medradar/atlas/graph/__init__.py"
+    },
+    {
+     "status": "A",
+     "path": "medradar/atlas/graph/build.py"
+    },
+    {
+     "status": "A",
+     "path": "medradar/atlas/graph/query.py"
+    },
+    {
+     "status": "A",
+     "path": "medradar/atlas/identity/__init__.py"
+    },
+    {
+     "status": "A",
+     "path": "medradar/atlas/identity/companies.py"
+    },
+    {
+     "status": "A",
+     "path": "medradar/atlas/identity/models.py"
+    },
+    {
+     "status": "A",
+     "path": "medradar/atlas/identity/normalize.py"
+    },
+    {
+     "status": "A",
+     "path": "medradar/atlas/identity/pilot.py"
+    },
+    {
+     "status": "A",
+     "path": "medradar/atlas/identity/resolver.py"
+    },
+    {
+     "status": "A",
+     "path": "medradar/atlas/quality/__init__.py"
+    },
+    {
+     "status": "A",
+     "path": "medradar/atlas/quality/checks.py"
+    },
+    {
+     "status": "A",
+     "path": "medradar/atlas/research/__init__.py"
+    },
+    {
+     "status": "A",
+     "path": "medradar/atlas/research/asof.py"
+    },
+    {
+     "status": "A",
+     "path": "medradar/atlas/research/prospective.py"
+    },
+    {
+     "status": "A",
+     "path": "medradar/atlas/store.py"
+    },
+    {
+     "status": "A",
+     "path": "medradar/integration/__init__.py"
+    },
+    {
+     "status": "A",
+     "path": "medradar/integration/__main__.py"
+    }
+   ],
+   "changed_path_count": 815,
+   "risk_path_hits": {
+    "un_comtrade": {
+     "count": 5,
+     "examples": [
+      "research/horizon/CONNECTORS/industry/un_comtrade.py",
+      "research/horizon/DATASETS/industry/un_comtrade/PROVENANCE.json",
+      "research/horizon/DATASETS/industry/un_comtrade/raw/comtrade_license.html",
+      "research/horizon/DATASETS/industry/un_comtrade/raw/terms_of_use.html",
+      "research/horizon/registry/sources/un_comtrade.json"
+     ]
+    },
+    "uk_find_a_tender": {
+     "count": 7,
+     "examples": [
+      "research/horizon/CONNECTORS/industry/uk_find_a_tender.py",
+      "research/horizon/DATASETS/industry/uk_find_a_tender/PROVENANCE.json",
+      "research/horizon/DATASETS/industry/uk_find_a_tender/summary.json",
+      "research/horizon/experiments/industry/evidence/uk_find_a_tender.jsonl",
+      "research/horizon/exports/horizon-2026-11-10/uk_find_a_tender.jsonl"
+     ]
+    },
+    "restricted_exports": {
+     "count": 325,
+     "examples": [
+      "research/horizon/DATASETS/industry/descartes_datamyne/raw/legal_compliance.html",
+      "research/horizon/DATASETS/industry/descartes_datamyne/raw/robots.txt",
+      "research/horizon/DATASETS/industry/eu_ted/raw/api_docs_index.html",
+      "research/horizon/DATASETS/industry/eu_ted/raw/diag_division_33100000.json",
+      "research/horizon/DATASETS/industry/eu_ted/raw/diag_subfamily_33140000.json"
+     ]
+    },
+    "credentials": {
+     "count": 3,
+     "examples": [
+      "research/convergence/h2/explore_tokens.py",
+      "research/convergence/licence/secrets_scan.json",
+      "tools/convergence/licence/secrets_scan.py"
+     ]
+    }
+   }
+  },
+  {
+   "number": 31,
+   "title": "docs(refoundation): REFOUNDATION-001 repository audit (sanitized)",
+   "state": "open",
+   "draft": true,
+   "base_ref": "main",
+   "base_is_main": true,
+   "head_ref": "publish/refoundation-001",
+   "head_sha": "f682be0f83830215146f74cf8e321a7defc6fad4",
+   "created_at": "2026-11-12T16:08:09Z",
+   "updated_at": "2026-11-12T16:08:09Z",
+   "additions": 54732,
+   "deletions": 0,
+   "changed_files": 179,
+   "mergeable": true,
+   "mergeable_state": "clean",
+   "local_ref_present": true,
+   "labels": [],
+   "body_excerpt": "## Summary\n\nSanitized public release of the **REFOUNDATION-001** read-only repository audit of MedRadar.\n\nBaseline: `origin/main` = `b2a14c0` (2026-11-02). Audit performed 2026-11-12 against live GitHub state, all 34 remote branches, 30 PRs, and the local git object store.\n\n**Draft on purpose — do not merge without owner review.** This PR adds documentation only.\n\n## What this adds\n\n`docs/refoundation/`:\n\n| Document | Content |\n|---|---|\n| `EXECUTIVE_SUMMARY_ZH.md` | Owner-facing Chinese summary + six-part roadmap |\n| `REPOSITORY_INVENTORY.md` | Asset map, branch/branch-only separation, test m",
+   "tip_date": "2026-11-12T23:52:14+08:00",
+   "diff_vs_main": {
+    "files": 179,
+    "additions": 54732,
+    "deletions": 0
+   },
+   "divergence_vs_main": {
+    "ahead": 1,
+    "behind": 0
+   },
+   "diff_vs_declared_base": {
+    "files": 179,
+    "additions": 54732,
+    "deletions": 0
+   },
+   "merge_probe_main": {
+    "local_clean": true,
+    "conflicts": []
+   },
+   "changed_paths_sample": [
+    {
+     "status": "A",
+     "path": "docs/refoundation/AGENT_COLLABORATION_PROTOCOL.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/refoundation/ARCHITECTURE_AS_IS.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/refoundation/ARCHITECTURE_TO_BE.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/refoundation/BRANCH_PR_AUDIT.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/refoundation/DATA_GOVERNANCE_AUDIT.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/refoundation/DECISION_REGISTER.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/refoundation/EXECUTIVE_SUMMARY_ZH.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/refoundation/MIGRATION_PLAN.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/refoundation/README.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/refoundation/README_REDESIGN_PROPOSAL.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/refoundation/REPOSITORY_INVENTORY.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/refoundation/RESEARCH_ASSET_REGISTER.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/refoundation/SANITIZATION_LOG.json"
+    },
+    {
+     "status": "A",
+     "path": "docs/refoundation/TECHNICAL_DEBT_REGISTER.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/refoundation/_FACTS.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/refoundation/_evidence/ancestry.json"
+    },
+    {
+     "status": "A",
+     "path": "docs/refoundation/_evidence/ancestry_matrix.py"
+    },
+    {
+     "status": "A",
+     "path": "docs/refoundation/_evidence/arch/cmp.py"
+    },
+    {
+     "status": "A",
+     "path": "docs/refoundation/_evidence/arch/dep_matrix.py"
+    },
+    {
+     "status": "A",
+     "path": "docs/refoundation/_evidence/arch/probe.py"
+    },
+    {
+     "status": "A",
+     "path": "docs/refoundation/_evidence/arch/pytest_collect.txt"
+    },
+    {
+     "status": "A",
+     "path": "docs/refoundation/_evidence/arch/tables.py"
+    },
+    {
+     "status": "A",
+     "path": "docs/refoundation/_evidence/blob_identity.json"
+    },
+    {
+     "status": "A",
+     "path": "docs/refoundation/_evidence/blob_identity.py"
+    },
+    {
+     "status": "A",
+     "path": "docs/refoundation/_evidence/collect_facts.py"
+    },
+    {
+     "status": "A",
+     "path": "docs/refoundation/_evidence/collision_analysis.py"
+    },
+    {
+     "status": "A",
+     "path": "docs/refoundation/_evidence/collisions.json"
+    },
+    {
+     "status": "A",
+     "path": "docs/refoundation/_evidence/comms/main_ATTRIBUTION.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/refoundation/_evidence/comms/main_CASES.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/refoundation/_evidence/comms/main_CONTRIBUTING.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/refoundation/_evidence/comms/main_DATA.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/refoundation/_evidence/comms/main_GOOD_FIRST_ISSUES.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/refoundation/_evidence/comms/main_LICENSE"
+    },
+    {
+     "status": "A",
+     "path": "docs/refoundation/_evidence/comms/main_MARKET_DATA.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/refoundation/_evidence/comms/main_METHODS.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/refoundation/_evidence/comms/main_README.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/refoundation/_evidence/comms/main_README.zh-CN.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/refoundation/_evidence/comms/main_RESEARCH.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/refoundation/_evidence/comms/main_ROADMAP.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/refoundation/_evidence/comms/main_ci.yml"
+    },
+    {
+     "status": "A",
+     "path": "docs/refoundation/_evidence/comms/main_forecast-cycle.yml"
+    },
+    {
+     "status": "A",
+     "path": "docs/refoundation/_evidence/comms/main_index.html"
+    },
+    {
+     "status": "A",
+     "path": "docs/refoundation/_evidence/comms/main_live.yml"
+    },
+    {
+     "status": "A",
+     "path": "docs/refoundation/_evidence/comms/main_pr_template.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/refoundation/_evidence/comms/main_pyproject.toml"
+    },
+    {
+     "status": "A",
+     "path": "docs/refoundation/_evidence/comms/main_weekly.yml"
+    },
+    {
+     "status": "A",
+     "path": "docs/refoundation/_evidence/copy_volume.json"
+    },
+    {
+     "status": "A",
+     "path": "docs/refoundation/_evidence/copy_volume.py"
+    },
+    {
+     "status": "A",
+     "path": "docs/refoundation/_evidence/inventory/ancestry_extra.py"
+    },
+    {
+     "status": "A",
+     "path": "docs/refoundation/_evidence/inventory/ancestry_verify.json"
+    },
+    {
+     "status": "A",
+     "path": "docs/refoundation/_evidence/inventory/blob_variants_check.py"
+    },
+    {
+     "status": "A",
+     "path": "docs/refoundation/_evidence/inventory/branch_families.py"
+    },
+    {
+     "status": "A",
+     "path": "docs/refoundation/_evidence/inventory/collect_inventory.py"
+    },
+    {
+     "status": "A",
+     "path": "docs/refoundation/_evidence/inventory/convergence_dup.py"
+    },
+    {
+     "status": "A",
+     "path": "docs/refoundation/_evidence/inventory/dirs_inventory.py"
+    },
+    {
+     "status": "A",
+     "path": "docs/refoundation/_evidence/inventory/dump_titles.py"
+    },
+    {
+     "status": "A",
+     "path": "docs/refoundation/_evidence/inventory/final_checks.py"
+    },
+    {
+     "status": "A",
+     "path": "docs/refoundation/_evidence/inventory/horizon_vs_convergence.py"
+    },
+    {
+     "status": "A",
+     "path": "docs/refoundation/_evidence/inventory/inventory_facts.json"
+    },
+    {
+     "status": "A",
+     "path": "docs/refoundation/_evidence/inventory/metrics.py"
+    }
+   ],
+   "changed_path_count": 179,
+   "risk_path_hits": {}
+  },
+  {
+   "number": 32,
+   "title": "feat(governance): Phase 0 governance MVP - state source, 5 gates, CI draft",
+   "state": "open",
+   "draft": true,
+   "base_ref": "main",
+   "base_is_main": true,
+   "head_ref": "governance/refoundation-002",
+   "head_sha": "beacd1115a7bfea6e144cae9ca18fc2b1d4a7233",
+   "created_at": "2026-11-12T16:08:17Z",
+   "updated_at": "2026-11-12T19:15:06Z",
+   "additions": 10676,
+   "deletions": 17,
+   "changed_files": 74,
+   "mergeable": true,
+   "mergeable_state": "clean",
+   "local_ref_present": true,
+   "labels": [],
+   "body_excerpt": "## Summary\n\nREFOUNDATION-002 Phase 0 governance minimum viable version, adapted to a **solo maintainer** workflow. Everything here is verified locally; **no GitHub repository setting has been changed** and nothing has been merged.\n\n**Draft on purpose.** The branch protection plan is a document, not an applied setting.\n\n## What this adds\n\n| Mechanism | Files | Verified behaviour |\n|---|---|---|\n| Single source of truth | `PROJECT_STATE.yaml` (204 lines) | `check_state.py`: 240 checks, 0 failures; wrong head / missing path / duplicate id / test drift all fail |\n| Generated views | `tools/governa",
+   "tip_date": "2026-11-13T03:14:50+08:00",
+   "diff_vs_main": {
+    "files": 74,
+    "additions": 10676,
+    "deletions": 17
+   },
+   "divergence_vs_main": {
+    "ahead": 6,
+    "behind": 0
+   },
+   "diff_vs_declared_base": {
+    "files": 74,
+    "additions": 10676,
+    "deletions": 17
+   },
+   "merge_probe_main": {
+    "local_clean": true,
+    "conflicts": []
+   },
+   "changed_paths_sample": [
+    {
+     "status": "A",
+     "path": ".github/CODEOWNERS"
+    },
+    {
+     "status": "M",
+     "path": ".github/pull_request_template.md"
+    },
+    {
+     "status": "A",
+     "path": ".github/workflows/governance.yml"
+    },
+    {
+     "status": "M",
+     "path": "CHANGELOG.md"
+    },
+    {
+     "status": "A",
+     "path": "PROJECT_STATE.yaml"
+    },
+    {
+     "status": "M",
+     "path": "README.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/RESEARCH_INDEX.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/governance/BRANCH_PROTECTION_PLAN.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/governance/DATA_INVENTORY.yaml"
+    },
+    {
+     "status": "A",
+     "path": "docs/governance/DATA_LICENSES.yaml"
+    },
+    {
+     "status": "A",
+     "path": "docs/governance/DECISION_LOG.yaml"
+    },
+    {
+     "status": "A",
+     "path": "docs/governance/FROZEN.yaml"
+    },
+    {
+     "status": "A",
+     "path": "docs/governance/GOVERNANCE.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/governance/RULE_CHANGES.yaml"
+    },
+    {
+     "status": "A",
+     "path": "docs/refoundation/phase0/GOVERNANCE_MVP.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/refoundation/phase0/_evidence/governance/00_INDEX.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/refoundation/phase0/_evidence/governance/01_env.txt"
+    },
+    {
+     "status": "A",
+     "path": "docs/refoundation/phase0/_evidence/governance/03_check_state_pass.txt"
+    },
+    {
+     "status": "A",
+     "path": "docs/refoundation/phase0/_evidence/governance/04_check_state_fail_wrong_head.txt"
+    },
+    {
+     "status": "A",
+     "path": "docs/refoundation/phase0/_evidence/governance/05_check_state_fail_missing_path.txt"
+    },
+    {
+     "status": "A",
+     "path": "docs/refoundation/phase0/_evidence/governance/06_check_state_fail_duplicate_id.txt"
+    },
+    {
+     "status": "A",
+     "path": "docs/refoundation/phase0/_evidence/governance/07_check_state_fail_test_drift.txt"
+    },
+    {
+     "status": "A",
+     "path": "docs/refoundation/phase0/_evidence/governance/08_check_state_drift_warn.txt"
+    },
+    {
+     "status": "A",
+     "path": "docs/refoundation/phase0/_evidence/governance/09_gen_views_pass_twice.txt"
+    },
+    {
+     "status": "A",
+     "path": "docs/refoundation/phase0/_evidence/governance/10_gen_views_stale_regen.txt"
+    },
+    {
+     "status": "A",
+     "path": "docs/refoundation/phase0/_evidence/governance/11_gen_views_fail_tampered.txt"
+    },
+    {
+     "status": "A",
+     "path": "docs/refoundation/phase0/_evidence/governance/12_check_frozen_pass.txt"
+    },
+    {
+     "status": "A",
+     "path": "docs/refoundation/phase0/_evidence/governance/13_check_frozen_fail_tampered.txt"
+    },
+    {
+     "status": "A",
+     "path": "docs/refoundation/phase0/_evidence/governance/14_check_licence_pass.txt"
+    },
+    {
+     "status": "A",
+     "path": "docs/refoundation/phase0/_evidence/governance/15_check_licence_fail_red_source.txt"
+    },
+    {
+     "status": "A",
+     "path": "docs/refoundation/phase0/_evidence/governance/16_check_links_pass.txt"
+    },
+    {
+     "status": "A",
+     "path": "docs/refoundation/phase0/_evidence/governance/17_check_links_fail_broken.txt"
+    },
+    {
+     "status": "A",
+     "path": "docs/refoundation/phase0/_evidence/governance/18_compileall.txt"
+    },
+    {
+     "status": "A",
+     "path": "docs/refoundation/phase0/_evidence/governance/19_workflow_yaml_valid.txt"
+    },
+    {
+     "status": "A",
+     "path": "docs/refoundation/phase0/_evidence/governance/20_restored_all_pass.txt"
+    },
+    {
+     "status": "A",
+     "path": "docs/refoundation/phase0/_evidence/governance/21_json_summary.txt"
+    },
+    {
+     "status": "A",
+     "path": "docs/refoundation/phase0/_evidence/governance/22_file_inventory.txt"
+    },
+    {
+     "status": "A",
+     "path": "docs/refoundation/phase0/_evidence/governance/23_git_status.txt"
+    },
+    {
+     "status": "A",
+     "path": "docs/refoundation/phase0/_evidence/governance/pytest_count.json"
+    },
+    {
+     "status": "A",
+     "path": "docs/refoundation/phase2/GOVERNANCE_HARDENING.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/refoundation/phase2/_evidence/governance/01_environment.txt"
+    },
+    {
+     "status": "A",
+     "path": "docs/refoundation/phase2/_evidence/governance/02_before_after_bypass_table.txt"
+    },
+    {
+     "status": "A",
+     "path": "docs/refoundation/phase2/_evidence/governance/03_false_positive_baseline.txt"
+    },
+    {
+     "status": "A",
+     "path": "docs/refoundation/phase2/_evidence/governance/04_freeze_bypass_matrix.txt"
+    },
+    {
+     "status": "A",
+     "path": "docs/refoundation/phase2/_evidence/governance/05_rule_change_audit_proof.txt"
+    },
+    {
+     "status": "A",
+     "path": "docs/refoundation/phase2/_evidence/governance/06_state_staleness_and_bump.txt"
+    },
+    {
+     "status": "A",
+     "path": "docs/refoundation/phase2/_evidence/governance/07_governance_unit_tests.txt"
+    },
+    {
+     "status": "A",
+     "path": "docs/refoundation/phase2/_evidence/governance/08_full_suite.txt"
+    },
+    {
+     "status": "A",
+     "path": "docs/refoundation/phase2/_evidence/governance/09_all_gates_after.txt"
+    },
+    {
+     "status": "A",
+     "path": "docs/refoundation/phase2/_evidence/governance/10_file_inventory.txt"
+    },
+    {
+     "status": "A",
+     "path": "docs/refoundation/phase2/_evidence/governance/11_log_privacy.txt"
+    },
+    {
+     "status": "A",
+     "path": "docs/refoundation/phase2/_evidence/governance/12_final_validation.txt"
+    },
+    {
+     "status": "A",
+     "path": "tests/governance/__init__.py"
+    },
+    {
+     "status": "A",
+     "path": "tests/governance/fixtures/README.md"
+    },
+    {
+     "status": "A",
+     "path": "tests/governance/fixtures/fake_archive.gz"
+    },
+    {
+     "status": "A",
+     "path": "tests/governance/fixtures/fake_market.csv"
+    },
+    {
+     "status": "A",
+     "path": "tests/governance/fixtures/fake_market.json"
+    },
+    {
+     "status": "A",
+     "path": "tests/governance/fixtures/fake_market.sqlite"
+    },
+    {
+     "status": "A",
+     "path": "tests/governance/gitfix.py"
+    },
+    {
+     "status": "A",
+     "path": "tests/governance/test_bump_state.py"
+    }
+   ],
+   "changed_path_count": 74,
+   "risk_path_hits": {
+    "sqlite_db": {
+     "count": 1,
+     "examples": [
+      "tests/governance/fixtures/fake_market.sqlite"
+     ]
+    },
+    "large_binary": {
+     "count": 1,
+     "examples": [
+      "tests/governance/fixtures/fake_archive.gz"
+     ]
+    }
+   }
+  },
+  {
+   "number": 33,
+   "title": "research(evidence): Phase 0 evidence-store comparison and three architecture options",
+   "state": "open",
+   "draft": true,
+   "base_ref": "main",
+   "base_is_main": true,
+   "head_ref": "research/evidence-architecture-002",
+   "head_sha": "b88a455aece9eca2452b29fcee7a0a18a95366b6",
+   "created_at": "2026-11-12T16:08:19Z",
+   "updated_at": "2026-11-12T16:08:19Z",
+   "additions": 12049,
+   "deletions": 0,
+   "changed_files": 4,
+   "mergeable": true,
+   "mergeable_state": "clean",
+   "local_ref_present": true,
+   "labels": [],
+   "body_excerpt": "## Summary\n\nREFOUNDATION-002 Phase 0 **decision preparation** for the evidence-store question. This PR deliberately does **not** adopt a canon and does **not** migrate any data — it compares the real stores and produces a conditional recommendation.\n\n**Draft on purpose.**\n\n## What this adds\n\n`docs/refoundation/phase0/EVIDENCE_STORE_COMPARISON.md` (503 lines) plus a deterministic, stdlib-only structural probe:\n\n| Artefact | Content |\n|---|---|\n| `EVIDENCE_STORE_COMPARISON.md` | inventory, comparison matrix, defects with `file:line`, three architectures, weighted matrix, conditional recommendati",
+   "tip_date": "2026-11-12T23:42:46+08:00",
+   "diff_vs_main": {
+    "files": 4,
+    "additions": 12049,
+    "deletions": 0
+   },
+   "divergence_vs_main": {
+    "ahead": 1,
+    "behind": 0
+   },
+   "diff_vs_declared_base": {
+    "files": 4,
+    "additions": 12049,
+    "deletions": 0
+   },
+   "merge_probe_main": {
+    "local_clean": true,
+    "conflicts": []
+   },
+   "changed_paths_sample": [
+    {
+     "status": "A",
+     "path": "docs/refoundation/phase0/EVIDENCE_STORE_COMPARISON.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/refoundation/phase0/_evidence/evidence/probe_store_structure.py"
+    },
+    {
+     "status": "A",
+     "path": "docs/refoundation/phase0/_evidence/evidence/store_structure.json"
+    },
+    {
+     "status": "A",
+     "path": "docs/refoundation/phase0/_evidence/evidence/store_structure.txt"
+    }
+   ],
+   "changed_path_count": 4,
+   "risk_path_hits": {}
+  },
+  {
+   "number": 34,
+   "title": "docs(readme): truth revision - mission, main-vs-draft status, event-time limitation",
+   "state": "open",
+   "draft": true,
+   "base_ref": "main",
+   "base_is_main": true,
+   "head_ref": "docs/readme-truth-phase2",
+   "head_sha": "6a95a5b019f60812cd5872f9a2b1056146dc3005",
+   "created_at": "2026-11-12T18:43:50Z",
+   "updated_at": "2026-11-12T19:18:14Z",
+   "additions": 263,
+   "deletions": 22,
+   "changed_files": 4,
+   "mergeable": true,
+   "mergeable_state": "clean",
+   "local_ref_present": true,
+   "labels": [],
+   "body_excerpt": "## Summary\n\nSmall truth revision of the front page (not a redesign): state the scientific mission, separate what `main` actually ships from draft PRs, correct the timing/test claims, demote the dashboard screenshot, and add reproduction entry points.\n\n**Draft on purpose.**\n\n## Changes\n\n- **Mission first**: MedRadar is research infrastructure, not a validated predictive product.\n- **Project status block**: `main` @ `b2a14c0`; **23 open PRs (22 drafts)** not released; **1,074 tests**; revision ledger not yet on `main`; branch protection not enabled.\n- **Timing correction (key)**: in the shipped ",
+   "tip_date": "2026-11-13T03:18:10+08:00",
+   "diff_vs_main": {
+    "files": 4,
+    "additions": 263,
+    "deletions": 22
+   },
+   "divergence_vs_main": {
+    "ahead": 2,
+    "behind": 0
+   },
+   "diff_vs_declared_base": {
+    "files": 4,
+    "additions": 263,
+    "deletions": 22
+   },
+   "merge_probe_main": {
+    "local_clean": true,
+    "conflicts": []
+   },
+   "changed_paths_sample": [
+    {
+     "status": "M",
+     "path": "README.md"
+    },
+    {
+     "status": "M",
+     "path": "README.zh-CN.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/refoundation/phase2/README_TRUTH_UPDATE.md"
+    },
+    {
+     "status": "M",
+     "path": "tests/test_release.py"
+    }
+   ],
+   "changed_path_count": 4,
+   "risk_path_hits": {}
+  },
+  {
+   "number": 35,
+   "title": "feat(evidence-core): append-only event_revision ledger + versioned migrations (ADR-001 option C)",
+   "state": "open",
+   "draft": true,
+   "base_ref": "main",
+   "base_is_main": true,
+   "head_ref": "feature/evidence-core-v1",
+   "head_sha": "f088e370db265799596c5e9a04f273f5814ece8e",
+   "created_at": "2026-11-12T19:13:22Z",
+   "updated_at": "2026-11-12T19:13:22Z",
+   "additions": 2383,
+   "deletions": 49,
+   "changed_files": 9,
+   "mergeable": true,
+   "mergeable_state": "clean",
+   "local_ref_present": true,
+   "labels": [],
+   "body_excerpt": "## Summary\n\nImplements **ADR-001 option C — Evidence Core v1**: an append-only revision ledger behind the existing mutable `events` table, with a versioned migration runner. `main` readers keep their exact current behaviour.\n\n**Draft on purpose.** No data migration is performed here; migration runs on a copy and is exercised by a full-DB drill.\n\n## What this adds\n\n| File | Content |\n|---|---|\n| `medradar/evidence_core/migrations.py` | `schema_version` ledger + idempotent, transactional migration runner (name + checksum + applied_at), guard reinstall |\n| `medradar/evidence_core/ledger.py` | `ev",
+   "tip_date": "2026-11-13T03:12:57+08:00",
+   "diff_vs_main": {
+    "files": 9,
+    "additions": 2383,
+    "deletions": 49
+   },
+   "divergence_vs_main": {
+    "ahead": 1,
+    "behind": 0
+   },
+   "diff_vs_declared_base": {
+    "files": 9,
+    "additions": 2383,
+    "deletions": 49
+   },
+   "merge_probe_main": {
+    "local_clean": true,
+    "conflicts": []
+   },
+   "changed_paths_sample": [
+    {
+     "status": "A",
+     "path": "docs/refoundation/phase2/EVIDENCE_CORE_V1.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/refoundation/phase2/_evidence/evidence_core/evidence_core.json"
+    },
+    {
+     "status": "A",
+     "path": "docs/refoundation/phase2/_evidence/evidence_core/run_evidence.py"
+    },
+    {
+     "status": "M",
+     "path": "medradar/db.py"
+    },
+    {
+     "status": "A",
+     "path": "medradar/evidence_core/__init__.py"
+    },
+    {
+     "status": "A",
+     "path": "medradar/evidence_core/ledger.py"
+    },
+    {
+     "status": "A",
+     "path": "medradar/evidence_core/migrations.py"
+    },
+    {
+     "status": "A",
+     "path": "tests/test_event_revision.py"
+    },
+    {
+     "status": "A",
+     "path": "tests/test_evidence_core.py"
+    }
+   ],
+   "changed_path_count": 9,
+   "risk_path_hits": {}
+  },
+  {
+   "number": 36,
+   "title": "research(e1b): source recovery - retrospective public availability vs prospective observation",
+   "state": "open",
+   "draft": true,
+   "base_ref": "main",
+   "base_is_main": true,
+   "head_ref": "research/e1b-source-recovery",
+   "head_sha": "6ffe7e7f150f33b0e426ab0dab4da3e8498add56",
+   "created_at": "2026-11-12T19:13:25Z",
+   "updated_at": "2026-11-12T19:13:25Z",
+   "additions": 1543,
+   "deletions": 0,
+   "changed_files": 8,
+   "mergeable": true,
+   "mergeable_state": "clean",
+   "local_ref_present": true,
+   "labels": [],
+   "body_excerpt": "## Summary\n\n**E1b source-recovery experiment**: what historical public-availability evidence can actually be recovered from openFDA, ClinicalTrials.gov and SEC EDGAR — measured on a small real sample (28 requests, 5 records/source), with retrospective and prospective evidence kept strictly separate.\n\n**Draft on purpose.** No bulk collection, no `main` change.\n\n## Headline\n\n| Source | Retrospective public availability | Prospective observation |\n|---|---|---|\n| **SEC EDGAR** | **PASS** — `acceptanceDateTime` is a true UTC instant; originals immutable; amendments are separate `8-K/A` accessions ",
+   "tip_date": "2026-11-13T03:12:57+08:00",
+   "diff_vs_main": {
+    "files": 8,
+    "additions": 1543,
+    "deletions": 0
+   },
+   "divergence_vs_main": {
+    "ahead": 1,
+    "behind": 0
+   },
+   "diff_vs_declared_base": {
+    "files": 8,
+    "additions": 1543,
+    "deletions": 0
+   },
+   "merge_probe_main": {
+    "local_clean": true,
+    "conflicts": []
+   },
+   "changed_paths_sample": [
+    {
+     "status": "A",
+     "path": "docs/refoundation/phase2/E1B_SOURCE_RECOVERY.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/refoundation/phase2/_evidence/e1b/collection.jsonl"
+    },
+    {
+     "status": "A",
+     "path": "docs/refoundation/phase2/_evidence/e1b/findings.json"
+    },
+    {
+     "status": "A",
+     "path": "docs/refoundation/phase2/_evidence/e1b/prospective.json"
+    },
+    {
+     "status": "A",
+     "path": "docs/refoundation/phase2/_evidence/e1b/retrospective.json"
+    },
+    {
+     "status": "A",
+     "path": "docs/refoundation/phase2/_evidence/e1b/summary.json"
+    },
+    {
+     "status": "A",
+     "path": "research/e1b/collect_e1b.py"
+    },
+    {
+     "status": "A",
+     "path": "research/e1b/derive_findings.py"
+    }
+   ],
+   "changed_path_count": 8,
+   "risk_path_hits": {}
+  },
+  {
+   "number": 37,
+   "title": "docs(refoundation): Phase 2 acceptance - governance, evidence core v1, E1b recovery, README truth",
+   "state": "open",
+   "draft": true,
+   "base_ref": "main",
+   "base_is_main": true,
+   "head_ref": "refoundation/phase2-acceptance",
+   "head_sha": "8c23a3a1e57903b7119e14e075bf8f714ac8307b",
+   "created_at": "2026-11-12T19:15:59Z",
+   "updated_at": "2026-11-12T19:22:07Z",
+   "additions": 890,
+   "deletions": 0,
+   "changed_files": 5,
+   "mergeable": true,
+   "mergeable_state": "clean",
+   "local_ref_present": true,
+   "labels": [],
+   "body_excerpt": "## Summary\n\nUnified **REFOUNDATION-002 Phase 2 acceptance package**. It copies the four workstream reports into one reviewable place and states exactly what was implemented, what was tested, which vulnerabilities are fixed, what history is recoverable, and which scientific claims still do not hold.\n\n**Draft on purpose. No merge, no branch protection, no `main` change.**\n\n## Contents\n\n| File | Workstream | Branch / PR |\n|---|---|---|\n| `PHASE2_ACCEPTANCE.md` | unified acceptance (7 required sections) | this PR |\n| `GOVERNANCE_HARDENING.md` | A — governance | `governance/phase2-hardening` → PR #",
+   "tip_date": "2026-11-13T03:22:03+08:00",
+   "diff_vs_main": {
+    "files": 5,
+    "additions": 890,
+    "deletions": 0
+   },
+   "divergence_vs_main": {
+    "ahead": 2,
+    "behind": 0
+   },
+   "diff_vs_declared_base": {
+    "files": 5,
+    "additions": 890,
+    "deletions": 0
+   },
+   "merge_probe_main": {
+    "local_clean": true,
+    "conflicts": []
+   },
+   "changed_paths_sample": [
+    {
+     "status": "A",
+     "path": "docs/refoundation/phase2/E1B_SOURCE_RECOVERY.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/refoundation/phase2/EVIDENCE_CORE_V1.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/refoundation/phase2/GOVERNANCE_HARDENING.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/refoundation/phase2/PHASE2_ACCEPTANCE.md"
+    },
+    {
+     "status": "A",
+     "path": "docs/refoundation/phase2/README_TRUTH_UPDATE.md"
+    }
+   ],
+   "changed_path_count": 5,
+   "risk_path_hits": {}
+  }
+ ],
+ "ancestry": {
+  "1": {},
+  "12": {
+   "13": true,
+   "14": true,
+   "15": true,
+   "16": true,
+   "21": true,
+   "22": true
+  },
+  "13": {
+   "14": true,
+   "15": true,
+   "16": true,
+   "21": true,
+   "22": true
+  },
+  "14": {
+   "15": true,
+   "16": true,
+   "21": true,
+   "22": true
+  },
+  "15": {
+   "21": true,
+   "22": true
+  },
+  "16": {},
+  "17": {},
+  "18": {},
+  "19": {
+   "20": true,
+   "21": true,
+   "22": true
+  },
+  "20": {
+   "21": true,
+   "22": true
+  },
+  "21": {
+   "22": true
+  },
+  "22": {},
+  "23": {},
+  "24": {
+   "25": true
+  },
+  "25": {},
+  "26": {},
+  "27": {},
+  "28": {
+   "30": true
+  },
+  "29": {},
+  "30": {},
+  "31": {},
+  "32": {},
+  "33": {},
+  "34": {},
+  "35": {},
+  "36": {},
+  "37": {}
+ },
+ "notes": []
+}

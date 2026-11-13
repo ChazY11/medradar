@@ -1,0 +1,9 @@
+# Static minimal pyproject fixture for the state-scheme tests.
+[build-system]
+requires = ["setuptools>=68"]
+
+[project]
+name = "governance-fixture"
+version = "9.9.9"
+description = "Static fixture for governance tests; never built."
+requires-python = ">=3.12"

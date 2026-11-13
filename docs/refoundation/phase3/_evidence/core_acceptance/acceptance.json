@@ -1,0 +1,967 @@
+{
+  "checks": [
+    {
+      "detail": "",
+      "expected": {
+        "sha256": "445807cab60df66e0f0853c973aaf0dae6065e72b6c9807d5dd5265097002c92"
+      },
+      "item": "1.1 fresh copy byte-identical to original",
+      "measured": {
+        "bytes": 1368469504,
+        "sha256": "445807cab60df66e0f0853c973aaf0dae6065e72b6c9807d5dd5265097002c92"
+      },
+      "pass": true
+    },
+    {
+      "detail": "",
+      "expected": [
+        1,
+        2
+      ],
+      "item": "1.2 migration applied exactly 2 versions in order",
+      "measured": [
+        1,
+        2
+      ],
+      "pass": true
+    },
+    {
+      "detail": "",
+      "expected": null,
+      "item": "1.3 stored checksums equal code checksums",
+      "measured": {
+        "1": "bc477359c705",
+        "2": "04b231db92f3"
+      },
+      "pass": true
+    },
+    {
+      "detail": "",
+      "expected": null,
+      "item": "1.4 applied_at parses and is after 2026-01-01",
+      "measured": "2026-11-12T19:53:57.570246Z",
+      "pass": true
+    },
+    {
+      "detail": "",
+      "expected": 375378,
+      "item": "1.5 event count unchanged by migration",
+      "measured": 375378,
+      "pass": true
+    },
+    {
+      "detail": "",
+      "expected": 375378,
+      "item": "1.6 one baseline revision per event",
+      "measured": 375378,
+      "pass": true
+    },
+    {
+      "detail": "",
+      "expected": null,
+      "item": "1.7 available_at index created",
+      "measured": [
+        "idx_event_revision_recorded_at",
+        "idx_event_revision_source",
+        "idx_events_available_at"
+      ],
+      "pass": true
+    },
+    {
+      "detail": "",
+      "expected": null,
+      "item": "1.8 all three guards present",
+      "measured": {
+        "missing": [],
+        "ok": true,
+        "present": [
+          "event_revision_no_delete",
+          "event_revision_no_resubmit",
+          "event_revision_no_update"
+        ]
+      },
+      "pass": true
+    },
+    {
+      "detail": "",
+      "expected": null,
+      "item": "2.1 second open applies nothing",
+      "measured": {
+        "applied_now": [],
+        "events": 375378,
+        "revisions": 375378,
+        "schema_version_after": 2,
+        "seconds": 0.001,
+        "version_rows": 2
+      },
+      "pass": true
+    },
+    {
+      "detail": "",
+      "expected": null,
+      "item": "2.2 second open leaves events/revisions unchanged",
+      "measured": {
+        "events": 375378,
+        "revisions": 375378
+      },
+      "pass": true
+    },
+    {
+      "detail": "",
+      "expected": null,
+      "item": "2.3 tampered checksum refused with explicit message",
+      "measured": {
+        "error": "migration 1 (evidence_core_init) checksum mismatch: applied=0000000000000000… expected=bc477359c7059fc7…; editing an applied migration is an error",
+        "raised": true,
+        "restored_ok": true
+      },
+      "pass": true
+    },
+    {
+      "detail": "",
+      "expected": null,
+      "item": "2.4 unknown applied version refused",
+      "measured": {
+        "error": "schema_version records unknown migration 99 (future); this build cannot safely continue",
+        "raised": true
+      },
+      "pass": true
+    },
+    {
+      "detail": "",
+      "expected": null,
+      "item": "3.1 every event has at least one revision",
+      "measured": 0,
+      "pass": true
+    },
+    {
+      "detail": "",
+      "expected": null,
+      "item": "3.2 exactly one current revision per event (no gaps, v starts at 1)",
+      "measured": {
+        "duplicate_pk": 0,
+        "missing_latest": 0,
+        "version_gaps": 0
+      },
+      "pass": true
+    },
+    {
+      "detail": "",
+      "expected": null,
+      "item": "3.3 no orphan revisions",
+      "measured": 0,
+      "pass": true
+    },
+    {
+      "detail": "",
+      "expected": null,
+      "item": "3.4 all revisions are legacy_baseline/baseline_only",
+      "measured": {
+        "completeness": [
+          {
+            "history_completeness": "baseline_only",
+            "n": 375378
+          }
+        ],
+        "origin": [
+          {
+            "n": 375378,
+            "origin": "legacy_baseline"
+          }
+        ]
+      },
+      "pass": true
+    },
+    {
+      "detail": "",
+      "expected": null,
+      "item": "3.5 only version 1 exists after clean migration",
+      "measured": "<sqlite3.Row object at 0x000002665AF7E320>",
+      "pass": true
+    },
+    {
+      "detail": "",
+      "expected": null,
+      "item": "3.6 reconcile reports zero mismatches",
+      "measured": {
+        "events_rows": 375378,
+        "head_mismatch_count": 0,
+        "missing_revision_count": 0,
+        "ok": true,
+        "orphan_revision_count": 0,
+        "revisioned_events": 375378
+      },
+      "pass": true
+    },
+    {
+      "detail": "",
+      "expected": null,
+      "item": "3.7 no fabricated observation time (single migration moment, none before 2026)",
+      "measured": {
+        "distinct_recorded_at": 1,
+        "max_recorded_at": "2026-11-12T19:52:52.034779Z",
+        "min_recorded_at": "2026-11-12T19:52:52.034779Z"
+      },
+      "pass": true
+    },
+    {
+      "detail": "",
+      "expected": null,
+      "item": "3.8 first_seen_at preserved from pre-ledger rows",
+      "measured": {
+        "revision_column": 0,
+        "snapshot": 0
+      },
+      "pass": true
+    },
+    {
+      "detail": "",
+      "expected": null,
+      "item": "7.1 aggregate fingerprints identical before/after migration",
+      "measured": null,
+      "pass": true
+    },
+    {
+      "detail": "",
+      "expected": null,
+      "item": "7.2 200-row sample (all 19 old columns) identical",
+      "measured": null,
+      "pass": true
+    },
+    {
+      "detail": "",
+      "expected": null,
+      "item": "7.3 old audit predicate still returns 298,810",
+      "measured": {
+        "fn": 298810,
+        "sql": 298810
+      },
+      "pass": true
+    },
+    {
+      "detail": "",
+      "expected": null,
+      "item": "4.1 change appends revision and old value is retrievable",
+      "measured": [
+        {
+          "latest_reason": "update",
+          "old_value_in_v1": "OJJAARA (MOMELOTINIB DIHYDROCHLORIDE)",
+          "prev_hash_chain_ok": true,
+          "versions_after": 2,
+          "versions_before": 1
+        },
+        {
+          "latest_reason": "update",
+          "old_value_in_v1": "MEDLINE INDUSTRIES, LP - Northfield 召回：Custom Sterile and Non-Sterile Procedural Kits containing Turkuaz Ultrasound Gel.  Labele…",
+          "prev_hash_chain_ok": true,
+          "versions_after": 2,
+          "versions_before": 1
+        },
+        {
+          "latest_reason": "update",
+          "old_value_in_v1": "Clinical Assays, Inc. 510(k)：GAMMADAB LH RADIO-KIT #CA-1508",
+          "prev_hash_chain_ok": true,
+          "versions_after": 2,
+          "versions_before": 1
+        }
+      ],
+      "pass": true
+    },
+    {
+      "detail": "",
+      "expected": null,
+      "item": "5.1 raw UPDATE events detected by reconcile",
+      "measured": 1,
+      "pass": true
+    },
+    {
+      "detail": "",
+      "expected": null,
+      "item": "5.2 raw DELETE events detected as orphan",
+      "measured": 1,
+      "pass": true
+    },
+    {
+      "detail": "",
+      "expected": null,
+      "item": "5.3 INSERT OR REPLACE events detected by reconcile",
+      "measured": 1,
+      "pass": true
+    },
+    {
+      "detail": "",
+      "expected": null,
+      "item": "5.4 ledger UPDATE/DELETE/REPLACE rejected by triggers",
+      "measured": {
+        "delete": "rejected: event_revision is append-only: DELETE rejected",
+        "replace": "rejected: event_revision is append-only: revision already recorded",
+        "update": "rejected: event_revision is append-only: UPDATE rejected"
+      },
+      "pass": true
+    },
+    {
+      "detail": "",
+      "expected": null,
+      "item": "5.5 dropped trigger is NOT caught (documented limit) but guards report it and tx rollback restores",
+      "measured": {
+        "forged_visible": "forged",
+        "guards_after_drop": [
+          "event_revision_no_update"
+        ],
+        "guards_after_rollback": {
+          "missing": [],
+          "ok": true,
+          "present": [
+            "event_revision_no_delete",
+            "event_revision_no_resubmit",
+            "event_revision_no_update"
+          ]
+        }
+      },
+      "pass": true
+    },
+    {
+      "detail": "",
+      "expected": null,
+      "item": "5.6 rollback restores revision count",
+      "measured": 375381,
+      "pass": true
+    },
+    {
+      "detail": "",
+      "expected": null,
+      "item": "6.1 partial batch failure rolls back head rows AND revisions",
+      "measured": {
+        "after": [
+          375378,
+          375381
+        ],
+        "before": [
+          375378,
+          375381
+        ],
+        "error": "forced revision failure",
+        "first_row_written_before_rollback": true,
+        "raised": true
+      },
+      "pass": true
+    },
+    {
+      "detail": "",
+      "expected": null,
+      "item": "6.2 failed migration records no version and no data; unpatched re-run succeeds",
+      "measured": {
+        "after": 3,
+        "rerun_applied": [
+          2
+        ],
+        "revision_rows": 0,
+        "schema_versions": [
+          1
+        ]
+      },
+      "pass": true
+    },
+    {
+      "detail": "LOW: production path (DB) sets sqlite3.Row; document the precondition or make the seed defensive",
+      "expected": null,
+      "item": "6.3 finding: runner requires sqlite3.Row on the caller's connection (plain connection fails safely with TypeError, no partial state)",
+      "measured": {
+        "note": "DB.__init__ sets sqlite3.Row, so the production path is unaffected; the runner is not callable on a plain connection without that row factory.",
+        "outcome": "TypeError: tuple indices must be integers or slices, not str",
+        "revision_rows": 0,
+        "schema_versions": [
+          1
+        ]
+      },
+      "pass": true
+    },
+    {
+      "detail": "",
+      "expected": null,
+      "item": "8.1 restored copy is byte-identical to the pre-migration copy",
+      "measured": {
+        "original": "445807cab60df66e",
+        "restored": "445807cab60df66e"
+      },
+      "pass": true
+    },
+    {
+      "detail": "",
+      "expected": null,
+      "item": "8.2 restore removes the ledger/schema_version tables (true rollback)",
+      "measured": {
+        "bytes": 1368469504,
+        "events": 375378,
+        "has_event_revision": false,
+        "has_schema_version": false,
+        "original_sha256": "445807cab60df66e0f0853c973aaf0dae6065e72b6c9807d5dd5265097002c92",
+        "pristine_sha256": "445807cab60df66e0f0853c973aaf0dae6065e72b6c9807d5dd5265097002c92",
+        "restored_sha256": "445807cab60df66e0f0853c973aaf0dae6065e72b6c9807d5dd5265097002c92"
+      },
+      "pass": true
+    },
+    {
+      "detail": "",
+      "expected": null,
+      "item": "9.1 full pytest suite green (zero failures, baseline tests included)",
+      "measured": {
+        "failed": 0,
+        "passed": 1099,
+        "returncode": 0,
+        "tail": "1099 passed, 3 skipped, 224 subtests passed in 28.02s"
+      },
+      "pass": true
+    },
+    {
+      "detail": "",
+      "expected": null,
+      "item": "0.1 original database byte-identical after acceptance",
+      "measured": {
+        "after": {
+          "bytes": 1368469504,
+          "mtime_ns": 1793424505704931600,
+          "sha256": "445807cab60df66e0f0853c973aaf0dae6065e72b6c9807d5dd5265097002c92"
+        },
+        "before": {
+          "bytes": 1368469504,
+          "mtime_ns": 1793424505704931600,
+          "sha256": "445807cab60df66e0f0853c973aaf0dae6065e72b6c9807d5dd5265097002c92"
+        }
+      },
+      "pass": true
+    }
+  ],
+  "detection": {
+    "delete_detected": {
+      "events_rows": 375377,
+      "head_mismatch_count": 0,
+      "head_mismatch_sample": [],
+      "missing_revision_count": 0,
+      "missing_revision_sample": [],
+      "ok": false,
+      "orphan_revision_count": 1,
+      "orphan_revision_sample": [
+        "0000947ad72db4f1eae93595826e3dd8"
+      ],
+      "revisioned_events": 375378
+    },
+    "dropped_trigger": {
+      "forged_visible": "forged",
+      "guards": {
+        "missing": [
+          "event_revision_no_update"
+        ],
+        "ok": false,
+        "present": [
+          "event_revision_no_delete",
+          "event_revision_no_resubmit"
+        ]
+      },
+      "reconcile": {
+        "events_rows": 375378,
+        "head_mismatch_count": 0,
+        "head_mismatch_sample": [],
+        "missing_revision_count": 0,
+        "missing_revision_sample": [],
+        "ok": true,
+        "orphan_revision_count": 0,
+        "orphan_revision_sample": [],
+        "revisioned_events": 375378
+      }
+    },
+    "guards_after_rollback": {
+      "missing": [],
+      "ok": true,
+      "present": [
+        "event_revision_no_delete",
+        "event_revision_no_resubmit",
+        "event_revision_no_update"
+      ]
+    },
+    "ledger_write_attempts": {
+      "delete": "rejected: event_revision is append-only: DELETE rejected",
+      "replace": "rejected: event_revision is append-only: revision already recorded",
+      "update": "rejected: event_revision is append-only: UPDATE rejected"
+    },
+    "replace_detected": {
+      "events_rows": 375378,
+      "head_mismatch_count": 1,
+      "head_mismatch_sample": [
+        {
+          "event_id": "000027f434623c045cd137ea39053e96",
+          "head_content_hash": "b03d95a913e94015759a046d8db32f5ac6fafc699e2bc81ccc449d7df5fc208d",
+          "ledger_content_hash": "544cbb0c231c91a0ed33c3f7e6f66a6c66311ee02764c5fe76a166cafec84e3a",
+          "ledger_origin": "live",
+          "ledger_version": 2
+        }
+      ],
+      "missing_revision_count": 0,
+      "missing_revision_sample": [],
+      "ok": false,
+      "orphan_revision_count": 0,
+      "orphan_revision_sample": [],
+      "revisioned_events": 375378
+    },
+    "revision_count_after_rollbacks": 375381,
+    "update_detected": {
+      "events_rows": 375378,
+      "head_mismatch_count": 1,
+      "head_mismatch_sample": [
+        {
+          "event_id": "000027f434623c045cd137ea39053e96",
+          "head_content_hash": "1e1eed7f2970973ad3c5b394a9bbdf54957b156d5f12a1c5557e1f8fc5fe898d",
+          "ledger_content_hash": "544cbb0c231c91a0ed33c3f7e6f66a6c66311ee02764c5fe76a166cafec84e3a",
+          "ledger_origin": "live",
+          "ledger_version": 2
+        }
+      ],
+      "missing_revision_count": 0,
+      "missing_revision_sample": [],
+      "ok": false,
+      "orphan_revision_count": 0,
+      "orphan_revision_sample": [],
+      "revisioned_events": 375378
+    }
+  },
+  "history_retention": {
+    "events": [
+      {
+        "event_id": "000027f434623c045cd137ea39053e96",
+        "first_seen_preserved": true,
+        "head_first_seen_after_earlier": "2000-01-01T00:00:00",
+        "head_title": "OJJAARA (MOMELOTINIB DIHYDROCHLORIDE) [acceptance-change]",
+        "latest_reason": "update",
+        "new_title": "OJJAARA (MOMELOTINIB DIHYDROCHLORIDE) [acceptance-change]",
+        "old_title": "OJJAARA (MOMELOTINIB DIHYDROCHLORIDE)",
+        "old_value_in_v1": "OJJAARA (MOMELOTINIB DIHYDROCHLORIDE)",
+        "prev_hash_chain_ok": true,
+        "versions_after": 2,
+        "versions_after_earlier_first_seen": 2,
+        "versions_after_identical": 2,
+        "versions_before": 1
+      },
+      {
+        "event_id": "0000947ad72db4f1eae93595826e3dd8",
+        "first_seen_preserved": true,
+        "head_first_seen_after_earlier": "2000-01-01T00:00:00",
+        "head_title": "MEDLINE INDUSTRIES, LP - Northfield 召回：Custom Sterile and Non-Sterile Procedural Kits containing Turkuaz Ultrasound Gel.  Labele… [acceptance-change]",
+        "latest_reason": "update",
+        "new_title": "MEDLINE INDUSTRIES, LP - Northfield 召回：Custom Sterile and Non-Sterile Procedural Kits containing Turkuaz Ultrasound Gel.  Labele… [acceptance-change]",
+        "old_title": "MEDLINE INDUSTRIES, LP - Northfield 召回：Custom Sterile and Non-Sterile Procedural Kits containing Turkuaz Ultrasound Gel.  Labele…",
+        "old_value_in_v1": "MEDLINE INDUSTRIES, LP - Northfield 召回：Custom Sterile and Non-Sterile Procedural Kits containing Turkuaz Ultrasound Gel.  Labele…",
+        "prev_hash_chain_ok": true,
+        "versions_after": 2,
+        "versions_after_earlier_first_seen": 2,
+        "versions_after_identical": 2,
+        "versions_before": 1
+      },
+      {
+        "event_id": "0000df21329b69d47a7897adfb4d2f20",
+        "first_seen_preserved": true,
+        "head_first_seen_after_earlier": "2000-01-01T00:00:00",
+        "head_title": "Clinical Assays, Inc. 510(k)：GAMMADAB LH RADIO-KIT #CA-1508 [acceptance-change]",
+        "latest_reason": "update",
+        "new_title": "Clinical Assays, Inc. 510(k)：GAMMADAB LH RADIO-KIT #CA-1508 [acceptance-change]",
+        "old_title": "Clinical Assays, Inc. 510(k)：GAMMADAB LH RADIO-KIT #CA-1508",
+        "old_value_in_v1": "Clinical Assays, Inc. 510(k)：GAMMADAB LH RADIO-KIT #CA-1508",
+        "prev_hash_chain_ok": true,
+        "versions_after": 2,
+        "versions_after_earlier_first_seen": 2,
+        "versions_after_identical": 2,
+        "versions_before": 1
+      }
+    ],
+    "ok": true
+  },
+  "idempotency_and_tamper": {
+    "checksum_restored": true,
+    "reopen": {
+      "applied_now": [],
+      "events": 375378,
+      "revisions": 375378,
+      "schema_version_after": 2,
+      "seconds": 0.001,
+      "version_rows": 2
+    },
+    "tamper": {
+      "error": "migration 1 (evidence_core_init) checksum mismatch: applied=0000000000000000… expected=bc477359c7059fc7…; editing an applied migration is an error",
+      "raised": true,
+      "restored_ok": true
+    },
+    "unknown_version": {
+      "error": "schema_version records unknown migration 99 (future); this build cannot safely continue",
+      "raised": true
+    }
+  },
+  "ledger_consistency": {
+    "baseline_recorded_at": {
+      "distinct_recorded_at": 1,
+      "max_recorded_at": "2026-11-12T19:52:52.034779Z",
+      "min_recorded_at": "2026-11-12T19:52:52.034779Z"
+    },
+    "by_completeness": [
+      {
+        "history_completeness": "baseline_only",
+        "n": 375378
+      }
+    ],
+    "by_origin": [
+      {
+        "n": 375378,
+        "origin": "legacy_baseline"
+      }
+    ],
+    "duplicate_pk": 0,
+    "events": 375378,
+    "events_without_revision": 0,
+    "first_seen_mismatch": 0,
+    "head_mismatch": 0,
+    "missing_latest": 0,
+    "orphan_revisions": 0,
+    "reconcile": {
+      "events_rows": 375378,
+      "head_mismatch_count": 0,
+      "head_mismatch_sample": [],
+      "missing_revision_count": 0,
+      "missing_revision_sample": [],
+      "ok": true,
+      "orphan_revision_count": 0,
+      "orphan_revision_sample": [],
+      "revisioned_events": 375378
+    },
+    "reconcile_seconds": 18.236,
+    "revisions": 375378,
+    "revisions_before_2026": 0,
+    "v1_snapshot_first_seen_mismatch": 0,
+    "version_gaps": 0,
+    "version_min": "<sqlite3.Row object at 0x000002665AF7E320>"
+  },
+  "meta": {
+    "db": "<BACKUP_DB>",
+    "expected_original_sha256": "445807cab60df66e0f0853c973aaf0dae6065e72b6c9807d5dd5265097002c92",
+    "generated_at": "2026-11-12T19:52:34Z",
+    "python": "3.12.10",
+    "script": "docs\\refoundation\\phase3\\_evidence\\core_acceptance\\run_acceptance.py",
+    "sqlite": "3.49.1"
+  },
+  "migration": {
+    "copy_seconds": 0.601,
+    "event_count": 375378,
+    "indexes": [
+      "idx_event_revision_recorded_at",
+      "idx_event_revision_source",
+      "idx_events_available_at"
+    ],
+    "migrated_available_at_ms": 0.51,
+    "migrated_plan": [
+      [
+        3,
+        0,
+        189,
+        "SEARCH events USING COVERING INDEX idx_events_available_at (available_at>?)"
+      ]
+    ],
+    "migrated_size_before_mutations": {
+      "main_bytes": 2941247488,
+      "page_count": 718078,
+      "page_size": 4096,
+      "shm_bytes": 0,
+      "total_bytes": 2941247488,
+      "wal_bytes": 0
+    },
+    "migration_seconds": 73.017,
+    "pristine_available_at_ms": 1260.5,
+    "pristine_bytes": 1368469504,
+    "pristine_has_revision": false,
+    "pristine_has_schema_version": false,
+    "pristine_legacy_promotions": 298810,
+    "pristine_plan": [
+      [
+        3,
+        0,
+        216,
+        "SCAN events"
+      ]
+    ],
+    "pristine_sha256": "445807cab60df66e0f0853c973aaf0dae6065e72b6c9807d5dd5265097002c92",
+    "pristine_signature": {
+      "queries": {
+        "by_company": {
+          "groups": 90,
+          "rows": [
+            [
+              "",
+              243085
+            ],
+            [
+              "abbott",
+              9585
+            ],
+            [
+              "abbvie",
+              1622
+            ],
+            [
+              "alcon",
+              2241
+            ],
+            [
+              "alnylam",
+              113
+            ],
+            [
+              "ambu",
+              105
+            ],
+            [
+              "amgen",
+              1054
+            ],
+            [
+              "argenx",
+              81
+            ],
+            [
+              "ark",
+              21
+            ],
+            [
+              "astellas",
+              858
+            ]
+          ],
+          "sha256": "4e0723045619ac7ab0899e61684be2b5244c4ab1455b8bedb82163be72a45287"
+        },
+        "by_quality": {
+          "groups": 1,
+          "rows": [
+            [
+              "date",
+              375378
+            ]
+          ],
+          "sha256": "596c29e112f70de00d3f4819143ddf98c548d776c0ac2574b82800f35451b332"
+        },
+        "by_source_kind": {
+          "groups": 6,
+          "rows": [
+            [
+              "ctgov",
+              "trial",
+              55592,
+              5924743,
+              59338050
+            ],
+            [
+              "openfda_device_510k",
+              "510k",
+              176466,
+              11751896,
+              318380176
+            ],
+            [
+              "openfda_device_pma",
+              "pma",
+              57372,
+              5106757,
+              103112163
+            ],
+            [
+              "openfda_device_recall",
+              "device_recall",
+              59646,
+              6587666,
+              157585834
+            ],
+            [
+              "openfda_drug_drugsfda",
+              "drug_approval",
+              5326,
+              160866,
+              38413139
+            ],
+            [
+              "sec_edgar_corpus",
+              "8k_catalyst",
+              20976,
+              1041079,
+              2929476
+            ]
+          ],
+          "sha256": "b8ec723abd3480f0ad80854bb6d948d25bee3f569928d291591033a443c71d4e"
+        },
+        "dated": {
+          "groups": 1,
+          "rows": [
+            [
+              375378,
+              3753780
+            ]
+          ],
+          "sha256": "0ad51fef00c4e47bad6ece3197d7ffa3693b372344808bebafa056c000a48908"
+        }
+      }
+    },
+    "report": {
+      "applied_now": [
+        1,
+        2
+      ],
+      "details": {
+        "evidence_core_init": {},
+        "legacy_baseline_seed": {
+          "already_revisioned": 0,
+          "baseline_inserted": 375378,
+          "events_scanned": 375378,
+          "recorded_at": "2026-11-12T19:52:52.034779Z"
+        }
+      },
+      "schema_version_after": 2,
+      "schema_version_before": 0,
+      "skipped": []
+    },
+    "revision_count": 375378,
+    "schema_version_rows": [
+      {
+        "applied_at": "2026-11-12T19:52:51.744594Z",
+        "checksum": "bc477359c7059fc71248a37aa345b8985b3835f618282a3e916cea0e59d31a53",
+        "name": "evidence_core_init",
+        "version": 1
+      },
+      {
+        "applied_at": "2026-11-12T19:53:57.570246Z",
+        "checksum": "04b231db92f31749c3644a5d58468fce07e107d49b7df8027af208fe84c4ef16",
+        "name": "legacy_baseline_seed",
+        "version": 2
+      }
+    ],
+    "triggers": {
+      "missing": [],
+      "ok": true,
+      "present": [
+        "event_revision_no_delete",
+        "event_revision_no_resubmit",
+        "event_revision_no_update"
+      ]
+    }
+  },
+  "original_after": {
+    "bytes": 1368469504,
+    "mtime_ns": 1793424505704931600,
+    "sha256": "445807cab60df66e0f0853c973aaf0dae6065e72b6c9807d5dd5265097002c92"
+  },
+  "original_before": {
+    "bytes": 1368469504,
+    "mtime_ns": 1793424505704931600,
+    "sha256": "445807cab60df66e0f0853c973aaf0dae6065e72b6c9807d5dd5265097002c92"
+  },
+  "pytest": {
+    "failed": 0,
+    "passed": 1099,
+    "returncode": 0,
+    "seconds": 29.4,
+    "tail": "1099 passed, 3 skipped, 224 subtests passed in 28.02s"
+  },
+  "readers_and_perf": {
+    "aggregate_equal": true,
+    "legacy_promotions": 298810,
+    "legacy_timestamp_promotions_fn": 298810,
+    "migrated_available_at_ms": 0.49,
+    "migrated_plan": [
+      [
+        3,
+        0,
+        189,
+        "SEARCH events USING COVERING INDEX idx_events_available_at (available_at>?)"
+      ]
+    ],
+    "pristine_ms": 1260.5,
+    "sample_rows_equal": true
+  },
+  "restore": {
+    "bytes": 1368469504,
+    "events": 375378,
+    "has_event_revision": false,
+    "has_schema_version": false,
+    "original_sha256": "445807cab60df66e0f0853c973aaf0dae6065e72b6c9807d5dd5265097002c92",
+    "pristine_sha256": "445807cab60df66e0f0853c973aaf0dae6065e72b6c9807d5dd5265097002c92",
+    "restored_sha256": "445807cab60df66e0f0853c973aaf0dae6065e72b6c9807d5dd5265097002c92"
+  },
+  "rollback": {
+    "batch_rollback": {
+      "after": [
+        375378,
+        375381
+      ],
+      "before": [
+        375378,
+        375381
+      ],
+      "error": "forced revision failure",
+      "first_row_written_before_rollback": true,
+      "raised": true
+    },
+    "migration_rollback": {
+      "error": "forced baseline failure",
+      "raised": true,
+      "rerun": {
+        "applied_now": [
+          2
+        ],
+        "details": {
+          "legacy_baseline_seed": {
+            "already_revisioned": 0,
+            "baseline_inserted": 3,
+            "events_scanned": 3,
+            "recorded_at": "2026-11-12T19:56:35.161255Z"
+          }
+        },
+        "schema_version_after": 2,
+        "schema_version_before": 1,
+        "skipped": [
+          1
+        ]
+      },
+      "revision_rows": 0,
+      "revision_rows_after_rerun": 3,
+      "schema_versions": [
+        1
+      ]
+    },
+    "plain_connection_probe": {
+      "note": "DB.__init__ sets sqlite3.Row, so the production path is unaffected; the runner is not callable on a plain connection without that row factory.",
+      "outcome": "TypeError: tuple indices must be integers or slices, not str",
+      "revision_rows": 0,
+      "schema_versions": [
+        1
+      ]
+    }
+  },
+  "storage": {
+    "growth_bytes": 1572777984,
+    "growth_pct": 114.93,
+    "migrated_bytes": 2941247488,
+    "migrated_main_bytes": 2941247488,
+    "migrated_page_count": 718078,
+    "note": "revision table stores one full 19-column snapshot per event; growth is the honest cost of append-only history, not compression",
+    "revision_payload_bytes": 1121277740,
+    "source_bytes": 1368469504,
+    "source_page_count": 334099
+  },
+  "summary": {
+    "failed": [],
+    "passed": 37,
+    "total": 37,
+    "verdict": "PASS"
+  },
+  "timings": {
+    "available_at_ms_after": 0.49,
+    "available_at_ms_before": 1260.5,
+    "copy_seconds": 0.601,
+    "migration_seconds": 73.017,
+    "pytest_seconds": 29.4,
+    "reconcile_seconds": 18.236,
+    "reopen_seconds": 0.001
+  }
+}
