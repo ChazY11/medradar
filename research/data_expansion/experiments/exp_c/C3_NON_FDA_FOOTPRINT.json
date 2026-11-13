@@ -1,0 +1,722 @@
+{
+  "computed_at": "2026-11-08T22:11:13.994062Z",
+  "coverage": {
+    "anchors_checkable_in_canada": 30,
+    "anchors_not_checkable": 8,
+    "anchors_total": 38,
+    "reason_not_checkable": "no MDALL active licence list could be retrieved for that firm (entity mapping or empty list)",
+    "registries_not_checkable": [
+      "EUDAMED (registration required)",
+      "UK MHRA (no public product register exists)",
+      "TGA ARTG (automated access blocked this round)",
+      "Japan PMDA / Brazil ANVISA / China NMPA (no usable public machine interface)"
+    ]
+  },
+  "fetch_log": [
+    {
+      "company_id": 100933,
+      "firm": "medtronic",
+      "licences": 0
+    },
+    {
+      "company_id": 101886,
+      "firm": "medtronic",
+      "licences": 0
+    },
+    {
+      "company_id": 103188,
+      "firm": "medtronic",
+      "licences": 0
+    },
+    {
+      "company_id": 100078,
+      "firm": "ge_healthcare",
+      "licences": 12
+    },
+    {
+      "company_id": 100580,
+      "firm": "ge_healthcare",
+      "licences": 0
+    },
+    {
+      "company_id": 104136,
+      "firm": "ge_healthcare",
+      "licences": 0
+    },
+    {
+      "company_id": 100201,
+      "firm": "philips",
+      "licences": 0
+    },
+    {
+      "company_id": 100255,
+      "firm": "philips",
+      "licences": 37
+    },
+    {
+      "company_id": 104638,
+      "firm": "philips",
+      "licences": 17
+    },
+    {
+      "company_id": 100305,
+      "firm": "draeger",
+      "licences": 0
+    },
+    {
+      "company_id": 103279,
+      "firm": "draeger",
+      "licences": 110
+    },
+    {
+      "company_id": 109437,
+      "firm": "draeger",
+      "licences": 0
+    },
+    {
+      "company_id": 120691,
+      "firm": "mindray",
+      "licences": 69
+    },
+    {
+      "company_id": 128239,
+      "firm": "mindray",
+      "licences": 0
+    }
+  ],
+  "interpretation": [
+    "This counts an EARLIER REGULATORY FOOTPRINT, not an earlier publicly observable signal: MDALL is a current snapshot and does not prove the licence was queryable on that date.",
+    "Only Canada is checkable, so absence of a Canadian licence is not evidence of absence of an earlier EU/UK/JP/CN footprint.",
+    "A match is a product-token match against a licence name, i.e. tier B evidence, not a confirmed identical device."
+  ],
+  "question": "did a non-FDA registry hold a matching device with an earlier regulatory footprint date?",
+  "requests": 14,
+  "result": {
+    "anchors_with_earlier_canadian_token_match": 11,
+    "examples": [
+      {
+        "anchor_id": "510k:K220051",
+        "canada_first_status": "2005-10-31",
+        "canada_licence": 69631,
+        "canada_name": "Z.ONE ULTRA ULTRASOUND SYSTEM",
+        "days_fda_after_canada": 5968,
+        "fda_decision": "2022-03-04",
+        "firm": "mindray"
+      },
+      {
+        "anchor_id": "510k:K233834",
+        "canada_first_status": "2009-06-09",
+        "canada_licence": 79924,
+        "canada_name": "INFINITY ID BREATHING BAG SET",
+        "days_fda_after_canada": 5512,
+        "fda_decision": "2024-07-12",
+        "firm": "draeger"
+      },
+      {
+        "anchor_id": "510k:K222928",
+        "canada_first_status": "2008-05-20",
+        "canada_licence": 77112,
+        "canada_name": "M5 DIAGNOSTIC ULTRASOUND SYSTEM",
+        "days_fda_after_canada": 5376,
+        "fda_decision": "2023-02-07",
+        "firm": "mindray"
+      },
+      {
+        "anchor_id": "510k:K203088",
+        "canada_first_status": "2009-06-09",
+        "canada_licence": 79924,
+        "canada_name": "INFINITY ID BREATHING BAG SET",
+        "days_fda_after_canada": 4620,
+        "fda_decision": "2022-02-01",
+        "firm": "draeger"
+      },
+      {
+        "anchor_id": "510k:K201764",
+        "canada_first_status": "2009-06-09",
+        "canada_licence": 79924,
+        "canada_name": "INFINITY ID BREATHING BAG SET",
+        "days_fda_after_canada": 4566,
+        "fda_decision": "2021-12-09",
+        "firm": "draeger"
+      },
+      {
+        "anchor_id": "510k:K200859",
+        "canada_first_status": "2009-06-09",
+        "canada_licence": 79924,
+        "canada_name": "INFINITY ID BREATHING BAG SET",
+        "days_fda_after_canada": 4098,
+        "fda_decision": "2020-08-28",
+        "firm": "draeger"
+      },
+      {
+        "anchor_id": "510k:K240115",
+        "canada_first_status": "2016-08-15",
+        "canada_licence": 97512,
+        "canada_name": "RESONA 7 DIAGNOSTIC ULTRASOUND SYSTEM",
+        "days_fda_after_canada": 2807,
+        "fda_decision": "2024-04-22",
+        "firm": "mindray"
+      },
+      {
+        "anchor_id": "510k:K170277",
+        "canada_first_status": "2012-01-24",
+        "canada_licence": 88108,
+        "canada_name": "DC-8 DIAGNOSTIC ULTRASOUND SYSTEM",
+        "days_fda_after_canada": 1885,
+        "fda_decision": "2017-03-23",
+        "firm": "mindray"
+      }
+    ],
+    "share_of_checkable": 0.3667,
+    "strong_matches": 2,
+    "weak_matches_single_brand_token": 9
+  },
+  "rows": [
+    {
+      "anchor_id": "510k:K172154",
+      "decision_date": "2018-04-19",
+      "earlier_canadian_licence": null,
+      "firm_key": "draeger",
+      "licences_available_for_firm": 110,
+      "reclassify_pre_regulatory": false,
+      "terms": [
+        "Isolette"
+      ]
+    },
+    {
+      "anchor_id": "510k:K200859",
+      "decision_date": "2020-08-28",
+      "earlier_canadian_licence": {
+        "days_fda_after_canada": 4098,
+        "first_licence_status_dt": "2009-06-09",
+        "licence_name": "INFINITY ID BREATHING BAG SET",
+        "licence_no": 79924,
+        "match_strength": "weak_single_brand_token",
+        "matched_terms": [
+          "Infinity"
+        ]
+      },
+      "firm_key": "draeger",
+      "licences_available_for_firm": 110,
+      "reclassify_pre_regulatory": true,
+      "terms": [
+        "M300",
+        "Infinity"
+      ]
+    },
+    {
+      "anchor_id": "510k:K201764",
+      "decision_date": "2021-12-09",
+      "earlier_canadian_licence": {
+        "days_fda_after_canada": 4566,
+        "first_licence_status_dt": "2009-06-09",
+        "licence_name": "INFINITY ID BREATHING BAG SET",
+        "licence_no": 79924,
+        "match_strength": "weak_single_brand_token",
+        "matched_terms": [
+          "Infinity"
+        ]
+      },
+      "firm_key": "draeger",
+      "licences_available_for_firm": 110,
+      "reclassify_pre_regulatory": true,
+      "terms": [
+        "Infinity",
+        "IACS"
+      ]
+    },
+    {
+      "anchor_id": "510k:K203088",
+      "decision_date": "2022-02-01",
+      "earlier_canadian_licence": {
+        "days_fda_after_canada": 4620,
+        "first_licence_status_dt": "2009-06-09",
+        "licence_name": "INFINITY ID BREATHING BAG SET",
+        "licence_no": 79924,
+        "match_strength": "weak_single_brand_token",
+        "matched_terms": [
+          "Infinity"
+        ]
+      },
+      "firm_key": "draeger",
+      "licences_available_for_firm": 110,
+      "reclassify_pre_regulatory": true,
+      "terms": [
+        "Infinity",
+        "IACS"
+      ]
+    },
+    {
+      "anchor_id": "510k:K230278",
+      "decision_date": "2023-05-30",
+      "earlier_canadian_licence": null,
+      "firm_key": "draeger",
+      "licences_available_for_firm": 110,
+      "reclassify_pre_regulatory": false,
+      "terms": [
+        "TN300",
+        "Babyroo"
+      ]
+    },
+    {
+      "anchor_id": "510k:K233834",
+      "decision_date": "2024-07-12",
+      "earlier_canadian_licence": {
+        "days_fda_after_canada": 5512,
+        "first_licence_status_dt": "2009-06-09",
+        "licence_name": "INFINITY ID BREATHING BAG SET",
+        "licence_no": 79924,
+        "match_strength": "weak_single_brand_token",
+        "matched_terms": [
+          "Infinity"
+        ]
+      },
+      "firm_key": "draeger",
+      "licences_available_for_firm": 110,
+      "reclassify_pre_regulatory": true,
+      "terms": [
+        "Infinity",
+        "Gateway"
+      ]
+    },
+    {
+      "anchor_id": "pma:P130020",
+      "decision_date": "2017-01-05",
+      "earlier_canadian_licence": null,
+      "firm_key": "ge_healthcare",
+      "licences_available_for_firm": 12,
+      "reclassify_pre_regulatory": false,
+      "terms": [
+        "SENOCLAIRE"
+      ]
+    },
+    {
+      "anchor_id": "510k:K173456",
+      "decision_date": "2018-01-05",
+      "earlier_canadian_licence": null,
+      "firm_key": "ge_healthcare",
+      "licences_available_for_firm": 12,
+      "reclassify_pre_regulatory": false,
+      "terms": [
+        "ViewPoint"
+      ]
+    },
+    {
+      "anchor_id": "510k:K182951",
+      "decision_date": "2019-01-18",
+      "earlier_canadian_licence": null,
+      "firm_key": "ge_healthcare",
+      "licences_available_for_firm": 12,
+      "reclassify_pre_regulatory": false,
+      "terms": [
+        "Pristina",
+        "Serena"
+      ]
+    },
+    {
+      "anchor_id": "510k:K192917",
+      "decision_date": "2020-01-06",
+      "earlier_canadian_licence": null,
+      "firm_key": "ge_healthcare",
+      "licences_available_for_firm": 12,
+      "reclassify_pre_regulatory": false,
+      "terms": [
+        "ViewPoint"
+      ]
+    },
+    {
+      "anchor_id": "510k:K203114",
+      "decision_date": "2021-01-08",
+      "earlier_canadian_licence": null,
+      "firm_key": "ge_healthcare",
+      "licences_available_for_firm": 12,
+      "reclassify_pre_regulatory": false,
+      "terms": [
+        "LOGIQ"
+      ]
+    },
+    {
+      "anchor_id": "510k:K213642",
+      "decision_date": "2022-01-13",
+      "earlier_canadian_licence": null,
+      "firm_key": "ge_healthcare",
+      "licences_available_for_firm": 12,
+      "reclassify_pre_regulatory": false,
+      "terms": [
+        "Voluson",
+        "Expert"
+      ]
+    },
+    {
+      "anchor_id": "510k:K223378",
+      "decision_date": "2023-01-03",
+      "earlier_canadian_licence": null,
+      "firm_key": "ge_healthcare",
+      "licences_available_for_firm": 12,
+      "reclassify_pre_regulatory": false,
+      "terms": [
+        "16ch"
+      ]
+    },
+    {
+      "anchor_id": "510k:K233728",
+      "decision_date": "2024-01-19",
+      "earlier_canadian_licence": null,
+      "firm_key": "ge_healthcare",
+      "licences_available_for_firm": 12,
+      "reclassify_pre_regulatory": false,
+      "terms": [
+        "Champion",
+        "SIGNA"
+      ]
+    },
+    {
+      "anchor_id": "510k:K163620",
+      "decision_date": "2017-01-19",
+      "earlier_canadian_licence": null,
+      "firm_key": "medtronic",
+      "licences_available_for_firm": 0,
+      "reclassify_pre_regulatory": false,
+      "terms": [
+        "Reprocessed",
+        "Compression"
+      ]
+    },
+    {
+      "anchor_id": "510k:K173559",
+      "decision_date": "2018-01-18",
+      "earlier_canadian_licence": null,
+      "firm_key": "medtronic",
+      "licences_available_for_firm": 0,
+      "reclassify_pre_regulatory": false,
+      "terms": [
+        "Barrx"
+      ]
+    },
+    {
+      "anchor_id": "510k:K182868",
+      "decision_date": "2019-01-08",
+      "earlier_canadian_licence": null,
+      "firm_key": "medtronic",
+      "licences_available_for_firm": 0,
+      "reclassify_pre_regulatory": false,
+      "terms": [
+        "PM7100",
+        "rSO2"
+      ]
+    },
+    {
+      "anchor_id": "510k:K192302",
+      "decision_date": "2020-01-17",
+      "earlier_canadian_licence": null,
+      "firm_key": "medtronic",
+      "licences_available_for_firm": 0,
+      "reclassify_pre_regulatory": false,
+      "terms": [
+        "Mahurkar",
+        "Pressure"
+      ]
+    },
+    {
+      "anchor_id": "510k:K202874",
+      "decision_date": "2021-01-09",
+      "earlier_canadian_licence": null,
+      "firm_key": "medtronic",
+      "licences_available_for_firm": 0,
+      "reclassify_pre_regulatory": false,
+      "terms": [
+        "Pressure",
+        "Puritan"
+      ]
+    },
+    {
+      "anchor_id": "510k:K213602",
+      "decision_date": "2022-01-14",
+      "earlier_canadian_licence": null,
+      "firm_key": "medtronic",
+      "licences_available_for_firm": 0,
+      "reclassify_pre_regulatory": false,
+      "terms": [
+        "Tunneling",
+        "Dialysis"
+      ]
+    },
+    {
+      "anchor_id": "510k:K223158",
+      "decision_date": "2023-01-23",
+      "earlier_canadian_licence": null,
+      "firm_key": "medtronic",
+      "licences_available_for_firm": 0,
+      "reclassify_pre_regulatory": false,
+      "terms": [
+        "LigaSure",
+        "Maryland"
+      ]
+    },
+    {
+      "anchor_id": "510k:K230693",
+      "decision_date": "2024-02-26",
+      "earlier_canadian_licence": null,
+      "firm_key": "medtronic",
+      "licences_available_for_firm": 0,
+      "reclassify_pre_regulatory": false,
+      "terms": [
+        "Advance"
+      ]
+    },
+    {
+      "anchor_id": "510k:K170277",
+      "decision_date": "2017-03-23",
+      "earlier_canadian_licence": {
+        "days_fda_after_canada": 1885,
+        "first_licence_status_dt": "2012-01-24",
+        "licence_name": "DC-8 DIAGNOSTIC ULTRASOUND SYSTEM",
+        "licence_no": 88108,
+        "match_strength": "strong",
+        "matched_terms": [
+          "DC-8"
+        ]
+      },
+      "firm_key": "mindray",
+      "licences_available_for_firm": 69,
+      "reclassify_pre_regulatory": true,
+      "terms": [
+        "DC-8S",
+        "DC-8"
+      ]
+    },
+    {
+      "anchor_id": "510k:K172860",
+      "decision_date": "2018-01-02",
+      "earlier_canadian_licence": null,
+      "firm_key": "mindray",
+      "licences_available_for_firm": 69,
+      "reclassify_pre_regulatory": false,
+      "terms": [
+        "6Elite",
+        "5Elite"
+      ]
+    },
+    {
+      "anchor_id": "510k:K181637",
+      "decision_date": "2019-01-09",
+      "earlier_canadian_licence": null,
+      "firm_key": "mindray",
+      "licences_available_for_firm": 69,
+      "reclassify_pre_regulatory": false,
+      "terms": [
+        "DC-70T",
+        "DC-70S"
+      ]
+    },
+    {
+      "anchor_id": "510k:K200251",
+      "decision_date": "2020-04-02",
+      "earlier_canadian_licence": null,
+      "firm_key": "mindray",
+      "licences_available_for_firm": 69,
+      "reclassify_pre_regulatory": false,
+      "terms": [
+        "Z50T",
+        "Z50S"
+      ]
+    },
+    {
+      "anchor_id": "510k:K202405",
+      "decision_date": "2021-01-07",
+      "earlier_canadian_licence": {
+        "days_fda_after_canada": 1731,
+        "first_licence_status_dt": "2016-04-12",
+        "licence_name": "BENEVISION CENTRAL MONITORING SYSTEM",
+        "licence_no": 96828,
+        "match_strength": "weak_single_brand_token",
+        "matched_terms": [
+          "BeneVision"
+        ]
+      },
+      "firm_key": "mindray",
+      "licences_available_for_firm": 69,
+      "reclassify_pre_regulatory": true,
+      "terms": [
+        "BeneVision"
+      ]
+    },
+    {
+      "anchor_id": "510k:K220051",
+      "decision_date": "2022-03-04",
+      "earlier_canadian_licence": {
+        "days_fda_after_canada": 5968,
+        "first_licence_status_dt": "2005-10-31",
+        "licence_name": "Z.ONE ULTRA ULTRASOUND SYSTEM",
+        "licence_no": 69631,
+        "match_strength": "weak_single_brand_token",
+        "matched_terms": [
+          "Ultrasound"
+        ]
+      },
+      "firm_key": "mindray",
+      "licences_available_for_firm": 69,
+      "reclassify_pre_regulatory": true,
+      "terms": [
+        "Diagnostic",
+        "Ultrasound"
+      ]
+    },
+    {
+      "anchor_id": "510k:K222928",
+      "decision_date": "2023-02-07",
+      "earlier_canadian_licence": {
+        "days_fda_after_canada": 5376,
+        "first_licence_status_dt": "2008-05-20",
+        "licence_name": "M5 DIAGNOSTIC ULTRASOUND SYSTEM",
+        "licence_no": 77112,
+        "match_strength": "weak_single_brand_token",
+        "matched_terms": [
+          "Diagnostic"
+        ]
+      },
+      "firm_key": "mindray",
+      "licences_available_for_firm": 69,
+      "reclassify_pre_regulatory": true,
+      "terms": [
+        "7EXP",
+        "Diagnostic"
+      ]
+    },
+    {
+      "anchor_id": "510k:K240115",
+      "decision_date": "2024-04-22",
+      "earlier_canadian_licence": {
+        "days_fda_after_canada": 2807,
+        "first_licence_status_dt": "2016-08-15",
+        "licence_name": "RESONA 7 DIAGNOSTIC ULTRASOUND SYSTEM",
+        "licence_no": 97512,
+        "match_strength": "weak_single_brand_token",
+        "matched_terms": [
+          "Resona"
+        ]
+      },
+      "firm_key": "mindray",
+      "licences_available_for_firm": 69,
+      "reclassify_pre_regulatory": true,
+      "terms": [
+        "NuewaI8S",
+        "Resona"
+      ]
+    },
+    {
+      "anchor_id": "510k:K163410",
+      "decision_date": "2017-01-04",
+      "earlier_canadian_licence": null,
+      "firm_key": "philips",
+      "licences_available_for_firm": 54,
+      "reclassify_pre_regulatory": false,
+      "terms": [
+        "DigitalDiagnost"
+      ]
+    },
+    {
+      "anchor_id": "510k:K173588",
+      "decision_date": "2018-01-12",
+      "earlier_canadian_licence": null,
+      "firm_key": "philips",
+      "licences_available_for_firm": 54,
+      "reclassify_pre_regulatory": false,
+      "terms": [
+        "Illumeo"
+      ]
+    },
+    {
+      "anchor_id": "510k:K182973",
+      "decision_date": "2019-01-11",
+      "earlier_canadian_licence": null,
+      "firm_key": "philips",
+      "licences_available_for_firm": 54,
+      "reclassify_pre_regulatory": false,
+      "terms": [
+        "DigitalDiagnost"
+      ]
+    },
+    {
+      "anchor_id": "510k:K193109",
+      "decision_date": "2020-01-24",
+      "earlier_canadian_licence": null,
+      "firm_key": "philips",
+      "licences_available_for_firm": 54,
+      "reclassify_pre_regulatory": false,
+      "terms": [
+        "MRCAT",
+        "brain"
+      ]
+    },
+    {
+      "anchor_id": "510k:K203231",
+      "decision_date": "2021-01-11",
+      "earlier_canadian_licence": null,
+      "firm_key": "philips",
+      "licences_available_for_firm": 54,
+      "reclassify_pre_regulatory": false,
+      "terms": [
+        "Switched",
+        "Internal"
+      ]
+    },
+    {
+      "anchor_id": "510k:K210760",
+      "decision_date": "2022-01-14",
+      "earlier_canadian_licence": {
+        "days_fda_after_canada": 1509,
+        "first_licence_status_dt": "2017-11-27",
+        "licence_name": "PERCUNAV IMAGE FUSION AND INTERVENTIONAL NAVIGATION",
+        "licence_no": 100048,
+        "match_strength": "weak_single_brand_token",
+        "matched_terms": [
+          "Image"
+        ]
+      },
+      "firm_key": "philips",
+      "licences_available_for_firm": 54,
+      "reclassify_pre_regulatory": true,
+      "terms": [
+        "Precise",
+        "Image"
+      ]
+    },
+    {
+      "anchor_id": "510k:K223804",
+      "decision_date": "2023-01-18",
+      "earlier_canadian_licence": {
+        "days_fda_after_canada": 1878,
+        "first_licence_status_dt": "2017-11-27",
+        "licence_name": "PERCUNAV IMAGE FUSION AND INTERVENTIONAL NAVIGATION",
+        "licence_no": 100048,
+        "match_strength": "strong",
+        "matched_terms": [
+          "Interventional",
+          "Navigation"
+        ]
+      },
+      "firm_key": "philips",
+      "licences_available_for_firm": 54,
+      "reclassify_pre_regulatory": true,
+      "terms": [
+        "Interventional",
+        "Navigation"
+      ]
+    },
+    {
+      "anchor_id": "pma:P160029",
+      "decision_date": "2024-01-05",
+      "earlier_canadian_licence": null,
+      "firm_key": "philips",
+      "licences_available_for_firm": 54,
+      "reclassify_pre_regulatory": false,
+      "terms": [
+        "HeartStart",
+        "OnSite"
+      ]
+    }
+  ],
+  "schema": "medradar.external.c3.v1",
+  "source": "Health Canada MDALL JSON API (keyless)"
+}

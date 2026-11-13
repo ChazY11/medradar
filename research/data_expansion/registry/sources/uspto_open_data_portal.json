@@ -1,0 +1,47 @@
+{
+  "api_available": "YES",
+  "authentication": "API key in X-API-KEY header",
+  "bulk_download_available": "PARTIAL",
+  "category": "patent",
+  "connection_status": "NOT_TESTED",
+  "cost_notes": "Free of charge; a free account is required to mint the key.",
+  "country_or_region": "US",
+  "domain": "B",
+  "entity_identifiers": [
+    "US application number",
+    "US patent number",
+    "assignee name (raw)",
+    "inventor name (raw)",
+    "CPC",
+    "USPC"
+  ],
+  "evidence_urls": [
+    "https://data.uspto.gov/apis",
+    "https://api.uspto.gov/api/v1/patent/applications/search"
+  ],
+  "free_tier": "free API key after creating a USPTO developer account",
+  "historical_coverage": "US applications and grants; dataset products from 2001 onward",
+  "known_limitations": [
+    "PROBED 2026-11-09: /api/v1/patent/applications/search and /api/v1/datasets/products/... both returned HTTP 401 {\"message\":\"Unauthorized\"} - every data path needs X-API-KEY.",
+    "The portal absorbed the former developer.uspto.gov endpoints AND the PatentsView surface (see the patentsview record); counting them as independent sources double-counts one authority.",
+    "Assignee strings are as-filed legal names (subsidiaries included); ODP supplies no disambiguated assignee id comparable to PatentsView's assignee_id.",
+    "Patent family is not a first-class ODP concept; family reconstruction needs publication numbers or an external concordance (EPO/Google).",
+    "The docs UI is a single-page app; endpoint details must be read from its JS app or the linked API documentation, not from scraped HTML."
+  ],
+  "licence": "US government work, public domain (17 U.S.C. 105)",
+  "official_or_commercial": "official",
+  "official_url": "https://data.uspto.gov/apis",
+  "probe_priority": "P0",
+  "rate_limits": "documented per-endpoint; unauthenticated calls return 401 {\"message\":\"Unauthorized\"}",
+  "redistribution_allowed": "YES",
+  "research_value": "The current US patent gateway and the practical replacement for the retired PatentsView API: free key, paged JSON, publication dates separate from filing dates. It is the only affordable way to get US pre-grant publications at record level for many thousands of assignees.",
+  "source_id": "uspto_open_data_portal",
+  "source_name": "USPTO Open Data Portal (ODP) API",
+  "timestamp_fields": [
+    "publicationDate = pre-grant publication -> source_public_at",
+    "filingDate = application date -> event_at only",
+    "grantDate = later public-visibility event, not the earliest"
+  ],
+  "update_frequency": "daily (search); weekly (bulk dataset products)",
+  "verified_at": "2026-11-09"
+}

@@ -1,0 +1,67 @@
+{
+  "generated_at": "2026-11-08T21:59:08.429764Z",
+  "manifest_repair": {
+    "incident": "wildcard write rewrote SAMPLES.json files during collection",
+    "incident_observed_at": "2026-11-08T21:59:10Z",
+    "policy": "verify, do not restore: payload bytes were never modified",
+    "repaired_at_note": "hashes recomputed from disk; declared values preserved on conflict",
+    "stats": {
+      "entries": 3,
+      "mismatched": 0,
+      "missing_files": 0,
+      "recomputed": 3,
+      "source_id": "eu_ctis",
+      "unlisted_files_added": 0,
+      "verified": 0
+    }
+  },
+  "note": "Raw response slices only; parsed records are derived and live in the series/handoff.",
+  "samples": [
+    {
+      "file": "ctis_retrieve.json",
+      "hash_verified": true,
+      "name": "ctis_retrieve.json",
+      "note": "descriptor recovered from disk: the probe run did not persist the full-response descriptor, so sha256_full/total_bytes are null rather than guessed",
+      "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\eu_ctis\\ctis_retrieve.json",
+      "recovered_from": "requests.jsonl",
+      "request_url": "https://euclinicaltrials.eu/ctis-public-api/retrieve/2023-507015-35-00",
+      "sha256_full": "a973f3d79acda48e4d9681ba961bd6c7d83cd33a418e9579306da342fdfa8b0f",
+      "sha256_source": "recomputed_from_disk",
+      "sha256_stored": "a973f3d79acda48e4d9681ba961bd6c7d83cd33a418e9579306da342fdfa8b0f",
+      "source": "recovered_from_disk",
+      "stored_bytes": 137298,
+      "total_bytes": 137298,
+      "truncated": false
+    },
+    {
+      "file": "ctis_search.json",
+      "hash_verified": true,
+      "name": "ctis_search.json",
+      "note": "descriptor recovered from disk: the probe run did not persist the full-response descriptor, so sha256_full/total_bytes are null rather than guessed",
+      "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\eu_ctis\\ctis_search.json",
+      "sha256_full": "87ed575103c90f36a54f43df2f9a6ca50b19686952e8a0418616c7c177ec8ed9",
+      "sha256_source": "recomputed_from_disk",
+      "sha256_stored": "87ed575103c90f36a54f43df2f9a6ca50b19686952e8a0418616c7c177ec8ed9",
+      "source": "recovered_from_disk",
+      "stored_bytes": 4487,
+      "total_bytes": 4487,
+      "truncated": false
+    },
+    {
+      "file": "ctis_search_sponsor.json",
+      "hash_verified": true,
+      "name": "ctis_search_sponsor.json",
+      "note": "descriptor recovered from disk: the probe run did not persist the full-response descriptor, so sha256_full/total_bytes are null rather than guessed",
+      "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\eu_ctis\\ctis_search_sponsor.json",
+      "sha256_full": "d37eaed5b41e35fc0594f247964f7ab832bd4a9ec7fd7fdb290410f66006f6fa",
+      "sha256_source": "recomputed_from_disk",
+      "sha256_stored": "d37eaed5b41e35fc0594f247964f7ab832bd4a9ec7fd7fdb290410f66006f6fa",
+      "source": "recovered_from_disk",
+      "stored_bytes": 5010,
+      "total_bytes": 5010,
+      "truncated": false
+    }
+  ],
+  "schema": "medradar.external.samples.v1",
+  "source_id": "eu_ctis"
+}

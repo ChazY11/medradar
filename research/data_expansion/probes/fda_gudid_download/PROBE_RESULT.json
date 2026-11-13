@@ -1,0 +1,96 @@
+{
+  "error": "",
+  "evidence_urls": [
+    "https://accessgudid.nlm.nih.gov/download",
+    "https://accessgudid.nlm.nih.gov/release_files/download/gudid_daily_update_20261102.zip"
+  ],
+  "notes": "NLM publishes GUDID release files: daily / weekly / monthly change sets and a full release. Daily files are small enough to download inside the protocol budget and carry an explicit 'Date Created' + record count + MD5, which gives a true per-batch publication clock. The full release is far above the 8 MB cap.",
+  "probes": [
+    {
+      "attempts": 1,
+      "bytes": 46951,
+      "daily_files": [
+        "https://accessgudid.nlm.nih.gov/release_files/download/gudid_daily_update_20261102.zip",
+        "https://accessgudid.nlm.nih.gov/release_files/download/gudid_daily_update_20261103.zip",
+        "https://accessgudid.nlm.nih.gov/release_files/download/gudid_daily_update_20261104.zip"
+      ],
+      "elapsed_ms": 2250,
+      "error": "",
+      "name": "download_page",
+      "note": "",
+      "ok": true,
+      "release_file_count": 27,
+      "release_files": [
+        "https://accessgudid.nlm.nih.gov/release_files/download/gudid_daily_update_20261102.zip",
+        "https://accessgudid.nlm.nih.gov/release_files/download/gudid_daily_update_20261103.zip",
+        "https://accessgudid.nlm.nih.gov/release_files/download/gudid_daily_update_20261104.zip",
+        "https://accessgudid.nlm.nih.gov/release_files/download/gudid_daily_update_20261105.zip",
+        "https://accessgudid.nlm.nih.gov/release_files/download/gudid_daily_update_20261106.zip",
+        "https://accessgudid.nlm.nih.gov/release_files/download/gudid_full_release_20261001.zip",
+        "https://accessgudid.nlm.nih.gov/release_files/download/gudid_full_release_20261102.zip",
+        "https://accessgudid.nlm.nih.gov/release_files/download/gudid_monthly_update_april_2025.zip",
+        "https://accessgudid.nlm.nih.gov/release_files/download/gudid_monthly_update_april_2026.zip",
+        "https://accessgudid.nlm.nih.gov/release_files/download/gudid_monthly_update_august_2025.zip",
+        "https://accessgudid.nlm.nih.gov/release_files/download/gudid_monthly_update_august_2026.zip",
+        "https://accessgudid.nlm.nih.gov/release_files/download/gudid_monthly_update_december_2025.zip"
+      ],
+      "release_metadata": {
+        "gudid_daily_update_20261102.zip": "gudid_daily_update_20261102.zip\" href=\"https://accessgudid.nlm.nih.gov/release_files/download/gudid_daily_update_20261102.zip\">gudid_daily_update_20261102.zip Date Created: Nov 02, 2026 Number of Device Identifier Records: 5548 File Size: 535 KB MD5 Checksum: 14d940ed292e452ccb2961f5adb935f8 WEEKLY UPDATES <a download=\"gudid_weekly_update_20261026_20261030.zip\" href=\"https://accessgud",
+        "gudid_daily_update_20261103.zip": "gudid_daily_update_20261103.zip\" href=\"https://accessgudid.nlm.nih.gov/release_files/download/gudid_daily_update_20261103.zip\">gudid_daily_update_20261103.zip Date Created: Nov 03, 2026 Number of Device Identifier Records: 35773 File Size: 1.91 MB MD5 Checksum: e1785015ffa4029c7c3a40d464dd0eed gudid_daily_update_20",
+        "gudid_daily_update_20261104.zip": "gudid_daily_update_20261104.zip\" href=\"https://accessgudid.nlm.nih.gov/release_files/download/gudid_daily_update_20261104.zip\">gudid_daily_update_20261104.zip Date Created: Nov 04, 2026 Number of Device Identifier Records: 14000 File Size: 1.4 MB MD5 Checksum: d71ece4d9f5165bb9ccf3bd481ed67b8 gudid_daily_update_202"
+      },
+      "sample": {
+        "name": "download_page.html",
+        "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\fda_gudid_download\\download_page.html",
+        "sha256_full": "7506c4a622b6c5e8a41bcdb3472b4b2de99bf39db702772732f43f241a86252d",
+        "sha256_stored": "7506c4a622b6c5e8a41bcdb3472b4b2de99bf39db702772732f43f241a86252d",
+        "stored_bytes": 46951,
+        "total_bytes": 46951,
+        "truncated": false
+      },
+      "status": 200,
+      "structure": null,
+      "url": "https://accessgudid.nlm.nih.gov/download"
+    },
+    {
+      "attempts": 1,
+      "bytes": 547350,
+      "elapsed_ms": 2843,
+      "error": "",
+      "header": {
+        "creationDate": "2026-11-02T10:05:09",
+        "database_type": "DELTA_INCREMENTAL",
+        "devicePublishDate_sample": "2026-10-23",
+        "frequency": "daily",
+        "numberRecordXML": "5548",
+        "period_end": "2026-11-02T10:05:09",
+        "period_start": "2026-10-26T10:29:02",
+        "publicVersionDate_sample": "2026-11-02"
+      },
+      "inner_files": [
+        "DELTA_INCREMENTALDownload_Part1_Of_1_2026-11-02.xml"
+      ],
+      "name": "daily_release_zip",
+      "note": "a real GUDID daily release",
+      "ok": true,
+      "parsed_records": 5548,
+      "sample": {
+        "name": "daily_release_zip.zip",
+        "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\fda_gudid_download\\daily_release_zip.zip",
+        "sha256_full": "1f702770003d96cc8896919f1bf31de87ee51a67f28b41af31ee466d44ec2e37",
+        "sha256_stored": "7f47f318b4a991a375f01d20e5539a3bfdeb26ca09c8ede708a8680cf086753b",
+        "stored_bytes": 524288,
+        "total_bytes": 547350,
+        "truncated": true
+      },
+      "status": 200,
+      "structure": null,
+      "url": "https://accessgudid.nlm.nih.gov/release_files/download/gudid_daily_update_20261102.zip"
+    }
+  ],
+  "requests": 2,
+  "schema": "medradar.external.probe.v1",
+  "source_id": "fda_gudid_download",
+  "status": "VERIFIED_BULK_DOWNLOAD",
+  "verified_at": "2026-11-08T21:52:07.834859Z"
+}

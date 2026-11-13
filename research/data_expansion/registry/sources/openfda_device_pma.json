@@ -1,0 +1,48 @@
+{
+  "api_available": "YES",
+  "authentication": "none (anonymous calls work); optional free API key only raises the daily quota",
+  "bulk_download_available": "YES",
+  "category": "regulatory_clearance",
+  "connection_status": "NOT_TESTED",
+  "cost_notes": "free; no SLA and no commercial support; FDA may throttle or restrict access per its terms",
+  "country_or_region": "US",
+  "domain": "A",
+  "entity_identifiers": [
+    "PMA number (pma_number) + supplement_number - together they identify the record",
+    "product_code",
+    "applicant (submitter legal entity, free text)",
+    "openfda.registration_number",
+    "UNKNOWN - no UDI-DI on the PMA record"
+  ],
+  "evidence_urls": [
+    "https://api.fda.gov/device/pma.json?search=decision_date%3A%5B2024-01-01+TO+2024-12-31%5D&limit=2",
+    "https://api.fda.gov/device/pma.json?search=applicant%3Amedtronic&limit=3",
+    "https://open.fda.gov/license/",
+    "https://open.fda.gov/terms/",
+    "https://open.fda.gov/apis/authentication/"
+  ],
+  "free_tier": "free; no key needed (1,000 req/day per IP); free key raises it to 120,000/day",
+  "historical_coverage": "PMA originals and supplements; 57,421 records in the 2026-11-02 bulk export",
+  "known_limitations": [
+    "a supplement is a separate record under the same pma_number; counting rows instead of distinct pma_number inflates the number of approved devices",
+    "same date problem as 510(k): decision_date is an event date, not a publication date",
+    "high-risk Class III only - it is not a substitute for the 510(k) stream and covers a much narrower slice of the five firms' portfolios",
+    "company linkage inherits the same submitter-string fragmentation as 510(k)"
+  ],
+  "licence": "public domain: FDA dedicates openFDA content/data to the public domain under a Creative Commons CC0 1.0 Universal dedication (open.fda.gov/license/, verified)",
+  "official_or_commercial": "official",
+  "official_url": "https://open.fda.gov/apis/device/pma/",
+  "probe_priority": "P0",
+  "rate_limits": "documented: 240 requests/min and 1,000 requests/day per IP without a key; 240/min and 120,000/day with a free key (open.fda.gov/apis/authentication/, verified). `skip` is capped at 25,000, so full history requires splitting by decision_date windows",
+  "redistribution_allowed": "YES",
+  "research_value": "PMAs mark the highest-risk device approvals, so they are the cleanest signal for frontier-technology launches (structural heart, neurostimulation, insulin pumps) where Medtronic and Philips compete. Supplement records additionally reveal post-approval label expansions, which 510(k) clearances do not expose as cleanly.",
+  "source_id": "openfda_device_pma",
+  "source_name": "openFDA device PMA",
+  "timestamp_fields": [
+    "decision_date (event clock)",
+    "date_received",
+    "meta.last_updated (endpoint-level)"
+  ],
+  "update_frequency": "continuous; endpoint `meta.last_updated` observed as 2026-10-26",
+  "verified_at": "2026-11-09"
+}

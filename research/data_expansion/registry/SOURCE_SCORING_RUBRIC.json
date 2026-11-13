@@ -1,0 +1,153 @@
+{
+  "schema": "medradar.external.scoring_rubric.v1",
+  "frozen_at": "2026-11-09T05:40:00Z",
+  "frozen_before_results": true,
+  "note": "Weights and band definitions are frozen before any experiment number exists. Code reads this file; do not inline thresholds.",
+  "scale": {"min": 0, "max": 4, "display_multiplier": 25},
+  "dimensions": [
+    {
+      "id": "time_credibility",
+      "label_zh": "时间信息可信度",
+      "weight": 0.2,
+      "direction": "positive",
+      "bands": {
+        "0": "只有抓取时间，或公开时间明显不可靠（页面无日期/日期可被回改）",
+        "1": "有日期字段但语义含混，无法区分事件日与公开日",
+        "2": "事件日与公开日可区分，但精度只有月/年，或缺少历史版本",
+        "3": "两条时间轴清晰、日精度，但无法验证历史版本",
+        "4": "事件日/公开日/版本历史均可核实，且可程序化取证（含明确的时间戳字段文档）"
+      }
+    },
+    {
+      "id": "accessibility",
+      "label_zh": "可获取性",
+      "weight": 0.15,
+      "direction": "positive",
+      "bands": {
+        "0": "无任何程序化访问",
+        "1": "仅人工网页查询，且条款严格限制自动访问",
+        "2": "公开查询页可解析，但无稳定接口、易变",
+        "3": "有稳定公开 API 或公开批量下载，无凭据要求",
+        "4": "有稳定公开 API + 批量下载 + 明确的分页/增量语义"
+      }
+    },
+    {
+      "id": "entity_linkage",
+      "label_zh": "企业身份关联能力",
+      "weight": 0.15,
+      "direction": "positive",
+      "bands": {
+        "0": "完全无法关联到企业",
+        "1": "只有自由文本企业名，无别名/无标识符",
+        "2": "有企业名字段与部分别名，但无权威企业标识符",
+        "3": "有稳定企业标识符（如 CIK/LEI/官方备案号）或结构化申请人字段",
+        "4": "有稳定官方企业标识符，且提供历史名称/母子公司关系"
+      }
+    },
+    {
+      "id": "product_linkage",
+      "label_zh": "产品/技术关联能力",
+      "weight": 0.15,
+      "direction": "positive",
+      "bands": {
+        "0": "无产品级信息",
+        "1": "只有类别/主题词",
+        "2": "有产品名或型号，但无稳定产品标识符",
+        "3": "有稳定产品标识符（DI/注册证号/NCT/专利号/DOI 等）",
+        "4": "有稳定产品标识符且可与外部体系交叉引用（映射表/交叉引用字段）"
+      }
+    },
+    {
+      "id": "licence_and_cost",
+      "label_zh": "授权与成本",
+      "weight": 0.1,
+      "direction": "positive",
+      "bands": {
+        "0": "必须付费且价格不公开，或明确禁止科研使用",
+        "1": "必须付费，价格公开且昂贵；或条款严重限制再分发",
+        "2": "需注册/授权但免费（科研可用），再分发受限",
+        "3": "免费公开，条款允许科研使用，再分发受限",
+        "4": "公有领域或开放许可，允许再分发与衍生（需署名时注明）"
+      }
+    },
+    {
+      "id": "historical_coverage",
+      "label_zh": "历史覆盖",
+      "weight": 0.1,
+      "direction": "positive",
+      "bands": {
+        "0": "只有当前快照",
+        "1": "覆盖最近 1–2 年",
+        "2": "覆盖 3–5 年",
+        "3": "覆盖 6–15 年",
+        "4": "覆盖 15 年以上且有历史版本可回溯"
+      }
+    },
+    {
+      "id": "update_stability",
+      "label_zh": "更新稳定性",
+      "weight": 0.05,
+      "direction": "positive",
+      "bands": {
+        "0": "已停更或状态不明",
+        "1": "不定期更新",
+        "2": "季度/年度更新",
+        "3": "月度更新且有更新日志",
+        "4": "日更或持续更新，有版本/变更记录"
+      }
+    },
+    {
+      "id": "complementarity",
+      "label_zh": "与现有数据的互补性",
+      "weight": 0.05,
+      "direction": "positive",
+      "bands": {
+        "0": "与 medradar main 已有来源完全重复",
+        "1": "大部分重复，仅有少量新字段",
+        "2": "约一半内容重复",
+        "3": "主要是新机构/新视角，少量重叠",
+        "4": "明确是不同上游机构、不同环节，可提供独立佐证"
+      }
+    },
+    {
+      "id": "early_evidence_potential",
+      "label_zh": "潜在早期证据价值",
+      "weight": 0.03,
+      "direction": "positive",
+      "bands": {
+        "0": "结构上不可能早于监管（如上市后被动上报）",
+        "1": "通常晚于监管",
+        "2": "理论上可能早于监管，但无证据",
+        "3": "有零星案例显示可能更早",
+        "4": "有可核查案例证明早于监管（必须给出案例引用）"
+      }
+    },
+    {
+      "id": "maintenance_cost",
+      "label_zh": "长期维护成本",
+      "weight": 0.02,
+      "direction": "negative",
+      "bands": {
+        "0": "维护成本极高（需破解前端、频繁改版、法律风险）",
+        "1": "成本高",
+        "2": "中等：需定期处理格式变化",
+        "3": "低：稳定接口，少量适配",
+        "4": "极低：稳定接口 + 官方 schema 版本化"
+      }
+    }
+  ],
+  "categories": {
+    "ADOPT NOW": {"requires_status": ["VERIFIED_API", "VERIFIED_BULK_DOWNLOAD"], "min_score": 70, "requires_exp_a": "INCREMENTAL"},
+    "PILOT": {"requires_status": ["VERIFIED_API", "VERIFIED_BULK_DOWNLOAD", "VERIFIED_PUBLIC_QUERY"], "min_score": 50, "note": "or EXP-A INSUFFICIENT_EVIDENCE"},
+    "RESEARCH ONLY": {"min_score": 30, "max_score": 49},
+    "COMMERCIAL CANDIDATE": {"requires_status": ["PAID_ONLY"], "min_score": 50},
+    "BLOCKED": {"requires_status": ["BLOCKED_BY_POLICY", "REQUIRES_REGISTRATION"]},
+    "REJECT": {"max_score": 29, "forbids_status": ["PAID_ONLY"]}
+  },
+  "anti_gaming_rules": [
+    "Never score on raw record volume; only de-duplicated, datable, linkable records count.",
+    "A source whose records are mostly duplicates of an existing source scores <= 2 on complementarity.",
+    "early_evidence_potential must cite a verifiable case at band 3-4; otherwise cap at 2.",
+    "Any dimension with UNKNOWN evidence scores 0, not the midpoint."
+  ]
+}

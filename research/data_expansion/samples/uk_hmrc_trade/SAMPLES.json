@@ -1,0 +1,103 @@
+{
+  "generated_at": "2026-11-08T21:59:10.207200Z",
+  "manifest_repair": {
+    "incident": "wildcard write rewrote SAMPLES.json files during collection",
+    "incident_observed_at": "2026-11-08T21:59:10Z",
+    "policy": "verify, do not restore: payload bytes were never modified",
+    "repaired_at_note": "hashes recomputed from disk; declared values preserved on conflict",
+    "stats": {
+      "entries": 5,
+      "mismatched": 0,
+      "missing_files": 0,
+      "recomputed": 5,
+      "source_id": "uk_hmrc_trade",
+      "unlisted_files_added": 0,
+      "verified": 0
+    }
+  },
+  "note": "Raw response slices only; parsed records are derived and live in the series/handoff.",
+  "samples": [
+    {
+      "file": "commodity_search_hs9018.json",
+      "hash_verified": true,
+      "name": "commodity_search_hs9018.json",
+      "note": "descriptor recovered from disk: the probe run did not persist the full-response descriptor, so sha256_full/total_bytes are null rather than guessed",
+      "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\uk_hmrc_trade\\commodity_search_hs9018.json",
+      "recovered_from": "requests.jsonl",
+      "request_url": "https://api.uktradeinfo.com/CommoditySearch?%24filter=startswith%28Hs4Code%2C%279018%27%29&%24top=2",
+      "sha256_full": "46ae87cb0c339f99a080025959c629446e8d419ad0000793f21db7ad20ae78b7",
+      "sha256_source": "recomputed_from_disk",
+      "sha256_stored": "46ae87cb0c339f99a080025959c629446e8d419ad0000793f21db7ad20ae78b7",
+      "source": "recovered_from_disk",
+      "stored_bytes": 1289,
+      "total_bytes": 1289,
+      "truncated": false
+    },
+    {
+      "file": "ots_aggregate_sample.json",
+      "hash_verified": true,
+      "name": "ots_aggregate_sample.json",
+      "note": "descriptor recovered from disk: the probe run did not persist the full-response descriptor, so sha256_full/total_bytes are null rather than guessed",
+      "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\uk_hmrc_trade\\ots_aggregate_sample.json",
+      "recovered_from": "requests.jsonl",
+      "request_url": "https://api.uktradeinfo.com/OTS?%24top=2",
+      "sha256_full": "e05b0732bd6f1b6d21600393da0f5b33fd10713be08e79c615556ebb6f10ce48",
+      "sha256_source": "recomputed_from_disk",
+      "sha256_stored": "e05b0732bd6f1b6d21600393da0f5b33fd10713be08e79c615556ebb6f10ce48",
+      "source": "recovered_from_disk",
+      "stored_bytes": 420,
+      "total_bytes": 420,
+      "truncated": false
+    },
+    {
+      "file": "service_document.json",
+      "hash_verified": true,
+      "name": "service_document.json",
+      "note": "descriptor recovered from disk: the probe run did not persist the full-response descriptor, so sha256_full/total_bytes are null rather than guessed",
+      "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\uk_hmrc_trade\\service_document.json",
+      "recovered_from": "requests.jsonl",
+      "request_url": "https://api.uktradeinfo.com/",
+      "sha256_full": "cb2158d8b929de3f871a94403042c8a7e06df2a9ab695c11a511b83826639e40",
+      "sha256_source": "recomputed_from_disk",
+      "sha256_stored": "cb2158d8b929de3f871a94403042c8a7e06df2a9ab695c11a511b83826639e40",
+      "source": "recovered_from_disk",
+      "stored_bytes": 920,
+      "total_bytes": 920,
+      "truncated": false
+    },
+    {
+      "file": "trader_search_medtronic.json",
+      "hash_verified": true,
+      "name": "trader_search_medtronic.json",
+      "note": "descriptor recovered from disk: the probe run did not persist the full-response descriptor, so sha256_full/total_bytes are null rather than guessed",
+      "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\uk_hmrc_trade\\trader_search_medtronic.json",
+      "recovered_from": "requests.jsonl",
+      "request_url": "https://api.uktradeinfo.com/Trader?%24filter=contains%28CompanyName%2C%27MEDTRONIC%27%29&%24top=5&%24select=TraderId%2CCompanyName%2CPostCode",
+      "sha256_full": "9db4837089aa86518468c1273043fcc520973da48d00a92b091364082acac753",
+      "sha256_source": "recomputed_from_disk",
+      "sha256_stored": "9db4837089aa86518468c1273043fcc520973da48d00a92b091364082acac753",
+      "source": "recovered_from_disk",
+      "stored_bytes": 461,
+      "total_bytes": 461,
+      "truncated": false
+    },
+    {
+      "file": "yearly_trade_presence.json",
+      "hash_verified": true,
+      "name": "yearly_trade_presence.json",
+      "note": "descriptor recovered from disk: the probe run did not persist the full-response descriptor, so sha256_full/total_bytes are null rather than guessed",
+      "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\uk_hmrc_trade\\yearly_trade_presence.json",
+      "recovered_from": "requests.jsonl",
+      "request_url": "https://api.uktradeinfo.com/YearlyTrade?%24filter=TraderId+eq+213902+and+Year+eq+2023&%24top=5",
+      "sha256_full": "c5b46b4cfaaa453859ab95fbf286104a99f2fa0220ab8302787530d631be87e3",
+      "sha256_source": "recomputed_from_disk",
+      "sha256_stored": "c5b46b4cfaaa453859ab95fbf286104a99f2fa0220ab8302787530d631be87e3",
+      "source": "recovered_from_disk",
+      "stored_bytes": 1543,
+      "total_bytes": 1543,
+      "truncated": false
+    }
+  ],
+  "schema": "medradar.external.samples.v1",
+  "source_id": "uk_hmrc_trade"
+}

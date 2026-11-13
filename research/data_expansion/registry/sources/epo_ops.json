@@ -1,0 +1,49 @@
+{
+  "api_available": "YES",
+  "authentication": "OAuth2 client-credentials (consumer key + secret) -> 20-minute bearer token",
+  "bulk_download_available": "NO",
+  "category": "patent",
+  "connection_status": "NOT_TESTED",
+  "cost_notes": "Free with registration; the quota is volume-metered (allowance unverified this round). Paid PATSTAT bulk is a separate product.",
+  "country_or_region": "EU",
+  "domain": "B",
+  "entity_identifiers": [
+    "EP publication number",
+    "DOCDB family id",
+    "applicant name (raw, unnormalised)",
+    "inventor name (raw)",
+    "IPC",
+    "CPC"
+  ],
+  "evidence_urls": [
+    "https://www.epo.org/en/searching-for-patents/data/web-services/ops",
+    "https://developers.epo.org/",
+    "https://ops.epo.org/3.2/rest-services/published-data/search"
+  ],
+  "free_tier": "free registration; OAuth2 client-credentials. The quota is metered by volume, but the exact free-tier volume was NOT verified this round (developers.epo.org answered 403).",
+  "historical_coverage": "EP publications from 1978; DOCDB worldwide bibliographic/family data reaching back to the 19th century for some offices",
+  "known_limitations": [
+    "PROBED 2026-11-09 without credentials: both REST calls returned HTTP 403 '<error><code>403</code><message>This request has been rejected due to the violation of Fair Use policy</message></error>' and the token endpoint returned 401 - i.e. NOTHING is obtainable without registering an OAuth2 app.",
+    "Registration is free but mandatory: consumer key + secret must be created in an EPO account before a single record can be read.",
+    "Quota is metered by volume, not by call count; the published free-tier allowance could not be read this round (developer portal 403), so no volume figure is quoted here.",
+    "Applicant names are raw legal strings including subsidiaries ('MEDTRONIC VASCULAR INC', 'KONINKLIJKE PHILIPS N.V.'); no disambiguated assignee id is provided, so company linking stays at exact_alias/candidate.",
+    "Family data is INPADOC/DOCDB based and can lag national offices; publication dates for national phase entries are office-specific."
+  ],
+  "licence": "EPO OPS terms of use; bibliographic data reusable, bulk extract redistribution restricted",
+  "official_or_commercial": "official",
+  "official_url": "https://www.epo.org/en/searching-for-patents/data/web-services/ops",
+  "probe_priority": "P0",
+  "rate_limits": "quota metered by volume per service (the allowance is documented on the developer portal, which returned 403 to our client, so the number is UNVERIFIED); anonymous calls answered 403 'Fair Use policy'",
+  "redistribution_allowed": "PARTIAL",
+  "research_value": "The single most complete open-licensed patent channel that offers publication date, filing/priority date, family AND citations in one API - exactly what a public-visibility (not filing-date) clock needs. Blocked only by free registration. It would let MedRadar date the earliest public disclosure of a device technology, before regulatory clearance and before trade flows.",
+  "source_id": "epo_ops",
+  "source_name": "European Patent Office — Open Patent Services (OPS) 3.2",
+  "timestamp_fields": [
+    "date-publ = publication date -> the ONLY valid source_public_at (never the filing date)",
+    "date-filing = application date -> event_at for the invention timeline, NOT public visibility",
+    "priority date -> event_at only; a priority filing is not public",
+    "grant date = B1 publication -> a second, later public-visibility event for the same family"
+  ],
+  "update_frequency": "daily (publication data)",
+  "verified_at": "2026-11-09"
+}

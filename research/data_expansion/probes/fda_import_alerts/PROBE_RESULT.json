@@ -1,0 +1,127 @@
+{
+  "error": "",
+  "evidence_urls": [
+    "https://www.accessdata.fda.gov/cms_ia/ialist.html",
+    "https://www.accessdata.fda.gov/cms_ia/industrygroup_9.html",
+    "https://www.fda.gov/about-fda/about-website/website-policies"
+  ],
+  "notes": "no openFDA endpoint; ialist.html parsed into 154 import alerts with number/type/publish-date/name, 154 schema-v1 evidence records; device industry group lists 19 sub-industries. Index has no company column, so firm-level linkage is UNKNOWN.",
+  "probes": [
+    {
+      "bytes": 5213,
+      "elapsed_ms": 563,
+      "error": "HTTP 403 Forbidden",
+      "name": "bare_directory_not_usable",
+      "note": "HTTP 403.14 directory listing forbidden; concrete .html pages are required",
+      "ok": true,
+      "status": 403,
+      "url": "https://www.accessdata.fda.gov/cms_ia/"
+    },
+    {
+      "alerts": 154,
+      "bytes": 66100,
+      "elapsed_ms": 672,
+      "error": "",
+      "first_rows": [
+        {
+          "alert_name": "\"Detention Without Physical Examination of Papad and Farfar Wafers From India\"",
+          "alert_number": "03-05",
+          "alert_type": "DWPE",
+          "detail_href": "importalert_3.html",
+          "detail_id": "3",
+          "publish_date": "07/28/2025"
+        },
+        {
+          "alert_name": "\"Detention Without Physical Examination of Imported Soft Cheese and Soft Ripened Cheese from France\"",
+          "alert_number": "12-03",
+          "alert_type": "DWPE",
+          "detail_href": "importalert_7.html",
+          "detail_id": "7",
+          "publish_date": "12/23/2025"
+        },
+        {
+          "alert_name": "\"Detention Without Physical Examination of Cheese Due to Microbiological Contamination\"",
+          "alert_number": "12-10",
+          "alert_type": "DWPE",
+          "detail_href": "importalert_9.html",
+          "detail_id": "9",
+          "publish_date": "08/07/2026"
+        }
+      ],
+      "name": "ialist_index_parsed",
+      "ok": true,
+      "sample": {
+        "name": "ialist.html",
+        "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\fda_import_alerts\\ialist.html",
+        "sha256_full": "f927cb735a8988b8f01556c073e5a94b0191540e4af0ac116d3a774f0672e7b4",
+        "sha256_stored": "f927cb735a8988b8f01556c073e5a94b0191540e4af0ac116d3a774f0672e7b4",
+        "stored_bytes": 66100,
+        "total_bytes": 66100,
+        "truncated": false
+      },
+      "status": 200,
+      "url": "https://www.accessdata.fda.gov/cms_ia/ialist.html"
+    },
+    {
+      "bytes": 27514,
+      "device_industries": 19,
+      "elapsed_ms": 391,
+      "error": "",
+      "first_industries": [
+        {
+          "href": "industry_73.html",
+          "industry": "Anesthesiology"
+        },
+        {
+          "href": "industry_74.html",
+          "industry": "Cardiovascular"
+        },
+        {
+          "href": "industry_75.html",
+          "industry": "Chemistry"
+        },
+        {
+          "href": "industry_76.html",
+          "industry": "Dental"
+        }
+      ],
+      "name": "device_industry_group_parsed",
+      "ok": true,
+      "status": 200,
+      "url": "https://www.accessdata.fda.gov/cms_ia/industrygroup_9.html"
+    },
+    {
+      "bytes": 44684,
+      "elapsed_ms": 437,
+      "error": "",
+      "five_firm_alias_text_hits": {
+        "draeger": 0,
+        "ge_healthcare": 0,
+        "medtronic": 0,
+        "mindray": 0,
+        "philips": 0
+      },
+      "is_real_alert_page": true,
+      "name": "one_alert_detail_page",
+      "note": "detail pages carry the firm red list; counts are raw text hits, not identity links",
+      "ok": true,
+      "status": 200,
+      "url": "https://www.accessdata.fda.gov/cms_ia/importalert_1182.html"
+    },
+    {
+      "distinct_record_ids": 154,
+      "kinds": [
+        "import_alert"
+      ],
+      "name": "schema_validation",
+      "ok": true,
+      "records": 154,
+      "status": 200
+    }
+  ],
+  "requests": 4,
+  "schema": "medradar.external.probe.v1",
+  "source_id": "fda_import_alerts",
+  "status": "VERIFIED_PUBLIC_QUERY",
+  "verified_at": "2026-11-08T21:48:42.878580Z"
+}

@@ -1,0 +1,48 @@
+{
+  "api_available": "PARTIAL",
+  "authentication": "none",
+  "bulk_download_available": "PARTIAL",
+  "category": "research_funding",
+  "connection_status": "NOT_TESTED",
+  "cost_notes": "free, CC-BY 4.0 with attribution",
+  "country_or_region": "EU",
+  "domain": "H",
+  "entity_identifiers": [
+    "CORDIS project id",
+    "RCN",
+    "grant DOI (10.3030/<id>)",
+    "call id",
+    "participant org id"
+  ],
+  "evidence_urls": [
+    "https://cordis.europa.eu/project/id/101069357?format=json",
+    "https://cordis.europa.eu/search/en?q=stent&format=json&num=2&p=1"
+  ],
+  "free_tier": "free, no key required",
+  "historical_coverage": "Horizon Europe and Horizon 2020 project factsheets; partial FP7 coverage",
+  "known_limitations": [
+    "no documented developer API: the public search front end calls an unauthenticated JSON endpoint that can change without notice",
+    "the search index returns 'result' report documents, not projects; project factsheets must be resolved via the associated project id and then fetched individually (2 requests per project)",
+    "fielded query syntax is undocumented and fails silently: a numeric query returned HTTP 500, and 'contenttype=project' as a query was ignored",
+    "contentCreationDate is when the CORDIS record was created, not a formal publication date; ecSignatureDate is the award decision"
+  ],
+  "licence": "CC-BY 4.0 (European Commission open data)",
+  "official_or_commercial": "official",
+  "official_url": "https://cordis.europa.eu/",
+  "probe_priority": "P1",
+  "rate_limits": "undocumented JSON endpoints; no published limit (we paced at 1.2s)",
+  "redistribution_allowed": "YES",
+  "research_value": "The only public record of EU research money and consortium membership; a deterministic way to see whether a European device firm participates in funded consortia, with CC-BY reuse.",
+  "source_id": "eu_cordis",
+  "source_name": "EU CORDIS project database",
+  "timestamp_fields": [
+    "startDate",
+    "endDate",
+    "ecSignatureDate",
+    "contentCreationDate",
+    "contentUpdateDate",
+    "lastUpdateDate"
+  ],
+  "update_frequency": "continuous",
+  "verified_at": "2026-11-09"
+}

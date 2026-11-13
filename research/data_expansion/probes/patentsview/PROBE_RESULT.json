@@ -1,0 +1,103 @@
+{
+  "error": "",
+  "evidence_urls": [
+    "https://api.patentsview.org/patents/query?q=%7B%7D&f=%5B%22patent_number%22%5D",
+    "https://patentsview.org/apis/api-endpoints"
+  ],
+  "notes": "Documented host search.patentsview.org is NXDOMAIN; api host now serves an ODP-branded SPA. Retired/absorbed into uspto_open_data_portal.",
+  "probes": [
+    {
+      "bytes": 0,
+      "content_type": "",
+      "elapsed_ms": 0,
+      "error": "URLError: <urlopen error [Errno 11001] getaddrinfo failed>",
+      "excerpt": "",
+      "looks_like_html": false,
+      "looks_like_json": false,
+      "name": "documented_api_host",
+      "ok": false,
+      "sample": null,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "status": null,
+      "structure": null,
+      "url": "https://search.patentsview.org/api/v1/patent/?q=%7B%22_text_any%22%3A+%7B%22patent_title%22%3A+%22stent%22%7D%7D&f=%5B%22patent_id%22%2C%22patent_date%22%5D"
+    },
+    {
+      "bytes": 0,
+      "content_type": "",
+      "elapsed_ms": 16,
+      "error": "URLError: <urlopen error [Errno 11001] getaddrinfo failed>",
+      "excerpt": "",
+      "looks_like_html": false,
+      "looks_like_json": false,
+      "name": "documented_docs_host",
+      "ok": false,
+      "sample": null,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "status": null,
+      "structure": null,
+      "url": "https://search.patentsview.org/docs/"
+    },
+    {
+      "bytes": 20666,
+      "content_type": "text/html",
+      "elapsed_ms": 2141,
+      "error": "",
+      "excerpt": "<!doctype html> <html lang=\"en\" data-beasties-container> <head><link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin>   <meta charset=\"utf-8\">   <base href=\"/\">   <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">   <meta name=\"description\" content=\"The Open Data Port",
+      "looks_like_html": true,
+      "looks_like_json": false,
+      "name": "legacy_api_host",
+      "ok": true,
+      "sample": {
+        "fetched_at": "2026-11-08T21:41:52.513391Z",
+        "http_status": 200,
+        "name": "legacy_api_host.html",
+        "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\patentsview\\legacy_api_host.html",
+        "request_name": "legacy_api_host",
+        "request_url": "https://api.patentsview.org/patents/query?q=%7B%7D&f=%5B%22patent_number%22%5D",
+        "sha256_full": "4ccc927a003f3944c18c0c3394af2d6f2504b194a72ab480ef77fff21b997b85",
+        "sha256_stored": "4ccc927a003f3944c18c0c3394af2d6f2504b194a72ab480ef77fff21b997b85",
+        "stored_bytes": 20666,
+        "total_bytes": 20666,
+        "truncated": false
+      },
+      "sha256": "4ccc927a003f3944c18c0c3394af2d6f2504b194a72ab480ef77fff21b997b85",
+      "status": 200,
+      "structure": null,
+      "url": "https://api.patentsview.org/patents/query?q=%7B%7D&f=%5B%22patent_number%22%5D"
+    },
+    {
+      "bytes": 20666,
+      "content_type": "text/html",
+      "elapsed_ms": 905,
+      "error": "",
+      "excerpt": "<!doctype html> <html lang=\"en\" data-beasties-container> <head><link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin>   <meta charset=\"utf-8\">   <base href=\"/\">   <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">   <meta name=\"description\" content=\"The Open Data Port",
+      "looks_like_html": true,
+      "looks_like_json": false,
+      "name": "project_website",
+      "ok": true,
+      "sample": {
+        "fetched_at": "2026-11-08T21:41:54.206256Z",
+        "http_status": 200,
+        "name": "project_website.html",
+        "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\patentsview\\project_website.html",
+        "request_name": "project_website",
+        "request_url": "https://patentsview.org/apis/api-endpoints",
+        "sha256_full": "4ccc927a003f3944c18c0c3394af2d6f2504b194a72ab480ef77fff21b997b85",
+        "sha256_stored": "4ccc927a003f3944c18c0c3394af2d6f2504b194a72ab480ef77fff21b997b85",
+        "stored_bytes": 20666,
+        "total_bytes": 20666,
+        "truncated": false
+      },
+      "sha256": "4ccc927a003f3944c18c0c3394af2d6f2504b194a72ab480ef77fff21b997b85",
+      "status": 200,
+      "structure": null,
+      "url": "https://patentsview.org/apis/api-endpoints"
+    }
+  ],
+  "requests": 8,
+  "schema": "medradar.external.probe.v1",
+  "source_id": "patentsview",
+  "status": "UNAVAILABLE",
+  "verified_at": "2026-11-08T21:41:54.207251Z"
+}

@@ -1,0 +1,39 @@
+{
+  "api_available": "NO",
+  "authentication": "free registered web account for the form-based query tool",
+  "bulk_download_available": "UNKNOWN",
+  "category": "trade_aggregate",
+  "connection_status": "NOT_TESTED",
+  "cost_notes": "Free account for the web UI; no API product.",
+  "country_or_region": "US",
+  "domain": "E",
+  "entity_identifiers": [],
+  "evidence_urls": [
+    "https://dataweb.usitc.gov/",
+    "https://www.usitc.gov/dataweb"
+  ],
+  "free_tier": "free account, browser UI only",
+  "historical_coverage": "US import/export statistics by HTS, long history in the UI",
+  "known_limitations": [
+    "PROBED 2026-11-09: no machine interface found. dataweb.usitc.gov returns the same ~9.5 KB Angular shell for every path, including /api/... guesses, so nothing is parseable without a browser session.",
+    "www.usitc.gov/dataweb answered HTTP 403 'Access Denied' (Akamai) to our client.",
+    "DataWeb's documented model is a free *registered* account driving a form UI; automating a logged-in session would need an account and browser automation, both out of policy for this round.",
+    "Research value is redundant anyway: the same HS-code country aggregates are available keyless (Comtrade/Eurostat) or with a free key (Census).",
+    "Country-level HS-code AGGREGATE statistics only: no company, no shipment, no product identity. Must not be substituted for bill-of-lading (company-level) data, and cannot be used to infer any of the five firms' supply chain."
+  ],
+  "licence": "US government work (public domain), delivered through a web application",
+  "official_or_commercial": "official",
+  "official_url": "https://dataweb.usitc.gov/",
+  "probe_priority": "P2",
+  "rate_limits": "UNKNOWN - no API",
+  "redistribution_allowed": "PARTIAL",
+  "research_value": "Would add USITC-reconciled HTS-10 detail with customs districts, but it is UI-only and duplicates the Census/Comtrade aggregate question. No firm-level capability at all.",
+  "source_id": "usitc_dataweb",
+  "source_name": "USITC DataWeb",
+  "timestamp_fields": [
+    "reporting month/year only (coarse)",
+    "no machine-readable publication timestamp"
+  ],
+  "update_frequency": "monthly",
+  "verified_at": "2026-11-09"
+}

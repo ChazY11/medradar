@@ -1,0 +1,575 @@
+{
+  "error": "",
+  "evidence_urls": [
+    "https://accessgudid.nlm.nih.gov/api/v3/devices/lookup?di=00643169718425",
+    "https://accessgudid.nlm.nih.gov/api/v3/devices/lookup?di=04049098054089",
+    "https://accessgudid.nlm.nih.gov/api/v3/devices/lookup?di=06944904092515",
+    "https://api.fda.gov/device/udi.json?search=identifiers.id%3A%2200643169718425%22&limit=1"
+  ],
+  "notes": "AccessGUDID (NLM) /api/v3/devices/lookup?di= returns the GUDID record as JSON. GUDID is the upstream database that openFDA /device/udi.json re-publishes: the same DI yields the same publicDeviceRecordKey on both interfaces, so they are ONE evidence item, not two. GUDID publish_date is a real per-record first-publication date; public_version_date is a version stamp and must never be used as the first-publication date.",
+  "probes": [
+    {
+      "attempts": 1,
+      "brand_name": "NA",
+      "bytes": 2987,
+      "company_name": "MEDTRONIC, INC.",
+      "device_publish_date": "2016-01-07T00:00:00.000Z",
+      "elapsed_ms": 797,
+      "error": "",
+      "name": "lookup_medtronic_00643169718425",
+      "note": "",
+      "ok": true,
+      "public_device_record_key": "166af89e-bd7c-4978-8fc5-27c4bac10e88",
+      "public_version_date": "2022-12-08T00:00:00.000Z",
+      "sample": {
+        "name": "lookup_medtronic_00643169718425.json",
+        "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\accessgudid\\lookup_medtronic_00643169718425.json",
+        "sha256_full": "253ad04311b0c8daf0eaf9988ae213a604cbffbf7df71c2b2bcae7aaa1d55336",
+        "sha256_stored": "253ad04311b0c8daf0eaf9988ae213a604cbffbf7df71c2b2bcae7aaa1d55336",
+        "stored_bytes": 2987,
+        "total_bytes": 2987,
+        "truncated": false
+      },
+      "status": 200,
+      "structure": {
+        "__type__": "object",
+        "keys": [
+          "gudid",
+          "productCodes"
+        ],
+        "sample": {
+          "gudid": {
+            "__type__": "object",
+            "keys": [
+              "device"
+            ],
+            "sample": {
+              "device": {
+                "__type__": "object",
+                "keys": [
+                  "DMExempt",
+                  "MRISafetyStatus",
+                  "brandName",
+                  "catalogNumber",
+                  "companyName",
+                  "contacts",
+                  "deviceCombinationProduct",
+                  "deviceCommDistributionEndDate",
+                  "deviceCommDistributionStatus",
+                  "deviceCount",
+                  "deviceDescription",
+                  "deviceHCTP",
+                  "deviceKit",
+                  "devicePublishDate",
+                  "deviceRecordStatus",
+                  "deviceSizes",
+                  "donationIdNumber",
+                  "dunsNumber",
+                  "environmentalConditions",
+                  "expirationDate",
+                  "gmdnTerms",
+                  "identifiers",
+                  "labeledContainsNRL",
+                  "labeledNoNRL",
+                  "lotBatch",
+                  "manufacturingDate",
+                  "otc",
+                  "premarketExempt",
+                  "premarketSubmissions",
+                  "productCodes",
+                  "publicDeviceRecordKey",
+                  "publicVersionDate",
+                  "publicVersionNumber",
+                  "publicVersionStatus",
+                  "rx",
+                  "serialNumber",
+                  "singleUse",
+                  "sterilization",
+                  "versionModelNumber"
+                ],
+                "sample": {
+                  "brandName": "str",
+                  "catalogNumber": "NoneType",
+                  "deviceCommDistributionEndDate": "NoneType",
+                  "deviceCommDistributionStatus": "str",
+                  "devicePublishDate": "str",
+                  "deviceRecordStatus": "str",
+                  "identifiers": "dict",
+                  "publicDeviceRecordKey": "str",
+                  "publicVersionDate": "str",
+                  "publicVersionNumber": "int",
+                  "publicVersionStatus": "str",
+                  "versionModelNumber": "str"
+                }
+              }
+            }
+          },
+          "productCodes": {
+            "__type__": "array",
+            "item": {
+              "__type__": "object",
+              "keys": [
+                "definition",
+                "deviceClass",
+                "deviceName",
+                "gmpExemptFlag",
+                "implantFlag",
+                "lifeSustainSupportFlag",
+                "medicalSpecialty",
+                "physicalState",
+                "productCode",
+                "regulationNumber",
+                "reviewCode",
+                "reviewPanel",
+                "submissionTypeID",
+                "targetArea",
+                "technicalMethod",
+                "thirdPartyFlag",
+                "unclassifiedReason"
+              ],
+              "sample": {
+                "definition": "NoneType",
+                "deviceClass": "str",
+                "gmpExemptFlag": "str",
+                "lifeSustainSupportFlag": "str",
+                "physicalState": "NoneType",
+                "productCode": "str",
+                "reviewCode": "NoneType",
+                "reviewPanel": "str",
+                "submissionTypeID": "str",
+                "technicalMethod": "NoneType",
+                "thirdPartyFlag": "str",
+                "unclassifiedReason": "NoneType"
+              }
+            },
+            "len": 1
+          }
+        }
+      },
+      "url": "https://accessgudid.nlm.nih.gov/api/v3/devices/lookup?di=00643169718425"
+    },
+    {
+      "attempts": 1,
+      "brand_name": "Hemo Pod Adapter, Edwards",
+      "bytes": 2867,
+      "company_name": "DRAEGER MEDICAL SYSTEMS, INC.",
+      "device_publish_date": "2015-11-02T00:00:00.000Z",
+      "elapsed_ms": 922,
+      "error": "",
+      "name": "lookup_draeger_04049098054089",
+      "note": "",
+      "ok": true,
+      "public_device_record_key": "ddf1688c-b0a0-4295-b5b7-71a5548fd0dc",
+      "public_version_date": "2018-07-06T00:00:00.000Z",
+      "sample": {
+        "name": "lookup_draeger_04049098054089.json",
+        "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\accessgudid\\lookup_draeger_04049098054089.json",
+        "sha256_full": "ef3aa590cb86136fc7b2a1714916c3f5e58fd51fa44208811d3190ddec7f6b61",
+        "sha256_stored": "ef3aa590cb86136fc7b2a1714916c3f5e58fd51fa44208811d3190ddec7f6b61",
+        "stored_bytes": 2867,
+        "total_bytes": 2867,
+        "truncated": false
+      },
+      "status": 200,
+      "structure": {
+        "__type__": "object",
+        "keys": [
+          "gudid",
+          "productCodes"
+        ],
+        "sample": {
+          "gudid": {
+            "__type__": "object",
+            "keys": [
+              "device"
+            ],
+            "sample": {
+              "device": {
+                "__type__": "object",
+                "keys": [
+                  "DMExempt",
+                  "MRISafetyStatus",
+                  "brandName",
+                  "catalogNumber",
+                  "companyName",
+                  "contacts",
+                  "deviceCombinationProduct",
+                  "deviceCommDistributionEndDate",
+                  "deviceCommDistributionStatus",
+                  "deviceCount",
+                  "deviceDescription",
+                  "deviceHCTP",
+                  "deviceKit",
+                  "devicePublishDate",
+                  "deviceRecordStatus",
+                  "deviceSizes",
+                  "donationIdNumber",
+                  "dunsNumber",
+                  "environmentalConditions",
+                  "expirationDate",
+                  "gmdnTerms",
+                  "identifiers",
+                  "labeledContainsNRL",
+                  "labeledNoNRL",
+                  "lotBatch",
+                  "manufacturingDate",
+                  "otc",
+                  "premarketExempt",
+                  "premarketSubmissions",
+                  "productCodes",
+                  "publicDeviceRecordKey",
+                  "publicVersionDate",
+                  "publicVersionNumber",
+                  "publicVersionStatus",
+                  "rx",
+                  "serialNumber",
+                  "singleUse",
+                  "sterilization",
+                  "versionModelNumber"
+                ],
+                "sample": {
+                  "brandName": "str",
+                  "catalogNumber": "NoneType",
+                  "deviceCommDistributionEndDate": "NoneType",
+                  "deviceCommDistributionStatus": "str",
+                  "devicePublishDate": "str",
+                  "deviceRecordStatus": "str",
+                  "identifiers": "dict",
+                  "publicDeviceRecordKey": "str",
+                  "publicVersionDate": "str",
+                  "publicVersionNumber": "int",
+                  "publicVersionStatus": "str",
+                  "versionModelNumber": "str"
+                }
+              }
+            }
+          },
+          "productCodes": {
+            "__type__": "array",
+            "item": {
+              "__type__": "object",
+              "keys": [
+                "definition",
+                "deviceClass",
+                "deviceName",
+                "gmpExemptFlag",
+                "implantFlag",
+                "lifeSustainSupportFlag",
+                "medicalSpecialty",
+                "physicalState",
+                "productCode",
+                "regulationNumber",
+                "reviewCode",
+                "reviewPanel",
+                "submissionTypeID",
+                "targetArea",
+                "technicalMethod",
+                "thirdPartyFlag",
+                "unclassifiedReason"
+              ],
+              "sample": {
+                "definition": "NoneType",
+                "deviceClass": "str",
+                "gmpExemptFlag": "str",
+                "lifeSustainSupportFlag": "str",
+                "physicalState": "NoneType",
+                "productCode": "str",
+                "reviewCode": "NoneType",
+                "reviewPanel": "str",
+                "submissionTypeID": "str",
+                "technicalMethod": "NoneType",
+                "thirdPartyFlag": "str",
+                "unclassifiedReason": "NoneType"
+              }
+            },
+            "len": 1
+          }
+        }
+      },
+      "url": "https://accessgudid.nlm.nih.gov/api/v3/devices/lookup?di=04049098054089"
+    },
+    {
+      "attempts": 1,
+      "brand_name": "P8-3Ts Ultrasonic Probe(FDA)",
+      "bytes": 2648,
+      "company_name": "Shenzhen Mindray Bio-Medical Electronics Co., Ltd.",
+      "device_publish_date": "2018-02-11T00:00:00.000Z",
+      "elapsed_ms": 750,
+      "error": "",
+      "name": "lookup_mindray_06944904092515",
+      "note": "",
+      "ok": true,
+      "public_device_record_key": "325f3829-1ebf-47b9-be7d-c9d21da5a7cb",
+      "public_version_date": "2018-07-06T00:00:00.000Z",
+      "sample": {
+        "name": "lookup_mindray_06944904092515.json",
+        "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\accessgudid\\lookup_mindray_06944904092515.json",
+        "sha256_full": "ba3ff8778a9e3eb543634bd980e8b3986ce5fe4dbb781caf8a3528534b0abcb3",
+        "sha256_stored": "ba3ff8778a9e3eb543634bd980e8b3986ce5fe4dbb781caf8a3528534b0abcb3",
+        "stored_bytes": 2648,
+        "total_bytes": 2648,
+        "truncated": false
+      },
+      "status": 200,
+      "structure": {
+        "__type__": "object",
+        "keys": [
+          "gudid",
+          "productCodes"
+        ],
+        "sample": {
+          "gudid": {
+            "__type__": "object",
+            "keys": [
+              "device"
+            ],
+            "sample": {
+              "device": {
+                "__type__": "object",
+                "keys": [
+                  "DMExempt",
+                  "MRISafetyStatus",
+                  "brandName",
+                  "catalogNumber",
+                  "companyName",
+                  "contacts",
+                  "deviceCombinationProduct",
+                  "deviceCommDistributionEndDate",
+                  "deviceCommDistributionStatus",
+                  "deviceCount",
+                  "deviceDescription",
+                  "deviceHCTP",
+                  "deviceKit",
+                  "devicePublishDate",
+                  "deviceRecordStatus",
+                  "deviceSizes",
+                  "donationIdNumber",
+                  "dunsNumber",
+                  "environmentalConditions",
+                  "expirationDate",
+                  "gmdnTerms",
+                  "identifiers",
+                  "labeledContainsNRL",
+                  "labeledNoNRL",
+                  "lotBatch",
+                  "manufacturingDate",
+                  "otc",
+                  "premarketExempt",
+                  "premarketSubmissions",
+                  "productCodes",
+                  "publicDeviceRecordKey",
+                  "publicVersionDate",
+                  "publicVersionNumber",
+                  "publicVersionStatus",
+                  "rx",
+                  "serialNumber",
+                  "singleUse",
+                  "sterilization",
+                  "versionModelNumber"
+                ],
+                "sample": {
+                  "brandName": "str",
+                  "catalogNumber": "NoneType",
+                  "deviceCommDistributionEndDate": "NoneType",
+                  "deviceCommDistributionStatus": "str",
+                  "devicePublishDate": "str",
+                  "deviceRecordStatus": "str",
+                  "identifiers": "dict",
+                  "publicDeviceRecordKey": "str",
+                  "publicVersionDate": "str",
+                  "publicVersionNumber": "int",
+                  "publicVersionStatus": "str",
+                  "versionModelNumber": "str"
+                }
+              }
+            }
+          },
+          "productCodes": {
+            "__type__": "array",
+            "item": {
+              "__type__": "object",
+              "keys": [
+                "definition",
+                "deviceClass",
+                "deviceName",
+                "gmpExemptFlag",
+                "implantFlag",
+                "lifeSustainSupportFlag",
+                "medicalSpecialty",
+                "physicalState",
+                "productCode",
+                "regulationNumber",
+                "reviewCode",
+                "reviewPanel",
+                "submissionTypeID",
+                "targetArea",
+                "technicalMethod",
+                "thirdPartyFlag",
+                "unclassifiedReason"
+              ],
+              "sample": {
+                "definition": "NoneType",
+                "deviceClass": "str",
+                "gmpExemptFlag": "str",
+                "lifeSustainSupportFlag": "str",
+                "physicalState": "NoneType",
+                "productCode": "str",
+                "reviewCode": "NoneType",
+                "reviewPanel": "str",
+                "submissionTypeID": "str",
+                "technicalMethod": "NoneType",
+                "thirdPartyFlag": "str",
+                "unclassifiedReason": "NoneType"
+              }
+            },
+            "len": 1
+          }
+        }
+      },
+      "url": "https://accessgudid.nlm.nih.gov/api/v3/devices/lookup?di=06944904092515"
+    },
+    {
+      "attempts": 1,
+      "bytes": 3677,
+      "elapsed_ms": 1047,
+      "error": "",
+      "name": "openfda_udi_same_di",
+      "note": "",
+      "ok": true,
+      "premarket_submissions": [
+        {
+          "submission_number": "K973011",
+          "supplement_number": "000"
+        }
+      ],
+      "public_device_record_key": "166af89e-bd7c-4978-8fc5-27c4bac10e88",
+      "public_version_date": "2022-12-08",
+      "publish_date": "2016-01-07",
+      "sample": {
+        "name": "openfda_udi_same_di.json",
+        "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\accessgudid\\openfda_udi_same_di.json",
+        "sha256_full": "d5a5f1d36892b168eef945c5c49db937df5f1fa8e8baed01b2fafe7f196c2421",
+        "sha256_stored": "d5a5f1d36892b168eef945c5c49db937df5f1fa8e8baed01b2fafe7f196c2421",
+        "stored_bytes": 3677,
+        "total_bytes": 3677,
+        "truncated": false
+      },
+      "status": 200,
+      "structure": {
+        "__type__": "object",
+        "keys": [
+          "meta",
+          "results"
+        ],
+        "sample": {
+          "meta": {
+            "__type__": "object",
+            "keys": [
+              "disclaimer",
+              "last_updated",
+              "license",
+              "results",
+              "terms"
+            ],
+            "sample": {
+              "disclaimer": {
+                "__type__": "string",
+                "max_len": 264
+              },
+              "last_updated": {
+                "__type__": "string",
+                "max_len": 10
+              },
+              "license": {
+                "__type__": "string",
+                "max_len": 29
+              },
+              "results": {
+                "__type__": "object",
+                "keys": [
+                  "limit",
+                  "skip",
+                  "total"
+                ],
+                "sample": {
+                  "limit": "int",
+                  "skip": "int",
+                  "total": "int"
+                }
+              },
+              "terms": {
+                "__type__": "string",
+                "max_len": 27
+              }
+            }
+          },
+          "results": {
+            "__type__": "array",
+            "item": {
+              "__type__": "object",
+              "keys": [
+                "brand_name",
+                "commercial_distribution_status",
+                "company_name",
+                "customer_contacts",
+                "device_count_in_base_package",
+                "device_description",
+                "gmdn_terms",
+                "has_donation_id_number",
+                "has_expiration_date",
+                "has_lot_or_batch_number",
+                "has_manufacturing_date",
+                "has_serial_number",
+                "identifiers",
+                "is_combination_product",
+                "is_direct_marking_exempt",
+                "is_hct_p",
+                "is_kit",
+                "is_labeled_as_no_nrl",
+                "is_labeled_as_nrl",
+                "is_otc",
+                "is_pm_exempt",
+                "is_rx",
+                "is_single_use",
+                "labeler_duns_number",
+                "mri_safety",
+                "premarket_submissions",
+                "product_codes",
+                "public_device_record_key",
+                "public_version_date",
+                "public_version_number",
+                "public_version_status",
+                "publish_date",
+                "record_status",
+                "sterilization",
+                "storage",
+                "version_or_model_number"
+              ],
+              "sample": {
+                "commercial_distribution_status": "str",
+                "device_description": "str",
+                "has_donation_id_number": "str",
+                "has_serial_number": "str",
+                "is_labeled_as_nrl": "str",
+                "is_rx": "str",
+                "mri_safety": "str",
+                "public_device_record_key": "str",
+                "public_version_date": "str",
+                "record_status": "str",
+                "sterilization": "dict",
+                "storage": "list"
+              }
+            },
+            "len": 1
+          }
+        }
+      },
+      "url": "https://api.fda.gov/device/udi.json?search=identifiers.id%3A%2200643169718425%22&limit=1"
+    }
+  ],
+  "requests": 4,
+  "schema": "medradar.external.probe.v1",
+  "source_id": "accessgudid",
+  "status": "VERIFIED_API",
+  "verified_at": "2026-11-08T21:51:09.518902Z"
+}

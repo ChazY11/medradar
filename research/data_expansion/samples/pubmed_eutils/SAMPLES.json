@@ -1,0 +1,65 @@
+{
+  "generated_at": "2026-11-08T21:59:10.153742Z",
+  "manifest_repair": {
+    "incident": "wildcard write rewrote SAMPLES.json files during collection",
+    "incident_observed_at": "2026-11-08T21:59:10Z",
+    "policy": "verify, do not restore: payload bytes were never modified",
+    "repaired_at_note": "hashes recomputed from disk; declared values preserved on conflict",
+    "stats": {
+      "entries": 3,
+      "mismatched": 0,
+      "missing_files": 0,
+      "recomputed": 3,
+      "source_id": "pubmed_eutils",
+      "unlisted_files_added": 0,
+      "verified": 0
+    }
+  },
+  "note": "Raw response slices only; parsed records are derived and live in the series/handoff.",
+  "samples": [
+    {
+      "file": "pubmed_esearch.json",
+      "hash_verified": true,
+      "name": "pubmed_esearch.json",
+      "note": "descriptor recovered from disk: the probe run did not persist the full-response descriptor, so sha256_full/total_bytes are null rather than guessed",
+      "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\pubmed_eutils\\pubmed_esearch.json",
+      "sha256_full": "a25dfdaf9a2a4b0d8028985850a847243d1bc4bc2d733a3596b9fe53a56d077a",
+      "sha256_source": "recomputed_from_disk",
+      "sha256_stored": "a25dfdaf9a2a4b0d8028985850a847243d1bc4bc2d733a3596b9fe53a56d077a",
+      "source": "recovered_from_disk",
+      "stored_bytes": 617,
+      "total_bytes": 617,
+      "truncated": false
+    },
+    {
+      "file": "pubmed_esearch_doi.json",
+      "hash_verified": true,
+      "name": "pubmed_esearch_doi.json",
+      "note": "descriptor recovered from disk: the probe run did not persist the full-response descriptor, so sha256_full/total_bytes are null rather than guessed",
+      "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\pubmed_eutils\\pubmed_esearch_doi.json",
+      "sha256_full": "1670c05afc8726afd5fe5dbe74fb4fea44aa63e97a6778bf5877cb133d54d6fc",
+      "sha256_source": "recomputed_from_disk",
+      "sha256_stored": "1670c05afc8726afd5fe5dbe74fb4fea44aa63e97a6778bf5877cb133d54d6fc",
+      "source": "recovered_from_disk",
+      "stored_bytes": 207,
+      "total_bytes": 207,
+      "truncated": false
+    },
+    {
+      "file": "pubmed_esummary.json",
+      "hash_verified": true,
+      "name": "pubmed_esummary.json",
+      "note": "descriptor recovered from disk: the probe run did not persist the full-response descriptor, so sha256_full/total_bytes are null rather than guessed",
+      "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\pubmed_eutils\\pubmed_esummary.json",
+      "sha256_full": "91ffd94772edae9675d8e68818c5f36c13863ddef02f6bef41617ad19ebae918",
+      "sha256_source": "recomputed_from_disk",
+      "sha256_stored": "91ffd94772edae9675d8e68818c5f36c13863ddef02f6bef41617ad19ebae918",
+      "source": "recovered_from_disk",
+      "stored_bytes": 2198,
+      "total_bytes": 2198,
+      "truncated": false
+    }
+  ],
+  "schema": "medradar.external.samples.v1",
+  "source_id": "pubmed_eutils"
+}

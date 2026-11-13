@@ -1,0 +1,44 @@
+{
+  "api_available": "PARTIAL",
+  "authentication": "S&P Global subscription account / data feed contract",
+  "bulk_download_available": "PARTIAL",
+  "category": "shipment",
+  "connection_status": "NOT_TESTED",
+  "cost_notes": "No public price list; sales-negotiated S&P Global subscription. Budget must be obtained from S&P, not from a web page.",
+  "country_or_region": "GLOBAL",
+  "domain": "E",
+  "entity_identifiers": [
+    "consignee/shipper name+address",
+    "S&P corporate hierarchy id",
+    "HS code",
+    "TEU/weight",
+    "carrier",
+    "date"
+  ],
+  "evidence_urls": [
+    "https://panjiva.com/"
+  ],
+  "free_tier": "none; sales-negotiated",
+  "historical_coverage": "multi-country customs and BoL records, deep history",
+  "known_limitations": [
+    "PROBED 2026-11-09: homepage public; /pricing and /plans both 404. No public price list exists - access is sales-negotiated, which is why the cost can only be described qualitatively.",
+    "PAID_ONLY and contract-gated; no free tier, no trial without a sales contact (and contacting sales was out of scope for this round).",
+    "The differentiator is corporate hierarchy linkage (S&P entity ids), which matters for mapping subsidiary importer names to a parent firm like Medtronic.",
+    "Bill-of-lading/customs records are company-level shipment evidence; they are not interchangeable with HS-code national aggregates."
+  ],
+  "licence": "S&P Global commercial terms; redistribution prohibited",
+  "official_or_commercial": "commercial",
+  "official_url": "https://panjiva.com/",
+  "probe_priority": "P3",
+  "rate_limits": "contract dependent",
+  "redistribution_allowed": "NO",
+  "research_value": "The strongest firm-level option: multi-country BoL/customs records plus corporate hierarchy, which would let MedRadar map subsidiary entities onto the five parents. It is entirely commercial and cannot be obtained or priced without a contract.",
+  "source_id": "panjiva",
+  "source_name": "Panjiva (S&P Global Market Intelligence)",
+  "timestamp_fields": [
+    "shipment/customs date -> event_at (company-level)",
+    "feed delivery timestamps are contractual, not public"
+  ],
+  "update_frequency": "daily to weekly",
+  "verified_at": "2026-11-09"
+}

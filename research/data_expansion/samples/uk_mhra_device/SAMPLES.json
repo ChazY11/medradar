@@ -1,0 +1,53 @@
+{
+  "generated_at": "2026-11-08T21:59:18.614344Z",
+  "manifest_repair": {
+    "incident": "wildcard write rewrote SAMPLES.json files during collection",
+    "incident_observed_at": "2026-11-08T21:59:10Z",
+    "policy": "verify, do not restore: payload bytes were never modified",
+    "repaired_at_note": "hashes recomputed from disk; declared values preserved on conflict",
+    "stats": {
+      "entries": 2,
+      "mismatched": 0,
+      "missing_files": 0,
+      "recomputed": 0,
+      "source_id": "uk_mhra_device",
+      "unlisted_files_added": 0,
+      "verified": 2
+    }
+  },
+  "note": "Every file below is a byte-for-byte slice of a live HTTP response captured by HttpClient. `sha256_full` is the digest of the complete response body; `sha256_stored` covers only the stored head when truncated is true.",
+  "samples": [
+    {
+      "fetched_at": "2026-11-08T21:59:18.614344Z",
+      "file": "govuk_search_medical_device_register.json",
+      "hash_verified": true,
+      "http_status": 200,
+      "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\uk_mhra_device\\govuk_search_medical_device_register.json",
+      "request_name": "govuk_search_medical_device_register",
+      "request_url": "https://www.gov.uk/api/search.json?q=medical+device+register&filter_organisations=medicines-and-healthcare-products-regulatory-agency&count=5&fields=title%2Clink%2Cdescription%2Cpublic_timestamp",
+      "sha256_full": "635993fbc98a167b3329f1d60ac646ec209f05536ce26f812edf4b040624320c",
+      "sha256_stored": "635993fbc98a167b3329f1d60ac646ec209f05536ce26f812edf4b040624320c",
+      "source_id": "uk_mhra_device",
+      "stored_bytes": 2396,
+      "total_bytes": 2396,
+      "truncated": false
+    },
+    {
+      "fetched_at": "2026-11-08T21:59:18.614344Z",
+      "file": "govuk_search_public_register.json",
+      "hash_verified": true,
+      "http_status": 200,
+      "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\uk_mhra_device\\govuk_search_public_register.json",
+      "request_name": "govuk_search_public_register",
+      "request_url": "https://www.gov.uk/api/search.json?q=public+register+medical+devices+searchable&filter_organisations=medicines-and-healthcare-products-regulatory-agency&count=3&fields=title%2Clink%2Cpublic_timestamp",
+      "sha256_full": "9862f0f7414a62a9a76680f1f265ca6c803eb1379605c2cc58dccb3e0fe0eae2",
+      "sha256_stored": "9862f0f7414a62a9a76680f1f265ca6c803eb1379605c2cc58dccb3e0fe0eae2",
+      "source_id": "uk_mhra_device",
+      "stored_bytes": 1549,
+      "total_bytes": 1549,
+      "truncated": false
+    }
+  ],
+  "schema": "medradar.external.samples.v1",
+  "source_id": "uk_mhra_device"
+}

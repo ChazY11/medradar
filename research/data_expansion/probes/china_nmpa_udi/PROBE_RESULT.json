@@ -1,0 +1,73 @@
+{
+  "error": "",
+  "evidence_urls": [
+    "https://udi.nmpa.gov.cn/"
+  ],
+  "notes": "The NMPA UDI portal serves a JSP/JS shell whose data calls are session-bound and undocumented; no public machine interface was found and the documented paths did not return records. Recorded as unavailable rather than guessed at.",
+  "probes": [
+    {
+      "attempts": 1,
+      "bytes": 49373,
+      "challenge_markers": [],
+      "elapsed_ms": 2093,
+      "error": "",
+      "has_search_form": true,
+      "name": "udi_portal_home",
+      "note": "",
+      "ok": true,
+      "sample": {
+        "name": "udi_portal_home.html",
+        "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\china_nmpa_udi\\udi_portal_home.html",
+        "sha256_full": "1dfdb4b7dcc766f5f96fc373b68bafd3c69555d1d7f98e56ce1c027def72c340",
+        "sha256_stored": "1dfdb4b7dcc766f5f96fc373b68bafd3c69555d1d7f98e56ce1c027def72c340",
+        "stored_bytes": 49373,
+        "total_bytes": 49373,
+        "truncated": false
+      },
+      "script_refs": [
+        "/lib/js/html5shiv.min.js",
+        "/lib/js/respond.min.js",
+        "/lib/plugins/es5-shim/es5-shim.min.js",
+        "/lib/plugins/es5-shim/es5-sham.min.js",
+        "/lib/js/jquery.min.js",
+        "/lib/js/jquery.min.js",
+        "/lib/plugins/datepicker/bootstrap-datepicker.js",
+        "/lib/js/jquery.form.js"
+      ],
+      "status": 200,
+      "structure": null,
+      "url": "https://udi.nmpa.gov.cn/"
+    },
+    {
+      "attempts": 1,
+      "bytes": 11664,
+      "elapsed_ms": 1078,
+      "error": "HTTP 404 Not Found",
+      "name": "query_udi_query",
+      "note": "",
+      "ok": false,
+      "sample": null,
+      "status": 404,
+      "structure": null,
+      "url": "https://udi.nmpa.gov.cn/udi/query?di=00643169718425"
+    },
+    {
+      "attempts": 1,
+      "bytes": 11664,
+      "elapsed_ms": 891,
+      "error": "HTTP 404 Not Found",
+      "name": "query_api_udi_search",
+      "note": "",
+      "ok": false,
+      "sample": null,
+      "status": 404,
+      "structure": null,
+      "url": "https://udi.nmpa.gov.cn/api/udi/search?di=00643169718425"
+    }
+  ],
+  "requests": 3,
+  "schema": "medradar.external.probe.v1",
+  "source_id": "china_nmpa_udi",
+  "status": "UNAVAILABLE",
+  "verified_at": "2026-11-08T21:53:13.162103Z"
+}

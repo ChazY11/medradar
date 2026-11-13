@@ -1,0 +1,87 @@
+{
+  "generated_at": "2026-11-08T21:59:10.206180Z",
+  "manifest_repair": {
+    "incident": "wildcard write rewrote SAMPLES.json files during collection",
+    "incident_observed_at": "2026-11-08T21:59:10Z",
+    "policy": "verify, do not restore: payload bytes were never modified",
+    "repaired_at_note": "hashes recomputed from disk; declared values preserved on conflict",
+    "stats": {
+      "entries": 4,
+      "mismatched": 0,
+      "missing_files": 0,
+      "recomputed": 4,
+      "source_id": "uk_find_a_tender",
+      "unlisted_files_added": 0,
+      "verified": 0
+    }
+  },
+  "note": "Raw response slices only; parsed records are derived and live in the series/handoff.",
+  "samples": [
+    {
+      "file": "release_packages_date_window.json",
+      "hash_verified": true,
+      "name": "release_packages_date_window.json",
+      "note": "descriptor recovered from disk: the probe run did not persist the full-response descriptor, so sha256_full/total_bytes are null rather than guessed",
+      "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\uk_find_a_tender\\release_packages_date_window.json",
+      "recovered_from": "requests.jsonl",
+      "request_url": "https://www.find-tender.service.gov.uk/api/1.0/ocdsReleasePackages?limit=1&updatedFrom=2026-11-02T00%3A00%3A00&updatedTo=2026-11-09T00%3A00%3A00",
+      "sha256_full": "ece7c0ddf281779b1177860faae84272eb307d237b2b31d1fd25561de048abdb",
+      "sha256_source": "recomputed_from_disk",
+      "sha256_stored": "ece7c0ddf281779b1177860faae84272eb307d237b2b31d1fd25561de048abdb",
+      "source": "recovered_from_disk",
+      "stored_bytes": 9790,
+      "total_bytes": 9790,
+      "truncated": false
+    },
+    {
+      "file": "release_packages_limit2.json",
+      "hash_verified": true,
+      "name": "release_packages_limit2.json",
+      "note": "descriptor recovered from disk: the probe run did not persist the full-response descriptor, so sha256_full/total_bytes are null rather than guessed",
+      "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\uk_find_a_tender\\release_packages_limit2.json",
+      "recovered_from": "requests.jsonl",
+      "request_url": "https://www.find-tender.service.gov.uk/api/1.0/ocdsReleasePackages?limit=2",
+      "sha256_full": "3a914f707eeb7bc50e1fab142a23ee4754f6eb468a6fdfa5053c45bb8514b5b2",
+      "sha256_source": "recomputed_from_disk",
+      "sha256_stored": "3a914f707eeb7bc50e1fab142a23ee4754f6eb468a6fdfa5053c45bb8514b5b2",
+      "source": "recovered_from_disk",
+      "stored_bytes": 20052,
+      "total_bytes": 20052,
+      "truncated": false
+    },
+    {
+      "file": "release_packages_stage_award.json",
+      "hash_verified": true,
+      "name": "release_packages_stage_award.json",
+      "note": "descriptor recovered from disk: the probe run did not persist the full-response descriptor, so sha256_full/total_bytes are null rather than guessed",
+      "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\uk_find_a_tender\\release_packages_stage_award.json",
+      "recovered_from": "requests.jsonl",
+      "request_url": "https://www.find-tender.service.gov.uk/api/1.0/ocdsReleasePackages?limit=1&stages=award",
+      "sha256_full": "e880323677a6fb368e04216b28400ade2f115278e4a396ab7a6b92c31dcfa260",
+      "sha256_source": "recomputed_from_disk",
+      "sha256_stored": "e880323677a6fb368e04216b28400ade2f115278e4a396ab7a6b92c31dcfa260",
+      "source": "recovered_from_disk",
+      "stored_bytes": 9708,
+      "total_bytes": 9708,
+      "truncated": false
+    },
+    {
+      "file": "release_packages_stage_tender.json",
+      "hash_verified": true,
+      "name": "release_packages_stage_tender.json",
+      "note": "descriptor recovered from disk: the probe run did not persist the full-response descriptor, so sha256_full/total_bytes are null rather than guessed",
+      "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\uk_find_a_tender\\release_packages_stage_tender.json",
+      "recovered_from": "requests.jsonl",
+      "request_url": "https://www.find-tender.service.gov.uk/api/1.0/ocdsReleasePackages?limit=1&stages=tender",
+      "sha256_full": "1de6189a9f6360355f5ff562600387a4b533b0e1980ae5832779ba51b44b4bce",
+      "sha256_source": "recomputed_from_disk",
+      "sha256_stored": "1de6189a9f6360355f5ff562600387a4b533b0e1980ae5832779ba51b44b4bce",
+      "source": "recovered_from_disk",
+      "stored_bytes": 9979,
+      "total_bytes": 9979,
+      "truncated": false
+    }
+  ],
+  "schema": "medradar.external.samples.v1",
+  "source_id": "uk_find_a_tender"
+}

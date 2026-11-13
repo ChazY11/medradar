@@ -1,0 +1,98 @@
+{
+  "error": "",
+  "evidence_urls": [
+    "https://www.pmda.go.jp/english/",
+    "https://www.pmda.go.jp/PmdaSearch/kikiSearch/",
+    "https://www.pmda.go.jp/PmdaSearch/kikiSearch/?nameWord=Medtronic"
+  ],
+  "notes": "PMDA's device database (kikiSearch) is a legacy servlet that renders an HTML form and only answers a form POST; a GET with query parameters returns the empty form again. No documented API and no bulk release exist, so there is no machine-readable path for this study. The pages themselves are reachable, so this is 'no machine interface', not 'no data'.",
+  "probes": [
+    {
+      "attempts": 1,
+      "bytes": 57643,
+      "elapsed_ms": 2608,
+      "error": "",
+      "name": "english_portal",
+      "note": "",
+      "ok": true,
+      "sample": {
+        "name": "english_portal.html",
+        "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\japan_pmda\\english_portal.html",
+        "sha256_full": "8068e96f2cadda477424566065d558ae7342f1688ca21ed5165816927889f2ca",
+        "sha256_stored": "8068e96f2cadda477424566065d558ae7342f1688ca21ed5165816927889f2ca",
+        "stored_bytes": 57643,
+        "total_bytes": 57643,
+        "truncated": false
+      },
+      "status": 200,
+      "structure": null,
+      "url": "https://www.pmda.go.jp/english/"
+    },
+    {
+      "attempts": 1,
+      "bytes": 139894,
+      "elapsed_ms": 2766,
+      "error": "",
+      "field_names": [
+        "btnA",
+        "targetBothWithItemRadioValue",
+        "targetBothWithItemRadioValue",
+        "nameWord",
+        "kikiXmlHowtoNameSearchRadioValue",
+        "kikiXmlHowtoNameSearchRadioValue",
+        "kikiXmlHowtoNameSearchRadioValue",
+        "kikiXmlHowtoNameSearchRadioValue",
+        "kikiSgmlHowtoNameSearchRadioValue",
+        "kikiSgmlHowtoNameSearchRadioValue",
+        "kikiSgmlHowtoNameSearchRadioValue",
+        "howtoMatchRadioValue"
+      ],
+      "form_action": "/PmdaSearch/kikiSearch",
+      "form_method": "POST",
+      "has_faces_viewstate": false,
+      "name": "device_search_page",
+      "note": "",
+      "ok": true,
+      "sample": {
+        "name": "device_search_page.html",
+        "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\japan_pmda\\device_search_page.html",
+        "sha256_full": "1e7ac201cc207bedaae06899ed74a2f556342a40ffb33edd5ec7a5972cbec381",
+        "sha256_stored": "1e7ac201cc207bedaae06899ed74a2f556342a40ffb33edd5ec7a5972cbec381",
+        "stored_bytes": 139894,
+        "total_bytes": 139894,
+        "truncated": false
+      },
+      "status": 200,
+      "structure": null,
+      "url": "https://www.pmda.go.jp/PmdaSearch/kikiSearch/"
+    },
+    {
+      "attempts": 1,
+      "bytes": 139903,
+      "contains_query_term": true,
+      "elapsed_ms": 2437,
+      "error": "",
+      "name": "get_with_query_rejected",
+      "note": "does a GET with query params return results?",
+      "ok": true,
+      "result_rows": 0,
+      "sample": {
+        "name": "get_with_query_rejected.html",
+        "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\japan_pmda\\get_with_query_rejected.html",
+        "sha256_full": "bf634594e37aaa838c271af62980f719b22b171c56d3647c6e62819f9094efa7",
+        "sha256_stored": "bf634594e37aaa838c271af62980f719b22b171c56d3647c6e62819f9094efa7",
+        "stored_bytes": 139903,
+        "total_bytes": 139903,
+        "truncated": false
+      },
+      "status": 200,
+      "structure": null,
+      "url": "https://www.pmda.go.jp/PmdaSearch/kikiSearch/?nameWord=Medtronic"
+    }
+  ],
+  "requests": 3,
+  "schema": "medradar.external.probe.v1",
+  "source_id": "japan_pmda",
+  "status": "UNAVAILABLE",
+  "verified_at": "2026-11-08T21:59:26.473986Z"
+}

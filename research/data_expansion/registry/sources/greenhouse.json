@@ -1,0 +1,47 @@
+{
+  "source_id": "greenhouse",
+  "source_name": "Greenhouse job board API (boards-api.greenhouse.io)",
+  "official_url": "https://developers.greenhouse.io/job-board.html",
+  "country_or_region": "GLOBAL",
+  "domain": "G",
+  "category": "job_postings",
+  "official_or_commercial": "official",
+  "api_available": "YES",
+  "bulk_download_available": "NO",
+  "authentication": "none - the per-board jobs endpoint is public by design; no key, no account",
+  "free_tier": "free, anonymous",
+  "rate_limits": "UNKNOWN - no numeric limit published on the job-board docs; the 6-request probe at 0.8 s interval was never throttled",
+  "licence": "no explicit data licence for board content; the API is public but the postings are the employer's content. redistribution_allowed is recorded as UNKNOWN on purpose.",
+  "redistribution_allowed": "UNKNOWN",
+  "update_frequency": "continuous (updated_at moves as a requisition is edited)",
+  "historical_coverage": "only currently-open postings: the board endpoint returns live jobs, not a historical archive",
+  "entity_identifiers": [
+    "job id (Greenhouse internal, stable per posting)",
+    "internal_job_id",
+    "requisition_id (present on 766/766 probed postings)",
+    "company board token (e.g. 'stripe') - the only firm-level key"
+  ],
+  "timestamp_fields": [
+    "first_published (ISO 8601 with offset, e.g. 2026-09-03T13:30:34-04:00) - the true publication clock",
+    "updated_at (ISO 8601 with offset) - last edit, NOT publication",
+    "application_deadline"
+  ],
+  "known_limitations": [
+    "NEGATIVE RESULT: none of the five target firms (Medtronic, GE HealthCare, Philips, Draeger, Mindray) resolved under its likely board token. The control token 'stripe' returned 766 live jobs from the same endpoint in the same run, so the endpoint works and the 404s mean 'no such board', not 'network broken'.",
+    "Access is per-employer-token only. There is no search across boards, so 'is firm X on Greenhouse' can only be answered by guessing tokens - which was capped at 6 requests and must not be expanded into enumeration.",
+    "Returns open postings only; a closed requisition disappears. Any 'hiring volume' series built from this API is a snapshot series and must record first_observed_at, not a backfilled publication history.",
+    "NO department/function field in the board payload (metadata was null on every probed posting), so the required R&D vs Sales vs Production split cannot be derived from Greenhouse structured fields - only from job titles, which is a text heuristic, not a classification.",
+    "No salary, no headcount, no seniority beyond the title string.",
+    "Duplicate re-postings of the same role appear as separate job ids; a (company, title, location) key is required and the duplicate rate must be reported rather than assumed zero.",
+    "A job posting is not evidence of a technology direction: adding R&D postings can co-occur with a strategy already announced, or be routine backfill."
+  ],
+  "connection_status": "NOT_TESTED",
+  "research_value": "Gives a clean, free, publication-dated hiring signal (first_published) for companies that use Greenhouse - useful as a *methodological* template for hiring evidence: publication clock separated from fetch clock, and de-duplication by (company, title, location). For the five target firms it currently yields nothing, which is itself the finding: their hiring evidence must come from per-employer sources.",
+  "evidence_urls": [
+    "https://developers.greenhouse.io/job-board.html",
+    "https://boards-api.greenhouse.io/v1/boards/stripe/jobs?content=false"
+  ],
+  "verified_at": "2026-11-09",
+  "cost_notes": "free; no key; no pagination cost (single call per board)",
+  "probe_priority": "P0"
+}

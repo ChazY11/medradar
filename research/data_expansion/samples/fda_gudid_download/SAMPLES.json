@@ -1,0 +1,53 @@
+{
+  "generated_at": "2026-11-08T21:59:08.749270Z",
+  "manifest_repair": {
+    "incident": "wildcard write rewrote SAMPLES.json files during collection",
+    "incident_observed_at": "2026-11-08T21:59:10Z",
+    "policy": "verify, do not restore: payload bytes were never modified",
+    "repaired_at_note": "hashes recomputed from disk; declared values preserved on conflict",
+    "stats": {
+      "entries": 2,
+      "mismatched": 0,
+      "missing_files": 0,
+      "recomputed": 2,
+      "source_id": "fda_gudid_download",
+      "unlisted_files_added": 0,
+      "verified": 0
+    }
+  },
+  "note": "Raw response slices only; parsed records are derived and live in the series/handoff.",
+  "samples": [
+    {
+      "file": "daily_release_zip.zip",
+      "hash_verified": true,
+      "name": "daily_release_zip.zip",
+      "note": "descriptor recovered from disk: the probe run did not persist the full-response descriptor, so sha256_full/total_bytes are null rather than guessed",
+      "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\fda_gudid_download\\daily_release_zip.zip",
+      "sha256_full": "7f47f318b4a991a375f01d20e5539a3bfdeb26ca09c8ede708a8680cf086753b",
+      "sha256_source": "recomputed_from_disk",
+      "sha256_stored": "7f47f318b4a991a375f01d20e5539a3bfdeb26ca09c8ede708a8680cf086753b",
+      "source": "recovered_from_disk",
+      "stored_bytes": 524288,
+      "total_bytes": 524288,
+      "truncated": true
+    },
+    {
+      "file": "download_page.html",
+      "hash_verified": true,
+      "name": "download_page.html",
+      "note": "descriptor recovered from disk: the probe run did not persist the full-response descriptor, so sha256_full/total_bytes are null rather than guessed",
+      "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\fda_gudid_download\\download_page.html",
+      "recovered_from": "requests.jsonl",
+      "request_url": "https://accessgudid.nlm.nih.gov/download",
+      "sha256_full": "7506c4a622b6c5e8a41bcdb3472b4b2de99bf39db702772732f43f241a86252d",
+      "sha256_source": "recomputed_from_disk",
+      "sha256_stored": "7506c4a622b6c5e8a41bcdb3472b4b2de99bf39db702772732f43f241a86252d",
+      "source": "recovered_from_disk",
+      "stored_bytes": 46951,
+      "total_bytes": 46951,
+      "truncated": false
+    }
+  ],
+  "schema": "medradar.external.samples.v1",
+  "source_id": "fda_gudid_download"
+}

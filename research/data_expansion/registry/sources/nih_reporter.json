@@ -1,0 +1,46 @@
+{
+  "api_available": "YES",
+  "authentication": "none",
+  "bulk_download_available": "PARTIAL",
+  "category": "research_funding",
+  "connection_status": "NOT_TESTED",
+  "cost_notes": "free",
+  "country_or_region": "US",
+  "domain": "H",
+  "entity_identifiers": [
+    "project_num",
+    "core_project_num",
+    "appl_id",
+    "organization UEI/DUNS"
+  ],
+  "evidence_urls": [
+    "https://api.reporter.nih.gov/v2/projects/search"
+  ],
+  "free_tier": "free, no key required; POST-only JSON API",
+  "historical_coverage": "NIH awards from FY1985 onward",
+  "known_limitations": [
+    "POST-only: GET requests are not supported, so the generic JSON shape differs from other APIs",
+    "org_names matching is exact and case-sensitive-ish ('MEDTRONIC' and 'MEDTRONIC INC' return different sets; FY2023 with 'MEDTRONIC INC' returned 0)",
+    "the same award appears in several fiscal years; de-duplicate on core project number",
+    "award_notice_date is missing for some older records, leaving source_public_at unknown rather than guessed"
+  ],
+  "licence": "US federal government public data",
+  "official_or_commercial": "official",
+  "official_url": "https://api.reporter.nih.gov/",
+  "probe_priority": "P0",
+  "rate_limits": "no published hard number; keep offset/limit small (we used limit=2 and 1 req/s)",
+  "redistribution_allowed": "YES",
+  "research_value": "Direct evidence of US public money going to a firm's R&D; the award record carries an organisation field and an award-notice date, which makes both company attribution and a public-visibility clock deterministic.",
+  "source_id": "nih_reporter",
+  "source_name": "NIH RePORTER API",
+  "timestamp_fields": [
+    "project_start_date",
+    "project_end_date",
+    "award_notice_date",
+    "fiscal_year",
+    "budget_start",
+    "budget_end"
+  ],
+  "update_frequency": "weekly (ExPORTER refresh)",
+  "verified_at": "2026-11-09"
+}

@@ -1,0 +1,87 @@
+{
+  "generated_at": "2026-11-08T21:59:07.797971Z",
+  "manifest_repair": {
+    "incident": "wildcard write rewrote SAMPLES.json files during collection",
+    "incident_observed_at": "2026-11-08T21:59:10Z",
+    "policy": "verify, do not restore: payload bytes were never modified",
+    "repaired_at_note": "hashes recomputed from disk; declared values preserved on conflict",
+    "stats": {
+      "entries": 4,
+      "mismatched": 0,
+      "missing_files": 0,
+      "recomputed": 4,
+      "source_id": "accessgudid",
+      "unlisted_files_added": 0,
+      "verified": 0
+    }
+  },
+  "note": "Raw response slices only; parsed records are derived and live in the series/handoff.",
+  "samples": [
+    {
+      "file": "lookup_draeger_04049098054089.json",
+      "hash_verified": true,
+      "name": "lookup_draeger_04049098054089.json",
+      "note": "descriptor recovered from disk: the probe run did not persist the full-response descriptor, so sha256_full/total_bytes are null rather than guessed",
+      "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\accessgudid\\lookup_draeger_04049098054089.json",
+      "recovered_from": "requests.jsonl",
+      "request_url": "https://accessgudid.nlm.nih.gov/api/v3/devices/lookup?di=04049098054089",
+      "sha256_full": "ef3aa590cb86136fc7b2a1714916c3f5e58fd51fa44208811d3190ddec7f6b61",
+      "sha256_source": "recomputed_from_disk",
+      "sha256_stored": "ef3aa590cb86136fc7b2a1714916c3f5e58fd51fa44208811d3190ddec7f6b61",
+      "source": "recovered_from_disk",
+      "stored_bytes": 2867,
+      "total_bytes": 2867,
+      "truncated": false
+    },
+    {
+      "file": "lookup_medtronic_00643169718425.json",
+      "hash_verified": true,
+      "name": "lookup_medtronic_00643169718425.json",
+      "note": "descriptor recovered from disk: the probe run did not persist the full-response descriptor, so sha256_full/total_bytes are null rather than guessed",
+      "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\accessgudid\\lookup_medtronic_00643169718425.json",
+      "recovered_from": "requests.jsonl",
+      "request_url": "https://accessgudid.nlm.nih.gov/api/v3/devices/lookup?di=00643169718425",
+      "sha256_full": "253ad04311b0c8daf0eaf9988ae213a604cbffbf7df71c2b2bcae7aaa1d55336",
+      "sha256_source": "recomputed_from_disk",
+      "sha256_stored": "253ad04311b0c8daf0eaf9988ae213a604cbffbf7df71c2b2bcae7aaa1d55336",
+      "source": "recovered_from_disk",
+      "stored_bytes": 2987,
+      "total_bytes": 2987,
+      "truncated": false
+    },
+    {
+      "file": "lookup_mindray_06944904092515.json",
+      "hash_verified": true,
+      "name": "lookup_mindray_06944904092515.json",
+      "note": "descriptor recovered from disk: the probe run did not persist the full-response descriptor, so sha256_full/total_bytes are null rather than guessed",
+      "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\accessgudid\\lookup_mindray_06944904092515.json",
+      "recovered_from": "requests.jsonl",
+      "request_url": "https://accessgudid.nlm.nih.gov/api/v3/devices/lookup?di=06944904092515",
+      "sha256_full": "ba3ff8778a9e3eb543634bd980e8b3986ce5fe4dbb781caf8a3528534b0abcb3",
+      "sha256_source": "recomputed_from_disk",
+      "sha256_stored": "ba3ff8778a9e3eb543634bd980e8b3986ce5fe4dbb781caf8a3528534b0abcb3",
+      "source": "recovered_from_disk",
+      "stored_bytes": 2648,
+      "total_bytes": 2648,
+      "truncated": false
+    },
+    {
+      "file": "openfda_udi_same_di.json",
+      "hash_verified": true,
+      "name": "openfda_udi_same_di.json",
+      "note": "descriptor recovered from disk: the probe run did not persist the full-response descriptor, so sha256_full/total_bytes are null rather than guessed",
+      "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\accessgudid\\openfda_udi_same_di.json",
+      "recovered_from": "requests.jsonl",
+      "request_url": "https://api.fda.gov/device/udi.json?search=identifiers.id%3A%2200643169718425%22&limit=1",
+      "sha256_full": "d5a5f1d36892b168eef945c5c49db937df5f1fa8e8baed01b2fafe7f196c2421",
+      "sha256_source": "recomputed_from_disk",
+      "sha256_stored": "d5a5f1d36892b168eef945c5c49db937df5f1fa8e8baed01b2fafe7f196c2421",
+      "source": "recovered_from_disk",
+      "stored_bytes": 3677,
+      "total_bytes": 3677,
+      "truncated": false
+    }
+  ],
+  "schema": "medradar.external.samples.v1",
+  "source_id": "accessgudid"
+}

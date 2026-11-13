@@ -1,0 +1,85 @@
+{
+  "generated_at": "2026-11-08T21:59:09.481474Z",
+  "manifest_repair": {
+    "incident": "wildcard write rewrote SAMPLES.json files during collection",
+    "incident_observed_at": "2026-11-08T21:59:10Z",
+    "policy": "verify, do not restore: payload bytes were never modified",
+    "repaired_at_note": "hashes recomputed from disk; declared values preserved on conflict",
+    "stats": {
+      "entries": 4,
+      "mismatched": 0,
+      "missing_files": 0,
+      "recomputed": 4,
+      "source_id": "openfda_device_510k",
+      "unlisted_files_added": 0,
+      "verified": 0
+    }
+  },
+  "note": "Raw response slices only; parsed records are derived and live in the series/handoff.",
+  "samples": [
+    {
+      "file": "search_applicant",
+      "hash_verified": true,
+      "name": "search_applicant",
+      "note": "descriptor recovered from disk: the probe run did not persist the full-response descriptor, so sha256_full/total_bytes are null rather than guessed",
+      "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\openfda_device_510k\\search_applicant",
+      "sha256_full": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sha256_source": "recomputed_from_disk",
+      "sha256_stored": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source": "recovered_from_disk",
+      "stored_bytes": 0,
+      "total_bytes": 0,
+      "truncated": false
+    },
+    {
+      "file": "skip_25000_behaviour.json",
+      "hash_verified": true,
+      "name": "skip_25000_behaviour.json",
+      "note": "descriptor recovered from disk: the probe run did not persist the full-response descriptor, so sha256_full/total_bytes are null rather than guessed",
+      "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\openfda_device_510k\\skip_25000_behaviour.json",
+      "recovered_from": "requests.jsonl",
+      "request_url": "https://api.fda.gov/device/510k.json?search=decision_date%3A%5B1990-01-01+TO+2026-12-31%5D&skip=25000&limit=1",
+      "sha256_full": "f9bcf6fa21a7ac8a27953ab38a577dd6518777b4c1abae50741facdae81ff38d",
+      "sha256_source": "recomputed_from_disk",
+      "sha256_stored": "f9bcf6fa21a7ac8a27953ab38a577dd6518777b4c1abae50741facdae81ff38d",
+      "source": "recovered_from_disk",
+      "stored_bytes": 7749,
+      "total_bytes": 7749,
+      "truncated": false
+    },
+    {
+      "file": "window_2025_count.json",
+      "hash_verified": true,
+      "name": "window_2025_count.json",
+      "note": "descriptor recovered from disk: the probe run did not persist the full-response descriptor, so sha256_full/total_bytes are null rather than guessed",
+      "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\openfda_device_510k\\window_2025_count.json",
+      "recovered_from": "requests.jsonl",
+      "request_url": "https://api.fda.gov/device/510k.json?search=decision_date%3A%5B2025-01-01+TO+2025-12-31%5D&limit=1",
+      "sha256_full": "e5d10d122ef9d66d7961a7ae22fcb162d064a0ae5dd6e096c5b9ee213dfe636d",
+      "sha256_source": "recomputed_from_disk",
+      "sha256_stored": "e5d10d122ef9d66d7961a7ae22fcb162d064a0ae5dd6e096c5b9ee213dfe636d",
+      "source": "recovered_from_disk",
+      "stored_bytes": 17094,
+      "total_bytes": 17094,
+      "truncated": false
+    },
+    {
+      "file": "window_smoke_2024.json",
+      "hash_verified": true,
+      "name": "window_smoke_2024.json",
+      "note": "descriptor recovered from disk: the probe run did not persist the full-response descriptor, so sha256_full/total_bytes are null rather than guessed",
+      "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\openfda_device_510k\\window_smoke_2024.json",
+      "recovered_from": "requests.jsonl",
+      "request_url": "https://api.fda.gov/device/510k.json?search=decision_date%3A%5B2024-01-01+TO+2024-12-31%5D&limit=2",
+      "sha256_full": "c24a274321f2906c29ba4e023f28298c9348290fc0057942eb26e433c8c036ff",
+      "sha256_source": "recomputed_from_disk",
+      "sha256_stored": "c24a274321f2906c29ba4e023f28298c9348290fc0057942eb26e433c8c036ff",
+      "source": "recovered_from_disk",
+      "stored_bytes": 20941,
+      "total_bytes": 20941,
+      "truncated": false
+    }
+  ],
+  "schema": "medradar.external.samples.v1",
+  "source_id": "openfda_device_510k"
+}

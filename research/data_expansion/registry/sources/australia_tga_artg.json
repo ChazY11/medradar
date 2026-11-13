@@ -1,0 +1,39 @@
+{
+  "api_available": "NO",
+  "authentication": "n/a - the ARTG path is behind a bot-management layer",
+  "bulk_download_available": "NO",
+  "category": "device_registration",
+  "connection_status": "NOT_TESTED",
+  "cost_notes": "free to a browser user; not reachable for automated collection from this host",
+  "country_or_region": "AU",
+  "domain": "A",
+  "entity_identifiers": [
+    "UNKNOWN - ARTG numbers are documented by TGA but were never observed from the source in this pass"
+  ],
+  "evidence_urls": [
+    "https://www.tga.gov.au/",
+    "https://data.gov.au/data/api/3/action/package_search?q=%22ARTG%22&rows=10"
+  ],
+  "free_tier": "UNKNOWN",
+  "historical_coverage": "UNKNOWN - the register could not be queried",
+  "known_limitations": [
+    "every request to tga.gov.au timed out (90-120 s) or was reset by the remote end from this host, so the ARTG could not be verified in either direction",
+    "during reconnaissance the ARTG path served an Akamai Bot Manager proof-of-work interstitial ('bm-verify' then POST to /_sec/verify'); solving it programmatically is a WAF bypass and is forbidden by the protocol. That observation is recorded as recon context, not as a probed fact",
+    "no ARTG dataset is mirrored on data.gov.au (checked through the CKAN package_search API), so there is no alternative official machine route",
+    "consequence: Australia cannot serve as a fourth-country anchor, and no date semantics are claimed for this source"
+  ],
+  "licence": "UNKNOWN - the ARTG pages could not be retrieved, so no licence statement was read",
+  "official_or_commercial": "official",
+  "official_url": "https://www.tga.gov.au/resources/artg",
+  "probe_priority": "P1",
+  "rate_limits": "UNKNOWN - no request from this host completed inside 90-120 s",
+  "redistribution_allowed": "UNKNOWN",
+  "research_value": "The ARTG is a comparatively transparent register that lists devices actually supplied in Australia, which would add a small but independent market to the cross-country comparison. Because it was unreachable this round it contributes a documented gap, not a data column.",
+  "source_id": "australia_tga_artg",
+  "source_name": "Australia TGA ARTG (Australian Register of Therapeutic Goods)",
+  "timestamp_fields": [
+    "UNKNOWN - no record was served"
+  ],
+  "update_frequency": "UNKNOWN",
+  "verified_at": "2026-11-09"
+}

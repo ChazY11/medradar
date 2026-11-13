@@ -1,0 +1,227 @@
+{
+  "agent": "regulatory",
+  "finished_at": "2026-11-09T06:35:00Z",
+  "sources_assigned": 16,
+  "sources_probed": 15,
+  "connection_status_counts": {
+    "VERIFIED_API": 6,
+    "VERIFIED_BULK_DOWNLOAD": 2,
+    "REQUIRES_REGISTRATION": 2,
+    "BLOCKED_BY_POLICY": 1,
+    "UNAVAILABLE": 4,
+    "NOT_TESTED": 1
+  },
+  "per_source": [
+    {
+      "source_id": "openfda_device_510k",
+      "status": "VERIFIED_API",
+      "requests": 8,
+      "real_records": 17,
+      "connector": "medradar/external_sources/regulatory/openfda_device_510k.py"
+    },
+    {
+      "source_id": "openfda_device_pma",
+      "status": "VERIFIED_API",
+      "requests": 8,
+      "real_records": 11,
+      "connector": "medradar/external_sources/regulatory/openfda_device_pma.py"
+    },
+    {
+      "source_id": "openfda_device_classification",
+      "status": "VERIFIED_API",
+      "requests": 2,
+      "real_records": 1,
+      "connector": "medradar/external_sources/regulatory/openfda_device_classification.py"
+    },
+    {
+      "source_id": "openfda_device_registrationlisting",
+      "status": "VERIFIED_API",
+      "requests": 2,
+      "real_records": 2,
+      "connector": "medradar/external_sources/regulatory/openfda_device_registrationlisting.py"
+    },
+    {
+      "source_id": "openfda_bulk_download",
+      "status": "VERIFIED_BULK_DOWNLOAD",
+      "requests": 2,
+      "real_records": 7097,
+      "connector": "medradar/external_sources/regulatory/openfda_bulk_download.py",
+      "note": "device/classification export partition downloaded (3.13 MB zip) and parsed in memory"
+    },
+    {
+      "source_id": "accessgudid",
+      "status": "VERIFIED_API",
+      "requests": 4,
+      "real_records": 4,
+      "connector": "medradar/external_sources/regulatory/accessgudid.py",
+      "note": "3 GUDID device lookups + 1 openFDA UDI comparison of the same DI"
+    },
+    {
+      "source_id": "fda_gudid_download",
+      "status": "VERIFIED_BULK_DOWNLOAD",
+      "requests": 2,
+      "real_records": 5548,
+      "connector": "medradar/external_sources/regulatory/fda_gudid_download.py",
+      "note": "2026-11-02 daily delta zip parsed; 5,548 devices == the file header's numberRecordXML"
+    },
+    {
+      "source_id": "eudamed",
+      "status": "REQUIRES_REGISTRATION",
+      "requests": 4,
+      "real_records": 0,
+      "connector": null,
+      "blocked_reason": "public data endpoints answer HTTP 429 with an explicit 'use the official EUDAMED data API instead of scraping' policy message; the official API sits on the DG SANTE developer portal and needs registered credentials"
+    },
+    {
+      "source_id": "canada_mdall",
+      "status": "VERIFIED_API",
+      "requests": 8,
+      "real_records": 543,
+      "connector": "medradar/external_sources/regulatory/canada_mdall.py",
+      "note": "82 company rows (Medtronic 29, GE HealthCare 16, Philips 31, Drager 4, Mindray 2) + 461 Medtronic licences"
+    },
+    {
+      "source_id": "china_nmpa_device",
+      "status": "BLOCKED_BY_POLICY",
+      "requests": 2,
+      "real_records": 0,
+      "connector": null,
+      "blocked_reason": "HTTP 412 + JavaScript anti-bot challenge on every path; solving or replaying it is a WAF bypass and is forbidden by the protocol"
+    },
+    {
+      "source_id": "china_nmpa_udi",
+      "status": "UNAVAILABLE",
+      "requests": 3,
+      "real_records": 0,
+      "connector": null,
+      "blocked_reason": "session-bound JSP/JS shell, no public machine interface, documented query paths returned no records"
+    },
+    {
+      "source_id": "australia_tga_artg",
+      "status": "UNAVAILABLE",
+      "requests": 4,
+      "real_records": 0,
+      "connector": null,
+      "blocked_reason": "every request timed out (90-120 s) or was reset by the remote end; recon the same day saw an Akamai Bot Manager proof-of-work interstitial on the ARTG path, which the protocol forbids solving. Recorded UNAVAILABLE because the logged probe itself captured only timeouts"
+    },
+    {
+      "source_id": "uk_mhra_device",
+      "status": "UNAVAILABLE",
+      "requests": 2,
+      "real_records": 0,
+      "connector": null,
+      "blocked_reason": "no public UK device register exists - GOV.UK search returns manufacturer guidance only; structural absence, not a technical block"
+    },
+    {
+      "source_id": "japan_pmda",
+      "status": "UNAVAILABLE",
+      "requests": 3,
+      "real_records": 0,
+      "connector": null,
+      "blocked_reason": "device database is a legacy servlet that only answers a form POST; a GET with query params returns the empty form (verified). No API, no bulk release"
+    },
+    {
+      "source_id": "brazil_anvisa",
+      "status": "REQUIRES_REGISTRATION",
+      "requests": 3,
+      "real_records": 0,
+      "connector": null,
+      "blocked_reason": "JSON API answers 403 without a bearer token from the ANVISA login flow"
+    },
+    {
+      "source_id": "korea_mfds",
+      "status": "NOT_TESTED",
+      "requests": 0,
+      "real_records": 0,
+      "connector": null,
+      "blocked_reason": "P3: register record only, per the task scope; api_available left UNKNOWN because nothing was tested"
+    }
+  ],
+  "connectors": [
+    "medradar/external_sources/regulatory/_common.py",
+    "medradar/external_sources/regulatory/openfda_device_510k.py",
+    "medradar/external_sources/regulatory/openfda_device_pma.py",
+    "medradar/external_sources/regulatory/openfda_device_classification.py",
+    "medradar/external_sources/regulatory/openfda_device_registrationlisting.py",
+    "medradar/external_sources/regulatory/openfda_bulk_download.py",
+    "medradar/external_sources/regulatory/accessgudid.py",
+    "medradar/external_sources/regulatory/fda_gudid_download.py",
+    "medradar/external_sources/regulatory/canada_mdall.py",
+    "medradar/external_sources/regulatory/probes.py"
+  ],
+  "real_records_collected": 13223,
+  "real_records_breakdown": {
+    "openfda_bulk_download": 7097,
+    "fda_gudid_download": 5548,
+    "canada_mdall": 543,
+    "openfda_device_510k": 17,
+    "openfda_device_pma": 11,
+    "accessgudid": 4,
+    "openfda_device_registrationlisting": 2,
+    "openfda_device_classification": 1
+  },
+  "blocked": [
+    {"source_id": "eudamed", "reason": "operator policy block on public endpoints (HTTP 429 + explicit anti-scraping message); official API needs registered credentials"},
+    {"source_id": "china_nmpa_device", "reason": "HTTP 412 + JavaScript WAF challenge; bypass forbidden"},
+    {"source_id": "china_nmpa_udi", "reason": "session-bound JS shell, no machine interface found"},
+    {"source_id": "australia_tga_artg", "reason": "all requests timed out/reset; ARTG behind Akamai bot-management probe"},
+    {"source_id": "uk_mhra_device", "reason": "no public UK device register exists"},
+    {"source_id": "japan_pmda", "reason": "form-POST-only legacy servlet, no API and no bulk release"},
+    {"source_id": "brazil_anvisa", "reason": "API requires an ANVISA login token (403 anonymous)"},
+    {"source_id": "korea_mfds", "reason": "P3 scope: documentation record only, not probed"}
+  ],
+  "notable_findings": [
+    "AccessGUDID and openFDA /device/udi.json publish the SAME GUDID record: the same DI (00643169718425) returns the same publicDeviceRecordKey on both interfaces, so they are one evidence item and must be de-duplicated, never counted as two sources.",
+    "US device identity and US clearance identity are officially joinable - from the UDI side only: GUDID premarket_submissions names the K/PMA number (verified DI 00643169718425 -> K973011), while a 510(k)/PMA record carries no DI, model or labeler id at all.",
+    "Health Canada MDALL is the only non-US source found that exposes an official UDI-DI endpoint (/deviceidentifier/?device_identifier=), but it returned 0 rows for a US-only Medtronic DI - the bridge exists and is sparse, not universal.",
+    "MDALL exposes exactly three dates per licence (first_licence_status_dt, last_refresh_dt, end_date); the refresh stamp and the cancellation date are precisely the two the protocol forbids as first-publication dates, so MDALL source_public_at can only ever be a derived proxy.",
+    "GUDID daily release files are self-describing in a way no live API is: header creationDate + period start/end + numberRecordXML (5,548, matching the 5,548 records actually parsed), which is what makes point-in-time reconstruction possible.",
+    "openFDA applicant search resolves all five target firms by exact_alias: 510(k) totals Medtronic 1,588 / Philips 994 / GE HealthCare 266 / Mindray 180 / Drager 152; PMA totals Medtronic 12,900 / Philips 169 / GE HealthCare 55, and PMA returns 404 (zero rows) for Drager and Mindray - they hold no PMA approvals at all.",
+    "The openFDA bulk manifest carries a real per-endpoint export_date (2026-11-02..06) and is the only way to pin a defensible vintage; the API's meta.last_updated is an endpoint refresh stamp that would silently re-date every record.",
+    "A classification record has no date of any kind - FDA publishes the current value of a product code with no effective date, so its clocks must stay empty or every historical clearance inherits today's risk class."
+  ],
+  "identity_verdict_per_source": {
+    "openfda_device_510k": "official per-clearance id (k_number); DI link only in reverse (GUDID -> K number); cross-country link would be a candidate",
+    "openfda_device_pma": "official per-approval id (pma_number + supplement_number); DI link only in reverse; supplements are separate records",
+    "openfda_device_classification": "no device instance id; product_code is a device-family join key only",
+    "openfda_device_registrationlisting": "establishment id, not a product id; registrant-level bridge carrying k_number/pma_number",
+    "openfda_bulk_download": "inherits per-endpoint ids; delegates to the same normalisers so bulk and API records share one evidence_id",
+    "accessgudid": "official UDI-DI; official bridge to 510(k)/PMA via premarket_submissions; DI is the shared cross-country key",
+    "fda_gudid_download": "official UDI-DI + publicDeviceRecordKey; carries premarket submission numbers where the labeler supplied them",
+    "canada_mdall": "official licence number + company_id + device_id; official DI endpoint but sparse (0 rows for a US-only DI); no FDA number field",
+    "eudamed": "expected Basic UDI-DI / UDI-DI / SRN but UNVERIFIED - no record was ever served",
+    "china_nmpa_device": "UNKNOWN - nothing observed; Chinese registrations cannot be anchored this round",
+    "china_nmpa_udi": "UNKNOWN - no machine interface, so a Chinese DI cannot be resolved",
+    "australia_tga_artg": "UNKNOWN - ARTG number documented but never observed",
+    "uk_mhra_device": "none exists in public form",
+    "japan_pmda": "UNKNOWN - approval number exists in HTML only",
+    "brazil_anvisa": "UNKNOWN - registro ANVISA not observable anonymously",
+    "korea_mfds": "UNKNOWN - not probed"
+  },
+  "five_firm_evidence": {
+    "medtronic": {"openfda_510k_total": 1588, "openfda_pma_total": 12900, "mdall_companies": 29, "mdall_licences_sampled": 461, "resolution": "exact_alias in every probe"},
+    "philips": {"openfda_510k_total": 994, "openfda_pma_total": 169, "mdall_companies": 31, "resolution": "exact_alias"},
+    "ge_healthcare": {"openfda_510k_total": 266, "openfda_pma_total": 55, "mdall_companies": 16, "resolution": "exact_alias"},
+    "mindray": {"openfda_510k_total": 180, "openfda_pma_total": 0, "mdall_companies": 2, "resolution": "exact_alias"},
+    "draeger": {"openfda_510k_total": 152, "openfda_pma_total": 0, "mdall_companies": 4, "resolution": "exact_alias"},
+    "note": "PMA totals of 0 for Drager and Mindray are genuine zero-result answers (openFDA returns HTTP 404 for an empty result set), not probe failures. MDALL company counts are %LIKE% matches, so they include unrelated subsidiaries - company linkage goes through CompanyIndex, not the substring hit."
+  },
+  "open_questions": [
+    "EUDAMED: worth registering for the DG SANTE EU Health Data Lake Data API (api=94b9e658-d721-4b58-8d96-022c490f7a17)? Without it the EU has no device data and the EU-vs-US registration-timing comparison cannot be built.",
+    "TGA: whether the timeouts are this host's egress or a TGA-side block. Re-probing from another network would settle it; if the Akamai probe is served again, the source stays blocked by policy.",
+    "PMA supplements: the connector deliberately uses a pma_supplement identifier so canonical_key does not collapse every supplement of an approval into one key. Lead should confirm that dedupe convention before downstream aggregation across sources.",
+    "GUDID: does devicePublishDate ever change for an existing record? Only a multi-day delta study can answer that, and it decides whether devicePublishDate is a stable publication clock or a first-seen stamp.",
+    "Cross-country DI matching currently works for exactly one non-US market (Canada). EUDAMED and NMPA would be the second and third, and both are blocked for different reasons."
+  ],
+  "deliverables": {
+    "registry_records": 16,
+    "probe_dirs": 15,
+    "sample_dirs": 15,
+    "samples_manifest": "SAMPLES.json in every probed samples/<source_id>/ directory, with sha256_full for each complete response body",
+    "notes": "NOTES.md in every probed probes/<source_id>/ directory (what was tested, verdict, time semantics, cross-national identity, ledger table)"
+  },
+  "tests": {"file": "tests/test_extsrc_regulatory.py", "passed": 29, "failed": 0},
+  "selftest": "pass (python -m medradar selftest: 1277 tests, OK, 3 skipped)",
+  "register_check": "python research/data_expansion/tools/build_register.py --check -> 0 validation problems, 59 sources merged, domain A = 16",
+  "scope_discipline": "No git command was executed. No file outside research/data_expansion/{registry/sources,probes,samples,handoffs} + medradar/external_sources/regulatory/ + tests/test_extsrc_regulatory.py was written. The five foundation modules and medradar/collect_device.py were not modified."
+}

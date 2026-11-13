@@ -1,0 +1,61 @@
+{
+  "error": "",
+  "evidence_urls": [
+    "https://consultas.anvisa.gov.br/"
+  ],
+  "notes": "consultas.anvisa.gov.br is an Angular SPA; its JSON API answers 401/403 without a bearer token issued by the ANVISA login flow, so device registrations require a registered account. No anonymous machine interface was found.",
+  "probes": [
+    {
+      "attempts": 1,
+      "bytes": 19812,
+      "elapsed_ms": 500,
+      "error": "",
+      "name": "consultas_spa",
+      "note": "",
+      "ok": true,
+      "sample": {
+        "name": "consultas_spa.html",
+        "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\brazil_anvisa\\consultas_spa.html",
+        "sha256_full": "2ecd4fa74d09d3302181c2252df68f1c6fa1634b23f331aaa7db4f40f2559281",
+        "sha256_stored": "2ecd4fa74d09d3302181c2252df68f1c6fa1634b23f331aaa7db4f40f2559281",
+        "stored_bytes": 19812,
+        "total_bytes": 19812,
+        "truncated": false
+      },
+      "status": 200,
+      "structure": null,
+      "url": "https://consultas.anvisa.gov.br/"
+    },
+    {
+      "attempts": 1,
+      "bytes": 2380,
+      "elapsed_ms": 219,
+      "error": "HTTP 403 Forbidden",
+      "name": "api_produtos_saude_without_token",
+      "note": "",
+      "ok": false,
+      "sample": null,
+      "status": 403,
+      "structure": null,
+      "url": "https://consultas.anvisa.gov.br/api/consulta/produtos-saude"
+    },
+    {
+      "attempts": 1,
+      "bytes": 2380,
+      "elapsed_ms": 375,
+      "error": "HTTP 403 Forbidden",
+      "name": "api_medicamentos_without_token",
+      "note": "",
+      "ok": false,
+      "sample": null,
+      "status": 403,
+      "structure": null,
+      "url": "https://consultas.anvisa.gov.br/api/consulta/medicamentos?page=1"
+    }
+  ],
+  "requests": 3,
+  "schema": "medradar.external.probe.v1",
+  "source_id": "brazil_anvisa",
+  "status": "REQUIRES_REGISTRATION",
+  "verified_at": "2026-11-08T21:59:29.256132Z"
+}

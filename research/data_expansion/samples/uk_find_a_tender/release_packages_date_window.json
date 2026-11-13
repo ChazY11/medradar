@@ -1,0 +1,220 @@
+{
+    "uri": "https://www.find-tender.service.gov.uk/api/1.0/ocdsReleasePackages?limit=1&updatedFrom=2026-11-02T00:00:00&updatedTo=2026-11-09T00:00:00",
+    "version": "1.1",
+    "extensions": [
+        "https://standard.open-contracting.org/profiles/eu/latest/en/extension.json",
+        "https://raw.githubusercontent.com/open-contracting-extensions/ocds_amendment_rationale_classifications_extension/master/extension.json",
+        "https://raw.githubusercontent.com/open-contracting-extensions/ocds_budget_breakdown_extension/master/extension.json",
+        "https://raw.githubusercontent.com/open-contracting-extensions/ocds_contract_completion_extension/master/extension.json",
+        "https://raw.githubusercontent.com/open-contracting-extensions/ocds_documentation_extension/master/extension.json",
+        "https://raw.githubusercontent.com/open-contracting-extensions/ocds_pagination_extension/master/extension.json",
+        "https://raw.githubusercontent.com/open-contracting-extensions/ocds_suitability_extension/master/extension.json",
+        "https://raw.githubusercontent.com/portaledcahn/ocds_Links_extension/main/extension.json",
+        "https://raw.githubusercontent.com/cabinetoffice/ocds_uk_extension/main/extension.json"
+    ],
+    "publishedDate": "2026-11-08T20:14:58Z",
+    "publisher": {
+        "name": "Cabinet Office",
+        "scheme": "GB-GOR",
+        "uid": "D2",
+        "uri": "https://www.gov.uk/government/organisations/cabinet-office"
+    },
+    "license": "http://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/",
+    "publicationPolicy": "https://www.gov.uk/government/publications/open-contracting",
+    "releases": [
+        {
+            "ocid": "ocds-h6vhtk-07b710",
+            "id": "105976-2026",
+            "date": "2026-11-08T20:14:58Z",
+            "tag": [
+                "award",
+                "contract"
+            ],
+            "description": "1 x optional 12 month extension at the Council's discretion.",
+            "initiationType": "tender",
+            "tender": {
+                "id": "PRJ_31265",
+                "legalBasis": {
+                    "id": "32014L0024",
+                    "scheme": "CELEX"
+                },
+                "title": "WCC Consultation Governance and Assurance Platform (PRJ_31265)",
+                "status": "complete",
+                "classification": {
+                    "scheme": "CPV",
+                    "id": "72000000",
+                    "description": "IT services: consulting, software development, Internet and support"
+                },
+                "mainProcurementCategory": "services",
+                "description": "The contract will implement the Consultation Governance and Assurance Platform which will provide governance assurance across multiple concurrent end-to-end workforce consultations as part of the Fit for the Future Programme for Westminster City Council.",
+                "lots": [
+                    {
+                        "id": "1",
+                        "description": "The contract will implement the Consultation Governance and Assurance Platform which will provide governance assurance across multiple concurrent end-to-end workforce consultations as part of the Fit for the Future Programme for Westminster City Council.",
+                        "awardCriteria": {
+                            "criteria": [
+                                {
+                                    "type": "price"
+                                }
+                            ]
+                        },
+                        "hasOptions": false,
+                        "status": "cancelled"
+                    }
+                ],
+                "items": [
+                    {
+                        "id": "1",
+                        "deliveryAddresses": [
+                            {
+                                "region": "UK"
+                            }
+                        ],
+                        "relatedLot": "1"
+                    }
+                ],
+                "procurementMethod": "limited",
+                "procurementMethodDetails": "Award procedure without prior publication of a call for competition",
+                "coveredBy": [
+                    "GPA"
+                ],
+                "procurementMethodRationaleClassifications": [
+                    {
+                        "scheme": "TED_PT_AWARD_CONTRACT_WITHOUT_CALL",
+                        "id": "D_OUTSIDE_SCOPE",
+                        "description": "The procurement falls outside the scope of application of the directive"
+                    }
+                ],
+                "procurementMethodRationale": "Compliant award without competition via GCA/CCS G Cloud 14 (RM1557.14)"
+            },
+            "awards": [
+                {
+                    "id": "105976-2026-1",
+                    "relatedLots": [
+                        "1"
+                    ],
+                    "title": "PRJ_31265 WCC Consultation Governance and Assurance Platform",
+                    "status": "active",
+                    "suppliers": [
+                        {
+                            "id": "GB-FTS-188248",
+                            "name": "Lumilinks Group Ltd"
+                        }
+                    ]
+                }
+            ],
+            "parties": [
+                {
+                    "name": "Westminster City Council",
+                    "id": "GB-FTS-5427",
+                    "identifier": {
+                        "legalName": "Westminster City Council"
+                    },
+                    "address": {
+                        "streetAddress": "64 Victoria Street",
+                        "locality": "London",
+                        "region": "UKI32",
+                        "postalCode": "SW1E 6QP",
+                        "countryName": "United Kingdom"
+                    },
+                    "contactPoint": {
+                        "email": "procurementteam@westminster.gov.uk"
+                    },
+                    "roles": [
+                        "buyer"
+                    ],
+                    "details": {
+                        "url": "https://wcc.ukp.app.jaggaer.com",
+                        "buyerProfile": "http://www.westminster.gov.uk",
+                        "classifications": [
+                            {
+                                "scheme": "TED_CA_TYPE",
+                                "id": "REGIONAL_AUTHORITY",
+                                "description": "Regional or local authority"
+                            },
+                            {
+                                "scheme": "COFOG",
+                                "id": "01",
+                                "description": "General public services"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "name": "Lumilinks Group Ltd",
+                    "id": "GB-FTS-188248",
+                    "identifier": {
+                        "legalName": "Lumilinks Group Ltd",
+                        "id": "11557839"
+                    },
+                    "address": {
+                        "streetAddress": "79 College Road,",
+                        "locality": "Harrow",
+                        "region": "UK",
+                        "postalCode": "HA1 1BD",
+                        "countryName": "United Kingdom"
+                    },
+                    "roles": [
+                        "supplier"
+                    ],
+                    "details": {
+                        "scale": "sme"
+                    }
+                },
+                {
+                    "name": "The High Court of Justice",
+                    "id": "GB-FTS-5080",
+                    "identifier": {
+                        "legalName": "The High Court of Justice"
+                    },
+                    "address": {
+                        "streetAddress": "The Royal Court of Justice, The Strand",
+                        "locality": "London",
+                        "postalCode": "WC2A 2LL",
+                        "countryName": "United Kingdom"
+                    },
+                    "roles": [
+                        "reviewBody"
+                    ]
+                }
+            ],
+            "buyer": {
+                "id": "GB-FTS-5427",
+                "name": "Westminster City Council"
+            },
+            "contracts": [
+                {
+                    "id": "105976-2026-1",
+                    "awardID": "105976-2026-1",
+                    "title": "PRJ_31265 WCC Consultation Governance and Assurance Platform",
+                    "status": "active",
+                    "value": {
+                        "amount": 125460.00,
+                        "currency": "GBP"
+                    },
+                    "dateSigned": "2026-10-28T00:00:00Z"
+                }
+            ],
+            "bids": {
+                "statistics": [
+                    {
+                        "id": "1",
+                        "measure": "bids",
+                        "relatedLot": "1",
+                        "value": 1
+                    },
+                    {
+                        "id": "2",
+                        "measure": "smeBids",
+                        "relatedLot": "1",
+                        "value": 1
+                    }
+                ]
+            },
+            "language": "en"
+        }
+    ],
+    "links": {
+        "next": "https://www.find-tender.service.gov.uk/api/1.0/ocdsReleasePackages?limit=1&updatedFrom=2026-11-02T00:00:00&updatedTo=2026-11-09T00:00:00&cursor=dXBkYXRlZEZyb209MjAyNi0xMS0wMlQwMDowMDowMHx1cGRhdGVkVG89MjAyNi0xMS0wOVQwMDowMDowMHxuZXh0Q3Vyc29yPTc1Nzk4NA=="
+    }
+}

@@ -1,0 +1,55 @@
+{
+  "generated_at": "2026-11-08T21:59:10.210201Z",
+  "manifest_repair": {
+    "incident": "wildcard write rewrote SAMPLES.json files during collection",
+    "incident_observed_at": "2026-11-08T21:59:10Z",
+    "policy": "verify, do not restore: payload bytes were never modified",
+    "repaired_at_note": "hashes recomputed from disk; declared values preserved on conflict",
+    "stats": {
+      "entries": 2,
+      "mismatched": 0,
+      "missing_files": 0,
+      "recomputed": 2,
+      "source_id": "us_census_trade",
+      "unlisted_files_added": 0,
+      "verified": 0
+    }
+  },
+  "note": "Raw response slices only; parsed records are derived and live in the series/handoff.",
+  "samples": [
+    {
+      "file": "keyless_response.html",
+      "hash_verified": true,
+      "name": "keyless_response.html",
+      "note": "descriptor recovered from disk: the probe run did not persist the full-response descriptor, so sha256_full/total_bytes are null rather than guessed",
+      "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\us_census_trade\\keyless_response.html",
+      "recovered_from": "requests.jsonl",
+      "request_url": "https://api.census.gov/data/timeseries/intltrade/imports/hs?get=CTY_CODE%2CI_COMMODITY%2CGEN_VAL_MO&YEAR=2023&MONTH=01&I_COMMODITY=9018",
+      "sha256_full": "c214e06d2f06370d11b7dc5c3ee66db8c3d90c7ba9f0dc06d4f870af8d936989",
+      "sha256_source": "recomputed_from_disk",
+      "sha256_stored": "c214e06d2f06370d11b7dc5c3ee66db8c3d90c7ba9f0dc06d4f870af8d936989",
+      "source": "recovered_from_disk",
+      "stored_bytes": 8764,
+      "total_bytes": 8764,
+      "truncated": false
+    },
+    {
+      "file": "trade_api_docs.html",
+      "hash_verified": true,
+      "name": "trade_api_docs.html",
+      "note": "descriptor recovered from disk: the probe run did not persist the full-response descriptor, so sha256_full/total_bytes are null rather than guessed",
+      "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\us_census_trade\\trade_api_docs.html",
+      "recovered_from": "requests.jsonl",
+      "request_url": "https://www.census.gov/data/developers/data-sets/international-trade.html",
+      "sha256_full": "519b496ce2786b32f98d47d2c982f38d829ec1eb0461c2f67a35bb8243d4ddec",
+      "sha256_source": "recomputed_from_disk",
+      "sha256_stored": "519b496ce2786b32f98d47d2c982f38d829ec1eb0461c2f67a35bb8243d4ddec",
+      "source": "recovered_from_disk",
+      "stored_bytes": 321813,
+      "total_bytes": 321813,
+      "truncated": false
+    }
+  ],
+  "schema": "medradar.external.samples.v1",
+  "source_id": "us_census_trade"
+}

@@ -1,0 +1,44 @@
+{
+  "api_available": "YES",
+  "authentication": "none; optional free NCBI API key",
+  "bulk_download_available": "PARTIAL",
+  "category": "scholarly_literature",
+  "connection_status": "NOT_TESTED",
+  "cost_notes": "free",
+  "country_or_region": "US",
+  "domain": "C",
+  "entity_identifiers": [
+    "PMID",
+    "PMCID",
+    "DOI",
+    "MID"
+  ],
+  "evidence_urls": [
+    "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=pubmed&term=Medtronic%5BAffiliation%5D+AND+stent&retmode=json&retmax=3&tool=medradar_research&email=medradar.research%40example.org",
+    "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esummary.fcgi?db=pubmed&retmode=json&id=42830997&tool=medradar_research&email=medradar.research%40example.org"
+  ],
+  "free_tier": "free; 3 requests/second without a key, 10/second with a free key",
+  "historical_coverage": "37M+ citations; MEDLINE from 1966, OLDMEDLINE back to 1946",
+  "known_limitations": [
+    "esummary returns no author affiliations, so PubMed alone cannot attribute a paper to a company",
+    "esummary returns no funder award ids; grant linking needs Europe PMC core or efetch",
+    "pubdate is often month-year only (coarse) and must not support lead-time claims",
+    "the NCBI books documentation page is behind a reCAPTCHA for automated clients; API behaviour was verified directly instead"
+  ],
+  "licence": "NLM terms of use; abstracts reusable with attribution, some records carry publisher copyright",
+  "official_or_commercial": "official",
+  "official_url": "https://www.ncbi.nlm.nih.gov/books/NBK25501/",
+  "probe_priority": "P1",
+  "rate_limits": "3 req/s without key, 10 req/s with key; tool= and email= parameters improve the politeness tier",
+  "redistribution_allowed": "PARTIAL",
+  "research_value": "The canonical biomedical citation index; useful mainly as the PMID authority and as a duplicate source to measure how much a naive collection over-counts the same paper.",
+  "source_id": "pubmed_eutils",
+  "source_name": "NCBI PubMed E-utilities",
+  "timestamp_fields": [
+    "epubdate",
+    "pubdate",
+    "sortpubdate"
+  ],
+  "update_frequency": "daily",
+  "verified_at": "2026-11-09"
+}

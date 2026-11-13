@@ -1,0 +1,176 @@
+{
+  "c3_non_fda_footprint": null,
+  "caveats": [
+    "Anchors are products that were eventually cleared, so the sample is survivorship-selected.",
+    "A retrospective earlier document is not a signal that was usable at the time.",
+    "Any relation that only exists because of a later acquisition is excluded from tier A by construction.",
+    "Tier B cannot be used as a lead-time claim; it is reported to show how much of the literature is product-named without manufacturer attribution."
+  ],
+  "computed_at": "2026-11-08T22:02:45.007771Z",
+  "confirmed_link_share": 0.0242,
+  "decision_rule": "detectable iff p<0.05 AND confirmed_link_share>=0.7 AND >=5 dated tier-A rows",
+  "placebo": {
+    "median_placebo_days": 2593.5,
+    "n_placebo_lead_values": 10704,
+    "one_sided_p_tier_a_vs_placebo": 0.569
+  },
+  "schema": "medradar.external.exp_c.v1",
+  "seed": 20261109,
+  "tier_a": {
+    "buckets": {
+      "0-90d": 0,
+      "181-365d": 2,
+      "366-730d": 1,
+      "91-180d": 1,
+      ">730d": 25,
+      "after_event": 0
+    },
+    "max_days": 6308,
+    "median_days": 2508,
+    "min_days": 98,
+    "n": 29,
+    "undatable": 0
+  },
+  "tier_a_by_source": {
+    "clinicaltrials_gov": {
+      "buckets": {
+        "0-90d": 0,
+        "181-365d": 0,
+        "366-730d": 0,
+        "91-180d": 0,
+        ">730d": 1,
+        "after_event": 0
+      },
+      "max_days": 1284,
+      "median_days": 1284,
+      "min_days": 1284,
+      "n": 1,
+      "undatable": 0
+    },
+    "crossref": {
+      "buckets": {
+        "0-90d": 0,
+        "181-365d": 0,
+        "366-730d": 0,
+        "91-180d": 0,
+        ">730d": 0,
+        "after_event": 0
+      },
+      "max_days": null,
+      "median_days": null,
+      "min_days": null,
+      "n": 0,
+      "undatable": 0
+    },
+    "europepmc": {
+      "buckets": {
+        "0-90d": 0,
+        "181-365d": 0,
+        "366-730d": 0,
+        "91-180d": 0,
+        ">730d": 0,
+        "after_event": 0
+      },
+      "max_days": null,
+      "median_days": null,
+      "min_days": null,
+      "n": 0,
+      "undatable": 0
+    },
+    "nih_reporter": {
+      "buckets": {
+        "0-90d": 0,
+        "181-365d": 0,
+        "366-730d": 0,
+        "91-180d": 0,
+        ">730d": 0,
+        "after_event": 0
+      },
+      "max_days": null,
+      "median_days": null,
+      "min_days": null,
+      "n": 0,
+      "undatable": 0
+    },
+    "openalex": {
+      "buckets": {
+        "0-90d": 0,
+        "181-365d": 0,
+        "366-730d": 0,
+        "91-180d": 0,
+        ">730d": 0,
+        "after_event": 0
+      },
+      "max_days": null,
+      "median_days": null,
+      "min_days": null,
+      "n": 0,
+      "undatable": 0
+    },
+    "pubmed_eutils": {
+      "buckets": {
+        "0-90d": 0,
+        "181-365d": 0,
+        "366-730d": 0,
+        "91-180d": 0,
+        ">730d": 0,
+        "after_event": 0
+      },
+      "max_days": null,
+      "median_days": null,
+      "min_days": null,
+      "n": 0,
+      "undatable": 0
+    },
+    "semantic_scholar": {
+      "buckets": {
+        "0-90d": 0,
+        "181-365d": 0,
+        "366-730d": 0,
+        "91-180d": 0,
+        ">730d": 0,
+        "after_event": 0
+      },
+      "max_days": null,
+      "median_days": null,
+      "min_days": null,
+      "n": 0,
+      "undatable": 0
+    },
+    "usaspending": {
+      "buckets": {
+        "0-90d": 0,
+        "181-365d": 2,
+        "366-730d": 1,
+        "91-180d": 1,
+        ">730d": 24,
+        "after_event": 0
+      },
+      "max_days": 6308,
+      "median_days": 2568.0,
+      "min_days": 98,
+      "n": 28,
+      "undatable": 0
+    }
+  },
+  "tier_b": {
+    "buckets": {
+      "0-90d": 62,
+      "181-365d": 42,
+      "366-730d": 54,
+      "91-180d": 27,
+      ">730d": 662,
+      "after_event": 16
+    },
+    "max_days": 37264,
+    "median_days": 2636,
+    "min_days": -1915,
+    "n": 863,
+    "undatable": 0
+  },
+  "tier_definition": {
+    "A_confirmed": "product token match AND a firm field in the record resolved to the anchor firm",
+    "B_product_only": "product token match only; the record cannot confirm the manufacturer"
+  },
+  "verdict": "NO_DETECTABLE_LEAD"
+}

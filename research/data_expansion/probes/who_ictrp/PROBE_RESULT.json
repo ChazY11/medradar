@@ -1,0 +1,42 @@
+{
+  "error": "",
+  "evidence_urls": [],
+  "notes": "ICTRP is a search portal over national registries, with no public machine API.  The probe records the portal responses but they are HTML forms, not queryable records, so the source is recorded UNAVAILABLE for programmatic collection.  The registries it indexes (CT.gov, CTIS, ChiCTR, ...) are collected directly instead.",
+  "probes": [
+    {
+      "attempts": 1,
+      "bytes": 36376,
+      "counts_as_ok": false,
+      "elapsed_ms": 1140,
+      "error": "JSONDecodeError: json decode failed",
+      "http_ok": true,
+      "json_parsed": false,
+      "method": "get",
+      "name": "search_portal",
+      "record_count": null,
+      "status": 200,
+      "structure": null,
+      "url": "https://trialsearch.who.int/"
+    },
+    {
+      "attempts": 1,
+      "bytes": 101771,
+      "counts_as_ok": false,
+      "elapsed_ms": 1422,
+      "error": "JSONDecodeError: json decode failed",
+      "http_ok": true,
+      "json_parsed": false,
+      "method": "get",
+      "name": "platform_page",
+      "record_count": null,
+      "status": 200,
+      "structure": null,
+      "url": "https://www.who.int/clinical-trials-registry-platform"
+    }
+  ],
+  "requests": 2,
+  "schema": "medradar.external.probe.v1",
+  "source_id": "who_ictrp",
+  "status": "UNAVAILABLE",
+  "verified_at": "2026-11-08T21:39:09.627678Z"
+}

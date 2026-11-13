@@ -1,0 +1,553 @@
+{
+  "error": "",
+  "evidence_urls": [
+    "https://clinicaltrials.gov/api/v2/studies?query.spons=Medtronic&pageSize=2&countTotal=true",
+    "https://clinicaltrials.gov/api/v2/studies?query.term=stent&pageSize=2&countTotal=true",
+    "https://clinicaltrials.gov/api/v2/studies?query.spons=Philips&pageSize=2&countTotal=true",
+    "https://clinicaltrials.gov/api/v2/studies/NCT01693120"
+  ],
+  "notes": "CT.gov v2 returned 200 JSON with `studies`, `totalCount` and `nextPageToken`.  `statusModule.studyFirstPostDateStruct.date` is the first-public-registration date and is the only defensible `source_public_at`; `startDateStruct.date` is the study start and must not be substituted.  `sponsorCollaboratorsModule.leadSponsor.name` is the deterministic company field (identity.CompanyIndex.resolve).",
+  "probes": [
+    {
+      "attempts": 1,
+      "bytes": 39795,
+      "counts_as_ok": true,
+      "elapsed_ms": 889,
+      "error": "",
+      "http_ok": true,
+      "json_parsed": true,
+      "method": "get",
+      "name": "sponsor_search",
+      "record_count": 2,
+      "sample": {
+        "fetched_at": "2026-11-08T21:43:28.053241Z",
+        "name": "ctgov_sponsor_medtronic.json",
+        "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\clinicaltrials_gov\\ctgov_sponsor_medtronic.json",
+        "sha256_full": "4b1ad8920d623b0e0b0a2c01424b9935332b9dd9d0c80131a8b42e3cce1e2aa6",
+        "sha256_stored": "4b1ad8920d623b0e0b0a2c01424b9935332b9dd9d0c80131a8b42e3cce1e2aa6",
+        "stored_bytes": 39795,
+        "total_bytes": 39795,
+        "truncated": false,
+        "url": "https://clinicaltrials.gov/api/v2/studies?query.spons=Medtronic&pageSize=2&countTotal=true"
+      },
+      "status": 200,
+      "structure": {
+        "__type__": "object",
+        "keys": [
+          "nextPageToken",
+          "studies",
+          "totalCount"
+        ],
+        "sample": {
+          "nextPageToken": {
+            "__type__": "string",
+            "max_len": 39
+          },
+          "studies": {
+            "__type__": "array",
+            "item": {
+              "__type__": "object",
+              "keys": [
+                "derivedSection",
+                "documentSection",
+                "hasResults",
+                "protocolSection",
+                "resultsSection"
+              ],
+              "sample": {
+                "derivedSection": "dict",
+                "documentSection": "dict",
+                "hasResults": "bool",
+                "protocolSection": "dict",
+                "resultsSection": "dict"
+              }
+            },
+            "len": 2
+          },
+          "totalCount": {
+            "__type__": "int"
+          }
+        }
+      },
+      "url": "https://clinicaltrials.gov/api/v2/studies?query.spons=Medtronic&pageSize=2&countTotal=true"
+    },
+    {
+      "attempts": 1,
+      "bytes": 15279,
+      "counts_as_ok": true,
+      "elapsed_ms": 375,
+      "error": "",
+      "http_ok": true,
+      "json_parsed": true,
+      "method": "get",
+      "name": "term_search",
+      "record_count": 2,
+      "sample": {
+        "fetched_at": "2026-11-08T21:43:28.443298Z",
+        "name": "ctgov_term_stent.json",
+        "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\clinicaltrials_gov\\ctgov_term_stent.json",
+        "sha256_full": "b7a1a5de056813725f17ad5db7d548177d4f8f418caaf62c73a3b998123f2d16",
+        "sha256_stored": "b7a1a5de056813725f17ad5db7d548177d4f8f418caaf62c73a3b998123f2d16",
+        "stored_bytes": 15279,
+        "total_bytes": 15279,
+        "truncated": false,
+        "url": "https://clinicaltrials.gov/api/v2/studies?query.term=stent&pageSize=2&countTotal=true"
+      },
+      "status": 200,
+      "structure": {
+        "__type__": "object",
+        "keys": [
+          "nextPageToken",
+          "studies",
+          "totalCount"
+        ],
+        "sample": {
+          "nextPageToken": {
+            "__type__": "string",
+            "max_len": 38
+          },
+          "studies": {
+            "__type__": "array",
+            "item": {
+              "__type__": "object",
+              "keys": [
+                "derivedSection",
+                "hasResults",
+                "protocolSection"
+              ],
+              "sample": {
+                "derivedSection": "dict",
+                "hasResults": "bool",
+                "protocolSection": "dict"
+              }
+            },
+            "len": 2
+          },
+          "totalCount": {
+            "__type__": "int"
+          }
+        }
+      },
+      "url": "https://clinicaltrials.gov/api/v2/studies?query.term=stent&pageSize=2&countTotal=true"
+    },
+    {
+      "attempts": 1,
+      "bytes": 15235,
+      "counts_as_ok": true,
+      "elapsed_ms": 359,
+      "error": "",
+      "http_ok": true,
+      "json_parsed": true,
+      "method": "get",
+      "name": "sponsor_philips",
+      "record_count": 2,
+      "sample": {
+        "fetched_at": "2026-11-08T21:43:29.334131Z",
+        "name": "ctgov_sponsor_philips.json",
+        "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\clinicaltrials_gov\\ctgov_sponsor_philips.json",
+        "sha256_full": "55839598a0b1c8d6cabb5a8bfd0573cc1fd15ab32d5751f944213c878ef98984",
+        "sha256_stored": "55839598a0b1c8d6cabb5a8bfd0573cc1fd15ab32d5751f944213c878ef98984",
+        "stored_bytes": 15235,
+        "total_bytes": 15235,
+        "truncated": false,
+        "url": "https://clinicaltrials.gov/api/v2/studies?query.spons=Philips&pageSize=2&countTotal=true"
+      },
+      "status": 200,
+      "structure": {
+        "__type__": "object",
+        "keys": [
+          "nextPageToken",
+          "studies",
+          "totalCount"
+        ],
+        "sample": {
+          "nextPageToken": {
+            "__type__": "string",
+            "max_len": 38
+          },
+          "studies": {
+            "__type__": "array",
+            "item": {
+              "__type__": "object",
+              "keys": [
+                "derivedSection",
+                "hasResults",
+                "protocolSection"
+              ],
+              "sample": {
+                "derivedSection": "dict",
+                "hasResults": "bool",
+                "protocolSection": "dict"
+              }
+            },
+            "len": 2
+          },
+          "totalCount": {
+            "__type__": "int"
+          }
+        }
+      },
+      "url": "https://clinicaltrials.gov/api/v2/studies?query.spons=Philips&pageSize=2&countTotal=true"
+    },
+    {
+      "attempts": 1,
+      "bytes": 31773,
+      "counts_as_ok": true,
+      "elapsed_ms": 702,
+      "error": "",
+      "http_ok": true,
+      "json_parsed": true,
+      "method": "get",
+      "name": "study_detail",
+      "record_count": null,
+      "sample": {
+        "fetched_at": "2026-11-08T21:43:30.564405Z",
+        "name": "ctgov_study_detail.json",
+        "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\clinicaltrials_gov\\ctgov_study_detail.json",
+        "sha256_full": "c2efe7a809570f2c7045a843b65af8847c4a040bae758d062f05e67745639ccf",
+        "sha256_stored": "c2efe7a809570f2c7045a843b65af8847c4a040bae758d062f05e67745639ccf",
+        "stored_bytes": 31773,
+        "total_bytes": 31773,
+        "truncated": false,
+        "url": "https://clinicaltrials.gov/api/v2/studies/NCT01693120"
+      },
+      "status": 200,
+      "structure": {
+        "__type__": "object",
+        "keys": [
+          "derivedSection",
+          "documentSection",
+          "hasResults",
+          "protocolSection",
+          "resultsSection"
+        ],
+        "sample": {
+          "derivedSection": {
+            "__type__": "object",
+            "keys": [
+              "conditionBrowseModule",
+              "miscInfoModule"
+            ],
+            "sample": {
+              "conditionBrowseModule": {
+                "__type__": "object",
+                "keys": [
+                  "ancestors",
+                  "meshes"
+                ],
+                "sample": {
+                  "ancestors": "list",
+                  "meshes": "list"
+                }
+              },
+              "miscInfoModule": {
+                "__type__": "object",
+                "keys": [
+                  "removedCountries",
+                  "versionHolder"
+                ],
+                "sample": {
+                  "removedCountries": "list",
+                  "versionHolder": "str"
+                }
+              }
+            }
+          },
+          "documentSection": {
+            "__type__": "object",
+            "keys": [
+              "largeDocumentModule"
+            ],
+            "sample": {
+              "largeDocumentModule": {
+                "__type__": "object",
+                "keys": [
+                  "largeDocs"
+                ],
+                "sample": {
+                  "largeDocs": "list"
+                }
+              }
+            }
+          },
+          "hasResults": {
+            "__type__": "bool"
+          },
+          "protocolSection": {
+            "__type__": "object",
+            "keys": [
+              "armsInterventionsModule",
+              "conditionsModule",
+              "contactsLocationsModule",
+              "descriptionModule",
+              "designModule",
+              "eligibilityModule",
+              "identificationModule",
+              "ipdSharingStatementModule",
+              "outcomesModule",
+              "oversightModule",
+              "sponsorCollaboratorsModule",
+              "statusModule"
+            ],
+            "sample": {
+              "armsInterventionsModule": {
+                "__type__": "object",
+                "keys": [
+                  "armGroups",
+                  "interventions"
+                ],
+                "sample": {
+                  "armGroups": "list",
+                  "interventions": "list"
+                }
+              },
+              "conditionsModule": {
+                "__type__": "object",
+                "keys": [
+                  "conditions",
+                  "keywords"
+                ],
+                "sample": {
+                  "conditions": "list",
+                  "keywords": "list"
+                }
+              },
+              "contactsLocationsModule": {
+                "__type__": "object",
+                "keys": [
+                  "locations",
+                  "overallOfficials"
+                ],
+                "sample": {
+                  "locations": "list",
+                  "overallOfficials": "list"
+                }
+              },
+              "descriptionModule": {
+                "__type__": "object",
+                "keys": [
+                  "briefSummary"
+                ],
+                "sample": {
+                  "briefSummary": "str"
+                }
+              },
+              "designModule": {
+                "__type__": "object",
+                "keys": [
+                  "designInfo",
+                  "enrollmentInfo",
+                  "phases",
+                  "studyType"
+                ],
+                "sample": {
+                  "designInfo": "dict",
+                  "enrollmentInfo": "dict",
+                  "phases": "list",
+                  "studyType": "str"
+                }
+              },
+              "eligibilityModule": {
+                "__type__": "object",
+                "keys": [
+                  "eligibilityCriteria",
+                  "healthyVolunteers",
+                  "maximumAge",
+                  "minimumAge",
+                  "sex",
+                  "stdAges"
+                ],
+                "sample": {
+                  "eligibilityCriteria": "str",
+                  "healthyVolunteers": "bool",
+                  "maximumAge": "str",
+                  "minimumAge": "str",
+                  "sex": "str",
+                  "stdAges": "list"
+                }
+              },
+              "identificationModule": {
+                "__type__": "object",
+                "keys": [
+                  "acronym",
+                  "briefTitle",
+                  "nctId",
+                  "officialTitle",
+                  "orgStudyIdInfo",
+                  "organization"
+                ],
+                "sample": {
+                  "acronym": "str",
+                  "briefTitle": "str",
+                  "nctId": "str",
+                  "officialTitle": "str",
+                  "orgStudyIdInfo": "dict",
+                  "organization": "dict"
+                }
+              },
+              "ipdSharingStatementModule": {
+                "__type__": "object",
+                "keys": [
+                  "ipdSharing"
+                ],
+                "sample": {
+                  "ipdSharing": "str"
+                }
+              },
+              "outcomesModule": {
+                "__type__": "object",
+                "keys": [
+                  "primaryOutcomes",
+                  "secondaryOutcomes"
+                ],
+                "sample": {
+                  "primaryOutcomes": "list",
+                  "secondaryOutcomes": "list"
+                }
+              },
+              "oversightModule": {
+                "__type__": "object",
+                "keys": [
+                  "oversightHasDmc"
+                ],
+                "sample": {
+                  "oversightHasDmc": "bool"
+                }
+              },
+              "sponsorCollaboratorsModule": {
+                "__type__": "object",
+                "keys": [
+                  "leadSponsor",
+                  "responsibleParty"
+                ],
+                "sample": {
+                  "leadSponsor": "dict",
+                  "responsibleParty": "dict"
+                }
+              },
+              "statusModule": {
+                "__type__": "object",
+                "keys": [
+                  "completionDateStruct",
+                  "expandedAccessInfo",
+                  "lastUpdatePostDateStruct",
+                  "lastUpdateSubmitDate",
+                  "overallStatus",
+                  "primaryCompletionDateStruct",
+                  "resultsFirstPostDateStruct",
+                  "resultsFirstSubmitDate",
+                  "resultsFirstSubmitQcDate",
+                  "startDateStruct",
+                  "statusVerifiedDate",
+                  "studyFirstPostDateStruct",
+                  "studyFirstSubmitDate",
+                  "studyFirstSubmitQcDate",
+                  "whyStopped"
+                ],
+                "sample": {
+                  "completionDateStruct": "dict",
+                  "expandedAccessInfo": "dict",
+                  "overallStatus": "str",
+                  "primaryCompletionDateStruct": "dict",
+                  "resultsFirstSubmitDate": "str",
+                  "resultsFirstSubmitQcDate": "str",
+                  "startDateStruct": "dict",
+                  "statusVerifiedDate": "str",
+                  "studyFirstPostDateStruct": "dict",
+                  "studyFirstSubmitDate": "str",
+                  "studyFirstSubmitQcDate": "str",
+                  "whyStopped": "str"
+                }
+              }
+            }
+          },
+          "resultsSection": {
+            "__type__": "object",
+            "keys": [
+              "adverseEventsModule",
+              "baselineCharacteristicsModule",
+              "moreInfoModule",
+              "outcomeMeasuresModule",
+              "participantFlowModule"
+            ],
+            "sample": {
+              "adverseEventsModule": {
+                "__type__": "object",
+                "keys": [
+                  "eventGroups",
+                  "frequencyThreshold",
+                  "otherEvents",
+                  "seriousEvents",
+                  "timeFrame"
+                ],
+                "sample": {
+                  "eventGroups": "list",
+                  "frequencyThreshold": "str",
+                  "otherEvents": "list",
+                  "seriousEvents": "list",
+                  "timeFrame": "str"
+                }
+              },
+              "baselineCharacteristicsModule": {
+                "__type__": "object",
+                "keys": [
+                  "denoms",
+                  "groups",
+                  "measures",
+                  "populationDescription"
+                ],
+                "sample": {
+                  "denoms": "list",
+                  "groups": "list",
+                  "measures": "list",
+                  "populationDescription": "str"
+                }
+              },
+              "moreInfoModule": {
+                "__type__": "object",
+                "keys": [
+                  "certainAgreement",
+                  "limitationsAndCaveats",
+                  "pointOfContact"
+                ],
+                "sample": {
+                  "certainAgreement": "dict",
+                  "limitationsAndCaveats": "dict",
+                  "pointOfContact": "dict"
+                }
+              },
+              "outcomeMeasuresModule": {
+                "__type__": "object",
+                "keys": [
+                  "outcomeMeasures"
+                ],
+                "sample": {
+                  "outcomeMeasures": "list"
+                }
+              },
+              "participantFlowModule": {
+                "__type__": "object",
+                "keys": [
+                  "groups",
+                  "periods",
+                  "recruitmentDetails"
+                ],
+                "sample": {
+                  "groups": "list",
+                  "periods": "list",
+                  "recruitmentDetails": "str"
+                }
+              }
+            }
+          }
+        }
+      },
+      "url": "https://clinicaltrials.gov/api/v2/studies/NCT01693120"
+    }
+  ],
+  "requests": 4,
+  "schema": "medradar.external.probe.v1",
+  "source_id": "clinicaltrials_gov",
+  "status": "VERIFIED_API",
+  "verified_at": "2026-11-08T21:43:30.566406Z"
+}

@@ -1,0 +1,95 @@
+{
+  "generated_at": "2026-11-08T21:59:09.375387Z",
+  "manifest_repair": {
+    "incident": "wildcard write rewrote SAMPLES.json files during collection",
+    "incident_observed_at": "2026-11-08T21:59:10Z",
+    "policy": "verify, do not restore: payload bytes were never modified",
+    "repaired_at_note": "hashes recomputed from disk; declared values preserved on conflict",
+    "stats": {
+      "entries": 5,
+      "mismatched": 0,
+      "missing_files": 0,
+      "recomputed": 5,
+      "source_id": "openalex",
+      "unlisted_files_added": 0,
+      "verified": 0
+    }
+  },
+  "note": "Raw response slices only; parsed records are derived and live in the series/handoff.",
+  "samples": [
+    {
+      "file": "openalex_affiliation_medtronic.json",
+      "hash_verified": true,
+      "name": "openalex_affiliation_medtronic.json",
+      "note": "descriptor recovered from disk: the probe run did not persist the full-response descriptor, so sha256_full/total_bytes are null rather than guessed",
+      "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\openalex\\openalex_affiliation_medtronic.json",
+      "recovered_from": "requests.jsonl",
+      "request_url": "https://api.openalex.org/works?filter=raw_affiliation_strings.search%3Amedtronic&per-page=2&mailto=medradar.research%40example.org",
+      "sha256_full": "d000a1f32cc5a0e6a30841c545785de02cdd19459efd9c7b92bf10a8de082fc6",
+      "sha256_source": "recomputed_from_disk",
+      "sha256_stored": "d000a1f32cc5a0e6a30841c545785de02cdd19459efd9c7b92bf10a8de082fc6",
+      "source": "recovered_from_disk",
+      "stored_bytes": 44885,
+      "total_bytes": 44885,
+      "truncated": false
+    },
+    {
+      "file": "openalex_institutions.json",
+      "hash_verified": true,
+      "name": "openalex_institutions.json",
+      "note": "descriptor recovered from disk: the probe run did not persist the full-response descriptor, so sha256_full/total_bytes are null rather than guessed",
+      "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\openalex\\openalex_institutions.json",
+      "sha256_full": "d7df176dfa085db6b9126b8eeff231cebca448912d6a4047e285e7541999e085",
+      "sha256_source": "recomputed_from_disk",
+      "sha256_stored": "d7df176dfa085db6b9126b8eeff231cebca448912d6a4047e285e7541999e085",
+      "source": "recovered_from_disk",
+      "stored_bytes": 50605,
+      "total_bytes": 50605,
+      "truncated": false
+    },
+    {
+      "file": "openalex_works_company.json",
+      "hash_verified": true,
+      "name": "openalex_works_company.json",
+      "note": "descriptor recovered from disk: the probe run did not persist the full-response descriptor, so sha256_full/total_bytes are null rather than guessed",
+      "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\openalex\\openalex_works_company.json",
+      "sha256_full": "801b75a2bf22b1b10d2d3b234bf96f837c8d5ba1578f501af73f8984545dc306",
+      "sha256_source": "recomputed_from_disk",
+      "sha256_stored": "801b75a2bf22b1b10d2d3b234bf96f837c8d5ba1578f501af73f8984545dc306",
+      "source": "recovered_from_disk",
+      "stored_bytes": 20995,
+      "total_bytes": 20995,
+      "truncated": false
+    },
+    {
+      "file": "openalex_works_doi.json",
+      "hash_verified": true,
+      "name": "openalex_works_doi.json",
+      "note": "descriptor recovered from disk: the probe run did not persist the full-response descriptor, so sha256_full/total_bytes are null rather than guessed",
+      "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\openalex\\openalex_works_doi.json",
+      "sha256_full": "9021ee1a0632c0fbd2fc76701d935a56bdfa94e836a72e1b8692d41ec8bd98f5",
+      "sha256_source": "recomputed_from_disk",
+      "sha256_stored": "9021ee1a0632c0fbd2fc76701d935a56bdfa94e836a72e1b8692d41ec8bd98f5",
+      "source": "recovered_from_disk",
+      "stored_bytes": 227924,
+      "total_bytes": 227924,
+      "truncated": false
+    },
+    {
+      "file": "openalex_works_search.json",
+      "hash_verified": true,
+      "name": "openalex_works_search.json",
+      "note": "descriptor recovered from disk: the probe run did not persist the full-response descriptor, so sha256_full/total_bytes are null rather than guessed",
+      "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\openalex\\openalex_works_search.json",
+      "sha256_full": "56ff42eff009f26ebeab73be6a8d820d2d562a3f0506a3964e9a2416bdd59286",
+      "sha256_source": "recomputed_from_disk",
+      "sha256_stored": "56ff42eff009f26ebeab73be6a8d820d2d562a3f0506a3964e9a2416bdd59286",
+      "source": "recovered_from_disk",
+      "stored_bytes": 56207,
+      "total_bytes": 56207,
+      "truncated": false
+    }
+  ],
+  "schema": "medradar.external.samples.v1",
+  "source_id": "openalex"
+}

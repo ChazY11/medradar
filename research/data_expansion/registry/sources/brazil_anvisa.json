@@ -1,0 +1,38 @@
+{
+  "api_available": "PARTIAL",
+  "authentication": "ANVISA login token (registered account); anonymous API calls answer 403",
+  "bulk_download_available": "NO",
+  "category": "device_registration",
+  "connection_status": "NOT_TESTED",
+  "cost_notes": "UNKNOWN - requires an ANVISA account",
+  "country_or_region": "BR",
+  "domain": "A",
+  "entity_identifiers": [
+    "UNKNOWN - the registro ANVISA number is documented but was never observed from the source"
+  ],
+  "evidence_urls": [
+    "https://consultas.anvisa.gov.br/",
+    "https://consultas.anvisa.gov.br/api/consulta/medicamentos"
+  ],
+  "free_tier": "UNKNOWN - depends on the account/token terms",
+  "historical_coverage": "UNKNOWN - no product record was served",
+  "known_limitations": [
+    "consultas.anvisa.gov.br is an Angular SPA whose JSON API under /api/consulta/ answers 403 without a bearer token obtained from the ANVISA login flow (verified in the probe)",
+    "no public bulk release for device registrations was found",
+    "consequence: Brazilian registration can only be collected after registration, so Brazil is absent from this round's cross-market comparison"
+  ],
+  "licence": "UNKNOWN",
+  "official_or_commercial": "official",
+  "official_url": "https://consultas.anvisa.gov.br/",
+  "probe_priority": "P2",
+  "rate_limits": "UNKNOWN - limits are not reachable without a token",
+  "redistribution_allowed": "UNKNOWN",
+  "research_value": "ANVISA registration is the gate for the largest Latin American device market, so it would extend the comparison beyond North America, Europe and Asia. With access gated behind a login, it is recorded as a registration-dependent source rather than counted as data.",
+  "source_id": "brazil_anvisa",
+  "source_name": "Brazil ANVISA medical device registry (Consultas)",
+  "timestamp_fields": [
+    "UNKNOWN - no record was served"
+  ],
+  "update_frequency": "UNKNOWN",
+  "verified_at": "2026-11-09"
+}

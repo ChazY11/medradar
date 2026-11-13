@@ -1,0 +1,65 @@
+{
+  "generated_at": "2026-11-08T21:59:10.200792Z",
+  "manifest_repair": {
+    "incident": "wildcard write rewrote SAMPLES.json files during collection",
+    "incident_observed_at": "2026-11-08T21:59:10Z",
+    "policy": "verify, do not restore: payload bytes were never modified",
+    "repaired_at_note": "hashes recomputed from disk; declared values preserved on conflict",
+    "stats": {
+      "entries": 3,
+      "mismatched": 0,
+      "missing_files": 0,
+      "recomputed": 3,
+      "source_id": "scholarly",
+      "unlisted_files_added": 0,
+      "verified": 0
+    }
+  },
+  "note": "Raw response slices only; parsed records are derived and live in the series/handoff.",
+  "samples": [
+    {
+      "file": "build_coverage_snapshot.py",
+      "hash_verified": true,
+      "name": "build_coverage_snapshot.py",
+      "note": "descriptor recovered from disk: the probe run did not persist the full-response descriptor, so sha256_full/total_bytes are null rather than guessed",
+      "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\scholarly\\build_coverage_snapshot.py",
+      "sha256_full": "abbaf34027a4e6dcf0eb19f0bad555d83032b2fc55b083771a020f706365e2d3",
+      "sha256_source": "recomputed_from_disk",
+      "sha256_stored": "abbaf34027a4e6dcf0eb19f0bad555d83032b2fc55b083771a020f706365e2d3",
+      "source": "recovered_from_disk",
+      "stored_bytes": 17974,
+      "total_bytes": 17974,
+      "truncated": false
+    },
+    {
+      "file": "COVERAGE_SNAPSHOT.json",
+      "hash_verified": true,
+      "name": "COVERAGE_SNAPSHOT.json",
+      "note": "descriptor recovered from disk: the probe run did not persist the full-response descriptor, so sha256_full/total_bytes are null rather than guessed",
+      "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\scholarly\\COVERAGE_SNAPSHOT.json",
+      "sha256_full": "a2c150eef981f2b2f94af66f3ac54705d5161958e9a09be17336f8d8d115fac9",
+      "sha256_source": "recomputed_from_disk",
+      "sha256_stored": "a2c150eef981f2b2f94af66f3ac54705d5161958e9a09be17336f8d8d115fac9",
+      "source": "recovered_from_disk",
+      "stored_bytes": 33100,
+      "total_bytes": 33100,
+      "truncated": false
+    },
+    {
+      "file": "requests.jsonl",
+      "hash_verified": true,
+      "name": "requests.jsonl",
+      "note": "descriptor recovered from disk: the probe run did not persist the full-response descriptor, so sha256_full/total_bytes are null rather than guessed",
+      "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\scholarly\\requests.jsonl",
+      "sha256_full": "27d8734ce48961f7f5b98111300f2caf990ced9b49d4bf29fd28f7bc62a0e15a",
+      "sha256_source": "recomputed_from_disk",
+      "sha256_stored": "27d8734ce48961f7f5b98111300f2caf990ced9b49d4bf29fd28f7bc62a0e15a",
+      "source": "recovered_from_disk",
+      "stored_bytes": 43021,
+      "total_bytes": 43021,
+      "truncated": false
+    }
+  ],
+  "schema": "medradar.external.samples.v1",
+  "source_id": "scholarly"
+}

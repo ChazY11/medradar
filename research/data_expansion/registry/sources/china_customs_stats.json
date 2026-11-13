@@ -1,0 +1,38 @@
+{
+  "api_available": "NO",
+  "authentication": "browser session + captcha for the query UI; no account API",
+  "bulk_download_available": "NO",
+  "category": "trade_aggregate",
+  "connection_status": "NOT_TESTED",
+  "cost_notes": "Free UI; no lawful automated access found.",
+  "country_or_region": "CN",
+  "domain": "E",
+  "entity_identifiers": [],
+  "evidence_urls": [
+    "http://stats.customs.gov.cn/",
+    "http://www.customs.gov.cn/"
+  ],
+  "free_tier": "free web query UI only",
+  "historical_coverage": "UNKNOWN - no machine-readable catalogue",
+  "known_limitations": [
+    "PROBED 2026-11-09: stats.customs.gov.cn returned HTTP 412 with an anti-automation JS interstitial for every request (also for /queryData); www.customs.gov.cn returned 412 to our client as well on repeat.",
+    "There is no documented API and no anonymous bulk download; the only interface is a captcha-driven form.",
+    "Chinese customs does not publish company-level bill-of-lading data at all; vendor 'China export' company data comes from separate commercial sources, so China cannot be covered by an open firm-level channel.",
+    "Country-level HS-code AGGREGATE statistics only: no company, no shipment, no product identity. Must not be substituted for bill-of-lading (company-level) data, and cannot be used to infer any of the five firms' supply chain."
+  ],
+  "licence": "UNKNOWN (Chinese government site terms; no explicit reuse licence found)",
+  "official_or_commercial": "official",
+  "official_url": "http://stats.customs.gov.cn/",
+  "probe_priority": "P3",
+  "rate_limits": "no API; anti-automation responses observed",
+  "redistribution_allowed": "UNKNOWN",
+  "research_value": "Would provide China's own HS-code import/export aggregates - a useful mirror for device flows in and out of China. Not accessible without a captcha session; aggregate only in any case.",
+  "source_id": "china_customs_stats",
+  "source_name": "China Customs statistics (海关统计数据在线查询平台)",
+  "timestamp_fields": [
+    "reporting month/year only (coarse)",
+    "no machine-readable publication timestamp"
+  ],
+  "update_frequency": "monthly",
+  "verified_at": "2026-11-09"
+}

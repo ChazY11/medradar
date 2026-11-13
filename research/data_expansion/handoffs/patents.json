@@ -1,0 +1,270 @@
+{
+  "agent": "patents",
+  "scope": "Domain B (patents, 7 sources) + Domain E (customs/trade, 10 sources)",
+  "branch": "research/data-expansion-001",
+  "finished_at": "2026-11-09T06:10:00Z",
+  "sources_assigned": 17,
+  "sources_probed": 17,
+  "connection_status_counts": {
+    "VERIFIED_API": 3,
+    "REQUIRES_REGISTRATION": 6,
+    "PAID_ONLY": 4,
+    "BLOCKED_BY_POLICY": 1,
+    "UNAVAILABLE": 3
+  },
+  "headline": "Trade: three open sources verified (UN Comtrade preview, Eurostat Comext, HMRC UK Trade Info) and one of them is company-level. Patents: ZERO records obtainable without registration or payment - the patent component of this round is a scoping result, not a data result.",
+
+  "required_answers": {
+    "1_patents_without_registration_or_payment": {
+      "answer": "Nothing. Zero patent records.",
+      "detail": [
+        "Not a single patent record was obtained in this round. Every patent path reachable from this host was credential-gated, paid, or dead, and each was probed live rather than assumed.",
+        "EPO OPS: both /published-data/search and /family/... returned HTTP 403 with '<error><code>403</code><message>This request has been rejected due to the violation of Fair Use policy</message></error>'; the OAuth2 token endpoint also refused (401). Nothing readable without a registered app.",
+        "USPTO Open Data Portal: /api/v1/patent/applications/search and /api/v1/datasets/products/... both returned HTTP 401 {\"message\":\"Unauthorized\"}. A free X-API-KEY is required.",
+        "PatentsView: the documented host search.patentsview.org does not resolve (NXDOMAIN from the system resolver and from 8.8.8.8); the legacy host api.patentsview.org returns HTTP 200 but an HTML single-page-app shell, not JSON. The service is retired and its surface now serves the USPTO ODP app. There is nothing to fetch and nothing to register for.",
+        "USPTO bulk: bulkdata.uspto.gov no longer resolves (DNS returns only an SOA record); data.uspto.gov/bulkdata is the ODP shell and the surviving dataset-product API is key-gated (401/403). Zero bytes of bulk data were downloaded.",
+        "WIPO PATENTSCOPE: no open interface. The search UI is a JSF web app; an undocumented /search/api/ path is 404; PCT data products are routed to a subscription page.",
+        "Google Patents on BigQuery: bigquery.googleapis.com returns 401 anonymously. Public data can be queried within a free 1 TB/month allowance, but that still needs a GCP project and OAuth credentials.",
+        "Lens.org: the API is institutional-subscription only ('Lens API service is only available through an institutional subscription', from its own terms page) and returns 401 without a token.",
+        "Consequence for MedRadar: there is currently no patent data, so no patent-derived lead-time, technology-trend or citation analysis can be computed. Do not let any report imply otherwise.",
+        "Cheapest route out (not taken here because it needs an account, which the protocol forbids): a free USPTO ODP API key, and/or a free EPO OPS registration. Both are documentable in a few hours once someone may create the accounts."
+      ]
+    },
+    "2_five_firm_patent_and_trade_linkage": {
+      "patents": "IDENTICAL FOR ALL FIVE AND CURRENTLY NIL. With no patent data, no firm has a patent link. When a key arrives: patent applicants are legal strings, so parent names ('MEDTRONIC', 'KONINKLIJKE PHILIPS N.V.') resolve as exact_alias through identity.CompanyIndex, while subsidiaries ('MEDTRONIC VASCULAR INC', 'GE HEALTHCARE FINNAMORE LIMITED') need manual alias additions or stay candidate. Neither EPO OPS nor USPTO ODP provides a disambiguated assignee id, so expect a large candidate tier. PatentsView's assignee_id - the one feature that solved this - is gone with the service.",
+      "trade": {
+        "general": "Only UK HMRC offers an open company-level channel, and it is presence-only (no values, no quantities, no partners). No other open source names a company at all. Bill-of-lading vendors (ImportGenius, Panjiva, Datamyne) would provide the real firm-level shipment evidence but are all paid.",
+        "medtronic": {
+          "uk_trader_entities_found": ["MEDTRONIC VASCULAR GALWAY UNLIMITEDCOMPANY (TraderId 213902)", "MEDTRONIC LIMITED (243358, WD18 8WW)", "MEDTRONIC INTERNATIONAL TRADING SARL (282422)", "MEDTRONIC BIOPHARMA B.V. (467789)"],
+          "verified_presence": "14 live records collected in total; 9 belong to Medtronic. Trader 213902 traded CN8 30061010, 30061090, 90183900, 90213910, 90213990 in 2023, with import and export months listed - i.e. genuine medical-device commodity presence.",
+          "link_tier": "exact_alias (0.95) for the parent-name strings"
+        },
+        "ge_healthcare": {
+          "uk_trader_entities_found": ["GE HEALTHCARE LIMITED (92994, HP8 4SP)", "GE HEALTHCARE FINNAMORE LIMITED (75265, HP8 4SP)"],
+          "verified_presence": "Entity names verified live via the Trader search; the bounded run stopped before collecting their YearlyTrade rows.",
+          "link_tier": "exact_alias (0.95)"
+        },
+        "philips": {
+          "uk_trader_entities_found": ["PHILIPS IN LIGHTING LTD (12781)", "PHILIPS CONSUMER LIFESTYLE BV (30594)", "PHILIPS PHILIPHS (6051, typo string in the source)"],
+          "verified_presence": "Names verified, but two of the three are non-medical divisions; the connector demotes them to candidate (0.55) with an explicit guard, so they must never be counted as medical links.",
+          "link_tier": "candidate (0.55) for the lighting/consumer entities"
+        },
+        "draeger": {
+          "uk_trader_entities_found": ["DRAEGER MEDICAL UK LTD (41779, HP2 7BW)", "DRAEGER SAFETY UK LTD (51959)", "DRAEGER SAFETY AG & CO. KGAA (514743)"],
+          "verified_presence": "5 live presence records collected for DRAEGER MEDICAL UK LTD; the safety division is demoted to candidate.",
+          "link_tier": "exact_alias (0.95) for DRAEGER MEDICAL UK LTD; candidate for the safety division"
+        },
+        "mindray": {
+          "uk_trader_entities_found": ["MINDRAY UK LTD (82557, PE29 6FN)"],
+          "verified_presence": "Entity name verified live; the bounded run stopped before its YearlyTrade rows were collected.",
+          "link_tier": "exact_alias (0.95)"
+        }
+      }
+    },
+    "3_cost_of_the_blocked_and_paid_sources": {
+      "note": "Only figures actually read from a public page in this round are quoted. Where a vendor publishes no price, that is stated instead of guessed.",
+      "free_but_requires_an_account_or_key": [
+        {
+          "source_id": "epo_ops",
+          "price": "free account; quota is volume-metered",
+          "caveat": "the published free-tier volume could NOT be verified this round - developers.epo.org answered HTTP 403 to our client",
+          "url": "https://www.epo.org/en/searching-for-patents/data/web-services/ops"
+        },
+        {
+          "source_id": "uspto_open_data_portal",
+          "price": "free API key (X-API-KEY)",
+          "caveat": "401 Unauthorized observed without it; key issued from the developer portal after account creation",
+          "url": "https://data.uspto.gov/apis"
+        },
+        {
+          "source_id": "un_comtrade",
+          "price": "full /data/v1 API: free-tier subscription key; anonymous preview is keyless but capped",
+          "caveat": "401 'Access denied due to missing subscription key' observed on the keyed path; the preview cap is not published on reachable pages",
+          "url": "https://comtradedeveloper.un.org/"
+        },
+        {
+          "source_id": "us_census_trade",
+          "price": "free API key",
+          "caveat": "keyless calls return HTTP 200 with an HTML 'Missing Key' page, not an error status",
+          "url": "https://www.census.gov/data/developers/data-sets/international-trade.html"
+        },
+        {
+          "source_id": "google_patents_bigquery",
+          "price": "first 1 TB of query data per month free; on-demand pricing beyond that",
+          "caveat": "a GCP project + OAuth credentials are mandatory; the per-TB price was not captured from the pricing page in this round",
+          "url": "https://cloud.google.com/bigquery/public-data"
+        },
+        {
+          "source_id": "wipo_patentscope",
+          "price": "PCT data products / Web Services: subscription or account",
+          "caveat": "no price is published on the page we fetched (no CHF/USD token found); real cost obtainable only by contacting WIPO",
+          "url": "https://www.wipo.int/en/web/patentscope/data/subscribe-pct-data-products-services"
+        },
+        {
+          "source_id": "usitc_dataweb",
+          "price": "free registered web account",
+          "caveat": "no API at all - UI only, so it is worthless for automation",
+          "url": "https://dataweb.usitc.gov/"
+        }
+      ],
+      "paid_only": [
+        {
+          "source_id": "lens_org",
+          "price": "institutional subscription (quote-based)",
+          "caveat": "its terms state the API is available only through an institutional subscription; individual 'Lens Scholars' accounts are website-only. Redistribution of derived data is restricted.",
+          "url": "https://about.lens.org/lens-patent-api-terms-of-use/"
+        },
+        {
+          "source_id": "importgenius",
+          "price": "from $229/month; $183/month if billed $2,198/year; other tiers listed at $359, $449, $1,999, $2,198 and $4,310",
+          "caveat": "prices read directly from the public pricing page; contract price may differ",
+          "url": "https://www.importgenius.com/pricing"
+        },
+        {
+          "source_id": "panjiva",
+          "price": "no public price list - S&P Global sales-negotiated subscription",
+          "caveat": "/pricing and /plans both 404; budget must come from S&P, not from a web page",
+          "url": "https://panjiva.com/"
+        },
+        {
+          "source_id": "descartes_datamyne",
+          "price": "no public price list - quote-based commercial licence",
+          "caveat": "the SOURCE_ID_INDEX URL (descartes.com/solutions/global-trade-data) is 404; live product page is /datamyne",
+          "url": "https://www.descartes.com/datamyne"
+        }
+      ]
+    }
+  },
+
+  "connectors": [
+    "medradar/external_sources/trade/__init__.py",
+    "medradar/external_sources/trade/un_comtrade.py",
+    "medradar/external_sources/trade/eurostat_comext.py",
+    "medradar/external_sources/trade/uk_hmrc_trade.py"
+  ],
+  "connectors_not_written_on_purpose": {
+    "patents": "No patent connector exists because no patent source verified. Writing one would mean shipping untestable code.",
+    "us_census_trade": "requires a key (not obtainable under this round's rules)",
+    "usitc_dataweb": "no API",
+    "importyeti": "robots-disallowed",
+    "china_customs_stats": "412/captcha",
+    "importgenius/panjiva/descartes_datamyne": "paid"
+  },
+
+  "real_records_collected": {
+    "live_connector_records": 28,
+    "breakdown": {"un_comtrade": 12, "eurostat_comext": 2, "uk_hmrc_trade": 14},
+    "comtrade_preview_rows_saved_in_samples": 278,
+    "patent_records": 0,
+    "staging_note": "The 28 records were written to a throwaway StagingStore in %TEMP% (not to the repo staging DB, to avoid colliding with other agents). All 28 passed schema.validate_evidence with zero problems.",
+    "concrete_values_observed": [
+      "UN Comtrade, reporter 842 (USA) 2023 imports, HS 9018: world total 37,909,230,134 USD across 127 partner rows",
+      "UN Comtrade, HS 9022: 4,650,622,668 USD across 81 partner rows; HS 9402: 1,187,893,275 USD across 70 rows",
+      "Eurostat Comext DS-045409, 2023, DE imports of HS 9018 from US: 2,682,137,903 EUR; DE exports: 3,376,125,154 EUR",
+      "HMRC TraderId 213902 traded CN8 90183900 (needles/catheters) and 90213910/90213990 in 2023, plus 30061010/30061090 (sutures)"
+    ]
+  },
+
+  "blocked": [
+    {"source_id": "epo_ops", "reason": "OAuth2 required; 403 Fair Use policy on both REST endpoints; token endpoint 401 without credentials"},
+    {"source_id": "uspto_open_data_portal", "reason": "X-API-KEY required; 401 {'message':'Unauthorized'} on every data path"},
+    {"source_id": "patentsview", "reason": "RETIRED: documented host is NXDOMAIN; legacy host serves an HTML SPA shell; surface folded into USPTO ODP"},
+    {"source_id": "uspto_patent_bulk", "reason": "bulkdata.uspto.gov no longer resolves; surviving ODP dataset-product API needs X-API-KEY (401/403). Zero bytes downloaded."},
+    {"source_id": "wipo_patentscope", "reason": "no open machine interface; JSF UI + subscription-gated PCT data products"},
+    {"source_id": "google_patents_bigquery", "reason": "requires GCP project + OAuth (401 anonymous); 1 TB/month free query allowance but not free of setup"},
+    {"source_id": "lens_org", "reason": "institutional subscription only, per its own API terms; redistribution restricted"},
+    {"source_id": "us_census_trade", "reason": "free API key required; keyless calls return HTTP 200 with an HTML 'Missing Key' page"},
+    {"source_id": "usitc_dataweb", "reason": "no machine interface (SPA only); www.usitc.gov 403"},
+    {"source_id": "importyeti", "reason": "BLOCKED_BY_POLICY: robots.txt disallows /search?q and the JSON API paths; no data request made"},
+    {"source_id": "china_customs_stats", "reason": "HTTP 412 anti-automation on every path; no API, no anonymous bulk"},
+    {"source_id": "importgenius", "reason": "PAID_ONLY (from $229/month)"},
+    {"source_id": "panjiva", "reason": "PAID_ONLY, sales-negotiated, no public price"},
+    {"source_id": "descartes_datamyne", "reason": "PAID_ONLY, quote-based"}
+  ],
+
+  "notable_findings": [
+    "PATENTS ARE UNOBTAINABLE WITHOUT AN ACCOUNT: 0 patent records from 7 patent sources. Everything is credential-gated, paid or dead. This is the single most important negative result of my scope.",
+    "PatentsView IS GONE, not merely key-gated: search.patentsview.org is NXDOMAIN (two resolvers), api.patentsview.org/patents/query returns HTTP 200 but an HTML SPA shell, and patentsview.org's own meta description says 'The Open Data Portal (ODP) is USPTO's data platform'. Counting patentsview and uspto_open_data_portal as two independent sources would double-count one authority - and SOURCE_ID_INDEX still lists PatentsView as a separate P0 with a dead URL.",
+    "bulkdata.uspto.gov NO LONGER RESOLVES, so the classic free multi-TB patent bulk channel does not exist here; the only surviving bulk path is the keyed ODP dataset API. I downloaded 0 bytes of bulk data.",
+    "US CENSUS RETURNS HTTP 200 ON FAILURE: keyless calls yield a 200 text/html page titled 'Missing Key'. Any client that trusts status codes will silently parse an error page as data. This is the most dangerous trap found.",
+    "UN COMTRADE HAS TWO DISTINCT CAPABILITIES that must be reported separately: the anonymous /public/v1/preview endpoint works (278 real partner rows for HS 9018/9022/9402 in the saved samples) while the full /data/v1 endpoint is 401 without a subscription key.",
+    "HMRC UK TRADE INFO IS THE ONLY OPEN COMPANY-LEVEL TRADE CHANNEL FOUND: api.uktradeinfo.com is open OData with no key, and its Trader entity exposes CompanyName + PostCode joined to CN8 commodity and month. It is PRESENCE ONLY - no values, no quantities, no partners, no consignments. It is not a bill of lading and must never be reported as one.",
+    "ALL FIVE TARGET FIRMS HAVE UK TRADER ENTITIES in HMRC data (Medtronic 4, Philips 3, Draeger 3, GE HealthCare 2, Mindray 1), so a company-level UK clock is genuinely possible - but names are raw declarant strings with typos ('PHILIPS PHILIPHS'), and several non-UK traders share HMRC's own address/postcode AB10 1ZP, so address cannot disambiguate.",
+    "THE SHARED ALIAS TABLE OVER-MATCHES FOR TRADE: 'PHILIPS IN LIGHTING LTD' and 'PHILIPS CONSUMER LIFESTYLE BV' resolve as exact_alias to Philips because the negative guards only cover 'PHILIPS LIGHTING' as consecutive tokens. My connector adds an explicit trade demotion guard (LIGHTING / CONSUMER LIFESTYLE / LUMILEDS / SIGNIFY / SAFETY) so these become candidates, never confirmed links.",
+    "EUROSTAT COMEXT NEEDS THE RIGHT PATH AND DIMENSIONS: the dataset lives under /api/comext/dissemination/... (the mainstream /api/dissemination/ path returns 404 for DS-045409) and its dimensions are freq/reporter/partner/product/flow/indicators/time - using geo= returns 400.",
+    "BIGQUERY IS NOT 'PAID_ONLY': the public-data page states the first 1 TB per month is free and billing is only required beyond the free tier. It is still REQUIRES_REGISTRATION because a GCP project and OAuth credentials are mandatory. (I corrected this after re-reading the saved page.)",
+    "EPO OPS QUOTA IS UNVERIFIED: the docs page we could fetch does not state a volume, and developers.epo.org answered 403 to our client, so I removed the '4 GB/month' figure rather than repeat an unverified number.",
+    "IMPORTYETI IS A POLICY BLOCK, NOT A TECHNICAL ONE: robots.txt disallows exactly the path that answers the question (/search?q) plus the JSON API paths. Zero data requests were made; do not build a scraper for it.",
+    "AGGREGATE vs SHIPMENT IS ENFORCED IN CODE: all aggregate connectors emit an empty entity_refs list and a null canonical_key, so an HS-code statistic cannot accidentally acquire a company link downstream."
+  ],
+
+  "time_semantics_rules_for_reviewers": [
+    "PATENTS: source_public_at = publication date (the 18-month public disclosure), never filing or priority. Filing/priority is event_at only. A not-yet-published application is not public and must never be treated as an early signal. OPS exposes date-publ/date-filing/priority separately; ODP exposes publicationDate/filingDate/grantDate separately.",
+    "PATENTSVIEW would have been a GRANT-date clock only (no pre-grant publication field), so it could not have served as a public-visibility clock even before retirement.",
+    "TRADE AGGREGATES (Comtrade/Census/Eurostat/HMRC-OTS): no source exposes a per-record publication timestamp. Every record is therefore written with source_public_at = '' and quality 'unknown', and event_at is a derived period anchor. These records must be excluded from any lead-time computation.",
+    "HMRC TRADER PRESENCE: month/year precision only, published in arrears by HMRC, with no publication date in the API. Same rule: source_public_at unknown, not lead-time eligible.",
+    "No record anywhere in my scope was given a fabricated publication clock. If a downstream report needs a knowledge clock for trade, that clock does not exist in the data and must be stated as missing."
+  ],
+
+  "warnings_for_lead": [
+    "Do not report '17 trade/patent sources, 3 verified' as if patents had a foothold: the 3 verified sources are ALL trade. Patents: 0 verified, 0 records.",
+    "Do not merge patentsview with uspto_open_data_portal in any coverage count; they are one retired authority and one live one.",
+    "Do not describe HMRC trader data as shipment data; it is company-level presence with no values.",
+    "Do not compare aggregate HS statistics with bill-of-lading totals; different coverage, thresholds, valuation and confidentiality rules make them non-comparable.",
+    "SOURCE_ID_INDEX has two dead official_url values in my scope: patentsview (search.patentsview.org) and descartes_datamyne (descartes.com/solutions/global-trade-data). Both are documented in the register records; the index itself was not modified (out of my write scope).",
+    "If the Lead authorises account creation, the two highest-value registrations are a free USPTO ODP key (unlocks US application/publication search) and a free EPO OPS app (unlocks publication date + family + citations). Both are free; neither is a purchase."
+  ],
+
+  "per_source": [
+    {"source_id": "epo_ops", "priority": "P0", "connection_status": "REQUIRES_REGISTRATION", "requests": 4, "records": 0, "note": "403 Fair Use policy on both endpoints; OAuth2 required"},
+    {"source_id": "uspto_open_data_portal", "priority": "P0", "connection_status": "REQUIRES_REGISTRATION", "requests": 3, "records": 0, "note": "401 Unauthorized without X-API-KEY"},
+    {"source_id": "patentsview", "priority": "P0", "connection_status": "UNAVAILABLE", "requests": 8, "records": 0, "note": "documented host NXDOMAIN; legacy host serves ODP SPA shell; retired"},
+    {"source_id": "uspto_patent_bulk", "priority": "P1", "connection_status": "REQUIRES_REGISTRATION", "requests": 6, "records": 0, "note": "bulkdata.uspto.gov does not resolve; ODP dataset API key-gated (401/403)"},
+    {"source_id": "wipo_patentscope", "priority": "P2", "connection_status": "REQUIRES_REGISTRATION", "requests": 4, "records": 0, "note": "no open API; JSF UI + subscription data products"},
+    {"source_id": "google_patents_bigquery", "priority": "P3", "connection_status": "REQUIRES_REGISTRATION", "requests": 3, "records": 0, "note": "401 anonymous; GCP project + OAuth required"},
+    {"source_id": "lens_org", "priority": "P3", "connection_status": "PAID_ONLY", "requests": 4, "records": 0, "note": "institutional subscription only per its terms; 401 without token"},
+    {"source_id": "un_comtrade", "priority": "P0", "connection_status": "VERIFIED_API", "requests": 6, "records": 12, "note": "public preview works keyless (278 sample rows); full /data/v1 is 401 without key"},
+    {"source_id": "us_census_trade", "priority": "P0", "connection_status": "REQUIRES_REGISTRATION", "requests": 3, "records": 0, "note": "HTTP 200 + HTML 'Missing Key' page; free key required"},
+    {"source_id": "eurostat_comext", "priority": "P1", "connection_status": "VERIFIED_API", "requests": 4, "records": 2, "note": "open keyless Comext API; real 2023 values returned"},
+    {"source_id": "uk_hmrc_trade", "priority": "P1", "connection_status": "VERIFIED_API", "requests": 5, "records": 14, "note": "open OData; named traders x CN8 x month (presence only) plus OTS aggregates"},
+    {"source_id": "usitc_dataweb", "priority": "P2", "connection_status": "UNAVAILABLE", "requests": 4, "records": 0, "note": "SPA only, no API; www.usitc.gov 403"},
+    {"source_id": "importyeti", "priority": "P2", "connection_status": "BLOCKED_BY_POLICY", "requests": 3, "records": 0, "note": "robots.txt disallows /search?q and the JSON API paths; no data request made"},
+    {"source_id": "china_customs_stats", "priority": "P3", "connection_status": "UNAVAILABLE", "requests": 3, "records": 0, "note": "HTTP 412 anti-automation on every path"},
+    {"source_id": "importgenius", "priority": "P3", "connection_status": "PAID_ONLY", "requests": 2, "records": 0, "note": "public price list read: from $229/month"},
+    {"source_id": "panjiva", "priority": "P3", "connection_status": "PAID_ONLY", "requests": 3, "records": 0, "note": "S&P sales-negotiated; no public price; /pricing 404"},
+    {"source_id": "descartes_datamyne", "priority": "P3", "connection_status": "PAID_ONLY", "requests": 3, "records": 0, "note": "quote-based; index URL is 404, live page is /datamyne"}
+  ],
+
+  "open_questions": [
+    "Does anything in the repo already assume patent data exists (e.g. a template that joins patents to devices)? If so it must be guarded, because there is no patent data.",
+    "Should SOURCE_ID_INDEX be corrected for the two dead URLs (patentsview, descartes_datamyne) and for the PatentsView/ODP duplication? That is outside my write scope; the Lead owns the index.",
+    "If accounts become permissible next round, which is worth more: US pre-grant publications (ODP, free key, US-centric) or EP/PCT publication + family + citations (EPO OPS, free app, global)? They answer different questions and neither is a substitute for the other.",
+    "For firm-level trade evidence beyond the UK, the only route is a paid BoL vendor. Is the research question strong enough to justify a quote from S&P or ImportGenius, given that the licence will forbid redistributing records?",
+    "HMRC presence could be extended to more CN8 codes and all five firms' UK entities cheaply (free). Worth doing only if a firm-level UK clock is actually used in an experiment - otherwise it is data with no consumer."
+  ],
+
+  "tests": {
+    "file": "tests/test_extsrc_trade.py",
+    "tests": 28,
+    "passed": 28,
+    "failed": 0,
+    "covers": [
+      "normalisation of all three connectors with handwritten fixtures shaped like the live payloads",
+      "schema.validate_evidence(...) == [] for every emitted record type",
+      "time semantics: aggregates have source_public_at '' quality 'unknown'; patches never share a clock with the event",
+      "aggregate records can never carry entity_refs or a canonical_key",
+      "HMRC trade demotion guard: lighting/consumer/safety entities stay candidates",
+      "bounded collect(): request counts asserted against a fake client, limit respected"
+    ]
+  },
+  "selftest": "pass (python -m medradar selftest: 1210 tests, OK, 3 skipped)",
+  "files_written": {
+    "registry": "research/data_expansion/registry/sources/<source_id>.json (17)",
+    "probes": "research/data_expansion/probes/<source_id>/{requests.jsonl,PROBE_RESULT.json,NOTES.md} (17)",
+    "samples": "research/data_expansion/samples/<source_id>/{SAMPLES.json,<payload>} (17)",
+    "connectors": "medradar/external_sources/trade/ (4 files)",
+    "tests": "tests/test_extsrc_trade.py",
+    "handoff": "research/data_expansion/handoffs/patents.json"
+  },
+  "not_modified": ["medradar/external_sources/{schema,base,store,identity,timeq,registry}.py", "SOURCE_ID_INDEX.json", "any git state", "no accounts created, nothing purchased, no large files downloaded"]
+}

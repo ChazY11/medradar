@@ -1,0 +1,44 @@
+{
+  "source_id": "lever",
+  "source_name": "Lever postings API (api.lever.co/v0/postings)",
+  "official_url": "https://github.com/lever/postings-api",
+  "country_or_region": "GLOBAL",
+  "domain": "G",
+  "category": "job_postings",
+  "official_or_commercial": "official",
+  "api_available": "YES",
+  "bulk_download_available": "NO",
+  "authentication": "none - the postings endpoint is public per company token",
+  "free_tier": "free, anonymous",
+  "rate_limits": "UNKNOWN - no numeric limit published; the 6-request probe at 0.8 s interval was never throttled",
+  "licence": "the postings API is documented publicly, but posting content belongs to the employer; redistribution_allowed recorded as UNKNOWN",
+  "redistribution_allowed": "UNKNOWN",
+  "update_frequency": "continuous",
+  "historical_coverage": "currently-open postings only; no historical archive",
+  "entity_identifiers": [
+    "posting id (uuid)",
+    "company token (e.g. 'leverdemo')",
+    "categories.team / categories.department (free text, sometimes null)"
+  ],
+  "timestamp_fields": [
+    "createdAt (epoch milliseconds, e.g. 1788199939703 -> 2026-08-31T18:12:19Z) - publication clock",
+    "no updatedAt in the postings payload; edits are not observable"
+  ],
+  "known_limitations": [
+    "NEGATIVE RESULT: none of the five target firms resolved under its likely token. The control token 'leverdemo' returned 10 real postings in the same run, so the endpoint works and the 404s are 'no such board'.",
+    "createdAt is epoch milliseconds, not ISO - a naive parser will read it as a 1970 date or overflow. The connector must divide by 1000 and use an aware UTC datetime.",
+    "No updatedAt field in the postings payload, so an edit cannot be distinguished from a new posting; first_published is therefore the only defensible clock, and it can be older than what a reader sees.",
+    "categories.department is free text and was null for some postings in the control board, so a R&D/Sales/Production split is possible only where the employer filled it in - the coverage rate must be measured, not assumed.",
+    "Open postings only; a requisition vanishing is not evidence of a hire or of a cancelled programme.",
+    "Posting volume is not a technology signal: it can reflect backfill, seasonal demand or a reorganisation."
+  ],
+  "connection_status": "NOT_TESTED",
+  "research_value": "Second free job-board API with a publication clock (createdAt) and, unlike Greenhouse, an optional department field, which is exactly what a role-mix analysis needs (R&D vs Sales vs Production) when the employer populates it. For the five target firms it is empty, so its value here is as a schema reference and as a control showing the two big generic job boards do not host these firms.",
+  "evidence_urls": [
+    "https://github.com/lever/postings-api",
+    "https://api.lever.co/v0/postings/leverdemo?mode=json"
+  ],
+  "verified_at": "2026-11-09",
+  "cost_notes": "free; no key",
+  "probe_priority": "P0"
+}

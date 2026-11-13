@@ -1,0 +1,52 @@
+{
+  "api_available": "YES",
+  "authentication": "none",
+  "bulk_download_available": "UNKNOWN",
+  "category": "shipment",
+  "connection_status": "NOT_TESTED",
+  "cost_notes": "Free of charge, no registration, no key.",
+  "country_or_region": "UK",
+  "domain": "E",
+  "entity_identifiers": [
+    "HMRC TraderId",
+    "CompanyName (raw declarant string)",
+    "PostCode",
+    "CommodityId (CN8)",
+    "MonthId (YYYYMM)",
+    "CountryId",
+    "PortId"
+  ],
+  "evidence_urls": [
+    "https://api.uktradeinfo.com/",
+    "https://api.uktradeinfo.com/Trader",
+    "https://api.uktradeinfo.com/YearlyTrade",
+    "https://api.uktradeinfo.com/OTS"
+  ],
+  "free_tier": "free, no key, no registration",
+  "historical_coverage": "trader-level presence tables from ~2016; aggregate OTS from 2013 in this API",
+  "known_limitations": [
+    "PROBED 2026-11-09: this is the only VERIFIED OPEN company-level trade channel found. /Trader?$filter=contains(CompanyName,'MEDTRONIC') returned real named traders (MEDTRONIC LIMITED, MEDTRONIC VASCULAR GALWAY ..., MEDTRONIC INTERNATIONAL TRADING SARL); PHILIPS/DRAEGER/MINDRAY also resolved.",
+    "CATEGORY WARNING: this is company-level PRESENCE data, NOT a bill of lading. Trade/YearlyTrade join TraderId x CommodityId x MonthId, and contain NO values, NO quantities, NO partners and NO consignment identity. Do not treat it as shipment-value data.",
+    "The aggregate series in the same service is the OTS entity (Value, NetMass, SuppUnit by month x flow x commodity x country x port) - that part is trade_aggregate, not shipment.",
+    "Company names are raw declarant strings with heavy noise ('PHILIPS PHILIPHS', 'MEDTRONIC VASCULAR GALWAY UNLIMITEDCOMPANY'), so linking must stay at exact_alias/candidate and be manually reviewed; the shared alias table also matches non-medical Philips entities (e.g. PHILIPS IN LIGHTING LTD).",
+    "Several non-UK traders share the same HMRC address/postcode 'AB10 1ZP' (HM Revenue and Customs, Ruby House, Aberdeen), so address is NOT a usable disambiguator for them.",
+    "Commodity entity rejects startswith(Cn8Code,...) with a runtime error page; use CommoditySearch (Hs2/Hs4/Hs6) instead.",
+    "UK only: this says nothing about US, EU, Chinese or Japanese firms' trade."
+  ],
+  "licence": "HMRC published trade statistics; presumed Open Government Licence v3.0 (to confirm against the service terms)",
+  "official_or_commercial": "official",
+  "official_url": "https://api.uktradeinfo.com/",
+  "probe_priority": "P1",
+  "rate_limits": "undocumented OData service; no key-based throttling observed",
+  "redistribution_allowed": "PARTIAL",
+  "research_value": "The only open, verified, company-level trade signal available in this round: it can show WHICH UK-registered entity (including Medtronic/Philips/Draeger/Mindray UK subsidiaries) traded WHICH CN8 commodity in WHICH month, import or export. That is a genuine firm-level activity clock - presence, not volume - and it must be presented as such, alongside (never instead of) aggregate statistics.",
+  "source_id": "uk_hmrc_trade",
+  "source_name": "HMRC UK Trade Info API (OData)",
+  "timestamp_fields": [
+    "MonthId = YYYYMM -> month precision only (coarse)",
+    "YearlyTrade.Year -> year precision (coarse)",
+    "no published-at field in the API -> HMRC's publication lag must be documented separately and the record kept out of lead-time claims"
+  ],
+  "update_frequency": "monthly (OTS trade statistics are published in arrears)",
+  "verified_at": "2026-11-09"
+}

@@ -1,0 +1,38 @@
+{
+  "generated_at": "2026-11-08T22:00:18.243669Z",
+  "manifest_repair": {
+    "incident": "wildcard write rewrote SAMPLES.json files during collection",
+    "incident_observed_at": "2026-11-08T21:59:10Z",
+    "policy": "verify, do not restore: payload bytes were never modified",
+    "repaired_at_note": "hashes recomputed from disk; declared values preserved on conflict",
+    "stats": {
+      "entries": 1,
+      "mismatched": 0,
+      "missing_files": 0,
+      "recomputed": 0,
+      "source_id": "fda_device_shortages",
+      "unlisted_files_added": 0,
+      "verified": 1
+    }
+  },
+  "note": "Raw response slices only; parsed records are derived and live in the series/handoff.",
+  "samples": [
+    {
+      "fetched_at": "2026-11-08T21:57:35.081874Z",
+      "file": "medical-device-shortages-list.html",
+      "hash_verified": true,
+      "name": "medical-device-shortages-list.html",
+      "note": "descriptor recovered from disk: the probe run did not persist the full-response descriptor, so sha256_full/total_bytes are null rather than guessed",
+      "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\fda_device_shortages\\medical-device-shortages-list.html",
+      "request_url": "https://www.fda.gov/medical-devices/medical-device-supply-chain-and-shortages/medical-device-shortages-list",
+      "sha256_full": "b7dde31146fc06e937b2ebd4473cf64da0be089b126174578d324ed395f0f26d",
+      "sha256_stored": "b7dde31146fc06e937b2ebd4473cf64da0be089b126174578d324ed395f0f26d",
+      "source": "recovered_from_disk",
+      "stored_bytes": 128140,
+      "total_bytes": 128140,
+      "truncated": false
+    }
+  ],
+  "schema": "medradar.external.samples.v1",
+  "source_id": "fda_device_shortages"
+}

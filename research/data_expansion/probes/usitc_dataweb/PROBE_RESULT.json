@@ -1,0 +1,92 @@
+{
+  "error": "",
+  "evidence_urls": [
+    "https://dataweb.usitc.gov/",
+    "https://dataweb.usitc.gov/help",
+    "https://dataweb.usitc.gov/api/v1/data"
+  ],
+  "notes": "SPA-only site, no discoverable API; www.usitc.gov 403. Registered web UI only; redundant with Census for aggregate purposes.",
+  "probes": [
+    {
+      "bytes": 9514,
+      "content_type": "text/html; charset=UTF-8",
+      "elapsed_ms": 936,
+      "error": "",
+      "excerpt": "<!doctype html> <html lang=\"en\" data-beasties-container>   <head>     <meta charset=\"utf-8\">     <title>DataWeb</title>     <base href=\"/\">     <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">     <meta name=\"apple-mobile-web-app-title\" content=\"DataWeb\">     <link rel=\"icon\" typ",
+      "looks_like_html": true,
+      "looks_like_json": false,
+      "name": "dataweb_app",
+      "ok": true,
+      "sample": {
+        "fetched_at": "2026-11-08T21:48:31.804668Z",
+        "http_status": 200,
+        "name": "dataweb_app.html",
+        "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\usitc_dataweb\\dataweb_app.html",
+        "request_name": "dataweb_app",
+        "request_url": "https://dataweb.usitc.gov/",
+        "sha256_full": "eea274df7a907d8f8cb0a5c649c920bd37bd47016a32487a5c7b3ac1eec1c085",
+        "sha256_stored": "eea274df7a907d8f8cb0a5c649c920bd37bd47016a32487a5c7b3ac1eec1c085",
+        "stored_bytes": 9514,
+        "total_bytes": 9514,
+        "truncated": false
+      },
+      "sha256": "eea274df7a907d8f8cb0a5c649c920bd37bd47016a32487a5c7b3ac1eec1c085",
+      "status": 200,
+      "structure": null,
+      "url": "https://dataweb.usitc.gov/"
+    },
+    {
+      "bytes": 374,
+      "content_type": "text/html",
+      "elapsed_ms": 485,
+      "error": "HTTP 403 Forbidden",
+      "excerpt": "<HTML><HEAD> <TITLE>Access Denied</TITLE> </HEAD><BODY> <H1>Access Denied</H1>   You don't have permission to access \"http&#58;&#47;&#47;www&#46;usitc&#46;gov&#47;dataweb\" on this server.<P> Reference&#32;&#35;18&#46;278f1402&#46;1794174512&#46;104b1735 <P>https&#58;&#47;&#47;errors&#46;edgesuite&#4",
+      "looks_like_html": true,
+      "looks_like_json": false,
+      "name": "usitc_dataweb_docs",
+      "ok": false,
+      "sample": null,
+      "sha256": "ad30d2a943cdfe360ae4ce5a8abbb30d84cd65470680f877b6eb9ac19f0e90ab",
+      "status": 403,
+      "structure": null,
+      "url": "https://www.usitc.gov/dataweb"
+    },
+    {
+      "bytes": 9518,
+      "content_type": "text/html; charset=UTF-8",
+      "elapsed_ms": 563,
+      "error": "",
+      "excerpt": "<!doctype html> <html lang=\"en\" data-beasties-container>   <head>     <meta charset=\"utf-8\">     <title>DataWeb</title>     <base href=\"/\">     <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">     <meta name=\"apple-mobile-web-app-title\" content=\"DataWeb\">     <link rel=\"icon\" typ",
+      "looks_like_html": true,
+      "looks_like_json": false,
+      "name": "dataweb_help_route",
+      "ok": true,
+      "sample": null,
+      "sha256": "e0bea31660711a8101492cd4bda6da69b8fa8ac6e6203825e11484844fa1afd2",
+      "status": 200,
+      "structure": null,
+      "url": "https://dataweb.usitc.gov/help"
+    },
+    {
+      "bytes": 9517,
+      "content_type": "text/html; charset=UTF-8",
+      "elapsed_ms": 358,
+      "error": "",
+      "excerpt": "<!doctype html> <html lang=\"en\" data-beasties-container>   <head>     <meta charset=\"utf-8\">     <title>DataWeb</title>     <base href=\"/\">     <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">     <meta name=\"apple-mobile-web-app-title\" content=\"DataWeb\">     <link rel=\"icon\" typ",
+      "looks_like_html": true,
+      "looks_like_json": false,
+      "name": "api_route_guess",
+      "ok": true,
+      "sample": null,
+      "sha256": "647b32794cc61d8f1586d24e1e4ef6cd800b1056e848b750c9fba3ee7c8ebb78",
+      "status": 200,
+      "structure": null,
+      "url": "https://dataweb.usitc.gov/api/v1/data"
+    }
+  ],
+  "requests": 4,
+  "schema": "medradar.external.probe.v1",
+  "source_id": "usitc_dataweb",
+  "status": "UNAVAILABLE",
+  "verified_at": "2026-11-08T21:48:33.773038Z"
+}

@@ -1,0 +1,72 @@
+{
+  "error": "",
+  "evidence_urls": [
+    "https://ec.europa.eu/tools/eudamed/",
+    "https://developer.datalake.sante.service.ec.europa.eu/api-details#api=94b9e658-d721-4b58-8d96-022c490f7a17"
+  ],
+  "notes": "EUDAMED's public SPA loads, but every public data endpoint answers HTTP 429 with an explicit policy message telling automated clients to use the official EUDAMED data API instead of scraping. That machine API lives on the DG SANTE developer portal and needs registered credentials, so the source is reachable only after registration; the public endpoints are off-limits to this study by the operator's own instruction (probe stores the exact message).",
+  "probes": [
+    {
+      "attempts": 1,
+      "bytes": 48322,
+      "elapsed_ms": 781,
+      "error": "",
+      "name": "public_spa_shell",
+      "note": "",
+      "ok": true,
+      "sample": {
+        "name": "public_spa_shell.html",
+        "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\eudamed\\public_spa_shell.html",
+        "sha256_full": "da7b04bd1ac3b68657b62e2f016d225e97015887f6ad7ab23b7c61ff10dde3e7",
+        "sha256_stored": "da7b04bd1ac3b68657b62e2f016d225e97015887f6ad7ab23b7c61ff10dde3e7",
+        "stored_bytes": 48322,
+        "total_bytes": 48322,
+        "truncated": false
+      },
+      "status": 200,
+      "structure": null,
+      "url": "https://ec.europa.eu/tools/eudamed/"
+    },
+    {
+      "attempts": 2,
+      "bytes": 321,
+      "elapsed_ms": 312,
+      "error": "HTTP 429 Unknown",
+      "machine_to_machine_api": "https://developer.datalake.sante.service.ec.europa.eu/api-details#api=94b9e658-d721-4b58-8d96-022c490f7a17",
+      "name": "public_api_devices",
+      "note": "",
+      "ok": false,
+      "policy_message": "For automated/machine-to-machine access, please use the official EUDAMED data API instead of scraping the public endpoints.",
+      "sample": null,
+      "status": 429,
+      "structure": null,
+      "url": "https://ec.europa.eu/tools/eudamed/api/devices?page=0&size=2"
+    },
+    {
+      "attempts": 1,
+      "bytes": 9981,
+      "elapsed_ms": 405,
+      "error": "",
+      "name": "official_machine_api_portal",
+      "note": "portal named by the EUDAMED public endpoint's own policy message",
+      "ok": true,
+      "sample": {
+        "name": "official_machine_api_portal.html",
+        "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\eudamed\\official_machine_api_portal.html",
+        "sha256_full": "241b9092868b840d60648374f7dfdb3876d4a2691bc7abd3a3607beadab15a59",
+        "sha256_stored": "241b9092868b840d60648374f7dfdb3876d4a2691bc7abd3a3607beadab15a59",
+        "stored_bytes": 9981,
+        "total_bytes": 9981,
+        "truncated": false
+      },
+      "status": 200,
+      "structure": null,
+      "url": "https://developer.datalake.sante.service.ec.europa.eu/api-details#api=94b9e658-d721-4b58-8d96-022c490f7a17"
+    }
+  ],
+  "requests": 4,
+  "schema": "medradar.external.probe.v1",
+  "source_id": "eudamed",
+  "status": "REQUIRES_REGISTRATION",
+  "verified_at": "2026-11-08T21:53:02.327296Z"
+}

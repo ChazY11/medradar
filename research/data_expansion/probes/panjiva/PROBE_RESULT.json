@@ -1,0 +1,74 @@
+{
+  "error": "",
+  "evidence_urls": [
+    "https://panjiva.com/"
+  ],
+  "notes": "Sales-negotiated S&P subscription; no public price list; buyer/supplier BoL + corporate hierarchy under contract.",
+  "probes": [
+    {
+      "bytes": 33038,
+      "content_type": "text/html; charset=utf-8",
+      "elapsed_ms": 562,
+      "error": "",
+      "excerpt": "<!DOCTYPE html> <html>  <head>  <meta http-equiv=\"X-UA-Compatible\" content=\"IE=EDGE\" /> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">  <meta name=\"description\" content=\"Panjiva provides data that powers global trade. Using information from 30 sources, we have shipment and cust",
+      "looks_like_html": true,
+      "looks_like_json": false,
+      "name": "homepage",
+      "ok": true,
+      "sample": {
+        "fetched_at": "2026-11-08T21:48:41.529487Z",
+        "http_status": 200,
+        "name": "homepage.html",
+        "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\panjiva\\homepage.html",
+        "request_name": "homepage",
+        "request_url": "https://panjiva.com/",
+        "sha256_full": "10120f4a821e8b848c9c4354729784df0a11d07752e86b500a4ea7ec87ede704",
+        "sha256_stored": "10120f4a821e8b848c9c4354729784df0a11d07752e86b500a4ea7ec87ede704",
+        "stored_bytes": 33038,
+        "total_bytes": 33038,
+        "truncated": false
+      },
+      "sha256": "10120f4a821e8b848c9c4354729784df0a11d07752e86b500a4ea7ec87ede704",
+      "status": 200,
+      "structure": null,
+      "url": "https://panjiva.com/"
+    },
+    {
+      "bytes": 8753,
+      "content_type": "text/html; charset=utf-8",
+      "elapsed_ms": 343,
+      "error": "HTTP 404 Not Found",
+      "excerpt": "  <!DOCTYPE html> <html>  <head>  <meta http-equiv=\"X-UA-Compatible\" content=\"IE=EDGE\" /> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">  <meta name=\"description\" content=\"Panjiva provides data that powers global trade. Using information from 30 sources, we have shipment and cu",
+      "looks_like_html": true,
+      "looks_like_json": false,
+      "name": "pricing_route_probable_404",
+      "ok": false,
+      "sample": null,
+      "sha256": "8bb19aadabcf222b9cb0a9e4c4dc7b977b8580ccf2fad7da6d4d5f5400540c36",
+      "status": 404,
+      "structure": null,
+      "url": "https://panjiva.com/pricing"
+    },
+    {
+      "bytes": 8754,
+      "content_type": "text/html; charset=utf-8",
+      "elapsed_ms": 500,
+      "error": "HTTP 404 Not Found",
+      "excerpt": "  <!DOCTYPE html> <html>  <head>  <meta http-equiv=\"X-UA-Compatible\" content=\"IE=EDGE\" /> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">  <meta name=\"description\" content=\"Panjiva provides data that powers global trade. Using information from 30 sources, we have shipment and cu",
+      "looks_like_html": true,
+      "looks_like_json": false,
+      "name": "plans_route_probable_404",
+      "ok": false,
+      "sample": null,
+      "sha256": "98f78c016c4b1fd3df283bc8f9d17d91651a79986b55538586294846bef58a17",
+      "status": 404,
+      "structure": null,
+      "url": "https://panjiva.com/plans"
+    }
+  ],
+  "requests": 3,
+  "schema": "medradar.external.probe.v1",
+  "source_id": "panjiva",
+  "status": "PAID_ONLY",
+  "verified_at": "2026-11-08T21:48:43.079402Z"
+}

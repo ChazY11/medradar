@@ -1,0 +1,46 @@
+{
+  "api_available": "PARTIAL",
+  "authentication": "paid account / data licence",
+  "bulk_download_available": "PARTIAL",
+  "category": "shipment",
+  "connection_status": "NOT_TESTED",
+  "cost_notes": "Quote-based commercial licence; no public pricing.",
+  "country_or_region": "GLOBAL",
+  "domain": "E",
+  "entity_identifiers": [
+    "importer/exporter name+address",
+    "HS code",
+    "FOB value",
+    "weight",
+    "port",
+    "date",
+    "carrier"
+  ],
+  "evidence_urls": [
+    "https://www.datamyne.com/",
+    "https://www.descartes.com/datamyne"
+  ],
+  "free_tier": "none; quote-based",
+  "historical_coverage": "Latin American import records plus US customs/BoL; deep history",
+  "known_limitations": [
+    "PROBED 2026-11-09: the SOURCE_ID_INDEX URL https://www.descartes.com/solutions/global-trade-data returns 404 - the product moved. The live page is https://www.descartes.com/datamyne (200), and datamyne.com is live.",
+    "PAID_ONLY and quote-based; no public price list, no free tier, no API without a contract.",
+    "Its distinctive coverage is Latin American import records - relevant if MedRadar ever studies LatAm device distribution, otherwise overlapping with Panjiva/ImportGenius.",
+    "Company-level shipment data; not interchangeable with HS-code aggregates."
+  ],
+  "licence": "Descartes commercial terms; redistribution prohibited",
+  "official_or_commercial": "commercial",
+  "official_url": "https://www.descartes.com/datamyne",
+  "probe_priority": "P3",
+  "rate_limits": "contract dependent",
+  "redistribution_allowed": "NO",
+  "research_value": "A commercial BoL source with LatAm strength and FOB values. Same class and same cost model as Panjiva/ImportGenius; only worth buying if LatAm coverage is specifically needed.",
+  "source_id": "descartes_datamyne",
+  "source_name": "Descartes Datamyne",
+  "timestamp_fields": [
+    "shipment/customs date -> event_at (company-level)",
+    "no public per-record publication clock"
+  ],
+  "update_frequency": "daily to weekly",
+  "verified_at": "2026-11-09"
+}

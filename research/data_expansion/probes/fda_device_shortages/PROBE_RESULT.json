@@ -1,0 +1,115 @@
+{
+  "error": "",
+  "evidence_urls": [
+    "https://www.fda.gov/medical-devices/medical-device-supply-chain-and-shortages/medical-device-shortages-list",
+    "https://www.fda.gov/about-fda/about-website/website-policies"
+  ],
+  "notes": "no openFDA shortage endpoint (404 confirmed); HTML list parsed into 6 shortage rows + 236 discontinuance rows, 242 schema-v1 evidence records. Listing date is the only published clock.",
+  "probes": [
+    {
+      "bytes": 151,
+      "elapsed_ms": 2265,
+      "error": "HTTP 404 Not Found",
+      "name": "openfda_shortage_endpoint_absent",
+      "note": "404 = no such openFDA endpoint; the public data is the HTML list page",
+      "ok": true,
+      "status": 404,
+      "url": "https://api.fda.gov/device/shortage.json?limit=1"
+    },
+    {
+      "bytes": 128205,
+      "elapsed_ms": 468,
+      "error": "",
+      "name": "shortages_list_page",
+      "ok": true,
+      "sample": {
+        "name": "medical-device-shortages-list.html",
+        "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\fda_device_shortages\\medical-device-shortages-list.html",
+        "sha256_full": "91be1199684ea69cea81d496a3f479516e82a78226ce3f18eb17d42a0cf8108c",
+        "sha256_stored": "91be1199684ea69cea81d496a3f479516e82a78226ce3f18eb17d42a0cf8108c",
+        "stored_bytes": 128205,
+        "total_bytes": 128205,
+        "truncated": false
+      },
+      "status": 200,
+      "table_headers": [
+        [
+          "Category",
+          "Product Code (Description)",
+          "Availability and Estimated Shortage Duration",
+          "Additional Information",
+          "Reason for Interruption (per 506J)",
+          "Date (YYYY/MM/DD)"
+        ],
+        [
+          "Date Posted",
+          "Category",
+          "Product Code",
+          "Manufacturer Name",
+          "Device Trade Name",
+          "Reason for Discontinuance"
+        ]
+      ],
+      "tables": 2,
+      "url": "https://www.fda.gov/medical-devices/medical-device-supply-chain-and-shortages/medical-device-shortages-list"
+    },
+    {
+      "discontinuance_rows": 236,
+      "first_discontinuance": {
+        "category": "HEMATOLOGY - Immunology and Hemotology Devices",
+        "date_posted": "10/26/2026",
+        "device_trade_name": "CELL-DYN Sapphire Systems (Model/Catalog # 08H00-01; 08H00-03)",
+        "manufacturer_name": "Abbott Laboratories",
+        "product_code": "GKZ",
+        "product_code_description": "COUNTER, DIFFERENTIAL CELL",
+        "reason_for_discontinuance": "Discontinuance of the manufacture of the device",
+        "row": {
+          "Category": "HEMATOLOGY - Immunology and Hemotology Devices",
+          "Date Posted": "10/26/2026",
+          "Device Trade Name": "CELL-DYN Sapphire Systems (Model/Catalog # 08H00-01; 08H00-03)",
+          "Manufacturer Name": "Abbott Laboratories",
+          "Product Code": "GKZ (COUNTER, DIFFERENTIAL CELL)",
+          "Reason for Discontinuance": "Discontinuance of the manufacture of the device"
+        }
+      },
+      "first_shortage": {
+        "additional_information": "Neurosurgical patties, sponges & strip products are in shortage. The FDA has issued a Letter to Health Care Providers to provide recommendations to health care providers and facilities that use neurosurgical patties.",
+        "availability": "Estimated through Q4 2026",
+        "category": "Neurology – Neurosurgical, Neurointerventional and Neurodiagnostic Devices",
+        "date_posted": "2026/05/06",
+        "date_text": "2026/05/06 initial",
+        "product_code": "HBA",
+        "product_code_description": "Neurosurgical pattie",
+        "reason_for_interruption": "Shortage or discontinuance of a component, part or accessory of the device.",
+        "row": {
+          "Additional Information": "Neurosurgical patties, sponges & strip products are in shortage. The FDA has issued a Letter to Health Care Providers to provide recommendations to health care providers and facilities that use neurosurgical patties.",
+          "Availability and Estimated Shortage Duration": "Estimated through Q4 2026",
+          "Category": "Neurology – Neurosurgical, Neurointerventional and Neurodiagnostic Devices",
+          "Date (YYYY/MM/DD)": "2026/05/06 initial",
+          "Product Code (Description)": "HBA (Neurosurgical pattie)",
+          "Reason for Interruption (per 506J)": "Shortage or discontinuance of a component, part or accessory of the device."
+        }
+      },
+      "name": "parsed_real_records",
+      "note": "rows are server-rendered in the page source; both tables have real entries",
+      "ok": true,
+      "shortage_rows": 6,
+      "status": 200
+    },
+    {
+      "distinct_record_ids": 229,
+      "kinds": [
+        "shortage"
+      ],
+      "name": "schema_validation",
+      "ok": true,
+      "records": 242,
+      "status": 200
+    }
+  ],
+  "requests": 2,
+  "schema": "medradar.external.probe.v1",
+  "source_id": "fda_device_shortages",
+  "status": "VERIFIED_PUBLIC_QUERY",
+  "verified_at": "2026-11-08T21:48:39.218563Z"
+}

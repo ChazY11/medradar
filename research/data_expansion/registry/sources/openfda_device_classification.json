@@ -1,0 +1,44 @@
+{
+  "api_available": "YES",
+  "authentication": "none; optional free API key for a higher daily quota",
+  "bulk_download_available": "YES",
+  "category": "device_classification_dictionary",
+  "connection_status": "NOT_TESTED",
+  "cost_notes": "free; no SLA and no commercial support; FDA may throttle or restrict access per its terms",
+  "country_or_region": "US",
+  "domain": "A",
+  "entity_identifiers": [
+    "product_code (primary key of the dictionary)",
+    "regulation_number (21 CFR citation, e.g. 870.1250)",
+    "device_class (1/2/3)",
+    "medical_specialty / review_panel",
+    "UNKNOWN - no GMDN or IMDRF code is carried; the text names are FDA prose"
+  ],
+  "evidence_urls": [
+    "https://api.fda.gov/device/classification.json?limit=2",
+    "https://api.fda.gov/device/classification.json?search=product_code%3A%22DQA%22&limit=2",
+    "https://open.fda.gov/license/"
+  ],
+  "free_tier": "free; the whole dictionary is ~7,097 rows, i.e. <=8 pages at limit=1000",
+  "historical_coverage": "current snapshot only - FDA publishes no effective-dated history of product codes",
+  "known_limitations": [
+    "it is a snapshot without effective dates, so a product code cannot be placed in time - using today's classification for a 2015 clearance silently applies later regulation",
+    "product codes are occasionally retired or merged without a redirect field",
+    "device_name/definition are FDA prose, not GMDN or IMDRF terms, so cross-market device-family comparison needs separate mapping",
+    "a code says nothing about which company owns a clearance; it is a join key, not a company signal"
+  ],
+  "licence": "public domain: FDA dedicates openFDA content/data to the public domain under a Creative Commons CC0 1.0 Universal dedication (open.fda.gov/license/, verified)",
+  "official_or_commercial": "official",
+  "official_url": "https://open.fda.gov/apis/device/classification/",
+  "probe_priority": "P1",
+  "rate_limits": "documented: 240 requests/min and 1,000 requests/day per IP without a key; 240/min and 120,000/day with a free key (open.fda.gov/apis/authentication/, verified). `skip` is capped at 25,000, so full history requires splitting by decision_date windows",
+  "redistribution_allowed": "YES",
+  "research_value": "The dictionary that turns a 510(k)/PMA product_code into a device family with a risk class and a 21 CFR regulation. It is what makes submission-level records analysable per track, and it is cheap enough (one small pull) to mirror in full so no downstream join depends on a second network call.",
+  "source_id": "openfda_device_classification",
+  "source_name": "openFDA device classification",
+  "timestamp_fields": [
+    "meta.last_updated (endpoint-level only; there is no per-code effective date)"
+  ],
+  "update_frequency": "continuous; 7,097 records in the 2026-11-02 export",
+  "verified_at": "2026-11-09"
+}

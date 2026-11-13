@@ -1,0 +1,67 @@
+{
+  "error": "",
+  "evidence_urls": [
+    "https://open.gsa.gov/api/get-opportunities-public-api/",
+    "https://open.gsa.gov/api/get-opportunities-public-api/"
+  ],
+  "notes": "SAM.gov documents api_key as mandatory for /opportunities/v2/search. Unauthenticated requests (with and without a bogus key) were answered by the istio-envoy gateway with 404 and an empty body - not the 401/403 the protocol expects, so the registration requirement is a DOCUMENTED fact while the live observation only proves the endpoint refuses anonymous callers. No key was registered.",
+  "probes": [
+    {
+      "api_key_sent": false,
+      "attempts": 1,
+      "body_head": "",
+      "bytes": 0,
+      "elapsed_ms": 782,
+      "error": "HTTP 404 Not Found",
+      "method": "GET",
+      "name": "search_no_key",
+      "ok": false,
+      "sample": null,
+      "server": "istio-envoy",
+      "status": 404,
+      "url": "https://api.sam.gov/opportunities/v2/search?limit=1"
+    },
+    {
+      "api_key_sent": true,
+      "attempts": 1,
+      "body_head": "",
+      "bytes": 0,
+      "elapsed_ms": 483,
+      "error": "HTTP 404 Not Found",
+      "method": "GET",
+      "name": "search_invalid_key",
+      "ok": false,
+      "sample": null,
+      "server": "istio-envoy",
+      "status": 404,
+      "url": "https://api.sam.gov/opportunities/v2/search?limit=1&api_key=0000000000000000000000000000000000000000"
+    },
+    {
+      "attempts": 1,
+      "body_head": "<!doctype html>\n<html lang=\"en\">\n\n<head>\n  <meta charset=\"utf-8\">\n  <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n\n  <tit",
+      "bytes": 46217,
+      "elapsed_ms": 1077,
+      "error": "",
+      "method": "GET",
+      "name": "official_docs_page",
+      "ok": true,
+      "sample": {
+        "name": "official_docs.html",
+        "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\sam_gov\\official_docs.html",
+        "sha256_full": "448b85ab4a22e33d139295cb1d6a3a6384b685a936d8c645dd12e69ed938fa62",
+        "sha256_stored": "448b85ab4a22e33d139295cb1d6a3a6384b685a936d8c645dd12e69ed938fa62",
+        "stored_bytes": 46217,
+        "total_bytes": 46217,
+        "truncated": false
+      },
+      "server": "",
+      "status": 200,
+      "url": "https://open.gsa.gov/api/get-opportunities-public-api/"
+    }
+  ],
+  "requests": 3,
+  "schema": "medradar.external.probe.v1",
+  "source_id": "sam_gov",
+  "status": "REQUIRES_REGISTRATION",
+  "verified_at": "2026-11-08T21:47:51.707231Z"
+}

@@ -1,0 +1,795 @@
+{
+  "error": "",
+  "evidence_urls": [
+    "https://ec.europa.eu/eurostat/api/comext/dissemination/statistics/1.0/data/DS-045409?format=JSON&lang=EN&reporter=DE&partner=US&product=9018&flow=1&time=2023&indicators=VALUE_IN_EUROS",
+    "https://ec.europa.eu/eurostat/api/comext/dissemination/statistics/1.0/data/DS-045409?format=JSON&lang=EN&reporter=DE&partner=US&product=9018&flow=2&time=2023&indicators=VALUE_IN_EUROS",
+    "https://ec.europa.eu/eurostat/api/comext/dissemination/statistics/1.0/data/DS-045409?format=JSON&lang=EN&reporter=DE&partner=US&product=9402&flow=1&time=2023&indicators=VALUE_IN_EUROS",
+    "https://ec.europa.eu/eurostat/web/international-trade-in-goods/database"
+  ],
+  "notes": "Comext dissemination API is open and keyless; real 2023 DE/US HS9018 values returned. Correct base path is /api/comext/... and dimensions are reporter/partner/product/flow.",
+  "probes": [
+    {
+      "bytes": 2027,
+      "content_type": "application/json",
+      "elapsed_ms": 311,
+      "error": "",
+      "excerpt": "{\"version\":\"2.0\",\"class\":\"dataset\",\"label\":\"EU trade since 1988 by HS2-4-6 and CN8\",\"source\":\"ESTAT\",\"updated\":\"2026-10-16T11:00:00+0200\",\"value\":{\"0\":2682137903},\"id\":[\"freq\",\"reporter\",\"partner\",\"product\",\"flow\",\"indicators\",\"time\"],\"size\":[2,1,1,1,1,1,1],\"dimension\":{\"freq\":{\"label\":\"Frequency\",\"",
+      "looks_like_html": false,
+      "looks_like_json": true,
+      "name": "hs9018_de_imports_2023",
+      "ok": true,
+      "sample": {
+        "fetched_at": "2026-11-08T21:49:14.195837Z",
+        "http_status": 200,
+        "name": "hs9018_de_imports_2023.json",
+        "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\eurostat_comext\\hs9018_de_imports_2023.json",
+        "request_name": "hs9018_de_imports_2023",
+        "request_url": "https://ec.europa.eu/eurostat/api/comext/dissemination/statistics/1.0/data/DS-045409?format=JSON&lang=EN&reporter=DE&partner=US&product=9018&flow=1&time=2023&indicators=VALUE_IN_EUROS",
+        "sha256_full": "95f8c5b16c6200f363c291ecd367e0edecdee8637e248c1ad27bbbcec0042d0e",
+        "sha256_stored": "95f8c5b16c6200f363c291ecd367e0edecdee8637e248c1ad27bbbcec0042d0e",
+        "stored_bytes": 2027,
+        "total_bytes": 2027,
+        "truncated": false
+      },
+      "sha256": "95f8c5b16c6200f363c291ecd367e0edecdee8637e248c1ad27bbbcec0042d0e",
+      "status": 200,
+      "structure": {
+        "__type__": "object",
+        "keys": [
+          "class",
+          "dimension",
+          "extension",
+          "id",
+          "label",
+          "size",
+          "source",
+          "updated",
+          "value",
+          "version"
+        ],
+        "sample": {
+          "class": {
+            "__type__": "string",
+            "max_len": 7
+          },
+          "dimension": {
+            "__type__": "object",
+            "keys": [
+              "flow",
+              "freq",
+              "indicators",
+              "partner",
+              "product",
+              "reporter",
+              "time"
+            ],
+            "sample": {
+              "flow": {
+                "__type__": "object",
+                "keys": [
+                  "category",
+                  "label"
+                ],
+                "sample": {
+                  "category": "dict",
+                  "label": "str"
+                }
+              },
+              "freq": {
+                "__type__": "object",
+                "keys": [
+                  "category",
+                  "label"
+                ],
+                "sample": {
+                  "category": "dict",
+                  "label": "str"
+                }
+              },
+              "indicators": {
+                "__type__": "object",
+                "keys": [
+                  "category",
+                  "label"
+                ],
+                "sample": {
+                  "category": "dict",
+                  "label": "str"
+                }
+              },
+              "partner": {
+                "__type__": "object",
+                "keys": [
+                  "category",
+                  "label"
+                ],
+                "sample": {
+                  "category": "dict",
+                  "label": "str"
+                }
+              },
+              "product": {
+                "__type__": "object",
+                "keys": [
+                  "category",
+                  "label"
+                ],
+                "sample": {
+                  "category": "dict",
+                  "label": "str"
+                }
+              },
+              "reporter": {
+                "__type__": "object",
+                "keys": [
+                  "category",
+                  "label"
+                ],
+                "sample": {
+                  "category": "dict",
+                  "label": "str"
+                }
+              },
+              "time": {
+                "__type__": "object",
+                "keys": [
+                  "category",
+                  "label"
+                ],
+                "sample": {
+                  "category": "dict",
+                  "label": "str"
+                }
+              }
+            }
+          },
+          "extension": {
+            "__type__": "object",
+            "keys": [
+              "agencyId",
+              "annotation",
+              "datastructure",
+              "id",
+              "lang",
+              "positions-with-no-data",
+              "version"
+            ],
+            "sample": {
+              "agencyId": {
+                "__type__": "string",
+                "max_len": 5
+              },
+              "annotation": {
+                "__type__": "array",
+                "item": "dict",
+                "len": 7
+              },
+              "datastructure": {
+                "__type__": "object",
+                "keys": [
+                  "agencyId",
+                  "id",
+                  "version"
+                ],
+                "sample": {
+                  "agencyId": "str",
+                  "id": "str",
+                  "version": "str"
+                }
+              },
+              "id": {
+                "__type__": "string",
+                "max_len": 9
+              },
+              "lang": {
+                "__type__": "string",
+                "max_len": 2
+              },
+              "positions-with-no-data": {
+                "__type__": "object",
+                "keys": [
+                  "flow",
+                  "freq",
+                  "indicators",
+                  "partner",
+                  "product",
+                  "reporter",
+                  "time"
+                ],
+                "sample": {
+                  "flow": "list",
+                  "freq": "list",
+                  "indicators": "list",
+                  "partner": "list",
+                  "product": "list",
+                  "reporter": "list",
+                  "time": "list"
+                }
+              },
+              "version": {
+                "__type__": "string",
+                "max_len": 3
+              }
+            }
+          },
+          "id": {
+            "__type__": "array",
+            "item": {
+              "__type__": "string",
+              "max_len": 4
+            },
+            "len": 7
+          },
+          "label": {
+            "__type__": "string",
+            "max_len": 38
+          },
+          "size": {
+            "__type__": "array",
+            "item": {
+              "__type__": "int"
+            },
+            "len": 7
+          },
+          "source": {
+            "__type__": "string",
+            "max_len": 5
+          },
+          "updated": {
+            "__type__": "string",
+            "max_len": 24
+          },
+          "value": {
+            "__type__": "object",
+            "keys": [
+              "0"
+            ],
+            "sample": {
+              "0": {
+                "__type__": "int"
+              }
+            }
+          },
+          "version": {
+            "__type__": "string",
+            "max_len": 3
+          }
+        }
+      },
+      "url": "https://ec.europa.eu/eurostat/api/comext/dissemination/statistics/1.0/data/DS-045409?format=JSON&lang=EN&reporter=DE&partner=US&product=9018&flow=1&time=2023&indicators=VALUE_IN_EUROS"
+    },
+    {
+      "bytes": 2027,
+      "content_type": "application/json",
+      "elapsed_ms": 422,
+      "error": "",
+      "excerpt": "{\"version\":\"2.0\",\"class\":\"dataset\",\"label\":\"EU trade since 1988 by HS2-4-6 and CN8\",\"source\":\"ESTAT\",\"updated\":\"2026-10-16T11:00:00+0200\",\"value\":{\"0\":3376125154},\"id\":[\"freq\",\"reporter\",\"partner\",\"product\",\"flow\",\"indicators\",\"time\"],\"size\":[2,1,1,1,1,1,1],\"dimension\":{\"freq\":{\"label\":\"Frequency\",\"",
+      "looks_like_html": false,
+      "looks_like_json": true,
+      "name": "hs9018_de_exports_2023",
+      "ok": true,
+      "sample": {
+        "fetched_at": "2026-11-08T21:49:15.110027Z",
+        "http_status": 200,
+        "name": "hs9018_de_exports_2023.json",
+        "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\eurostat_comext\\hs9018_de_exports_2023.json",
+        "request_name": "hs9018_de_exports_2023",
+        "request_url": "https://ec.europa.eu/eurostat/api/comext/dissemination/statistics/1.0/data/DS-045409?format=JSON&lang=EN&reporter=DE&partner=US&product=9018&flow=2&time=2023&indicators=VALUE_IN_EUROS",
+        "sha256_full": "7be23c33828bcbbdce7c42b5d3c6ad333ce06867818925f96c8c3e67f8637e21",
+        "sha256_stored": "7be23c33828bcbbdce7c42b5d3c6ad333ce06867818925f96c8c3e67f8637e21",
+        "stored_bytes": 2027,
+        "total_bytes": 2027,
+        "truncated": false
+      },
+      "sha256": "7be23c33828bcbbdce7c42b5d3c6ad333ce06867818925f96c8c3e67f8637e21",
+      "status": 200,
+      "structure": {
+        "__type__": "object",
+        "keys": [
+          "class",
+          "dimension",
+          "extension",
+          "id",
+          "label",
+          "size",
+          "source",
+          "updated",
+          "value",
+          "version"
+        ],
+        "sample": {
+          "class": {
+            "__type__": "string",
+            "max_len": 7
+          },
+          "dimension": {
+            "__type__": "object",
+            "keys": [
+              "flow",
+              "freq",
+              "indicators",
+              "partner",
+              "product",
+              "reporter",
+              "time"
+            ],
+            "sample": {
+              "flow": {
+                "__type__": "object",
+                "keys": [
+                  "category",
+                  "label"
+                ],
+                "sample": {
+                  "category": "dict",
+                  "label": "str"
+                }
+              },
+              "freq": {
+                "__type__": "object",
+                "keys": [
+                  "category",
+                  "label"
+                ],
+                "sample": {
+                  "category": "dict",
+                  "label": "str"
+                }
+              },
+              "indicators": {
+                "__type__": "object",
+                "keys": [
+                  "category",
+                  "label"
+                ],
+                "sample": {
+                  "category": "dict",
+                  "label": "str"
+                }
+              },
+              "partner": {
+                "__type__": "object",
+                "keys": [
+                  "category",
+                  "label"
+                ],
+                "sample": {
+                  "category": "dict",
+                  "label": "str"
+                }
+              },
+              "product": {
+                "__type__": "object",
+                "keys": [
+                  "category",
+                  "label"
+                ],
+                "sample": {
+                  "category": "dict",
+                  "label": "str"
+                }
+              },
+              "reporter": {
+                "__type__": "object",
+                "keys": [
+                  "category",
+                  "label"
+                ],
+                "sample": {
+                  "category": "dict",
+                  "label": "str"
+                }
+              },
+              "time": {
+                "__type__": "object",
+                "keys": [
+                  "category",
+                  "label"
+                ],
+                "sample": {
+                  "category": "dict",
+                  "label": "str"
+                }
+              }
+            }
+          },
+          "extension": {
+            "__type__": "object",
+            "keys": [
+              "agencyId",
+              "annotation",
+              "datastructure",
+              "id",
+              "lang",
+              "positions-with-no-data",
+              "version"
+            ],
+            "sample": {
+              "agencyId": {
+                "__type__": "string",
+                "max_len": 5
+              },
+              "annotation": {
+                "__type__": "array",
+                "item": "dict",
+                "len": 7
+              },
+              "datastructure": {
+                "__type__": "object",
+                "keys": [
+                  "agencyId",
+                  "id",
+                  "version"
+                ],
+                "sample": {
+                  "agencyId": "str",
+                  "id": "str",
+                  "version": "str"
+                }
+              },
+              "id": {
+                "__type__": "string",
+                "max_len": 9
+              },
+              "lang": {
+                "__type__": "string",
+                "max_len": 2
+              },
+              "positions-with-no-data": {
+                "__type__": "object",
+                "keys": [
+                  "flow",
+                  "freq",
+                  "indicators",
+                  "partner",
+                  "product",
+                  "reporter",
+                  "time"
+                ],
+                "sample": {
+                  "flow": "list",
+                  "freq": "list",
+                  "indicators": "list",
+                  "partner": "list",
+                  "product": "list",
+                  "reporter": "list",
+                  "time": "list"
+                }
+              },
+              "version": {
+                "__type__": "string",
+                "max_len": 3
+              }
+            }
+          },
+          "id": {
+            "__type__": "array",
+            "item": {
+              "__type__": "string",
+              "max_len": 4
+            },
+            "len": 7
+          },
+          "label": {
+            "__type__": "string",
+            "max_len": 38
+          },
+          "size": {
+            "__type__": "array",
+            "item": {
+              "__type__": "int"
+            },
+            "len": 7
+          },
+          "source": {
+            "__type__": "string",
+            "max_len": 5
+          },
+          "updated": {
+            "__type__": "string",
+            "max_len": 24
+          },
+          "value": {
+            "__type__": "object",
+            "keys": [
+              "0"
+            ],
+            "sample": {
+              "0": {
+                "__type__": "int"
+              }
+            }
+          },
+          "version": {
+            "__type__": "string",
+            "max_len": 3
+          }
+        }
+      },
+      "url": "https://ec.europa.eu/eurostat/api/comext/dissemination/statistics/1.0/data/DS-045409?format=JSON&lang=EN&reporter=DE&partner=US&product=9018&flow=2&time=2023&indicators=VALUE_IN_EUROS"
+    },
+    {
+      "bytes": 2109,
+      "content_type": "application/json",
+      "elapsed_ms": 422,
+      "error": "",
+      "excerpt": "{\"version\":\"2.0\",\"class\":\"dataset\",\"label\":\"EU trade since 1988 by HS2-4-6 and CN8\",\"source\":\"ESTAT\",\"updated\":\"2026-10-16T11:00:00+0200\",\"value\":{\"0\":15552361},\"id\":[\"freq\",\"reporter\",\"partner\",\"product\",\"flow\",\"indicators\",\"time\"],\"size\":[2,1,1,1,1,1,1],\"dimension\":{\"freq\":{\"label\":\"Frequency\",\"ca",
+      "looks_like_html": false,
+      "looks_like_json": true,
+      "name": "hs9402_de_imports_2023",
+      "ok": true,
+      "sample": {
+        "fetched_at": "2026-11-08T21:49:15.922467Z",
+        "http_status": 200,
+        "name": "hs9402_de_imports_2023.json",
+        "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\eurostat_comext\\hs9402_de_imports_2023.json",
+        "request_name": "hs9402_de_imports_2023",
+        "request_url": "https://ec.europa.eu/eurostat/api/comext/dissemination/statistics/1.0/data/DS-045409?format=JSON&lang=EN&reporter=DE&partner=US&product=9402&flow=1&time=2023&indicators=VALUE_IN_EUROS",
+        "sha256_full": "4264be87a05ae9d0f9c3c62a7915d179526fca12309d3faa0a961ed226ae6974",
+        "sha256_stored": "4264be87a05ae9d0f9c3c62a7915d179526fca12309d3faa0a961ed226ae6974",
+        "stored_bytes": 2109,
+        "total_bytes": 2109,
+        "truncated": false
+      },
+      "sha256": "4264be87a05ae9d0f9c3c62a7915d179526fca12309d3faa0a961ed226ae6974",
+      "status": 200,
+      "structure": {
+        "__type__": "object",
+        "keys": [
+          "class",
+          "dimension",
+          "extension",
+          "id",
+          "label",
+          "size",
+          "source",
+          "updated",
+          "value",
+          "version"
+        ],
+        "sample": {
+          "class": {
+            "__type__": "string",
+            "max_len": 7
+          },
+          "dimension": {
+            "__type__": "object",
+            "keys": [
+              "flow",
+              "freq",
+              "indicators",
+              "partner",
+              "product",
+              "reporter",
+              "time"
+            ],
+            "sample": {
+              "flow": {
+                "__type__": "object",
+                "keys": [
+                  "category",
+                  "label"
+                ],
+                "sample": {
+                  "category": "dict",
+                  "label": "str"
+                }
+              },
+              "freq": {
+                "__type__": "object",
+                "keys": [
+                  "category",
+                  "label"
+                ],
+                "sample": {
+                  "category": "dict",
+                  "label": "str"
+                }
+              },
+              "indicators": {
+                "__type__": "object",
+                "keys": [
+                  "category",
+                  "label"
+                ],
+                "sample": {
+                  "category": "dict",
+                  "label": "str"
+                }
+              },
+              "partner": {
+                "__type__": "object",
+                "keys": [
+                  "category",
+                  "label"
+                ],
+                "sample": {
+                  "category": "dict",
+                  "label": "str"
+                }
+              },
+              "product": {
+                "__type__": "object",
+                "keys": [
+                  "category",
+                  "label"
+                ],
+                "sample": {
+                  "category": "dict",
+                  "label": "str"
+                }
+              },
+              "reporter": {
+                "__type__": "object",
+                "keys": [
+                  "category",
+                  "label"
+                ],
+                "sample": {
+                  "category": "dict",
+                  "label": "str"
+                }
+              },
+              "time": {
+                "__type__": "object",
+                "keys": [
+                  "category",
+                  "label"
+                ],
+                "sample": {
+                  "category": "dict",
+                  "label": "str"
+                }
+              }
+            }
+          },
+          "extension": {
+            "__type__": "object",
+            "keys": [
+              "agencyId",
+              "annotation",
+              "datastructure",
+              "id",
+              "lang",
+              "positions-with-no-data",
+              "version"
+            ],
+            "sample": {
+              "agencyId": {
+                "__type__": "string",
+                "max_len": 5
+              },
+              "annotation": {
+                "__type__": "array",
+                "item": "dict",
+                "len": 7
+              },
+              "datastructure": {
+                "__type__": "object",
+                "keys": [
+                  "agencyId",
+                  "id",
+                  "version"
+                ],
+                "sample": {
+                  "agencyId": "str",
+                  "id": "str",
+                  "version": "str"
+                }
+              },
+              "id": {
+                "__type__": "string",
+                "max_len": 9
+              },
+              "lang": {
+                "__type__": "string",
+                "max_len": 2
+              },
+              "positions-with-no-data": {
+                "__type__": "object",
+                "keys": [
+                  "flow",
+                  "freq",
+                  "indicators",
+                  "partner",
+                  "product",
+                  "reporter",
+                  "time"
+                ],
+                "sample": {
+                  "flow": "list",
+                  "freq": "list",
+                  "indicators": "list",
+                  "partner": "list",
+                  "product": "list",
+                  "reporter": "list",
+                  "time": "list"
+                }
+              },
+              "version": {
+                "__type__": "string",
+                "max_len": 3
+              }
+            }
+          },
+          "id": {
+            "__type__": "array",
+            "item": {
+              "__type__": "string",
+              "max_len": 4
+            },
+            "len": 7
+          },
+          "label": {
+            "__type__": "string",
+            "max_len": 38
+          },
+          "size": {
+            "__type__": "array",
+            "item": {
+              "__type__": "int"
+            },
+            "len": 7
+          },
+          "source": {
+            "__type__": "string",
+            "max_len": 5
+          },
+          "updated": {
+            "__type__": "string",
+            "max_len": 24
+          },
+          "value": {
+            "__type__": "object",
+            "keys": [
+              "0"
+            ],
+            "sample": {
+              "0": {
+                "__type__": "int"
+              }
+            }
+          },
+          "version": {
+            "__type__": "string",
+            "max_len": 3
+          }
+        }
+      },
+      "url": "https://ec.europa.eu/eurostat/api/comext/dissemination/statistics/1.0/data/DS-045409?format=JSON&lang=EN&reporter=DE&partner=US&product=9402&flow=1&time=2023&indicators=VALUE_IN_EUROS"
+    },
+    {
+      "bytes": 195343,
+      "content_type": "text/html;charset=UTF-8",
+      "elapsed_ms": 358,
+      "error": "",
+      "excerpt": "                                \t \t\t \t\t\t<!DOCTYPE html>                                                                  <html dir=\"ltr\" lang=\"en-GB\">  <head>        <title>Database - International trade in goods - Eurostat</title>      <meta content=\"initial-scale=1.0, width=device-width\" name=\"vie",
+      "looks_like_html": true,
+      "looks_like_json": false,
+      "name": "official_data_page",
+      "ok": true,
+      "sample": {
+        "fetched_at": "2026-11-08T21:49:16.656781Z",
+        "http_status": 200,
+        "name": "official_data_page.html",
+        "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\eurostat_comext\\official_data_page.html",
+        "request_name": "official_data_page",
+        "request_url": "https://ec.europa.eu/eurostat/web/international-trade-in-goods/database",
+        "sha256_full": "e32b42da72e77ca09cdf66776745720768716e65e8d9b62358449da941f942cc",
+        "sha256_stored": "e32b42da72e77ca09cdf66776745720768716e65e8d9b62358449da941f942cc",
+        "stored_bytes": 195343,
+        "total_bytes": 195343,
+        "truncated": false
+      },
+      "sha256": "e32b42da72e77ca09cdf66776745720768716e65e8d9b62358449da941f942cc",
+      "status": 200,
+      "structure": null,
+      "url": "https://ec.europa.eu/eurostat/web/international-trade-in-goods/database"
+    }
+  ],
+  "requests": 4,
+  "schema": "medradar.external.probe.v1",
+  "source_id": "eurostat_comext",
+  "status": "VERIFIED_API",
+  "verified_at": "2026-11-08T21:49:16.657945Z"
+}

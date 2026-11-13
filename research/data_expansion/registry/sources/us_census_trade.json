@@ -1,0 +1,39 @@
+{
+  "api_available": "YES",
+  "authentication": "API key as the `key` query parameter (free signup)",
+  "bulk_download_available": "PARTIAL",
+  "category": "trade_aggregate",
+  "connection_status": "NOT_TESTED",
+  "cost_notes": "Free with a free API key.",
+  "country_or_region": "US",
+  "domain": "E",
+  "entity_identifiers": [],
+  "evidence_urls": [
+    "https://api.census.gov/data/timeseries/intltrade/imports/hs",
+    "https://www.census.gov/data/developers/data-sets/international-trade.html"
+  ],
+  "free_tier": "free API key; no paid tier documented for this API",
+  "historical_coverage": "1992 onward for the HS time series (varies by dataset)",
+  "known_limitations": [
+    "PROBED 2026-11-09 WITHOUT a key: the endpoint returned HTTP 200 with an HTML page titled 'Missing Key' (8.8 KB), not JSON, not 401/403. A naive `if response.ok` client would parse an error page as data - this is the key operational trap of this source.",
+    "A DEMO_KEY attempt also returned the HTML Missing Key page, so the demo key is not a usable workaround.",
+    "Data is HS-code aggregate by country: no company, no shipment, no product identity.",
+    "Monthly values are revised after first release; the API exposes no revision timestamp, so 'known at' claims cannot be reconstructed.",
+    "Country-level HS-code AGGREGATE statistics only: no company, no shipment, no product identity. Must not be substituted for bill-of-lading (company-level) data, and cannot be used to infer any of the five firms' supply chain."
+  ],
+  "licence": "US government work, public domain",
+  "official_or_commercial": "official",
+  "official_url": "https://www.census.gov/data/developers/data-sets/international-trade.html",
+  "probe_priority": "P0",
+  "rate_limits": "documented per-key query cap (Census API); keyless calls are refused",
+  "redistribution_allowed": "YES",
+  "research_value": "The authoritative US monthly goods trade series by HS code, useful as the US macro backdrop for device HS codes and for reconciling against Comtrade. It is aggregate only; it cannot identify any of the five firms and must never be used as a firm-level signal.",
+  "source_id": "us_census_trade",
+  "source_name": "US Census Bureau International Trade API",
+  "timestamp_fields": [
+    "time=YYYY-MM or YEAR/MONTH -> month/year precision only (coarse)",
+    "no publication timestamp in the API -> first-release lag and revisions are invisible"
+  ],
+  "update_frequency": "monthly (goods), annual revisions",
+  "verified_at": "2026-11-09"
+}

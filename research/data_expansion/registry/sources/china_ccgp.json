@@ -1,0 +1,46 @@
+{
+  "source_id": "china_ccgp",
+  "source_name": "China Government Procurement Network (中国政府采购网)",
+  "official_url": "http://www.ccgp.gov.cn/",
+  "country_or_region": "CN",
+  "domain": "F",
+  "category": "public_procurement_notices",
+  "official_or_commercial": "official",
+  "api_available": "NO",
+  "bulk_download_available": "NO",
+  "authentication": "none for the public search page; the search form displays a captcha field, which this task did not attempt to solve",
+  "free_tier": "free public web search",
+  "rate_limits": "UNKNOWN - not published; the probe used 2 requests at 0.9 s interval",
+  "licence": "UNKNOWN - no explicit reuse licence found on the pages opened; treat as 'open web page, redistribution unclear'",
+  "redistribution_allowed": "UNKNOWN",
+  "update_frequency": "daily (announcements are dated to the day; observed listing dated 2026.11.07-2026.11.09)",
+  "historical_coverage": "not established - the search page defaults to a 7-day window; historical depth was not probed",
+  "entity_identifiers": [
+    "项目编号 (project number) - appears in the listing",
+    "采购人 (purchaser name) - free text",
+    "no national supplier identifier in the listing",
+    "no device/UDI identifier"
+  ],
+  "timestamp_fields": [
+    "公告发布时间 (announcement timestamp, e.g. '2026.11.07 18:24:08') - day+time precision",
+    "查询日期区间 (query date range) is a filter, not an event date"
+  ],
+  "known_limitations": [
+    "HTML only: there is no documented API. Any ingestion is scraping a public search result page, which is fragile and must be rate-limited and attributed.",
+    "The search form carries a captcha field. The keyword query used here returned results without it, but that cannot be relied on; solving captchas would violate the collection protocol and was not attempted.",
+    "Both annoucement types are mixed in one listing: 采购公告 (notice), 中标/成交公告 (award), 废标公告 (failed tender), 更正公告 (correction). Treating the listing as a notice feed would conflate tender publication with award.",
+    "No supplier identifier in the listing: winner names appear inside the announcement body text, so award->supplier links require per-notice page fetching and free-text parsing.",
+    "No device identifier; product/model text is inside free-text body content.",
+    "Chinese-language only, GBK/UTF-8 encoding variance across pages.",
+    "Only 2 requests were made; coverage claims beyond 'the search page answers' would be unsupported."
+  ],
+  "connection_status": "NOT_TESTED",
+  "research_value": "China is one of the five firms' home markets (Mindray) and a major public hospital buyer. Verified that the official portal's keyword search answers anonymous HTML requests with real, dated announcements, so Chinese public procurement is reachable - but only as scraped HTML with mixed notice/award types, so it is an exploratory source, not a reliable panel.",
+  "evidence_urls": [
+    "http://www.ccgp.gov.cn/",
+    "http://search.ccgp.gov.cn/bxsearch?searchtype=1&page_index=1&bidSort=0&pinMu=0&bidType=0&kw=%E5%86%85%E7%AA%A5%E9%95%9C"
+  ],
+  "verified_at": "2026-11-09",
+  "cost_notes": "free public web access; no API, no key",
+  "probe_priority": "P3"
+}

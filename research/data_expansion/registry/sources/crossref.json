@@ -1,0 +1,50 @@
+{
+  "api_available": "YES",
+  "authentication": "none; polite pool via mailto= or agent header; optional Metadata Plus key",
+  "bulk_download_available": "PARTIAL",
+  "category": "scholarly_literature",
+  "connection_status": "NOT_TESTED",
+  "cost_notes": "free; Metadata Plus is commercial and was not used",
+  "country_or_region": "GLOBAL",
+  "domain": "C",
+  "entity_identifiers": [
+    "DOI",
+    "ISSN",
+    "ORCID",
+    "ROR",
+    "Open Funder Registry id"
+  ],
+  "evidence_urls": [
+    "https://www.crossref.org/documentation/retrieve-metadata/rest-api/access-and-authentication/",
+    "https://api.crossref.org/works?query=stent&rows=2&mailto=medradar.research%40example.org",
+    "https://api.crossref.org/works?filter=has-funder:true,from-pub-date:2020-01-01&query=stent&rows=2&mailto=medradar.research%40example.org"
+  ],
+  "free_tier": "free; public pool 5 req/s (concurrency 1), polite pool 10 req/s (concurrency 3)",
+  "historical_coverage": "150M+ DOI records; strong from the 1990s, sparse before 1970",
+  "known_limitations": [
+    "created/deposited are DOI-registration clocks, not publication clocks",
+    "published-online is missing for many legacy records; published-print may then be the only public clock",
+    "funder[].award[] is incomplete and inconsistently formatted, so award matching needs normalisation and still misses",
+    "resolution/relation graphs are sparse for industry-funded work"
+  ],
+  "licence": "metadata is openly available; each record carries its own licence[] (often CC-BY, sometimes publisher terms)",
+  "official_or_commercial": "official",
+  "official_url": "https://api.crossref.org/",
+  "probe_priority": "P0",
+  "rate_limits": "public pool 5 req/s / concurrency 1; polite pool 10 req/s / concurrency 3; 429 on exceed; manual blocks return 403",
+  "redistribution_allowed": "PARTIAL",
+  "research_value": "Authoritative DOI registry with funder and award metadata; supplies the paper-to-grant join and the DOI spine that makes cross-source de-duplication reliable across OpenAlex/Europe PMC/PubMed.",
+  "source_id": "crossref",
+  "source_name": "Crossref REST API",
+  "timestamp_fields": [
+    "published-online",
+    "published-print",
+    "published",
+    "issued",
+    "created",
+    "deposited",
+    "indexed"
+  ],
+  "update_frequency": "continuous (member deposits), effectively daily",
+  "verified_at": "2026-11-09"
+}

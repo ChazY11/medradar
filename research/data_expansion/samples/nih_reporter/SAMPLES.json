@@ -1,0 +1,79 @@
+{
+  "generated_at": "2026-11-08T21:59:09.305271Z",
+  "manifest_repair": {
+    "incident": "wildcard write rewrote SAMPLES.json files during collection",
+    "incident_observed_at": "2026-11-08T21:59:10Z",
+    "policy": "verify, do not restore: payload bytes were never modified",
+    "repaired_at_note": "hashes recomputed from disk; declared values preserved on conflict",
+    "stats": {
+      "entries": 4,
+      "mismatched": 0,
+      "missing_files": 0,
+      "recomputed": 4,
+      "source_id": "nih_reporter",
+      "unlisted_files_added": 0,
+      "verified": 0
+    }
+  },
+  "note": "Raw response slices only; parsed records are derived and live in the series/handoff.",
+  "samples": [
+    {
+      "file": "reporter_org_any_year.json",
+      "hash_verified": true,
+      "name": "reporter_org_any_year.json",
+      "note": "descriptor recovered from disk: the probe run did not persist the full-response descriptor, so sha256_full/total_bytes are null rather than guessed",
+      "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\nih_reporter\\reporter_org_any_year.json",
+      "sha256_full": "6a4fa448f8f8e841bd1208cab1e5399875df11f31cfd510f767a1d80124b2a29",
+      "sha256_source": "recomputed_from_disk",
+      "sha256_stored": "6a4fa448f8f8e841bd1208cab1e5399875df11f31cfd510f767a1d80124b2a29",
+      "source": "recovered_from_disk",
+      "stored_bytes": 710,
+      "total_bytes": 710,
+      "truncated": false
+    },
+    {
+      "file": "reporter_org_medtronic.json",
+      "hash_verified": true,
+      "name": "reporter_org_medtronic.json",
+      "note": "descriptor recovered from disk: the probe run did not persist the full-response descriptor, so sha256_full/total_bytes are null rather than guessed",
+      "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\nih_reporter\\reporter_org_medtronic.json",
+      "sha256_full": "7ecfcf9efe25e69d1d3b9f0f616921b5f4fdaa848b68c3d949670230720033a1",
+      "sha256_source": "recomputed_from_disk",
+      "sha256_stored": "7ecfcf9efe25e69d1d3b9f0f616921b5f4fdaa848b68c3d949670230720033a1",
+      "source": "recovered_from_disk",
+      "stored_bytes": 241,
+      "total_bytes": 241,
+      "truncated": false
+    },
+    {
+      "file": "reporter_org_medtronic_fy2023.json",
+      "hash_verified": true,
+      "name": "reporter_org_medtronic_fy2023.json",
+      "note": "descriptor recovered from disk: the probe run did not persist the full-response descriptor, so sha256_full/total_bytes are null rather than guessed",
+      "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\nih_reporter\\reporter_org_medtronic_fy2023.json",
+      "sha256_full": "a98c331170ae241b4937dcd09ab764d5b78c62591995782bb2e0c1fdd6d545ce",
+      "sha256_source": "recomputed_from_disk",
+      "sha256_stored": "a98c331170ae241b4937dcd09ab764d5b78c62591995782bb2e0c1fdd6d545ce",
+      "source": "recovered_from_disk",
+      "stored_bytes": 241,
+      "total_bytes": 241,
+      "truncated": false
+    },
+    {
+      "file": "reporter_text_stent.json",
+      "hash_verified": true,
+      "name": "reporter_text_stent.json",
+      "note": "descriptor recovered from disk: the probe run did not persist the full-response descriptor, so sha256_full/total_bytes are null rather than guessed",
+      "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\nih_reporter\\reporter_text_stent.json",
+      "sha256_full": "4b89f069055324e066a2bc4e656fbbe00da778a0a2f0f13fd4dc705703590691",
+      "sha256_source": "recomputed_from_disk",
+      "sha256_stored": "4b89f069055324e066a2bc4e656fbbe00da778a0a2f0f13fd4dc705703590691",
+      "source": "recovered_from_disk",
+      "stored_bytes": 2310,
+      "total_bytes": 2310,
+      "truncated": false
+    }
+  ],
+  "schema": "medradar.external.samples.v1",
+  "source_id": "nih_reporter"
+}

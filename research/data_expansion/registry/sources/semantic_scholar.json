@@ -1,0 +1,46 @@
+{
+  "api_available": "YES",
+  "authentication": "none for a throttled shared pool; free API key raises limits",
+  "bulk_download_available": "PARTIAL",
+  "category": "scholarly_literature",
+  "connection_status": "NOT_TESTED",
+  "cost_notes": "free tier only; commercial partnership not used",
+  "country_or_region": "GLOBAL",
+  "domain": "C",
+  "entity_identifiers": [
+    "Semantic Scholar paperId",
+    "DOI",
+    "PMID",
+    "PMCID",
+    "arXiv id",
+    "MAG id",
+    "CorpusId"
+  ],
+  "evidence_urls": [
+    "https://api.semanticscholar.org/graph/v1/paper/DOI:10.1056/NEJMoa2034577?fields=title,externalIds,publicationDate,year",
+    "https://api.semanticscholar.org/graph/v1/paper/search?query=stent&limit=2&fields=title,year,externalIds,publicationDate,venue"
+  ],
+  "free_tier": "free shared pool (heavily throttled); free key on request; paid partnerships exist",
+  "historical_coverage": "200M+ papers; strong post-2000, thinner pre-1990",
+  "known_limitations": [
+    "the /paper/search endpoint was rate-limited (429) in 2 of 3 probe calls; single-paper DOI lookup succeeded",
+    "publicationDate is often year-only, i.e. coarse",
+    "no author affiliations, so no company attribution is possible from this source",
+    "abstract/embedding fields are large; keep page sizes small"
+  ],
+  "licence": "S2 data largely ODC-BY 4.0 (S2ORC); API terms restrict redistribution of derived records",
+  "official_or_commercial": "official",
+  "official_url": "https://api.semanticscholar.org/",
+  "probe_priority": "P1",
+  "rate_limits": "unauthenticated shared pool returns 429 quickly (2 of 3 probes); a free key raises the limit",
+  "redistribution_allowed": "PARTIAL",
+  "research_value": "Useful as a citation/tldr enrichment source and as an independent identifier crosswalk, not as a discovery backbone: unauthenticated search is too throttled to rely on.",
+  "source_id": "semantic_scholar",
+  "source_name": "Semantic Scholar Graph API",
+  "timestamp_fields": [
+    "publicationDate",
+    "year"
+  ],
+  "update_frequency": "weekly (approximate)",
+  "verified_at": "2026-11-09"
+}

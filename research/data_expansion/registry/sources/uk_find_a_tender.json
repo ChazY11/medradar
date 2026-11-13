@@ -1,0 +1,51 @@
+{
+  "source_id": "uk_find_a_tender",
+  "source_name": "UK Find a Tender service (OCDS 1.1 release packages)",
+  "official_url": "https://www.find-tender.service.gov.uk/api/1.0/ocdsReleasePackages",
+  "country_or_region": "UK",
+  "domain": "F",
+  "category": "public_procurement_notices",
+  "official_or_commercial": "official",
+  "api_available": "YES",
+  "bulk_download_available": "PARTIAL",
+  "authentication": "none - anonymous GET",
+  "free_tier": "free, no key, no registration",
+  "rate_limits": "UNKNOWN - no published numeric limit found; 6-request probe at 0.8 s interval was never throttled",
+  "licence": "Open Government Licence v3.0 for UK public sector information (documented by the publisher); notice-level attribution required",
+  "redistribution_allowed": "YES",
+  "update_frequency": "continuous (releases are appended as procurements progress; the probe returned a release published 2026-11-08T20:14:58Z)",
+  "historical_coverage": "OCDS releases for UK above-threshold procurements; exact start date not verified in this probe",
+  "entity_identifiers": [
+    "ocid (Open Contracting ID, e.g. ocds-h6vhtk-07b710)",
+    "release id",
+    "awards[].suppliers[].id (OCDS organisation identifier, e.g. GB-FTS-188248)",
+    "parties[].id plus parties[].roles",
+    "tender.id / award.id / contract.id"
+  ],
+  "timestamp_fields": [
+    "release.date (when this release was published/updated)",
+    "contracts[].dateSigned (when the contract was signed)",
+    "awards[].date (populated in the schema but null in the probed records)",
+    "tender.tenderPeriod / tender.enquiryPeriod (present in the schema)",
+    "release.tag is the stage marker: ['tender'] vs ['award','contract']"
+  ],
+  "known_limitations": [
+    "No keyword/company parameter on the OCDS feed: adding `keywords` returns HTTP 400. Firm-level retrieval must therefore go through the HTML search page, which is not a documented record API, or through a date-windowed full scan.",
+    "release.date is the release's publication/update timestamp, not necessarily the first time the procurement became public; a re-published release carries a later date. First-observation semantics need the earliest release of an ocid, which requires walking the ocid's history.",
+    "awards[].date was null in every probed record, so the award date is not usable as event_at; contracts[].dateSigned is the reliable signature date.",
+    "bids/parties may be redacted for some procedures; tender.items carry only CPV classification and delivery regions, never a device model or UDI, so no product-level join is possible.",
+    "Coverage is UK above-threshold procurement as published on FTS; below-threshold and pre-FTS historical contracts are not here.",
+    "bulk_download_available is PARTIAL: the OCDS feed is a paged bulk-style feed (limit/updatedFrom/updatedTo), not a downloadable archive. Full-country extraction requires a long paged walk within rate limits."
+  ],
+  "connection_status": "NOT_TESTED",
+  "research_value": "The strongest procurement source verified in this batch for the notice->award->contract chain: releases are stage-tagged, awards name the supplier with an OCDS organisation id, and contracts carry dateSigned plus a GBP value. It lets MedRadar observe a public tender first, then the same procurement being awarded, then the contract signature date - three separate dates, not one.",
+  "evidence_urls": [
+    "https://www.find-tender.service.gov.uk/api/1.0/ocdsReleasePackages?limit=2",
+    "https://www.find-tender.service.gov.uk/api/1.0/ocdsReleasePackages?limit=1&stages=award",
+    "https://www.find-tender.service.gov.uk/api/1.0/ocdsReleasePackages?limit=1&stages=tender",
+    "https://standard.open-contracting.org/latest/en/"
+  ],
+  "verified_at": "2026-11-09",
+  "cost_notes": "free; no key; paged feed rather than a single archive",
+  "probe_priority": "P1"
+}

@@ -1,0 +1,49 @@
+{
+  "source_id": "openfda_device_recall",
+  "source_name": "openFDA device recall",
+  "official_url": "https://open.fda.gov/apis/device/recall/",
+  "country_or_region": "US",
+  "domain": "I",
+  "category": "postmarket_recall",
+  "official_or_commercial": "official",
+  "api_available": "YES",
+  "bulk_download_available": "PARTIAL",
+  "authentication": "none in practice; an API key is optional and only raises the documented daily limit and the count-bucket cap",
+  "free_tier": "free; unauthenticated requests work, documented limits 240 requests/minute and 1,000 requests/day per IP",
+  "rate_limits": "240 req/min, 1,000 req/day per IP without a key; 240 req/min, 120,000 req/day with a free key (documented on open.fda.gov/apis/authentication/)",
+  "licence": "public domain / CC0 1.0 Universal dedication (openFDA device recall data); FDA website content is public domain unless otherwise noted",
+  "redistribution_allowed": "YES",
+  "update_frequency": "weekly (API metadata last_updated observed as 2026-11-05 at probe time)",
+  "historical_coverage": "2002 to present per the API key facts (weekly updates); the API caps skip at 25,000 so a full-history pull needs date windows",
+  "entity_identifiers": [
+    "cfres_id",
+    "res_event_number",
+    "product_res_number",
+    "k_numbers (510(k))",
+    "pma_numbers (PMA)"
+  ],
+  "timestamp_fields": [
+    "event_date_initiated",
+    "event_date_posted",
+    "event_date_created",
+    "event_date_terminated"
+  ],
+  "known_limitations": [
+    "A recall record is one enforcement action, NOT a failure rate: there is no exposure denominator and FDA seeks publicity selectively.",
+    "event_date_* fields exist on device/recall; the drug-enforcement report_date / center_classification_date fields are absent and must not be assumed (verified from a real response).",
+    "event_date_posted (public visibility) is later than event_date_initiated (event), so recall evidence cannot anticipate the event it reports; it can only be used as a lagging confirmation.",
+    "FDA does not keep updating recall status after classification, so recall_status/termination is administrative, not a safety verdict.",
+    "The API caps skip at 25,000, so an unfiltered full-history pull needs a date window rather than deep paging.",
+    "recalling_firm is a free-text submitter string, not a legal entity id; parent/subsidiary resolution must be done locally and candidates must not be promoted."
+  ],
+  "connection_status": "NOT_TESTED",
+  "research_value": "Gives MedRadar a dated, regulator-published recall clock per device firm: event_date_initiated supports event-time alignment and event_date_posted supports a defensible public-visibility clock. It fills the postmarket 'confirmed harm / corrective action' gap that clearance-only data cannot show, and it is the highest-quality lagging label for the five target firms.",
+  "evidence_urls": [
+    "https://open.fda.gov/apis/device/recall/",
+    "https://open.fda.gov/apis/authentication/",
+    "https://open.fda.gov/license/"
+  ],
+  "verified_at": "2026-11-09",
+  "cost_notes": "free; no registration required; polite serial access at >= 0.9 s interval used by this project",
+  "probe_priority": "P0"
+}

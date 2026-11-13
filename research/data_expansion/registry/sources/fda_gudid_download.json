@@ -1,0 +1,49 @@
+{
+  "api_available": "NO",
+  "authentication": "none; plain HTTP file download from accessgudid.nlm.nih.gov/release_files/download/",
+  "bulk_download_available": "YES",
+  "category": "device_udi_bulk_release",
+  "connection_status": "NOT_TESTED",
+  "cost_notes": "free; bandwidth-bound (full release is multiple GB)",
+  "country_or_region": "US",
+  "domain": "A",
+  "entity_identifiers": [
+    "UDI-DI (<deviceId>)",
+    "publicDeviceRecordKey",
+    "labeler DUNS",
+    "premarket submission numbers where present",
+    "UNKNOWN - no GMDN code in the release XML that this probe inspected"
+  ],
+  "evidence_urls": [
+    "https://accessgudid.nlm.nih.gov/download",
+    "https://accessgudid.nlm.nih.gov/release_files/download/gudid_daily_update_20261102.zip",
+    "https://open.fda.gov/license/"
+  ],
+  "free_tier": "free",
+  "historical_coverage": "full GUDID (5.18M DI records) via the full release; delta files carry only changed records (e.g. 5,548 records in the 2026-11-02 daily delta). GUDID publishes no complete version history of a record, only the change stream",
+  "known_limitations": [
+    "devicePublishDate is the per-record publication clock; publicVersionDate is only a version stamp and must not be substituted for it",
+    "delta files are incremental: a point-in-time view requires replaying deltas on top of a full release, and GUDID never publishes the superseded versions themselves",
+    "the full release ZIP is far above the 8 MB protocol cap, so only a daily delta was byte-verified here (5,548 records, matching the advertised numberRecordXML)",
+    "the release XML is namespaced, so naive '<device>' string matching under-counts records (observed: 0 vs 5,548) - parse the namespace-aware tag or the header count",
+    "the download page's advertised MD5 is the only integrity hint; re-verify locally"
+  ],
+  "licence": "US federal GUDID data; FDA republishes GUDID under a CC0 1.0 dedication (open.fda.gov/license/, verified). NLM's own release-file terms were not opened in this pass",
+  "official_or_commercial": "official",
+  "official_url": "https://accessgudid.nlm.nih.gov/download",
+  "probe_priority": "P1",
+  "rate_limits": "not documented on the download page; files are static and each is downloaded once",
+  "redistribution_allowed": "PARTIAL",
+  "research_value": "The only device source that yields a reproducible *snapshot plus change stream*: the daily delta header states the exact change window and creation time, and every record carries devicePublishDate. That makes it possible to reconstruct what GUDID knew on a given date, which no live API can do.",
+  "source_id": "fda_gudid_download",
+  "source_name": "GUDID full / delta release files (NLM)",
+  "timestamp_fields": [
+    "header/creationDate (when the release file was generated)",
+    "header/period/@start and @end (the change window the delta covers)",
+    "devicePublishDate (per record - first publication in GUDID)",
+    "publicVersionDate (per record - version stamp, not a publication date)",
+    "deviceCommDistributionEndDate"
+  ],
+  "update_frequency": "daily delta, weekly combined, monthly, plus periodic full release",
+  "verified_at": "2026-11-09"
+}

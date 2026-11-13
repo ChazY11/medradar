@@ -1,0 +1,829 @@
+{
+  "error": "",
+  "evidence_urls": [
+    "https://health-products.canada.ca/api/documentation/mdall-documentation-en.html",
+    "https://health-products.canada.ca/api/medical-devices/company/?company_name=MEDTRONIC&type=json",
+    "https://health-products.canada.ca/api/medical-devices/company/?company_name=GE+HEALTHCARE&type=json",
+    "https://health-products.canada.ca/api/medical-devices/company/?company_name=PHILIPS&type=json",
+    "https://health-products.canada.ca/api/medical-devices/company/?company_name=DRAEGER&type=json",
+    "https://health-products.canada.ca/api/medical-devices/company/?company_name=MINDRAY&type=json",
+    "https://health-products.canada.ca/api/medical-devices/licence/?company_id=114663&state=active&lang=en&type=json",
+    "https://health-products.canada.ca/api/medical-devices/deviceidentifier/?device_identifier=00643169718425&state=active&type=json"
+  ],
+  "notes": "Health Canada publishes a documented JSON/XML API (no key) for MDALL: company / licence / device / deviceidentifier. `first_licence_status_dt` (licence) and `first_licence_dt` (device) are the only real dates; `last_refresh_dt` is a database refresh stamp and `end_date` is a cancellation date, so neither may be used as the first-publication date. The deviceidentifier endpoint takes a real UDI-DI, which is an official bridge to GUDID for devices sold in both markets.",
+  "probes": [
+    {
+      "attempts": 1,
+      "bytes": 72027,
+      "elapsed_ms": 718,
+      "error": "",
+      "name": "api_documentation",
+      "note": "",
+      "ok": true,
+      "sample": {
+        "name": "api_documentation.html",
+        "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\canada_mdall\\api_documentation.html",
+        "sha256_full": "848f35f63b8fa1af3a88c244ca7f76145f9496f7f091a6ae1bb82df22a5aa64b",
+        "sha256_stored": "848f35f63b8fa1af3a88c244ca7f76145f9496f7f091a6ae1bb82df22a5aa64b",
+        "stored_bytes": 72027,
+        "total_bytes": 72027,
+        "truncated": false
+      },
+      "status": 200,
+      "structure": null,
+      "url": "https://health-products.canada.ca/api/documentation/mdall-documentation-en.html"
+    },
+    {
+      "attempts": 1,
+      "bytes": 6909,
+      "companies": 29,
+      "company_ids": [
+        {
+          "company_id": 114663,
+          "company_name": "MEDTRONIC INC."
+        },
+        {
+          "company_id": 113735,
+          "company_name": "MEDTRONIC OPHTHALMICS"
+        },
+        {
+          "company_id": 114890,
+          "company_name": "MEDTRONIC POWERED SURGICAL SOLUTIONS"
+        },
+        {
+          "company_id": 114892,
+          "company_name": "MEDTRONIC NAVIGATION, INC."
+        },
+        {
+          "company_id": 116264,
+          "company_name": "MEDTRONIC ADVANCED ENERGY, LLC"
+        },
+        {
+          "company_id": 100933,
+          "company_name": "MEDTRONIC ATS MEDICAL, INC."
+        }
+      ],
+      "company_resolution": [
+        {
+          "applicant_raw": "MEDTRONIC INC.",
+          "confidence": 0.95,
+          "method": "exact_alias",
+          "resolved_key": "medtronic"
+        },
+        {
+          "applicant_raw": "MEDTRONIC OPHTHALMICS",
+          "confidence": 0.95,
+          "method": "exact_alias",
+          "resolved_key": "medtronic"
+        },
+        {
+          "applicant_raw": "MEDTRONIC POWERED SURGICAL SOLUTIONS",
+          "confidence": 0.95,
+          "method": "exact_alias",
+          "resolved_key": "medtronic"
+        },
+        {
+          "applicant_raw": "MEDTRONIC NAVIGATION, INC.",
+          "confidence": 0.95,
+          "method": "exact_alias",
+          "resolved_key": "medtronic"
+        },
+        {
+          "applicant_raw": "MEDTRONIC ADVANCED ENERGY, LLC",
+          "confidence": 0.95,
+          "method": "exact_alias",
+          "resolved_key": "medtronic"
+        },
+        {
+          "applicant_raw": "MEDTRONIC ATS MEDICAL, INC.",
+          "confidence": 0.95,
+          "method": "exact_alias",
+          "resolved_key": "medtronic"
+        }
+      ],
+      "elapsed_ms": 530,
+      "error": "",
+      "name": "company_search_medtronic",
+      "needle": "MEDTRONIC",
+      "note": "",
+      "ok": true,
+      "sample": {
+        "name": "company_search_medtronic.json",
+        "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\canada_mdall\\company_search_medtronic.json",
+        "sha256_full": "c82d2ca51834c0f74e3e88620c9d731d5ae7b0617952986d394c99d17fad49f4",
+        "sha256_stored": "c82d2ca51834c0f74e3e88620c9d731d5ae7b0617952986d394c99d17fad49f4",
+        "stored_bytes": 6909,
+        "total_bytes": 6909,
+        "truncated": false
+      },
+      "status": 200,
+      "structure": {
+        "__type__": "array",
+        "item": {
+          "__type__": "object",
+          "keys": [
+            "addr_line_1",
+            "addr_line_2",
+            "addr_line_3",
+            "city",
+            "company_id",
+            "company_name",
+            "company_status",
+            "country_cd",
+            "postal_code",
+            "region_cd"
+          ],
+          "sample": {
+            "addr_line_1": {
+              "__type__": "string",
+              "max_len": 26
+            },
+            "addr_line_2": {
+              "__type__": "string",
+              "max_len": 0
+            },
+            "addr_line_3": {
+              "__type__": "string",
+              "max_len": 0
+            },
+            "city": {
+              "__type__": "string",
+              "max_len": 11
+            },
+            "company_id": {
+              "__type__": "int"
+            },
+            "company_name": {
+              "__type__": "string",
+              "max_len": 14
+            },
+            "company_status": {
+              "__type__": "string",
+              "max_len": 1
+            },
+            "country_cd": {
+              "__type__": "string",
+              "max_len": 2
+            },
+            "postal_code": {
+              "__type__": "string",
+              "max_len": 5
+            },
+            "region_cd": {
+              "__type__": "string",
+              "max_len": 2
+            }
+          }
+        },
+        "len": 29
+      },
+      "url": "https://health-products.canada.ca/api/medical-devices/company/?company_name=MEDTRONIC&type=json"
+    },
+    {
+      "attempts": 1,
+      "bytes": 3836,
+      "companies": 16,
+      "company_ids": [
+        {
+          "company_id": 113870,
+          "company_name": "GE HEALTHCARE FINLAND OY"
+        },
+        {
+          "company_id": 100580,
+          "company_name": "GE HEALTHCARE CANADA INC."
+        },
+        {
+          "company_id": 105114,
+          "company_name": "GE HEALTHCARE FINLAND OY"
+        },
+        {
+          "company_id": 106447,
+          "company_name": "VITAL SIGNS, INC. A GE HEALTHCARE COMPANY"
+        },
+        {
+          "company_id": 106639,
+          "company_name": "MEDI-PHYSICS INC., D.B.A. GE HEALTHCARE"
+        },
+        {
+          "company_id": 104136,
+          "company_name": "GE HEALTHCARE"
+        }
+      ],
+      "company_resolution": [
+        {
+          "applicant_raw": "GE HEALTHCARE FINLAND OY",
+          "confidence": 0.95,
+          "method": "exact_alias",
+          "resolved_key": "ge_healthcare"
+        },
+        {
+          "applicant_raw": "GE HEALTHCARE CANADA INC.",
+          "confidence": 0.95,
+          "method": "exact_alias",
+          "resolved_key": "ge_healthcare"
+        },
+        {
+          "applicant_raw": "GE HEALTHCARE FINLAND OY",
+          "confidence": 0.95,
+          "method": "exact_alias",
+          "resolved_key": "ge_healthcare"
+        },
+        {
+          "applicant_raw": "VITAL SIGNS, INC. A GE HEALTHCARE COMPANY",
+          "confidence": 0.95,
+          "method": "exact_alias",
+          "resolved_key": "ge_healthcare"
+        },
+        {
+          "applicant_raw": "MEDI-PHYSICS INC., D.B.A. GE HEALTHCARE",
+          "confidence": 0.95,
+          "method": "exact_alias",
+          "resolved_key": "ge_healthcare"
+        },
+        {
+          "applicant_raw": "GE HEALTHCARE",
+          "confidence": 0.95,
+          "method": "exact_alias",
+          "resolved_key": "ge_healthcare"
+        }
+      ],
+      "elapsed_ms": 546,
+      "error": "",
+      "name": "company_search_ge_healthcare",
+      "needle": "GE HEALTHCARE",
+      "note": "",
+      "ok": true,
+      "sample": {
+        "name": "company_search_ge_healthcare.json",
+        "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\canada_mdall\\company_search_ge_healthcare.json",
+        "sha256_full": "71a03923049354d6d5f311cb5d411437af837b974f20ce2c90e2953880319a6c",
+        "sha256_stored": "71a03923049354d6d5f311cb5d411437af837b974f20ce2c90e2953880319a6c",
+        "stored_bytes": 3836,
+        "total_bytes": 3836,
+        "truncated": false
+      },
+      "status": 200,
+      "structure": {
+        "__type__": "array",
+        "item": {
+          "__type__": "object",
+          "keys": [
+            "addr_line_1",
+            "addr_line_2",
+            "addr_line_3",
+            "city",
+            "company_id",
+            "company_name",
+            "company_status",
+            "country_cd",
+            "postal_code",
+            "region_cd"
+          ],
+          "sample": {
+            "addr_line_1": {
+              "__type__": "string",
+              "max_len": 17
+            },
+            "addr_line_2": {
+              "__type__": "string",
+              "max_len": 0
+            },
+            "addr_line_3": {
+              "__type__": "string",
+              "max_len": 0
+            },
+            "city": {
+              "__type__": "string",
+              "max_len": 8
+            },
+            "company_id": {
+              "__type__": "int"
+            },
+            "company_name": {
+              "__type__": "string",
+              "max_len": 24
+            },
+            "company_status": {
+              "__type__": "string",
+              "max_len": 1
+            },
+            "country_cd": {
+              "__type__": "string",
+              "max_len": 2
+            },
+            "postal_code": {
+              "__type__": "string",
+              "max_len": 5
+            },
+            "region_cd": {
+              "__type__": "string",
+              "max_len": 0
+            }
+          }
+        },
+        "len": 16
+      },
+      "url": "https://health-products.canada.ca/api/medical-devices/company/?company_name=GE+HEALTHCARE&type=json"
+    },
+    {
+      "attempts": 1,
+      "bytes": 7604,
+      "companies": 31,
+      "company_ids": [
+        {
+          "company_id": 116587,
+          "company_name": "PHILIPS ULTRASOUND"
+        },
+        {
+          "company_id": 114392,
+          "company_name": "PHILIPS MEDICAL SYSTEMS NEDERLAND B.V.."
+        },
+        {
+          "company_id": 114393,
+          "company_name": "PHILIPS MEDICAL SYSTEMS TECHNOLOGIES LTD."
+        },
+        {
+          "company_id": 114421,
+          "company_name": "PHILIPS OY"
+        },
+        {
+          "company_id": 115655,
+          "company_name": "PHILIPS MEDICAL SYSTEMS NEDERLAND B.V."
+        },
+        {
+          "company_id": 115885,
+          "company_name": "PHILIPS MEDICAL SYSTEMS DMC GMBH"
+        }
+      ],
+      "company_resolution": [
+        {
+          "applicant_raw": "PHILIPS ULTRASOUND",
+          "confidence": 0.95,
+          "method": "exact_alias",
+          "resolved_key": "philips"
+        },
+        {
+          "applicant_raw": "PHILIPS MEDICAL SYSTEMS NEDERLAND B.V..",
+          "confidence": 0.95,
+          "method": "exact_alias",
+          "resolved_key": "philips"
+        },
+        {
+          "applicant_raw": "PHILIPS MEDICAL SYSTEMS TECHNOLOGIES LTD.",
+          "confidence": 0.95,
+          "method": "exact_alias",
+          "resolved_key": "philips"
+        },
+        {
+          "applicant_raw": "PHILIPS OY",
+          "confidence": 0.95,
+          "method": "exact_alias",
+          "resolved_key": "philips"
+        },
+        {
+          "applicant_raw": "PHILIPS MEDICAL SYSTEMS NEDERLAND B.V.",
+          "confidence": 0.95,
+          "method": "exact_alias",
+          "resolved_key": "philips"
+        },
+        {
+          "applicant_raw": "PHILIPS MEDICAL SYSTEMS DMC GMBH",
+          "confidence": 0.95,
+          "method": "exact_alias",
+          "resolved_key": "philips"
+        }
+      ],
+      "elapsed_ms": 718,
+      "error": "",
+      "name": "company_search_philips",
+      "needle": "PHILIPS",
+      "note": "",
+      "ok": true,
+      "sample": {
+        "name": "company_search_philips.json",
+        "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\canada_mdall\\company_search_philips.json",
+        "sha256_full": "c511ea01a62f209467ecfebef3e892ac279700d60516c73f4939cfc8191d3264",
+        "sha256_stored": "c511ea01a62f209467ecfebef3e892ac279700d60516c73f4939cfc8191d3264",
+        "stored_bytes": 7604,
+        "total_bytes": 7604,
+        "truncated": false
+      },
+      "status": 200,
+      "structure": {
+        "__type__": "array",
+        "item": {
+          "__type__": "object",
+          "keys": [
+            "addr_line_1",
+            "addr_line_2",
+            "addr_line_3",
+            "city",
+            "company_id",
+            "company_name",
+            "company_status",
+            "country_cd",
+            "postal_code",
+            "region_cd"
+          ],
+          "sample": {
+            "addr_line_1": {
+              "__type__": "string",
+              "max_len": 19
+            },
+            "addr_line_2": {
+              "__type__": "string",
+              "max_len": 0
+            },
+            "addr_line_3": {
+              "__type__": "string",
+              "max_len": 0
+            },
+            "city": {
+              "__type__": "string",
+              "max_len": 7
+            },
+            "company_id": {
+              "__type__": "int"
+            },
+            "company_name": {
+              "__type__": "string",
+              "max_len": 18
+            },
+            "company_status": {
+              "__type__": "string",
+              "max_len": 1
+            },
+            "country_cd": {
+              "__type__": "string",
+              "max_len": 2
+            },
+            "postal_code": {
+              "__type__": "string",
+              "max_len": 5
+            },
+            "region_cd": {
+              "__type__": "string",
+              "max_len": 2
+            }
+          }
+        },
+        "len": 31
+      },
+      "url": "https://health-products.canada.ca/api/medical-devices/company/?company_name=PHILIPS&type=json"
+    },
+    {
+      "attempts": 1,
+      "bytes": 928,
+      "companies": 4,
+      "company_ids": [
+        {
+          "company_id": 109437,
+          "company_name": "DRAEGER MEDICAL SYSTEMS, INC."
+        },
+        {
+          "company_id": 112588,
+          "company_name": "DRAEGER MEDICAL SYSTEMS, INC."
+        },
+        {
+          "company_id": 103279,
+          "company_name": "DRAEGERWERK AG & CO. KGAA"
+        },
+        {
+          "company_id": 100305,
+          "company_name": "DRAEGER MEDICAL INFANT CARE, INC."
+        }
+      ],
+      "company_resolution": [
+        {
+          "applicant_raw": "DRAEGER MEDICAL SYSTEMS, INC.",
+          "confidence": 0.95,
+          "method": "exact_alias",
+          "resolved_key": "draeger"
+        },
+        {
+          "applicant_raw": "DRAEGER MEDICAL SYSTEMS, INC.",
+          "confidence": 0.95,
+          "method": "exact_alias",
+          "resolved_key": "draeger"
+        },
+        {
+          "applicant_raw": "DRAEGERWERK AG & CO. KGAA",
+          "confidence": 0.95,
+          "method": "exact_alias",
+          "resolved_key": "draeger"
+        },
+        {
+          "applicant_raw": "DRAEGER MEDICAL INFANT CARE, INC.",
+          "confidence": 0.95,
+          "method": "exact_alias",
+          "resolved_key": "draeger"
+        }
+      ],
+      "elapsed_ms": 1625,
+      "error": "",
+      "name": "company_search_draeger",
+      "needle": "DRAEGER",
+      "note": "",
+      "ok": true,
+      "sample": {
+        "name": "company_search_draeger.json",
+        "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\canada_mdall\\company_search_draeger.json",
+        "sha256_full": "f6778ad7b3a950fcb8e13cd34e63478f5193b1f23ae74425e8b35cad3e2e6b45",
+        "sha256_stored": "f6778ad7b3a950fcb8e13cd34e63478f5193b1f23ae74425e8b35cad3e2e6b45",
+        "stored_bytes": 928,
+        "total_bytes": 928,
+        "truncated": false
+      },
+      "status": 200,
+      "structure": {
+        "__type__": "array",
+        "item": {
+          "__type__": "object",
+          "keys": [
+            "addr_line_1",
+            "addr_line_2",
+            "addr_line_3",
+            "city",
+            "company_id",
+            "company_name",
+            "company_status",
+            "country_cd",
+            "postal_code",
+            "region_cd"
+          ],
+          "sample": {
+            "addr_line_1": {
+              "__type__": "string",
+              "max_len": 18
+            },
+            "addr_line_2": {
+              "__type__": "string",
+              "max_len": 0
+            },
+            "addr_line_3": {
+              "__type__": "string",
+              "max_len": 0
+            },
+            "city": {
+              "__type__": "string",
+              "max_len": 7
+            },
+            "company_id": {
+              "__type__": "int"
+            },
+            "company_name": {
+              "__type__": "string",
+              "max_len": 29
+            },
+            "company_status": {
+              "__type__": "string",
+              "max_len": 1
+            },
+            "country_cd": {
+              "__type__": "string",
+              "max_len": 2
+            },
+            "postal_code": {
+              "__type__": "string",
+              "max_len": 5
+            },
+            "region_cd": {
+              "__type__": "string",
+              "max_len": 2
+            }
+          }
+        },
+        "len": 4
+      },
+      "url": "https://health-products.canada.ca/api/medical-devices/company/?company_name=DRAEGER&type=json"
+    },
+    {
+      "attempts": 1,
+      "bytes": 532,
+      "companies": 2,
+      "company_ids": [
+        {
+          "company_id": 128239,
+          "company_name": "MINDRAY DS USA, INC."
+        },
+        {
+          "company_id": 120691,
+          "company_name": "SHENZHEN MINDRAY BIO-MEDICAL ELECTRONICS CO., LTD."
+        }
+      ],
+      "company_resolution": [
+        {
+          "applicant_raw": "MINDRAY DS USA, INC.",
+          "confidence": 0.95,
+          "method": "exact_alias",
+          "resolved_key": "mindray"
+        },
+        {
+          "applicant_raw": "SHENZHEN MINDRAY BIO-MEDICAL ELECTRONICS CO., LTD.",
+          "confidence": 0.95,
+          "method": "exact_alias",
+          "resolved_key": "mindray"
+        }
+      ],
+      "elapsed_ms": 594,
+      "error": "",
+      "name": "company_search_mindray",
+      "needle": "MINDRAY",
+      "note": "",
+      "ok": true,
+      "sample": {
+        "name": "company_search_mindray.json",
+        "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\canada_mdall\\company_search_mindray.json",
+        "sha256_full": "63a0cebb2d306732da7a5f420ead3d35a198c4eb60692df081e316c6dbf58148",
+        "sha256_stored": "63a0cebb2d306732da7a5f420ead3d35a198c4eb60692df081e316c6dbf58148",
+        "stored_bytes": 532,
+        "total_bytes": 532,
+        "truncated": false
+      },
+      "status": 200,
+      "structure": {
+        "__type__": "array",
+        "item": {
+          "__type__": "object",
+          "keys": [
+            "addr_line_1",
+            "addr_line_2",
+            "addr_line_3",
+            "city",
+            "company_id",
+            "company_name",
+            "company_status",
+            "country_cd",
+            "postal_code",
+            "region_cd"
+          ],
+          "sample": {
+            "addr_line_1": {
+              "__type__": "string",
+              "max_len": 19
+            },
+            "addr_line_2": {
+              "__type__": "string",
+              "max_len": 0
+            },
+            "addr_line_3": {
+              "__type__": "string",
+              "max_len": 0
+            },
+            "city": {
+              "__type__": "string",
+              "max_len": 6
+            },
+            "company_id": {
+              "__type__": "int"
+            },
+            "company_name": {
+              "__type__": "string",
+              "max_len": 20
+            },
+            "company_status": {
+              "__type__": "string",
+              "max_len": 1
+            },
+            "country_cd": {
+              "__type__": "string",
+              "max_len": 2
+            },
+            "postal_code": {
+              "__type__": "string",
+              "max_len": 5
+            },
+            "region_cd": {
+              "__type__": "string",
+              "max_len": 2
+            }
+          }
+        },
+        "len": 2
+      },
+      "url": "https://health-products.canada.ca/api/medical-devices/company/?company_name=MINDRAY&type=json"
+    },
+    {
+      "attempts": 1,
+      "bytes": 131018,
+      "date_fields": [
+        "end_date",
+        "first_licence_status_dt",
+        "last_refresh_dt"
+      ],
+      "elapsed_ms": 67639,
+      "error": "",
+      "licence_numbers": [
+        100692,
+        1007,
+        100785,
+        100786,
+        100831
+      ],
+      "licences": 461,
+      "name": "licence_by_company",
+      "note": "",
+      "ok": true,
+      "sample": {
+        "name": "licence_by_company.json",
+        "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\canada_mdall\\licence_by_company.json",
+        "sha256_full": "8740c752830b31071ed36764b4daaa390bddae5343fdca35c84be79457aae504",
+        "sha256_stored": "8740c752830b31071ed36764b4daaa390bddae5343fdca35c84be79457aae504",
+        "stored_bytes": 131018,
+        "total_bytes": 131018,
+        "truncated": false
+      },
+      "status": 200,
+      "structure": {
+        "__type__": "array",
+        "item": {
+          "__type__": "object",
+          "keys": [
+            "appl_risk_class",
+            "company_id",
+            "end_date",
+            "first_licence_status_dt",
+            "last_refresh_dt",
+            "licence_name",
+            "licence_status",
+            "licence_type_cd",
+            "licence_type_desc",
+            "original_licence_no"
+          ],
+          "sample": {
+            "appl_risk_class": {
+              "__type__": "int"
+            },
+            "company_id": {
+              "__type__": "int"
+            },
+            "end_date": {
+              "__type__": "NoneType"
+            },
+            "first_licence_status_dt": {
+              "__type__": "string",
+              "max_len": 10
+            },
+            "last_refresh_dt": {
+              "__type__": "string",
+              "max_len": 10
+            },
+            "licence_name": {
+              "__type__": "string",
+              "max_len": 38
+            },
+            "licence_status": {
+              "__type__": "string",
+              "max_len": 1
+            },
+            "licence_type_cd": {
+              "__type__": "string",
+              "max_len": 1
+            },
+            "licence_type_desc": {
+              "__type__": "string",
+              "max_len": 13
+            },
+            "original_licence_no": {
+              "__type__": "int"
+            }
+          }
+        },
+        "len": 461
+      },
+      "url": "https://health-products.canada.ca/api/medical-devices/licence/?company_id=114663&state=active&lang=en&type=json"
+    },
+    {
+      "attempts": 1,
+      "bytes": 2,
+      "elapsed_ms": 1610,
+      "error": "",
+      "matched": [],
+      "name": "device_identifier_00643169718425",
+      "note": "",
+      "ok": true,
+      "rows": 0,
+      "sample": {
+        "name": "device_identifier_00643169718425.json",
+        "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\canada_mdall\\device_identifier_00643169718425.json",
+        "sha256_full": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "sha256_stored": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "stored_bytes": 2,
+        "total_bytes": 2,
+        "truncated": false
+      },
+      "status": 200,
+      "structure": {
+        "__type__": "array",
+        "item": null,
+        "len": 0
+      },
+      "url": "https://health-products.canada.ca/api/medical-devices/deviceidentifier/?device_identifier=00643169718425&state=active&type=json"
+    }
+  ],
+  "requests": 8,
+  "schema": "medradar.external.probe.v1",
+  "source_id": "canada_mdall",
+  "status": "VERIFIED_API",
+  "verified_at": "2026-11-08T21:53:32.914756Z"
+}

@@ -1,0 +1,146 @@
+{
+  "note": "Live smoke test of the shipped connectors through base.HttpClient. Tiny by design: one bounded page per source. Greenhouse/Lever used the control tokens because the five target firms have no board there.",
+  "results": [
+    {
+      "first_record": {
+        "canonical_key": "award_id:75N91024C00033",
+        "entity_refs": [
+          {
+            "method": "none",
+            "name_raw": "CALYX SYSTEMS LLC",
+            "resolved_key": null
+          }
+        ],
+        "event_at": "2024-09-12",
+        "evidence_id": "ev_87834af01cf4e3ac429845d52bbb1b95",
+        "first_observed_at": "2026-11-08T21:56:54.951366Z",
+        "kind": "procurement_award",
+        "source_public_at": "",
+        "source_record_id": "CONT_AWD_75N91024C00033_7529_-NONE-_-NONE-"
+      },
+      "kinds": {
+        "procurement_award": 3
+      },
+      "records": 3,
+      "requests": 2,
+      "schema_problems": [],
+      "schema_valid": true,
+      "source_id": "usaspending"
+    },
+    {
+      "first_record": {
+        "canonical_key": "award_id:105976-2026-1",
+        "entity_refs": [
+          {
+            "method": "none",
+            "name_raw": "Lumilinks Group Ltd",
+            "resolved_key": null
+          }
+        ],
+        "event_at": "2026-10-28",
+        "evidence_id": "ev_fce12637dc2dfb35b3db39ed163b790a",
+        "first_observed_at": "2026-11-08T21:57:28.348320Z",
+        "kind": "procurement_award",
+        "source_public_at": "2026-11-08",
+        "source_record_id": "ocds-h6vhtk-07b710#105976-2026"
+      },
+      "kinds": {
+        "procurement_award": 3
+      },
+      "records": 3,
+      "requests": 1,
+      "schema_problems": [],
+      "schema_valid": true,
+      "source_id": "uk_find_a_tender",
+      "stage_split": {
+        "procurement_award": 3,
+        "procurement_notice": 0
+      }
+    },
+    {
+      "duplicate_report": {
+        "duplicate_instances": 1,
+        "duplicate_rate": 0.3333,
+        "examples": [
+          {
+            "count": 2,
+            "key": [
+              "stripe",
+              "abuse investigator",
+              "dublin"
+            ]
+          }
+        ],
+        "key_fields": [
+          "company",
+          "title",
+          "location"
+        ],
+        "n_business_keys": 2,
+        "n_items": 3,
+        "n_keys_with_duplicates": 1
+      },
+      "first_record": {
+        "canonical_key": null,
+        "entity_refs": [
+          {
+            "method": "none",
+            "name_raw": "Stripe",
+            "resolved_key": null
+          }
+        ],
+        "event_at": "",
+        "evidence_id": "ev_b201aa73d67345cfc2561e0f5987b18e",
+        "first_observed_at": "2026-11-08T21:57:31.504820Z",
+        "kind": "job_posting",
+        "source_public_at": "2026-09-03",
+        "source_record_id": "stripe:8172487"
+      },
+      "kinds": {
+        "job_posting": 3
+      },
+      "records": 3,
+      "requests": 1,
+      "schema_problems": [],
+      "schema_valid": true,
+      "source_id": "greenhouse"
+    },
+    {
+      "department_coverage": {
+        "coverage_rate": 1.0,
+        "n_postings": 3,
+        "n_with_department": 3,
+        "note": "role mix may only be reported for the covered subset, and that subset must be stated",
+        "role_counts_over_covered_postings": {
+          "sales": 1,
+          "unknown": 2
+        }
+      },
+      "first_record": {
+        "canonical_key": null,
+        "entity_refs": [
+          {
+            "method": "none",
+            "name_raw": "leverdemo",
+            "resolved_key": null
+          }
+        ],
+        "event_at": "",
+        "evidence_id": "ev_709cc566f520857c2045fea51950941b",
+        "first_observed_at": "2026-11-08T21:57:32.354643Z",
+        "kind": "job_posting",
+        "source_public_at": "2026-08-31",
+        "source_record_id": "leverdemo:ad208490-4052-4f91-a57e-433f2d1e484b"
+      },
+      "kinds": {
+        "job_posting": 3
+      },
+      "records": 3,
+      "requests": 1,
+      "schema_problems": [],
+      "schema_valid": true,
+      "source_id": "lever"
+    }
+  ],
+  "schema": "medradar.procurement.connector_smoke.v1"
+}

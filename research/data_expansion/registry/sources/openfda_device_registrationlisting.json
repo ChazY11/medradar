@@ -1,0 +1,44 @@
+{
+  "api_available": "YES",
+  "authentication": "none; optional free API key for a higher daily quota",
+  "bulk_download_available": "YES",
+  "category": "establishment_registration",
+  "connection_status": "NOT_TESTED",
+  "cost_notes": "free; no SLA and no commercial support; FDA may throttle or restrict access per its terms",
+  "country_or_region": "US",
+  "domain": "A",
+  "entity_identifiers": [
+    "registration.registration_number / fei_number (establishment identity)",
+    "k_number and pma_number (clearance references carried on the establishment record)",
+    "proprietary_name / products[].product_code",
+    "UNKNOWN - no UDI-DI at establishment level"
+  ],
+  "evidence_urls": [
+    "https://api.fda.gov/device/registrationlisting.json?limit=2",
+    "https://api.fda.gov/device/registrationlisting.json?search=registration.name%3A%22Medtronic%22&limit=2",
+    "https://open.fda.gov/license/"
+  ],
+  "free_tier": "free; 1,000 req/day per IP without a key",
+  "historical_coverage": "current registrations plus recently expired ones; it is a living register, not an archive",
+  "known_limitations": [
+    "establishment-level, not product-level: one record describes who may distribute what, so it must never be counted as a second clearance record",
+    "the registration object's sub-fields were only inspected at key level in this probe, so its date semantics are explicitly UNKNOWN here",
+    "a registration is not evidence of marketing: registered establishments routinely hold listings for products that were never launched",
+    "company linkage must use registration.name, which is again a filed legal string"
+  ],
+  "licence": "public domain: FDA dedicates openFDA content/data to the public domain under a Creative Commons CC0 1.0 Universal dedication (open.fda.gov/license/, verified)",
+  "official_or_commercial": "official",
+  "official_url": "https://open.fda.gov/apis/device/registrationlisting/",
+  "probe_priority": "P1",
+  "rate_limits": "documented: 240 requests/min and 1,000 requests/day per IP without a key; 240/min and 120,000/day with a free key (open.fda.gov/apis/authentication/, verified). `skip` is capped at 25,000, so full history requires splitting by decision_date windows",
+  "redistribution_allowed": "YES",
+  "research_value": "Gives the manufacturing/distribution footprint behind a clearance: which establishments list which product codes, including contract manufacturers. That is the only openFDA endpoint that connects a company's regulatory identity to its physical production and import network, which matters for supply-chain questions the clearance stream cannot answer.",
+  "source_id": "openfda_device_registrationlisting",
+  "source_name": "openFDA device registration & listing",
+  "timestamp_fields": [
+    "meta.last_updated (endpoint-level)",
+    "UNKNOWN - the probe verified the top-level record keys only; the establishment object's own date fields were not enumerated, so no event clock is claimed for this source"
+  ],
+  "update_frequency": "continuous; 337,116 records in the 2026-11-02 export (2 partitions)",
+  "verified_at": "2026-11-09"
+}

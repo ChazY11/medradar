@@ -1,0 +1,72 @@
+{
+  "error": "",
+  "evidence_urls": [],
+  "notes": "No vendor-neutral public API exists; each employer exposes its own tenant. Per-employer JSON endpoints answering: none. TLS hostname-mismatch failures: ['phenom_host_medtronic'] — TLS verification was not disabled to work around them. A working tenant endpoint is site-specific, not a generalisable job-postings API.",
+  "probes": [
+    {
+      "attempts": 1,
+      "body_head": "",
+      "bytes": 0,
+      "content_type": "",
+      "elapsed_ms": 422,
+      "error": "URLError: <urlopen error [SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: Hostname mismatch, certificate is not valid for 'jobs.medtronic.com'. (_ssl.c:1010)>",
+      "method": "GET",
+      "name": "phenom_host_medtronic",
+      "ok": false,
+      "sample": null,
+      "status": null,
+      "structure": null,
+      "url": "https://jobs.medtronic.com/"
+    },
+    {
+      "attempts": 1,
+      "body_head": "\u001f�\b\u0000\u0000\u0000\u0000\u0000\u0000\u0000<�A\n�0\u0010\u0000�\"{�\u0010�P$�H�BA��\u0010R�Հ&�ݜĿ�B�u��\r0��tt\b\n�S\u0005�X��\u001d�kQU��n�ux\u001czb^{��\t�\u0014��\u0005����C��\u001dsp��ŗ�\"�\u000f��=�i�g\u0016����~%�mBL\u0004����.�s��\u000f\u0000\u0000\u0000��\u0003\u0000@�\"��\u0000\u0000\u0000",
+      "bytes": 155,
+      "content_type": "application/json;charset=ISO-8859-1",
+      "elapsed_ms": 391,
+      "error": "HTTP 404 Not Found",
+      "method": "POST",
+      "name": "workday_cxs_philips",
+      "ok": false,
+      "sample": null,
+      "status": 404,
+      "structure": null,
+      "url": "https://philips.wd3.myworkdayjobs.com/wday/cxs/philips/Philips_Careers/jobs"
+    },
+    {
+      "attempts": 1,
+      "body_head": "\u001f�\b\u0000\u0000\u0000\u0000\u0000\u0000\u0000�VJ-*�/r�OIU�R\n62Tҁ�$\u0016�z�\u0000�\f�\\���|�-\\Lܣ\"��\u0019%%\u0005�%�%��JV&\u0006&:J���ŉ� �y�%\ni��y)V\n^�I�\u0001��%�y����%��.1�\u0006\u0006�)�\u001e�JpM\u0001�E��@��kk\u0001\u0000\u0000\u0000��\u0003\u0000|�X��\u0000\u0000\u0000",
+      "bytes": 148,
+      "content_type": "application/json;charset=ISO-8859-1",
+      "elapsed_ms": 1000,
+      "error": "HTTP 404 Not Found",
+      "method": "POST",
+      "name": "workday_cxs_gehc",
+      "ok": false,
+      "sample": null,
+      "status": 404,
+      "structure": null,
+      "url": "https://gehc.wd5.myworkdayjobs.com/wday/cxs/gehc/GEHC/jobs"
+    },
+    {
+      "attempts": 1,
+      "body_head": "\u001f�\b\u0000\u0000\u0000\u0000\u0000\u0000\u0003�}�r�6���j�\u0001��ݑ6\"��\u001f���,;�ϵ���$��]*\u000e��0�\f�\u001c}$q�}��\u0004�A��'��\r�\u00049\u001c}8��=��+�\u0010@���nt7@\u0000|�y������y�Ȏv\u001e�\u000fˢ���/��_�ت���p��\u001f\u0000P�:�L����e���h���s\u001e%���U��yT��:\u001c}�",
+      "bytes": 12050,
+      "content_type": "text/html;charset=utf-8",
+      "elapsed_ms": 467,
+      "error": "HTTP 404 Not Found",
+      "method": "GET",
+      "name": "workday_product_page",
+      "ok": false,
+      "sample": null,
+      "status": 404,
+      "structure": null,
+      "url": "https://www.workday.com/en-us/products/talent-acquisition.html"
+    }
+  ],
+  "requests": 4,
+  "schema": "medradar.external.probe.v1",
+  "source_id": "workday_phenom",
+  "status": "UNAVAILABLE",
+  "verified_at": "2026-11-08T21:46:58.100890Z"
+}

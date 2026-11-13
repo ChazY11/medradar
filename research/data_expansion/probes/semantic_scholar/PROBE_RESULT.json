@@ -1,0 +1,159 @@
+{
+  "error": "",
+  "evidence_urls": [
+    "https://api.semanticscholar.org/graph/v1/paper/DOI:10.1056/NEJMoa2034577?fields=title%2CexternalIds%2CpublicationDate%2Cyear"
+  ],
+  "notes": "Probed unauthenticated.  429 responses mean the shared un-keyed pool is exhausted, not that the API is private: a free API key raises the limit.  Recorded honestly as rate-limited (see PROBE_RESULT.json); no connector ships without a verified 2xx record.",
+  "probes": [
+    {
+      "attempts": 1,
+      "bytes": 174,
+      "counts_as_ok": false,
+      "elapsed_ms": 907,
+      "error": "HTTP 429 ",
+      "http_ok": false,
+      "json_parsed": true,
+      "method": "get",
+      "name": "paper_search",
+      "record_count": null,
+      "status": 429,
+      "structure": {
+        "__type__": "object",
+        "keys": [
+          "code",
+          "message"
+        ],
+        "sample": {
+          "code": {
+            "__type__": "string",
+            "max_len": 3
+          },
+          "message": {
+            "__type__": "string",
+            "max_len": 144
+          }
+        }
+      },
+      "url": "https://api.semanticscholar.org/graph/v1/paper/search?query=stent&limit=2&fields=title%2Cyear%2CexternalIds%2CpublicationDate%2Cvenue"
+    },
+    {
+      "attempts": 1,
+      "bytes": 174,
+      "counts_as_ok": false,
+      "elapsed_ms": 625,
+      "error": "HTTP 429 ",
+      "http_ok": false,
+      "json_parsed": true,
+      "method": "get",
+      "name": "paper_search_retry",
+      "record_count": null,
+      "status": 429,
+      "structure": {
+        "__type__": "object",
+        "keys": [
+          "code",
+          "message"
+        ],
+        "sample": {
+          "code": {
+            "__type__": "string",
+            "max_len": 3
+          },
+          "message": {
+            "__type__": "string",
+            "max_len": 144
+          }
+        }
+      },
+      "url": "https://api.semanticscholar.org/graph/v1/paper/search?query=Medtronic&limit=2&fields=title%2Cyear%2CexternalIds%2CpublicationDate%2Cvenue"
+    },
+    {
+      "attempts": 1,
+      "bytes": 316,
+      "counts_as_ok": true,
+      "elapsed_ms": 360,
+      "error": "",
+      "http_ok": true,
+      "json_parsed": true,
+      "method": "get",
+      "name": "paper_doi",
+      "record_count": null,
+      "sample": {
+        "fetched_at": "2026-11-08T21:42:36.289236Z",
+        "name": "s2_paper_doi.json",
+        "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\semantic_scholar\\s2_paper_doi.json",
+        "sha256_full": "00727088eef4bd6567080b05ac957336640a3101f5d7eab371600d4e38fa7315",
+        "sha256_stored": "00727088eef4bd6567080b05ac957336640a3101f5d7eab371600d4e38fa7315",
+        "stored_bytes": 316,
+        "total_bytes": 316,
+        "truncated": false,
+        "url": "https://api.semanticscholar.org/graph/v1/paper/DOI:10.1056/NEJMoa2034577?fields=title%2CexternalIds%2CpublicationDate%2Cyear"
+      },
+      "status": 200,
+      "structure": {
+        "__type__": "object",
+        "keys": [
+          "externalIds",
+          "paperId",
+          "publicationDate",
+          "title",
+          "year"
+        ],
+        "sample": {
+          "externalIds": {
+            "__type__": "object",
+            "keys": [
+              "CorpusId",
+              "DOI",
+              "MAG",
+              "PubMed",
+              "PubMedCentral"
+            ],
+            "sample": {
+              "CorpusId": {
+                "__type__": "int"
+              },
+              "DOI": {
+                "__type__": "string",
+                "max_len": 21
+              },
+              "MAG": {
+                "__type__": "string",
+                "max_len": 10
+              },
+              "PubMed": {
+                "__type__": "string",
+                "max_len": 8
+              },
+              "PubMedCentral": {
+                "__type__": "string",
+                "max_len": 7
+              }
+            }
+          },
+          "paperId": {
+            "__type__": "string",
+            "max_len": 40
+          },
+          "publicationDate": {
+            "__type__": "string",
+            "max_len": 10
+          },
+          "title": {
+            "__type__": "string",
+            "max_len": 57
+          },
+          "year": {
+            "__type__": "int"
+          }
+        }
+      },
+      "url": "https://api.semanticscholar.org/graph/v1/paper/DOI:10.1056/NEJMoa2034577?fields=title%2CexternalIds%2CpublicationDate%2Cyear"
+    }
+  ],
+  "requests": 3,
+  "schema": "medradar.external.probe.v1",
+  "source_id": "semantic_scholar",
+  "status": "VERIFIED_API",
+  "verified_at": "2026-11-08T21:42:36.291233Z"
+}

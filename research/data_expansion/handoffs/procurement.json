@@ -1,0 +1,182 @@
+{
+  "agent": "procurement",
+  "finished_at": "2026-11-09T06:05:00Z",
+  "scope": "Domain F (public procurement) + Domain G (hiring): 10 source_ids",
+  "sources_assigned": 10,
+  "sources_probed": 10,
+  "connection_status_counts": {
+    "VERIFIED_API": 5,
+    "VERIFIED_PUBLIC_QUERY": 1,
+    "REQUIRES_REGISTRATION": 1,
+    "UNAVAILABLE": 2,
+    "NOT_TESTED": 1
+  },
+  "connection_status_by_source": {
+    "usaspending": "VERIFIED_API",
+    "eu_ted": "VERIFIED_API",
+    "uk_find_a_tender": "VERIFIED_API",
+    "greenhouse": "VERIFIED_API",
+    "lever": "VERIFIED_API",
+    "china_ccgp": "VERIFIED_PUBLIC_QUERY",
+    "sam_gov": "REQUIRES_REGISTRATION",
+    "workday_phenom": "UNAVAILABLE",
+    "company_careers_pages": "UNAVAILABLE",
+    "ocds_registry": "NOT_TESTED"
+  },
+  "connectors": [
+    "medradar/external_sources/procurement/__init__.py",
+    "medradar/external_sources/procurement/common.py",
+    "medradar/external_sources/procurement/usaspending.py",
+    "medradar/external_sources/procurement/uk_find_a_tender.py",
+    "medradar/external_sources/procurement/greenhouse.py",
+    "medradar/external_sources/procurement/lever.py"
+  ],
+  "connector_notes": [
+    "eu_ted is VERIFIED_API but deliberately has NO connector: its search index returns winner-name/winner-partname as null, so an award record built from it would have no supplier. Emitting supplier-less awards would be worse than emitting none.",
+    "china_ccgp is VERIFIED_PUBLIC_QUERY but has NO connector: HTML-only, mixed notice/award listing, captcha field on the form, no supplier identifier in the listing.",
+    "sam_gov / workday_phenom / company_careers_pages / ocds_registry have no connector by design (registration-gated, per-tenant, client-rendered, standards-layer)."
+  ],
+  "real_records_collected": {
+    "total": 962,
+    "note": "records actually returned by live requests during probing; connectors were additionally live-smoked (see connector_smoke)",
+    "by_source": {
+      "usaspending": 55,
+      "eu_ted": 35,
+      "uk_find_a_tender": 6,
+      "greenhouse": 766,
+      "lever": 10,
+      "china_ccgp": 90,
+      "sam_gov": 0,
+      "ocds_registry": 0,
+      "workday_phenom": 0,
+      "company_careers_pages": 0
+    }
+  },
+  "connector_smoke": {
+    "artifact": "research/data_expansion/samples/procurement/CONNECTOR_SMOKE.json",
+    "method": "live run of all four connectors through base.HttpClient, one bounded page each",
+    "results": {
+      "usaspending": {"requests": 2, "records": 3, "schema_valid": true},
+      "uk_find_a_tender": {"requests": 1, "records": 3, "schema_valid": true},
+      "greenhouse": {"requests": 1, "records": 3, "schema_valid": true},
+      "lever": {"requests": 1, "records": 3, "schema_valid": true}
+    }
+  },
+  "deliverables": {
+    "register_records": 10,
+    "probe_dirs": 10,
+    "samples_indexes": 9,
+    "samples_note": "workday_phenom has no SAMPLES.json because every request failed (TLS hostname mismatch / 404) — no response body exists to store",
+    "five_firm_probe": "research/data_expansion/samples/procurement/FIVE_FIRM_PROBE.json",
+    "tests": "tests/test_extsrc_procurement.py"
+  },
+  "blocked": [
+    {
+      "source_id": "sam_gov",
+      "reason": "api_key is documented as mandatory; no account was created and no key used. Gateway answers unauthenticated requests with 404 (empty body), not 401/403, so the registration requirement is a documented fact plus an observed refusal."
+    },
+    {
+      "source_id": "workday_phenom",
+      "reason": "No vendor-neutral API. jobs.medtronic.com resolves but its TLS certificate does not match the hostname (verification deliberately not disabled); Workday CXS tenant/site guesses returned 404."
+    },
+    {
+      "source_id": "company_careers_pages",
+      "reason": "HTML front doors only: 2 of 4 firm pages returned 200, 1 returned 403, 1 returned 404, and the one job-listing page is client-rendered so the served HTML contains no vacancies. No publication timestamp."
+    },
+    {
+      "source_id": "eu_ted (bulk only)",
+      "reason": "ted.europa.eu answers this client with a JavaScript 'Human Verification' challenge on both the notice XML link and the bulk-downloads page. Not bypassed, so anonymous bulk XML is UNVERIFIED; the search API itself is verified."
+    },
+    {
+      "source_id": "ocds_registry",
+      "reason": "Not a blocker but a category limit: OCDS is a standard plus a publisher registry, not a record publisher, so it cannot be 'verified' as a data source."
+    }
+  ],
+  "five_firm_identifiability": {
+    "question": "Can Medtronic / GE HealthCare / Philips / Dräger / Mindray be identified in real procurement and hiring records?",
+    "procurement_identifiable": "YES for all five on USAspending, with caveats",
+    "detail": {
+      "Medtronic": "10/10 first-page recipient names resolve exact_alias (MEDTRONIC CARE MANAGEMENT SERVICES, LLC et al.); token-search population 97,663 contract actions (upper bound, not a firm count); page amounts 27.0M-69.2M USD; performance starts 2013-2024.",
+      "GE HealthCare": "only 1/10 first-page names resolve (GE MEDICAL SYSTEMS INFORMATION TECHNOLOGIES); 9/10 are CHANGE HEALTHCARE entities caught by the 'HealthCare' token. Population 5,692 is therefore polluted; a cleaner query must use 'GE MEDICAL SYSTEMS' or 'GE HEALTHCARE'.",
+      "Philips": "10/10 resolve (PHILIPS NORTH AMERICA LLC, PHILIPS MEDICAL SYSTEMS NORTH AMERICA, PHILIPS RS NORTH AMERICA); population 33,929; page amounts 24.4M-232.7M USD; starts 2006-2021.",
+      "Draeger": "10/10 resolve (DRAEGER INC); population 22,725; page amounts 3.04M-31.2M USD; starts 2013-2026.",
+      "Mindray": "10/10 resolve (MINDRAY DS USA INC); population only 43 contract actions; page amounts 53.5K-200.9K USD; starts 2011-2019 — very small US federal footprint."
+    },
+    "hiring_identifiable": "NO for all five",
+    "hiring_detail": "None of the five has a public Greenhouse or Lever board under its likely token, while the control tokens (stripe: 766 jobs; leverdemo: 10 postings) resolved in the same runs. Their hiring data sits behind per-employer Phenom/Workday-style stacks.",
+    "important_caveat": "USAspending is a token search, not an entity-resolution service: population counts are upper bounds and must be recomputed after identity resolution. An award is an obligation, not revenue."
+  },
+  "procurement_chain_layering": {
+    "notice_to_revenue": "notice → award → contract signed → delivery → realised revenue",
+    "what_is_observable": {
+      "notice": "uk_find_a_tender (tag 'tender') and eu_ted (notice-type cn-standard); NOT available from usaspending",
+      "award": "uk_find_a_tender (tag 'award', supplier named + OCDS org id), usaspending (award action, recipient named, obligation amount); eu_ted search index does NOT expose the winner",
+      "contract_signed": "uk_find_a_tender contracts[0].dateSigned only; usaspending has date_signed on the detail endpoint",
+      "delivery": "not observable in any source probed",
+      "revenue": "not observable in any source probed — federal obligations are not revenue"
+    },
+    "kinds_used": {
+      "procurement_notice": "tender/opportunity published",
+      "procurement_award": "winner and/or signed contract published"
+    },
+    "explicitly_forbidden_mapping": "An announcement is not an award (TED full-text hits are keyword mentions, not awards), an award is not a signed contract (USAspending has no contract-signature semantics for all rows), and neither is revenue."
+  },
+  "time_semantics_findings": [
+    "USAspending publishes NO publication clock: event dates only. source_public_at is left empty with quality 'unknown' in the connector rather than borrowing 'Start Date' (period-of-performance start).",
+    "UK FTS gives all four clocks distinctly: source_public_at = release.date, event_at = contracts[0].dateSigned, first_observed_at = fetch clock. awards[0].date was null in every probed record, so it is not used.",
+    "TED publishes publication-date (with offset) but no winner; its notice publication date is a genuine publication clock for the notice stage only.",
+    "Greenhouse first_published is a true publication clock; updated_at is an edit time and is stored separately (never as source_public_at).",
+    "Lever createdAt is epoch MILLISECONDS with no updatedAt; converted once, in one place, so an edit cannot masquerade as a new posting.",
+    "China CCGP announcement timestamps have day+time precision but the listing mixes notice/award/failure/correction, so the timestamp's meaning depends on the announcement type."
+  ],
+  "product_identity_findings": [
+    "No procurement source probed carries a device identifier. USAspending has a free-text Description (<=134 chars observed); TED has CPV categories (33100000 = medical equipments) but no model; UK FTS has CPV + tender items with delivery regions only.",
+    "Therefore: contract → specific device linking is NOT possible from structured fields in any probed source. Only keyword hits in free text are possible, with unknown precision/recall.",
+    "CPV 33100000 matched 488,133 TED notices — that is a category, not a product: it cannot be joined to UDI/510(k) and must not be presented as product-level evidence.",
+    "Recommendation for the study: treat procurement as firm-level demand evidence at best; a model-level procurement claim would need a different source class (e.g. award line items or hospital purchase orders), which was not found here."
+  ],
+  "hiring_discipline_findings": [
+    "Hiring volume is not a technology signal. Every connector carries an explicit interpretation_warning in normalized and in the register's known_limitations.",
+    "Role split: Greenhouse exposes NO department/function field (metadata null on all 766 probed postings), so an R&D/Sales/Production split there is a title-text heuristic only. Lever exposes categories.department, but it was null for some postings, so coverage must be measured (department_coverage()).",
+    "Publication clock vs observation clock: first_published (Greenhouse) / createdAt (Lever) is source_public_at; first_observed_at equals the fetch clock and is never back-filled.",
+    "Re-posting duplication: the required (company, title, location) key is implemented in both connectors (duplicate_report()), which reports duplicate instances and rate instead of silently collapsing them. Observed 0 duplicates in the 3-posting smoke sample (too small to be a population statement)."
+  ],
+  "overlap_with_existing_hiring_research": "Possible overlap with the hiring-capability study on branch research/s031-hiring-capability-study (PR #22): that asset was not present in this worktree and was not read or modified. If it already defines role-taxonomy or posting-dedupe rules, this subpackage's duplicate_report()/department_coverage() should be reconciled with it by the Lead rather than duplicated.",
+  "notable_findings": [
+    "USAspending's award search is POST-only and needs no API key; it returns real awards, but it publishes no publication date at all — so a 'when could we have known' study cannot use it alone.",
+    "USAspending recipient_search_text is a token search: 'GE HealthCare' returned CHANGE HEALTHCARE entities, and only 1 of 10 first-page names resolved to GE HealthCare. Population counts like 97,663 (Medtronic) are upper bounds, not firm award counts.",
+    "EU TED's Search API v3 answers anonymous POST queries, and notice-type cleanly separates cn-standard (contract notices, 2.95M) from can-standard (award notices, 2.86M) — but the winning supplier is NOT in the index (winner fields null even for 2024 medical awards), so TED cannot support award→supplier linkage on its own.",
+    "UK Find a Tender is the only probed source that publishes notice, award AND contract signature as distinct, dated, stage-tagged objects with a named supplier plus an OCDS organisation id. It is the best procurement source of this batch.",
+    "ted.europa.eu (web host, notice XML, bulk downloads) answers with a JavaScript 'Human Verification' challenge; that was not bypassed, so anonymous TED bulk XML is unverified and 'bulk_download_available' is UNKNOWN rather than YES.",
+    "China CCGP's keyword search answers anonymously with real dated announcements (90 for 内窥镜), which contradicts the P3 'known-blocked' assumption — but the listing mixes 采购公告/中标公告/废标公告, so it cannot be treated as a notice feed.",
+    "NEGATIVE RESULT: none of the five target firms publishes a Greenhouse or Lever job board, while control tokens resolved in the same runs (766 jobs / 10 postings). This is a fact about those two platforms, not about hiring data in general.",
+    "jobs.medtronic.com resolves but its TLS certificate does not match the hostname; the correct response was to stop, not to disable verification.",
+    "philips.wd3 and gehc.wd5 Workday CXS guesses both 404'd: tenant+site names must be discovered per employer, so a Workday adapter is per-employer work, not a generalisable connector."
+  ],
+  "open_questions": [
+    "Which of the five firms' hire data is reachable at all without JS execution? A real answer needs per-employer discovery (Workday tenant/site, Phenom board id), which is out of scope for a 20-request probe.",
+    "Is there any procurement source with award line items that name a model/part number? None of the 10 probed sources has one; that is the gap for product-level procurement evidence.",
+    "schema.canonical_key's priority list has no 'ocid' scheme, so two OCDS publishers republishing the same procurement will not de-duplicate across sources. Adding 'ocid' would require editing a frozen foundation module — flagged for the Lead, not changed here.",
+    "USAspending's bulk award archive (download centre) was not probed; if it is anonymous, it would allow population-level five-firm counts instead of token-search upper bounds.",
+    "Does the UK FTS feed allow a stable full-history walk (updatedFrom/updatedTo over years) within rate limits? Only a 7-day window was exercised."
+  ],
+  "tests": {
+    "file": "tests/test_extsrc_procurement.py",
+    "passed": 38,
+    "failed": 0,
+    "network": "none - all fixtures are inline dicts; no sample file is read"
+  },
+  "selftest": "pass",
+  "selftest_detail": {
+    "command": "python -m medradar selftest",
+    "result": "Ran 1248 tests, OK (skipped=3)"
+  },
+  "files_written_outside_scope": [],
+  "git_commands_run": false,
+  "credentials_used": false,
+  "notes_for_lead": [
+    "All 10 register records are written with connection_status NOT_TESTED by contract; the merge tool derives the real status (verified above: 5 VERIFIED_API, 1 VERIFIED_PUBLIC_QUERY, 1 REQUIRES_REGISTRATION, 2 UNAVAILABLE, 1 NOT_TESTED) and reports 0 validation problems for these 10.",
+    "eu_ted is deliberately connector-less; if the Lead wants an EU award connector, the missing piece is the notice XML, which needs either a TED API key or a challenge-clearing client — both out of policy here.",
+    "China CCGP is a positive verification that contradicts the P3 assumption; it is documented as exploratory (mixed announcement types, no supplier ids), not as a usable panel."
+  ]
+}

@@ -1,0 +1,196 @@
+{
+  "error": "",
+  "evidence_urls": [
+    "https://boards-api.greenhouse.io/v1/boards/stripe/jobs?content=false"
+  ],
+  "notes": "Greenhouse boards-api answers anonymously for a control token, so the endpoint works; the five target firms were tested by their likely board tokens and the ones that resolved are: none. A 404 is the API's answer for 'no such board', not a network failure. Token guessing was capped at 6 requests; absence here means 'not a Greenhouse customer under these tokens', not 'no hiring data exists'.",
+  "probes": [
+    {
+      "attempts": 1,
+      "bytes": 477852,
+      "elapsed_ms": 438,
+      "error": "",
+      "first_job_fields": {
+        "absolute_url": "https://stripe.com/jobs/search?gh_jid=8172487",
+        "id": 8172487,
+        "location": "<structured>",
+        "title": "Abuse Investigator",
+        "updated_at": "2026-10-29T10:42:09-04:00"
+      },
+      "first_job_keys": [
+        "absolute_url",
+        "application_deadline",
+        "company_name",
+        "data_compliance",
+        "education",
+        "first_published",
+        "id",
+        "internal_job_id",
+        "language",
+        "location",
+        "metadata",
+        "requisition_id",
+        "title",
+        "updated_at"
+      ],
+      "method": "GET",
+      "n_jobs": 766,
+      "name": "control_stripe",
+      "ok": true,
+      "sample": {
+        "name": "board_stripe.json",
+        "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\greenhouse\\board_stripe.json",
+        "sha256_full": "6b30809c456837ac53fe4f0f1560d2ad96b121fcbac8de9e764ffb98851324eb",
+        "sha256_stored": "6b30809c456837ac53fe4f0f1560d2ad96b121fcbac8de9e764ffb98851324eb",
+        "stored_bytes": 477852,
+        "total_bytes": 477852,
+        "truncated": false
+      },
+      "status": 200,
+      "structure": {
+        "__type__": "object",
+        "keys": [
+          "jobs",
+          "meta"
+        ],
+        "sample": {
+          "jobs": {
+            "__type__": "array",
+            "item": {
+              "__type__": "object",
+              "keys": [
+                "absolute_url",
+                "application_deadline",
+                "company_name",
+                "data_compliance",
+                "education",
+                "first_published",
+                "id",
+                "internal_job_id",
+                "language",
+                "location",
+                "metadata",
+                "requisition_id",
+                "title",
+                "updated_at"
+              ],
+              "sample": {
+                "absolute_url": "str",
+                "company_name": "str",
+                "data_compliance": "list",
+                "education": "str",
+                "first_published": "str",
+                "id": "int",
+                "internal_job_id": "int",
+                "location": "dict",
+                "metadata": "NoneType",
+                "requisition_id": "str",
+                "title": "str",
+                "updated_at": "str"
+              }
+            },
+            "len": 766
+          },
+          "meta": {
+            "__type__": "object",
+            "keys": [
+              "total"
+            ],
+            "sample": {
+              "total": {
+                "__type__": "int"
+              }
+            }
+          }
+        }
+      },
+      "token": "stripe",
+      "url": "https://boards-api.greenhouse.io/v1/boards/stripe/jobs?content=false"
+    },
+    {
+      "attempts": 1,
+      "body_head": "\u001f�\b\u0000\u0000\u0000\u0000\u0000\u0000\u0003�V*.I,)-V�210�QJ-*�/R�R��OR��/QH�/�KQ�\u0005\u0000\u0000\u0000��\u0003\u0000{�<�&\u0000\u0000\u0000",
+      "bytes": 64,
+      "elapsed_ms": 468,
+      "error": "HTTP 404 Not Found",
+      "method": "GET",
+      "n_jobs": null,
+      "name": "medtronic",
+      "ok": false,
+      "sample": null,
+      "status": 404,
+      "structure": null,
+      "token": "medtronic",
+      "url": "https://boards-api.greenhouse.io/v1/boards/medtronic/jobs?content=false"
+    },
+    {
+      "attempts": 1,
+      "body_head": "\u001f�\b\u0000\u0000\u0000\u0000\u0000\u0000\u0003�V*.I,)-V�210�QJ-*�/R�R��OR��/QH�/�KQ�\u0005\u0000\u0000\u0000��\u0003\u0000{�<�&\u0000\u0000\u0000",
+      "bytes": 64,
+      "elapsed_ms": 467,
+      "error": "HTTP 404 Not Found",
+      "method": "GET",
+      "n_jobs": null,
+      "name": "ge_healthcare",
+      "ok": false,
+      "sample": null,
+      "status": 404,
+      "structure": null,
+      "token": "gehealthcare",
+      "url": "https://boards-api.greenhouse.io/v1/boards/gehealthcare/jobs?content=false"
+    },
+    {
+      "attempts": 1,
+      "body_head": "\u001f�\b\u0000\u0000\u0000\u0000\u0000\u0000\u0003�V*.I,)-V�210�QJ-*�/R�R��OR��/QH�/�KQ�\u0005\u0000\u0000\u0000��\u0003\u0000{�<�&\u0000\u0000\u0000",
+      "bytes": 64,
+      "elapsed_ms": 295,
+      "error": "HTTP 404 Not Found",
+      "method": "GET",
+      "n_jobs": null,
+      "name": "philips",
+      "ok": false,
+      "sample": null,
+      "status": 404,
+      "structure": null,
+      "token": "philips",
+      "url": "https://boards-api.greenhouse.io/v1/boards/philips/jobs?content=false"
+    },
+    {
+      "attempts": 1,
+      "body_head": "\u001f�\b\u0000\u0000\u0000\u0000\u0000\u0000\u0003�V*.I,)-V�210�QJ-*�/R�R��OR��/QH�/�KQ�\u0005\u0000\u0000\u0000��\u0003\u0000{�<�&\u0000\u0000\u0000",
+      "bytes": 64,
+      "elapsed_ms": 297,
+      "error": "HTTP 404 Not Found",
+      "method": "GET",
+      "n_jobs": null,
+      "name": "draeger",
+      "ok": false,
+      "sample": null,
+      "status": 404,
+      "structure": null,
+      "token": "draeger",
+      "url": "https://boards-api.greenhouse.io/v1/boards/draeger/jobs?content=false"
+    },
+    {
+      "attempts": 1,
+      "body_head": "\u001f�\b\u0000\u0000\u0000\u0000\u0000\u0000\u0003�V*.I,)-V�210�QJ-*�/R�R��OR��/QH�/�KQ�\u0005\u0000\u0000\u0000��\u0003\u0000{�<�&\u0000\u0000\u0000",
+      "bytes": 64,
+      "elapsed_ms": 313,
+      "error": "HTTP 404 Not Found",
+      "method": "GET",
+      "n_jobs": null,
+      "name": "mindray",
+      "ok": false,
+      "sample": null,
+      "status": 404,
+      "structure": null,
+      "token": "mindray",
+      "url": "https://boards-api.greenhouse.io/v1/boards/mindray/jobs?content=false"
+    }
+  ],
+  "requests": 6,
+  "schema": "medradar.external.probe.v1",
+  "source_id": "greenhouse",
+  "status": "VERIFIED_API",
+  "verified_at": "2026-11-08T21:45:36.534451Z"
+}

@@ -27,3 +27,9 @@ Thumbs.db
 
 # cycle-2 per-row prediction dumps: regenerable intermediates, not aggregates (~7 MB)
 experiments/**/pred_*.json
+
+# DATA-EXPANSION-001: staging store is regenerable and never committed
+research/data_expansion/staging/
+research/data_expansion/**/*.sqlite
+research/data_expansion/**/*.sqlite-wal
+research/data_expansion/**/*.sqlite-shm

@@ -1,0 +1,51 @@
+{
+  "api_available": "YES",
+  "authentication": "none",
+  "bulk_download_available": "YES",
+  "category": "device_licence_registry",
+  "connection_status": "NOT_TESTED",
+  "cost_notes": "free; Open Government Licence - Canada",
+  "country_or_region": "CA",
+  "domain": "A",
+  "entity_identifiers": [
+    "MDALL licence number (original_licence_no) - the authoritative Canadian product-licence id",
+    "company_id (MDALL's own company identifier, resolvable via /company/?company_name=)",
+    "device_id (MDALL device row id)",
+    "device identifier via /deviceidentifier/ - takes a real UDI-DI, i.e. an official DI bridge",
+    "licence_type_cd / licence_type_desc",
+    "UNKNOWN - no FDA 510(k)/PMA number, and no EU SRN/Basic UDI-DI"
+  ],
+  "evidence_urls": [
+    "https://health-products.canada.ca/api/documentation/mdall-documentation-en.html",
+    "https://health-products.canada.ca/api/medical-devices/company/?company_name=MEDTRONIC&type=json",
+    "https://health-products.canada.ca/api/medical-devices/licence/?company_id=113870&state=active&lang=en&type=json",
+    "https://open.canada.ca/data/api/3/action/package_show?id=c801a084-210b-4cd2-8513-26a00b66eb6f"
+  ],
+  "free_tier": "free, no key",
+  "historical_coverage": "all Class II-IV licences currently or formerly held (active + archived states). Class I devices need no licence and are absent by design, as are Investigational Testing Authorisations and Special Access records",
+  "known_limitations": [
+    "last_refresh_dt is a database refresh stamp; using it as a publication date would make every licence look freshly published on the last refresh day",
+    "end_date is a cancellation date. The collection protocol forbids using an expiry/cancellation date as the first-publication date, and it is future-dated for active-looking rows",
+    "MDALL publishes no per-record publication timestamp, so source_public_at can only be a derived proxy from first_licence_status_dt / first_licence_dt (flag quality=derived)",
+    "Class I devices are absent by regulation, so Canada under-covers low-risk devices",
+    "the /company/ search is a %LIKE% match: 'MEDTRONIC' returns 29 companies (incl. unrelated subsidiaries), 'PHILIPS' 31, so company linkage must go through the alias index and stay a candidate where the alias layer is unsure",
+    "the deviceidentifier bridge exists but is sparse: the sampled US-only Medtronic DI had no MDALL row, so it only resolves devices actually licensed in Canada"
+  ],
+  "licence": "Open Government Licence - Canada (open.canada.ca CKAN record for the MDALL dataset, verified)",
+  "official_or_commercial": "official",
+  "official_url": "https://health-products.canada.ca/mdall-limh/",
+  "probe_priority": "P0",
+  "rate_limits": "no documented numeric limit; the unfiltered ?state=active dumps are large (the device dump did not complete inside a 120 s timeout from this host), so queries should be scoped by company_id / licence_number / device_identifier. We paced at 1.0 s",
+  "redistribution_allowed": "YES",
+  "research_value": "Canada is the one market where an official endpoint resolves a UDI-DI to a national product licence, giving a genuine second-country anchor for the same device and a first_licence date that is independent of FDA's decision clock. The documented JSON API (no key, no session) also makes MDALL far cheaper to collect than the EU or UK registers.",
+  "source_id": "canada_mdall",
+  "source_name": "Health Canada Medical Devices Active Licence Listing (MDALL) API",
+  "timestamp_fields": [
+    "first_licence_status_dt (licence level - date the licence was first issued)",
+    "first_licence_dt (device level - date the device was added to the licence)",
+    "last_refresh_dt (database refresh stamp - NOT a publication date)",
+    "end_date (cancellation/removal date, null while active)"
+  ],
+  "update_frequency": "daily (CKAN metadata states frequency P1D); each licence row carries last_refresh_dt",
+  "verified_at": "2026-11-09"
+}

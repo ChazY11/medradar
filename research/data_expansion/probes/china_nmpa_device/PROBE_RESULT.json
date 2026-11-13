@@ -1,0 +1,42 @@
+{
+  "error": "",
+  "evidence_urls": [],
+  "notes": "NMPA answers HTTP 412 with a JavaScript anti-bot challenge (a dynamic <meta> token that must be solved by running obfuscated script) before any content is served. Solving or replaying that challenge is a WAF bypass, which the collection protocol forbids, so the source is recorded as blocked rather than retried.",
+  "probes": [
+    {
+      "attempts": 1,
+      "bytes": 2502,
+      "challenge_markers": [
+        "meta id=",
+        "r='m'"
+      ],
+      "elapsed_ms": 905,
+      "error": "HTTP 412 Precondition Failed",
+      "name": "portal_home",
+      "note": "",
+      "ok": false,
+      "sample": null,
+      "status": 412,
+      "structure": null,
+      "url": "https://www.nmpa.gov.cn/"
+    },
+    {
+      "attempts": 1,
+      "bytes": 2562,
+      "elapsed_ms": 1108,
+      "error": "HTTP 412 Precondition Failed",
+      "name": "datasearch_query",
+      "note": "",
+      "ok": false,
+      "sample": null,
+      "status": 412,
+      "structure": null,
+      "url": "https://www.nmpa.gov.cn/datasearch/search-result.html?q=Medtronic"
+    }
+  ],
+  "requests": 2,
+  "schema": "medradar.external.probe.v1",
+  "source_id": "china_nmpa_device",
+  "status": "BLOCKED_BY_POLICY",
+  "verified_at": "2026-11-08T21:53:08.981675Z"
+}

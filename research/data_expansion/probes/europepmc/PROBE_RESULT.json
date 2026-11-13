@@ -1,0 +1,411 @@
+{
+  "error": "",
+  "evidence_urls": [
+    "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=stent&format=json&pageSize=2&resultType=lite",
+    "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=stent&format=json&pageSize=2&resultType=core",
+    "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=AFF%3A%22Medtronic%22&format=json&pageSize=2&resultType=core",
+    "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI%3A%2210.1056%2FNEJMoa2034577%22&format=json&pageSize=2&resultType=core"
+  ],
+  "notes": "Europe PMC REST returned 200 JSON with `resultList.result` and `hitCount`. `resultType=core` supplies `firstPublicationDate`, `firstIndexDate`, DOI/PMID/PMCID, `authorList[].affiliation`, `grantsList` and `dbCrossReferenceList` - enough for DOI-based cross-source de-duplication, author-affiliation company matching and grant-number linking.  `firstIndexDate` is an ingestion clock, not publication.",
+  "probes": [
+    {
+      "attempts": 1,
+      "bytes": 2289,
+      "counts_as_ok": true,
+      "elapsed_ms": 1452,
+      "error": "",
+      "http_ok": true,
+      "json_parsed": true,
+      "method": "get",
+      "name": "search_lite",
+      "record_count": 2,
+      "sample": {
+        "fetched_at": "2026-11-08T21:38:23.424807Z",
+        "name": "europepmc_search_lite.json",
+        "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\europepmc\\europepmc_search_lite.json",
+        "sha256_full": "b02df3357d3b4a3700aa10d8a9e2cef46c6c1dffc004409ff5dc0791c0263029",
+        "sha256_stored": "b02df3357d3b4a3700aa10d8a9e2cef46c6c1dffc004409ff5dc0791c0263029",
+        "stored_bytes": 2289,
+        "total_bytes": 2289,
+        "truncated": false,
+        "url": "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=stent&format=json&pageSize=2&resultType=lite"
+      },
+      "status": 200,
+      "structure": {
+        "__type__": "object",
+        "keys": [
+          "hitCount",
+          "nextCursorMark",
+          "nextPageUrl",
+          "request",
+          "resultList",
+          "version"
+        ],
+        "sample": {
+          "hitCount": {
+            "__type__": "int"
+          },
+          "nextCursorMark": {
+            "__type__": "string",
+            "max_len": 24
+          },
+          "nextPageUrl": {
+            "__type__": "string",
+            "max_len": 146
+          },
+          "request": {
+            "__type__": "object",
+            "keys": [
+              "cursorMark",
+              "pageSize",
+              "queryString",
+              "resultType",
+              "sort",
+              "synonym"
+            ],
+            "sample": {
+              "cursorMark": {
+                "__type__": "string",
+                "max_len": 1
+              },
+              "pageSize": {
+                "__type__": "int"
+              },
+              "queryString": {
+                "__type__": "string",
+                "max_len": 5
+              },
+              "resultType": {
+                "__type__": "string",
+                "max_len": 4
+              },
+              "sort": {
+                "__type__": "string",
+                "max_len": 0
+              },
+              "synonym": {
+                "__type__": "bool"
+              }
+            }
+          },
+          "resultList": {
+            "__type__": "object",
+            "keys": [
+              "result"
+            ],
+            "sample": {
+              "result": {
+                "__type__": "array",
+                "item": "dict",
+                "len": 2
+              }
+            }
+          },
+          "version": {
+            "__type__": "string",
+            "max_len": 3
+          }
+        }
+      },
+      "url": "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=stent&format=json&pageSize=2&resultType=lite"
+    },
+    {
+      "attempts": 1,
+      "bytes": 18853,
+      "counts_as_ok": true,
+      "elapsed_ms": 1766,
+      "error": "",
+      "http_ok": true,
+      "json_parsed": true,
+      "method": "get",
+      "name": "search_core",
+      "record_count": 2,
+      "sample": {
+        "fetched_at": "2026-11-08T21:38:25.203803Z",
+        "name": "europepmc_search_core.json",
+        "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\europepmc\\europepmc_search_core.json",
+        "sha256_full": "0b957aeb699ea59e43b65d1a06984db98d07c4e346b4b72e8c908ac712d1adfb",
+        "sha256_stored": "0b957aeb699ea59e43b65d1a06984db98d07c4e346b4b72e8c908ac712d1adfb",
+        "stored_bytes": 18853,
+        "total_bytes": 18853,
+        "truncated": false,
+        "url": "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=stent&format=json&pageSize=2&resultType=core"
+      },
+      "status": 200,
+      "structure": {
+        "__type__": "object",
+        "keys": [
+          "hitCount",
+          "nextCursorMark",
+          "nextPageUrl",
+          "request",
+          "resultList",
+          "version"
+        ],
+        "sample": {
+          "hitCount": {
+            "__type__": "int"
+          },
+          "nextCursorMark": {
+            "__type__": "string",
+            "max_len": 24
+          },
+          "nextPageUrl": {
+            "__type__": "string",
+            "max_len": 146
+          },
+          "request": {
+            "__type__": "object",
+            "keys": [
+              "cursorMark",
+              "pageSize",
+              "queryString",
+              "resultType",
+              "sort",
+              "synonym"
+            ],
+            "sample": {
+              "cursorMark": {
+                "__type__": "string",
+                "max_len": 1
+              },
+              "pageSize": {
+                "__type__": "int"
+              },
+              "queryString": {
+                "__type__": "string",
+                "max_len": 5
+              },
+              "resultType": {
+                "__type__": "string",
+                "max_len": 4
+              },
+              "sort": {
+                "__type__": "string",
+                "max_len": 0
+              },
+              "synonym": {
+                "__type__": "bool"
+              }
+            }
+          },
+          "resultList": {
+            "__type__": "object",
+            "keys": [
+              "result"
+            ],
+            "sample": {
+              "result": {
+                "__type__": "array",
+                "item": "dict",
+                "len": 2
+              }
+            }
+          },
+          "version": {
+            "__type__": "string",
+            "max_len": 3
+          }
+        }
+      },
+      "url": "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=stent&format=json&pageSize=2&resultType=core"
+    },
+    {
+      "attempts": 1,
+      "bytes": 8190,
+      "counts_as_ok": true,
+      "elapsed_ms": 703,
+      "error": "",
+      "http_ok": true,
+      "json_parsed": true,
+      "method": "get",
+      "name": "affiliation_company",
+      "record_count": 2,
+      "sample": {
+        "fetched_at": "2026-11-08T21:38:25.916888Z",
+        "name": "europepmc_affiliation.json",
+        "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\europepmc\\europepmc_affiliation.json",
+        "sha256_full": "a7d837a5271246cf9b24265edd5576ce660a630786cada1b288786c8e683aa5a",
+        "sha256_stored": "a7d837a5271246cf9b24265edd5576ce660a630786cada1b288786c8e683aa5a",
+        "stored_bytes": 8190,
+        "total_bytes": 8190,
+        "truncated": false,
+        "url": "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=AFF%3A%22Medtronic%22&format=json&pageSize=2&resultType=core"
+      },
+      "status": 200,
+      "structure": {
+        "__type__": "object",
+        "keys": [
+          "hitCount",
+          "nextCursorMark",
+          "nextPageUrl",
+          "request",
+          "resultList",
+          "version"
+        ],
+        "sample": {
+          "hitCount": {
+            "__type__": "int"
+          },
+          "nextCursorMark": {
+            "__type__": "string",
+            "max_len": 24
+          },
+          "nextPageUrl": {
+            "__type__": "string",
+            "max_len": 162
+          },
+          "request": {
+            "__type__": "object",
+            "keys": [
+              "cursorMark",
+              "pageSize",
+              "queryString",
+              "resultType",
+              "sort",
+              "synonym"
+            ],
+            "sample": {
+              "cursorMark": {
+                "__type__": "string",
+                "max_len": 1
+              },
+              "pageSize": {
+                "__type__": "int"
+              },
+              "queryString": {
+                "__type__": "string",
+                "max_len": 15
+              },
+              "resultType": {
+                "__type__": "string",
+                "max_len": 4
+              },
+              "sort": {
+                "__type__": "string",
+                "max_len": 0
+              },
+              "synonym": {
+                "__type__": "bool"
+              }
+            }
+          },
+          "resultList": {
+            "__type__": "object",
+            "keys": [
+              "result"
+            ],
+            "sample": {
+              "result": {
+                "__type__": "array",
+                "item": "dict",
+                "len": 2
+              }
+            }
+          },
+          "version": {
+            "__type__": "string",
+            "max_len": 3
+          }
+        }
+      },
+      "url": "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=AFF%3A%22Medtronic%22&format=json&pageSize=2&resultType=core"
+    },
+    {
+      "attempts": 1,
+      "bytes": 62503,
+      "counts_as_ok": true,
+      "elapsed_ms": 858,
+      "error": "",
+      "http_ok": true,
+      "json_parsed": true,
+      "method": "get",
+      "name": "doi_lookup",
+      "record_count": 1,
+      "sample": {
+        "fetched_at": "2026-11-08T21:38:26.863882Z",
+        "name": "europepmc_doi.json",
+        "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\europepmc\\europepmc_doi.json",
+        "sha256_full": "88a1e7eddb690cc197cba7ab68afd7091629b0565ac2971c4b4f3701900a0bbf",
+        "sha256_stored": "88a1e7eddb690cc197cba7ab68afd7091629b0565ac2971c4b4f3701900a0bbf",
+        "stored_bytes": 62503,
+        "total_bytes": 62503,
+        "truncated": false,
+        "url": "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI%3A%2210.1056%2FNEJMoa2034577%22&format=json&pageSize=2&resultType=core"
+      },
+      "status": 200,
+      "structure": {
+        "__type__": "object",
+        "keys": [
+          "hitCount",
+          "request",
+          "resultList",
+          "version"
+        ],
+        "sample": {
+          "hitCount": {
+            "__type__": "int"
+          },
+          "request": {
+            "__type__": "object",
+            "keys": [
+              "cursorMark",
+              "pageSize",
+              "queryString",
+              "resultType",
+              "sort",
+              "synonym"
+            ],
+            "sample": {
+              "cursorMark": {
+                "__type__": "string",
+                "max_len": 1
+              },
+              "pageSize": {
+                "__type__": "int"
+              },
+              "queryString": {
+                "__type__": "string",
+                "max_len": 27
+              },
+              "resultType": {
+                "__type__": "string",
+                "max_len": 4
+              },
+              "sort": {
+                "__type__": "string",
+                "max_len": 0
+              },
+              "synonym": {
+                "__type__": "bool"
+              }
+            }
+          },
+          "resultList": {
+            "__type__": "object",
+            "keys": [
+              "result"
+            ],
+            "sample": {
+              "result": {
+                "__type__": "array",
+                "item": "dict",
+                "len": 1
+              }
+            }
+          },
+          "version": {
+            "__type__": "string",
+            "max_len": 3
+          }
+        }
+      },
+      "url": "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI%3A%2210.1056%2FNEJMoa2034577%22&format=json&pageSize=2&resultType=core"
+    }
+  ],
+  "requests": 4,
+  "schema": "medradar.external.probe.v1",
+  "source_id": "europepmc",
+  "status": "VERIFIED_API",
+  "verified_at": "2026-11-08T21:38:26.866884Z"
+}

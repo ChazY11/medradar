@@ -1,0 +1,56 @@
+{
+  "broken_modules": [],
+  "collected_at": "2026-11-08T22:05:26.691226Z",
+  "connectors_found": [
+    "clinicaltrials_gov",
+    "crossref",
+    "europepmc",
+    "eurostat_comext",
+    "fda_device_shortages",
+    "fda_import_alerts",
+    "greenhouse",
+    "lever",
+    "nih_reporter",
+    "openalex",
+    "openfda_device_maude",
+    "openfda_device_recall",
+    "pubmed_eutils",
+    "uk_find_a_tender",
+    "uk_hmrc_trade",
+    "un_comtrade",
+    "usaspending"
+  ],
+  "limit_per_source": 300,
+  "schema": "medradar.external.collection.v1",
+  "sources": [
+    {
+      "content_duplicates": 8,
+      "error": "",
+      "invalid_rejected": 0,
+      "notes": [
+        "connector_meta: {\"url\": \"https://www.fda.gov/medical-devices/medical-device-supply-chain-and-shortages/medical-device-shortages-list\", \"status\": 200, \"bytes\": 128140, \"error\": \"\", \"tables\": 2, \"table_headers\": [[\"Category\", \"Product Code (Description)\", \"Availability and Estimated Shortage Duration\", \"Additional Information\", \"Reason for Interruption (per 506J)\", \"Date (YYYY/MM/DD)\"], [\"Date Posted\", \"Category\", "
+      ],
+      "records_returned": 242,
+      "records_written": 234,
+      "requests": 1,
+      "source_id": "fda_device_shortages"
+    },
+    {
+      "content_duplicates": 0,
+      "error": "",
+      "invalid_rejected": 0,
+      "notes": [
+        "connector_meta: {\"url\": \"https://www.accessdata.fda.gov/cms_ia/ialist.html\", \"status\": 200, \"bytes\": 66100, \"error\": \"\", \"records\": 154}"
+      ],
+      "records_returned": 154,
+      "records_written": 154,
+      "requests": 1,
+      "source_id": "fda_import_alerts"
+    }
+  ],
+  "totals": {
+    "failed_sources": [],
+    "records_written": 388,
+    "requests": 2
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "api_available": "NO",
+  "authentication": "none, but there is no machine interface to authenticate to",
+  "bulk_download_available": "NO",
+  "category": "device_approval_database",
+  "connection_status": "NOT_TESTED",
+  "cost_notes": "free to a browser user; not machine-accessible",
+  "country_or_region": "JP",
+  "domain": "A",
+  "entity_identifiers": [
+    "UNKNOWN - PMDA approval numbers (承認番号) are documented but were never observed from a machine response in this pass",
+    "UNKNOWN - no DI field verifiable"
+  ],
+  "evidence_urls": [
+    "https://www.pmda.go.jp/english/",
+    "https://www.pmda.go.jp/PmdaSearch/kikiSearch/"
+  ],
+  "free_tier": "free to a browser user",
+  "historical_coverage": "the device database (kikiSearch) covers approved devices and their package inserts, but only through an interactive HTML form; coverage could not be measured",
+  "known_limitations": [
+    "the device database at /PmdaSearch/kikiSearch/ is a legacy servlet that renders an HTML form and only answers a form POST; a GET with query parameters returns the empty form again (verified in the probe)",
+    "no documented API and no bulk release were found, and the pages are Japanese-only",
+    "the pages themselves are reachable, so this is 'no machine interface', not 'no data' - a human can query it, a pipeline cannot",
+    "consequence: Japanese approval dates cannot be collected, so Japan is absent from the cross-market comparison"
+  ],
+  "licence": "UNKNOWN - PMDA terms for reuse of database output were not opened in this pass",
+  "official_or_commercial": "official",
+  "official_url": "https://www.pmda.go.jp/english/",
+  "probe_priority": "P2",
+  "rate_limits": "n/a - no API",
+  "redistribution_allowed": "UNKNOWN",
+  "research_value": "Japan is a top-three device market with a distinct approval pathway (PMDA review then MHLW approval), so Japanese approval numbers would let the study test whether a device reaches Japan before or after the US. Without a machine interface that question stays open; the honest contribution here is the recorded absence of an API.",
+  "source_id": "japan_pmda",
+  "source_name": "Japan PMDA medical device information",
+  "timestamp_fields": [
+    "UNKNOWN - results exist only as HTML rendered after a form POST"
+  ],
+  "update_frequency": "UNKNOWN - no machine-readable feed",
+  "verified_at": "2026-11-09"
+}

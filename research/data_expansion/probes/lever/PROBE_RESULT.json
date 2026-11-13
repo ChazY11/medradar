@@ -1,0 +1,252 @@
+{
+  "error": "",
+  "evidence_urls": [
+    "https://api.lever.co/v0/postings/leverdemo?mode=json"
+  ],
+  "notes": "Lever postings API answers anonymously for a control token, so the endpoint works; target-firm tokens that resolved: none. Lever returns createdAt (source publication time) per posting, which is what the hiring evidence needs, but only for companies that actually use Lever.",
+  "probes": [
+    {
+      "attempts": 1,
+      "bytes": 83523,
+      "elapsed_ms": 2358,
+      "error": "",
+      "first_posting_fields": {
+        "categories": {
+          "allLocations": [
+            "Atlanta, Georgia"
+          ],
+          "commitment": "Regular Full Time (Salary)",
+          "department": "Customer Success",
+          "location": "Atlanta, Georgia",
+          "team": "Customer Success Team"
+        },
+        "createdAt": 1788199939703,
+        "hostedUrl": "https://jobs.lever.co/leverdemo/ad208490-4052-4f91-a57e-433f2d1e484b",
+        "id": "ad208490-4052-4f91-a57e-433f2d1e484b",
+        "text": "Customer Success Manager"
+      },
+      "first_posting_keys": [
+        "additional",
+        "additionalPlain",
+        "applyUrl",
+        "categories",
+        "country",
+        "createdAt",
+        "description",
+        "descriptionBody",
+        "descriptionBodyPlain",
+        "descriptionPlain",
+        "hostedUrl",
+        "id",
+        "lists",
+        "opening",
+        "openingPlain",
+        "salaryRange",
+        "text",
+        "workplaceType"
+      ],
+      "method": "GET",
+      "n_postings": 10,
+      "name": "control_leverdemo",
+      "ok": true,
+      "sample": {
+        "name": "postings_leverdemo.json",
+        "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\lever\\postings_leverdemo.json",
+        "sha256_full": "68478fb293d2613e07317386e66fdba1981be8cf3c68cf6e42b4d83fb999f650",
+        "sha256_stored": "68478fb293d2613e07317386e66fdba1981be8cf3c68cf6e42b4d83fb999f650",
+        "stored_bytes": 83523,
+        "total_bytes": 83523,
+        "truncated": false
+      },
+      "status": 200,
+      "structure": {
+        "__type__": "array",
+        "item": {
+          "__type__": "object",
+          "keys": [
+            "additional",
+            "additionalPlain",
+            "applyUrl",
+            "categories",
+            "country",
+            "createdAt",
+            "description",
+            "descriptionBody",
+            "descriptionBodyPlain",
+            "descriptionPlain",
+            "hostedUrl",
+            "id",
+            "lists",
+            "opening",
+            "openingPlain",
+            "salaryRange",
+            "text",
+            "workplaceType"
+          ],
+          "sample": {
+            "additional": {
+              "__type__": "string",
+              "max_len": 0
+            },
+            "additionalPlain": {
+              "__type__": "string",
+              "max_len": 0
+            },
+            "categories": {
+              "__type__": "object",
+              "keys": [
+                "allLocations",
+                "commitment",
+                "department",
+                "location",
+                "team"
+              ],
+              "sample": {
+                "allLocations": "list",
+                "commitment": "str",
+                "department": "str",
+                "location": "str",
+                "team": "str"
+              }
+            },
+            "country": {
+              "__type__": "string",
+              "max_len": 2
+            },
+            "createdAt": {
+              "__type__": "int"
+            },
+            "description": {
+              "__type__": "string",
+              "max_len": 1634
+            },
+            "descriptionPlain": {
+              "__type__": "string",
+              "max_len": 1353
+            },
+            "id": {
+              "__type__": "string",
+              "max_len": 36
+            },
+            "lists": {
+              "__type__": "array",
+              "item": "dict",
+              "len": 4
+            },
+            "salaryRange": {
+              "__type__": "object",
+              "keys": [
+                "currency",
+                "interval",
+                "max",
+                "min"
+              ],
+              "sample": {
+                "currency": "str",
+                "interval": "str",
+                "max": "int",
+                "min": "int"
+              }
+            },
+            "text": {
+              "__type__": "string",
+              "max_len": 24
+            },
+            "workplaceType": {
+              "__type__": "string",
+              "max_len": 6
+            }
+          }
+        },
+        "len": 10
+      },
+      "token": "leverdemo",
+      "url": "https://api.lever.co/v0/postings/leverdemo?mode=json"
+    },
+    {
+      "attempts": 1,
+      "body_head": "{\"ok\":false,\"error\":\"Document not found\"}",
+      "bytes": 41,
+      "elapsed_ms": 5016,
+      "error": "HTTP 404 Not Found",
+      "method": "GET",
+      "n_postings": null,
+      "name": "medtronic",
+      "ok": false,
+      "sample": null,
+      "status": 404,
+      "structure": null,
+      "token": "medtronic",
+      "url": "https://api.lever.co/v0/postings/medtronic?mode=json"
+    },
+    {
+      "attempts": 1,
+      "body_head": "{\"ok\":false,\"error\":\"Document not found\"}",
+      "bytes": 41,
+      "elapsed_ms": 1140,
+      "error": "HTTP 404 Not Found",
+      "method": "GET",
+      "n_postings": null,
+      "name": "ge_healthcare",
+      "ok": false,
+      "sample": null,
+      "status": 404,
+      "structure": null,
+      "token": "gehealthcare",
+      "url": "https://api.lever.co/v0/postings/gehealthcare?mode=json"
+    },
+    {
+      "attempts": 1,
+      "body_head": "{\"ok\":false,\"error\":\"Document not found\"}",
+      "bytes": 41,
+      "elapsed_ms": 1016,
+      "error": "HTTP 404 Not Found",
+      "method": "GET",
+      "n_postings": null,
+      "name": "philips",
+      "ok": false,
+      "sample": null,
+      "status": 404,
+      "structure": null,
+      "token": "philips",
+      "url": "https://api.lever.co/v0/postings/philips?mode=json"
+    },
+    {
+      "attempts": 1,
+      "body_head": "{\"ok\":false,\"error\":\"Document not found\"}",
+      "bytes": 41,
+      "elapsed_ms": 1780,
+      "error": "HTTP 404 Not Found",
+      "method": "GET",
+      "n_postings": null,
+      "name": "draeger",
+      "ok": false,
+      "sample": null,
+      "status": 404,
+      "structure": null,
+      "token": "draeger",
+      "url": "https://api.lever.co/v0/postings/draeger?mode=json"
+    },
+    {
+      "attempts": 1,
+      "body_head": "{\"ok\":false,\"error\":\"Document not found\"}",
+      "bytes": 41,
+      "elapsed_ms": 1047,
+      "error": "HTTP 404 Not Found",
+      "method": "GET",
+      "n_postings": null,
+      "name": "mindray",
+      "ok": false,
+      "sample": null,
+      "status": 404,
+      "structure": null,
+      "token": "mindray",
+      "url": "https://api.lever.co/v0/postings/mindray?mode=json"
+    }
+  ],
+  "requests": 6,
+  "schema": "medradar.external.probe.v1",
+  "source_id": "lever",
+  "status": "VERIFIED_API",
+  "verified_at": "2026-11-08T21:45:49.245303Z"
+}

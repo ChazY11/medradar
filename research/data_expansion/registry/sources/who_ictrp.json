@@ -1,0 +1,39 @@
+{
+  "api_available": "NO",
+  "authentication": "none",
+  "bulk_download_available": "NO",
+  "category": "clinical_trials_registry",
+  "connection_status": "NOT_TESTED",
+  "cost_notes": "free portal, no machine access",
+  "country_or_region": "GLOBAL",
+  "domain": "D",
+  "entity_identifiers": [
+    "ICTRP search id",
+    "primary registry id (NCT, ChiCTR, CTRI, jRCT, ...)"
+  ],
+  "evidence_urls": [
+    "https://trialsearch.who.int/",
+    "https://www.who.int/clinical-trials-registry-platform"
+  ],
+  "free_tier": "free web portal only",
+  "historical_coverage": "indexes 17+ primary registries; coverage depends on registry",
+  "known_limitations": [
+    "no public machine API: both probed URLs returned HTML forms, which are not queryable records",
+    "the portal's ASP.NET viewstate cannot be driven reliably without a browser, and scraping it is out of scope",
+    "the primary registries it indexes (CT.gov, CTIS, ChiCTR, CTRI, jRCT) should be collected directly instead"
+  ],
+  "licence": "WHO portal terms; the trial data itself belong to the primary registries",
+  "official_or_commercial": "official",
+  "official_url": "https://www.who.int/clinical-trials-registry-platform",
+  "probe_priority": "P2",
+  "rate_limits": "no API exists; the search portal is an ASP.NET form",
+  "redistribution_allowed": "UNKNOWN",
+  "research_value": "Documents the global trial-registry landscape, but contributes no collectable evidence; used here as the pointer to the primary registries rather than as a data source.",
+  "source_id": "who_ictrp",
+  "source_name": "WHO International Clinical Trials Registry Platform",
+  "timestamp_fields": [
+    "registration date (via primary registry)"
+  ],
+  "update_frequency": "continuous (indexes primary registries)",
+  "verified_at": "2026-11-09"
+}

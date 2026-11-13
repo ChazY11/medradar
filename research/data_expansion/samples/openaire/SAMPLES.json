@@ -1,0 +1,55 @@
+{
+  "generated_at": "2026-11-08T21:59:09.333312Z",
+  "manifest_repair": {
+    "incident": "wildcard write rewrote SAMPLES.json files during collection",
+    "incident_observed_at": "2026-11-08T21:59:10Z",
+    "policy": "verify, do not restore: payload bytes were never modified",
+    "repaired_at_note": "hashes recomputed from disk; declared values preserved on conflict",
+    "stats": {
+      "entries": 2,
+      "mismatched": 0,
+      "missing_files": 0,
+      "recomputed": 2,
+      "source_id": "openaire",
+      "unlisted_files_added": 0,
+      "verified": 0
+    }
+  },
+  "note": "Raw response slices only; parsed records are derived and live in the series/handoff.",
+  "samples": [
+    {
+      "file": "openaire_graph_products.json",
+      "hash_verified": true,
+      "name": "openaire_graph_products.json",
+      "note": "descriptor recovered from disk: the probe run did not persist the full-response descriptor, so sha256_full/total_bytes are null rather than guessed",
+      "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\openaire\\openaire_graph_products.json",
+      "recovered_from": "requests.jsonl",
+      "request_url": "https://api.openaire.eu/graph/v1/researchProducts?search=stent&pageSize=2",
+      "sha256_full": "e96e4bbbdca1bc0e35ceb771ab6da6ab69212486ea19c12dd65d33405fa9789c",
+      "sha256_source": "recomputed_from_disk",
+      "sha256_stored": "e96e4bbbdca1bc0e35ceb771ab6da6ab69212486ea19c12dd65d33405fa9789c",
+      "source": "recovered_from_disk",
+      "stored_bytes": 10332,
+      "total_bytes": 10332,
+      "truncated": false
+    },
+    {
+      "file": "openaire_search_publications.json",
+      "hash_verified": true,
+      "name": "openaire_search_publications.json",
+      "note": "descriptor recovered from disk: the probe run did not persist the full-response descriptor, so sha256_full/total_bytes are null rather than guessed",
+      "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\openaire\\openaire_search_publications.json",
+      "recovered_from": "requests.jsonl",
+      "request_url": "https://api.openaire.eu/search/publications?title=stent&format=json&size=2",
+      "sha256_full": "be446d573495844283885f485b1334cdf889acec6e1b259a1c4e33b144f8f968",
+      "sha256_source": "recomputed_from_disk",
+      "sha256_stored": "be446d573495844283885f485b1334cdf889acec6e1b259a1c4e33b144f8f968",
+      "source": "recovered_from_disk",
+      "stored_bytes": 24512,
+      "total_bytes": 24512,
+      "truncated": false
+    }
+  ],
+  "schema": "medradar.external.samples.v1",
+  "source_id": "openaire"
+}

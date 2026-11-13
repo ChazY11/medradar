@@ -1,0 +1,478 @@
+{
+  "error": "",
+  "evidence_urls": [
+    "https://euclinicaltrials.eu/ctis-public-api/search",
+    "https://euclinicaltrials.eu/ctis-public-api/search",
+    "https://euclinicaltrials.eu/ctis-public-api/retrieve/2023-507015-35-00"
+  ],
+  "notes": "CTIS exposes an unauthenticated JSON API at `https://euclinicaltrials.eu/ctis-public-api` (`POST /search`, `GET /retrieve/{ctNumber}`), used by its own public search front end. It is not a formally versioned/documented developer API, so the register records `api_available: PARTIAL`; `ctNumber` is the authoritative identifier and `decisionDate`/`publishDate` are the clock candidates (first public visibility).",
+  "probes": [
+    {
+      "attempts": 1,
+      "bytes": 4487,
+      "counts_as_ok": true,
+      "elapsed_ms": 641,
+      "error": "",
+      "http_ok": true,
+      "json_parsed": true,
+      "method": "post",
+      "name": "api_search",
+      "record_count": 2,
+      "sample": {
+        "fetched_at": "2026-11-08T21:43:31.380451Z",
+        "name": "ctis_search.json",
+        "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\eu_ctis\\ctis_search.json",
+        "sha256_full": "87ed575103c90f36a54f43df2f9a6ca50b19686952e8a0418616c7c177ec8ed9",
+        "sha256_stored": "87ed575103c90f36a54f43df2f9a6ca50b19686952e8a0418616c7c177ec8ed9",
+        "stored_bytes": 4487,
+        "total_bytes": 4487,
+        "truncated": false,
+        "url": "https://euclinicaltrials.eu/ctis-public-api/search"
+      },
+      "status": 200,
+      "structure": {
+        "__type__": "object",
+        "keys": [
+          "data",
+          "pagination",
+          "showWarning"
+        ],
+        "sample": {
+          "data": {
+            "__type__": "array",
+            "item": {
+              "__type__": "object",
+              "keys": [
+                "ageGroup",
+                "ageRangeSecondary",
+                "conditions",
+                "ctNumber",
+                "ctStatus",
+                "ctTitle",
+                "decisionDate",
+                "decisionDateOverall",
+                "endPoint",
+                "gender",
+                "lastPublicationUpdate",
+                "lastUpdated",
+                "primaryEndPoint",
+                "product",
+                "resultsFirstReceived",
+                "sponsor",
+                "sponsorType",
+                "startDateEU",
+                "therapeuticAreas",
+                "totalNumberEnrolled",
+                "trialCountries",
+                "trialPhase",
+                "trialRegion"
+              ],
+              "sample": {
+                "conditions": "str",
+                "ctNumber": "str",
+                "ctStatus": "int",
+                "ctTitle": "str",
+                "decisionDate": "str",
+                "decisionDateOverall": "str",
+                "sponsor": "str",
+                "sponsorType": "str",
+                "startDateEU": "str",
+                "therapeuticAreas": "list",
+                "trialCountries": "list",
+                "trialPhase": "str"
+              }
+            },
+            "len": 2
+          },
+          "pagination": {
+            "__type__": "object",
+            "keys": [
+              "currentPage",
+              "nextPage",
+              "prevPage",
+              "totalPages",
+              "totalRecords"
+            ],
+            "sample": {
+              "currentPage": {
+                "__type__": "int"
+              },
+              "nextPage": {
+                "__type__": "bool"
+              },
+              "prevPage": {
+                "__type__": "bool"
+              },
+              "totalPages": {
+                "__type__": "int"
+              },
+              "totalRecords": {
+                "__type__": "int"
+              }
+            }
+          },
+          "showWarning": {
+            "__type__": "bool"
+          }
+        }
+      },
+      "url": "https://euclinicaltrials.eu/ctis-public-api/search"
+    },
+    {
+      "attempts": 1,
+      "bytes": 5010,
+      "counts_as_ok": true,
+      "elapsed_ms": 688,
+      "error": "",
+      "http_ok": true,
+      "json_parsed": true,
+      "method": "post",
+      "name": "api_search_sponsor",
+      "record_count": 2,
+      "sample": {
+        "fetched_at": "2026-11-08T21:43:32.633154Z",
+        "name": "ctis_search_sponsor.json",
+        "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\eu_ctis\\ctis_search_sponsor.json",
+        "sha256_full": "d37eaed5b41e35fc0594f247964f7ab832bd4a9ec7fd7fdb290410f66006f6fa",
+        "sha256_stored": "d37eaed5b41e35fc0594f247964f7ab832bd4a9ec7fd7fdb290410f66006f6fa",
+        "stored_bytes": 5010,
+        "total_bytes": 5010,
+        "truncated": false,
+        "url": "https://euclinicaltrials.eu/ctis-public-api/search"
+      },
+      "status": 200,
+      "structure": {
+        "__type__": "object",
+        "keys": [
+          "data",
+          "pagination",
+          "showWarning"
+        ],
+        "sample": {
+          "data": {
+            "__type__": "array",
+            "item": {
+              "__type__": "object",
+              "keys": [
+                "ageGroup",
+                "ageRangeSecondary",
+                "conditions",
+                "ctNumber",
+                "ctStatus",
+                "ctTitle",
+                "decisionDate",
+                "decisionDateOverall",
+                "endPoint",
+                "gender",
+                "lastPublicationUpdate",
+                "lastUpdated",
+                "primaryEndPoint",
+                "product",
+                "resultsFirstReceived",
+                "shortTitle",
+                "sponsor",
+                "sponsorType",
+                "startDateEU",
+                "therapeuticAreas",
+                "totalNumberEnrolled",
+                "trialCountries",
+                "trialPhase",
+                "trialRegion"
+              ],
+              "sample": {
+                "conditions": "str",
+                "ctNumber": "str",
+                "ctStatus": "int",
+                "ctTitle": "str",
+                "decisionDate": "str",
+                "decisionDateOverall": "str",
+                "shortTitle": "str",
+                "sponsor": "str",
+                "sponsorType": "str",
+                "startDateEU": "str",
+                "therapeuticAreas": "list",
+                "trialCountries": "list"
+              }
+            },
+            "len": 2
+          },
+          "pagination": {
+            "__type__": "object",
+            "keys": [
+              "currentPage",
+              "nextPage",
+              "prevPage",
+              "totalPages",
+              "totalRecords"
+            ],
+            "sample": {
+              "currentPage": {
+                "__type__": "int"
+              },
+              "nextPage": {
+                "__type__": "bool"
+              },
+              "prevPage": {
+                "__type__": "bool"
+              },
+              "totalPages": {
+                "__type__": "int"
+              },
+              "totalRecords": {
+                "__type__": "int"
+              }
+            }
+          },
+          "showWarning": {
+            "__type__": "bool"
+          }
+        }
+      },
+      "url": "https://euclinicaltrials.eu/ctis-public-api/search"
+    },
+    {
+      "attempts": 1,
+      "bytes": 137298,
+      "counts_as_ok": true,
+      "elapsed_ms": 516,
+      "error": "",
+      "http_ok": true,
+      "json_parsed": true,
+      "method": "get",
+      "name": "api_retrieve",
+      "record_count": null,
+      "sample": {
+        "fetched_at": "2026-11-08T21:43:33.670765Z",
+        "name": "ctis_retrieve.json",
+        "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\eu_ctis\\ctis_retrieve.json",
+        "sha256_full": "a973f3d79acda48e4d9681ba961bd6c7d83cd33a418e9579306da342fdfa8b0f",
+        "sha256_stored": "a973f3d79acda48e4d9681ba961bd6c7d83cd33a418e9579306da342fdfa8b0f",
+        "stored_bytes": 137298,
+        "total_bytes": 137298,
+        "truncated": false,
+        "url": "https://euclinicaltrials.eu/ctis-public-api/retrieve/2023-507015-35-00"
+      },
+      "status": 200,
+      "structure": {
+        "__type__": "object",
+        "keys": [
+          "authorizedApplication",
+          "correctiveMeasures",
+          "ctNumber",
+          "ctPublicStatusCode",
+          "ctStatus",
+          "decisionDate",
+          "documents",
+          "events",
+          "publishDate",
+          "results",
+          "startDateEU",
+          "trialRegion",
+          "trialRegionCode"
+        ],
+        "sample": {
+          "authorizedApplication": {
+            "__type__": "object",
+            "keys": [
+              "applicationInfo",
+              "authorizedPartI",
+              "authorizedPartsII",
+              "eudraCt",
+              "memberStatesConcerned",
+              "trialGlobalEnd"
+            ],
+            "sample": {
+              "applicationInfo": {
+                "__type__": "array",
+                "item": "dict",
+                "len": 7
+              },
+              "authorizedPartI": {
+                "__type__": "object",
+                "keys": [
+                  "assessmentOutcome",
+                  "assessmentOutcomeDate",
+                  "conclusionDate",
+                  "id",
+                  "isLowIntervention",
+                  "medicalConditions",
+                  "partOneTherapeuticAreas",
+                  "productRoleGroupInfos",
+                  "products",
+                  "rowSubjectCount",
+                  "sponsors",
+                  "therapeuticAreas",
+                  "trialCategoryCode",
+                  "trialCategoryJustificationComment",
+                  "trialDetails"
+                ],
+                "sample": {
+                  "assessmentOutcome": "str",
+                  "assessmentOutcomeDate": "str",
+                  "conclusionDate": "str",
+                  "id": "int",
+                  "medicalConditions": "list",
+                  "products": "list",
+                  "rowSubjectCount": "int",
+                  "sponsors": "list",
+                  "therapeuticAreas": "list",
+                  "trialCategoryCode": "str",
+                  "trialCategoryJustificationComment": "str",
+                  "trialDetails": "dict"
+                }
+              },
+              "authorizedPartsII": {
+                "__type__": "array",
+                "item": "dict",
+                "len": 3
+              },
+              "eudraCt": {
+                "__type__": "object",
+                "keys": [
+                  "eudraCtCode",
+                  "isTransitioned"
+                ],
+                "sample": {
+                  "eudraCtCode": "str",
+                  "isTransitioned": "bool"
+                }
+              },
+              "memberStatesConcerned": {
+                "__type__": "array",
+                "item": "dict",
+                "len": 3
+              },
+              "trialGlobalEnd": {
+                "__type__": "array",
+                "item": null,
+                "len": 0
+              }
+            }
+          },
+          "ctNumber": {
+            "__type__": "string",
+            "max_len": 17
+          },
+          "ctPublicStatusCode": {
+            "__type__": "int"
+          },
+          "ctStatus": {
+            "__type__": "string",
+            "max_len": 10
+          },
+          "decisionDate": {
+            "__type__": "string",
+            "max_len": 23
+          },
+          "documents": {
+            "__type__": "array",
+            "item": {
+              "__type__": "object",
+              "keys": [
+                "associatedEntityId",
+                "documentType",
+                "documentTypeLabel",
+                "fileType",
+                "languageCode",
+                "manualVersion",
+                "systemVersion",
+                "title",
+                "uuid"
+              ],
+              "sample": {
+                "associatedEntityId": "int",
+                "documentType": "str",
+                "documentTypeLabel": "str",
+                "fileType": "str",
+                "languageCode": "int",
+                "manualVersion": "str",
+                "systemVersion": "str",
+                "title": "str",
+                "uuid": "str"
+              }
+            },
+            "len": 48
+          },
+          "events": {
+            "__type__": "object",
+            "keys": [
+              "seriousBreaches",
+              "temporaryHaltList",
+              "trialEvents",
+              "unexpectedEvents",
+              "urgentSafetyMeasures"
+            ],
+            "sample": {
+              "seriousBreaches": {
+                "__type__": "array",
+                "item": "dict",
+                "len": 1
+              },
+              "temporaryHaltList": {
+                "__type__": "array",
+                "item": null,
+                "len": 0
+              },
+              "trialEvents": {
+                "__type__": "array",
+                "item": "dict",
+                "len": 3
+              },
+              "unexpectedEvents": {
+                "__type__": "array",
+                "item": null,
+                "len": 0
+              },
+              "urgentSafetyMeasures": {
+                "__type__": "array",
+                "item": null,
+                "len": 0
+              }
+            }
+          },
+          "publishDate": {
+            "__type__": "string",
+            "max_len": 29
+          },
+          "results": {
+            "__type__": "object",
+            "keys": [],
+            "sample": {}
+          },
+          "startDateEU": {
+            "__type__": "string",
+            "max_len": 10
+          },
+          "trialRegion": {
+            "__type__": "string",
+            "max_len": 3
+          },
+          "trialRegionCode": {
+            "__type__": "int"
+          }
+        }
+      },
+      "url": "https://euclinicaltrials.eu/ctis-public-api/retrieve/2023-507015-35-00"
+    },
+    {
+      "attempts": 1,
+      "bytes": 105219,
+      "counts_as_ok": false,
+      "elapsed_ms": 547,
+      "error": "JSONDecodeError: json decode failed",
+      "http_ok": true,
+      "json_parsed": false,
+      "method": "get",
+      "name": "site_home",
+      "record_count": null,
+      "status": 200,
+      "structure": null,
+      "url": "https://euclinicaltrials.eu/"
+    }
+  ],
+  "requests": 4,
+  "schema": "medradar.external.probe.v1",
+  "source_id": "eu_ctis",
+  "status": "VERIFIED_API",
+  "verified_at": "2026-11-08T21:43:34.908041Z"
+}

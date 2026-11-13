@@ -1,0 +1,107 @@
+{
+  "generated_at": "2026-11-08T21:59:10.121956Z",
+  "manifest_repair": {
+    "incident": "wildcard write rewrote SAMPLES.json files during collection",
+    "incident_observed_at": "2026-11-08T21:59:10Z",
+    "policy": "verify, do not restore: payload bytes were never modified",
+    "repaired_at_note": "hashes recomputed from disk; declared values preserved on conflict",
+    "stats": {
+      "entries": 6,
+      "mismatched": 0,
+      "missing_files": 0,
+      "recomputed": 6,
+      "source_id": "procurement",
+      "unlisted_files_added": 0,
+      "verified": 0
+    }
+  },
+  "note": "Raw response slices only; parsed records are derived and live in the series/handoff.",
+  "samples": [
+    {
+      "file": "build_five_firm_probe.py",
+      "hash_verified": true,
+      "name": "build_five_firm_probe.py",
+      "note": "descriptor recovered from disk: the probe run did not persist the full-response descriptor, so sha256_full/total_bytes are null rather than guessed",
+      "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\procurement\\build_five_firm_probe.py",
+      "sha256_full": "6ff2f57190699da99ea8a0041015b9b5b4e70bb94aeb33664d080b515589df8a",
+      "sha256_source": "recomputed_from_disk",
+      "sha256_stored": "6ff2f57190699da99ea8a0041015b9b5b4e70bb94aeb33664d080b515589df8a",
+      "source": "recovered_from_disk",
+      "stored_bytes": 12291,
+      "total_bytes": 12291,
+      "truncated": false
+    },
+    {
+      "file": "build_sample_index.py",
+      "hash_verified": true,
+      "name": "build_sample_index.py",
+      "note": "descriptor recovered from disk: the probe run did not persist the full-response descriptor, so sha256_full/total_bytes are null rather than guessed",
+      "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\procurement\\build_sample_index.py",
+      "sha256_full": "04f655c411f23683b0dfa7d95b0a593f327a12df6be257a2699ee6875b5ebba6",
+      "sha256_source": "recomputed_from_disk",
+      "sha256_stored": "04f655c411f23683b0dfa7d95b0a593f327a12df6be257a2699ee6875b5ebba6",
+      "source": "recovered_from_disk",
+      "stored_bytes": 4436,
+      "total_bytes": 4436,
+      "truncated": false
+    },
+    {
+      "file": "CONNECTOR_SMOKE.json",
+      "hash_verified": true,
+      "name": "CONNECTOR_SMOKE.json",
+      "note": "descriptor recovered from disk: the probe run did not persist the full-response descriptor, so sha256_full/total_bytes are null rather than guessed",
+      "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\procurement\\CONNECTOR_SMOKE.json",
+      "sha256_full": "d2d3113b6ab39cd78001131bdf725780038722b42156c854384de563458f8c6a",
+      "sha256_source": "recomputed_from_disk",
+      "sha256_stored": "d2d3113b6ab39cd78001131bdf725780038722b42156c854384de563458f8c6a",
+      "source": "recovered_from_disk",
+      "stored_bytes": 4253,
+      "total_bytes": 4253,
+      "truncated": false
+    },
+    {
+      "file": "connector_smoke.py",
+      "hash_verified": true,
+      "name": "connector_smoke.py",
+      "note": "descriptor recovered from disk: the probe run did not persist the full-response descriptor, so sha256_full/total_bytes are null rather than guessed",
+      "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\procurement\\connector_smoke.py",
+      "sha256_full": "154650e59a3336055826cfbaea7b39e4596438a166a9e6f22ce5716f020b0e9c",
+      "sha256_source": "recomputed_from_disk",
+      "sha256_stored": "154650e59a3336055826cfbaea7b39e4596438a166a9e6f22ce5716f020b0e9c",
+      "source": "recovered_from_disk",
+      "stored_bytes": 5476,
+      "total_bytes": 5476,
+      "truncated": false
+    },
+    {
+      "file": "connector_smoke_requests.jsonl",
+      "hash_verified": true,
+      "name": "connector_smoke_requests.jsonl",
+      "note": "descriptor recovered from disk: the probe run did not persist the full-response descriptor, so sha256_full/total_bytes are null rather than guessed",
+      "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\procurement\\connector_smoke_requests.jsonl",
+      "sha256_full": "3e6b199a8d966916f567b9c2009b7d48e11d95bb234452e9289bf306ba567ed9",
+      "sha256_source": "recomputed_from_disk",
+      "sha256_stored": "3e6b199a8d966916f567b9c2009b7d48e11d95bb234452e9289bf306ba567ed9",
+      "source": "recovered_from_disk",
+      "stored_bytes": 1466,
+      "total_bytes": 1466,
+      "truncated": false
+    },
+    {
+      "file": "FIVE_FIRM_PROBE.json",
+      "hash_verified": true,
+      "name": "FIVE_FIRM_PROBE.json",
+      "note": "descriptor recovered from disk: the probe run did not persist the full-response descriptor, so sha256_full/total_bytes are null rather than guessed",
+      "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\procurement\\FIVE_FIRM_PROBE.json",
+      "sha256_full": "d48524f53e7ba70e357b88741d226db6316553c7ece4d26c60de964aedd8d129",
+      "sha256_source": "recomputed_from_disk",
+      "sha256_stored": "d48524f53e7ba70e357b88741d226db6316553c7ece4d26c60de964aedd8d129",
+      "source": "recovered_from_disk",
+      "stored_bytes": 39966,
+      "total_bytes": 39966,
+      "truncated": false
+    }
+  ],
+  "schema": "medradar.external.samples.v1",
+  "source_id": "procurement"
+}

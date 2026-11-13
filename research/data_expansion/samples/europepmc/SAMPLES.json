@@ -1,0 +1,87 @@
+{
+  "generated_at": "2026-11-08T21:59:08.577650Z",
+  "manifest_repair": {
+    "incident": "wildcard write rewrote SAMPLES.json files during collection",
+    "incident_observed_at": "2026-11-08T21:59:10Z",
+    "policy": "verify, do not restore: payload bytes were never modified",
+    "repaired_at_note": "hashes recomputed from disk; declared values preserved on conflict",
+    "stats": {
+      "entries": 4,
+      "mismatched": 0,
+      "missing_files": 0,
+      "recomputed": 4,
+      "source_id": "europepmc",
+      "unlisted_files_added": 0,
+      "verified": 0
+    }
+  },
+  "note": "Raw response slices only; parsed records are derived and live in the series/handoff.",
+  "samples": [
+    {
+      "file": "europepmc_affiliation.json",
+      "hash_verified": true,
+      "name": "europepmc_affiliation.json",
+      "note": "descriptor recovered from disk: the probe run did not persist the full-response descriptor, so sha256_full/total_bytes are null rather than guessed",
+      "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\europepmc\\europepmc_affiliation.json",
+      "recovered_from": "requests.jsonl",
+      "request_url": "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=AFF%3A%22Medtronic%22&format=json&pageSize=2&resultType=core",
+      "sha256_full": "a7d837a5271246cf9b24265edd5576ce660a630786cada1b288786c8e683aa5a",
+      "sha256_source": "recomputed_from_disk",
+      "sha256_stored": "a7d837a5271246cf9b24265edd5576ce660a630786cada1b288786c8e683aa5a",
+      "source": "recovered_from_disk",
+      "stored_bytes": 8190,
+      "total_bytes": 8190,
+      "truncated": false
+    },
+    {
+      "file": "europepmc_doi.json",
+      "hash_verified": true,
+      "name": "europepmc_doi.json",
+      "note": "descriptor recovered from disk: the probe run did not persist the full-response descriptor, so sha256_full/total_bytes are null rather than guessed",
+      "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\europepmc\\europepmc_doi.json",
+      "recovered_from": "requests.jsonl",
+      "request_url": "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=DOI%3A%2210.1056%2FNEJMoa2034577%22&format=json&pageSize=2&resultType=core",
+      "sha256_full": "88a1e7eddb690cc197cba7ab68afd7091629b0565ac2971c4b4f3701900a0bbf",
+      "sha256_source": "recomputed_from_disk",
+      "sha256_stored": "88a1e7eddb690cc197cba7ab68afd7091629b0565ac2971c4b4f3701900a0bbf",
+      "source": "recovered_from_disk",
+      "stored_bytes": 62503,
+      "total_bytes": 62503,
+      "truncated": false
+    },
+    {
+      "file": "europepmc_search_core.json",
+      "hash_verified": true,
+      "name": "europepmc_search_core.json",
+      "note": "descriptor recovered from disk: the probe run did not persist the full-response descriptor, so sha256_full/total_bytes are null rather than guessed",
+      "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\europepmc\\europepmc_search_core.json",
+      "recovered_from": "requests.jsonl",
+      "request_url": "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=stent&format=json&pageSize=2&resultType=core",
+      "sha256_full": "0b957aeb699ea59e43b65d1a06984db98d07c4e346b4b72e8c908ac712d1adfb",
+      "sha256_source": "recomputed_from_disk",
+      "sha256_stored": "0b957aeb699ea59e43b65d1a06984db98d07c4e346b4b72e8c908ac712d1adfb",
+      "source": "recovered_from_disk",
+      "stored_bytes": 18853,
+      "total_bytes": 18853,
+      "truncated": false
+    },
+    {
+      "file": "europepmc_search_lite.json",
+      "hash_verified": true,
+      "name": "europepmc_search_lite.json",
+      "note": "descriptor recovered from disk: the probe run did not persist the full-response descriptor, so sha256_full/total_bytes are null rather than guessed",
+      "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\europepmc\\europepmc_search_lite.json",
+      "recovered_from": "requests.jsonl",
+      "request_url": "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=stent&format=json&pageSize=2&resultType=lite",
+      "sha256_full": "b02df3357d3b4a3700aa10d8a9e2cef46c6c1dffc004409ff5dc0791c0263029",
+      "sha256_source": "recomputed_from_disk",
+      "sha256_stored": "b02df3357d3b4a3700aa10d8a9e2cef46c6c1dffc004409ff5dc0791c0263029",
+      "source": "recovered_from_disk",
+      "stored_bytes": 2289,
+      "total_bytes": 2289,
+      "truncated": false
+    }
+  ],
+  "schema": "medradar.external.samples.v1",
+  "source_id": "europepmc"
+}

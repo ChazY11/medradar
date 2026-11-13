@@ -1,0 +1,316 @@
+{
+  "error": "",
+  "evidence_urls": [
+    "https://api.reporter.nih.gov/v2/projects/search",
+    "https://api.reporter.nih.gov/v2/projects/search",
+    "https://api.reporter.nih.gov/v2/projects/search"
+  ],
+  "notes": "NIH RePORTER v2 is POST-only and needs no key: `POST /v2/projects/search` with a `criteria` object returned 200 JSON and `results`.  Grants carry `project_num`, `project_start_date` (event_at), `award_notice_date` (approximate public-visibility clock of the award record), `organization.org_name` (company field) and `agency_ic_*`.  The same grant must not be counted twice when several fiscal-year queries overlap.",
+  "probes": [
+    {
+      "attempts": 1,
+      "bytes": 2310,
+      "counts_as_ok": true,
+      "elapsed_ms": 828,
+      "error": "",
+      "http_ok": true,
+      "json_parsed": true,
+      "method": "post",
+      "name": "projects_text",
+      "record_count": 2,
+      "sample": {
+        "fetched_at": "2026-11-08T21:42:45.277993Z",
+        "name": "reporter_text_stent.json",
+        "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\nih_reporter\\reporter_text_stent.json",
+        "sha256_full": "4b89f069055324e066a2bc4e656fbbe00da778a0a2f0f13fd4dc705703590691",
+        "sha256_stored": "4b89f069055324e066a2bc4e656fbbe00da778a0a2f0f13fd4dc705703590691",
+        "stored_bytes": 2310,
+        "total_bytes": 2310,
+        "truncated": false,
+        "url": "https://api.reporter.nih.gov/v2/projects/search"
+      },
+      "status": 200,
+      "structure": {
+        "__type__": "object",
+        "keys": [
+          "meta",
+          "results"
+        ],
+        "sample": {
+          "meta": {
+            "__type__": "object",
+            "keys": [
+              "limit",
+              "offset",
+              "properties",
+              "search_id",
+              "sort_field",
+              "sort_order",
+              "sorted_by_relevance",
+              "total"
+            ],
+            "sample": {
+              "limit": {
+                "__type__": "int"
+              },
+              "offset": {
+                "__type__": "int"
+              },
+              "properties": {
+                "__type__": "object",
+                "keys": [
+                  "URL"
+                ],
+                "sample": {
+                  "URL": "str"
+                }
+              },
+              "search_id": {
+                "__type__": "string",
+                "max_len": 22
+              },
+              "sort_field": {
+                "__type__": "NoneType"
+              },
+              "sort_order": {
+                "__type__": "string",
+                "max_len": 3
+              },
+              "sorted_by_relevance": {
+                "__type__": "bool"
+              },
+              "total": {
+                "__type__": "int"
+              }
+            }
+          },
+          "results": {
+            "__type__": "array",
+            "item": {
+              "__type__": "object",
+              "keys": [
+                "agency_ic_admin",
+                "award_amount",
+                "award_notice_date",
+                "fiscal_year",
+                "organization",
+                "principal_investigators",
+                "project_num",
+                "project_start_date",
+                "project_title"
+              ],
+              "sample": {
+                "agency_ic_admin": "dict",
+                "award_amount": "int",
+                "award_notice_date": "str",
+                "fiscal_year": "int",
+                "organization": "dict",
+                "principal_investigators": "list",
+                "project_num": "str",
+                "project_start_date": "str",
+                "project_title": "str"
+              }
+            },
+            "len": 2
+          }
+        }
+      },
+      "url": "https://api.reporter.nih.gov/v2/projects/search"
+    },
+    {
+      "attempts": 1,
+      "bytes": 241,
+      "counts_as_ok": true,
+      "elapsed_ms": 531,
+      "error": "",
+      "http_ok": true,
+      "json_parsed": true,
+      "method": "post",
+      "name": "projects_org_fy",
+      "record_count": 0,
+      "sample": {
+        "fetched_at": "2026-11-08T21:42:45.978391Z",
+        "name": "reporter_org_medtronic_fy2023.json",
+        "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\nih_reporter\\reporter_org_medtronic_fy2023.json",
+        "sha256_full": "a98c331170ae241b4937dcd09ab764d5b78c62591995782bb2e0c1fdd6d545ce",
+        "sha256_stored": "a98c331170ae241b4937dcd09ab764d5b78c62591995782bb2e0c1fdd6d545ce",
+        "stored_bytes": 241,
+        "total_bytes": 241,
+        "truncated": false,
+        "url": "https://api.reporter.nih.gov/v2/projects/search"
+      },
+      "status": 200,
+      "structure": {
+        "__type__": "object",
+        "keys": [
+          "meta",
+          "results"
+        ],
+        "sample": {
+          "meta": {
+            "__type__": "object",
+            "keys": [
+              "limit",
+              "offset",
+              "properties",
+              "search_id",
+              "sort_field",
+              "sort_order",
+              "sorted_by_relevance",
+              "total"
+            ],
+            "sample": {
+              "limit": {
+                "__type__": "int"
+              },
+              "offset": {
+                "__type__": "int"
+              },
+              "properties": {
+                "__type__": "object",
+                "keys": [
+                  "URL"
+                ],
+                "sample": {
+                  "URL": "str"
+                }
+              },
+              "search_id": {
+                "__type__": "string",
+                "max_len": 22
+              },
+              "sort_field": {
+                "__type__": "NoneType"
+              },
+              "sort_order": {
+                "__type__": "string",
+                "max_len": 3
+              },
+              "sorted_by_relevance": {
+                "__type__": "bool"
+              },
+              "total": {
+                "__type__": "int"
+              }
+            }
+          },
+          "results": {
+            "__type__": "array",
+            "item": null,
+            "len": 0
+          }
+        }
+      },
+      "url": "https://api.reporter.nih.gov/v2/projects/search"
+    },
+    {
+      "attempts": 1,
+      "bytes": 710,
+      "counts_as_ok": true,
+      "elapsed_ms": 656,
+      "error": "",
+      "http_ok": true,
+      "json_parsed": true,
+      "method": "post",
+      "name": "projects_org_any_year",
+      "record_count": 2,
+      "sample": {
+        "fetched_at": "2026-11-08T21:42:47.099910Z",
+        "name": "reporter_org_any_year.json",
+        "path": "D:\\DEPPSKK\\worktrees\\data-expansion-001\\research\\data_expansion\\samples\\nih_reporter\\reporter_org_any_year.json",
+        "sha256_full": "6a4fa448f8f8e841bd1208cab1e5399875df11f31cfd510f767a1d80124b2a29",
+        "sha256_stored": "6a4fa448f8f8e841bd1208cab1e5399875df11f31cfd510f767a1d80124b2a29",
+        "stored_bytes": 710,
+        "total_bytes": 710,
+        "truncated": false,
+        "url": "https://api.reporter.nih.gov/v2/projects/search"
+      },
+      "status": 200,
+      "structure": {
+        "__type__": "object",
+        "keys": [
+          "meta",
+          "results"
+        ],
+        "sample": {
+          "meta": {
+            "__type__": "object",
+            "keys": [
+              "limit",
+              "offset",
+              "properties",
+              "search_id",
+              "sort_field",
+              "sort_order",
+              "sorted_by_relevance",
+              "total"
+            ],
+            "sample": {
+              "limit": {
+                "__type__": "int"
+              },
+              "offset": {
+                "__type__": "int"
+              },
+              "properties": {
+                "__type__": "object",
+                "keys": [
+                  "URL"
+                ],
+                "sample": {
+                  "URL": "str"
+                }
+              },
+              "search_id": {
+                "__type__": "string",
+                "max_len": 22
+              },
+              "sort_field": {
+                "__type__": "NoneType"
+              },
+              "sort_order": {
+                "__type__": "string",
+                "max_len": 3
+              },
+              "sorted_by_relevance": {
+                "__type__": "bool"
+              },
+              "total": {
+                "__type__": "int"
+              }
+            }
+          },
+          "results": {
+            "__type__": "array",
+            "item": {
+              "__type__": "object",
+              "keys": [
+                "award_amount",
+                "award_notice_date",
+                "fiscal_year",
+                "project_num",
+                "project_start_date",
+                "project_title"
+              ],
+              "sample": {
+                "award_amount": "int",
+                "award_notice_date": "str",
+                "fiscal_year": "int",
+                "project_num": "str",
+                "project_start_date": "str",
+                "project_title": "str"
+              }
+            },
+            "len": 2
+          }
+        }
+      },
+      "url": "https://api.reporter.nih.gov/v2/projects/search"
+    }
+  ],
+  "requests": 3,
+  "schema": "medradar.external.probe.v1",
+  "source_id": "nih_reporter",
+  "status": "VERIFIED_API",
+  "verified_at": "2026-11-08T21:42:47.101362Z"
+}

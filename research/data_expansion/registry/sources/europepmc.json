@@ -1,0 +1,49 @@
+{
+  "api_available": "YES",
+  "authentication": "none",
+  "bulk_download_available": "PARTIAL",
+  "category": "scholarly_literature",
+  "connection_status": "NOT_TESTED",
+  "cost_notes": "free public service",
+  "country_or_region": "EU",
+  "domain": "C",
+  "entity_identifiers": [
+    "PMID",
+    "PMCID",
+    "DOI",
+    "ISSN",
+    "ORCID"
+  ],
+  "evidence_urls": [
+    "https://europepmc.org/RestfulWebService",
+    "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=stent&format=json&pageSize=2&resultType=core",
+    "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=AFF%3A%22Medtronic%22&format=json&pageSize=2&resultType=core"
+  ],
+  "free_tier": "free, no key required",
+  "historical_coverage": "33M+ publications, incl. PubMed and Agricola; content back to the 1800s for some sources",
+  "known_limitations": [
+    "firstIndexDate is the ingestion clock and must never be used as source_public_at",
+    "grantsList often carries only an agency name and no grantId, so award-number linking is partial",
+    "affiliations are not always present and are free text",
+    "Europe PMC re-publishes PubMed records: counting both without DOI/PMID de-duplication inflates evidence"
+  ],
+  "licence": "record-level: abstracts and metadata aggregated from PubMed/PMC/Agricola/EPO; article licences vary",
+  "official_or_commercial": "official",
+  "official_url": "https://europepmc.org/RestfulWebService",
+  "probe_priority": "P0",
+  "rate_limits": "no published hard number in the REST documentation; fair-use, pace requests (we used 0.8s)",
+  "redistribution_allowed": "PARTIAL",
+  "research_value": "Publishes an explicit first-publication date plus grant metadata in one record; the best single source for 'when could the market first see this paper', and the bridge for paper-grant linking.",
+  "source_id": "europepmc",
+  "source_name": "Europe PMC REST",
+  "timestamp_fields": [
+    "firstPublicationDate",
+    "electronicPublicationDate",
+    "journalInfo.dateOfPublication",
+    "firstIndexDate",
+    "dateOfCreation",
+    "dateOfRevision"
+  ],
+  "update_frequency": "daily",
+  "verified_at": "2026-11-09"
+}
