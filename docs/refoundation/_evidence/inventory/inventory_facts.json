@@ -1,0 +1,6384 @@
+{
+ "generated_by": "docs/refoundation/_evidence/inventory/collect_inventory.py",
+ "main_file_count": 1135,
+ "main_total_bytes": 30474497,
+ "top_level": {
+  "experiments": {
+   "files": 657,
+   "bytes": 15778771
+  },
+  "docs": {
+   "files": 60,
+   "bytes": 6704394
+  },
+  "config": {
+   "files": 10,
+   "bytes": 2283315
+  },
+  "medradar": {
+   "files": 87,
+   "bytes": 1853319
+  },
+  "research": {
+   "files": 116,
+   "bytes": 1396890
+  },
+  "tests": {
+   "files": 105,
+   "bytes": 1315504
+  },
+  "papers": {
+   "files": 32,
+   "bytes": 534818
+  },
+  "scripts": {
+   "files": 13,
+   "bytes": 401951
+  },
+  "tools": {
+   "files": 15,
+   "bytes": 63663
+  },
+  "verifier": {
+   "files": 22,
+   "bytes": 34482
+  },
+  "README.md": {
+   "files": 1,
+   "bytes": 31738
+  },
+  "README.zh-CN.md": {
+   "files": 1,
+   "bytes": 26132
+  },
+  "CHANGELOG.md": {
+   "files": 1,
+   "bytes": 23524
+  },
+  ".github": {
+   "files": 8,
+   "bytes": 15046
+  },
+  "ROADMAP.md": {
+   "files": 1,
+   "bytes": 5225
+  },
+  "CONTRIBUTING.md": {
+   "files": 1,
+   "bytes": 1932
+  },
+  "pyproject.toml": {
+   "files": 1,
+   "bytes": 1490
+  },
+  "LICENSE": {
+   "files": 1,
+   "bytes": 1328
+  },
+  "MANIFEST.in": {
+   "files": 1,
+   "bytes": 479
+  },
+  ".gitignore": {
+   "files": 1,
+   "bytes": 437
+  },
+  ".gitattributes": {
+   "files": 1,
+   "bytes": 59
+  }
+ },
+ "sub_trees": {
+  "medradar": {
+   "medradar": {
+    "files": 61,
+    "bytes": 1644538
+   },
+   "medradar/intelligence/evaluation": {
+    "files": 4,
+    "bytes": 55608
+   },
+   "medradar/intelligence/features": {
+    "files": 6,
+    "bytes": 53249
+   },
+   "medradar/intelligence/sources": {
+    "files": 7,
+    "bytes": 52576
+   },
+   "medradar/intelligence/forecasting": {
+    "files": 5,
+    "bytes": 40087
+   },
+   "medradar/intelligence/models": {
+    "files": 2,
+    "bytes": 6007
+   },
+   "medradar/intelligence/entities": {
+    "files": 2,
+    "bytes": 1254
+   }
+  },
+  "experiments": {
+   "experiments": {
+    "files": 316,
+    "bytes": 12367075
+   },
+   "experiments/b027/snapshots": {
+    "files": 336,
+    "bytes": 3390498
+   },
+   "experiments/b027/profiles": {
+    "files": 5,
+    "bytes": 21198
+   }
+  },
+  "research": {
+   "research": {
+    "files": 66,
+    "bytes": 709181
+   },
+   "research/studies/early_signal_5firms": {
+    "files": 50,
+    "bytes": 687709
+   }
+  },
+  "tests": {
+   "tests": {
+    "files": 52,
+    "bytes": 848854
+   },
+   "tests/fixtures/calibration": {
+    "files": 29,
+    "bytes": 406813
+   },
+   "tests/fixtures/device": {
+    "files": 12,
+    "bytes": 22538
+   },
+   "tests/fixtures/dashboard": {
+    "files": 5,
+    "bytes": 16106
+   },
+   "tests/fixtures/stats": {
+    "files": 1,
+    "bytes": 8118
+   },
+   "tests/fixtures/prices": {
+    "files": 2,
+    "bytes": 7320
+   },
+   "tests/fixtures/drug": {
+    "files": 2,
+    "bytes": 4508
+   },
+   "tests/fixtures/replay": {
+    "files": 2,
+    "bytes": 1247
+   }
+  },
+  "docs": {
+   "docs": {
+    "files": 60,
+    "bytes": 6704394
+   }
+  },
+  "config": {
+   "config": {
+    "files": 10,
+    "bytes": 2283315
+   }
+  },
+  "papers": {
+   "papers": {
+    "files": 32,
+    "bytes": 534818
+   }
+  },
+  "verifier": {
+   "verifier": {
+    "files": 22,
+    "bytes": 34482
+   }
+  },
+  "tools": {
+   "tools": {
+    "files": 15,
+    "bytes": 63663
+   }
+  },
+  "scripts": {
+   "scripts": {
+    "files": 13,
+    "bytes": 401951
+   }
+  },
+  ".github": {
+   ".github": {
+    "files": 8,
+    "bytes": 15046
+   }
+  }
+ },
+ "medradar_files": [
+  {
+   "path": "medradar/__init__.py",
+   "bytes": 998,
+   "lines": 21
+  },
+  {
+   "path": "medradar/__main__.py",
+   "bytes": 40375,
+   "lines": 972
+  },
+  {
+   "path": "medradar/adcom.py",
+   "bytes": 15031,
+   "lines": 369
+  },
+  {
+   "path": "medradar/analyze.py",
+   "bytes": 45183,
+   "lines": 1142
+  },
+  {
+   "path": "medradar/audit.py",
+   "bytes": 10750,
+   "lines": 244
+  },
+  {
+   "path": "medradar/calibration.py",
+   "bytes": 44016,
+   "lines": 1090
+  },
+  {
+   "path": "medradar/cases.py",
+   "bytes": 28246,
+   "lines": 668
+  },
+  {
+   "path": "medradar/clinical.py",
+   "bytes": 18581,
+   "lines": 511
+  },
+  {
+   "path": "medradar/collect_device.py",
+   "bytes": 42545,
+   "lines": 1064
+  },
+  {
+   "path": "medradar/collect_drug.py",
+   "bytes": 12186,
+   "lines": 323
+  },
+  {
+   "path": "medradar/config.py",
+   "bytes": 13773,
+   "lines": 337
+  },
+  {
+   "path": "medradar/corpus.py",
+   "bytes": 48622,
+   "lines": 1242
+  },
+  {
+   "path": "medradar/dashboard.py",
+   "bytes": 76515,
+   "lines": 1368
+  },
+  {
+   "path": "medradar/db.py",
+   "bytes": 21465,
+   "lines": 625
+  },
+  {
+   "path": "medradar/eventstudy.py",
+   "bytes": 16773,
+   "lines": 436
+  },
+  {
+   "path": "medradar/families.py",
+   "bytes": 100671,
+   "lines": 1439
+  },
+  {
+   "path": "medradar/forecast_registry.py",
+   "bytes": 62610,
+   "lines": 1271
+  },
+  {
+   "path": "medradar/frontier.py",
+   "bytes": 9330,
+   "lines": 223
+  },
+  {
+   "path": "medradar/http.py",
+   "bytes": 11376,
+   "lines": 296
+  },
+  {
+   "path": "medradar/intelligence/__init__.py",
+   "bytes": 0,
+   "lines": 1
+  },
+  {
+   "path": "medradar/intelligence/changepoint.py",
+   "bytes": 25554,
+   "lines": 536
+  },
+  {
+   "path": "medradar/intelligence/entities/__init__.py",
+   "bytes": 0,
+   "lines": 1
+  },
+  {
+   "path": "medradar/intelligence/entities/technology_mapping.py",
+   "bytes": 1254,
+   "lines": 26
+  },
+  {
+   "path": "medradar/intelligence/evalstats.py",
+   "bytes": 64794,
+   "lines": 1455
+  },
+  {
+   "path": "medradar/intelligence/evaluation/__init__.py",
+   "bytes": 0,
+   "lines": 1
+  },
+  {
+   "path": "medradar/intelligence/evaluation/backtesting.py",
+   "bytes": 28922,
+   "lines": 518
+  },
+  {
+   "path": "medradar/intelligence/evaluation/leakage_audit.py",
+   "bytes": 20297,
+   "lines": 408
+  },
+  {
+   "path": "medradar/intelligence/evaluation/metrics.py",
+   "bytes": 6389,
+   "lines": 130
+  },
+  {
+   "path": "medradar/intelligence/features/__init__.py",
+   "bytes": 0,
+   "lines": 1
+  },
+  {
+   "path": "medradar/intelligence/features/demand_features.py",
+   "bytes": 2621,
+   "lines": 43
+  },
+  {
+   "path": "medradar/intelligence/features/financial_features.py",
+   "bytes": 6014,
+   "lines": 121
+  },
+  {
+   "path": "medradar/intelligence/features/market_features.py",
+   "bytes": 13905,
+   "lines": 335
+  },
+  {
+   "path": "medradar/intelligence/features/publication_features.py",
+   "bytes": 7247,
+   "lines": 162
+  },
+  {
+   "path": "medradar/intelligence/features/research_features.py",
+   "bytes": 23462,
+   "lines": 432
+  },
+  {
+   "path": "medradar/intelligence/forecasting/__init__.py",
+   "bytes": 0,
+   "lines": 1
+  },
+  {
+   "path": "medradar/intelligence/forecasting/calibration.py",
+   "bytes": 910,
+   "lines": 22
+  },
+  {
+   "path": "medradar/intelligence/forecasting/cycle.py",
+   "bytes": 13082,
+   "lines": 301
+  },
+  {
+   "path": "medradar/intelligence/forecasting/horizon.py",
+   "bytes": 8533,
+   "lines": 159
+  },
+  {
+   "path": "medradar/intelligence/forecasting/registry_adapter.py",
+   "bytes": 17562,
+   "lines": 395
+  },
+  {
+   "path": "medradar/intelligence/forecasts.py",
+   "bytes": 6398,
+   "lines": 141
+  },
+  {
+   "path": "medradar/intelligence/graph_context.py",
+   "bytes": 16082,
+   "lines": 391
+  },
+  {
+   "path": "medradar/intelligence/models/__init__.py",
+   "bytes": 0,
+   "lines": 1
+  },
+  {
+   "path": "medradar/intelligence/models/baseline.py",
+   "bytes": 6007,
+   "lines": 135
+  },
+  {
+   "path": "medradar/intelligence/pipeline.py",
+   "bytes": 9456,
+   "lines": 167
+  },
+  {
+   "path": "medradar/intelligence/profile.py",
+   "bytes": 32427,
+   "lines": 630
+  },
+  {
+   "path": "medradar/intelligence/promotion.py",
+   "bytes": 10531,
+   "lines": 221
+  },
+  {
+   "path": "medradar/intelligence/snapshot.py",
+   "bytes": 4368,
+   "lines": 97
+  },
+  {
+   "path": "medradar/intelligence/sources/__init__.py",
+   "bytes": 0,
+   "lines": 1
+  },
+  {
+   "path": "medradar/intelligence/sources/market_data.py",
+   "bytes": 13239,
+   "lines": 315
+  },
+  {
+   "path": "medradar/intelligence/sources/openfda_bulk.py",
+   "bytes": 5612,
+   "lines": 121
+  },
+  {
+   "path": "medradar/intelligence/sources/patents.py",
+   "bytes": 10162,
+   "lines": 237
+  },
+  {
+   "path": "medradar/intelligence/sources/procurement_us.py",
+   "bytes": 6103,
+   "lines": 126
+  },
+  {
+   "path": "medradar/intelligence/sources/publications.py",
+   "bytes": 11902,
+   "lines": 268
+  },
+  {
+   "path": "medradar/intelligence/sources/sec_financials.py",
+   "bytes": 5558,
+   "lines": 119
+  },
+  {
+   "path": "medradar/intelligence/storage.py",
+   "bytes": 9863,
+   "lines": 257
+  },
+  {
+   "path": "medradar/intelligence/taxonomy.py",
+   "bytes": 3846,
+   "lines": 82
+  },
+  {
+   "path": "medradar/intelligence/universe.py",
+   "bytes": 34415,
+   "lines": 849
+  },
+  {
+   "path": "medradar/live.py",
+   "bytes": 47708,
+   "lines": 1183
+  },
+  {
+   "path": "medradar/llm.py",
+   "bytes": 12469,
+   "lines": 320
+  },
+  {
+   "path": "medradar/nmpa.py",
+   "bytes": 13486,
+   "lines": 401
+  },
+  {
+   "path": "medradar/onboarding.py",
+   "bytes": 18947,
+   "lines": 502
+  },
+  {
+   "path": "medradar/paper.py",
+   "bytes": 27047,
+   "lines": 717
+  },
+  {
+   "path": "medradar/prices.py",
+   "bytes": 13145,
+   "lines": 356
+  },
+  {
+   "path": "medradar/products.py",
+   "bytes": 26808,
+   "lines": 665
+  },
+  {
+   "path": "medradar/replay.py",
+   "bytes": 130424,
+   "lines": 3088
+  },
+  {
+   "path": "medradar/report.py",
+   "bytes": 191556,
+   "lines": 4520
+  },
+  {
+   "path": "medradar/research_agent.py",
+   "bytes": 104628,
+   "lines": 1900
+  },
+  {
+   "path": "medradar/stats.py",
+   "bytes": 53029,
+   "lines": 1391
+  },
+  {
+   "path": "medradar/stats_cmd.py",
+   "bytes": 30443,
+   "lines": 827
+  },
+  {
+   "path": "medradar/studies/__init__.py",
+   "bytes": 82,
+   "lines": 1
+  },
+  {
+   "path": "medradar/studies/adjudication.py",
+   "bytes": 6623,
+   "lines": 132
+  },
+  {
+   "path": "medradar/studies/concurrent.py",
+   "bytes": 10886,
+   "lines": 226
+  },
+  {
+   "path": "medradar/studies/coverage.py",
+   "bytes": 9851,
+   "lines": 204
+  },
+  {
+   "path": "medradar/studies/crosswalk.py",
+   "bytes": 3860,
+   "lines": 87
+  },
+  {
+   "path": "medradar/studies/humanreview.py",
+   "bytes": 4531,
+   "lines": 102
+  },
+  {
+   "path": "medradar/studies/leadtimedesc.py",
+   "bytes": 4656,
+   "lines": 94
+  },
+  {
+   "path": "medradar/studies/pairing.py",
+   "bytes": 4086,
+   "lines": 81
+  },
+  {
+   "path": "medradar/studies/pointprocess.py",
+   "bytes": 9392,
+   "lines": 211
+  },
+  {
+   "path": "medradar/studies/thirdsource.py",
+   "bytes": 5617,
+   "lines": 118
+  },
+  {
+   "path": "medradar/tkg/__init__.py",
+   "bytes": 1185,
+   "lines": 44
+  },
+  {
+   "path": "medradar/tkg/__main__.py",
+   "bytes": 10539,
+   "lines": 260
+  },
+  {
+   "path": "medradar/tkg/_time.py",
+   "bytes": 2334,
+   "lines": 55
+  },
+  {
+   "path": "medradar/tkg/adapter.py",
+   "bytes": 9647,
+   "lines": 232
+  },
+  {
+   "path": "medradar/tkg/export.py",
+   "bytes": 4707,
+   "lines": 122
+  },
+  {
+   "path": "medradar/tkg/query.py",
+   "bytes": 7403,
+   "lines": 168
+  },
+  {
+   "path": "medradar/tkg/store.py",
+   "bytes": 31005,
+   "lines": 675
+  },
+  {
+   "path": "medradar/util.py",
+   "bytes": 11664,
+   "lines": 359
+  }
+ ],
+ "branches": {
+  "origin": {
+   "sha": "b2a14c0a92332c004445de686daee97754cf94cb",
+   "tip_subject": "Merge pull request #11 from ChazY11/research/early-signal-review-workbench",
+   "tip_date": "2026-11-03T04:26:31+08:00",
+   "ahead": 0,
+   "behind": 0,
+   "diffstat_vs_main": {
+    "files": 0,
+    "additions": 0,
+    "deletions": 0
+   }
+  },
+  "feat/frontier-device-radar": {
+   "sha": "94c6a10004dfbc4d8add974669be54d6cc8679ff",
+   "tip_subject": "Update medradar/report.py to match local version byte-for-byte",
+   "tip_date": "2026-11-01T09:41:51+08:00",
+   "ahead": 13,
+   "behind": 154,
+   "diffstat_vs_main": {
+    "files": 44,
+    "additions": 2709,
+    "deletions": 234
+   }
+  },
+  "feat/live-observatory-v1": {
+   "sha": "5335dfde39dca0db1a634c6913eef4668dee15a1",
+   "tip_subject": "docs(observatory): refresh acceptance evidence after the final confirmation pass",
+   "tip_date": "2026-11-03T23:09:22+08:00",
+   "ahead": 16,
+   "behind": 0,
+   "diffstat_vs_main": {
+    "files": 101,
+    "additions": 48941,
+    "deletions": 2
+   }
+  },
+  "feat/medradar-2.0-mvp": {
+   "sha": "ee7d0118466429c91a2031ca9db6279a78133d27",
+   "tip_subject": "docs(product): finalize acceptance for 01ba4aa and close R1/R2",
+   "tip_date": "2026-11-03T22:00:42+08:00",
+   "ahead": 8,
+   "behind": 0,
+   "diffstat_vs_main": {
+    "files": 57,
+    "additions": 17646,
+    "deletions": 1
+   }
+  },
+  "feat/observatory-reliability-v1": {
+   "sha": "d05fc81ff79bf83eaf9161e89781ddf486a5297f",
+   "tip_subject": "docs(reliability): architecture decision, validation protocol, acceptance report and evidence",
+   "tip_date": "2026-11-04T00:05:01+08:00",
+   "ahead": 22,
+   "behind": 0,
+   "diffstat_vs_main": {
+    "files": 139,
+    "additions": 71769,
+    "deletions": 2
+   }
+  },
+  "feature/market-to-rd": {
+   "sha": "ad38d27033f9973256990759838a7824af334b90",
+   "tip_subject": "docs: update final offline test count",
+   "tip_date": "2026-11-01T17:48:16+08:00",
+   "ahead": 0,
+   "behind": 120,
+   "diffstat_vs_main": {
+    "files": 0,
+    "additions": 0,
+    "deletions": 0
+   }
+  },
+  "foundation/atlas-001": {
+   "sha": "c63683631a1b277e2d27cfbe3adf6e133cf55e83",
+   "tip_subject": "chore(atlas): drop local scratch logs accidentally staged",
+   "tip_date": "2026-11-11T01:49:23+08:00",
+   "ahead": 4,
+   "behind": 0,
+   "diffstat_vs_main": {
+    "files": 70,
+    "additions": 18648,
+    "deletions": 0
+   }
+  },
+  "integration/convergence-001": {
+   "sha": "c6606c301b5aee254a30286f41d75c42339c5f98",
+   "tip_subject": "test(convergence-001): make external frozen-input checks portable",
+   "tip_date": "2026-11-12T00:34:30+08:00",
+   "ahead": 9,
+   "behind": 0,
+   "diffstat_vs_main": {
+    "files": 815,
+    "additions": 690079,
+    "deletions": 0
+   }
+  },
+  "integration/market-to-rd-v2": {
+   "sha": "1749bd5f3af92519f97f0f4978b209da70e45b7b",
+   "tip_subject": "fix(research-agent): UTF-8 stdio for CLI evidence text (fixes Windows CI UnicodeEncodeError)",
+   "tip_date": "2026-11-02T09:29:33+08:00",
+   "ahead": 0,
+   "behind": 71,
+   "diffstat_vs_main": {
+    "files": 0,
+    "additions": 0,
+    "deletions": 0
+   }
+  },
+  "integration/phase4-base": {
+   "sha": "aa0f6fca85e0d88ddbec871ede6da9d9c8fa357d",
+   "tip_subject": "fix(test): make the change-query filter fixture relative to the wall clock",
+   "tip_date": "2026-11-04T20:48:00+08:00",
+   "ahead": 39,
+   "behind": 0,
+   "diffstat_vs_main": {
+    "files": 472,
+    "additions": 235453,
+    "deletions": 2
+   }
+  },
+  "main": {
+   "sha": "b2a14c0a92332c004445de686daee97754cf94cb",
+   "tip_subject": "Merge pull request #11 from ChazY11/research/early-signal-review-workbench",
+   "tip_date": "2026-11-03T04:26:31+08:00",
+   "ahead": 0,
+   "behind": 0,
+   "diffstat_vs_main": {
+    "files": 0,
+    "additions": 0,
+    "deletions": 0
+   }
+  },
+  "maintenance/repository-consolidation": {
+   "sha": "b4a6af3fc60ef73a0c3c6f67b4cb16b7cbcf3ec4",
+   "tip_subject": "docs: correct measured line counts in the repository audit",
+   "tip_date": "2026-11-04T06:19:03+08:00",
+   "ahead": 2,
+   "behind": 0,
+   "diffstat_vs_main": {
+    "files": 6,
+    "additions": 947,
+    "deletions": 805
+   }
+  },
+  "research/ai-evidence-review": {
+   "sha": "b68af122a7791c2c96f57d3cdae7a901f67ee0f4",
+   "tip_subject": "research(ai-review): independent AI evidence review of the 69 early-signal packets",
+   "tip_date": "2026-11-04T07:20:26+08:00",
+   "ahead": 1,
+   "behind": 0,
+   "diffstat_vs_main": {
+    "files": 4,
+    "additions": 575,
+    "deletions": 0
+   }
+  },
+  "research/change-detection-v1": {
+   "sha": "5bb6545f6c85e7a3a0b932f634635e6a1335ed66",
+   "tip_subject": "docs(final): reproducibility audit and completion report — the record verifies and reproduces",
+   "tip_date": "2026-11-02T13:51:50+08:00",
+   "ahead": 0,
+   "behind": 26,
+   "diffstat_vs_main": {
+    "files": 0,
+    "additions": 0,
+    "deletions": 0
+   }
+  },
+  "research/cycle2-coverage-power": {
+   "sha": "ce99ea12f6fb8bb641410830353543bb74af6d69",
+   "tip_subject": "feat(cycle2): entity-universe coverage, power, and the reality of the entry signal",
+   "tip_date": "2026-11-02T10:25:42+08:00",
+   "ahead": 0,
+   "behind": 70,
+   "diffstat_vs_main": {
+    "files": 0,
+    "additions": 0,
+    "deletions": 0
+   }
+  },
+  "research/data-expansion-001": {
+   "sha": "192085e781976778f1e1638935c365e0a0ad5a5e",
+   "tip_subject": "docs(data-expansion): record response structure in access verification",
+   "tip_date": "2026-11-09T06:19:29+08:00",
+   "ahead": 7,
+   "behind": 0,
+   "diffstat_vs_main": {
+    "files": 916,
+    "additions": 260389,
+    "deletions": 0
+   }
+  },
+  "research/early-signal-5firms": {
+   "sha": "bb8f9f84cab1f7bde94e988fe06053b74c114e0f",
+   "tip_subject": "docs(study): independent review record (S-026) for the published head 23e9d9b",
+   "tip_date": "2026-11-03T03:49:12+08:00",
+   "ahead": 0,
+   "behind": 11,
+   "diffstat_vs_main": {
+    "files": 0,
+    "additions": 0,
+    "deletions": 0
+   }
+  },
+  "research/early-signal-adjudication": {
+   "sha": "d530abfa8767dacaad4d376ef3450223784466bf",
+   "tip_subject": "feat(study): agent pre-adjudication of the 69 packets — a new non-human tier, 0 confirmed shifts",
+   "tip_date": "2026-11-03T04:09:31+08:00",
+   "ahead": 0,
+   "behind": 5,
+   "diffstat_vs_main": {
+    "files": 0,
+    "additions": 0,
+    "deletions": 0
+   }
+  },
+  "research/early-signal-ai-review": {
+   "sha": "38565cbcf400ac7b1271cfd624f8332303eb9edf",
+   "tip_subject": "chore(gate): record the clean final gate result (15 PASS / 0 FAIL / 0 N/A, remote synced, 0 uncommitted)",
+   "tip_date": "2026-11-03T10:49:07+08:00",
+   "ahead": 11,
+   "behind": 0,
+   "diffstat_vs_main": {
+    "files": 110,
+    "additions": 140207,
+    "deletions": 306
+   }
+  },
+  "research/early-signal-postmerge": {
+   "sha": "a23ee604cbf695c820242ff2a217004d22498c4e",
+   "tip_subject": "docs(study): publication record (S-027) for PR #6 merged as 4627672",
+   "tip_date": "2026-11-03T03:53:26+08:00",
+   "ahead": 0,
+   "behind": 9,
+   "diffstat_vs_main": {
+    "files": 0,
+    "additions": 0,
+    "deletions": 0
+   }
+  },
+  "research/early-signal-review-workbench": {
+   "sha": "fa1d57b874ac7b1be466dea3b6b3180354ae2afd",
+   "tip_subject": "feat(study): drop-down-validated Excel workbook for the human review, with the refusal paths verified end-to-end",
+   "tip_date": "2026-11-03T04:23:11+08:00",
+   "ahead": 0,
+   "behind": 2,
+   "diffstat_vs_main": {
+    "files": 0,
+    "additions": 0,
+    "deletions": 0
+   }
+  },
+  "research/early-signal-third-source": {
+   "sha": "1e3864b188aff64019d43334d0f3451cd8d1e156",
+   "tip_subject": "feat(study): Europe PMC third-source cross-check of the nine events — one near-term hit, three decade-old matches",
+   "tip_date": "2026-11-03T04:00:33+08:00",
+   "ahead": 0,
+   "behind": 7,
+   "diffstat_vs_main": {
+    "files": 0,
+    "additions": 0,
+    "deletions": 0
+   }
+  },
+  "research/full-history-v1": {
+   "sha": "969fd0cc4fea040cbdb7a518f3c300b9122980b5",
+   "tip_subject": "experiment(hist_v1): full-history 1976-2026 entry benchmark; H1 supported marginally, two-way baseline not beaten; independent audit and two record repairs",
+   "tip_date": "2026-11-03T07:20:16+08:00",
+   "ahead": 1,
+   "behind": 0,
+   "diffstat_vs_main": {
+    "files": 32,
+    "additions": 54052,
+    "deletions": 280
+   }
+  },
+  "research/horizon-001": {
+   "sha": "2dcdc995102f094d723005c79bb9b0ec7d9737f7",
+   "tip_subject": "revert: restore repository-root .gitignore to main (out of HORIZON-001 write scope)",
+   "tip_date": "2026-11-11T01:37:46+08:00",
+   "ahead": 4,
+   "behind": 0,
+   "diffstat_vs_main": {
+    "files": 691,
+    "additions": 692975,
+    "deletions": 0
+   }
+  },
+  "research/innovation-signals-observatory": {
+   "sha": "c4327ce44c6aafe0e4af5a73df7f356dfffcb438",
+   "tip_subject": "research(phase4): local 4B model vs rules on real job text -- format is solved, semantics are not",
+   "tip_date": "2026-11-04T22:37:55+08:00",
+   "ahead": 46,
+   "behind": 0,
+   "diffstat_vs_main": {
+    "files": 567,
+    "additions": 299894,
+    "deletions": 2
+   }
+  },
+  "research/local-llm-foundation": {
+   "sha": "d4c4e43c9afa353b9b4af6f4f020a959024a07bd",
+   "tip_subject": "docs(local-llm): correct tokens-per-step figure in the QLoRA smoke table",
+   "tip_date": "2026-11-04T09:25:48+08:00",
+   "ahead": 9,
+   "behind": 0,
+   "diffstat_vs_main": {
+    "files": 110,
+    "additions": 32464,
+    "deletions": 0
+   }
+  },
+  "research/overnight-qlora-s030": {
+   "sha": "5954d7d81bc47ec5143fa7504fbe61debe51c29c",
+   "tip_subject": "research(overnight): exploratory QLoRA run, four-arm independent evaluation and Chinese morning report",
+   "tip_date": "2026-11-04T11:33:32+08:00",
+   "ahead": 11,
+   "behind": 0,
+   "diffstat_vs_main": {
+    "files": 248,
+    "additions": 49235,
+    "deletions": 0
+   }
+  },
+  "research/phoenix-001-external-methods": {
+   "sha": "bd2f839033b507bba312fb23ad024ee27fc3dabb",
+   "tip_subject": "research(phoenix): record final acceptance and verifier trajectory",
+   "tip_date": "2026-11-06T01:15:07Z",
+   "ahead": 16,
+   "behind": 0,
+   "diffstat_vs_main": {
+    "files": 40,
+    "additions": 6075,
+    "deletions": 0
+   }
+  },
+  "research/phoenix-001-round2": {
+   "sha": "cd63c7245b13e8278b4dd0a228ff327d18d0d3f7",
+   "tip_subject": "docs(phoenix): correct the cell section of the reproduction report with the post-verification numbers",
+   "tip_date": "2026-11-09T01:13:26+08:00",
+   "ahead": 7,
+   "behind": 0,
+   "diffstat_vs_main": {
+    "files": 166,
+    "additions": 158731,
+    "deletions": 0
+   }
+  },
+  "research/phoenix-002-h8-validation": {
+   "sha": "c826703126f7a26ce5671e800bcc2882e2c9c101",
+   "tip_subject": "docs(phoenix-002): note the residual unattainable track (aesthetics) in the attr38 universe",
+   "tip_date": "2026-11-09T03:44:23+08:00",
+   "ahead": 10,
+   "behind": 0,
+   "diffstat_vs_main": {
+    "files": 225,
+    "additions": 217169,
+    "deletions": 0
+   }
+  },
+  "research/phoenix-003-early-evidence": {
+   "sha": "91495bce95bd7e78231c91f1ea33d6aed851682c",
+   "tip_subject": "research(phoenix-003): drop the redundant text excerpt from emitted link rows",
+   "tip_date": "2026-11-09T05:38:50+08:00",
+   "ahead": 4,
+   "behind": 0,
+   "diffstat_vs_main": {
+    "files": 104,
+    "additions": 197464,
+    "deletions": 0
+   }
+  },
+  "research/research-foundation-integration": {
+   "sha": "dedfd68d7bdadd655ecc1f0f035d1ea0347347c0",
+   "tip_subject": "docs(foundation): honest source_version provenance + integration acceptance evidence (issues 4-5)",
+   "tip_date": "2026-11-01T11:05:54+08:00",
+   "ahead": 0,
+   "behind": 140,
+   "diffstat_vs_main": {
+    "files": 0,
+    "additions": 0,
+    "deletions": 0
+   }
+  },
+  "research/s028-temporal-graph-early-signal": {
+   "sha": "4c6686f45fd88ce324da1befb368f3cd6e415c18",
+   "tip_subject": "research(s028-correction-1): statistical, temporal and per-case re-review; seal/not-seal verdict",
+   "tip_date": "2026-11-04T03:05:10+08:00",
+   "ahead": 26,
+   "behind": 0,
+   "diffstat_vs_main": {
+    "files": 225,
+    "additions": 186211,
+    "deletions": 2
+   }
+  },
+  "research/s029-evidence-based-relations": {
+   "sha": "10f25d190a748d5a255215debe9cacccb11e2c45",
+   "tip_subject": "review(s029): item 2 closure verified at bb874af - all 7 editorial items closed, verdict READY_WITH_CONCERNS",
+   "tip_date": "2026-11-04T05:09:14+08:00",
+   "ahead": 34,
+   "behind": 0,
+   "diffstat_vs_main": {
+    "files": 344,
+    "additions": 205006,
+    "deletions": 2
+   }
+  },
+  "research/s031-hiring-capability-study": {
+   "sha": "e3e39d59e897fb9507dafd8ea44e5912e18545bb",
+   "tip_subject": "research(s031): record actual GitHub delivery state in the manifest",
+   "tip_date": "2026-11-06T04:57:36+08:00",
+   "ahead": 83,
+   "behind": 0,
+   "diffstat_vs_main": {
+    "files": 600,
+    "additions": 303926,
+    "deletions": 2
+   }
+  }
+ },
+ "branch_counts": {
+  "remote_branch_refs": 33,
+  "pr_heads": 29,
+  "remote_branches_without_pr": [
+   "integration/phase4-base",
+   "research/cycle2-coverage-power",
+   "research/early-signal-ai-review",
+   "research/full-history-v1"
+  ],
+  "pr_heads_without_remote_branch": []
+ },
+ "prs": [
+  {
+   "number": 1,
+   "state": "OPEN",
+   "isDraft": false,
+   "baseRefName": "main",
+   "headRefName": "feat/frontier-device-radar",
+   "title": "Add frontier device intelligence and research safeguards",
+   "additions": 2709,
+   "deletions": 234,
+   "changedFiles": 44,
+   "createdAt": "2026-11-01T01:44:54Z",
+   "mergedAt": null,
+   "url": "https://github.com/ChazY11/medradar/pull/1",
+   "head_sha": "94c6a10004dfbc4d8add974669be54d6cc8679ff",
+   "base_sha": "b2a14c0a92332c004445de686daee97754cf94cb",
+   "base_is_main": true,
+   "base_ahead_behind_main": {
+    "ahead": 0,
+    "behind": 0
+   },
+   "merged_into_main": false,
+   "merge_probe_main": {
+    "clean": false,
+    "exit": 1,
+    "conflicts": [
+     "CONFLICT (content): Merge conflict in CHANGELOG.md",
+     "CONFLICT (content): Merge conflict in README.md",
+     "CONFLICT (content): Merge conflict in README.zh-CN.md",
+     "CONFLICT (content): Merge conflict in docs/DATA.md",
+     "CONFLICT (modify/delete): docs/docs/ASSUMPTIONS.md deleted in origin/main and modified in origin/feat/frontier-device-radar.  Version origin/feat/frontier-device-radar of docs/docs/ASSUMPTIONS.md left in tree.",
+     "CONFLICT (content): Merge conflict in medradar/__init__.py",
+     "CONFLICT (add/add): Merge conflict in medradar/adcom.py",
+     "CONFLICT (content): Merge conflict in pyproject.toml",
+     "CONFLICT (add/add): Merge conflict in tests/test_frontier.py",
+     "CONFLICT (add/add): Merge conflict in verifier/README.md",
+     "CONFLICT (add/add): Merge conflict in verifier/v1/verify.py"
+    ],
+    "stderr_tail": ""
+   },
+   "merge_probe_declared_base": {
+    "clean": false,
+    "exit": 1,
+    "conflicts": [
+     "CONFLICT (content): Merge conflict in CHANGELOG.md",
+     "CONFLICT (content): Merge conflict in README.md",
+     "CONFLICT (content): Merge conflict in README.zh-CN.md",
+     "CONFLICT (content): Merge conflict in docs/DATA.md",
+     "CONFLICT (modify/delete): docs/docs/ASSUMPTIONS.md deleted in origin/main and modified in origin/feat/frontier-device-radar.  Version origin/feat/frontier-device-radar of docs/docs/ASSUMPTIONS.md left in tree.",
+     "CONFLICT (content): Merge conflict in medradar/__init__.py",
+     "CONFLICT (add/add): Merge conflict in medradar/adcom.py",
+     "CONFLICT (content): Merge conflict in pyproject.toml",
+     "CONFLICT (add/add): Merge conflict in tests/test_frontier.py",
+     "CONFLICT (add/add): Merge conflict in verifier/README.md",
+     "CONFLICT (add/add): Merge conflict in verifier/v1/verify.py"
+    ],
+    "stderr_tail": ""
+   }
+  },
+  {
+   "number": 2,
+   "state": "MERGED",
+   "isDraft": false,
+   "baseRefName": "main",
+   "headRefName": "research/research-foundation-integration",
+   "title": "feat(research): add bitemporal knowledge store and immutable forecast registry",
+   "additions": 6014,
+   "deletions": 3,
+   "changedFiles": 28,
+   "createdAt": "2026-11-01T03:12:44Z",
+   "mergedAt": "2026-11-02T11:22:48Z",
+   "url": "https://github.com/ChazY11/medradar/pull/2",
+   "head_sha": "dedfd68d7bdadd655ecc1f0f035d1ea0347347c0",
+   "base_sha": "b2a14c0a92332c004445de686daee97754cf94cb",
+   "base_is_main": true,
+   "base_ahead_behind_main": {
+    "ahead": 0,
+    "behind": 0
+   },
+   "merged_into_main": true
+  },
+  {
+   "number": 3,
+   "state": "MERGED",
+   "isDraft": false,
+   "baseRefName": "main",
+   "headRefName": "feature/market-to-rd",
+   "title": "Add Market-to-R&D intelligence and horizon forecasting",
+   "additions": 2453,
+   "deletions": 25,
+   "changedFiles": 60,
+   "createdAt": "2026-11-01T09:49:29Z",
+   "mergedAt": "2026-11-02T11:22:48Z",
+   "url": "https://github.com/ChazY11/medradar/pull/3",
+   "head_sha": "ad38d27033f9973256990759838a7824af334b90",
+   "base_sha": "b2a14c0a92332c004445de686daee97754cf94cb",
+   "base_is_main": true,
+   "base_ahead_behind_main": {
+    "ahead": 0,
+    "behind": 0
+   },
+   "merged_into_main": true
+  },
+  {
+   "number": 4,
+   "state": "MERGED",
+   "isDraft": false,
+   "baseRefName": "main",
+   "headRefName": "integration/market-to-rd-v2",
+   "title": "v0.3.0: integrate research foundation (TKG + forecast registry) and Market-to-R&D with audited fixes",
+   "additions": 59831,
+   "deletions": 543,
+   "changedFiles": 173,
+   "createdAt": "2026-11-01T23:27:44Z",
+   "mergedAt": "2026-11-02T11:22:48Z",
+   "url": "https://github.com/ChazY11/medradar/pull/4",
+   "head_sha": "1749bd5f3af92519f97f0f4978b209da70e45b7b",
+   "base_sha": "b2a14c0a92332c004445de686daee97754cf94cb",
+   "base_is_main": true,
+   "base_ahead_behind_main": {
+    "ahead": 0,
+    "behind": 0
+   },
+   "merged_into_main": true
+  },
+  {
+   "number": 5,
+   "state": "MERGED",
+   "isDraft": false,
+   "baseRefName": "main",
+   "headRefName": "research/change-detection-v1",
+   "title": "MedRadar Foresight Lab: change detection, company profiles, frozen forecasts, and the research record",
+   "additions": 444600,
+   "deletions": 543,
+   "changedFiles": 901,
+   "createdAt": "2026-11-02T11:14:25Z",
+   "mergedAt": "2026-11-02T11:22:46Z",
+   "url": "https://github.com/ChazY11/medradar/pull/5",
+   "head_sha": "5bb6545f6c85e7a3a0b932f634635e6a1335ed66",
+   "base_sha": "b2a14c0a92332c004445de686daee97754cf94cb",
+   "base_is_main": true,
+   "base_ahead_behind_main": {
+    "ahead": 0,
+    "behind": 0
+   },
+   "merged_into_main": true
+  },
+  {
+   "number": 6,
+   "state": "MERGED",
+   "isDraft": false,
+   "baseRefName": "main",
+   "headRefName": "research/early-signal-5firms",
+   "title": "Early-signal study (Phase 0-1D): five-firm cross-source audit, four pre-registered gates, and a negative result",
+   "additions": 24205,
+   "deletions": 39,
+   "changedFiles": 97,
+   "createdAt": "2026-11-02T19:49:04Z",
+   "mergedAt": "2026-11-02T19:52:07Z",
+   "url": "https://github.com/ChazY11/medradar/pull/6",
+   "head_sha": "bb8f9f84cab1f7bde94e988fe06053b74c114e0f",
+   "base_sha": "b2a14c0a92332c004445de686daee97754cf94cb",
+   "base_is_main": true,
+   "base_ahead_behind_main": {
+    "ahead": 0,
+    "behind": 0
+   },
+   "merged_into_main": true
+  },
+  {
+   "number": 7,
+   "state": "MERGED",
+   "isDraft": false,
+   "baseRefName": "main",
+   "headRefName": "research/early-signal-postmerge",
+   "title": "docs(study): publication record for PR #6 merged as 4627672",
+   "additions": 28,
+   "deletions": 0,
+   "changedFiles": 1,
+   "createdAt": "2026-11-02T19:53:35Z",
+   "mergedAt": "2026-11-02T19:56:17Z",
+   "url": "https://github.com/ChazY11/medradar/pull/7",
+   "head_sha": "a23ee604cbf695c820242ff2a217004d22498c4e",
+   "base_sha": "b2a14c0a92332c004445de686daee97754cf94cb",
+   "base_is_main": true,
+   "base_ahead_behind_main": {
+    "ahead": 0,
+    "behind": 0
+   },
+   "merged_into_main": true
+  },
+  {
+   "number": 8,
+   "state": "MERGED",
+   "isDraft": false,
+   "baseRefName": "main",
+   "headRefName": "research/early-signal-third-source",
+   "title": "feat(study): Europe PMC third-source cross-check — one near-term hit, three decade-old matches",
+   "additions": 1375,
+   "deletions": 0,
+   "changedFiles": 9,
+   "createdAt": "2026-11-02T20:00:44Z",
+   "mergedAt": "2026-11-02T20:03:11Z",
+   "url": "https://github.com/ChazY11/medradar/pull/8",
+   "head_sha": "1e3864b188aff64019d43334d0f3451cd8d1e156",
+   "base_sha": "b2a14c0a92332c004445de686daee97754cf94cb",
+   "base_is_main": true,
+   "base_ahead_behind_main": {
+    "ahead": 0,
+    "behind": 0
+   },
+   "merged_into_main": true
+  },
+  {
+   "number": 9,
+   "state": "MERGED",
+   "isDraft": false,
+   "baseRefName": "main",
+   "headRefName": "research/early-signal-adjudication",
+   "title": "feat(study): agent pre-adjudication of the 69 packets — a non-human tier, 0 confirmed shifts",
+   "additions": 2012,
+   "deletions": 0,
+   "changedFiles": 7,
+   "createdAt": "2026-11-02T20:09:41Z",
+   "mergedAt": "2026-11-02T20:11:51Z",
+   "url": "https://github.com/ChazY11/medradar/pull/9",
+   "head_sha": "d530abfa8767dacaad4d376ef3450223784466bf",
+   "base_sha": "b2a14c0a92332c004445de686daee97754cf94cb",
+   "base_is_main": true,
+   "base_ahead_behind_main": {
+    "ahead": 0,
+    "behind": 0
+   },
+   "merged_into_main": true
+  },
+  {
+   "number": 10,
+   "state": "MERGED",
+   "isDraft": false,
+   "baseRefName": "main",
+   "headRefName": "research/early-signal-review-workbench",
+   "title": "feat(study): human review workbench — 69-row worksheet, guide, and a validator that refuses incomplete labels",
+   "additions": 742,
+   "deletions": 0,
+   "changedFiles": 8,
+   "createdAt": "2026-11-02T20:16:22Z",
+   "mergedAt": "2026-11-02T20:18:20Z",
+   "url": "https://github.com/ChazY11/medradar/pull/10",
+   "head_sha": "fa1d57b874ac7b1be466dea3b6b3180354ae2afd",
+   "base_sha": "b2a14c0a92332c004445de686daee97754cf94cb",
+   "base_is_main": true,
+   "base_ahead_behind_main": {
+    "ahead": 0,
+    "behind": 0
+   },
+   "merged_into_main": true
+  },
+  {
+   "number": 11,
+   "state": "MERGED",
+   "isDraft": false,
+   "baseRefName": "main",
+   "headRefName": "research/early-signal-review-workbench",
+   "title": "feat(study): drop-down-validated Excel workbook for the human review, with refusal paths verified",
+   "additions": 309,
+   "deletions": 2,
+   "changedFiles": 5,
+   "createdAt": "2026-11-02T20:23:23Z",
+   "mergedAt": "2026-11-02T20:26:31Z",
+   "url": "https://github.com/ChazY11/medradar/pull/11",
+   "head_sha": "fa1d57b874ac7b1be466dea3b6b3180354ae2afd",
+   "base_sha": "b2a14c0a92332c004445de686daee97754cf94cb",
+   "base_is_main": true,
+   "base_ahead_behind_main": {
+    "ahead": 0,
+    "behind": 0
+   },
+   "merged_into_main": true
+  },
+  {
+   "number": 12,
+   "state": "OPEN",
+   "isDraft": true,
+   "baseRefName": "main",
+   "headRefName": "feat/medradar-2.0-mvp",
+   "title": "MedRadar 2.0 MVP: evidence-driven company, radar, analyst and evidence product",
+   "additions": 17646,
+   "deletions": 1,
+   "changedFiles": 57,
+   "createdAt": "2026-11-03T04:02:59Z",
+   "mergedAt": null,
+   "url": "https://github.com/ChazY11/medradar/pull/12",
+   "head_sha": "ee7d0118466429c91a2031ca9db6279a78133d27",
+   "base_sha": "b2a14c0a92332c004445de686daee97754cf94cb",
+   "base_is_main": true,
+   "base_ahead_behind_main": {
+    "ahead": 0,
+    "behind": 0
+   },
+   "merged_into_main": false,
+   "merge_probe_main": {
+    "clean": true,
+    "conflicts": []
+   },
+   "merge_probe_declared_base": {
+    "clean": true,
+    "conflicts": []
+   }
+  },
+  {
+   "number": 13,
+   "state": "OPEN",
+   "isDraft": true,
+   "baseRefName": "feat/medradar-2.0-mvp",
+   "headRefName": "feat/live-observatory-v1",
+   "title": "MedRadar Live Observatory v1: append-only observation ledger, official-source adapters, and the Live Observatory product",
+   "additions": 31301,
+   "deletions": 7,
+   "changedFiles": 57,
+   "createdAt": "2026-11-03T15:01:34Z",
+   "mergedAt": null,
+   "url": "https://github.com/ChazY11/medradar/pull/13",
+   "head_sha": "5335dfde39dca0db1a634c6913eef4668dee15a1",
+   "base_sha": "ee7d0118466429c91a2031ca9db6279a78133d27",
+   "base_is_main": false,
+   "base_ahead_behind_main": {
+    "ahead": 8,
+    "behind": 0
+   },
+   "merged_into_main": false,
+   "merge_probe_main": {
+    "clean": true,
+    "conflicts": []
+   },
+   "merge_probe_declared_base": {
+    "clean": true,
+    "conflicts": []
+   }
+  },
+  {
+   "number": 14,
+   "state": "OPEN",
+   "isDraft": true,
+   "baseRefName": "feat/live-observatory-v1",
+   "headRefName": "feat/observatory-reliability-v1",
+   "title": "MedRadar Observatory Reliability: durable persistence, verified backups, supervised operation and seven-day continuous validation",
+   "additions": 22899,
+   "deletions": 71,
+   "changedFiles": 54,
+   "createdAt": "2026-11-03T16:05:29Z",
+   "mergedAt": null,
+   "url": "https://github.com/ChazY11/medradar/pull/14",
+   "head_sha": "d05fc81ff79bf83eaf9161e89781ddf486a5297f",
+   "base_sha": "5335dfde39dca0db1a634c6913eef4668dee15a1",
+   "base_is_main": false,
+   "base_ahead_behind_main": {
+    "ahead": 16,
+    "behind": 0
+   },
+   "merged_into_main": false,
+   "merge_probe_main": {
+    "clean": true,
+    "conflicts": []
+   },
+   "merge_probe_declared_base": {
+    "clean": true,
+    "conflicts": []
+   }
+  },
+  {
+   "number": 15,
+   "state": "OPEN",
+   "isDraft": true,
+   "baseRefName": "feat/observatory-reliability-v1",
+   "headRefName": "research/s028-temporal-graph-early-signal",
+   "title": "S-028: temporal company-technology graph early-signal study (DRAFT, negative result, do not merge)",
+   "additions": 114442,
+   "deletions": 0,
+   "changedFiles": 86,
+   "createdAt": "2026-11-03T17:58:20Z",
+   "mergedAt": null,
+   "url": "https://github.com/ChazY11/medradar/pull/15",
+   "head_sha": "4c6686f45fd88ce324da1befb368f3cd6e415c18",
+   "base_sha": "d05fc81ff79bf83eaf9161e89781ddf486a5297f",
+   "base_is_main": false,
+   "base_ahead_behind_main": {
+    "ahead": 22,
+    "behind": 0
+   },
+   "merged_into_main": false,
+   "merge_probe_main": {
+    "clean": true,
+    "conflicts": []
+   },
+   "merge_probe_declared_base": {
+    "clean": true,
+    "conflicts": []
+   }
+  },
+  {
+   "number": 16,
+   "state": "OPEN",
+   "isDraft": true,
+   "baseRefName": "feat/observatory-reliability-v1",
+   "headRefName": "research/s029-evidence-based-relations",
+   "title": "S-029: evidence-based temporal relation reconstruction — measured evidence base, NO-GO verdict (research, draft)",
+   "additions": 133237,
+   "deletions": 0,
+   "changedFiles": 205,
+   "createdAt": "2026-11-03T20:48:01Z",
+   "mergedAt": null,
+   "url": "https://github.com/ChazY11/medradar/pull/16",
+   "head_sha": "10f25d190a748d5a255215debe9cacccb11e2c45",
+   "base_sha": "d05fc81ff79bf83eaf9161e89781ddf486a5297f",
+   "base_is_main": false,
+   "base_ahead_behind_main": {
+    "ahead": 22,
+    "behind": 0
+   },
+   "merged_into_main": false,
+   "merge_probe_main": {
+    "clean": true,
+    "conflicts": []
+   },
+   "merge_probe_declared_base": {
+    "clean": true,
+    "conflicts": []
+   }
+  },
+  {
+   "number": 17,
+   "state": "OPEN",
+   "isDraft": true,
+   "baseRefName": "main",
+   "headRefName": "maintenance/repository-consolidation",
+   "title": "Repository consolidation: documentation, research index, and data asset governance",
+   "additions": 947,
+   "deletions": 805,
+   "changedFiles": 6,
+   "createdAt": "2026-11-03T22:18:12Z",
+   "mergedAt": null,
+   "url": "https://github.com/ChazY11/medradar/pull/17",
+   "head_sha": "b4a6af3fc60ef73a0c3c6f67b4cb16b7cbcf3ec4",
+   "base_sha": "b2a14c0a92332c004445de686daee97754cf94cb",
+   "base_is_main": true,
+   "base_ahead_behind_main": {
+    "ahead": 0,
+    "behind": 0
+   },
+   "merged_into_main": false,
+   "merge_probe_main": {
+    "clean": true,
+    "conflicts": []
+   },
+   "merge_probe_declared_base": {
+    "clean": true,
+    "conflicts": []
+   }
+  },
+  {
+   "number": 18,
+   "state": "OPEN",
+   "isDraft": true,
+   "baseRefName": "main",
+   "headRefName": "research/ai-evidence-review",
+   "title": "AI evidence review of the 69 early-signal packets (machine review, not human truth)",
+   "additions": 575,
+   "deletions": 0,
+   "changedFiles": 4,
+   "createdAt": "2026-11-03T23:20:35Z",
+   "mergedAt": null,
+   "url": "https://github.com/ChazY11/medradar/pull/18",
+   "head_sha": "b68af122a7791c2c96f57d3cdae7a901f67ee0f4",
+   "base_sha": "b2a14c0a92332c004445de686daee97754cf94cb",
+   "base_is_main": true,
+   "base_ahead_behind_main": {
+    "ahead": 0,
+    "behind": 0
+   },
+   "merged_into_main": false,
+   "merge_probe_main": {
+    "clean": true,
+    "conflicts": []
+   },
+   "merge_probe_declared_base": {
+    "clean": true,
+    "conflicts": []
+   }
+  },
+  {
+   "number": 19,
+   "state": "OPEN",
+   "isDraft": true,
+   "baseRefName": "main",
+   "headRefName": "research/local-llm-foundation",
+   "title": "research(local-llm): Phase 2 — first real local GPU run (Qwen3-4B-Instruct vs rules on 19 real documents, QLoRA pipeline verified, formal training blocked)",
+   "additions": 32464,
+   "deletions": 0,
+   "changedFiles": 110,
+   "createdAt": "2026-11-03T23:49:35Z",
+   "mergedAt": null,
+   "url": "https://github.com/ChazY11/medradar/pull/19",
+   "head_sha": "d4c4e43c9afa353b9b4af6f4f020a959024a07bd",
+   "base_sha": "b2a14c0a92332c004445de686daee97754cf94cb",
+   "base_is_main": true,
+   "base_ahead_behind_main": {
+    "ahead": 0,
+    "behind": 0
+   },
+   "merged_into_main": false,
+   "merge_probe_main": {
+    "clean": true,
+    "conflicts": []
+   },
+   "merge_probe_declared_base": {
+    "clean": true,
+    "conflicts": []
+   }
+  },
+  {
+   "number": 20,
+   "state": "OPEN",
+   "isDraft": true,
+   "baseRefName": "research/local-llm-foundation",
+   "headRefName": "research/overnight-qlora-s030",
+   "title": "research(overnight): 隔夜探索性 QLoRA 训练与四臂独立评价（Draft，不合并）",
+   "additions": 16826,
+   "deletions": 55,
+   "changedFiles": 147,
+   "createdAt": "2026-11-04T03:33:57Z",
+   "mergedAt": null,
+   "url": "https://github.com/ChazY11/medradar/pull/20",
+   "head_sha": "5954d7d81bc47ec5143fa7504fbe61debe51c29c",
+   "base_sha": "d4c4e43c9afa353b9b4af6f4f020a959024a07bd",
+   "base_is_main": false,
+   "base_ahead_behind_main": {
+    "ahead": 9,
+    "behind": 0
+   },
+   "merged_into_main": false,
+   "merge_probe_main": {
+    "clean": true,
+    "conflicts": []
+   },
+   "merge_probe_declared_base": {
+    "clean": true,
+    "conflicts": []
+   }
+  },
+  {
+   "number": 21,
+   "state": "OPEN",
+   "isDraft": true,
+   "baseRefName": "integration/phase4-base",
+   "headRefName": "research/innovation-signals-observatory",
+   "title": "Phase 4: Innovation Signals Observatory — recruitment lane, real collection, and the honest limits of hiring as an early signal",
+   "additions": 64441,
+   "deletions": 0,
+   "changedFiles": 96,
+   "createdAt": "2026-11-04T14:41:38Z",
+   "mergedAt": null,
+   "url": "https://github.com/ChazY11/medradar/pull/21",
+   "head_sha": "c4327ce44c6aafe0e4af5a73df7f356dfffcb438",
+   "base_sha": "aa0f6fca85e0d88ddbec871ede6da9d9c8fa357d",
+   "base_is_main": false,
+   "base_ahead_behind_main": {
+    "ahead": 39,
+    "behind": 0
+   },
+   "merged_into_main": false,
+   "merge_probe_main": {
+    "clean": true,
+    "conflicts": []
+   },
+   "merge_probe_declared_base": {
+    "clean": true,
+    "conflicts": []
+   }
+  },
+  {
+   "number": 22,
+   "state": "OPEN",
+   "isDraft": true,
+   "baseRefName": "main",
+   "headRefName": "research/s031-hiring-capability-study",
+   "title": "S-031: hiring capability & R&D evidence study - 100 AI preliminary labels, 8 deliverables, verifier v2 (research, do not merge)",
+   "additions": 303926,
+   "deletions": 2,
+   "changedFiles": 600,
+   "createdAt": "2026-11-05T20:33:06Z",
+   "mergedAt": null,
+   "url": "https://github.com/ChazY11/medradar/pull/22",
+   "head_sha": "e3e39d59e897fb9507dafd8ea44e5912e18545bb",
+   "base_sha": "b2a14c0a92332c004445de686daee97754cf94cb",
+   "base_is_main": true,
+   "base_ahead_behind_main": {
+    "ahead": 0,
+    "behind": 0
+   },
+   "merged_into_main": false,
+   "merge_probe_main": {
+    "clean": true,
+    "conflicts": []
+   },
+   "merge_probe_declared_base": {
+    "clean": true,
+    "conflicts": []
+   }
+  },
+  {
+   "number": 23,
+   "state": "OPEN",
+   "isDraft": true,
+   "baseRefName": "main",
+   "headRefName": "research/phoenix-001-external-methods",
+   "title": "PHOENIX-001: External methods audit and reproducible experiments",
+   "additions": 6075,
+   "deletions": 0,
+   "changedFiles": 40,
+   "createdAt": "2026-11-05T23:32:53Z",
+   "mergedAt": null,
+   "url": "https://github.com/ChazY11/medradar/pull/23",
+   "head_sha": "bd2f839033b507bba312fb23ad024ee27fc3dabb",
+   "base_sha": "b2a14c0a92332c004445de686daee97754cf94cb",
+   "base_is_main": true,
+   "base_ahead_behind_main": {
+    "ahead": 0,
+    "behind": 0
+   },
+   "merged_into_main": false,
+   "merge_probe_main": {
+    "clean": true,
+    "conflicts": []
+   },
+   "merge_probe_declared_base": {
+    "clean": true,
+    "conflicts": []
+   }
+  },
+  {
+   "number": 24,
+   "state": "OPEN",
+   "isDraft": true,
+   "baseRefName": "main",
+   "headRefName": "research/phoenix-001-round2",
+   "title": "PHOENIX-001 round 2: frozen protocol, ten pre-registered experiments, 13-project register, and an entity-attribution prototype (research, do not merge)",
+   "additions": 158731,
+   "deletions": 0,
+   "changedFiles": 166,
+   "createdAt": "2026-11-08T17:16:16Z",
+   "mergedAt": null,
+   "url": "https://github.com/ChazY11/medradar/pull/24",
+   "head_sha": "cd63c7245b13e8278b4dd0a228ff327d18d0d3f7",
+   "base_sha": "b2a14c0a92332c004445de686daee97754cf94cb",
+   "base_is_main": true,
+   "base_ahead_behind_main": {
+    "ahead": 0,
+    "behind": 0
+   },
+   "merged_into_main": false,
+   "merge_probe_main": {
+    "clean": true,
+    "conflicts": []
+   },
+   "merge_probe_declared_base": {
+    "clean": true,
+    "conflicts": []
+   }
+  },
+  {
+   "number": 25,
+   "state": "OPEN",
+   "isDraft": true,
+   "baseRefName": "research/phoenix-001-round2",
+   "headRefName": "research/phoenix-002-h8-validation",
+   "title": "PHOENIX-002: independent H8 re-validation - methodology audit and a NO-GO verdict (research, do not merge)",
+   "additions": 58438,
+   "deletions": 0,
+   "changedFiles": 59,
+   "createdAt": "2026-11-08T19:39:09Z",
+   "mergedAt": null,
+   "url": "https://github.com/ChazY11/medradar/pull/25",
+   "head_sha": "c826703126f7a26ce5671e800bcc2882e2c9c101",
+   "base_sha": "cd63c7245b13e8278b4dd0a228ff327d18d0d3f7",
+   "base_is_main": false,
+   "base_ahead_behind_main": {
+    "ahead": 7,
+    "behind": 0
+   },
+   "merged_into_main": false,
+   "merge_probe_main": {
+    "clean": true,
+    "conflicts": []
+   },
+   "merge_probe_declared_base": {
+    "clean": true,
+    "conflicts": []
+   }
+  },
+  {
+   "number": 26,
+   "state": "OPEN",
+   "isDraft": true,
+   "baseRefName": "main",
+   "headRefName": "research/phoenix-003-early-evidence",
+   "title": "PHOENIX-003: regulatory-anchored early-evidence discovery - rigorous NO-GO, a reusable control battery, and a 28-case pre-regulatory series (research, do not merge)",
+   "additions": 197464,
+   "deletions": 0,
+   "changedFiles": 104,
+   "createdAt": "2026-11-08T21:19:44Z",
+   "mergedAt": null,
+   "url": "https://github.com/ChazY11/medradar/pull/26",
+   "head_sha": "91495bce95bd7e78231c91f1ea33d6aed851682c",
+   "base_sha": "b2a14c0a92332c004445de686daee97754cf94cb",
+   "base_is_main": true,
+   "base_ahead_behind_main": {
+    "ahead": 0,
+    "behind": 0
+   },
+   "merged_into_main": false,
+   "merge_probe_main": {
+    "clean": true,
+    "conflicts": []
+   },
+   "merge_probe_declared_base": {
+    "clean": true,
+    "conflicts": []
+   }
+  },
+  {
+   "number": 27,
+   "state": "OPEN",
+   "isDraft": true,
+   "baseRefName": "main",
+   "headRefName": "research/data-expansion-001",
+   "title": "DATA-EXPANSION-001: global data-source discovery, live access verification, and increment experiments (DRAFT, do not merge)",
+   "additions": 260389,
+   "deletions": 0,
+   "changedFiles": 916,
+   "createdAt": "2026-11-08T22:18:22Z",
+   "mergedAt": null,
+   "url": "https://github.com/ChazY11/medradar/pull/27",
+   "head_sha": "192085e781976778f1e1638935c365e0a0ad5a5e",
+   "base_sha": "b2a14c0a92332c004445de686daee97754cf94cb",
+   "base_is_main": true,
+   "base_ahead_behind_main": {
+    "ahead": 0,
+    "behind": 0
+   },
+   "merged_into_main": false,
+   "merge_probe_main": {
+    "clean": true,
+    "conflicts": []
+   },
+   "merge_probe_declared_base": {
+    "clean": true,
+    "conflicts": []
+   }
+  },
+  {
+   "number": 28,
+   "state": "OPEN",
+   "isDraft": true,
+   "baseRefName": "main",
+   "headRefName": "foundation/atlas-001",
+   "title": "ATLAS-001: identity, evidence and graph foundation (identity pilot + independent verification)",
+   "additions": 18648,
+   "deletions": 0,
+   "changedFiles": 70,
+   "createdAt": "2026-11-09T23:23:24Z",
+   "mergedAt": null,
+   "url": "https://github.com/ChazY11/medradar/pull/28",
+   "head_sha": "c63683631a1b277e2d27cfbe3adf6e133cf55e83",
+   "base_sha": "b2a14c0a92332c004445de686daee97754cf94cb",
+   "base_is_main": true,
+   "base_ahead_behind_main": {
+    "ahead": 0,
+    "behind": 0
+   },
+   "merged_into_main": false,
+   "merge_probe_main": {
+    "clean": true,
+    "conflicts": []
+   },
+   "merge_probe_declared_base": {
+    "clean": true,
+    "conflicts": []
+   }
+  },
+  {
+   "number": 29,
+   "state": "OPEN",
+   "isDraft": true,
+   "baseRefName": "main",
+   "headRefName": "research/horizon-001",
+   "title": "HORIZON-001: 全球数据前沿 — 两条免密专利通道、真实证据导出与三项实测实验（Draft）",
+   "additions": 692975,
+   "deletions": 0,
+   "changedFiles": 691,
+   "createdAt": "2026-11-09T23:34:57Z",
+   "mergedAt": null,
+   "url": "https://github.com/ChazY11/medradar/pull/29",
+   "head_sha": "2dcdc995102f094d723005c79bb9b0ec7d9737f7",
+   "base_sha": "b2a14c0a92332c004445de686daee97754cf94cb",
+   "base_is_main": true,
+   "base_ahead_behind_main": {
+    "ahead": 0,
+    "behind": 0
+   },
+   "merged_into_main": false,
+   "merge_probe_main": {
+    "clean": true,
+    "conflicts": []
+   },
+   "merge_probe_declared_base": {
+    "clean": true,
+    "conflicts": []
+   }
+  },
+  {
+   "number": 30,
+   "state": "OPEN",
+   "isDraft": true,
+   "baseRefName": "main",
+   "headRefName": "integration/convergence-001",
+   "title": "CONVERGENCE-001: ATLAS x HORIZON end-to-end integration, P0 reconciliation and scientific gates (Draft)",
+   "additions": 690079,
+   "deletions": 0,
+   "changedFiles": 815,
+   "createdAt": "2026-11-10T21:11:36Z",
+   "mergedAt": null,
+   "url": "https://github.com/ChazY11/medradar/pull/30",
+   "head_sha": "c6606c301b5aee254a30286f41d75c42339c5f98",
+   "base_sha": "b2a14c0a92332c004445de686daee97754cf94cb",
+   "base_is_main": true,
+   "base_ahead_behind_main": {
+    "ahead": 0,
+    "behind": 0
+   },
+   "merged_into_main": false,
+   "merge_probe_main": {
+    "clean": true,
+    "conflicts": []
+   },
+   "merge_probe_declared_base": {
+    "clean": true,
+    "conflicts": []
+   }
+  }
+ ],
+ "local_branches": [
+  {
+   "name": "audit/refoundation-001",
+   "sha": "b2a14c0a92332c004445de686daee97754cf94cb",
+   "upstream": "origin/main",
+   "ahead": 0,
+   "behind": 0,
+   "commits_on_no_remote": 0
+  },
+  {
+   "name": "feat/live-observatory-v1",
+   "sha": "5335dfde39dca0db1a634c6913eef4668dee15a1",
+   "upstream": "origin/feat/live-observatory-v1",
+   "ahead": 16,
+   "behind": 0,
+   "commits_on_no_remote": 0
+  },
+  {
+   "name": "feat/medradar-2.0-mvp",
+   "sha": "ee7d0118466429c91a2031ca9db6279a78133d27",
+   "upstream": "origin/feat/medradar-2.0-mvp",
+   "ahead": 8,
+   "behind": 0,
+   "commits_on_no_remote": 0
+  },
+  {
+   "name": "feat/observatory-reliability-v1",
+   "sha": "d05fc81ff79bf83eaf9161e89781ddf486a5297f",
+   "upstream": "origin/feat/observatory-reliability-v1",
+   "ahead": 22,
+   "behind": 0,
+   "commits_on_no_remote": 0
+  },
+  {
+   "name": "fix/pr1-frontier",
+   "sha": "fa3514ce805855b114f6fddd5063e482cf33ecc9",
+   "upstream": "",
+   "ahead": 0,
+   "behind": 98,
+   "commits_on_no_remote": 0
+  },
+  {
+   "name": "fix/pr2-defects",
+   "sha": "456c63823b038a8b09a60c387287b9c272a2c568",
+   "upstream": "",
+   "ahead": 0,
+   "behind": 102,
+   "commits_on_no_remote": 0
+  },
+  {
+   "name": "fix/pr3-science",
+   "sha": "1d8ee973b4f41e0d028651987a2288f1ecb6756c",
+   "upstream": "",
+   "ahead": 0,
+   "behind": 101,
+   "commits_on_no_remote": 0
+  },
+  {
+   "name": "foundation/atlas-001",
+   "sha": "c63683631a1b277e2d27cfbe3adf6e133cf55e83",
+   "upstream": "origin/foundation/atlas-001",
+   "ahead": 4,
+   "behind": 0,
+   "commits_on_no_remote": 0
+  },
+  {
+   "name": "integration/audit-dryrun",
+   "sha": "4f4a99955d22e579ca8952b5e5789dedc39997b0",
+   "upstream": "origin/main",
+   "ahead": 1,
+   "behind": 140,
+   "commits_on_no_remote": 1
+  },
+  {
+   "name": "integration/convergence-001",
+   "sha": "c6606c301b5aee254a30286f41d75c42339c5f98",
+   "upstream": "",
+   "ahead": 9,
+   "behind": 0,
+   "commits_on_no_remote": 0
+  },
+  {
+   "name": "integration/market-to-rd-v2",
+   "sha": "1749bd5f3af92519f97f0f4978b209da70e45b7b",
+   "upstream": "origin/integration/market-to-rd-v2",
+   "ahead": 0,
+   "behind": 71,
+   "commits_on_no_remote": 0
+  },
+  {
+   "name": "integration/phase4-base",
+   "sha": "aa0f6fca85e0d88ddbec871ede6da9d9c8fa357d",
+   "upstream": "origin/integration/phase4-base",
+   "ahead": 39,
+   "behind": 0,
+   "commits_on_no_remote": 0
+  },
+  {
+   "name": "main",
+   "sha": "b2a14c0a92332c004445de686daee97754cf94cb",
+   "upstream": "origin/main",
+   "ahead": 0,
+   "behind": 0,
+   "commits_on_no_remote": 0
+  },
+  {
+   "name": "maintenance/repository-consolidation",
+   "sha": "b4a6af3fc60ef73a0c3c6f67b4cb16b7cbcf3ec4",
+   "upstream": "origin/maintenance/repository-consolidation",
+   "ahead": 2,
+   "behind": 0,
+   "commits_on_no_remote": 0
+  },
+  {
+   "name": "phase1/entry-multiwindow",
+   "sha": "cc179903c611274f72e4eaf3d91ee55fdaecd236",
+   "upstream": "",
+   "ahead": 0,
+   "behind": 88,
+   "commits_on_no_remote": 0
+  },
+  {
+   "name": "phase2/market-features",
+   "sha": "775fdab116cd7e1e6d6aad7cd0afa5c3fe3d7f71",
+   "upstream": "",
+   "ahead": 0,
+   "behind": 89,
+   "commits_on_no_remote": 0
+  },
+  {
+   "name": "phase2/publications-patents",
+   "sha": "33c8c08b8d7af956cf005671a5a3f75543ccf4c0",
+   "upstream": "",
+   "ahead": 0,
+   "behind": 89,
+   "commits_on_no_remote": 0
+  },
+  {
+   "name": "phase3/registry-cycle",
+   "sha": "37fcbd99765900cc8577bdf16727a5dad51448f1",
+   "upstream": "",
+   "ahead": 1,
+   "behind": 80,
+   "commits_on_no_remote": 1
+  },
+  {
+   "name": "phase3/research-agent",
+   "sha": "19edef7b2c15776f476e63742dd392a80f58d22c",
+   "upstream": "",
+   "ahead": 0,
+   "behind": 78,
+   "commits_on_no_remote": 0
+  },
+  {
+   "name": "phase3/tkg-integration",
+   "sha": "ad53ef6f6e2c6a0a4fffb0378726dccec463cbb0",
+   "upstream": "",
+   "ahead": 0,
+   "behind": 79,
+   "commits_on_no_remote": 0
+  },
+  {
+   "name": "research/ai-evidence-review",
+   "sha": "b68af122a7791c2c96f57d3cdae7a901f67ee0f4",
+   "upstream": "origin/research/ai-evidence-review",
+   "ahead": 1,
+   "behind": 0,
+   "commits_on_no_remote": 0
+  },
+  {
+   "name": "research/change-detection-v1",
+   "sha": "5bb6545f6c85e7a3a0b932f634635e6a1335ed66",
+   "upstream": "origin/research/change-detection-v1",
+   "ahead": 0,
+   "behind": 26,
+   "commits_on_no_remote": 0
+  },
+  {
+   "name": "research/cycle2-coverage-power",
+   "sha": "ce99ea12f6fb8bb641410830353543bb74af6d69",
+   "upstream": "origin/research/cycle2-coverage-power",
+   "ahead": 0,
+   "behind": 70,
+   "commits_on_no_remote": 0
+  },
+  {
+   "name": "research/data-expansion-001",
+   "sha": "192085e781976778f1e1638935c365e0a0ad5a5e",
+   "upstream": "origin/research/data-expansion-001",
+   "ahead": 7,
+   "behind": 0,
+   "commits_on_no_remote": 0
+  },
+  {
+   "name": "research/early-signal-5firms",
+   "sha": "bb8f9f84cab1f7bde94e988fe06053b74c114e0f",
+   "upstream": "origin/research/early-signal-5firms",
+   "ahead": 0,
+   "behind": 11,
+   "commits_on_no_remote": 0
+  },
+  {
+   "name": "research/early-signal-adjudication",
+   "sha": "d530abfa8767dacaad4d376ef3450223784466bf",
+   "upstream": "origin/research/early-signal-adjudication",
+   "ahead": 0,
+   "behind": 5,
+   "commits_on_no_remote": 0
+  },
+  {
+   "name": "research/early-signal-ai-review",
+   "sha": "38565cbcf400ac7b1271cfd624f8332303eb9edf",
+   "upstream": "origin/research/early-signal-ai-review",
+   "ahead": 11,
+   "behind": 0,
+   "commits_on_no_remote": 0
+  },
+  {
+   "name": "research/early-signal-postmerge",
+   "sha": "a23ee604cbf695c820242ff2a217004d22498c4e",
+   "upstream": "origin/research/early-signal-postmerge",
+   "ahead": 0,
+   "behind": 9,
+   "commits_on_no_remote": 0
+  },
+  {
+   "name": "research/early-signal-review-workbench",
+   "sha": "fa1d57b874ac7b1be466dea3b6b3180354ae2afd",
+   "upstream": "origin/research/early-signal-review-workbench",
+   "ahead": 0,
+   "behind": 2,
+   "commits_on_no_remote": 0
+  },
+  {
+   "name": "research/early-signal-third-source",
+   "sha": "1e3864b188aff64019d43334d0f3451cd8d1e156",
+   "upstream": "origin/research/early-signal-third-source",
+   "ahead": 0,
+   "behind": 7,
+   "commits_on_no_remote": 0
+  },
+  {
+   "name": "research/forecast-registry",
+   "sha": "d5aa16ca77d4be5a64ec3a64eb5e2ead2e990308",
+   "upstream": "",
+   "ahead": 2,
+   "behind": 148,
+   "commits_on_no_remote": 2
+  },
+  {
+   "name": "research/full-history-v1",
+   "sha": "969fd0cc4fea040cbdb7a518f3c300b9122980b5",
+   "upstream": "origin/research/full-history-v1",
+   "ahead": 1,
+   "behind": 0,
+   "commits_on_no_remote": 0
+  },
+  {
+   "name": "research/horizon-001",
+   "sha": "2dcdc995102f094d723005c79bb9b0ec7d9737f7",
+   "upstream": "origin/research/horizon-001",
+   "ahead": 4,
+   "behind": 0,
+   "commits_on_no_remote": 0
+  },
+  {
+   "name": "research/independent-validation",
+   "sha": "a362bac8b203bc3ee64599ae447b64518adc4416",
+   "upstream": "",
+   "ahead": 0,
+   "behind": 152,
+   "commits_on_no_remote": 0
+  },
+  {
+   "name": "research/innovation-signals-observatory",
+   "sha": "c4327ce44c6aafe0e4af5a73df7f356dfffcb438",
+   "upstream": "origin/research/innovation-signals-observatory",
+   "ahead": 46,
+   "behind": 0,
+   "commits_on_no_remote": 0
+  },
+  {
+   "name": "research/kimi-tkg-hardening",
+   "sha": "75acc2dac5bb48ee7284eb921103e2e119d85847",
+   "upstream": "",
+   "ahead": 0,
+   "behind": 145,
+   "commits_on_no_remote": 0
+  },
+  {
+   "name": "research/local-llm-foundation",
+   "sha": "d4c4e43c9afa353b9b4af6f4f020a959024a07bd",
+   "upstream": "origin/research/local-llm-foundation",
+   "ahead": 9,
+   "behind": 0,
+   "commits_on_no_remote": 0
+  },
+  {
+   "name": "research/overnight-qlora-s030",
+   "sha": "5954d7d81bc47ec5143fa7504fbe61debe51c29c",
+   "upstream": "origin/research/overnight-qlora-s030",
+   "ahead": 11,
+   "behind": 0,
+   "commits_on_no_remote": 0
+  },
+  {
+   "name": "research/phoenix-001-external-methods",
+   "sha": "c385553377dd340f6926aa9ff199e136c1a26f34",
+   "upstream": "",
+   "ahead": 33,
+   "behind": 0,
+   "commits_on_no_remote": 7
+  },
+  {
+   "name": "research/phoenix-001-round2",
+   "sha": "cd63c7245b13e8278b4dd0a228ff327d18d0d3f7",
+   "upstream": "origin/research/phoenix-001-round2",
+   "ahead": 7,
+   "behind": 0,
+   "commits_on_no_remote": 0
+  },
+  {
+   "name": "research/phoenix-002-h8-validation",
+   "sha": "c826703126f7a26ce5671e800bcc2882e2c9c101",
+   "upstream": "origin/research/phoenix-002-h8-validation",
+   "ahead": 10,
+   "behind": 0,
+   "commits_on_no_remote": 0
+  },
+  {
+   "name": "research/phoenix-003-early-evidence",
+   "sha": "91495bce95bd7e78231c91f1ea33d6aed851682c",
+   "upstream": "origin/research/phoenix-003-early-evidence",
+   "ahead": 4,
+   "behind": 0,
+   "commits_on_no_remote": 0
+  },
+  {
+   "name": "research/research-foundation-integration",
+   "sha": "dedfd68d7bdadd655ecc1f0f035d1ea0347347c0",
+   "upstream": "origin/research/research-foundation-integration",
+   "ahead": 0,
+   "behind": 140,
+   "commits_on_no_remote": 0
+  },
+  {
+   "name": "research/s028-temporal-graph-early-signal",
+   "sha": "4c6686f45fd88ce324da1befb368f3cd6e415c18",
+   "upstream": "origin/research/s028-temporal-graph-early-signal",
+   "ahead": 26,
+   "behind": 0,
+   "commits_on_no_remote": 0
+  },
+  {
+   "name": "research/s029-evidence-based-relations",
+   "sha": "10f25d190a748d5a255215debe9cacccb11e2c45",
+   "upstream": "origin/research/s029-evidence-based-relations",
+   "ahead": 34,
+   "behind": 0,
+   "commits_on_no_remote": 0
+  },
+  {
+   "name": "research/temporal-knowledge-graph",
+   "sha": "1d9e0d1d02c877a0cf3426ca1f6b2897521dbc04",
+   "upstream": "",
+   "ahead": 2,
+   "behind": 154,
+   "commits_on_no_remote": 2
+  },
+  {
+   "name": "research/tkg-mvp",
+   "sha": "f1b813212c8c32fa19e6d87fbfad0daed951e9dd",
+   "upstream": "",
+   "ahead": 0,
+   "behind": 148,
+   "commits_on_no_remote": 0
+  },
+  {
+   "name": "research/tkg-review",
+   "sha": "f194520d4f2454b0f990fb36601643fca573402b",
+   "upstream": "",
+   "ahead": 0,
+   "behind": 150,
+   "commits_on_no_remote": 0
+  },
+  {
+   "name": "s031-delivery",
+   "sha": "e3e39d59e897fb9507dafd8ea44e5912e18545bb",
+   "upstream": "origin/research/s031-hiring-capability-study",
+   "ahead": 83,
+   "behind": 0,
+   "commits_on_no_remote": 0
+  }
+ ],
+ "branch_trees": {
+  "feat/frontier-device-radar": {
+   "pr": 1,
+   "files": 178,
+   "bytes": 9328938,
+   "top_level": {
+    "docs": {
+     "files": 30,
+     "bytes": 6344484
+    },
+    "medradar": {
+     "files": 30,
+     "bytes": 1124593
+    },
+    "tests": {
+     "files": 77,
+     "bytes": 880319
+    },
+    "config": {
+     "files": 9,
+     "bytes": 572148
+    },
+    "scripts": {
+     "files": 8,
+     "bytes": 333242
+    },
+    "README.md": {
+     "files": 1,
+     "bytes": 18649
+    },
+    "README.zh-CN.md": {
+     "files": 1,
+     "bytes": 15389
+    },
+    ".github": {
+     "files": 7,
+     "bytes": 10968
+    },
+    "CHANGELOG.md": {
+     "files": 1,
+     "bytes": 9715
+    },
+    "verifier": {
+     "files": 7,
+     "bytes": 8639
+    },
+    "ROADMAP.md": {
+     "files": 1,
+     "bytes": 5225
+    },
+    "CONTRIBUTING.md": {
+     "files": 1,
+     "bytes": 1932
+    },
+    "pyproject.toml": {
+     "files": 1,
+     "bytes": 1454
+    },
+    "LICENSE": {
+     "files": 1,
+     "bytes": 1328
+    },
+    "MANIFEST.in": {
+     "files": 1,
+     "bytes": 479
+    },
+    ".gitignore": {
+     "files": 1,
+     "bytes": 315
+    },
+    ".gitattributes": {
+     "files": 1,
+     "bytes": 59
+    }
+   },
+   "added_top_dirs": {
+    "medradar": {
+     "files": 2,
+     "bytes": 21474
+    },
+    "tests": {
+     "files": 2,
+     "bytes": 13768
+    },
+    "verifier/v1": {
+     "files": 2,
+     "bytes": 4697
+    },
+    "verifier/runs": {
+     "files": 4,
+     "bytes": 3068
+    },
+    "tests/fixtures": {
+     "files": 2,
+     "bytes": 1258
+    },
+    "verifier": {
+     "files": 1,
+     "bytes": 874
+    }
+   },
+   "root_new": [
+    "medradar",
+    "tests",
+    "verifier"
+   ],
+   "notable_added": [
+    "medradar/adcom.py",
+    "medradar/frontier.py",
+    "tests/fixtures/adcom_calendar.html",
+    "tests/fixtures/adcom_detail.html",
+    "tests/test_frontier.py",
+    "tests/test_research_integrity.py",
+    "verifier/README.md",
+    "verifier/runs/2026-10-31T06-30-00Z-v1-baseline.json",
+    "verifier/runs/2026-10-31T18-53-30Z-v1-final.json",
+    "verifier/runs/2026-10-31T22-40-02Z-v1-merged-final.json",
+    "verifier/runs/index.ndjson",
+    "verifier/v1/acceptance.md",
+    "verifier/v1/verify.py"
+   ]
+  },
+  "feat/medradar-2.0-mvp": {
+   "pr": 12,
+   "files": 1188,
+   "bytes": 32367364,
+   "top_level": {
+    "experiments": {
+     "files": 657,
+     "bytes": 15778771
+    },
+    "docs": {
+     "files": 74,
+     "bytes": 7877501
+    },
+    "config": {
+     "files": 10,
+     "bytes": 2283315
+    },
+    "medradar": {
+     "files": 101,
+     "bytes": 2193934
+    },
+    "research": {
+     "files": 116,
+     "bytes": 1396890
+    },
+    "tests": {
+     "files": 110,
+     "bytes": 1388261
+    },
+    "papers": {
+     "files": 32,
+     "bytes": 534818
+    },
+    "scripts": {
+     "files": 14,
+     "bytes": 416744
+    },
+    "web": {
+     "files": 19,
+     "bytes": 288265
+    },
+    "tools": {
+     "files": 15,
+     "bytes": 63663
+    },
+    "verifier": {
+     "files": 22,
+     "bytes": 34482
+    },
+    "README.md": {
+     "files": 1,
+     "bytes": 33542
+    },
+    "README.zh-CN.md": {
+     "files": 1,
+     "bytes": 26132
+    },
+    "CHANGELOG.md": {
+     "files": 1,
+     "bytes": 23524
+    },
+    ".github": {
+     "files": 8,
+     "bytes": 16013
+    },
+    "ROADMAP.md": {
+     "files": 1,
+     "bytes": 5225
+    },
+    "pyproject.toml": {
+     "files": 1,
+     "bytes": 2049
+    },
+    "CONTRIBUTING.md": {
+     "files": 1,
+     "bytes": 1932
+    },
+    "LICENSE": {
+     "files": 1,
+     "bytes": 1328
+    },
+    "MANIFEST.in": {
+     "files": 1,
+     "bytes": 479
+    },
+    ".gitignore": {
+     "files": 1,
+     "bytes": 437
+    },
+    ".gitattributes": {
+     "files": 1,
+     "bytes": 59
+    }
+   },
+   "added_top_dirs": {
+    "docs/product": {
+     "files": 8,
+     "bytes": 1085501
+    },
+    "medradar/product": {
+     "files": 9,
+     "bytes": 326535
+    },
+    "web/js": {
+     "files": 14,
+     "bytes": 227569
+    },
+    "docs": {
+     "files": 6,
+     "bytes": 87606
+    },
+    "tests": {
+     "files": 5,
+     "bytes": 72757
+    },
+    "web": {
+     "files": 5,
+     "bytes": 60696
+    },
+    "scripts": {
+     "files": 1,
+     "bytes": 14793
+    },
+    "medradar/web": {
+     "files": 5,
+     "bytes": 13320
+    }
+   },
+   "root_new": [
+    "docs",
+    "medradar",
+    "scripts",
+    "tests",
+    "web"
+   ],
+   "notable_added": [
+    "docs/PRODUCT_ACCEPTANCE.md",
+    "docs/PRODUCT_ARCHITECTURE.md",
+    "docs/PRODUCT_ROADMAP.md",
+    "docs/PRODUCT_STATISTICAL_AUDIT.md",
+    "docs/PRODUCT_USER_GUIDE.md",
+    "docs/PRODUCT_VISION.md",
+    "docs/product/analyst.png",
+    "docs/product/company-mindray.png",
+    "docs/product/compare.png",
+    "docs/product/evidence-empty.png",
+    "docs/product/evidence-trace.png",
+    "docs/product/mobile-company.png",
+    "docs/product/overview.png",
+    "docs/product/radar-respiratory.png",
+    "medradar/product/__init__.py",
+    "medradar/product/analyst.py",
+    "medradar/product/catalog.py",
+    "medradar/product/entities.py",
+    "medradar/product/entity_aliases.json",
+    "medradar/product/lab.py",
+    "medradar/product/store.py",
+    "medradar/web/__init__.py",
+    "medradar/web/__main__.py",
+    "medradar/web/app.py",
+    "medradar/web/routes_analyst.py",
+    "medradar/web/routes_lab.py",
+    "scripts/product_e2e.cjs",
+    "tests/product_fixture.py",
+    "tests/test_product_analyst.py",
+    "tests/test_product_api.py",
+    "tests/test_product_statistics.py",
+    "tests/test_product_store.py",
+    "web/CONTRACT.md",
+    "web/app.js",
+    "web/favicon.svg",
+    "web/index.html",
+    "web/js/api.js",
+    "web/js/charts.js",
+    "web/js/components.js",
+    "web/js/event.js",
+    "web/js/util.js",
+    "web/styles.css"
+   ]
+  },
+  "feat/live-observatory-v1": {
+   "pr": 13,
+   "files": 1232,
+   "bytes": 33702993,
+   "top_level": {
+    "experiments": {
+     "files": 657,
+     "bytes": 15778771
+    },
+    "docs": {
+     "files": 91,
+     "bytes": 8579945
+    },
+    "medradar": {
+     "files": 117,
+     "bytes": 2565950
+    },
+    "config": {
+     "files": 10,
+     "bytes": 2283315
+    },
+    "tests": {
+     "files": 117,
+     "bytes": 1541785
+    },
+    "research": {
+     "files": 116,
+     "bytes": 1396890
+    },
+    "papers": {
+     "files": 32,
+     "bytes": 534818
+    },
+    "scripts": {
+     "files": 16,
+     "bytes": 463997
+    },
+    "web": {
+     "files": 20,
+     "bytes": 341828
+    },
+    "tools": {
+     "files": 15,
+     "bytes": 63663
+    },
+    "README.md": {
+     "files": 1,
+     "bytes": 35686
+    },
+    "verifier": {
+     "files": 22,
+     "bytes": 34482
+    },
+    "README.zh-CN.md": {
+     "files": 1,
+     "bytes": 26132
+    },
+    "CHANGELOG.md": {
+     "files": 1,
+     "bytes": 23524
+    },
+    ".github": {
+     "files": 9,
+     "bytes": 20698
+    },
+    "ROADMAP.md": {
+     "files": 1,
+     "bytes": 5225
+    },
+    "pyproject.toml": {
+     "files": 1,
+     "bytes": 2049
+    },
+    "CONTRIBUTING.md": {
+     "files": 1,
+     "bytes": 1932
+    },
+    "LICENSE": {
+     "files": 1,
+     "bytes": 1328
+    },
+    "MANIFEST.in": {
+     "files": 1,
+     "bytes": 479
+    },
+    ".gitignore": {
+     "files": 1,
+     "bytes": 437
+    },
+    ".gitattributes": {
+     "files": 1,
+     "bytes": 59
+    }
+   },
+   "added_top_dirs": {
+    "docs/product": {
+     "files": 8,
+     "bytes": 1085501
+    },
+    "docs/observatory": {
+     "files": 13,
+     "bytes": 629122
+    },
+    "medradar/product": {
+     "files": 11,
+     "bytes": 393216
+    },
+    "medradar/observatory": {
+     "files": 13,
+     "bytes": 286078
+    },
+    "web/js": {
+     "files": 15,
+     "bytes": 277083
+    },
+    "tests": {
+     "files": 10,
+     "bytes": 205133
+    },
+    "docs": {
+     "files": 10,
+     "bytes": 160928
+    },
+    "web": {
+     "files": 5,
+     "bytes": 64745
+    },
+    "scripts": {
+     "files": 3,
+     "bytes": 62046
+    },
+    "tests/fixtures": {
+     "files": 2,
+     "bytes": 21148
+    },
+    "medradar/web": {
+     "files": 6,
+     "bytes": 16391
+    },
+    ".github/workflows": {
+     "files": 1,
+     "bytes": 4201
+    }
+   },
+   "root_new": [
+    ".github",
+    "docs",
+    "medradar",
+    "scripts",
+    "tests",
+    "web"
+   ],
+   "notable_added": [
+    ".github/workflows/observatory.yml",
+    "docs/LIVE_OBSERVATORY.md",
+    "docs/LIVE_OBSERVATORY_ACCEPTANCE.md",
+    "docs/LIVE_OBSERVATORY_DESIGN.md",
+    "docs/PRODUCT_ACCEPTANCE.md",
+    "docs/PRODUCT_ARCHITECTURE.md",
+    "docs/PRODUCT_ROADMAP.md",
+    "docs/PRODUCT_STATISTICAL_AUDIT.md",
+    "docs/PRODUCT_USER_GUIDE.md",
+    "docs/PRODUCT_VISION.md",
+    "docs/PROSPECTIVE_OBSERVATION_REGISTRY.md",
+    "docs/product/analyst.png",
+    "docs/product/company-mindray.png",
+    "docs/product/compare.png",
+    "docs/product/evidence-empty.png",
+    "docs/product/evidence-trace.png",
+    "docs/product/mobile-company.png",
+    "docs/product/overview.png",
+    "docs/product/radar-respiratory.png",
+    "medradar/observatory/__init__.py",
+    "medradar/observatory/adapter.py",
+    "medradar/observatory/lag.py",
+    "medradar/observatory/ledger.py",
+    "medradar/observatory/mapping.py",
+    "medradar/observatory/prospective.py",
+    "medradar/observatory/records.py",
+    "medradar/observatory/runner.py",
+    "medradar/observatory/scheduler.py",
+    "medradar/product/__init__.py",
+    "medradar/product/analyst.py",
+    "medradar/product/catalog.py",
+    "medradar/product/entities.py",
+    "medradar/product/entity_aliases.json",
+    "medradar/product/lab.py",
+    "medradar/product/observatory.py",
+    "medradar/product/prospective.py",
+    "medradar/product/store.py",
+    "medradar/web/__init__.py",
+    "medradar/web/__main__.py",
+    "medradar/web/app.py",
+    "medradar/web/routes_analyst.py",
+    "medradar/web/routes_lab.py",
+    "medradar/web/routes_observatory.py",
+    "scripts/observatory_acceptance.py",
+    "scripts/observatory_evidence_bundle.py",
+    "scripts/product_e2e.cjs",
+    "tests/product_fixture.py",
+    "tests/test_observatory_api.py",
+    "tests/test_observatory_core.py",
+    "tests/test_observatory_ctgov.py",
+    "tests/test_observatory_europepmc.py",
+    "tests/test_observatory_prospective.py",
+    "tests/test_product_analyst.py",
+    "tests/test_product_api.py",
+    "tests/test_product_statistics.py",
+    "tests/test_product_store.py",
+    "web/CONTRACT.md",
+    "web/app.js",
+    "web/favicon.svg",
+    "web/index.html",
+    "web/js/api.js",
+    "web/js/charts.js",
+    "web/js/components.js",
+    "web/js/event.js",
+    "web/js/util.js",
+    "web/styles.css"
+   ]
+  },
+  "feat/observatory-reliability-v1": {
+   "pr": 14,
+   "files": 1269,
+   "bytes": 34770883,
+   "top_level": {
+    "experiments": {
+     "files": 657,
+     "bytes": 15778771
+    },
+    "docs": {
+     "files": 107,
+     "bytes": 9059751
+    },
+    "medradar": {
+     "files": 123,
+     "bytes": 2886168
+    },
+    "config": {
+     "files": 10,
+     "bytes": 2283315
+    },
+    "tests": {
+     "files": 122,
+     "bytes": 1685072
+    },
+    "research": {
+     "files": 116,
+     "bytes": 1396890
+    },
+    "papers": {
+     "files": 32,
+     "bytes": 534818
+    },
+    "scripts": {
+     "files": 22,
+     "bytes": 515954
+    },
+    "web": {
+     "files": 20,
+     "bytes": 366314
+    },
+    "tools": {
+     "files": 15,
+     "bytes": 63663
+    },
+    "deploy": {
+     "files": 4,
+     "bytes": 43632
+    },
+    "README.md": {
+     "files": 1,
+     "bytes": 38938
+    },
+    "verifier": {
+     "files": 22,
+     "bytes": 34482
+    },
+    "README.zh-CN.md": {
+     "files": 1,
+     "bytes": 26132
+    },
+    "CHANGELOG.md": {
+     "files": 1,
+     "bytes": 23524
+    },
+    ".github": {
+     "files": 9,
+     "bytes": 21780
+    },
+    "ROADMAP.md": {
+     "files": 1,
+     "bytes": 5225
+    },
+    "pyproject.toml": {
+     "files": 1,
+     "bytes": 2049
+    },
+    "CONTRIBUTING.md": {
+     "files": 1,
+     "bytes": 1932
+    },
+    "LICENSE": {
+     "files": 1,
+     "bytes": 1328
+    },
+    ".gitignore": {
+     "files": 1,
+     "bytes": 607
+    },
+    "MANIFEST.in": {
+     "files": 1,
+     "bytes": 479
+    },
+    ".gitattributes": {
+     "files": 1,
+     "bytes": 59
+    }
+   },
+   "added_top_dirs": {
+    "docs/product": {
+     "files": 8,
+     "bytes": 1085501
+    },
+    "docs/observatory": {
+     "files": 13,
+     "bytes": 629122
+    },
+    "medradar/observatory": {
+     "files": 19,
+     "bytes": 568465
+    },
+    "medradar/product": {
+     "files": 11,
+     "bytes": 416896
+    },
+    "docs/reliability": {
+     "files": 9,
+     "bytes": 374380
+    },
+    "tests": {
+     "files": 15,
+     "bytes": 348420
+    },
+    "web/js": {
+     "files": 15,
+     "bytes": 299606
+    },
+    "docs": {
+     "files": 17,
+     "bytes": 266354
+    },
+    "scripts": {
+     "files": 9,
+     "bytes": 114003
+    },
+    "web": {
+     "files": 5,
+     "bytes": 66708
+    },
+    "deploy/systemd": {
+     "files": 3,
+     "bytes": 25674
+    },
+    "tests/fixtures": {
+     "files": 2,
+     "bytes": 21148
+    },
+    "deploy/windows": {
+     "files": 1,
+     "bytes": 17958
+    },
+    "medradar/web": {
+     "files": 6,
+     "bytes": 16913
+    },
+    ".github/workflows": {
+     "files": 1,
+     "bytes": 4201
+    }
+   },
+   "root_new": [
+    ".github",
+    "deploy",
+    "docs",
+    "medradar",
+    "scripts",
+    "tests",
+    "web"
+   ],
+   "notable_added": [
+    ".github/workflows/observatory.yml",
+    "deploy/systemd/README.md",
+    "deploy/systemd/medradar-observatory.service",
+    "deploy/systemd/medradar-observatory.timer",
+    "deploy/windows/README.md",
+    "docs/BACKUP_AND_RECOVERY.md",
+    "docs/CONTINUOUS_VALIDATION_PROTOCOL.md",
+    "docs/DEPLOYMENT.md",
+    "docs/HEALTH_AND_VALIDATION.md",
+    "docs/LIVE_OBSERVATORY.md",
+    "docs/LIVE_OBSERVATORY_ACCEPTANCE.md",
+    "docs/LIVE_OBSERVATORY_DESIGN.md",
+    "docs/PRODUCT_ACCEPTANCE.md",
+    "docs/PRODUCT_ARCHITECTURE.md",
+    "docs/PRODUCT_ROADMAP.md",
+    "docs/PRODUCT_STATISTICAL_AUDIT.md",
+    "docs/PRODUCT_USER_GUIDE.md",
+    "docs/PRODUCT_VISION.md",
+    "docs/PROSPECTIVE_OBSERVATION_REGISTRY.md",
+    "docs/RELIABILITY_ACCEPTANCE.md",
+    "docs/RELIABILITY_DESIGN.md",
+    "docs/audit_report_example.md",
+    "docs/product/analyst.png",
+    "docs/product/company-mindray.png",
+    "docs/product/compare.png",
+    "docs/product/evidence-empty.png",
+    "docs/product/evidence-trace.png",
+    "docs/product/mobile-company.png",
+    "docs/product/overview.png",
+    "docs/product/radar-respiratory.png",
+    "medradar/observatory/__init__.py",
+    "medradar/observatory/adapter.py",
+    "medradar/observatory/audit.py",
+    "medradar/observatory/backup.py",
+    "medradar/observatory/health.py",
+    "medradar/observatory/lag.py",
+    "medradar/observatory/ledger.py",
+    "medradar/observatory/lock.py",
+    "medradar/observatory/mapping.py",
+    "medradar/observatory/prospective.py",
+    "medradar/observatory/records.py",
+    "medradar/observatory/restore.py",
+    "medradar/observatory/runner.py",
+    "medradar/observatory/scheduler.py",
+    "medradar/observatory/validation.py",
+    "medradar/product/__init__.py",
+    "medradar/product/analyst.py",
+    "medradar/product/catalog.py",
+    "medradar/product/entities.py",
+    "medradar/product/entity_aliases.json",
+    "medradar/product/lab.py",
+    "medradar/product/observatory.py",
+    "medradar/product/prospective.py",
+    "medradar/product/store.py",
+    "medradar/web/__init__.py",
+    "medradar/web/__main__.py",
+    "medradar/web/app.py",
+    "medradar/web/routes_analyst.py",
+    "medradar/web/routes_lab.py",
+    "medradar/web/routes_observatory.py",
+    "scripts/install_windows_task.ps1",
+    "scripts/observatory_acceptance.py",
+    "scripts/observatory_backup_drill.py",
+    "scripts/observatory_backup_task.ps1",
+    "scripts/observatory_evidence_bundle.py",
+    "scripts/observatory_reliability_evidence.py",
+    "scripts/observatory_watch.ps1",
+    "scripts/product_e2e.cjs",
+    "scripts/uninstall_windows_task.ps1",
+    "tests/product_fixture.py",
+    "tests/test_observatory_api.py",
+    "tests/test_observatory_audit.py",
+    "tests/test_observatory_backup.py",
+    "tests/test_observatory_core.py",
+    "tests/test_observatory_ctgov.py",
+    "tests/test_observatory_deploy.py",
+    "tests/test_observatory_europepmc.py",
+    "tests/test_observatory_health.py",
+    "tests/test_observatory_prospective.py",
+    "tests/test_observatory_reliability.py",
+    "tests/test_product_analyst.py",
+    "tests/test_product_api.py",
+    "tests/test_product_statistics.py",
+    "tests/test_product_store.py",
+    "web/CONTRACT.md",
+    "web/app.js",
+    "web/favicon.svg",
+    "web/index.html",
+    "web/js/api.js",
+    "web/js/charts.js",
+    "web/js/components.js",
+    "web/js/event.js",
+    "web/js/util.js",
+    "web/styles.css"
+   ]
+  },
+  "research/s028-temporal-graph-early-signal": {
+   "pr": 15,
+   "files": 1355,
+   "bytes": 40917487,
+   "top_level": {
+    "experiments": {
+     "files": 657,
+     "bytes": 15778771
+    },
+    "docs": {
+     "files": 107,
+     "bytes": 9059751
+    },
+    "research": {
+     "files": 202,
+     "bytes": 7543494
+    },
+    "medradar": {
+     "files": 123,
+     "bytes": 2886168
+    },
+    "config": {
+     "files": 10,
+     "bytes": 2283315
+    },
+    "tests": {
+     "files": 122,
+     "bytes": 1685072
+    },
+    "papers": {
+     "files": 32,
+     "bytes": 534818
+    },
+    "scripts": {
+     "files": 22,
+     "bytes": 515954
+    },
+    "web": {
+     "files": 20,
+     "bytes": 366314
+    },
+    "tools": {
+     "files": 15,
+     "bytes": 63663
+    },
+    "deploy": {
+     "files": 4,
+     "bytes": 43632
+    },
+    "README.md": {
+     "files": 1,
+     "bytes": 38938
+    },
+    "verifier": {
+     "files": 22,
+     "bytes": 34482
+    },
+    "README.zh-CN.md": {
+     "files": 1,
+     "bytes": 26132
+    },
+    "CHANGELOG.md": {
+     "files": 1,
+     "bytes": 23524
+    },
+    ".github": {
+     "files": 9,
+     "bytes": 21780
+    },
+    "ROADMAP.md": {
+     "files": 1,
+     "bytes": 5225
+    },
+    "pyproject.toml": {
+     "files": 1,
+     "bytes": 2049
+    },
+    "CONTRIBUTING.md": {
+     "files": 1,
+     "bytes": 1932
+    },
+    "LICENSE": {
+     "files": 1,
+     "bytes": 1328
+    },
+    ".gitignore": {
+     "files": 1,
+     "bytes": 607
+    },
+    "MANIFEST.in": {
+     "files": 1,
+     "bytes": 479
+    },
+    ".gitattributes": {
+     "files": 1,
+     "bytes": 59
+    }
+   },
+   "added_top_dirs": {
+    "research/studies": {
+     "files": 86,
+     "bytes": 6146604
+    },
+    "docs/product": {
+     "files": 8,
+     "bytes": 1085501
+    },
+    "docs/observatory": {
+     "files": 13,
+     "bytes": 629122
+    },
+    "medradar/observatory": {
+     "files": 19,
+     "bytes": 568465
+    },
+    "medradar/product": {
+     "files": 11,
+     "bytes": 416896
+    },
+    "docs/reliability": {
+     "files": 9,
+     "bytes": 374380
+    },
+    "tests": {
+     "files": 15,
+     "bytes": 348420
+    },
+    "web/js": {
+     "files": 15,
+     "bytes": 299606
+    },
+    "docs": {
+     "files": 17,
+     "bytes": 266354
+    },
+    "scripts": {
+     "files": 9,
+     "bytes": 114003
+    },
+    "web": {
+     "files": 5,
+     "bytes": 66708
+    },
+    "deploy/systemd": {
+     "files": 3,
+     "bytes": 25674
+    },
+    "tests/fixtures": {
+     "files": 2,
+     "bytes": 21148
+    },
+    "deploy/windows": {
+     "files": 1,
+     "bytes": 17958
+    },
+    "medradar/web": {
+     "files": 6,
+     "bytes": 16913
+    },
+    ".github/workflows": {
+     "files": 1,
+     "bytes": 4201
+    }
+   },
+   "root_new": [
+    ".github",
+    "deploy",
+    "docs",
+    "medradar",
+    "research",
+    "scripts",
+    "tests",
+    "web"
+   ],
+   "notable_added": [
+    ".github/workflows/observatory.yml",
+    "deploy/systemd/README.md",
+    "deploy/systemd/medradar-observatory.service",
+    "deploy/systemd/medradar-observatory.timer",
+    "deploy/windows/README.md",
+    "docs/BACKUP_AND_RECOVERY.md",
+    "docs/CONTINUOUS_VALIDATION_PROTOCOL.md",
+    "docs/DEPLOYMENT.md",
+    "docs/HEALTH_AND_VALIDATION.md",
+    "docs/LIVE_OBSERVATORY.md",
+    "docs/LIVE_OBSERVATORY_ACCEPTANCE.md",
+    "docs/LIVE_OBSERVATORY_DESIGN.md",
+    "docs/PRODUCT_ACCEPTANCE.md",
+    "docs/PRODUCT_ARCHITECTURE.md",
+    "docs/PRODUCT_ROADMAP.md",
+    "docs/PRODUCT_STATISTICAL_AUDIT.md",
+    "docs/PRODUCT_USER_GUIDE.md",
+    "docs/PRODUCT_VISION.md",
+    "docs/PROSPECTIVE_OBSERVATION_REGISTRY.md",
+    "docs/RELIABILITY_ACCEPTANCE.md",
+    "docs/RELIABILITY_DESIGN.md",
+    "docs/audit_report_example.md",
+    "docs/product/analyst.png",
+    "docs/product/company-mindray.png",
+    "docs/product/compare.png",
+    "docs/product/evidence-empty.png",
+    "docs/product/evidence-trace.png",
+    "docs/product/mobile-company.png",
+    "docs/product/overview.png",
+    "docs/product/radar-respiratory.png",
+    "medradar/observatory/__init__.py",
+    "medradar/observatory/adapter.py",
+    "medradar/observatory/audit.py",
+    "medradar/observatory/backup.py",
+    "medradar/observatory/health.py",
+    "medradar/observatory/lag.py",
+    "medradar/observatory/ledger.py",
+    "medradar/observatory/lock.py",
+    "medradar/observatory/mapping.py",
+    "medradar/observatory/prospective.py",
+    "medradar/observatory/records.py",
+    "medradar/observatory/restore.py",
+    "medradar/observatory/runner.py",
+    "medradar/observatory/scheduler.py",
+    "medradar/observatory/validation.py",
+    "medradar/product/__init__.py",
+    "medradar/product/analyst.py",
+    "medradar/product/catalog.py",
+    "medradar/product/entities.py",
+    "medradar/product/entity_aliases.json",
+    "medradar/product/lab.py",
+    "medradar/product/observatory.py",
+    "medradar/product/prospective.py",
+    "medradar/product/store.py",
+    "medradar/web/__init__.py",
+    "medradar/web/__main__.py",
+    "medradar/web/app.py",
+    "medradar/web/routes_analyst.py",
+    "medradar/web/routes_lab.py",
+    "medradar/web/routes_observatory.py",
+    "scripts/install_windows_task.ps1",
+    "scripts/observatory_acceptance.py",
+    "scripts/observatory_backup_drill.py",
+    "scripts/observatory_backup_task.ps1",
+    "scripts/observatory_evidence_bundle.py",
+    "scripts/observatory_reliability_evidence.py",
+    "scripts/observatory_watch.ps1",
+    "scripts/product_e2e.cjs",
+    "scripts/uninstall_windows_task.ps1",
+    "tests/product_fixture.py",
+    "tests/test_observatory_api.py",
+    "tests/test_observatory_audit.py",
+    "tests/test_observatory_backup.py",
+    "tests/test_observatory_core.py",
+    "tests/test_observatory_ctgov.py",
+    "tests/test_observatory_deploy.py",
+    "tests/test_observatory_europepmc.py",
+    "tests/test_observatory_health.py",
+    "tests/test_observatory_prospective.py",
+    "tests/test_observatory_reliability.py",
+    "tests/test_product_analyst.py",
+    "tests/test_product_api.py",
+    "tests/test_product_statistics.py",
+    "tests/test_product_store.py",
+    "web/CONTRACT.md",
+    "web/app.js",
+    "web/favicon.svg",
+    "web/index.html",
+    "web/js/api.js",
+    "web/js/charts.js",
+    "web/js/components.js",
+    "web/js/event.js",
+    "web/js/util.js",
+    "web/styles.css"
+   ]
+  },
+  "research/s029-evidence-based-relations": {
+   "pr": 16,
+   "files": 1474,
+   "bytes": 99808782,
+   "top_level": {
+    "research": {
+     "files": 316,
+     "bytes": 66393483
+    },
+    "experiments": {
+     "files": 657,
+     "bytes": 15778771
+    },
+    "docs": {
+     "files": 107,
+     "bytes": 9059751
+    },
+    "medradar": {
+     "files": 123,
+     "bytes": 2886168
+    },
+    "config": {
+     "files": 10,
+     "bytes": 2283315
+    },
+    "tests": {
+     "files": 122,
+     "bytes": 1685072
+    },
+    "papers": {
+     "files": 32,
+     "bytes": 534818
+    },
+    "scripts": {
+     "files": 22,
+     "bytes": 515954
+    },
+    "web": {
+     "files": 20,
+     "bytes": 366314
+    },
+    "tools": {
+     "files": 15,
+     "bytes": 63663
+    },
+    "deploy": {
+     "files": 4,
+     "bytes": 43632
+    },
+    "\"research": {
+     "files": 5,
+     "bytes": 41306
+    },
+    "README.md": {
+     "files": 1,
+     "bytes": 38938
+    },
+    "verifier": {
+     "files": 22,
+     "bytes": 34482
+    },
+    "README.zh-CN.md": {
+     "files": 1,
+     "bytes": 26132
+    },
+    "CHANGELOG.md": {
+     "files": 1,
+     "bytes": 23524
+    },
+    ".github": {
+     "files": 9,
+     "bytes": 21780
+    },
+    "ROADMAP.md": {
+     "files": 1,
+     "bytes": 5225
+    },
+    "pyproject.toml": {
+     "files": 1,
+     "bytes": 2049
+    },
+    "CONTRIBUTING.md": {
+     "files": 1,
+     "bytes": 1932
+    },
+    "LICENSE": {
+     "files": 1,
+     "bytes": 1328
+    },
+    ".gitignore": {
+     "files": 1,
+     "bytes": 607
+    },
+    "MANIFEST.in": {
+     "files": 1,
+     "bytes": 479
+    },
+    ".gitattributes": {
+     "files": 1,
+     "bytes": 59
+    }
+   },
+   "added_top_dirs": {
+    "research/studies": {
+     "files": 200,
+     "bytes": 64996593
+    },
+    "docs/product": {
+     "files": 8,
+     "bytes": 1085501
+    },
+    "docs/observatory": {
+     "files": 13,
+     "bytes": 629122
+    },
+    "medradar/observatory": {
+     "files": 19,
+     "bytes": 568465
+    },
+    "medradar/product": {
+     "files": 11,
+     "bytes": 416896
+    },
+    "docs/reliability": {
+     "files": 9,
+     "bytes": 374380
+    },
+    "tests": {
+     "files": 15,
+     "bytes": 348420
+    },
+    "web/js": {
+     "files": 15,
+     "bytes": 299606
+    },
+    "docs": {
+     "files": 17,
+     "bytes": 266354
+    },
+    "scripts": {
+     "files": 9,
+     "bytes": 114003
+    },
+    "web": {
+     "files": 5,
+     "bytes": 66708
+    },
+    "\"research/studies": {
+     "files": 5,
+     "bytes": 41306
+    },
+    "deploy/systemd": {
+     "files": 3,
+     "bytes": 25674
+    },
+    "tests/fixtures": {
+     "files": 2,
+     "bytes": 21148
+    },
+    "deploy/windows": {
+     "files": 1,
+     "bytes": 17958
+    },
+    "medradar/web": {
+     "files": 6,
+     "bytes": 16913
+    },
+    ".github/workflows": {
+     "files": 1,
+     "bytes": 4201
+    }
+   },
+   "root_new": [
+    "\"research",
+    ".github",
+    "deploy",
+    "docs",
+    "medradar",
+    "research",
+    "scripts",
+    "tests",
+    "web"
+   ],
+   "notable_added": [
+    ".github/workflows/observatory.yml",
+    "deploy/systemd/README.md",
+    "deploy/systemd/medradar-observatory.service",
+    "deploy/systemd/medradar-observatory.timer",
+    "deploy/windows/README.md",
+    "docs/BACKUP_AND_RECOVERY.md",
+    "docs/CONTINUOUS_VALIDATION_PROTOCOL.md",
+    "docs/DEPLOYMENT.md",
+    "docs/HEALTH_AND_VALIDATION.md",
+    "docs/LIVE_OBSERVATORY.md",
+    "docs/LIVE_OBSERVATORY_ACCEPTANCE.md",
+    "docs/LIVE_OBSERVATORY_DESIGN.md",
+    "docs/PRODUCT_ACCEPTANCE.md",
+    "docs/PRODUCT_ARCHITECTURE.md",
+    "docs/PRODUCT_ROADMAP.md",
+    "docs/PRODUCT_STATISTICAL_AUDIT.md",
+    "docs/PRODUCT_USER_GUIDE.md",
+    "docs/PRODUCT_VISION.md",
+    "docs/PROSPECTIVE_OBSERVATION_REGISTRY.md",
+    "docs/RELIABILITY_ACCEPTANCE.md",
+    "docs/RELIABILITY_DESIGN.md",
+    "docs/audit_report_example.md",
+    "docs/product/analyst.png",
+    "docs/product/company-mindray.png",
+    "docs/product/compare.png",
+    "docs/product/evidence-empty.png",
+    "docs/product/evidence-trace.png",
+    "docs/product/mobile-company.png",
+    "docs/product/overview.png",
+    "docs/product/radar-respiratory.png",
+    "medradar/observatory/__init__.py",
+    "medradar/observatory/adapter.py",
+    "medradar/observatory/audit.py",
+    "medradar/observatory/backup.py",
+    "medradar/observatory/health.py",
+    "medradar/observatory/lag.py",
+    "medradar/observatory/ledger.py",
+    "medradar/observatory/lock.py",
+    "medradar/observatory/mapping.py",
+    "medradar/observatory/prospective.py",
+    "medradar/observatory/records.py",
+    "medradar/observatory/restore.py",
+    "medradar/observatory/runner.py",
+    "medradar/observatory/scheduler.py",
+    "medradar/observatory/validation.py",
+    "medradar/product/__init__.py",
+    "medradar/product/analyst.py",
+    "medradar/product/catalog.py",
+    "medradar/product/entities.py",
+    "medradar/product/entity_aliases.json",
+    "medradar/product/lab.py",
+    "medradar/product/observatory.py",
+    "medradar/product/prospective.py",
+    "medradar/product/store.py",
+    "medradar/web/__init__.py",
+    "medradar/web/__main__.py",
+    "medradar/web/app.py",
+    "medradar/web/routes_analyst.py",
+    "medradar/web/routes_lab.py",
+    "medradar/web/routes_observatory.py",
+    "scripts/install_windows_task.ps1",
+    "scripts/observatory_acceptance.py",
+    "scripts/observatory_backup_drill.py",
+    "scripts/observatory_backup_task.ps1",
+    "scripts/observatory_evidence_bundle.py",
+    "scripts/observatory_reliability_evidence.py",
+    "scripts/observatory_watch.ps1",
+    "scripts/product_e2e.cjs",
+    "scripts/uninstall_windows_task.ps1",
+    "tests/product_fixture.py",
+    "tests/test_observatory_api.py",
+    "tests/test_observatory_audit.py",
+    "tests/test_observatory_backup.py",
+    "tests/test_observatory_core.py",
+    "tests/test_observatory_ctgov.py",
+    "tests/test_observatory_deploy.py",
+    "tests/test_observatory_europepmc.py",
+    "tests/test_observatory_health.py",
+    "tests/test_observatory_prospective.py",
+    "tests/test_observatory_reliability.py",
+    "tests/test_product_analyst.py",
+    "tests/test_product_api.py",
+    "tests/test_product_statistics.py",
+    "tests/test_product_store.py",
+    "web/CONTRACT.md",
+    "web/app.js",
+    "web/favicon.svg",
+    "web/index.html",
+    "web/js/api.js",
+    "web/js/charts.js",
+    "web/js/components.js",
+    "web/js/event.js",
+    "web/js/util.js",
+    "web/styles.css"
+   ]
+  },
+  "maintenance/repository-consolidation": {
+   "pr": 17,
+   "files": 1138,
+   "bytes": 30500290,
+   "top_level": {
+    "experiments": {
+     "files": 657,
+     "bytes": 15778771
+    },
+    "docs": {
+     "files": 63,
+     "bytes": 6757320
+    },
+    "config": {
+     "files": 10,
+     "bytes": 2283315
+    },
+    "medradar": {
+     "files": 87,
+     "bytes": 1853319
+    },
+    "research": {
+     "files": 116,
+     "bytes": 1396890
+    },
+    "tests": {
+     "files": 105,
+     "bytes": 1316463
+    },
+    "papers": {
+     "files": 32,
+     "bytes": 534818
+    },
+    "scripts": {
+     "files": 13,
+     "bytes": 401951
+    },
+    "tools": {
+     "files": 15,
+     "bytes": 63663
+    },
+    "verifier": {
+     "files": 22,
+     "bytes": 34482
+    },
+    "CHANGELOG.md": {
+     "files": 1,
+     "bytes": 23524
+    },
+    "README.md": {
+     "files": 1,
+     "bytes": 23123
+    },
+    ".github": {
+     "files": 8,
+     "bytes": 15046
+    },
+    "README.zh-CN.md": {
+     "files": 1,
+     "bytes": 6655
+    },
+    "ROADMAP.md": {
+     "files": 1,
+     "bytes": 5225
+    },
+    "CONTRIBUTING.md": {
+     "files": 1,
+     "bytes": 1932
+    },
+    "pyproject.toml": {
+     "files": 1,
+     "bytes": 1490
+    },
+    "LICENSE": {
+     "files": 1,
+     "bytes": 1328
+    },
+    "MANIFEST.in": {
+     "files": 1,
+     "bytes": 479
+    },
+    ".gitignore": {
+     "files": 1,
+     "bytes": 437
+    },
+    ".gitattributes": {
+     "files": 1,
+     "bytes": 59
+    }
+   },
+   "added_top_dirs": {
+    "docs": {
+     "files": 3,
+     "bytes": 52926
+    }
+   },
+   "root_new": [
+    "docs"
+   ],
+   "notable_added": [
+    "docs/DATA_ASSET_REGISTER.md",
+    "docs/PROJECT_STATUS.md",
+    "docs/REPOSITORY_AUDIT.md"
+   ]
+  },
+  "research/ai-evidence-review": {
+   "pr": 18,
+   "files": 1139,
+   "bytes": 30701231,
+   "top_level": {
+    "experiments": {
+     "files": 657,
+     "bytes": 15778771
+    },
+    "docs": {
+     "files": 60,
+     "bytes": 6704394
+    },
+    "config": {
+     "files": 10,
+     "bytes": 2283315
+    },
+    "medradar": {
+     "files": 87,
+     "bytes": 1853319
+    },
+    "research": {
+     "files": 120,
+     "bytes": 1623624
+    },
+    "tests": {
+     "files": 105,
+     "bytes": 1315504
+    },
+    "papers": {
+     "files": 32,
+     "bytes": 534818
+    },
+    "scripts": {
+     "files": 13,
+     "bytes": 401951
+    },
+    "tools": {
+     "files": 15,
+     "bytes": 63663
+    },
+    "verifier": {
+     "files": 22,
+     "bytes": 34482
+    },
+    "README.md": {
+     "files": 1,
+     "bytes": 31738
+    },
+    "README.zh-CN.md": {
+     "files": 1,
+     "bytes": 26132
+    },
+    "CHANGELOG.md": {
+     "files": 1,
+     "bytes": 23524
+    },
+    ".github": {
+     "files": 8,
+     "bytes": 15046
+    },
+    "ROADMAP.md": {
+     "files": 1,
+     "bytes": 5225
+    },
+    "CONTRIBUTING.md": {
+     "files": 1,
+     "bytes": 1932
+    },
+    "pyproject.toml": {
+     "files": 1,
+     "bytes": 1490
+    },
+    "LICENSE": {
+     "files": 1,
+     "bytes": 1328
+    },
+    "MANIFEST.in": {
+     "files": 1,
+     "bytes": 479
+    },
+    ".gitignore": {
+     "files": 1,
+     "bytes": 437
+    },
+    ".gitattributes": {
+     "files": 1,
+     "bytes": 59
+    }
+   },
+   "added_top_dirs": {
+    "research/studies": {
+     "files": 4,
+     "bytes": 226734
+    }
+   },
+   "root_new": [
+    "research"
+   ],
+   "notable_added": []
+  },
+  "research/local-llm-foundation": {
+   "pr": 19,
+   "files": 1244,
+   "bytes": 32075253,
+   "top_level": {
+    "experiments": {
+     "files": 755,
+     "bytes": 17190498
+    },
+    "docs": {
+     "files": 60,
+     "bytes": 6704394
+    },
+    "config": {
+     "files": 10,
+     "bytes": 2283315
+    },
+    "medradar": {
+     "files": 87,
+     "bytes": 1853319
+    },
+    "tests": {
+     "files": 116,
+     "bytes": 1503645
+    },
+    "research": {
+     "files": 116,
+     "bytes": 1396890
+    },
+    "papers": {
+     "files": 32,
+     "bytes": 534818
+    },
+    "scripts": {
+     "files": 13,
+     "bytes": 401951
+    },
+    "tools": {
+     "files": 15,
+     "bytes": 63663
+    },
+    "verifier": {
+     "files": 22,
+     "bytes": 34482
+    },
+    "README.md": {
+     "files": 1,
+     "bytes": 31738
+    },
+    "README.zh-CN.md": {
+     "files": 1,
+     "bytes": 26132
+    },
+    "CHANGELOG.md": {
+     "files": 1,
+     "bytes": 23524
+    },
+    ".github": {
+     "files": 8,
+     "bytes": 15046
+    },
+    "ROADMAP.md": {
+     "files": 1,
+     "bytes": 5225
+    },
+    "pyproject.toml": {
+     "files": 1,
+     "bytes": 2378
+    },
+    "CONTRIBUTING.md": {
+     "files": 1,
+     "bytes": 1932
+    },
+    "LICENSE": {
+     "files": 1,
+     "bytes": 1328
+    },
+    "MANIFEST.in": {
+     "files": 1,
+     "bytes": 479
+    },
+    ".gitignore": {
+     "files": 1,
+     "bytes": 437
+    },
+    ".gitattributes": {
+     "files": 1,
+     "bytes": 59
+    }
+   },
+   "added_top_dirs": {
+    "experiments/local_llm_event_extraction": {
+     "files": 97,
+     "bytes": 1411149
+    },
+    "tests": {
+     "files": 11,
+     "bytes": 188141
+    },
+    "experiments": {
+     "files": 1,
+     "bytes": 578
+    }
+   },
+   "root_new": [
+    "experiments",
+    "tests"
+   ],
+   "notable_added": [
+    "experiments/__init__.py",
+    "experiments/local_llm_event_extraction/.gitignore",
+    "experiments/local_llm_event_extraction/README.md",
+    "experiments/local_llm_event_extraction/__init__.py",
+    "experiments/local_llm_event_extraction/contracts.py",
+    "experiments/local_llm_event_extraction/labels.py",
+    "experiments/local_llm_event_extraction/parsing.py",
+    "experiments/local_llm_event_extraction/prompting.py",
+    "experiments/local_llm_event_extraction/safety.py",
+    "experiments/local_llm_event_extraction/schema.py",
+    "tests/test_llm_research_adapters.py",
+    "tests/test_llm_research_benchmark.py",
+    "tests/test_llm_research_contracts.py",
+    "tests/test_llm_research_env_probe.py",
+    "tests/test_llm_research_hf_runtime.py",
+    "tests/test_llm_research_labels.py",
+    "tests/test_llm_research_real_corpus.py",
+    "tests/test_llm_research_schema.py",
+    "tests/test_llm_research_training.py",
+    "tests/test_llm_research_validation.py",
+    "tests/test_llm_research_validator_hardening.py"
+   ]
+  },
+  "research/overnight-qlora-s030": {
+   "pr": 20,
+   "files": 1382,
+   "bytes": 33596857,
+   "top_level": {
+    "experiments": {
+     "files": 891,
+     "bytes": 18675530
+    },
+    "docs": {
+     "files": 60,
+     "bytes": 6704394
+    },
+    "config": {
+     "files": 10,
+     "bytes": 2283315
+    },
+    "medradar": {
+     "files": 87,
+     "bytes": 1853319
+    },
+    "tests": {
+     "files": 117,
+     "bytes": 1519634
+    },
+    "research": {
+     "files": 116,
+     "bytes": 1396890
+    },
+    "papers": {
+     "files": 32,
+     "bytes": 534818
+    },
+    "scripts": {
+     "files": 13,
+     "bytes": 401951
+    },
+    "tools": {
+     "files": 15,
+     "bytes": 63663
+    },
+    "verifier": {
+     "files": 22,
+     "bytes": 34482
+    },
+    "README.md": {
+     "files": 1,
+     "bytes": 31738
+    },
+    "README.zh-CN.md": {
+     "files": 1,
+     "bytes": 26132
+    },
+    "CHANGELOG.md": {
+     "files": 1,
+     "bytes": 23524
+    },
+    "OVERNIGHT_RESEARCH_REPORT.zh-CN.md": {
+     "files": 1,
+     "bytes": 20583
+    },
+    ".github": {
+     "files": 8,
+     "bytes": 15046
+    },
+    "ROADMAP.md": {
+     "files": 1,
+     "bytes": 5225
+    },
+    "pyproject.toml": {
+     "files": 1,
+     "bytes": 2378
+    },
+    "CONTRIBUTING.md": {
+     "files": 1,
+     "bytes": 1932
+    },
+    "LICENSE": {
+     "files": 1,
+     "bytes": 1328
+    },
+    "MANIFEST.in": {
+     "files": 1,
+     "bytes": 479
+    },
+    ".gitignore": {
+     "files": 1,
+     "bytes": 437
+    },
+    ".gitattributes": {
+     "files": 1,
+     "bytes": 59
+    }
+   },
+   "added_top_dirs": {
+    "experiments/local_llm_event_extraction": {
+     "files": 233,
+     "bytes": 2896181
+    },
+    "tests": {
+     "files": 12,
+     "bytes": 204130
+    },
+    "OVERNIGHT_RESEARCH_REPORT.zh-CN.md": {
+     "files": 1,
+     "bytes": 20583
+    },
+    "experiments": {
+     "files": 1,
+     "bytes": 578
+    }
+   },
+   "root_new": [
+    "OVERNIGHT_RESEARCH_REPORT.zh-CN.md",
+    "experiments",
+    "tests"
+   ],
+   "notable_added": [
+    "OVERNIGHT_RESEARCH_REPORT.zh-CN.md",
+    "experiments/__init__.py",
+    "experiments/local_llm_event_extraction/.gitignore",
+    "experiments/local_llm_event_extraction/README.md",
+    "experiments/local_llm_event_extraction/__init__.py",
+    "experiments/local_llm_event_extraction/contracts.py",
+    "experiments/local_llm_event_extraction/labels.py",
+    "experiments/local_llm_event_extraction/parsing.py",
+    "experiments/local_llm_event_extraction/prompting.py",
+    "experiments/local_llm_event_extraction/safety.py",
+    "experiments/local_llm_event_extraction/schema.py",
+    "tests/test_llm_research_adapters.py",
+    "tests/test_llm_research_benchmark.py",
+    "tests/test_llm_research_contracts.py",
+    "tests/test_llm_research_env_probe.py",
+    "tests/test_llm_research_hf_runtime.py",
+    "tests/test_llm_research_labels.py",
+    "tests/test_llm_research_real_corpus.py",
+    "tests/test_llm_research_schema.py",
+    "tests/test_llm_research_training.py",
+    "tests/test_llm_research_v2_fixes.py",
+    "tests/test_llm_research_validation.py",
+    "tests/test_llm_research_validator_hardening.py"
+   ]
+  },
+  "research/innovation-signals-observatory": {
+   "pr": 21,
+   "files": 1695,
+   "bytes": 60012058,
+   "top_level": {
+    "experiments": {
+     "files": 960,
+     "bytes": 34225040
+    },
+    "docs": {
+     "files": 107,
+     "bytes": 9059751
+    },
+    "research": {
+     "files": 202,
+     "bytes": 7543494
+    },
+    "medradar": {
+     "files": 133,
+     "bytes": 3098864
+    },
+    "config": {
+     "files": 11,
+     "bytes": 2299202
+    },
+    "tests": {
+     "files": 142,
+     "bytes": 2031762
+    },
+    "scripts": {
+     "files": 26,
+     "bytes": 538438
+    },
+    "papers": {
+     "files": 32,
+     "bytes": 534818
+    },
+    "web": {
+     "files": 20,
+     "bytes": 366314
+    },
+    "tools": {
+     "files": 15,
+     "bytes": 63663
+    },
+    "deploy": {
+     "files": 4,
+     "bytes": 43632
+    },
+    "README.md": {
+     "files": 1,
+     "bytes": 38938
+    },
+    "verifier": {
+     "files": 22,
+     "bytes": 34482
+    },
+    "PHASE4_RESEARCH_REPORT.zh-CN.md": {
+     "files": 1,
+     "bytes": 26489
+    },
+    "README.zh-CN.md": {
+     "files": 1,
+     "bytes": 26132
+    },
+    "CHANGELOG.md": {
+     "files": 1,
+     "bytes": 25528
+    },
+    ".github": {
+     "files": 9,
+     "bytes": 21780
+    },
+    "OVERNIGHT_RESEARCH_REPORT.zh-CN.md": {
+     "files": 1,
+     "bytes": 20583
+    },
+    "ROADMAP.md": {
+     "files": 1,
+     "bytes": 5225
+    },
+    "pyproject.toml": {
+     "files": 1,
+     "bytes": 2937
+    },
+    "CONTRIBUTING.md": {
+     "files": 1,
+     "bytes": 1932
+    },
+    "LICENSE": {
+     "files": 1,
+     "bytes": 1328
+    },
+    ".gitignore": {
+     "files": 1,
+     "bytes": 1082
+    },
+    "MANIFEST.in": {
+     "files": 1,
+     "bytes": 479
+    },
+    ".gitattributes": {
+     "files": 1,
+     "bytes": 165
+    }
+   },
+   "added_top_dirs": {
+    "experiments/innovation_signals_observatory": {
+     "files": 69,
+     "bytes": 15549510
+    },
+    "research/studies": {
+     "files": 86,
+     "bytes": 6146604
+    },
+    "experiments/local_llm_event_extraction": {
+     "files": 233,
+     "bytes": 2896181
+    },
+    "docs/product": {
+     "files": 8,
+     "bytes": 1085501
+    },
+    "tests": {
+     "files": 35,
+     "bytes": 695110
+    },
+    "docs/observatory": {
+     "files": 13,
+     "bytes": 629122
+    },
+    "medradar/observatory": {
+     "files": 19,
+     "bytes": 568465
+    },
+    "medradar/product": {
+     "files": 11,
+     "bytes": 416896
+    },
+    "docs/reliability": {
+     "files": 9,
+     "bytes": 374380
+    },
+    "web/js": {
+     "files": 15,
+     "bytes": 299606
+    },
+    "docs": {
+     "files": 17,
+     "bytes": 266354
+    },
+    "medradar/recruitment": {
+     "files": 10,
+     "bytes": 212696
+    },
+    "scripts": {
+     "files": 13,
+     "bytes": 136487
+    },
+    "web": {
+     "files": 5,
+     "bytes": 66708
+    },
+    "PHASE4_RESEARCH_REPORT.zh-CN.md": {
+     "files": 1,
+     "bytes": 26489
+    },
+    "deploy/systemd": {
+     "files": 3,
+     "bytes": 25674
+    },
+    "tests/fixtures": {
+     "files": 2,
+     "bytes": 21148
+    },
+    "OVERNIGHT_RESEARCH_REPORT.zh-CN.md": {
+     "files": 1,
+     "bytes": 20583
+    },
+    "deploy/windows": {
+     "files": 1,
+     "bytes": 17958
+    },
+    "medradar/web": {
+     "files": 6,
+     "bytes": 16913
+    },
+    "config": {
+     "files": 1,
+     "bytes": 15887
+    },
+    ".github/workflows": {
+     "files": 1,
+     "bytes": 4201
+    },
+    "experiments": {
+     "files": 1,
+     "bytes": 578
+    }
+   },
+   "root_new": [
+    ".github",
+    "OVERNIGHT_RESEARCH_REPORT.zh-CN.md",
+    "PHASE4_RESEARCH_REPORT.zh-CN.md",
+    "config",
+    "deploy",
+    "docs",
+    "experiments",
+    "medradar",
+    "research",
+    "scripts",
+    "tests",
+    "web"
+   ],
+   "notable_added": [
+    ".github/workflows/observatory.yml",
+    "OVERNIGHT_RESEARCH_REPORT.zh-CN.md",
+    "PHASE4_RESEARCH_REPORT.zh-CN.md",
+    "config/recruitment_function_classes.json",
+    "deploy/systemd/README.md",
+    "deploy/systemd/medradar-observatory.service",
+    "deploy/systemd/medradar-observatory.timer",
+    "deploy/windows/README.md",
+    "docs/BACKUP_AND_RECOVERY.md",
+    "docs/CONTINUOUS_VALIDATION_PROTOCOL.md",
+    "docs/DEPLOYMENT.md",
+    "docs/HEALTH_AND_VALIDATION.md",
+    "docs/LIVE_OBSERVATORY.md",
+    "docs/LIVE_OBSERVATORY_ACCEPTANCE.md",
+    "docs/LIVE_OBSERVATORY_DESIGN.md",
+    "docs/PRODUCT_ACCEPTANCE.md",
+    "docs/PRODUCT_ARCHITECTURE.md",
+    "docs/PRODUCT_ROADMAP.md",
+    "docs/PRODUCT_STATISTICAL_AUDIT.md",
+    "docs/PRODUCT_USER_GUIDE.md",
+    "docs/PRODUCT_VISION.md",
+    "docs/PROSPECTIVE_OBSERVATION_REGISTRY.md",
+    "docs/RELIABILITY_ACCEPTANCE.md",
+    "docs/RELIABILITY_DESIGN.md",
+    "docs/audit_report_example.md",
+    "docs/product/analyst.png",
+    "docs/product/company-mindray.png",
+    "docs/product/compare.png",
+    "docs/product/evidence-empty.png",
+    "docs/product/evidence-trace.png",
+    "docs/product/mobile-company.png",
+    "docs/product/overview.png",
+    "docs/product/radar-respiratory.png",
+    "experiments/__init__.py",
+    "experiments/innovation_signals_observatory/README.md",
+    "experiments/local_llm_event_extraction/.gitignore",
+    "experiments/local_llm_event_extraction/README.md",
+    "experiments/local_llm_event_extraction/__init__.py",
+    "experiments/local_llm_event_extraction/contracts.py",
+    "experiments/local_llm_event_extraction/labels.py",
+    "experiments/local_llm_event_extraction/parsing.py",
+    "experiments/local_llm_event_extraction/prompting.py",
+    "experiments/local_llm_event_extraction/safety.py",
+    "experiments/local_llm_event_extraction/schema.py",
+    "medradar/observatory/__init__.py",
+    "medradar/observatory/adapter.py",
+    "medradar/observatory/audit.py",
+    "medradar/observatory/backup.py",
+    "medradar/observatory/health.py",
+    "medradar/observatory/lag.py",
+    "medradar/observatory/ledger.py",
+    "medradar/observatory/lock.py",
+    "medradar/observatory/mapping.py",
+    "medradar/observatory/prospective.py",
+    "medradar/observatory/records.py",
+    "medradar/observatory/restore.py",
+    "medradar/observatory/runner.py",
+    "medradar/observatory/scheduler.py",
+    "medradar/observatory/validation.py",
+    "medradar/product/__init__.py",
+    "medradar/product/analyst.py",
+    "medradar/product/catalog.py",
+    "medradar/product/entities.py",
+    "medradar/product/entity_aliases.json",
+    "medradar/product/lab.py",
+    "medradar/product/observatory.py",
+    "medradar/product/prospective.py",
+    "medradar/product/store.py",
+    "medradar/recruitment/__init__.py",
+    "medradar/recruitment/beesite.py",
+    "medradar/recruitment/beisen.py",
+    "medradar/recruitment/identity.py",
+    "medradar/recruitment/phenom.py",
+    "medradar/recruitment/politeness.py",
+    "medradar/recruitment/records.py",
+    "medradar/recruitment/store.py",
+    "medradar/recruitment/taxonomy.py",
+    "medradar/recruitment/workday.py",
+    "medradar/web/__init__.py",
+    "medradar/web/__main__.py",
+    "medradar/web/app.py",
+    "medradar/web/routes_analyst.py",
+    "medradar/web/routes_lab.py",
+    "medradar/web/routes_observatory.py",
+    "scripts/collect_recruitment.py",
+    "scripts/collect_recruitment_beesite.py",
+    "scripts/collect_recruitment_beisen.py",
+    "scripts/collect_recruitment_phenom.py",
+    "scripts/install_windows_task.ps1",
+    "scripts/observatory_acceptance.py",
+    "scripts/observatory_backup_drill.py",
+    "scripts/observatory_backup_task.ps1",
+    "scripts/observatory_evidence_bundle.py",
+    "scripts/observatory_reliability_evidence.py",
+    "scripts/observatory_watch.ps1",
+    "scripts/product_e2e.cjs",
+    "scripts/uninstall_windows_task.ps1",
+    "tests/product_fixture.py",
+    "tests/test_innovation_signals_evidence.py",
+    "tests/test_innovation_signals_llm.py",
+    "tests/test_llm_research_adapters.py",
+    "tests/test_llm_research_benchmark.py",
+    "tests/test_llm_research_contracts.py",
+    "tests/test_llm_research_env_probe.py",
+    "tests/test_llm_research_hf_runtime.py",
+    "tests/test_llm_research_labels.py",
+    "tests/test_llm_research_real_corpus.py",
+    "tests/test_llm_research_schema.py",
+    "tests/test_llm_research_training.py",
+    "tests/test_llm_research_v2_fixes.py",
+    "tests/test_llm_research_validation.py",
+    "tests/test_llm_research_validator_hardening.py",
+    "tests/test_observatory_api.py",
+    "tests/test_observatory_audit.py",
+    "tests/test_observatory_backup.py",
+    "tests/test_observatory_core.py",
+    "tests/test_observatory_ctgov.py",
+    "tests/test_observatory_deploy.py",
+    "tests/test_observatory_europepmc.py",
+    "tests/test_observatory_health.py"
+   ]
+  },
+  "research/s031-hiring-capability-study": {
+   "pr": 22,
+   "files": 1727,
+   "bytes": 60793131,
+   "top_level": {
+    "experiments": {
+     "files": 960,
+     "bytes": 34225040
+    },
+    "docs": {
+     "files": 107,
+     "bytes": 9059751
+    },
+    "research": {
+     "files": 222,
+     "bytes": 8292846
+    },
+    "medradar": {
+     "files": 133,
+     "bytes": 3098864
+    },
+    "config": {
+     "files": 11,
+     "bytes": 2299202
+    },
+    "tests": {
+     "files": 142,
+     "bytes": 2031762
+    },
+    "scripts": {
+     "files": 26,
+     "bytes": 538438
+    },
+    "papers": {
+     "files": 32,
+     "bytes": 534818
+    },
+    "web": {
+     "files": 20,
+     "bytes": 366314
+    },
+    "tools": {
+     "files": 15,
+     "bytes": 63663
+    },
+    "verifier": {
+     "files": 33,
+     "bytes": 60241
+    },
+    "deploy": {
+     "files": 4,
+     "bytes": 43632
+    },
+    "README.md": {
+     "files": 1,
+     "bytes": 38938
+    },
+    "PHASE4_RESEARCH_REPORT.zh-CN.md": {
+     "files": 1,
+     "bytes": 26489
+    },
+    "README.zh-CN.md": {
+     "files": 1,
+     "bytes": 26132
+    },
+    "CHANGELOG.md": {
+     "files": 1,
+     "bytes": 25528
+    },
+    ".github": {
+     "files": 9,
+     "bytes": 21780
+    },
+    "OVERNIGHT_RESEARCH_REPORT.zh-CN.md": {
+     "files": 1,
+     "bytes": 20583
+    },
+    "S031_DELIVERY_MANIFEST.json": {
+     "files": 1,
+     "bytes": 5962
+    },
+    "ROADMAP.md": {
+     "files": 1,
+     "bytes": 5225
+    },
+    "pyproject.toml": {
+     "files": 1,
+     "bytes": 2937
+    },
+    "CONTRIBUTING.md": {
+     "files": 1,
+     "bytes": 1932
+    },
+    "LICENSE": {
+     "files": 1,
+     "bytes": 1328
+    },
+    ".gitignore": {
+     "files": 1,
+     "bytes": 1082
+    },
+    "MANIFEST.in": {
+     "files": 1,
+     "bytes": 479
+    },
+    ".gitattributes": {
+     "files": 1,
+     "bytes": 165
+    }
+   },
+   "added_top_dirs": {
+    "experiments/innovation_signals_observatory": {
+     "files": 69,
+     "bytes": 15549510
+    },
+    "research/studies": {
+     "files": 86,
+     "bytes": 6146604
+    },
+    "experiments/local_llm_event_extraction": {
+     "files": 233,
+     "bytes": 2896181
+    },
+    "docs/product": {
+     "files": 8,
+     "bytes": 1085501
+    },
+    "research/s031": {
+     "files": 20,
+     "bytes": 749352
+    },
+    "tests": {
+     "files": 35,
+     "bytes": 695110
+    },
+    "docs/observatory": {
+     "files": 13,
+     "bytes": 629122
+    },
+    "medradar/observatory": {
+     "files": 19,
+     "bytes": 568465
+    },
+    "medradar/product": {
+     "files": 11,
+     "bytes": 416896
+    },
+    "docs/reliability": {
+     "files": 9,
+     "bytes": 374380
+    },
+    "web/js": {
+     "files": 15,
+     "bytes": 299606
+    },
+    "docs": {
+     "files": 17,
+     "bytes": 266354
+    },
+    "medradar/recruitment": {
+     "files": 10,
+     "bytes": 212696
+    },
+    "scripts": {
+     "files": 13,
+     "bytes": 136487
+    },
+    "web": {
+     "files": 5,
+     "bytes": 66708
+    },
+    "PHASE4_RESEARCH_REPORT.zh-CN.md": {
+     "files": 1,
+     "bytes": 26489
+    },
+    "deploy/systemd": {
+     "files": 3,
+     "bytes": 25674
+    },
+    "tests/fixtures": {
+     "files": 2,
+     "bytes": 21148
+    },
+    "OVERNIGHT_RESEARCH_REPORT.zh-CN.md": {
+     "files": 1,
+     "bytes": 20583
+    },
+    "deploy/windows": {
+     "files": 1,
+     "bytes": 17958
+    },
+    "medradar/web": {
+     "files": 6,
+     "bytes": 16913
+    },
+    "config": {
+     "files": 1,
+     "bytes": 15887
+    },
+    "verifier/runs": {
+     "files": 9,
+     "bytes": 12995
+    },
+    "verifier/v2": {
+     "files": 2,
+     "bytes": 12396
+    },
+    "S031_DELIVERY_MANIFEST.json": {
+     "files": 1,
+     "bytes": 5962
+    },
+    ".github/workflows": {
+     "files": 1,
+     "bytes": 4201
+    },
+    "experiments": {
+     "files": 1,
+     "bytes": 578
+    }
+   },
+   "root_new": [
+    ".github",
+    "OVERNIGHT_RESEARCH_REPORT.zh-CN.md",
+    "PHASE4_RESEARCH_REPORT.zh-CN.md",
+    "S031_DELIVERY_MANIFEST.json",
+    "config",
+    "deploy",
+    "docs",
+    "experiments",
+    "medradar",
+    "research",
+    "scripts",
+    "tests",
+    "verifier",
+    "web"
+   ],
+   "notable_added": [
+    ".github/workflows/observatory.yml",
+    "OVERNIGHT_RESEARCH_REPORT.zh-CN.md",
+    "PHASE4_RESEARCH_REPORT.zh-CN.md",
+    "S031_DELIVERY_MANIFEST.json",
+    "config/recruitment_function_classes.json",
+    "deploy/systemd/README.md",
+    "deploy/systemd/medradar-observatory.service",
+    "deploy/systemd/medradar-observatory.timer",
+    "deploy/windows/README.md",
+    "docs/BACKUP_AND_RECOVERY.md",
+    "docs/CONTINUOUS_VALIDATION_PROTOCOL.md",
+    "docs/DEPLOYMENT.md",
+    "docs/HEALTH_AND_VALIDATION.md",
+    "docs/LIVE_OBSERVATORY.md",
+    "docs/LIVE_OBSERVATORY_ACCEPTANCE.md",
+    "docs/LIVE_OBSERVATORY_DESIGN.md",
+    "docs/PRODUCT_ACCEPTANCE.md",
+    "docs/PRODUCT_ARCHITECTURE.md",
+    "docs/PRODUCT_ROADMAP.md",
+    "docs/PRODUCT_STATISTICAL_AUDIT.md",
+    "docs/PRODUCT_USER_GUIDE.md",
+    "docs/PRODUCT_VISION.md",
+    "docs/PROSPECTIVE_OBSERVATION_REGISTRY.md",
+    "docs/RELIABILITY_ACCEPTANCE.md",
+    "docs/RELIABILITY_DESIGN.md",
+    "docs/audit_report_example.md",
+    "docs/product/analyst.png",
+    "docs/product/company-mindray.png",
+    "docs/product/compare.png",
+    "docs/product/evidence-empty.png",
+    "docs/product/evidence-trace.png",
+    "docs/product/mobile-company.png",
+    "docs/product/overview.png",
+    "docs/product/radar-respiratory.png",
+    "experiments/__init__.py",
+    "experiments/innovation_signals_observatory/README.md",
+    "experiments/local_llm_event_extraction/.gitignore",
+    "experiments/local_llm_event_extraction/README.md",
+    "experiments/local_llm_event_extraction/__init__.py",
+    "experiments/local_llm_event_extraction/contracts.py",
+    "experiments/local_llm_event_extraction/labels.py",
+    "experiments/local_llm_event_extraction/parsing.py",
+    "experiments/local_llm_event_extraction/prompting.py",
+    "experiments/local_llm_event_extraction/safety.py",
+    "experiments/local_llm_event_extraction/schema.py",
+    "medradar/observatory/__init__.py",
+    "medradar/observatory/adapter.py",
+    "medradar/observatory/audit.py",
+    "medradar/observatory/backup.py",
+    "medradar/observatory/health.py",
+    "medradar/observatory/lag.py",
+    "medradar/observatory/ledger.py",
+    "medradar/observatory/lock.py",
+    "medradar/observatory/mapping.py",
+    "medradar/observatory/prospective.py",
+    "medradar/observatory/records.py",
+    "medradar/observatory/restore.py",
+    "medradar/observatory/runner.py",
+    "medradar/observatory/scheduler.py",
+    "medradar/observatory/validation.py",
+    "medradar/product/__init__.py",
+    "medradar/product/analyst.py",
+    "medradar/product/catalog.py",
+    "medradar/product/entities.py",
+    "medradar/product/entity_aliases.json",
+    "medradar/product/lab.py",
+    "medradar/product/observatory.py",
+    "medradar/product/prospective.py",
+    "medradar/product/store.py",
+    "medradar/recruitment/__init__.py",
+    "medradar/recruitment/beesite.py",
+    "medradar/recruitment/beisen.py",
+    "medradar/recruitment/identity.py",
+    "medradar/recruitment/phenom.py",
+    "medradar/recruitment/politeness.py",
+    "medradar/recruitment/records.py",
+    "medradar/recruitment/store.py",
+    "medradar/recruitment/taxonomy.py",
+    "medradar/recruitment/workday.py",
+    "medradar/web/__init__.py",
+    "medradar/web/__main__.py",
+    "medradar/web/app.py",
+    "medradar/web/routes_analyst.py",
+    "medradar/web/routes_lab.py",
+    "medradar/web/routes_observatory.py",
+    "research/s031/.gitignore",
+    "research/s031/README.md",
+    "scripts/collect_recruitment.py",
+    "scripts/collect_recruitment_beesite.py",
+    "scripts/collect_recruitment_beisen.py",
+    "scripts/collect_recruitment_phenom.py",
+    "scripts/install_windows_task.ps1",
+    "scripts/observatory_acceptance.py",
+    "scripts/observatory_backup_drill.py",
+    "scripts/observatory_backup_task.ps1",
+    "scripts/observatory_evidence_bundle.py",
+    "scripts/observatory_reliability_evidence.py",
+    "scripts/observatory_watch.ps1",
+    "scripts/product_e2e.cjs",
+    "scripts/uninstall_windows_task.ps1",
+    "tests/product_fixture.py",
+    "tests/test_innovation_signals_evidence.py",
+    "tests/test_innovation_signals_llm.py",
+    "tests/test_llm_research_adapters.py",
+    "tests/test_llm_research_benchmark.py",
+    "tests/test_llm_research_contracts.py",
+    "tests/test_llm_research_env_probe.py",
+    "tests/test_llm_research_hf_runtime.py",
+    "tests/test_llm_research_labels.py",
+    "tests/test_llm_research_real_corpus.py",
+    "tests/test_llm_research_schema.py",
+    "tests/test_llm_research_training.py",
+    "tests/test_llm_research_v2_fixes.py",
+    "tests/test_llm_research_validation.py",
+    "tests/test_llm_research_validator_hardening.py",
+    "tests/test_observatory_api.py",
+    "tests/test_observatory_audit.py",
+    "tests/test_observatory_backup.py",
+    "tests/test_observatory_core.py",
+    "tests/test_observatory_ctgov.py"
+   ]
+  },
+  "research/phoenix-001-external-methods": {
+   "pr": 23,
+   "files": 1174,
+   "bytes": 30787534,
+   "top_level": {
+    "experiments": {
+     "files": 681,
+     "bytes": 16001453
+    },
+    "docs": {
+     "files": 70,
+     "bytes": 6754400
+    },
+    "config": {
+     "files": 10,
+     "bytes": 2283315
+    },
+    "medradar": {
+     "files": 87,
+     "bytes": 1853319
+    },
+    "research": {
+     "files": 116,
+     "bytes": 1396890
+    },
+    "tests": {
+     "files": 106,
+     "bytes": 1324798
+    },
+    "papers": {
+     "files": 32,
+     "bytes": 534818
+    },
+    "scripts": {
+     "files": 13,
+     "bytes": 401951
+    },
+    "verifier": {
+     "files": 26,
+     "bytes": 65537
+    },
+    "tools": {
+     "files": 15,
+     "bytes": 63663
+    },
+    "README.md": {
+     "files": 1,
+     "bytes": 31738
+    },
+    "README.zh-CN.md": {
+     "files": 1,
+     "bytes": 26132
+    },
+    "CHANGELOG.md": {
+     "files": 1,
+     "bytes": 23524
+    },
+    ".github": {
+     "files": 8,
+     "bytes": 15046
+    },
+    "ROADMAP.md": {
+     "files": 1,
+     "bytes": 5225
+    },
+    "CONTRIBUTING.md": {
+     "files": 1,
+     "bytes": 1932
+    },
+    "pyproject.toml": {
+     "files": 1,
+     "bytes": 1490
+    },
+    "LICENSE": {
+     "files": 1,
+     "bytes": 1328
+    },
+    "MANIFEST.in": {
+     "files": 1,
+     "bytes": 479
+    },
+    ".gitignore": {
+     "files": 1,
+     "bytes": 437
+    },
+    ".gitattributes": {
+     "files": 1,
+     "bytes": 59
+    }
+   },
+   "added_top_dirs": {
+    "experiments/phoenix_001": {
+     "files": 24,
+     "bytes": 222682
+    },
+    "docs": {
+     "files": 10,
+     "bytes": 50006
+    },
+    "verifier/runs": {
+     "files": 1,
+     "bytes": 16630
+    },
+    "verifier/v2": {
+     "files": 2,
+     "bytes": 12431
+    },
+    "tests": {
+     "files": 1,
+     "bytes": 9294
+    },
+    "verifier": {
+     "files": 1,
+     "bytes": 1574
+    }
+   },
+   "root_new": [
+    "docs",
+    "experiments",
+    "tests",
+    "verifier"
+   ],
+   "notable_added": [
+    "docs/PHOENIX_CANDIDATE_MODULES.md",
+    "docs/PHOENIX_EXTERNAL_PROJECT_REGISTER.md",
+    "docs/PHOENIX_INNOVATION_OPPORTUNITIES.md",
+    "docs/PHOENIX_LICENSE_AUDIT.md",
+    "docs/PHOENIX_METHOD_COMPARISON.md",
+    "docs/PHOENIX_NEXT_ROADMAP.md",
+    "docs/PHOENIX_REA_AUDIT.md",
+    "docs/PHOENIX_REPRODUCTION_REPORT.md",
+    "docs/PHOENIX_RESEARCH_PROTOCOL.md",
+    "docs/PHOENIX_SUMMARY.md",
+    "experiments/phoenix_001/asset_audit.json",
+    "experiments/phoenix_001/audit_assets.py",
+    "experiments/phoenix_001/build_method_comparison.py",
+    "experiments/phoenix_001/delivery.json",
+    "experiments/phoenix_001/evidence_contract.py",
+    "experiments/phoenix_001/external_projects.json",
+    "experiments/phoenix_001/fda_ai_longitudinal.py",
+    "experiments/phoenix_001/fda_ai_longitudinal_results.json",
+    "experiments/phoenix_001/hypotheses.json",
+    "experiments/phoenix_001/method_comparison.json",
+    "experiments/phoenix_001/pubtrends_smoke.py",
+    "experiments/phoenix_001/pubtrends_smoke_results.json",
+    "experiments/phoenix_001/rea_audit.json",
+    "experiments/phoenix_001/run_logged.py",
+    "experiments/phoenix_001/scitreands_crispr_lags.json",
+    "experiments/phoenix_001/scitreands_crispr_lags.py",
+    "experiments/phoenix_001/scitreands_reproduce.py",
+    "experiments/phoenix_001/scitreands_results.json",
+    "experiments/phoenix_001/stage_002_results.json",
+    "experiments/phoenix_001/stage_003_results.json",
+    "experiments/phoenix_001/stage_004_results.json",
+    "experiments/phoenix_001/stage_005_results.json",
+    "experiments/phoenix_001/stage_006_results.json",
+    "tests/test_phoenix_001.py",
+    "verifier/run_v2.py",
+    "verifier/runs/v2_index.json",
+    "verifier/v2/criteria.md",
+    "verifier/v2/verify.py"
+   ]
+  },
+  "research/phoenix-001-round2": {
+   "pr": 24,
+   "files": 1301,
+   "bytes": 63315540,
+   "top_level": {
+    "experiments": {
+     "files": 798,
+     "bytes": 48062594
+    },
+    "docs": {
+     "files": 85,
+     "bytes": 7261614
+    },
+    "config": {
+     "files": 10,
+     "bytes": 2283315
+    },
+    "medradar": {
+     "files": 87,
+     "bytes": 1853319
+    },
+    "research": {
+     "files": 116,
+     "bytes": 1396890
+    },
+    "tests": {
+     "files": 105,
+     "bytes": 1315504
+    },
+    "papers": {
+     "files": 32,
+     "bytes": 534818
+    },
+    "scripts": {
+     "files": 13,
+     "bytes": 401951
+    },
+    "tools": {
+     "files": 15,
+     "bytes": 63663
+    },
+    "verifier": {
+     "files": 22,
+     "bytes": 34482
+    },
+    "README.md": {
+     "files": 1,
+     "bytes": 31738
+    },
+    "README.zh-CN.md": {
+     "files": 1,
+     "bytes": 26132
+    },
+    "CHANGELOG.md": {
+     "files": 1,
+     "bytes": 23524
+    },
+    ".github": {
+     "files": 8,
+     "bytes": 15046
+    },
+    "ROADMAP.md": {
+     "files": 1,
+     "bytes": 5225
+    },
+    "CONTRIBUTING.md": {
+     "files": 1,
+     "bytes": 1932
+    },
+    "pyproject.toml": {
+     "files": 1,
+     "bytes": 1490
+    },
+    "LICENSE": {
+     "files": 1,
+     "bytes": 1328
+    },
+    "MANIFEST.in": {
+     "files": 1,
+     "bytes": 479
+    },
+    ".gitignore": {
+     "files": 1,
+     "bytes": 437
+    },
+    ".gitattributes": {
+     "files": 1,
+     "bytes": 59
+    }
+   },
+   "added_top_dirs": {
+    "experiments/phoenix": {
+     "files": 141,
+     "bytes": 32283823
+    },
+    "docs/phoenix": {
+     "files": 22,
+     "bytes": 485291
+    },
+    "docs": {
+     "files": 3,
+     "bytes": 71929
+    }
+   },
+   "root_new": [
+    "docs",
+    "experiments"
+   ],
+   "notable_added": [
+    "docs/PHOENIX_EXTERNAL_PROJECT_REGISTER.md",
+    "docs/PHOENIX_LICENSE_AUDIT.md",
+    "docs/PHOENIX_REPRODUCTION_REPORT.md",
+    "docs/phoenix/EXPERIMENTS_CELL_H1_H2_H4_H5_H10.md",
+    "docs/phoenix/EXPERIMENTS_TRACK_H3_H6_H7_H8_H9.md",
+    "docs/phoenix/INNOVATION_RAEA.md",
+    "docs/phoenix/PHOENIX_FROZEN_PROTOCOL.md",
+    "docs/phoenix/PHOENIX_GAP_AND_OPPORTUNITY.md",
+    "docs/phoenix/PHOENIX_ROADMAP.md",
+    "docs/phoenix/README.md",
+    "docs/phoenix/REA_VALIDATION.md",
+    "experiments/phoenix/.gitignore"
+   ]
+  },
+  "research/phoenix-002-h8-validation": {
+   "pr": 25,
+   "files": 1360,
+   "bytes": 67366645,
+   "top_level": {
+    "experiments": {
+     "files": 853,
+     "bytes": 52040590
+    },
+    "docs": {
+     "files": 89,
+     "bytes": 7334723
+    },
+    "config": {
+     "files": 10,
+     "bytes": 2283315
+    },
+    "medradar": {
+     "files": 87,
+     "bytes": 1853319
+    },
+    "research": {
+     "files": 116,
+     "bytes": 1396890
+    },
+    "tests": {
+     "files": 105,
+     "bytes": 1315504
+    },
+    "papers": {
+     "files": 32,
+     "bytes": 534818
+    },
+    "scripts": {
+     "files": 13,
+     "bytes": 401951
+    },
+    "tools": {
+     "files": 15,
+     "bytes": 63663
+    },
+    "verifier": {
+     "files": 22,
+     "bytes": 34482
+    },
+    "README.md": {
+     "files": 1,
+     "bytes": 31738
+    },
+    "README.zh-CN.md": {
+     "files": 1,
+     "bytes": 26132
+    },
+    "CHANGELOG.md": {
+     "files": 1,
+     "bytes": 23524
+    },
+    ".github": {
+     "files": 8,
+     "bytes": 15046
+    },
+    "ROADMAP.md": {
+     "files": 1,
+     "bytes": 5225
+    },
+    "CONTRIBUTING.md": {
+     "files": 1,
+     "bytes": 1932
+    },
+    "pyproject.toml": {
+     "files": 1,
+     "bytes": 1490
+    },
+    "LICENSE": {
+     "files": 1,
+     "bytes": 1328
+    },
+    "MANIFEST.in": {
+     "files": 1,
+     "bytes": 479
+    },
+    ".gitignore": {
+     "files": 1,
+     "bytes": 437
+    },
+    ".gitattributes": {
+     "files": 1,
+     "bytes": 59
+    }
+   },
+   "added_top_dirs": {
+    "experiments/phoenix": {
+     "files": 196,
+     "bytes": 36261819
+    },
+    "docs/phoenix": {
+     "files": 26,
+     "bytes": 558400
+    },
+    "docs": {
+     "files": 3,
+     "bytes": 71929
+    }
+   },
+   "root_new": [
+    "docs",
+    "experiments"
+   ],
+   "notable_added": [
+    "docs/PHOENIX_EXTERNAL_PROJECT_REGISTER.md",
+    "docs/PHOENIX_LICENSE_AUDIT.md",
+    "docs/PHOENIX_REPRODUCTION_REPORT.md",
+    "docs/phoenix/EXPERIMENTS_CELL_H1_H2_H4_H5_H10.md",
+    "docs/phoenix/EXPERIMENTS_TRACK_H3_H6_H7_H8_H9.md",
+    "docs/phoenix/INNOVATION_RAEA.md",
+    "docs/phoenix/PHOENIX_002_CONCLUSION_AND_NEXT_STEPS.md",
+    "docs/phoenix/PHOENIX_002_H8_RESULTS.md",
+    "docs/phoenix/PHOENIX_002_METHOD_AUDIT.md",
+    "docs/phoenix/PHOENIX_002_PROTOCOL.md",
+    "docs/phoenix/PHOENIX_FROZEN_PROTOCOL.md",
+    "docs/phoenix/PHOENIX_GAP_AND_OPPORTUNITY.md",
+    "docs/phoenix/PHOENIX_ROADMAP.md",
+    "docs/phoenix/README.md",
+    "docs/phoenix/REA_VALIDATION.md",
+    "experiments/phoenix/.gitignore"
+   ]
+  },
+  "research/phoenix-003-early-evidence": {
+   "pr": 26,
+   "files": 1238,
+   "bytes": 81643339,
+   "top_level": {
+    "experiments": {
+     "files": 754,
+     "bytes": 66834137
+    },
+    "docs": {
+     "files": 66,
+     "bytes": 6816291
+    },
+    "config": {
+     "files": 10,
+     "bytes": 2283315
+    },
+    "medradar": {
+     "files": 87,
+     "bytes": 1853319
+    },
+    "research": {
+     "files": 116,
+     "bytes": 1396890
+    },
+    "tests": {
+     "files": 105,
+     "bytes": 1315504
+    },
+    "papers": {
+     "files": 32,
+     "bytes": 534818
+    },
+    "scripts": {
+     "files": 13,
+     "bytes": 401951
+    },
+    "tools": {
+     "files": 15,
+     "bytes": 63663
+    },
+    "verifier": {
+     "files": 22,
+     "bytes": 34482
+    },
+    "README.md": {
+     "files": 1,
+     "bytes": 31738
+    },
+    "README.zh-CN.md": {
+     "files": 1,
+     "bytes": 26132
+    },
+    "CHANGELOG.md": {
+     "files": 1,
+     "bytes": 23524
+    },
+    ".github": {
+     "files": 8,
+     "bytes": 16625
+    },
+    "ROADMAP.md": {
+     "files": 1,
+     "bytes": 5225
+    },
+    "CONTRIBUTING.md": {
+     "files": 1,
+     "bytes": 1932
+    },
+    "pyproject.toml": {
+     "files": 1,
+     "bytes": 1490
+    },
+    "LICENSE": {
+     "files": 1,
+     "bytes": 1328
+    },
+    "MANIFEST.in": {
+     "files": 1,
+     "bytes": 479
+    },
+    ".gitignore": {
+     "files": 1,
+     "bytes": 437
+    },
+    ".gitattributes": {
+     "files": 1,
+     "bytes": 59
+    }
+   },
+   "added_top_dirs": {
+    "experiments/phoenix003": {
+     "files": 97,
+     "bytes": 51055366
+    },
+    "docs/phoenix003": {
+     "files": 6,
+     "bytes": 111897
+    }
+   },
+   "root_new": [
+    "docs",
+    "experiments"
+   ],
+   "notable_added": [
+    "docs/phoenix003/DATA_INTEGRITY_AUDIT.md",
+    "docs/phoenix003/EXPERIMENT_RESULTS.md",
+    "docs/phoenix003/FROZEN_PROTOCOL.md",
+    "docs/phoenix003/INDEPENDENT_VERIFICATION.md",
+    "docs/phoenix003/NEXT_EXPERIMENT.md",
+    "docs/phoenix003/SCIENTIFIC_CONCLUSION.md",
+    "experiments/phoenix003/.gitignore",
+    "experiments/phoenix003/EVIDENCE_LINKS.jsonl",
+    "experiments/phoenix003/FROZEN_RULES.json",
+    "experiments/phoenix003/HUMAN_REVIEW_QUEUE.csv",
+    "experiments/phoenix003/HUMAN_REVIEW_QUEUE.md",
+    "experiments/phoenix003/README.md",
+    "experiments/phoenix003/REGULATORY_ANCHORS.jsonl"
+   ]
+  },
+  "research/data-expansion-001": {
+   "pr": 27,
+   "files": 2050,
+   "bytes": 45234455,
+   "top_level": {
+    "experiments": {
+     "files": 657,
+     "bytes": 15778771
+    },
+    "research": {
+     "files": 979,
+     "bytes": 15568630
+    },
+    "docs": {
+     "files": 60,
+     "bytes": 6704394
+    },
+    "medradar": {
+     "files": 133,
+     "bytes": 2312135
+    },
+    "config": {
+     "files": 10,
+     "bytes": 2283315
+    },
+    "tests": {
+     "files": 111,
+     "bytes": 1444685
+    },
+    "papers": {
+     "files": 32,
+     "bytes": 534818
+    },
+    "scripts": {
+     "files": 13,
+     "bytes": 401951
+    },
+    "tools": {
+     "files": 15,
+     "bytes": 63663
+    },
+    "verifier": {
+     "files": 22,
+     "bytes": 34482
+    },
+    "README.md": {
+     "files": 1,
+     "bytes": 31738
+    },
+    "README.zh-CN.md": {
+     "files": 1,
+     "bytes": 26132
+    },
+    "CHANGELOG.md": {
+     "files": 1,
+     "bytes": 23524
+    },
+    ".github": {
+     "files": 8,
+     "bytes": 15046
+    },
+    "ROADMAP.md": {
+     "files": 1,
+     "bytes": 5225
+    },
+    "CONTRIBUTING.md": {
+     "files": 1,
+     "bytes": 1932
+    },
+    "pyproject.toml": {
+     "files": 1,
+     "bytes": 1490
+    },
+    "LICENSE": {
+     "files": 1,
+     "bytes": 1328
+    },
+    ".gitignore": {
+     "files": 1,
+     "bytes": 658
+    },
+    "MANIFEST.in": {
+     "files": 1,
+     "bytes": 479
+    },
+    ".gitattributes": {
+     "files": 1,
+     "bytes": 59
+    }
+   },
+   "added_top_dirs": {
+    "research/data_expansion": {
+     "files": 863,
+     "bytes": 14171740
+    },
+    "medradar/external_sources": {
+     "files": 46,
+     "bytes": 458816
+    },
+    "tests": {
+     "files": 6,
+     "bytes": 129181
+    }
+   },
+   "root_new": [
+    "medradar",
+    "research",
+    "tests"
+   ],
+   "notable_added": [
+    "medradar/external_sources/__init__.py",
+    "medradar/external_sources/base.py",
+    "medradar/external_sources/identity.py",
+    "medradar/external_sources/registry.py",
+    "medradar/external_sources/schema.py",
+    "medradar/external_sources/store.py",
+    "medradar/external_sources/timeq.py",
+    "research/data_expansion/ACCESS_VERIFICATION.json",
+    "research/data_expansion/COLLECTION_PROTOCOL.md",
+    "research/data_expansion/DATA_QUALITY_REPORT.md",
+    "research/data_expansion/EXECUTIVE_SUMMARY_ZH.md",
+    "research/data_expansion/EXPERIMENT_DESIGN.md",
+    "research/data_expansion/EXTERNAL_EVIDENCE_SCHEMA.md",
+    "research/data_expansion/GLOBAL_DATA_SOURCE_REGISTER.json",
+    "research/data_expansion/GLOBAL_DATA_SOURCE_REPORT.md",
+    "research/data_expansion/LICENCE_AND_COST_AUDIT.md",
+    "research/data_expansion/PRIORITY_ROADMAP.md",
+    "research/data_expansion/SOURCE_INCREMENT_EXPERIMENT.md",
+    "tests/test_external_sources_foundation.py",
+    "tests/test_extsrc_postmarket.py",
+    "tests/test_extsrc_procurement.py",
+    "tests/test_extsrc_regulatory.py",
+    "tests/test_extsrc_scholarly.py",
+    "tests/test_extsrc_trade.py"
+   ]
+  },
+  "foundation/atlas-001": {
+   "pr": 28,
+   "files": 1203,
+   "bytes": 31263601,
+   "top_level": {
+    "experiments": {
+     "files": 657,
+     "bytes": 15778771
+    },
+    "docs": {
+     "files": 70,
+     "bytes": 6785684
+    },
+    "config": {
+     "files": 12,
+     "bytes": 2299173
+    },
+    "medradar": {
+     "files": 118,
+     "bytes": 2103956
+    },
+    "research": {
+     "files": 132,
+     "bytes": 1777149
+    },
+    "tests": {
+     "files": 111,
+     "bytes": 1353806
+    },
+    "papers": {
+     "files": 32,
+     "bytes": 534818
+    },
+    "scripts": {
+     "files": 13,
+     "bytes": 401951
+    },
+    "tools": {
+     "files": 17,
+     "bytes": 83196
+    },
+    "verifier": {
+     "files": 22,
+     "bytes": 34482
+    },
+    "README.md": {
+     "files": 1,
+     "bytes": 32826
+    },
+    "README.zh-CN.md": {
+     "files": 1,
+     "bytes": 26132
+    },
+    "CHANGELOG.md": {
+     "files": 1,
+     "bytes": 23524
+    },
+    ".github": {
+     "files": 9,
+     "bytes": 16830
+    },
+    "ROADMAP.md": {
+     "files": 1,
+     "bytes": 5225
+    },
+    "CONTRIBUTING.md": {
+     "files": 1,
+     "bytes": 1932
+    },
+    "pyproject.toml": {
+     "files": 1,
+     "bytes": 1490
+    },
+    "LICENSE": {
+     "files": 1,
+     "bytes": 1328
+    },
+    ".gitignore": {
+     "files": 1,
+     "bytes": 790
+    },
+    "MANIFEST.in": {
+     "files": 1,
+     "bytes": 479
+    },
+    ".gitattributes": {
+     "files": 1,
+     "bytes": 59
+    }
+   },
+   "added_top_dirs": {
+    "research/atlas": {
+     "files": 16,
+     "bytes": 380259
+    },
+    "medradar/atlas": {
+     "files": 31,
+     "bytes": 250637
+    },
+    "docs/atlas": {
+     "files": 10,
+     "bytes": 81290
+    },
+    "tests": {
+     "files": 6,
+     "bytes": 38302
+    },
+    "tools": {
+     "files": 2,
+     "bytes": 19533
+    },
+    "config": {
+     "files": 2,
+     "bytes": 15858
+    },
+    ".github/workflows": {
+     "files": 1,
+     "bytes": 1784
+    }
+   },
+   "root_new": [
+    ".github",
+    "config",
+    "docs",
+    "medradar",
+    "research",
+    "tests",
+    "tools"
+   ],
+   "notable_added": [
+    ".github/workflows/atlas.yml",
+    "config/atlas_firms.json",
+    "config/atlas_sources.json",
+    "docs/atlas/ARCHITECTURE.md",
+    "docs/atlas/DATA_SOURCE_INTEGRATION.md",
+    "docs/atlas/EVIDENCE_MODEL.md",
+    "docs/atlas/EXECUTIVE_SUMMARY_ZH.md",
+    "docs/atlas/FOUNDATION_AUDIT.md",
+    "docs/atlas/IDENTITY_MODEL.md",
+    "docs/atlas/KNOWLEDGE_GRAPH.md",
+    "docs/atlas/QUALITY_REPORT.md",
+    "docs/atlas/RESEARCH_VALIDATION.md",
+    "docs/atlas/ROADMAP.md",
+    "medradar/atlas/__init__.py",
+    "medradar/atlas/__main__.py",
+    "medradar/atlas/cli.py",
+    "medradar/atlas/config.py",
+    "medradar/atlas/store.py",
+    "tests/run_atlas_ci_verifier.py",
+    "tests/test_atlas_connectors.py",
+    "tests/test_atlas_db.py",
+    "tests/test_atlas_evidence.py",
+    "tests/test_atlas_identity.py",
+    "tests/test_atlas_research.py",
+    "tools/run_atlas_pipeline.py",
+    "tools/verify_atlas.py"
+   ]
+  },
+  "research/horizon-001": {
+   "pr": 29,
+   "files": 1826,
+   "bytes": 105829056,
+   "top_level": {
+    "research": {
+     "files": 804,
+     "bytes": 76395066
+    },
+    "experiments": {
+     "files": 657,
+     "bytes": 15778771
+    },
+    "docs": {
+     "files": 60,
+     "bytes": 6704394
+    },
+    "config": {
+     "files": 10,
+     "bytes": 2283315
+    },
+    "medradar": {
+     "files": 87,
+     "bytes": 1853319
+    },
+    "tests": {
+     "files": 105,
+     "bytes": 1315504
+    },
+    "papers": {
+     "files": 32,
+     "bytes": 534818
+    },
+    "scripts": {
+     "files": 13,
+     "bytes": 401951
+    },
+    "\"research": {
+     "files": 3,
+     "bytes": 356383
+    },
+    "tools": {
+     "files": 15,
+     "bytes": 63663
+    },
+    "verifier": {
+     "files": 22,
+     "bytes": 34482
+    },
+    "README.md": {
+     "files": 1,
+     "bytes": 31738
+    },
+    "README.zh-CN.md": {
+     "files": 1,
+     "bytes": 26132
+    },
+    "CHANGELOG.md": {
+     "files": 1,
+     "bytes": 23524
+    },
+    ".github": {
+     "files": 8,
+     "bytes": 15046
+    },
+    "ROADMAP.md": {
+     "files": 1,
+     "bytes": 5225
+    },
+    "CONTRIBUTING.md": {
+     "files": 1,
+     "bytes": 1932
+    },
+    "pyproject.toml": {
+     "files": 1,
+     "bytes": 1490
+    },
+    "LICENSE": {
+     "files": 1,
+     "bytes": 1328
+    },
+    "MANIFEST.in": {
+     "files": 1,
+     "bytes": 479
+    },
+    ".gitignore": {
+     "files": 1,
+     "bytes": 437
+    },
+    ".gitattributes": {
+     "files": 1,
+     "bytes": 59
+    }
+   },
+   "added_top_dirs": {
+    "research/horizon": {
+     "files": 688,
+     "bytes": 74998176
+    },
+    "\"research/horizon": {
+     "files": 3,
+     "bytes": 356383
+    }
+   },
+   "root_new": [
+    "\"research",
+    "research"
+   ],
+   "notable_added": [
+    "research/horizon/.gitignore",
+    "research/horizon/ATLAS_HANDOFF.md",
+    "research/horizon/DATA_QUALITY_AUDIT.md",
+    "research/horizon/EXECUTIVE_SUMMARY_ZH.md",
+    "research/horizon/EXPERIMENT_RESULTS.md",
+    "research/horizon/GLOBAL_SOURCE_DEEP_AUDIT.md",
+    "research/horizon/HORIZON_RESEARCH_PLAN.md",
+    "research/horizon/WORKSTREAM_BRIEF.md"
+   ]
+  },
+  "integration/convergence-001": {
+   "pr": 30,
+   "files": 1948,
+   "bytes": 102951852,
+   "top_level": {
+    "research": {
+     "files": 818,
+     "bytes": 72204233
+    },
+    "experiments": {
+     "files": 657,
+     "bytes": 15778771
+    },
+    "docs": {
+     "files": 80,
+     "bytes": 7008955
+    },
+    "config": {
+     "files": 13,
+     "bytes": 2364504
+    },
+    "medradar": {
+     "files": 129,
+     "bytes": 2237961
+    },
+    "tests": {
+     "files": 116,
+     "bytes": 1409914
+    },
+    "papers": {
+     "files": 32,
+     "bytes": 534818
+    },
+    "tools": {
+     "files": 45,
+     "bytes": 504090
+    },
+    "scripts": {
+     "files": 13,
+     "bytes": 401951
+    },
+    "\"research": {
+     "files": 3,
+     "bytes": 356383
+    },
+    "verifier": {
+     "files": 22,
+     "bytes": 34482
+    },
+    "README.md": {
+     "files": 1,
+     "bytes": 32826
+    },
+    "README.zh-CN.md": {
+     "files": 1,
+     "bytes": 26132
+    },
+    "CHANGELOG.md": {
+     "files": 1,
+     "bytes": 23524
+    },
+    ".github": {
+     "files": 10,
+     "bytes": 21426
+    },
+    "ROADMAP.md": {
+     "files": 1,
+     "bytes": 5225
+    },
+    "CONTRIBUTING.md": {
+     "files": 1,
+     "bytes": 1932
+    },
+    "pyproject.toml": {
+     "files": 1,
+     "bytes": 1490
+    },
+    ".gitignore": {
+     "files": 1,
+     "bytes": 1369
+    },
+    "LICENSE": {
+     "files": 1,
+     "bytes": 1328
+    },
+    "MANIFEST.in": {
+     "files": 1,
+     "bytes": 479
+    },
+    ".gitattributes": {
+     "files": 1,
+     "bytes": 59
+    }
+   },
+   "added_top_dirs": {
+    "research/horizon": {
+     "files": 655,
+     "bytes": 64852327
+    },
+    "research/convergence": {
+     "files": 31,
+     "bytes": 5574757
+    },
+    "tools/convergence": {
+     "files": 28,
+     "bytes": 420894
+    },
+    "research/atlas": {
+     "files": 16,
+     "bytes": 380259
+    },
+    "\"research/horizon": {
+     "files": 3,
+     "bytes": 356383
+    },
+    "medradar/atlas": {
+     "files": 31,
+     "bytes": 250637
+    },
+    "docs/convergence": {
+     "files": 10,
+     "bytes": 223142
+    },
+    "medradar/integration": {
+     "files": 11,
+     "bytes": 134005
+    },
+    "docs/atlas": {
+     "files": 10,
+     "bytes": 81419
+    },
+    "config/convergence": {
+     "files": 1,
+     "bytes": 65331
+    },
+    "tests/convergence": {
+     "files": 5,
+     "bytes": 56108
+    },
+    "tests": {
+     "files": 6,
+     "bytes": 38302
+    },
+    "tools": {
+     "files": 2,
+     "bytes": 19533
+    },
+    "config": {
+     "files": 2,
+     "bytes": 15858
+    },
+    ".github/workflows": {
+     "files": 2,
+     "bytes": 6380
+    }
+   },
+   "root_new": [
+    "\"research",
+    ".github",
+    "config",
+    "docs",
+    "medradar",
+    "research",
+    "tests",
+    "tools"
+   ],
+   "notable_added": [
+    ".github/workflows/atlas.yml",
+    ".github/workflows/convergence.yml",
+    "config/atlas_firms.json",
+    "config/atlas_sources.json",
+    "config/convergence/licence_policy.json",
+    "docs/atlas/ARCHITECTURE.md",
+    "docs/atlas/DATA_SOURCE_INTEGRATION.md",
+    "docs/atlas/EVIDENCE_MODEL.md",
+    "docs/atlas/EXECUTIVE_SUMMARY_ZH.md",
+    "docs/atlas/FOUNDATION_AUDIT.md",
+    "docs/atlas/IDENTITY_MODEL.md",
+    "docs/atlas/KNOWLEDGE_GRAPH.md",
+    "docs/atlas/QUALITY_REPORT.md",
+    "docs/atlas/RESEARCH_VALIDATION.md",
+    "docs/atlas/ROADMAP.md",
+    "docs/convergence/EVIDENCE_CONTRACT.md",
+    "docs/convergence/EXECUTIVE_SUMMARY_ZH.md",
+    "docs/convergence/H2_RECONCILIATION.md",
+    "docs/convergence/IDENTITY_RECONCILIATION.md",
+    "docs/convergence/INDEPENDENT_VERIFICATION.md",
+    "docs/convergence/INTEGRATION_AUDIT.md",
+    "docs/convergence/INTEGRATION_EXPERIMENTS.md",
+    "docs/convergence/KNOWLEDGE_GRAPH_DEMO.md",
+    "docs/convergence/LICENCE_AND_SECURITY_REVIEW.md",
+    "docs/convergence/SCHEMA_MAPPING.md",
+    "medradar/atlas/__init__.py",
+    "medradar/atlas/__main__.py",
+    "medradar/atlas/cli.py",
+    "medradar/atlas/config.py",
+    "medradar/atlas/store.py",
+    "medradar/integration/__init__.py",
+    "medradar/integration/__main__.py",
+    "medradar/integration/adapter.py",
+    "medradar/integration/cli.py",
+    "medradar/integration/clock.py",
+    "medradar/integration/contract.py",
+    "medradar/integration/dedupe.py",
+    "medradar/integration/demo.py",
+    "medradar/integration/graph.py",
+    "medradar/integration/licence.py",
+    "medradar/integration/staging.py",
+    "research/horizon/.gitignore",
+    "research/horizon/ATLAS_HANDOFF.md",
+    "research/horizon/DATA_QUALITY_AUDIT.md",
+    "research/horizon/EXECUTIVE_SUMMARY_ZH.md",
+    "research/horizon/EXPERIMENT_RESULTS.md",
+    "research/horizon/GLOBAL_SOURCE_DEEP_AUDIT.md",
+    "research/horizon/HORIZON_RESEARCH_PLAN.md",
+    "research/horizon/WORKSTREAM_BRIEF.md",
+    "tests/convergence/test_contract_and_adapter.py",
+    "tests/convergence/test_e2e_pipeline.py",
+    "tests/convergence/test_h2_consistency.py",
+    "tests/convergence/test_identity_reconciliation.py",
+    "tests/convergence/test_staging_and_dedupe.py",
+    "tests/run_atlas_ci_verifier.py",
+    "tests/test_atlas_connectors.py",
+    "tests/test_atlas_db.py",
+    "tests/test_atlas_evidence.py",
+    "tests/test_atlas_identity.py",
+    "tests/test_atlas_research.py",
+    "tools/convergence/check_report_consistency.py",
+    "tools/convergence/run_experiments.py",
+    "tools/convergence/run_integration.py",
+    "tools/run_atlas_pipeline.py",
+    "tools/verify_atlas.py"
+   ]
+  }
+ },
+ "cli": {
+  "__main___bytes": 40375,
+  "add_parser_subcommands": [
+   "analyze",
+   "audit",
+   "cases",
+   "collect",
+   "corpus",
+   "dashboard",
+   "demo",
+   "doctor",
+   "frontier",
+   "judge",
+   "live",
+   "products",
+   "replay",
+   "report",
+   "run",
+   "selftest",
+   "stats",
+   "status",
+   "trade",
+   "watchlist"
+  ],
+  "pyproject": "[project]\nname = \"medradar\"\nversion = \"0.5.0\"\ndescription = \"FDA device & drug industry radar: big-pharma pipeline direction, China-gap comparison, and paper-trading event study.\"\nreadme = \"README.md\"\nrequires-python = \">=3.10\"\nlicense = { text = \"MIT\" }\nauthors = [{ name = \"MedRadar contributors\" }]\nkeywords = [\"fda\", \"openfda\", \"medical-device\", \"clinical-trials\", \"quant\", \"china-gap\",\n            \"sec-edgar\", \"research\", \"deepseek\", \"deepseek-harness\"]\ndependencies = []\n\n[project.optional-dependencies]\nexcel = [\"openpyxl>=3.1\"]\npdf = [\"pypdf>=4.0\"]\ndev = [\"pytest>=8.0\"]\nbulk = [\"ijson>=3.3\"]\n\n[project.urls]\nHomepage = \"https://chazy11.github.io/medradar/\"\nRepository = \"https://github.com/ChazY11/medradar\"\nAttribution = \"https://github.com/ChazY11/medradar/blob/main/docs/ATTRIBUTION.md\"\n\n[project.scripts]\nmedradar = \"medradar.__main__:main\"\n\n[build-system]\nrequires = [\"setuptools>=68\"]\nbuild-backend = \"setuptools.build_meta\"\n\n[tool.setuptools.packages.find]\ninclude = [\"medradar*\"]\n\n# JSON config is knowledge, not code: install it next to the wheel so a pip\n# install is usable without the git checkout. `medradar.config` resolves this\n# `share/medradar/config` location; the demo snapshot rides along so\n# `medradar demo` also works from an installed copy (fully offline).\n[tool.setuptools.data-files]\n\"share/medradar/config\" = [\"config/*.json\", \"config/*.csv\"]\n\"share/medradar/docs\" = [\"docs/metrics.json\"]\n\n[tool.pytest.ini_options]\ntestpaths = [\"tests\"]\naddopts = \"-q\"\n"
+ },
+ "tests": [
+  {
+   "path": "tests/__init__.py",
+   "bytes": 0,
+   "test_count": 0
+  },
+  {
+   "path": "tests/fixtures/device/_generate.py",
+   "bytes": 8232,
+   "test_count": 0
+  },
+  {
+   "path": "tests/test_audit.py",
+   "bytes": 4884,
+   "test_count": 5
+  },
+  {
+   "path": "tests/test_cases.py",
+   "bytes": 11139,
+   "test_count": 13
+  },
+  {
+   "path": "tests/test_changepoint.py",
+   "bytes": 23234,
+   "test_count": 44
+  },
+  {
+   "path": "tests/test_check_layout.py",
+   "bytes": 3246,
+   "test_count": 8
+  },
+  {
+   "path": "tests/test_corpus.py",
+   "bytes": 34033,
+   "test_count": 61
+  },
+  {
+   "path": "tests/test_dashboard.py",
+   "bytes": 9963,
+   "test_count": 11
+  },
+  {
+   "path": "tests/test_device.py",
+   "bytes": 26614,
+   "test_count": 36
+  },
+  {
+   "path": "tests/test_drug.py",
+   "bytes": 17396,
+   "test_count": 16
+  },
+  {
+   "path": "tests/test_evalstats.py",
+   "bytes": 23021,
+   "test_count": 37
+  },
+  {
+   "path": "tests/test_forecast_cycle.py",
+   "bytes": 11288,
+   "test_count": 5
+  },
+  {
+   "path": "tests/test_forecast_registry.py",
+   "bytes": 60646,
+   "test_count": 55
+  },
+  {
+   "path": "tests/test_forecasts.py",
+   "bytes": 5532,
+   "test_count": 18
+  },
+  {
+   "path": "tests/test_foundation.py",
+   "bytes": 12118,
+   "test_count": 15
+  },
+  {
+   "path": "tests/test_frontier.py",
+   "bytes": 8978,
+   "test_count": 8
+  },
+  {
+   "path": "tests/test_intelligence.py",
+   "bytes": 35600,
+   "test_count": 28
+  },
+  {
+   "path": "tests/test_live.py",
+   "bytes": 22543,
+   "test_count": 22
+  },
+  {
+   "path": "tests/test_llm.py",
+   "bytes": 5706,
+   "test_count": 12
+  },
+  {
+   "path": "tests/test_market_intelligence.py",
+   "bytes": 23600,
+   "test_count": 23
+  },
+  {
+   "path": "tests/test_nmpa.py",
+   "bytes": 11471,
+   "test_count": 15
+  },
+  {
+   "path": "tests/test_onboarding.py",
+   "bytes": 18185,
+   "test_count": 27
+  },
+  {
+   "path": "tests/test_products.py",
+   "bytes": 20210,
+   "test_count": 14
+  },
+  {
+   "path": "tests/test_profile.py",
+   "bytes": 16182,
+   "test_count": 46
+  },
+  {
+   "path": "tests/test_promotion.py",
+   "bytes": 8347,
+   "test_count": 28
+  },
+  {
+   "path": "tests/test_publication_intelligence.py",
+   "bytes": 14603,
+   "test_count": 12
+  },
+  {
+   "path": "tests/test_quant.py",
+   "bytes": 30515,
+   "test_count": 19
+  },
+  {
+   "path": "tests/test_registry_adapter.py",
+   "bytes": 15790,
+   "test_count": 11
+  },
+  {
+   "path": "tests/test_release.py",
+   "bytes": 4333,
+   "test_count": 8
+  },
+  {
+   "path": "tests/test_replay.py",
+   "bytes": 51919,
+   "test_count": 44
+  },
+  {
+   "path": "tests/test_report.py",
+   "bytes": 23697,
+   "test_count": 25
+  },
+  {
+   "path": "tests/test_research_agent.py",
+   "bytes": 30673,
+   "test_count": 20
+  },
+  {
+   "path": "tests/test_research_integrity.py",
+   "bytes": 7378,
+   "test_count": 10
+  },
+  {
+   "path": "tests/test_snapshot.py",
+   "bytes": 5390,
+   "test_count": 23
+  },
+  {
+   "path": "tests/test_stats.py",
+   "bytes": 44237,
+   "test_count": 61
+  },
+  {
+   "path": "tests/test_stats_cmd.py",
+   "bytes": 20377,
+   "test_count": 33
+  },
+  {
+   "path": "tests/test_study_adjudication.py",
+   "bytes": 5080,
+   "test_count": 19
+  },
+  {
+   "path": "tests/test_study_concurrent.py",
+   "bytes": 6999,
+   "test_count": 27
+  },
+  {
+   "path": "tests/test_study_coverage.py",
+   "bytes": 6299,
+   "test_count": 18
+  },
+  {
+   "path": "tests/test_study_crosswalk.py",
+   "bytes": 2827,
+   "test_count": 11
+  },
+  {
+   "path": "tests/test_study_humanreview.py",
+   "bytes": 4077,
+   "test_count": 15
+  },
+  {
+   "path": "tests/test_study_leadtimedesc.py",
+   "bytes": 2947,
+   "test_count": 7
+  },
+  {
+   "path": "tests/test_study_pairing.py",
+   "bytes": 3703,
+   "test_count": 14
+  },
+  {
+   "path": "tests/test_study_pointprocess.py",
+   "bytes": 4877,
+   "test_count": 20
+  },
+  {
+   "path": "tests/test_study_thirdsource.py",
+   "bytes": 3639,
+   "test_count": 15
+  },
+  {
+   "path": "tests/test_taxonomy.py",
+   "bytes": 3123,
+   "test_count": 10
+  },
+  {
+   "path": "tests/test_tkg.py",
+   "bytes": 55500,
+   "test_count": 50
+  },
+  {
+   "path": "tests/test_tkg_integration.py",
+   "bytes": 21515,
+   "test_count": 11
+  },
+  {
+   "path": "tests/test_universe.py",
+   "bytes": 27024,
+   "test_count": 35
+  }
+ ],
+ "config": [
+  {
+   "path": "config/companies_device.json",
+   "bytes": 13786
+  },
+  {
+   "path": "config/companies_drug.json",
+   "bytes": 9197
+  },
+  {
+   "path": "config/nmpa_demo_seed.csv",
+   "bytes": 6951
+  },
+  {
+   "path": "config/product_catalog_zh.json",
+   "bytes": 303361
+  },
+  {
+   "path": "config/product_code_tracks.json",
+   "bytes": 39233
+  },
+  {
+   "path": "config/product_families.json",
+   "bytes": 167635
+  },
+  {
+   "path": "config/sources.json",
+   "bytes": 2168
+  },
+  {
+   "path": "config/tracks_device.json",
+   "bytes": 24668
+  },
+  {
+   "path": "config/tracks_drug.json",
+   "bytes": 5149
+  },
+  {
+   "path": "config/universe_v1.json",
+   "bytes": 1711167
+  }
+ ],
+ "workflows": [
+  {
+   "path": ".github/ISSUE_TEMPLATE/bug_report.md",
+   "bytes": 747
+  },
+  {
+   "path": ".github/ISSUE_TEMPLATE/data_correction.md",
+   "bytes": 947
+  },
+  {
+   "path": ".github/ISSUE_TEMPLATE/feature_request.md",
+   "bytes": 659
+  },
+  {
+   "path": ".github/pull_request_template.md",
+   "bytes": 850
+  },
+  {
+   "path": ".github/workflows/ci.yml",
+   "bytes": 4562
+  },
+  {
+   "path": ".github/workflows/forecast-cycle.yml",
+   "bytes": 4078
+  },
+  {
+   "path": ".github/workflows/live.yml",
+   "bytes": 1613
+  },
+  {
+   "path": ".github/workflows/weekly.yml",
+   "bytes": 1590
+  }
+ ]
+}

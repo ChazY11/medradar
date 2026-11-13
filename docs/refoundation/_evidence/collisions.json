@@ -1,0 +1,5491 @@
+{
+  "branches": [
+    "feat/medradar-2.0-mvp",
+    "feat/live-observatory-v1",
+    "feat/observatory-reliability-v1",
+    "research/s028-temporal-graph-early-signal",
+    "research/s029-evidence-based-relations",
+    "maintenance/repository-consolidation",
+    "research/ai-evidence-review",
+    "research/local-llm-foundation",
+    "research/overnight-qlora-s030",
+    "research/innovation-signals-observatory",
+    "research/s031-hiring-capability-study",
+    "research/phoenix-001-external-methods",
+    "research/phoenix-001-round2",
+    "research/phoenix-002-h8-validation",
+    "research/phoenix-003-early-evidence",
+    "research/data-expansion-001",
+    "foundation/atlas-001",
+    "research/horizon-001",
+    "integration/convergence-001"
+  ],
+  "per_branch": {
+    "feat/medradar-2.0-mvp": {
+      "touched_paths": 57,
+      "top_level": {
+        "web": 19,
+        "medradar": 15,
+        "docs": 14,
+        "tests": 5,
+        "scripts": 1,
+        "README.md": 1,
+        "pyproject.toml": 1,
+        ".github": 1
+      }
+    },
+    "feat/live-observatory-v1": {
+      "touched_paths": 101,
+      "top_level": {
+        "medradar": 31,
+        "docs": 31,
+        "web": 20,
+        "tests": 12,
+        "scripts": 3,
+        ".github": 2,
+        "pyproject.toml": 1,
+        "README.md": 1
+      }
+    },
+    "feat/observatory-reliability-v1": {
+      "touched_paths": 139,
+      "top_level": {
+        "docs": 47,
+        "medradar": 37,
+        "web": 20,
+        "tests": 17,
+        "scripts": 9,
+        "deploy": 4,
+        ".github": 2,
+        "pyproject.toml": 1,
+        ".gitignore": 1,
+        "README.md": 1
+      }
+    },
+    "research/s028-temporal-graph-early-signal": {
+      "touched_paths": 225,
+      "top_level": {
+        "research": 86,
+        "docs": 47,
+        "medradar": 37,
+        "web": 20,
+        "tests": 17,
+        "scripts": 9,
+        "deploy": 4,
+        ".github": 2,
+        "pyproject.toml": 1,
+        ".gitignore": 1,
+        "README.md": 1
+      }
+    },
+    "research/s029-evidence-based-relations": {
+      "touched_paths": 344,
+      "top_level": {
+        "research": 200,
+        "docs": 47,
+        "medradar": 37,
+        "web": 20,
+        "tests": 17,
+        "scripts": 9,
+        "\"research": 5,
+        "deploy": 4,
+        ".github": 2,
+        ".gitignore": 1,
+        "pyproject.toml": 1,
+        "README.md": 1
+      }
+    },
+    "maintenance/repository-consolidation": {
+      "touched_paths": 6,
+      "top_level": {
+        "docs": 3,
+        "README.md": 1,
+        "README.zh-CN.md": 1,
+        "tests": 1
+      }
+    },
+    "research/ai-evidence-review": {
+      "touched_paths": 4,
+      "top_level": {
+        "research": 4
+      }
+    },
+    "research/local-llm-foundation": {
+      "touched_paths": 110,
+      "top_level": {
+        "experiments": 98,
+        "tests": 11,
+        "pyproject.toml": 1
+      }
+    },
+    "research/overnight-qlora-s030": {
+      "touched_paths": 248,
+      "top_level": {
+        "experiments": 234,
+        "tests": 12,
+        "OVERNIGHT_RESEARCH_REPORT.zh-CN.md": 1,
+        "pyproject.toml": 1
+      }
+    },
+    "research/innovation-signals-observatory": {
+      "touched_paths": 567,
+      "top_level": {
+        "experiments": 303,
+        "research": 86,
+        "medradar": 47,
+        "docs": 47,
+        "tests": 37,
+        "web": 20,
+        "scripts": 13,
+        "deploy": 4,
+        ".github": 2,
+        "config": 1,
+        "CHANGELOG.md": 1,
+        ".gitignore": 1
+      }
+    },
+    "research/s031-hiring-capability-study": {
+      "touched_paths": 600,
+      "top_level": {
+        "experiments": 303,
+        "research": 106,
+        "medradar": 47,
+        "docs": 47,
+        "tests": 37,
+        "web": 20,
+        "scripts": 13,
+        "verifier": 12,
+        "deploy": 4,
+        ".github": 2,
+        "config": 1,
+        "CHANGELOG.md": 1
+      }
+    },
+    "research/phoenix-001-external-methods": {
+      "touched_paths": 40,
+      "top_level": {
+        "experiments": 24,
+        "docs": 10,
+        "verifier": 5,
+        "tests": 1
+      }
+    },
+    "research/phoenix-001-round2": {
+      "touched_paths": 166,
+      "top_level": {
+        "experiments": 141,
+        "docs": 25
+      }
+    },
+    "research/phoenix-002-h8-validation": {
+      "touched_paths": 225,
+      "top_level": {
+        "experiments": 196,
+        "docs": 29
+      }
+    },
+    "research/phoenix-003-early-evidence": {
+      "touched_paths": 104,
+      "top_level": {
+        "experiments": 97,
+        "docs": 6,
+        ".github": 1
+      }
+    },
+    "research/data-expansion-001": {
+      "touched_paths": 916,
+      "top_level": {
+        "research": 863,
+        "medradar": 46,
+        "tests": 6,
+        ".gitignore": 1
+      }
+    },
+    "foundation/atlas-001": {
+      "touched_paths": 70,
+      "top_level": {
+        "medradar": 31,
+        "research": 16,
+        "docs": 10,
+        "tests": 6,
+        "tools": 2,
+        "config": 2,
+        "README.md": 1,
+        ".gitignore": 1,
+        ".github": 1
+      }
+    },
+    "research/horizon-001": {
+      "touched_paths": 691,
+      "top_level": {
+        "research": 688,
+        "\"research": 3
+      }
+    },
+    "integration/convergence-001": {
+      "touched_paths": 815,
+      "top_level": {
+        "research": 702,
+        "medradar": 42,
+        "tools": 30,
+        "docs": 20,
+        "tests": 11,
+        "\"research": 3,
+        "config": 3,
+        ".github": 2,
+        ".gitignore": 1,
+        "README.md": 1
+      }
+    }
+  },
+  "pairwise": [
+    {
+      "a": "feat/medradar-2.0-mvp",
+      "b": "feat/live-observatory-v1",
+      "shared_paths": 57,
+      "shared_substantive": 43,
+      "examples": [
+        ".github/workflows/ci.yml",
+        "README.md",
+        "medradar/__main__.py",
+        "medradar/product/__init__.py",
+        "medradar/product/analyst.py",
+        "medradar/product/artifacts/cycle43_full_history_2026-11-03.md",
+        "medradar/product/artifacts/five_firm_timeline.json",
+        "medradar/product/catalog.py"
+      ]
+    },
+    {
+      "a": "feat/medradar-2.0-mvp",
+      "b": "feat/observatory-reliability-v1",
+      "shared_paths": 57,
+      "shared_substantive": 43,
+      "examples": [
+        ".github/workflows/ci.yml",
+        "README.md",
+        "medradar/__main__.py",
+        "medradar/product/__init__.py",
+        "medradar/product/analyst.py",
+        "medradar/product/artifacts/cycle43_full_history_2026-11-03.md",
+        "medradar/product/artifacts/five_firm_timeline.json",
+        "medradar/product/catalog.py"
+      ]
+    },
+    {
+      "a": "feat/medradar-2.0-mvp",
+      "b": "research/s028-temporal-graph-early-signal",
+      "shared_paths": 57,
+      "shared_substantive": 43,
+      "examples": [
+        ".github/workflows/ci.yml",
+        "README.md",
+        "medradar/__main__.py",
+        "medradar/product/__init__.py",
+        "medradar/product/analyst.py",
+        "medradar/product/artifacts/cycle43_full_history_2026-11-03.md",
+        "medradar/product/artifacts/five_firm_timeline.json",
+        "medradar/product/catalog.py"
+      ]
+    },
+    {
+      "a": "feat/medradar-2.0-mvp",
+      "b": "research/s029-evidence-based-relations",
+      "shared_paths": 57,
+      "shared_substantive": 43,
+      "examples": [
+        ".github/workflows/ci.yml",
+        "README.md",
+        "medradar/__main__.py",
+        "medradar/product/__init__.py",
+        "medradar/product/analyst.py",
+        "medradar/product/artifacts/cycle43_full_history_2026-11-03.md",
+        "medradar/product/artifacts/five_firm_timeline.json",
+        "medradar/product/catalog.py"
+      ]
+    },
+    {
+      "a": "feat/medradar-2.0-mvp",
+      "b": "maintenance/repository-consolidation",
+      "shared_paths": 1,
+      "shared_substantive": 1,
+      "examples": [
+        "README.md"
+      ]
+    },
+    {
+      "a": "feat/medradar-2.0-mvp",
+      "b": "research/local-llm-foundation",
+      "shared_paths": 1,
+      "shared_substantive": 1,
+      "examples": [
+        "pyproject.toml"
+      ]
+    },
+    {
+      "a": "feat/medradar-2.0-mvp",
+      "b": "research/overnight-qlora-s030",
+      "shared_paths": 1,
+      "shared_substantive": 1,
+      "examples": [
+        "pyproject.toml"
+      ]
+    },
+    {
+      "a": "feat/medradar-2.0-mvp",
+      "b": "research/innovation-signals-observatory",
+      "shared_paths": 57,
+      "shared_substantive": 43,
+      "examples": [
+        ".github/workflows/ci.yml",
+        "README.md",
+        "medradar/__main__.py",
+        "medradar/product/__init__.py",
+        "medradar/product/analyst.py",
+        "medradar/product/artifacts/cycle43_full_history_2026-11-03.md",
+        "medradar/product/artifacts/five_firm_timeline.json",
+        "medradar/product/catalog.py"
+      ]
+    },
+    {
+      "a": "feat/medradar-2.0-mvp",
+      "b": "research/s031-hiring-capability-study",
+      "shared_paths": 57,
+      "shared_substantive": 43,
+      "examples": [
+        ".github/workflows/ci.yml",
+        "README.md",
+        "medradar/__main__.py",
+        "medradar/product/__init__.py",
+        "medradar/product/analyst.py",
+        "medradar/product/artifacts/cycle43_full_history_2026-11-03.md",
+        "medradar/product/artifacts/five_firm_timeline.json",
+        "medradar/product/catalog.py"
+      ]
+    },
+    {
+      "a": "feat/medradar-2.0-mvp",
+      "b": "research/phoenix-003-early-evidence",
+      "shared_paths": 1,
+      "shared_substantive": 1,
+      "examples": [
+        ".github/workflows/ci.yml"
+      ]
+    },
+    {
+      "a": "feat/medradar-2.0-mvp",
+      "b": "foundation/atlas-001",
+      "shared_paths": 1,
+      "shared_substantive": 1,
+      "examples": [
+        "README.md"
+      ]
+    },
+    {
+      "a": "feat/medradar-2.0-mvp",
+      "b": "integration/convergence-001",
+      "shared_paths": 1,
+      "shared_substantive": 1,
+      "examples": [
+        "README.md"
+      ]
+    },
+    {
+      "a": "feat/live-observatory-v1",
+      "b": "feat/observatory-reliability-v1",
+      "shared_paths": 101,
+      "shared_substantive": 70,
+      "examples": [
+        ".github/workflows/ci.yml",
+        ".github/workflows/observatory.yml",
+        "README.md",
+        "medradar/__main__.py",
+        "medradar/observatory/__init__.py",
+        "medradar/observatory/adapter.py",
+        "medradar/observatory/adapters/__init__.py",
+        "medradar/observatory/adapters/ctgov.py"
+      ]
+    },
+    {
+      "a": "feat/live-observatory-v1",
+      "b": "research/s028-temporal-graph-early-signal",
+      "shared_paths": 101,
+      "shared_substantive": 70,
+      "examples": [
+        ".github/workflows/ci.yml",
+        ".github/workflows/observatory.yml",
+        "README.md",
+        "medradar/__main__.py",
+        "medradar/observatory/__init__.py",
+        "medradar/observatory/adapter.py",
+        "medradar/observatory/adapters/__init__.py",
+        "medradar/observatory/adapters/ctgov.py"
+      ]
+    },
+    {
+      "a": "feat/live-observatory-v1",
+      "b": "research/s029-evidence-based-relations",
+      "shared_paths": 101,
+      "shared_substantive": 70,
+      "examples": [
+        ".github/workflows/ci.yml",
+        ".github/workflows/observatory.yml",
+        "README.md",
+        "medradar/__main__.py",
+        "medradar/observatory/__init__.py",
+        "medradar/observatory/adapter.py",
+        "medradar/observatory/adapters/__init__.py",
+        "medradar/observatory/adapters/ctgov.py"
+      ]
+    },
+    {
+      "a": "feat/live-observatory-v1",
+      "b": "maintenance/repository-consolidation",
+      "shared_paths": 1,
+      "shared_substantive": 1,
+      "examples": [
+        "README.md"
+      ]
+    },
+    {
+      "a": "feat/live-observatory-v1",
+      "b": "research/local-llm-foundation",
+      "shared_paths": 1,
+      "shared_substantive": 1,
+      "examples": [
+        "pyproject.toml"
+      ]
+    },
+    {
+      "a": "feat/live-observatory-v1",
+      "b": "research/overnight-qlora-s030",
+      "shared_paths": 1,
+      "shared_substantive": 1,
+      "examples": [
+        "pyproject.toml"
+      ]
+    },
+    {
+      "a": "feat/live-observatory-v1",
+      "b": "research/innovation-signals-observatory",
+      "shared_paths": 101,
+      "shared_substantive": 70,
+      "examples": [
+        ".github/workflows/ci.yml",
+        ".github/workflows/observatory.yml",
+        "README.md",
+        "medradar/__main__.py",
+        "medradar/observatory/__init__.py",
+        "medradar/observatory/adapter.py",
+        "medradar/observatory/adapters/__init__.py",
+        "medradar/observatory/adapters/ctgov.py"
+      ]
+    },
+    {
+      "a": "feat/live-observatory-v1",
+      "b": "research/s031-hiring-capability-study",
+      "shared_paths": 101,
+      "shared_substantive": 70,
+      "examples": [
+        ".github/workflows/ci.yml",
+        ".github/workflows/observatory.yml",
+        "README.md",
+        "medradar/__main__.py",
+        "medradar/observatory/__init__.py",
+        "medradar/observatory/adapter.py",
+        "medradar/observatory/adapters/__init__.py",
+        "medradar/observatory/adapters/ctgov.py"
+      ]
+    },
+    {
+      "a": "feat/live-observatory-v1",
+      "b": "research/phoenix-003-early-evidence",
+      "shared_paths": 1,
+      "shared_substantive": 1,
+      "examples": [
+        ".github/workflows/ci.yml"
+      ]
+    },
+    {
+      "a": "feat/live-observatory-v1",
+      "b": "foundation/atlas-001",
+      "shared_paths": 1,
+      "shared_substantive": 1,
+      "examples": [
+        "README.md"
+      ]
+    },
+    {
+      "a": "feat/live-observatory-v1",
+      "b": "integration/convergence-001",
+      "shared_paths": 1,
+      "shared_substantive": 1,
+      "examples": [
+        "README.md"
+      ]
+    },
+    {
+      "a": "feat/observatory-reliability-v1",
+      "b": "research/s028-temporal-graph-early-signal",
+      "shared_paths": 139,
+      "shared_substantive": 92,
+      "examples": [
+        ".github/workflows/ci.yml",
+        ".github/workflows/observatory.yml",
+        ".gitignore",
+        "README.md",
+        "deploy/systemd/README.md",
+        "deploy/systemd/medradar-observatory.service",
+        "deploy/systemd/medradar-observatory.timer",
+        "deploy/windows/README.md"
+      ]
+    },
+    {
+      "a": "feat/observatory-reliability-v1",
+      "b": "research/s029-evidence-based-relations",
+      "shared_paths": 139,
+      "shared_substantive": 92,
+      "examples": [
+        ".github/workflows/ci.yml",
+        ".github/workflows/observatory.yml",
+        ".gitignore",
+        "README.md",
+        "deploy/systemd/README.md",
+        "deploy/systemd/medradar-observatory.service",
+        "deploy/systemd/medradar-observatory.timer",
+        "deploy/windows/README.md"
+      ]
+    },
+    {
+      "a": "feat/observatory-reliability-v1",
+      "b": "maintenance/repository-consolidation",
+      "shared_paths": 1,
+      "shared_substantive": 1,
+      "examples": [
+        "README.md"
+      ]
+    },
+    {
+      "a": "feat/observatory-reliability-v1",
+      "b": "research/local-llm-foundation",
+      "shared_paths": 1,
+      "shared_substantive": 1,
+      "examples": [
+        "pyproject.toml"
+      ]
+    },
+    {
+      "a": "feat/observatory-reliability-v1",
+      "b": "research/overnight-qlora-s030",
+      "shared_paths": 1,
+      "shared_substantive": 1,
+      "examples": [
+        "pyproject.toml"
+      ]
+    },
+    {
+      "a": "feat/observatory-reliability-v1",
+      "b": "research/innovation-signals-observatory",
+      "shared_paths": 139,
+      "shared_substantive": 92,
+      "examples": [
+        ".github/workflows/ci.yml",
+        ".github/workflows/observatory.yml",
+        ".gitignore",
+        "README.md",
+        "deploy/systemd/README.md",
+        "deploy/systemd/medradar-observatory.service",
+        "deploy/systemd/medradar-observatory.timer",
+        "deploy/windows/README.md"
+      ]
+    },
+    {
+      "a": "feat/observatory-reliability-v1",
+      "b": "research/s031-hiring-capability-study",
+      "shared_paths": 139,
+      "shared_substantive": 92,
+      "examples": [
+        ".github/workflows/ci.yml",
+        ".github/workflows/observatory.yml",
+        ".gitignore",
+        "README.md",
+        "deploy/systemd/README.md",
+        "deploy/systemd/medradar-observatory.service",
+        "deploy/systemd/medradar-observatory.timer",
+        "deploy/windows/README.md"
+      ]
+    },
+    {
+      "a": "feat/observatory-reliability-v1",
+      "b": "research/phoenix-003-early-evidence",
+      "shared_paths": 1,
+      "shared_substantive": 1,
+      "examples": [
+        ".github/workflows/ci.yml"
+      ]
+    },
+    {
+      "a": "feat/observatory-reliability-v1",
+      "b": "research/data-expansion-001",
+      "shared_paths": 1,
+      "shared_substantive": 1,
+      "examples": [
+        ".gitignore"
+      ]
+    },
+    {
+      "a": "feat/observatory-reliability-v1",
+      "b": "foundation/atlas-001",
+      "shared_paths": 2,
+      "shared_substantive": 2,
+      "examples": [
+        ".gitignore",
+        "README.md"
+      ]
+    },
+    {
+      "a": "feat/observatory-reliability-v1",
+      "b": "integration/convergence-001",
+      "shared_paths": 2,
+      "shared_substantive": 2,
+      "examples": [
+        ".gitignore",
+        "README.md"
+      ]
+    },
+    {
+      "a": "research/s028-temporal-graph-early-signal",
+      "b": "research/s029-evidence-based-relations",
+      "shared_paths": 139,
+      "shared_substantive": 92,
+      "examples": [
+        ".github/workflows/ci.yml",
+        ".github/workflows/observatory.yml",
+        ".gitignore",
+        "README.md",
+        "deploy/systemd/README.md",
+        "deploy/systemd/medradar-observatory.service",
+        "deploy/systemd/medradar-observatory.timer",
+        "deploy/windows/README.md"
+      ]
+    },
+    {
+      "a": "research/s028-temporal-graph-early-signal",
+      "b": "maintenance/repository-consolidation",
+      "shared_paths": 1,
+      "shared_substantive": 1,
+      "examples": [
+        "README.md"
+      ]
+    },
+    {
+      "a": "research/s028-temporal-graph-early-signal",
+      "b": "research/local-llm-foundation",
+      "shared_paths": 1,
+      "shared_substantive": 1,
+      "examples": [
+        "pyproject.toml"
+      ]
+    },
+    {
+      "a": "research/s028-temporal-graph-early-signal",
+      "b": "research/overnight-qlora-s030",
+      "shared_paths": 1,
+      "shared_substantive": 1,
+      "examples": [
+        "pyproject.toml"
+      ]
+    },
+    {
+      "a": "research/s028-temporal-graph-early-signal",
+      "b": "research/innovation-signals-observatory",
+      "shared_paths": 225,
+      "shared_substantive": 178,
+      "examples": [
+        ".github/workflows/ci.yml",
+        ".github/workflows/observatory.yml",
+        ".gitignore",
+        "README.md",
+        "deploy/systemd/README.md",
+        "deploy/systemd/medradar-observatory.service",
+        "deploy/systemd/medradar-observatory.timer",
+        "deploy/windows/README.md"
+      ]
+    },
+    {
+      "a": "research/s028-temporal-graph-early-signal",
+      "b": "research/s031-hiring-capability-study",
+      "shared_paths": 225,
+      "shared_substantive": 178,
+      "examples": [
+        ".github/workflows/ci.yml",
+        ".github/workflows/observatory.yml",
+        ".gitignore",
+        "README.md",
+        "deploy/systemd/README.md",
+        "deploy/systemd/medradar-observatory.service",
+        "deploy/systemd/medradar-observatory.timer",
+        "deploy/windows/README.md"
+      ]
+    },
+    {
+      "a": "research/s028-temporal-graph-early-signal",
+      "b": "research/phoenix-003-early-evidence",
+      "shared_paths": 1,
+      "shared_substantive": 1,
+      "examples": [
+        ".github/workflows/ci.yml"
+      ]
+    },
+    {
+      "a": "research/s028-temporal-graph-early-signal",
+      "b": "research/data-expansion-001",
+      "shared_paths": 1,
+      "shared_substantive": 1,
+      "examples": [
+        ".gitignore"
+      ]
+    },
+    {
+      "a": "research/s028-temporal-graph-early-signal",
+      "b": "foundation/atlas-001",
+      "shared_paths": 2,
+      "shared_substantive": 2,
+      "examples": [
+        ".gitignore",
+        "README.md"
+      ]
+    },
+    {
+      "a": "research/s028-temporal-graph-early-signal",
+      "b": "integration/convergence-001",
+      "shared_paths": 2,
+      "shared_substantive": 2,
+      "examples": [
+        ".gitignore",
+        "README.md"
+      ]
+    },
+    {
+      "a": "research/s029-evidence-based-relations",
+      "b": "maintenance/repository-consolidation",
+      "shared_paths": 1,
+      "shared_substantive": 1,
+      "examples": [
+        "README.md"
+      ]
+    },
+    {
+      "a": "research/s029-evidence-based-relations",
+      "b": "research/local-llm-foundation",
+      "shared_paths": 1,
+      "shared_substantive": 1,
+      "examples": [
+        "pyproject.toml"
+      ]
+    },
+    {
+      "a": "research/s029-evidence-based-relations",
+      "b": "research/overnight-qlora-s030",
+      "shared_paths": 1,
+      "shared_substantive": 1,
+      "examples": [
+        "pyproject.toml"
+      ]
+    },
+    {
+      "a": "research/s029-evidence-based-relations",
+      "b": "research/innovation-signals-observatory",
+      "shared_paths": 139,
+      "shared_substantive": 92,
+      "examples": [
+        ".github/workflows/ci.yml",
+        ".github/workflows/observatory.yml",
+        ".gitignore",
+        "README.md",
+        "deploy/systemd/README.md",
+        "deploy/systemd/medradar-observatory.service",
+        "deploy/systemd/medradar-observatory.timer",
+        "deploy/windows/README.md"
+      ]
+    },
+    {
+      "a": "research/s029-evidence-based-relations",
+      "b": "research/s031-hiring-capability-study",
+      "shared_paths": 139,
+      "shared_substantive": 92,
+      "examples": [
+        ".github/workflows/ci.yml",
+        ".github/workflows/observatory.yml",
+        ".gitignore",
+        "README.md",
+        "deploy/systemd/README.md",
+        "deploy/systemd/medradar-observatory.service",
+        "deploy/systemd/medradar-observatory.timer",
+        "deploy/windows/README.md"
+      ]
+    },
+    {
+      "a": "research/s029-evidence-based-relations",
+      "b": "research/phoenix-003-early-evidence",
+      "shared_paths": 1,
+      "shared_substantive": 1,
+      "examples": [
+        ".github/workflows/ci.yml"
+      ]
+    },
+    {
+      "a": "research/s029-evidence-based-relations",
+      "b": "research/data-expansion-001",
+      "shared_paths": 1,
+      "shared_substantive": 1,
+      "examples": [
+        ".gitignore"
+      ]
+    },
+    {
+      "a": "research/s029-evidence-based-relations",
+      "b": "foundation/atlas-001",
+      "shared_paths": 2,
+      "shared_substantive": 2,
+      "examples": [
+        ".gitignore",
+        "README.md"
+      ]
+    },
+    {
+      "a": "research/s029-evidence-based-relations",
+      "b": "integration/convergence-001",
+      "shared_paths": 2,
+      "shared_substantive": 2,
+      "examples": [
+        ".gitignore",
+        "README.md"
+      ]
+    },
+    {
+      "a": "maintenance/repository-consolidation",
+      "b": "research/innovation-signals-observatory",
+      "shared_paths": 1,
+      "shared_substantive": 1,
+      "examples": [
+        "README.md"
+      ]
+    },
+    {
+      "a": "maintenance/repository-consolidation",
+      "b": "research/s031-hiring-capability-study",
+      "shared_paths": 1,
+      "shared_substantive": 1,
+      "examples": [
+        "README.md"
+      ]
+    },
+    {
+      "a": "maintenance/repository-consolidation",
+      "b": "foundation/atlas-001",
+      "shared_paths": 1,
+      "shared_substantive": 1,
+      "examples": [
+        "README.md"
+      ]
+    },
+    {
+      "a": "maintenance/repository-consolidation",
+      "b": "integration/convergence-001",
+      "shared_paths": 1,
+      "shared_substantive": 1,
+      "examples": [
+        "README.md"
+      ]
+    },
+    {
+      "a": "research/local-llm-foundation",
+      "b": "research/overnight-qlora-s030",
+      "shared_paths": 110,
+      "shared_substantive": 12,
+      "examples": [
+        "pyproject.toml",
+        "tests/test_llm_research_adapters.py",
+        "tests/test_llm_research_benchmark.py",
+        "tests/test_llm_research_contracts.py",
+        "tests/test_llm_research_env_probe.py",
+        "tests/test_llm_research_hf_runtime.py",
+        "tests/test_llm_research_labels.py",
+        "tests/test_llm_research_real_corpus.py"
+      ]
+    },
+    {
+      "a": "research/local-llm-foundation",
+      "b": "research/innovation-signals-observatory",
+      "shared_paths": 110,
+      "shared_substantive": 12,
+      "examples": [
+        "pyproject.toml",
+        "tests/test_llm_research_adapters.py",
+        "tests/test_llm_research_benchmark.py",
+        "tests/test_llm_research_contracts.py",
+        "tests/test_llm_research_env_probe.py",
+        "tests/test_llm_research_hf_runtime.py",
+        "tests/test_llm_research_labels.py",
+        "tests/test_llm_research_real_corpus.py"
+      ]
+    },
+    {
+      "a": "research/local-llm-foundation",
+      "b": "research/s031-hiring-capability-study",
+      "shared_paths": 110,
+      "shared_substantive": 12,
+      "examples": [
+        "pyproject.toml",
+        "tests/test_llm_research_adapters.py",
+        "tests/test_llm_research_benchmark.py",
+        "tests/test_llm_research_contracts.py",
+        "tests/test_llm_research_env_probe.py",
+        "tests/test_llm_research_hf_runtime.py",
+        "tests/test_llm_research_labels.py",
+        "tests/test_llm_research_real_corpus.py"
+      ]
+    },
+    {
+      "a": "research/overnight-qlora-s030",
+      "b": "research/innovation-signals-observatory",
+      "shared_paths": 248,
+      "shared_substantive": 14,
+      "examples": [
+        "OVERNIGHT_RESEARCH_REPORT.zh-CN.md",
+        "pyproject.toml",
+        "tests/test_llm_research_adapters.py",
+        "tests/test_llm_research_benchmark.py",
+        "tests/test_llm_research_contracts.py",
+        "tests/test_llm_research_env_probe.py",
+        "tests/test_llm_research_hf_runtime.py",
+        "tests/test_llm_research_labels.py"
+      ]
+    },
+    {
+      "a": "research/overnight-qlora-s030",
+      "b": "research/s031-hiring-capability-study",
+      "shared_paths": 248,
+      "shared_substantive": 14,
+      "examples": [
+        "OVERNIGHT_RESEARCH_REPORT.zh-CN.md",
+        "pyproject.toml",
+        "tests/test_llm_research_adapters.py",
+        "tests/test_llm_research_benchmark.py",
+        "tests/test_llm_research_contracts.py",
+        "tests/test_llm_research_env_probe.py",
+        "tests/test_llm_research_hf_runtime.py",
+        "tests/test_llm_research_labels.py"
+      ]
+    },
+    {
+      "a": "research/innovation-signals-observatory",
+      "b": "research/s031-hiring-capability-study",
+      "shared_paths": 567,
+      "shared_substantive": 217,
+      "examples": [
+        ".gitattributes",
+        ".github/workflows/ci.yml",
+        ".github/workflows/observatory.yml",
+        ".gitignore",
+        "CHANGELOG.md",
+        "OVERNIGHT_RESEARCH_REPORT.zh-CN.md",
+        "PHASE4_RESEARCH_REPORT.zh-CN.md",
+        "README.md"
+      ]
+    },
+    {
+      "a": "research/innovation-signals-observatory",
+      "b": "research/phoenix-003-early-evidence",
+      "shared_paths": 1,
+      "shared_substantive": 1,
+      "examples": [
+        ".github/workflows/ci.yml"
+      ]
+    },
+    {
+      "a": "research/innovation-signals-observatory",
+      "b": "research/data-expansion-001",
+      "shared_paths": 1,
+      "shared_substantive": 1,
+      "examples": [
+        ".gitignore"
+      ]
+    },
+    {
+      "a": "research/innovation-signals-observatory",
+      "b": "foundation/atlas-001",
+      "shared_paths": 2,
+      "shared_substantive": 2,
+      "examples": [
+        ".gitignore",
+        "README.md"
+      ]
+    },
+    {
+      "a": "research/innovation-signals-observatory",
+      "b": "integration/convergence-001",
+      "shared_paths": 2,
+      "shared_substantive": 2,
+      "examples": [
+        ".gitignore",
+        "README.md"
+      ]
+    },
+    {
+      "a": "research/s031-hiring-capability-study",
+      "b": "research/phoenix-001-external-methods",
+      "shared_paths": 3,
+      "shared_substantive": 3,
+      "examples": [
+        "verifier/README.md",
+        "verifier/v2/criteria.md",
+        "verifier/v2/verify.py"
+      ]
+    },
+    {
+      "a": "research/s031-hiring-capability-study",
+      "b": "research/phoenix-003-early-evidence",
+      "shared_paths": 1,
+      "shared_substantive": 1,
+      "examples": [
+        ".github/workflows/ci.yml"
+      ]
+    },
+    {
+      "a": "research/s031-hiring-capability-study",
+      "b": "research/data-expansion-001",
+      "shared_paths": 1,
+      "shared_substantive": 1,
+      "examples": [
+        ".gitignore"
+      ]
+    },
+    {
+      "a": "research/s031-hiring-capability-study",
+      "b": "foundation/atlas-001",
+      "shared_paths": 2,
+      "shared_substantive": 2,
+      "examples": [
+        ".gitignore",
+        "README.md"
+      ]
+    },
+    {
+      "a": "research/s031-hiring-capability-study",
+      "b": "integration/convergence-001",
+      "shared_paths": 2,
+      "shared_substantive": 2,
+      "examples": [
+        ".gitignore",
+        "README.md"
+      ]
+    },
+    {
+      "a": "research/data-expansion-001",
+      "b": "foundation/atlas-001",
+      "shared_paths": 1,
+      "shared_substantive": 1,
+      "examples": [
+        ".gitignore"
+      ]
+    },
+    {
+      "a": "research/data-expansion-001",
+      "b": "integration/convergence-001",
+      "shared_paths": 1,
+      "shared_substantive": 1,
+      "examples": [
+        ".gitignore"
+      ]
+    },
+    {
+      "a": "foundation/atlas-001",
+      "b": "integration/convergence-001",
+      "shared_paths": 70,
+      "shared_substantive": 60,
+      "examples": [
+        ".github/workflows/atlas.yml",
+        ".gitignore",
+        "README.md",
+        "config/atlas_firms.json",
+        "config/atlas_sources.json",
+        "medradar/atlas/__init__.py",
+        "medradar/atlas/__main__.py",
+        "medradar/atlas/cli.py"
+      ]
+    },
+    {
+      "a": "research/horizon-001",
+      "b": "integration/convergence-001",
+      "shared_paths": 658,
+      "shared_substantive": 658,
+      "examples": [
+        "\"research/horizon/DATASETS/scholarly/openalex/raw/works_draeger__tierA__t0__dr\\303\\244ger.json\"",
+        "\"research/horizon/DATASETS/scholarly/openalex/raw/works_draeger__tierB__t0__dr\\303\\244ger.json\"",
+        "\"research/horizon/DATASETS/scholarly/openalex/raw/works_draeger__tierC__t0__dr\\303\\244ger.json\"",
+        "research/horizon/.gitignore",
+        "research/horizon/ATLAS_HANDOFF.md",
+        "research/horizon/CONNECTORS/industry/_licence.py",
+        "research/horizon/CONNECTORS/industry/_util.py",
+        "research/horizon/CONNECTORS/industry/eu_ted.py"
+      ]
+    }
+  ],
+  "multi_branch_paths": [
+    {
+      "path": "README.md",
+      "branches": [
+        "feat/live-observatory-v1",
+        "feat/medradar-2.0-mvp",
+        "feat/observatory-reliability-v1",
+        "foundation/atlas-001",
+        "integration/convergence-001",
+        "maintenance/repository-consolidation",
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s029-evidence-based-relations",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "pyproject.toml",
+      "branches": [
+        "feat/live-observatory-v1",
+        "feat/medradar-2.0-mvp",
+        "feat/observatory-reliability-v1",
+        "research/innovation-signals-observatory",
+        "research/local-llm-foundation",
+        "research/overnight-qlora-s030",
+        "research/s028-temporal-graph-early-signal",
+        "research/s029-evidence-based-relations",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": ".github/workflows/ci.yml",
+      "branches": [
+        "feat/live-observatory-v1",
+        "feat/medradar-2.0-mvp",
+        "feat/observatory-reliability-v1",
+        "research/innovation-signals-observatory",
+        "research/phoenix-003-early-evidence",
+        "research/s028-temporal-graph-early-signal",
+        "research/s029-evidence-based-relations",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": ".gitignore",
+      "branches": [
+        "feat/observatory-reliability-v1",
+        "foundation/atlas-001",
+        "integration/convergence-001",
+        "research/data-expansion-001",
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s029-evidence-based-relations",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "web/js/pages/company.js",
+      "branches": [
+        "feat/live-observatory-v1",
+        "feat/medradar-2.0-mvp",
+        "feat/observatory-reliability-v1",
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s029-evidence-based-relations",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "web/js/util.js",
+      "branches": [
+        "feat/live-observatory-v1",
+        "feat/medradar-2.0-mvp",
+        "feat/observatory-reliability-v1",
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s029-evidence-based-relations",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "medradar/product/analyst.py",
+      "branches": [
+        "feat/live-observatory-v1",
+        "feat/medradar-2.0-mvp",
+        "feat/observatory-reliability-v1",
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s029-evidence-based-relations",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "scripts/product_e2e.cjs",
+      "branches": [
+        "feat/live-observatory-v1",
+        "feat/medradar-2.0-mvp",
+        "feat/observatory-reliability-v1",
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s029-evidence-based-relations",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "web/CONTRACT.md",
+      "branches": [
+        "feat/live-observatory-v1",
+        "feat/medradar-2.0-mvp",
+        "feat/observatory-reliability-v1",
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s029-evidence-based-relations",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "web/js/pages/analyst.js",
+      "branches": [
+        "feat/live-observatory-v1",
+        "feat/medradar-2.0-mvp",
+        "feat/observatory-reliability-v1",
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s029-evidence-based-relations",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "docs/product/analyst.png",
+      "branches": [
+        "feat/live-observatory-v1",
+        "feat/medradar-2.0-mvp",
+        "feat/observatory-reliability-v1",
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s029-evidence-based-relations",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "web/js/charts.js",
+      "branches": [
+        "feat/live-observatory-v1",
+        "feat/medradar-2.0-mvp",
+        "feat/observatory-reliability-v1",
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s029-evidence-based-relations",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "medradar/product/catalog.py",
+      "branches": [
+        "feat/live-observatory-v1",
+        "feat/medradar-2.0-mvp",
+        "feat/observatory-reliability-v1",
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s029-evidence-based-relations",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "tests/test_product_analyst.py",
+      "branches": [
+        "feat/live-observatory-v1",
+        "feat/medradar-2.0-mvp",
+        "feat/observatory-reliability-v1",
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s029-evidence-based-relations",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "docs/PRODUCT_ROADMAP.md",
+      "branches": [
+        "feat/live-observatory-v1",
+        "feat/medradar-2.0-mvp",
+        "feat/observatory-reliability-v1",
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s029-evidence-based-relations",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "tests/test_product_statistics.py",
+      "branches": [
+        "feat/live-observatory-v1",
+        "feat/medradar-2.0-mvp",
+        "feat/observatory-reliability-v1",
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s029-evidence-based-relations",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "medradar/product/__init__.py",
+      "branches": [
+        "feat/live-observatory-v1",
+        "feat/medradar-2.0-mvp",
+        "feat/observatory-reliability-v1",
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s029-evidence-based-relations",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "docs/product/evidence-trace.png",
+      "branches": [
+        "feat/live-observatory-v1",
+        "feat/medradar-2.0-mvp",
+        "feat/observatory-reliability-v1",
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s029-evidence-based-relations",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "tests/test_product_api.py",
+      "branches": [
+        "feat/live-observatory-v1",
+        "feat/medradar-2.0-mvp",
+        "feat/observatory-reliability-v1",
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s029-evidence-based-relations",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "docs/PRODUCT_VISION.md",
+      "branches": [
+        "feat/live-observatory-v1",
+        "feat/medradar-2.0-mvp",
+        "feat/observatory-reliability-v1",
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s029-evidence-based-relations",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "tests/product_fixture.py",
+      "branches": [
+        "feat/live-observatory-v1",
+        "feat/medradar-2.0-mvp",
+        "feat/observatory-reliability-v1",
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s029-evidence-based-relations",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "docs/PRODUCT_ARCHITECTURE.md",
+      "branches": [
+        "feat/live-observatory-v1",
+        "feat/medradar-2.0-mvp",
+        "feat/observatory-reliability-v1",
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s029-evidence-based-relations",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "medradar/product/store.py",
+      "branches": [
+        "feat/live-observatory-v1",
+        "feat/medradar-2.0-mvp",
+        "feat/observatory-reliability-v1",
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s029-evidence-based-relations",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "docs/product/company-mindray.png",
+      "branches": [
+        "feat/live-observatory-v1",
+        "feat/medradar-2.0-mvp",
+        "feat/observatory-reliability-v1",
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s029-evidence-based-relations",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "docs/product/mobile-company.png",
+      "branches": [
+        "feat/live-observatory-v1",
+        "feat/medradar-2.0-mvp",
+        "feat/observatory-reliability-v1",
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s029-evidence-based-relations",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "web/js/components.js",
+      "branches": [
+        "feat/live-observatory-v1",
+        "feat/medradar-2.0-mvp",
+        "feat/observatory-reliability-v1",
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s029-evidence-based-relations",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "medradar/product/artifacts/five_firm_timeline.json",
+      "branches": [
+        "feat/live-observatory-v1",
+        "feat/medradar-2.0-mvp",
+        "feat/observatory-reliability-v1",
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s029-evidence-based-relations",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "web/js/pages/track.js",
+      "branches": [
+        "feat/live-observatory-v1",
+        "feat/medradar-2.0-mvp",
+        "feat/observatory-reliability-v1",
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s029-evidence-based-relations",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "web/js/pages/companies.js",
+      "branches": [
+        "feat/live-observatory-v1",
+        "feat/medradar-2.0-mvp",
+        "feat/observatory-reliability-v1",
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s029-evidence-based-relations",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "docs/product/evidence-empty.png",
+      "branches": [
+        "feat/live-observatory-v1",
+        "feat/medradar-2.0-mvp",
+        "feat/observatory-reliability-v1",
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s029-evidence-based-relations",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "web/js/pages/overview.js",
+      "branches": [
+        "feat/live-observatory-v1",
+        "feat/medradar-2.0-mvp",
+        "feat/observatory-reliability-v1",
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s029-evidence-based-relations",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "medradar/web/routes_lab.py",
+      "branches": [
+        "feat/live-observatory-v1",
+        "feat/medradar-2.0-mvp",
+        "feat/observatory-reliability-v1",
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s029-evidence-based-relations",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "medradar/web/__init__.py",
+      "branches": [
+        "feat/live-observatory-v1",
+        "feat/medradar-2.0-mvp",
+        "feat/observatory-reliability-v1",
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s029-evidence-based-relations",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "web/js/pages/radar.js",
+      "branches": [
+        "feat/live-observatory-v1",
+        "feat/medradar-2.0-mvp",
+        "feat/observatory-reliability-v1",
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s029-evidence-based-relations",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "medradar/__main__.py",
+      "branches": [
+        "feat/live-observatory-v1",
+        "feat/medradar-2.0-mvp",
+        "feat/observatory-reliability-v1",
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s029-evidence-based-relations",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "web/js/event.js",
+      "branches": [
+        "feat/live-observatory-v1",
+        "feat/medradar-2.0-mvp",
+        "feat/observatory-reliability-v1",
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s029-evidence-based-relations",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "medradar/product/artifacts/cycle43_full_history_2026-11-03.md",
+      "branches": [
+        "feat/live-observatory-v1",
+        "feat/medradar-2.0-mvp",
+        "feat/observatory-reliability-v1",
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s029-evidence-based-relations",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "medradar/product/entity_aliases.json",
+      "branches": [
+        "feat/live-observatory-v1",
+        "feat/medradar-2.0-mvp",
+        "feat/observatory-reliability-v1",
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s029-evidence-based-relations",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "web/js/api.js",
+      "branches": [
+        "feat/live-observatory-v1",
+        "feat/medradar-2.0-mvp",
+        "feat/observatory-reliability-v1",
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s029-evidence-based-relations",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "web/js/pages/compare.js",
+      "branches": [
+        "feat/live-observatory-v1",
+        "feat/medradar-2.0-mvp",
+        "feat/observatory-reliability-v1",
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s029-evidence-based-relations",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "web/js/pages/evidence.js",
+      "branches": [
+        "feat/live-observatory-v1",
+        "feat/medradar-2.0-mvp",
+        "feat/observatory-reliability-v1",
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s029-evidence-based-relations",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "web/favicon.svg",
+      "branches": [
+        "feat/live-observatory-v1",
+        "feat/medradar-2.0-mvp",
+        "feat/observatory-reliability-v1",
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s029-evidence-based-relations",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "docs/PRODUCT_STATISTICAL_AUDIT.md",
+      "branches": [
+        "feat/live-observatory-v1",
+        "feat/medradar-2.0-mvp",
+        "feat/observatory-reliability-v1",
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s029-evidence-based-relations",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "docs/PRODUCT_USER_GUIDE.md",
+      "branches": [
+        "feat/live-observatory-v1",
+        "feat/medradar-2.0-mvp",
+        "feat/observatory-reliability-v1",
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s029-evidence-based-relations",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "docs/product/radar-respiratory.png",
+      "branches": [
+        "feat/live-observatory-v1",
+        "feat/medradar-2.0-mvp",
+        "feat/observatory-reliability-v1",
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s029-evidence-based-relations",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "medradar/product/entities.py",
+      "branches": [
+        "feat/live-observatory-v1",
+        "feat/medradar-2.0-mvp",
+        "feat/observatory-reliability-v1",
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s029-evidence-based-relations",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "medradar/product/lab.py",
+      "branches": [
+        "feat/live-observatory-v1",
+        "feat/medradar-2.0-mvp",
+        "feat/observatory-reliability-v1",
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s029-evidence-based-relations",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "tests/test_product_store.py",
+      "branches": [
+        "feat/live-observatory-v1",
+        "feat/medradar-2.0-mvp",
+        "feat/observatory-reliability-v1",
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s029-evidence-based-relations",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "medradar/web/app.py",
+      "branches": [
+        "feat/live-observatory-v1",
+        "feat/medradar-2.0-mvp",
+        "feat/observatory-reliability-v1",
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s029-evidence-based-relations",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "web/styles.css",
+      "branches": [
+        "feat/live-observatory-v1",
+        "feat/medradar-2.0-mvp",
+        "feat/observatory-reliability-v1",
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s029-evidence-based-relations",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "medradar/web/routes_analyst.py",
+      "branches": [
+        "feat/live-observatory-v1",
+        "feat/medradar-2.0-mvp",
+        "feat/observatory-reliability-v1",
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s029-evidence-based-relations",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "web/app.js",
+      "branches": [
+        "feat/live-observatory-v1",
+        "feat/medradar-2.0-mvp",
+        "feat/observatory-reliability-v1",
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s029-evidence-based-relations",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "medradar/web/__main__.py",
+      "branches": [
+        "feat/live-observatory-v1",
+        "feat/medradar-2.0-mvp",
+        "feat/observatory-reliability-v1",
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s029-evidence-based-relations",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "web/js/pages/lab.js",
+      "branches": [
+        "feat/live-observatory-v1",
+        "feat/medradar-2.0-mvp",
+        "feat/observatory-reliability-v1",
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s029-evidence-based-relations",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "docs/product/compare.png",
+      "branches": [
+        "feat/live-observatory-v1",
+        "feat/medradar-2.0-mvp",
+        "feat/observatory-reliability-v1",
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s029-evidence-based-relations",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "web/index.html",
+      "branches": [
+        "feat/live-observatory-v1",
+        "feat/medradar-2.0-mvp",
+        "feat/observatory-reliability-v1",
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s029-evidence-based-relations",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "docs/PRODUCT_ACCEPTANCE.md",
+      "branches": [
+        "feat/live-observatory-v1",
+        "feat/medradar-2.0-mvp",
+        "feat/observatory-reliability-v1",
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s029-evidence-based-relations",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "docs/product/overview.png",
+      "branches": [
+        "feat/live-observatory-v1",
+        "feat/medradar-2.0-mvp",
+        "feat/observatory-reliability-v1",
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s029-evidence-based-relations",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "medradar/observatory/ledger.py",
+      "branches": [
+        "feat/live-observatory-v1",
+        "feat/observatory-reliability-v1",
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s029-evidence-based-relations",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "docs/observatory/evidence/02_sec_second_run_idempotent_20261103T143958Z.json",
+      "branches": [
+        "feat/live-observatory-v1",
+        "feat/observatory-reliability-v1",
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s029-evidence-based-relations",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "tests/test_observatory_api.py",
+      "branches": [
+        "feat/live-observatory-v1",
+        "feat/observatory-reliability-v1",
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s029-evidence-based-relations",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "medradar/observatory/prospective.py",
+      "branches": [
+        "feat/live-observatory-v1",
+        "feat/observatory-reliability-v1",
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s029-evidence-based-relations",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "medradar/observatory/adapters/__init__.py",
+      "branches": [
+        "feat/live-observatory-v1",
+        "feat/observatory-reliability-v1",
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s029-evidence-based-relations",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "scripts/observatory_acceptance.py",
+      "branches": [
+        "feat/live-observatory-v1",
+        "feat/observatory-reliability-v1",
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s029-evidence-based-relations",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "medradar/observatory/adapters/ctgov.py",
+      "branches": [
+        "feat/live-observatory-v1",
+        "feat/observatory-reliability-v1",
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s029-evidence-based-relations",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "docs/observatory/evidence/11_sec_observation_timeline.json",
+      "branches": [
+        "feat/live-observatory-v1",
+        "feat/observatory-reliability-v1",
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s029-evidence-based-relations",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "docs/observatory/evidence/06_replay_after_20261103T144351Z.json",
+      "branches": [
+        "feat/live-observatory-v1",
+        "feat/observatory-reliability-v1",
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s029-evidence-based-relations",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "docs/observatory/evidence/15_structure_stable_pass6.json",
+      "branches": [
+        "feat/live-observatory-v1",
+        "feat/observatory-reliability-v1",
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s029-evidence-based-relations",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "medradar/observatory/records.py",
+      "branches": [
+        "feat/live-observatory-v1",
+        "feat/observatory-reliability-v1",
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s029-evidence-based-relations",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": ".github/workflows/observatory.yml",
+      "branches": [
+        "feat/live-observatory-v1",
+        "feat/observatory-reliability-v1",
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s029-evidence-based-relations",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "tests/test_observatory_europepmc.py",
+      "branches": [
+        "feat/live-observatory-v1",
+        "feat/observatory-reliability-v1",
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s029-evidence-based-relations",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "tests/fixtures/observatory/seed_demo_ledger.py",
+      "branches": [
+        "feat/live-observatory-v1",
+        "feat/observatory-reliability-v1",
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s029-evidence-based-relations",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "docs/observatory/evidence/14_final_sync_pass3.json",
+      "branches": [
+        "feat/live-observatory-v1",
+        "feat/observatory-reliability-v1",
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s029-evidence-based-relations",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "docs/observatory/evidence/08_full_sync_20261103T144424Z.json",
+      "branches": [
+        "feat/live-observatory-v1",
+        "feat/observatory-reliability-v1",
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s029-evidence-based-relations",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "medradar/product/prospective.py",
+      "branches": [
+        "feat/live-observatory-v1",
+        "feat/observatory-reliability-v1",
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s029-evidence-based-relations",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "medradar/observatory/runner.py",
+      "branches": [
+        "feat/live-observatory-v1",
+        "feat/observatory-reliability-v1",
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s029-evidence-based-relations",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "medradar/observatory/adapter.py",
+      "branches": [
+        "feat/live-observatory-v1",
+        "feat/observatory-reliability-v1",
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s029-evidence-based-relations",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "medradar/observatory/scheduler.py",
+      "branches": [
+        "feat/live-observatory-v1",
+        "feat/observatory-reliability-v1",
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s029-evidence-based-relations",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "docs/observatory/evidence/16_acceptance_report_full.json",
+      "branches": [
+        "feat/live-observatory-v1",
+        "feat/observatory-reliability-v1",
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s029-evidence-based-relations",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "medradar/product/observatory.py",
+      "branches": [
+        "feat/live-observatory-v1",
+        "feat/observatory-reliability-v1",
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s029-evidence-based-relations",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "medradar/observatory/mapping.py",
+      "branches": [
+        "feat/live-observatory-v1",
+        "feat/observatory-reliability-v1",
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s029-evidence-based-relations",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "tests/test_observatory_core.py",
+      "branches": [
+        "feat/live-observatory-v1",
+        "feat/observatory-reliability-v1",
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s029-evidence-based-relations",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "docs/observatory/evidence/17_product_e2e_report.json",
+      "branches": [
+        "feat/live-observatory-v1",
+        "feat/observatory-reliability-v1",
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s029-evidence-based-relations",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "docs/LIVE_OBSERVATORY.md",
+      "branches": [
+        "feat/live-observatory-v1",
+        "feat/observatory-reliability-v1",
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s029-evidence-based-relations",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "docs/LIVE_OBSERVATORY_ACCEPTANCE.md",
+      "branches": [
+        "feat/live-observatory-v1",
+        "feat/observatory-reliability-v1",
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s029-evidence-based-relations",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "medradar/observatory/adapters/sec_edgar.py",
+      "branches": [
+        "feat/live-observatory-v1",
+        "feat/observatory-reliability-v1",
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s029-evidence-based-relations",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "docs/observatory/evidence/09_final_ledger_evidence.json",
+      "branches": [
+        "feat/live-observatory-v1",
+        "feat/observatory-reliability-v1",
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s029-evidence-based-relations",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "docs/LIVE_OBSERVATORY_DESIGN.md",
+      "branches": [
+        "feat/live-observatory-v1",
+        "feat/observatory-reliability-v1",
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s029-evidence-based-relations",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "medradar/observatory/__init__.py",
+      "branches": [
+        "feat/live-observatory-v1",
+        "feat/observatory-reliability-v1",
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s029-evidence-based-relations",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "tests/test_observatory_prospective.py",
+      "branches": [
+        "feat/live-observatory-v1",
+        "feat/observatory-reliability-v1",
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s029-evidence-based-relations",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "web/js/pages/observatory.js",
+      "branches": [
+        "feat/live-observatory-v1",
+        "feat/observatory-reliability-v1",
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s029-evidence-based-relations",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "docs/observatory/evidence/13_final_sync_pass2.json",
+      "branches": [
+        "feat/live-observatory-v1",
+        "feat/observatory-reliability-v1",
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s029-evidence-based-relations",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "medradar/observatory/lag.py",
+      "branches": [
+        "feat/live-observatory-v1",
+        "feat/observatory-reliability-v1",
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s029-evidence-based-relations",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "medradar/web/routes_observatory.py",
+      "branches": [
+        "feat/live-observatory-v1",
+        "feat/observatory-reliability-v1",
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s029-evidence-based-relations",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "docs/observatory/evidence/12_final_sync_pass1.json",
+      "branches": [
+        "feat/live-observatory-v1",
+        "feat/observatory-reliability-v1",
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s029-evidence-based-relations",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "docs/observatory/evidence/10_replay_demo.json",
+      "branches": [
+        "feat/live-observatory-v1",
+        "feat/observatory-reliability-v1",
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s029-evidence-based-relations",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "docs/PROSPECTIVE_OBSERVATION_REGISTRY.md",
+      "branches": [
+        "feat/live-observatory-v1",
+        "feat/observatory-reliability-v1",
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s029-evidence-based-relations",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "docs/observatory/evidence/05_replay_before_20261103T144351Z.json",
+      "branches": [
+        "feat/live-observatory-v1",
+        "feat/observatory-reliability-v1",
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s029-evidence-based-relations",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "scripts/observatory_evidence_bundle.py",
+      "branches": [
+        "feat/live-observatory-v1",
+        "feat/observatory-reliability-v1",
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s029-evidence-based-relations",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "tests/test_observatory_ctgov.py",
+      "branches": [
+        "feat/live-observatory-v1",
+        "feat/observatory-reliability-v1",
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s029-evidence-based-relations",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "tests/fixtures/observatory/helpers.py",
+      "branches": [
+        "feat/live-observatory-v1",
+        "feat/observatory-reliability-v1",
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s029-evidence-based-relations",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "medradar/observatory/adapters/europepmc.py",
+      "branches": [
+        "feat/live-observatory-v1",
+        "feat/observatory-reliability-v1",
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s029-evidence-based-relations",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "docs/reliability/evidence/backup_and_restore.json",
+      "branches": [
+        "feat/observatory-reliability-v1",
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s029-evidence-based-relations",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "medradar/observatory/audit.py",
+      "branches": [
+        "feat/observatory-reliability-v1",
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s029-evidence-based-relations",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "scripts/observatory_reliability_evidence.py",
+      "branches": [
+        "feat/observatory-reliability-v1",
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s029-evidence-based-relations",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "tests/test_observatory_backup.py",
+      "branches": [
+        "feat/observatory-reliability-v1",
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s029-evidence-based-relations",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "docs/reliability/evidence/concurrency_refusal_live.json",
+      "branches": [
+        "feat/observatory-reliability-v1",
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s029-evidence-based-relations",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "docs/BACKUP_AND_RECOVERY.md",
+      "branches": [
+        "feat/observatory-reliability-v1",
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s029-evidence-based-relations",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "docs/HEALTH_AND_VALIDATION.md",
+      "branches": [
+        "feat/observatory-reliability-v1",
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s029-evidence-based-relations",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "docs/DEPLOYMENT.md",
+      "branches": [
+        "feat/observatory-reliability-v1",
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s029-evidence-based-relations",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "medradar/observatory/restore.py",
+      "branches": [
+        "feat/observatory-reliability-v1",
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s029-evidence-based-relations",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "medradar/observatory/validation.py",
+      "branches": [
+        "feat/observatory-reliability-v1",
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s029-evidence-based-relations",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "scripts/observatory_backup_drill.py",
+      "branches": [
+        "feat/observatory-reliability-v1",
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s029-evidence-based-relations",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "deploy/systemd/medradar-observatory.service",
+      "branches": [
+        "feat/observatory-reliability-v1",
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s029-evidence-based-relations",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "scripts/observatory_watch.ps1",
+      "branches": [
+        "feat/observatory-reliability-v1",
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s029-evidence-based-relations",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "docs/audit_report_example.md",
+      "branches": [
+        "feat/observatory-reliability-v1",
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s029-evidence-based-relations",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "docs/reliability/evidence/product_e2e_report.json",
+      "branches": [
+        "feat/observatory-reliability-v1",
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s029-evidence-based-relations",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "docs/RELIABILITY_DESIGN.md",
+      "branches": [
+        "feat/observatory-reliability-v1",
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s029-evidence-based-relations",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "scripts/observatory_backup_task.ps1",
+      "branches": [
+        "feat/observatory-reliability-v1",
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s029-evidence-based-relations",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "tests/test_observatory_reliability.py",
+      "branches": [
+        "feat/observatory-reliability-v1",
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s029-evidence-based-relations",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "docs/reliability/evidence/audit_report.md",
+      "branches": [
+        "feat/observatory-reliability-v1",
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s029-evidence-based-relations",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "docs/reliability/evidence/audit_report.json",
+      "branches": [
+        "feat/observatory-reliability-v1",
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s029-evidence-based-relations",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "medradar/observatory/lock.py",
+      "branches": [
+        "feat/observatory-reliability-v1",
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s029-evidence-based-relations",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "tests/test_observatory_audit.py",
+      "branches": [
+        "feat/observatory-reliability-v1",
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s029-evidence-based-relations",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "medradar/observatory/health.py",
+      "branches": [
+        "feat/observatory-reliability-v1",
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s029-evidence-based-relations",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "deploy/systemd/README.md",
+      "branches": [
+        "feat/observatory-reliability-v1",
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s029-evidence-based-relations",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "deploy/systemd/medradar-observatory.timer",
+      "branches": [
+        "feat/observatory-reliability-v1",
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s029-evidence-based-relations",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "docs/CONTINUOUS_VALIDATION_PROTOCOL.md",
+      "branches": [
+        "feat/observatory-reliability-v1",
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s029-evidence-based-relations",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "deploy/windows/README.md",
+      "branches": [
+        "feat/observatory-reliability-v1",
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s029-evidence-based-relations",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "scripts/install_windows_task.ps1",
+      "branches": [
+        "feat/observatory-reliability-v1",
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s029-evidence-based-relations",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "docs/reliability/evidence/final_acceptance_evidence.json",
+      "branches": [
+        "feat/observatory-reliability-v1",
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s029-evidence-based-relations",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "docs/RELIABILITY_ACCEPTANCE.md",
+      "branches": [
+        "feat/observatory-reliability-v1",
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s029-evidence-based-relations",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "docs/reliability/evidence/full_bundle.json",
+      "branches": [
+        "feat/observatory-reliability-v1",
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s029-evidence-based-relations",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "docs/reliability/evidence/runs_and_outcomes.json",
+      "branches": [
+        "feat/observatory-reliability-v1",
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s029-evidence-based-relations",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "tests/test_observatory_deploy.py",
+      "branches": [
+        "feat/observatory-reliability-v1",
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s029-evidence-based-relations",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "tests/test_observatory_health.py",
+      "branches": [
+        "feat/observatory-reliability-v1",
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s029-evidence-based-relations",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "scripts/uninstall_windows_task.ps1",
+      "branches": [
+        "feat/observatory-reliability-v1",
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s029-evidence-based-relations",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "docs/reliability/evidence/dependency_health_and_validation.json",
+      "branches": [
+        "feat/observatory-reliability-v1",
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s029-evidence-based-relations",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "medradar/observatory/backup.py",
+      "branches": [
+        "feat/observatory-reliability-v1",
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s029-evidence-based-relations",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/datasets/real/corpus/2026-11-04/documents/ctgov-NCT05634538.json",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/local-llm-foundation",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/training/checkpoint.py",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/local-llm-foundation",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/schema.py",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/local-llm-foundation",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/docs/HARDWARE_COMPATIBILITY.md",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/local-llm-foundation",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/adapters/mock.py",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/local-llm-foundation",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/datasets/real/corpus/2026-11-04/documents/ctgov-NCT02445040.json",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/local-llm-foundation",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/docs/DATA_ADAPTER.md",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/local-llm-foundation",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/docs/PHASE2_SUMMARY.zh-CN.md",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/local-llm-foundation",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/results/phase2-2026-11-04/experiment/EXPERIMENT_SUMMARY.json",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/local-llm-foundation",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "tests/test_llm_research_validation.py",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/local-llm-foundation",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/datasets/real/corpus/2026-11-04/collect.py",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/local-llm-foundation",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "tests/test_llm_research_training.py",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/local-llm-foundation",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/adapters/__init__.py",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/local-llm-foundation",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/datasets/synthetic.py",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/local-llm-foundation",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/benchmark/runner.py",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/local-llm-foundation",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/benchmark/report.py",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/local-llm-foundation",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/training/vram_guard.py",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/local-llm-foundation",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "tests/test_llm_research_contracts.py",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/local-llm-foundation",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/safety.py",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/local-llm-foundation",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/training/__init__.py",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/local-llm-foundation",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/datasets/real/corpus/2026-11-04/documents/fda510k-k262548.json",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/local-llm-foundation",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/docs/ARCHITECTURE.md",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/local-llm-foundation",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/validation/timefields.py",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/local-llm-foundation",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/scripts/verify_model.py",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/local-llm-foundation",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/results/phase2-2026-11-04/experiment/metrics.json",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/local-llm-foundation",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "tests/test_llm_research_labels.py",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/local-llm-foundation",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/scripts/verify_cuda.py",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/local-llm-foundation",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/datasets/real/corpus/2026-11-04/documents/fda510k-k260579.json",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/local-llm-foundation",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/datasets/real_documents.py",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/local-llm-foundation",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/__init__.py",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/local-llm-foundation",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/datasets/real/corpus/2026-11-04/documents/ctgov-NCT06678841.json",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/local-llm-foundation",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/results/phase2-2026-11-04/experiment/predictions.jsonl",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/local-llm-foundation",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/results/phase2-2026-11-04/training/smoke_run.json",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/local-llm-foundation",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/results/phase2-2026-11-04/environment/gpu_verification.json",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/local-llm-foundation",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/docs/RISK_REGISTER.md",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/local-llm-foundation",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "tests/test_llm_research_hf_runtime.py",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/local-llm-foundation",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/.gitignore",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/local-llm-foundation",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/adapters/config/models.example.json",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/local-llm-foundation",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/prompting.py",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/local-llm-foundation",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/validation/schema_validator.py",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/local-llm-foundation",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/results/phase2-2026-11-04/experiment/REPORT.md",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/local-llm-foundation",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/results/phase2-2026-11-04/model/model_download.json",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/local-llm-foundation",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/docs/PHASE2_REAL_RUN.md",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/local-llm-foundation",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/datasets/real/corpus/2026-11-04/documents/fda510k-k260656.json",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/local-llm-foundation",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/training/runlog.py",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/local-llm-foundation",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/datasets/real/corpus/2026-11-04/documents/fdarecall-z-3252-2026.json",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/local-llm-foundation",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/validation/dedup.py",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/local-llm-foundation",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/datasets/real/corpus/2026-11-04/documents/fdarecall-z-0302-2027.json",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/local-llm-foundation",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/contracts.py",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/local-llm-foundation",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "tests/test_llm_research_env_probe.py",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/local-llm-foundation",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/datasets/__init__.py",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/local-llm-foundation",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/datasets/real/corpus/2026-11-04/documents/ctgov-NCT06398730.json",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/local-llm-foundation",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/scripts/setup_ml_env.ps1",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/local-llm-foundation",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/README.md",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/local-llm-foundation",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/results/phase2-2026-11-04/experiment/manifest.json",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/local-llm-foundation",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/datasets/real/corpus/2026-11-04/MANIFEST.json",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/local-llm-foundation",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/datasets/real/corpus/2026-11-04/documents/fdarecall-z-3335-2026.json",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/local-llm-foundation",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/docs/EXISTING_SYSTEM_AUDIT.md",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/local-llm-foundation",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/datasets/real/corpus/2026-11-04/documents/fdapma-p060005-s027.json",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/local-llm-foundation",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/benchmark/__init__.py",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/local-llm-foundation",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/docs/PROTOCOL.md",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/local-llm-foundation",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/adapters/config/__init__.py",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/local-llm-foundation",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/adapters/base.py",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/local-llm-foundation",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/parsing.py",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/local-llm-foundation",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/scripts/install_stack.ps1",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/local-llm-foundation",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/training/run_train.py",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/local-llm-foundation",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/validation/__init__.py",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/local-llm-foundation",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/training/dataset_builder.py",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/local-llm-foundation",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/training/qlora_config.py",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/local-llm-foundation",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/datasets/fixtures/responses_v0.json",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/local-llm-foundation",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/benchmark/metrics.py",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/local-llm-foundation",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/datasets/real/corpus/2026-11-04/documents/fdapma-p980035-s848.json",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/local-llm-foundation",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/training/guard.py",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/local-llm-foundation",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/scripts/env_probe.py",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/local-llm-foundation",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/datasets/real/corpus/.gitattributes",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/local-llm-foundation",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/validation/entities.py",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/local-llm-foundation",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/adapters/rule_based.py",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/local-llm-foundation",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/datasets/real/corpus/2026-11-04/documents/fdapma-p130020-s005.json",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/local-llm-foundation",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/results/phase2-2026-11-04/environment/requirements-phase2.lock.txt",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/local-llm-foundation",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/results/phase2-2026-11-04/training/phase_train.json",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/local-llm-foundation",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/docs/INSTALL_WSL2_RTX5080.md",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/local-llm-foundation",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "tests/test_llm_research_real_corpus.py",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/local-llm-foundation",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "tests/test_llm_research_validator_hardening.py",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/local-llm-foundation",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/datasets/real/corpus/2026-11-04/documents/fdarecall-z-3166-2026.json",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/local-llm-foundation",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/datasets/real/corpus/2026-11-04/documents/fdarecall-z-0292-2027.json",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/local-llm-foundation",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/datasets/splits.py",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/local-llm-foundation",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/labels.py",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/local-llm-foundation",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/validation/validator.py",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/local-llm-foundation",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "tests/test_llm_research_adapters.py",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/local-llm-foundation",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/datasets/real/corpus/2026-11-04/documents/fda510k-k263048.json",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/local-llm-foundation",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/validation/evidence.py",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/local-llm-foundation",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/scripts/model_smoke.py",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/local-llm-foundation",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/adapters/hf_local.py",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/local-llm-foundation",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/training/smoke_train.py",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/local-llm-foundation",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/datasets/real/corpus/2026-11-04/documents/fda510k-k262913.json",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/local-llm-foundation",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/datasets/fixtures/cases_v0.json",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/local-llm-foundation",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "tests/test_llm_research_benchmark.py",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/local-llm-foundation",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/__init__.py",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/local-llm-foundation",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/training/configs/qlora_qwen3_4b.draft.json",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/local-llm-foundation",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/docs/READINESS_CHECKLIST.md",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/local-llm-foundation",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/results/phase2-2026-11-04/smoke/model-smoke.json",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/local-llm-foundation",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/scripts/run_real_document_experiment.py",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/local-llm-foundation",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/datasets/real/corpus/2026-11-04/documents/fdapma-p230021-s003.json",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/local-llm-foundation",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/datasets/real/corpus/2026-11-04/documents/ctgov-NCT04950192.json",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/local-llm-foundation",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/docs/PHASE2_ENVIRONMENT.md",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/local-llm-foundation",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "tests/test_llm_research_schema.py",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/local-llm-foundation",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/schema/event.schema.json",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/local-llm-foundation",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/adapters/openai_compat.py",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/local-llm-foundation",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/scripts/fetch_model.py",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/local-llm-foundation",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "research/studies/graph_early_signal_s028/code/s028_show.py",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "research/studies/graph_early_signal_s028/code/s028_stats_corrected.py",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "research/studies/graph_early_signal_s028/EXPERIMENT_PROTOCOL.md",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "research/studies/graph_early_signal_s028/STATISTICAL_REVIEW_CORRECTION.md",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "research/studies/graph_early_signal_s028/artifacts/prereg_freeze_amendment1.json",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "research/studies/graph_early_signal_s028/GRAPH_SCHEMA.md",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "research/studies/graph_early_signal_s028/artifacts/correction_round_1/false_positive_cases.json",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "research/studies/graph_early_signal_s028/code/s028_verify.py",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "research/studies/graph_early_signal_s028/LITERATURE_CORRECTION_NOTE.md",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "research/studies/graph_early_signal_s028/artifacts/correction_round_1/comparison_table.json",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "research/studies/graph_early_signal_s028/artifacts/experiment_summary.json",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "research/studies/graph_early_signal_s028/code/audit_16_positive_sample.py",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "research/studies/graph_early_signal_s028/code/audit_12_relations.py",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "research/studies/graph_early_signal_s028/code/audit_24_provenance_and_freeze.py",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "research/studies/graph_early_signal_s028/CORRECTION_REPORT_ZH.md",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "research/studies/graph_early_signal_s028/TEMPORAL_LEAKAGE_AUDIT.md",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "research/studies/graph_early_signal_s028/PRE_REGISTRATION.md",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "research/studies/graph_early_signal_s028/RESEARCH_QUESTION.md",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "research/studies/graph_early_signal_s028/PAPER_DRAFT.md",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "research/studies/graph_early_signal_s028/artifacts/correction_round_1/ORIGINAL_EVIDENCE_MANIFEST.json",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "research/studies/graph_early_signal_s028/code/s028_correction_compare.py",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "research/studies/graph_early_signal_s028/code/s028_experiment.py",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "research/studies/graph_early_signal_s028/LIMITATIONS.md",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "research/studies/graph_early_signal_s028/code/audit_common.py",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "research/studies/graph_early_signal_s028/STATISTICAL_VALIDATION.md",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "research/studies/graph_early_signal_s028/code/s028_show_stats.py",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "research/studies/graph_early_signal_s028/artifacts/correction_round_1/stats_corrected_original.json",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "research/studies/graph_early_signal_s028/code/s028_g2_corrected.py",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "research/studies/graph_early_signal_s028/artifacts/correction_round_1/run_H2q_N1.log",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "research/studies/graph_early_signal_s028/REPRODUCE.md",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "research/studies/graph_early_signal_s028/artifacts/statistical_validation.json",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "research/studies/graph_early_signal_s028/code/s028_nullmodels.py",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "research/studies/graph_early_signal_s028/code/audit_17_crosschecks.py",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "research/studies/graph_early_signal_s028/artifacts/predictions_H2q.json.gz",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "research/studies/graph_early_signal_s028/code/audit_22_false_positives.py",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "research/studies/graph_early_signal_s028/code/s028_stats.py",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "research/studies/graph_early_signal_s028/BASELINE_RESULTS.md",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "research/studies/graph_early_signal_s028/FALSE_POSITIVE_CASE_REVIEW.md",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "research/studies/graph_early_signal_s028/artifacts/correction_round_1/run_H2q_N2.log",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "research/studies/graph_early_signal_s028/artifacts/correction_round_1/g2_corrected_H2q_N2.json",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "research/studies/graph_early_signal_s028/code/audit_20_randomisation_invariants.py",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "research/studies/graph_early_signal_s028/artifacts/frozen_validation.json",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "research/studies/graph_early_signal_s028/artifacts/correction_round_1/stats_corrected_g2.json",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "research/studies/graph_early_signal_s028/LITERATURE_REVIEW.md",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "research/studies/graph_early_signal_s028/GRAPH_RESULTS.md",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "research/studies/graph_early_signal_s028/code/audit_11_time_clocks.py",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "research/studies/graph_early_signal_s028/code/audit_23_leakage_correction.py",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "research/studies/graph_early_signal_s028/artifacts/correction_round_1/g2_corrected_H2q_N1.json",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "research/studies/graph_early_signal_s028/G2_CORRECTION_RESULTS.md",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "research/studies/graph_early_signal_s028/DATA_FEASIBILITY.md",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "research/studies/graph_early_signal_s028/artifacts/correction_round_1/run_H4q_N2.log",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "research/studies/graph_early_signal_s028/artifacts/literature_refs.json",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "research/studies/graph_early_signal_s028/code/audit_14_track_coverage.py",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "research/studies/graph_early_signal_s028/artifacts/experiment_H4q.json",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "research/studies/graph_early_signal_s028/code/audit_18_assemble.py",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "research/studies/graph_early_signal_s028/artifacts/correction_round_1/g2_corrected_H4q_N2.json",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "research/studies/graph_early_signal_s028/code/audit_13_entity_mapping.py",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "research/studies/graph_early_signal_s028/code/s028_freeze.py",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "research/studies/graph_early_signal_s028/code/s028_lib.py",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "research/studies/graph_early_signal_s028/RELATION_AND_TIME_EVIDENCE_AUDIT.md",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "research/studies/graph_early_signal_s028/ABLATION_RESULTS.md",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "research/studies/graph_early_signal_s028/artifacts/entity_time_audit.json",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "research/studies/graph_early_signal_s028/artifacts/feasibility.json",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "research/studies/graph_early_signal_s028/artifacts/correction_round_1/stats_audit_original.json",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "research/studies/graph_early_signal_s028/artifacts/run_main.log",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "research/studies/graph_early_signal_s028/artifacts/correction_round_1/run_H4q_N1.log",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "research/studies/graph_early_signal_s028/artifacts/correction_round_1/comparison_table.md",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "research/studies/graph_early_signal_s028/RANDOMISATION_DEFECT_ANALYSIS.md",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "research/studies/graph_early_signal_s028/artifacts/correction_round_1/README.md",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "research/studies/graph_early_signal_s028/artifacts/predictions_H4q.json.gz",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "research/studies/graph_early_signal_s028/TEMPORAL_LEAKAGE_AUDIT_CORRECTION.md",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "research/studies/graph_early_signal_s028/PHASE_REPORT_ZH.md",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "research/studies/graph_early_signal_s028/NEGATIVE_RESULTS.md",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "research/studies/graph_early_signal_s028/code/audit_19_verify_report.py",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "research/studies/graph_early_signal_s028/artifacts/prereg_freeze.json",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "research/studies/graph_early_signal_s028/code/audit_10_provenance.py",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "research/studies/graph_early_signal_s028/artifacts/correction_round_1/audit_20_console.log",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "research/studies/graph_early_signal_s028/HYPOTHESIS_REGISTRY.md",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "research/studies/graph_early_signal_s028/artifacts/correction_round_1/provenance_verification.json",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "research/studies/graph_early_signal_s028/code/audit_21_statistics.py",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "research/studies/graph_early_signal_s028/artifacts/correction_round_1/g2_corrected_H4q_N1.json",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "research/studies/graph_early_signal_s028/artifacts/correction_round_1/randomisation_invariants.json",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "research/studies/graph_early_signal_s028/code/s028_feasibility.py",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "research/studies/graph_early_signal_s028/artifacts/correction_round_1/leakage_audit.json",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "research/studies/graph_early_signal_s028/code/audit_15_research_coverage.py",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "research/studies/graph_early_signal_s028/artifacts/experiment_H2q.json",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/s028-temporal-graph-early-signal",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "OVERNIGHT_RESEARCH_REPORT.zh-CN.md",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/datasets/real/overnight_corpus/ovn-2026-11-04/documents/ovn-regulatoryapproval-P060005-S027-2c30c136.json",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/datasets/real/overnight_corpus/ovn-2026-11-04/documents/ovn-regulatoryclearance-K253692-7f3177d3.json",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/datasets/real/overnight_corpus/ovn-2026-11-04/documents/ovn-regulatoryapproval-P160037-S024-0c583f5a.json",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/datasets/real/overnight_corpus/ovn-2026-11-04/documents/ovn-regulatoryapproval-P170024-S026-18a810f1.json",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/datasets/real/overnight_corpus/ovn-2026-11-04/documents/ovn-ctgov-NCT03267264-start.json",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/datasets/real/overnight_corpus/ovn-2026-11-04/documents/ovn-ctgov-NCT05659329-start.json",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/datasets/real/overnight_corpus/ovn-2026-11-04/documents/ovn-ctgov-NCT03740997-results.json",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/datasets/real/overnight_corpus/ovn-2026-11-04/documents/ovn-regulatoryapproval-P060037-S097-73b1673e.json",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/results/overnight-2026-11-04/evaluation/EXPERIMENT_REGISTER.json",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/results/overnight-2026-11-04/training/resource_log.jsonl",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/datasets/real/overnight_corpus/ovn-2026-11-04/documents/ovn-regulatoryclearance-K262955-ce677bcb.json",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/datasets/components.py",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/docs/OVERNIGHT_PROTOCOL.md",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/datasets/real/overnight_corpus/ovn-2026-11-04/documents/ovn-regulatoryclearance-K261792-05133335.json",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/datasets/real/overnight_corpus/ovn-2026-11-04/documents/ovn-recall-78216-5f31520f.json",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/adapters/rule_based_locale.py",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/datasets/real/overnight_corpus/ovn-2026-11-04/documents/ovn-regulatoryapproval-P220003-S032-07a00408.json",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/datasets/real/overnight_corpus/ovn-2026-11-04/documents/ovn-recall-49602-c1a2ee00.json",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/datasets/real/overnight_corpus/ovn-2026-11-04/documents/ovn-ctgov-NCT01026805-results.json",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/datasets/real/overnight_corpus/ovn-2026-11-04/documents/ovn-recall-95121-e4b552db.json",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/datasets/real/overnight_corpus/ovn-2026-11-04/documents/ovn-recall-56425-136f4cf7.json",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/datasets/real/overnight_corpus/ovn-2026-11-04/documents/ovn-recall-56599-61be0677.json",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/datasets/real/overnight_corpus/ovn-2026-11-04/documents/ovn-recall-69258-ad3df2f5.json",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/datasets/real/overnight_corpus/ovn-2026-11-04/documents/ovn-ctgov-NCT03517436-results.json",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/results/overnight-2026-11-04/evaluation/predictions-prompt-v2.jsonl",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/scripts/fetch_overnight_corpus.py",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/results/overnight-2026-11-04/evaluation/predictions-rules-fixed.jsonl",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/datasets/real/overnight_corpus/ovn-2026-11-04/documents/ovn-regulatoryclearance-K262156-aa837fef.json",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/datasets/real/overnight_corpus/ovn-2026-11-04/documents/ovn-ctgov-NCT05524064-start.json",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/datasets/real/overnight_corpus/ovn-2026-11-04/documents/ovn-recall-49436-59e8d85a.json",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/datasets/real/overnight_corpus/ovn-2026-11-04/documents/ovn-ctgov-NCT05659329-results.json",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/datasets/real/overnight_corpus/ovn-2026-11-04/documents/ovn-regulatoryapproval-P150035-S042-e0e5650c.json",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/results/overnight-2026-11-04/dataset/sft_summary.json",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/datasets/real/overnight_corpus/ovn-2026-11-04/documents/ovn-regulatoryclearance-K262386-ee5c9e2e.json",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/results/overnight-2026-11-04/evaluation/predictions-prompt-v1.jsonl",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/datasets/real/overnight_corpus/ovn-2026-11-04/documents/ovn-regulatoryclearance-K262151-29a5ea40.json",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/datasets/real/overnight_corpus/ovn-2026-11-04/documents/ovn-regulatoryclearance-K262548-00dc2571.json",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/datasets/real/overnight_corpus/ovn-2026-11-04/documents/ovn-ctgov-NCT04862065-completion.json",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/datasets/real/overnight_corpus/ovn-2026-11-04/documents/ovn-recall-53576-0ebda63d.json",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/datasets/real/overnight_corpus/ovn-2026-11-04/documents/ovn-recall-57858-6387865b.json",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/datasets/real/overnight_corpus/ovn-2026-11-04/documents/ovn-regulatoryapproval-P180031-S012-b0569898.json",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/datasets/real/overnight_corpus/ovn-2026-11-04/documents/ovn-regulatoryapproval-P920048-S030-172e738a.json",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/datasets/real/overnight_corpus/ovn-2026-11-04/documents/ovn-regulatoryclearance-K251640-578e946e.json",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/results/overnight-2026-11-04/evaluation/SUMMARY-v2.json",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/datasets/real/overnight_corpus/ovn-2026-11-04/documents/ovn-regulatoryapproval-P960013-S135-9a76ff06.json",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/scripts/render_arm_tables.py",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/datasets/real/overnight_corpus/ovn-2026-11-04/documents/ovn-recall-33279-078f8098.json",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/results/overnight-2026-11-04/evaluation/metrics-prompt-v2.json",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/scripts/reconstruct_training_record.py",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/datasets/real/overnight_corpus/ovn-2026-11-04/documents/ovn-regulatoryapproval-P150031-S100-f5d85810.json",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/datasets/real/overnight_corpus/ovn-2026-11-04/documents/ovn-recall-95215-b62d01d9.json",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/datasets/real/overnight_corpus/ovn-2026-11-04/documents/ovn-ctgov-NCT04725500-completion.json",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/datasets/real/overnight_corpus/ovn-2026-11-04/documents/ovn-ctgov-NCT03517436-start.json",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/datasets/real/overnight_corpus/ovn-2026-11-04/documents/ovn-ctgov-NCT05659329-completion.json",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/datasets/real/overnight_corpus/ovn-2026-11-04/documents/ovn-regulatoryclearance-K254090-0d82d245.json",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/datasets/real/overnight_corpus/ovn-2026-11-04/documents/ovn-ctgov-NCT03740997-completion.json",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/datasets/real/overnight_corpus/ovn-2026-11-04/documents/ovn-regulatoryclearance-K251993-1949d43d.json",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/datasets/real/overnight_corpus/ovn-2026-11-04/documents/ovn-neg-HAM.json",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/datasets/real/overnight_corpus/ovn-2026-11-04/documents/ovn-ctgov-NCT03267264-completion.json",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/training/train_overnight.py",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/datasets/real/overnight_corpus/ovn-2026-11-04/documents/ovn-regulatoryapproval-P240021-S001-bcff9454.json",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/scripts/summarize_overnight.py",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/datasets/real/overnight_corpus/ovn-2026-11-04/documents/ovn-regulatoryclearance-K254279-f3a366a2.json",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/datasets/real/overnight_corpus/ovn-2026-11-04/documents/ovn-recall-50138-ddfe182d.json",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/datasets/real/overnight_corpus/ovn-2026-11-04/documents/ovn-recall-92785-6f253f88.json",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/datasets/real/overnight_corpus/ovn-2026-11-04/documents/ovn-regulatoryapproval-P900056-S229-f6562e71.json",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/datasets/real/overnight_corpus/ovn-2026-11-04/documents/ovn-ctgov-NCT04725500-start.json",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/results/overnight-2026-11-04/evaluation/SUMMARY.json",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/datasets/real/overnight_corpus/ovn-2026-11-04/documents/ovn-regulatoryapproval-P160037-S027-e7f2135a.json",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/datasets/real/overnight_corpus/ovn-2026-11-04/documents/ovn-regulatoryclearance-K261683-c307815e.json",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/datasets/real/overnight_corpus/ovn-2026-11-04/documents/ovn-ctgov-NCT03740997-start.json",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/datasets/real/overnight_corpus/ovn-2026-11-04/documents/ovn-regulatoryclearance-K254265-1bfcc4d7.json",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/datasets/real/overnight_corpus/ovn-2026-11-04/documents/ovn-regulatoryclearance-K263048-a5fdc2bb.json",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/results/overnight-2026-11-04/training/best_checkpoint.json",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/datasets/real/overnight_corpus/ovn-2026-11-04/MANIFEST.json",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/datasets/real/overnight_corpus/ovn-2026-11-04/documents/ovn-ctgov-NCT01445171-results.json",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/datasets/real/overnight_corpus/ovn-2026-11-04/documents/ovn-regulatoryclearance-K260656-a5c44f83.json",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/datasets/real/overnight_corpus/ovn-2026-11-04/documents/ovn-ctgov-NCT03232645-start.json",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/datasets/real/overnight_corpus/ovn-2026-11-04/documents/ovn-regulatoryapproval-P230013-S033-2ae1fa95.json",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/datasets/real/overnight_corpus/ovn-2026-11-04/documents/ovn-regulatoryclearance-K261959-80b443cd.json",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/scripts/make_experiment_register.py",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/datasets/real/overnight_corpus/ovn-2026-11-04/documents/ovn-ctgov-NCT03267264-results.json",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/datasets/real/overnight_corpus/ovn-2026-11-04/documents/ovn-ctgov-NCT04862065-start.json",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/datasets/real/overnight_corpus/ovn-2026-11-04/documents/ovn-regulatoryapproval-P130020-S005-25d91c51.json",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/datasets/real/overnight_corpus/ovn-2026-11-04/documents/ovn-regulatoryapproval-P230021-S003-f0f298f9.json",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/datasets/real/overnight_corpus/ovn-2026-11-04/documents/ovn-regulatoryclearance-K253738-1365aff0.json",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/training/overnight_sft.py",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/datasets/real/overnight_corpus/ovn-2026-11-04/documents/ovn-regulatoryapproval-P110006-S010-b669851e.json",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/datasets/real/overnight_corpus/ovn-2026-11-04/documents/ovn-recall-52834-8e731524.json",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/datasets/real/overnight_corpus/ovn-2026-11-04/documents/ovn-ctgov-NCT03546374-completion.json",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/datasets/real/overnight_corpus/ovn-2026-11-04/documents/ovn-ctgov-NCT02897453-completion.json",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/datasets/real/overnight_corpus/ovn-2026-11-04/documents/ovn-ctgov-NCT03232645-results.json",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/datasets/real/overnight_corpus/ovn-2026-11-04/documents/ovn-neg-HEK.json",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/results/overnight-2026-11-04/evaluation/EXPERIMENT_REGISTER.md",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/datasets/real/overnight_corpus/ovn-2026-11-04/documents/ovn-recall-88626-f778ec56.json",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/datasets/real/overnight_corpus/ovn-2026-11-04/documents/ovn-regulatoryapproval-P230021-S004-b3cc36b2.json",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/results/overnight-2026-11-04/training/training_progress.json",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/results/overnight-2026-11-04/index/ARTIFACT_INDEX.json",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/datasets/real/overnight_corpus/ovn-2026-11-04/documents/ovn-regulatoryclearance-K252344-d49c362c.json",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/datasets/real/overnight_corpus/ovn-2026-11-04/documents/ovn-regulatoryclearance-DEN250049-9dd628a6.json",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/scripts/run_overnight_experiment.py",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/datasets/real/overnight_corpus/ovn-2026-11-04/documents/ovn-recall-92785-f529a473.json",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/datasets/real/overnight_corpus/ovn-2026-11-04/documents/ovn-regulatoryclearance-K252506-466f37aa.json",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/results/overnight-2026-11-04/dataset/dataset_audit.json",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/datasets/real/overnight_corpus/ovn-2026-11-04/documents/ovn-recall-75235-9e1e83e8.json",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/results/overnight-2026-11-04/evaluation/ARM_TABLES.md",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/datasets/real/overnight_corpus/ovn-2026-11-04/documents/ovn-regulatoryapproval-P010013-S094-f1521f0d.json",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/datasets/real/overnight_corpus/ovn-2026-11-04/documents/ovn-ctgov-NCT05524064-completion.json",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/datasets/real/overnight_corpus/ovn-2026-11-04/documents/ovn-ctgov-NCT04862065-results.json",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/datasets/real/overnight_corpus/ovn-2026-11-04/documents/ovn-regulatoryclearance-K262311-223ccfcd.json",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/datasets/real/overnight_corpus/ovn-2026-11-04/documents/ovn-recall-53491-0a815788.json",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/datasets/real/overnight_corpus/ovn-2026-11-04/documents/ovn-ctgov-NCT02897453-start.json",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/datasets/real/overnight_corpus/ovn-2026-11-04/documents/ovn-regulatoryclearance-K262735-ce95d1cc.json",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/datasets/real/overnight_corpus/ovn-2026-11-04/documents/ovn-regulatoryapproval-P220026-S019-89db8e14.json",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/datasets/real/overnight_corpus/ovn-2026-11-04/documents/ovn-ctgov-NCT03232645-completion.json",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/results/overnight-2026-11-04/training/training_run.reconstructed.json",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/datasets/real/overnight_corpus/ovn-2026-11-04/documents/ovn-recall-52990-d12e8747.json",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/datasets/real/overnight_corpus/ovn-2026-11-04/documents/ovn-ctgov-NCT03546374-start.json",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/datasets/overnight_corpus.py",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/datasets/real/overnight_corpus/ovn-2026-11-04/documents/ovn-regulatoryapproval-P030039-S032-3f284145.json",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/scripts/make_artifact_index.py",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/datasets/real/overnight_corpus/ovn-2026-11-04/documents/ovn-ctgov-NCT04725500-results.json",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/datasets/real/overnight_corpus/ovn-2026-11-04/documents/ovn-regulatoryapproval-P210036-S009-5ee7abab.json",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/datasets/real/overnight_corpus/ovn-2026-11-04/documents/ovn-recall-36214-c4d19075.json",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/datasets/real/overnight_corpus/ovn-2026-11-04/documents/ovn-recall-38449-4d55ace2.json",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/datasets/real/overnight_corpus/ovn-2026-11-04/.gitattributes",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/datasets/real/overnight_corpus/ovn-2026-11-04/documents/ovn-recall-63059-081803fd.json",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/results/overnight-2026-11-04/.gitattributes",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "tests/test_llm_research_v2_fixes.py",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/datasets/real/overnight_corpus/ovn-2026-11-04/documents/ovn-recall-69258-8bddc341.json",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/datasets/real/overnight_corpus/ovn-2026-11-04/documents/ovn-regulatoryapproval-P060037-S100-125633b4.json",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/datasets/real/overnight_corpus/ovn-2026-11-04/documents/ovn-neg-KQO.json",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/datasets/real/overnight_corpus/ovn-2026-11-04/documents/ovn-regulatoryclearance-K254232-171359d8.json",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/datasets/real/overnight_corpus/ovn-2026-11-04/documents/ovn-recall-36214-fbc08d8c.json",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/datasets/real/overnight_corpus/ovn-2026-11-04/documents/ovn-ctgov-NCT03517436-completion.json",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/datasets/real/overnight_corpus/ovn-2026-11-04/documents/ovn-regulatoryclearance-K260331-7cc18103.json",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "experiments/local_llm_event_extraction/datasets/real/overnight_corpus/ovn-2026-11-04/documents/ovn-regulatoryapproval-P010015-S591-82484632.json",
+      "branches": [
+        "research/innovation-signals-observatory",
+        "research/overnight-qlora-s030",
+        "research/s031-hiring-capability-study"
+      ]
+    },
+    {
+      "path": "docs/PHOENIX_EXTERNAL_PROJECT_REGISTER.md",
+      "branches": [
+        "research/phoenix-001-external-methods",
+        "research/phoenix-001-round2",
+        "research/phoenix-002-h8-validation"
+      ]
+    },
+    {
+      "path": "docs/PHOENIX_REPRODUCTION_REPORT.md",
+      "branches": [
+        "research/phoenix-001-external-methods",
+        "research/phoenix-001-round2",
+        "research/phoenix-002-h8-validation"
+      ]
+    },
+    {
+      "path": "docs/PHOENIX_LICENSE_AUDIT.md",
+      "branches": [
+        "research/phoenix-001-external-methods",
+        "research/phoenix-001-round2",
+        "research/phoenix-002-h8-validation"
+      ]
+    }
+  ]
+}

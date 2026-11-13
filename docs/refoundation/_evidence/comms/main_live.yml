@@ -1,0 +1,57 @@
+﻿name: live-lane
+
+# Event-driven paper trading is OPT-IN and not a reliable scheduler: GitHub
+# Actions cron fires late under load and the cache can be evicted, so the book
+# state is best effort. For a real always-on book run `medradar live --interval`
+# on a small VPS, or use the DSH automation in this repository's docs.
+#
+# Enable by uncommenting the schedule block, or run manually from the Actions tab.
+
+on:
+  workflow_dispatch:
+  # schedule:
+  #   - cron: "*/15 * * * *"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: live-lane
+  cancel-in-progress: false
+
+jobs:
+  cycle:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Restore paper-trading state (best effort)
+        uses: actions/cache/restore@v4
+        with:
+          path: data/medradar.sqlite
+          key: medradar-live-${{ github.run_id }}
+          restore-keys: medradar-live-
+
+      - name: One live cycle
+        env:
+          MEDRADAR_SEC_UA: "MedRadar research (github actions; contact: [EMAIL_REDACTED])"
+        run: python -m medradar live --once --since-hours 2
+
+      - name: Save paper-trading state (best effort)
+        if: always()
+        uses: actions/cache/save@v4
+        with:
+          path: data/medradar.sqlite
+          key: medradar-live-${{ github.run_id }}
+
+      - name: Upload alert log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: live-alerts
+          path: out/live_alerts.jsonl
+          if-no-files-found: ignore

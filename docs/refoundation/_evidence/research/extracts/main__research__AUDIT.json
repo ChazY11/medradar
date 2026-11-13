@@ -1,0 +1,114 @@
+﻿{
+  "schema": "objective_audit_v1",
+  "items": [
+    {
+      "requirement": "persistent research state files",
+      "status": "PASS",
+      "evidence": "13 files under research/",
+      "detail": {
+        "problems": []
+      }
+    },
+    {
+      "requirement": "backlog integrity",
+      "status": "PASS",
+      "evidence": "63 tasks, statuses {'done': 51, 'blocked': 5, 'todo': 6, 'frozen': 1}",
+      "detail": {
+        "duplicates": []
+      }
+    },
+    {
+      "requirement": "state completeness",
+      "status": "PASS",
+      "evidence": "phase='complete_verified', cycle=44",
+      "detail": {
+        "absent": [],
+        "findings": 102
+      }
+    },
+    {
+      "requirement": "loop ran and was recorded",
+      "status": "PASS",
+      "evidence": "74 decisions, 155 result rows (29 negative/null), retractions marked: 3",
+      "detail": {}
+    },
+    {
+      "requirement": "experiments with committed artifacts",
+      "status": "PASS",
+      "evidence": "87 JSON artifacts across 22 experiment dirs",
+      "detail": {}
+    },
+    {
+      "requirement": "point-in-time snapshots verify",
+      "status": "PASS",
+      "evidence": "6 of 6 snapshots verify",
+      "detail": {
+        "verified": [
+          "2020-12-31",
+          "2022-12-31",
+          "2024-12-31",
+          "2026-11-02",
+          "2026-11-03",
+          "2026-11-03-policy-v2"
+        ],
+        "problems": []
+      }
+    },
+    {
+      "requirement": "rolling-origin benchmark",
+      "status": "PASS",
+      "evidence": "376 cells, 12 origins, 717 observations",
+      "detail": {}
+    },
+    {
+      "requirement": "frozen forecasts",
+      "status": "PASS",
+      "evidence": "2 hash-verified forecast set(s); 25 genuinely prospective forecasts pending maturation",
+      "detail": {
+        "sets": [
+          {
+            "file": "FORECAST_SET_2026-11-03.json",
+            "forecasts": 32,
+            "prospective_only": false
+          },
+          {
+            "file": "FORECAST_SET_2026-11-03_prospective.json",
+            "forecasts": 25,
+            "prospective_only": true
+          }
+        ],
+        "problems": []
+      }
+    },
+    {
+      "requirement": "paper with verified claims",
+      "status": "PASS",
+      "evidence": "papers/PAPER_v1.md; claims checked: 88; failures: 0",
+      "detail": {}
+    },
+    {
+      "requirement": "figures verify",
+      "status": "PASS",
+      "evidence": "figures checked: 5; failures: 0",
+      "detail": {}
+    },
+    {
+      "requirement": "profile self-check",
+      "status": "PASS",
+      "evidence": "snapshot 2026-11-03-policy-v2: OK (53 companies, manifest 44abde1672df...)",
+      "detail": {}
+    },
+    {
+      "requirement": "working tree committed",
+      "status": "N/A",
+      "evidence": "9 uncommitted path(s) at audit time",
+      "detail": {}
+    }
+  ],
+  "summary": {
+    "passed": 11,
+    "failed": 0,
+    "not_applicable": 1,
+    "total": 12
+  }
+}
