@@ -105,10 +105,19 @@ The null distribution of dAUC is centred at **-0.107** (95% band
 models are fitted on train and held fixed, so circularly shifting holdout labels
 within a firm preserves each firm's label multiset but destroys the alignment
 between the extra prose features and the within-firm order that the fit partly
-captured. The consequence for reading the table is important and is stated on
-the figure: **only the observed percentile is interpretable**, and it is inside
-the band (p = 0.839). The point estimate -0.066 must not be read as "prose harms
-prediction"; it is inside chance-order variation.
+captured. The consequence for reading the table is important: the pre-registered
+`p = 0.839` is the fraction of permutations with `abs(dAUC_perm) >= abs(dAUC_obs)`.
+Because the permutation null is centred around -0.106 rather than zero, **that
+absolute-from-zero rule is not a conventional centred two-sided permutation test**.
+On the same 2,000 saved draws, a supplementary equal-tail calculation gives
+`2 * min(P(dAUC_perm >= observed), P(dAUC_perm <= observed)) = 0.322` (with
+plus-one corrections). The pre-registered positive-tail probability is `0.161`.
+**All three calculations lead to the same exploratory null verdict.** The
+pre-registered statistic and its original reported number are preserved rather
+than rewritten after observing the data; the supplementary calculation is
+labelled post-hoc and should not be presented as a second confirmatory test.
+The point estimate -0.066 must not be read as "prose harms prediction"; it is
+inside chance-order variation.
 
 ## 7. 8-K/A amendments
 
