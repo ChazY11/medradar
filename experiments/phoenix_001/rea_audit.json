@@ -1,0 +1,60 @@
+{
+  "upstream_repository": "https://github.com/morluto/rea",
+  "npm_package": "rea-agents",
+  "stable_version": "6.8.0",
+  "license": "MIT for REA-authored code; third-party material retains separate terms",
+  "release_evidence": {
+    "npm_latest": "6.8.0",
+    "published_at": "2026-10-25T09:07:31.585Z",
+    "official_tarball": "https://registry.npmjs.org/rea-agents/-/rea-agents-6.8.0.tgz",
+    "integrity": "sha512-9QDeRnGqEDzABZyr04eLnBXBv/c6I9/TWu/6M0MD4pEfkySI/BIgwTODIbAReX3C1x6hjw9+Jlx4A2yUSPZ9ww==",
+    "shasum": "6a2cc197e4ff7f11ba937125b3ca7e4de939906a",
+    "source_urls": [
+      "https://github.com/morluto/rea",
+      "https://raw.githubusercontent.com/morluto/rea/main/docs/installation.md",
+      "https://registry.npmjs.org/rea-agents/6.8.0"
+    ]
+  },
+  "dependency_review": {
+    "direct_dependency_count": 39,
+    "optional_dependencies": ["frida@17.23.2"],
+    "notable_dependencies": ["playwright-core@1.58.2", "@lydell/node-pty@1.1.0", "@modelcontextprotocol/server@2.3.1"],
+    "notices": "Upstream THIRD_PARTY_NOTICES.md must be retained; commercial Hopper, IDA and JEB licences are not granted by REA.",
+    "install_script_policy": "No curl installer, npm setup, npx package execution or third-party install script was run. Only npm metadata inspection was performed."
+  },
+  "resource_review": {
+    "package_file_count": 2398,
+    "unpacked_bytes": 49251336,
+    "node_required": "^22.23.4 || ^24.22.1 || >=26.12.1",
+    "node_observed": "v20.20.2",
+    "gpu_required_for_static_javascript": false,
+    "additional_engines": "Not installed. Native deep analysis would require a separately licensed or existing engine.",
+    "filesystem_constraint": "The persistent output mount does not support hard links, while upstream first-run configuration publication uses an exclusive hard link."
+  },
+  "proposed_mcp_changes": {
+    "applied": false,
+    "registration_scope": "project-local only; no global agent or skill changes",
+    "skill_installation": false,
+    "configuration": {
+      "mcpServers": {
+        "rea": {
+          "command": "/absolute/path/to/supported/node",
+          "args": ["/absolute/path/to/rea/scripts/rea.mjs", "mcp"]
+        }
+      }
+    },
+    "required_before_apply": "Owner approval of exact resolved paths plus a supported Node runtime and a configuration filesystem compatible with upstream publication guarantees."
+  },
+  "owner_approval": {
+    "state": "not_granted_for_this_exact_configuration",
+    "reason": "The task requires preview and owner approval. The exact configuration could not be resolved because the runtime prerequisite fails."
+  },
+  "status": "blocked",
+  "status_reason": "REA 6.8.0 rejects the observed Node v20.20.2 (requires >=22.23.4 in the 22.x line or another supported line). No MCP change was applied and no REA code was executed.",
+  "tool_list": [],
+  "tool_calls_attempted": 0,
+  "tool_calls_succeeded": 0,
+  "startup_time_seconds": null,
+  "smoke_test_log": null,
+  "next_safe_step": "If the owner later approves, use a trusted supported Node runtime, inspect the official 6.8.0 package without lifecycle scripts, run setup --dry-run with --skill=false, present exact paths, then apply only after approval. REA is not a dependency for source or paper reproduction."
+}

@@ -1,0 +1,426 @@
+{
+  "cell_allowlist": [
+    1,
+    2,
+    3,
+    5,
+    6,
+    8,
+    30,
+    33,
+    34,
+    35,
+    36,
+    39,
+    40,
+    44,
+    45
+  ],
+  "configuration": {
+    "DIFF_TARGET": true,
+    "DIFF_TARGET_PCT": false,
+    "FILTER_GROUP_SIZES": true,
+    "GET_DL_EMBEDS": false,
+    "NUM_CV_FOLDS": 30
+  },
+  "data_sha256": {
+    "trends_v6.csv.gz": "fbd32b59d9c9da2fb39e3d72a67eef101b5734f0fb8ed9c5034a6c236206baf4"
+  },
+  "dataset": {
+    "evaluated_rows": 4020,
+    "evaluated_topics": 123,
+    "input_rows": 4175,
+    "model_X_rows": 4175,
+    "prediction_years": [
+      1979,
+      1980,
+      1981,
+      1982,
+      1983,
+      1984,
+      1985,
+      1986,
+      1987,
+      1988,
+      1989,
+      1990,
+      1991,
+      1992,
+      1993,
+      1994,
+      1995,
+      1996,
+      1997,
+      1998,
+      1999,
+      2000,
+      2001,
+      2002,
+      2003,
+      2004,
+      2005,
+      2006,
+      2007,
+      2008,
+      2009,
+      2010,
+      2011,
+      2012,
+      2013,
+      2014,
+      2015
+    ],
+    "topics": 123
+  },
+  "deviations": [
+    "GET_DL_EMBEDS=False, an existing author configuration; no SentenceTransformer download or SHAP was run.",
+    "Jupyter magics and display calls were removed; no forecasting or file-writing cells were executed.",
+    "np.NaN was changed to np.nan for NumPy 2.x compatibility; model semantics were unchanged.",
+    "CatBoost 1.2.10 was pinned by PHOENIX because upstream has no dependency lock."
+  ],
+  "final_model_decline_classification": {
+    "accuracy": 0.8686567164179104,
+    "f1": 0.7916337805840569,
+    "predicted_decline_rate": 0.3161691542288557,
+    "true_decline_rate": 0.31417910447761194
+  },
+  "metrics": {
+    "catboost_all_features": {
+      "explained_variance": 0.8453231635859291,
+      "mae": 68.08433416696998,
+      "median_absolute_error": 25.95699521309202,
+      "r2": 0.8453210017563243,
+      "rmse": 153.69405189863394,
+      "rows": 4020
+    },
+    "cell_44_baseline": {
+      "explained_variance": -8.295180956624721,
+      "mae": 544.4325538443113,
+      "median_absolute_error": 141.5944,
+      "r2": -10.017716475986264,
+      "rmse": 1280.7657738120358,
+      "rows": 4175
+    },
+    "cell_45_baseline": {
+      "explained_variance": -8.220438733473383,
+      "mae": 550.9341782338308,
+      "median_absolute_error": 144.53965,
+      "r2": -9.939382824543262,
+      "rmse": 1292.5215573898195,
+      "rows": 4020
+    },
+    "ridge_complete_columns": {
+      "explained_variance": 0.46461855172363475,
+      "mae": 148.7251642621143,
+      "median_absolute_error": 69.07902861967065,
+      "r2": 0.46448640560299215,
+      "rmse": 285.97405591879755,
+      "rows": 4020
+    },
+    "ridge_full_mean_imputed": {
+      "explained_variance": 0.4949003550820348,
+      "mae": 143.11599204568222,
+      "median_absolute_error": 68.8997193989758,
+      "r2": 0.49488946980126747,
+      "rmse": 277.73754740078346,
+      "rows": 4020
+    },
+    "ridge_y_raw": {
+      "explained_variance": 0.19778074420238967,
+      "mae": 180.44474406123356,
+      "median_absolute_error": 65.34083467411827,
+      "r2": 0.19629651983632013,
+      "rmse": 350.33966414338045,
+      "rows": 4020
+    }
+  },
+  "notebook_sha256": "0cd09a1b7878cdef0a328d2651c4a627aa15bce7a6e5ae9e2184e987659e2030",
+  "source_commit": "81711b94181bb8d1f5bd93379670bf3250dfc343",
+  "source_notebook": "plot trend pred + CV-V2023.ipynb",
+  "source_repository": "https://github.com/ddofer/Trends",
+  "status": "completed_author_no_dl_core",
+  "temporal_audit": {
+    "folds": [
+      {
+        "fold": 1,
+        "shared_years": [
+          1980
+        ],
+        "test_rows": 134,
+        "test_rows_in_year_already_trained": 44,
+        "train_rows": 155
+      },
+      {
+        "fold": 2,
+        "shared_years": [
+          1981
+        ],
+        "test_rows": 134,
+        "test_rows_in_year_already_trained": 13,
+        "train_rows": 289
+      },
+      {
+        "fold": 3,
+        "shared_years": [
+          1983
+        ],
+        "test_rows": 134,
+        "test_rows_in_year_already_trained": 88,
+        "train_rows": 423
+      },
+      {
+        "fold": 4,
+        "shared_years": [
+          1984
+        ],
+        "test_rows": 134,
+        "test_rows_in_year_already_trained": 61,
+        "train_rows": 557
+      },
+      {
+        "fold": 5,
+        "shared_years": [
+          1985
+        ],
+        "test_rows": 134,
+        "test_rows_in_year_already_trained": 33,
+        "train_rows": 691
+      },
+      {
+        "fold": 6,
+        "shared_years": [
+          1986
+        ],
+        "test_rows": 134,
+        "test_rows_in_year_already_trained": 6,
+        "train_rows": 825
+      },
+      {
+        "fold": 7,
+        "shared_years": [
+          1988
+        ],
+        "test_rows": 134,
+        "test_rows_in_year_already_trained": 87,
+        "train_rows": 959
+      },
+      {
+        "fold": 8,
+        "shared_years": [
+          1989
+        ],
+        "test_rows": 134,
+        "test_rows_in_year_already_trained": 61,
+        "train_rows": 1093
+      },
+      {
+        "fold": 9,
+        "shared_years": [
+          1990
+        ],
+        "test_rows": 134,
+        "test_rows_in_year_already_trained": 35,
+        "train_rows": 1227
+      },
+      {
+        "fold": 10,
+        "shared_years": [
+          1991
+        ],
+        "test_rows": 134,
+        "test_rows_in_year_already_trained": 9,
+        "train_rows": 1361
+      },
+      {
+        "fold": 11,
+        "shared_years": [
+          1993
+        ],
+        "test_rows": 134,
+        "test_rows_in_year_already_trained": 93,
+        "train_rows": 1495
+      },
+      {
+        "fold": 12,
+        "shared_years": [
+          1994
+        ],
+        "test_rows": 134,
+        "test_rows_in_year_already_trained": 68,
+        "train_rows": 1629
+      },
+      {
+        "fold": 13,
+        "shared_years": [
+          1995
+        ],
+        "test_rows": 134,
+        "test_rows_in_year_already_trained": 44,
+        "train_rows": 1763
+      },
+      {
+        "fold": 14,
+        "shared_years": [
+          1996
+        ],
+        "test_rows": 134,
+        "test_rows_in_year_already_trained": 21,
+        "train_rows": 1897
+      },
+      {
+        "fold": 15,
+        "shared_years": [
+          1998
+        ],
+        "test_rows": 134,
+        "test_rows_in_year_already_trained": 110,
+        "train_rows": 2031
+      },
+      {
+        "fold": 16,
+        "shared_years": [
+          1999
+        ],
+        "test_rows": 134,
+        "test_rows_in_year_already_trained": 91,
+        "train_rows": 2165
+      },
+      {
+        "fold": 17,
+        "shared_years": [
+          2000
+        ],
+        "test_rows": 134,
+        "test_rows_in_year_already_trained": 72,
+        "train_rows": 2299
+      },
+      {
+        "fold": 18,
+        "shared_years": [
+          2001
+        ],
+        "test_rows": 134,
+        "test_rows_in_year_already_trained": 55,
+        "train_rows": 2433
+      },
+      {
+        "fold": 19,
+        "shared_years": [
+          2002
+        ],
+        "test_rows": 134,
+        "test_rows_in_year_already_trained": 38,
+        "train_rows": 2567
+      },
+      {
+        "fold": 20,
+        "shared_years": [
+          2003
+        ],
+        "test_rows": 134,
+        "test_rows_in_year_already_trained": 21,
+        "train_rows": 2701
+      },
+      {
+        "fold": 21,
+        "shared_years": [
+          2004
+        ],
+        "test_rows": 134,
+        "test_rows_in_year_already_trained": 5,
+        "train_rows": 2835
+      },
+      {
+        "fold": 22,
+        "shared_years": [
+          2006
+        ],
+        "test_rows": 134,
+        "test_rows_in_year_already_trained": 110,
+        "train_rows": 2969
+      },
+      {
+        "fold": 23,
+        "shared_years": [
+          2007
+        ],
+        "test_rows": 134,
+        "test_rows_in_year_already_trained": 96,
+        "train_rows": 3103
+      },
+      {
+        "fold": 24,
+        "shared_years": [
+          2008
+        ],
+        "test_rows": 134,
+        "test_rows_in_year_already_trained": 83,
+        "train_rows": 3237
+      },
+      {
+        "fold": 25,
+        "shared_years": [
+          2009
+        ],
+        "test_rows": 134,
+        "test_rows_in_year_already_trained": 70,
+        "train_rows": 3371
+      },
+      {
+        "fold": 26,
+        "shared_years": [
+          2010
+        ],
+        "test_rows": 134,
+        "test_rows_in_year_already_trained": 58,
+        "train_rows": 3505
+      },
+      {
+        "fold": 27,
+        "shared_years": [
+          2011
+        ],
+        "test_rows": 134,
+        "test_rows_in_year_already_trained": 46,
+        "train_rows": 3639
+      },
+      {
+        "fold": 28,
+        "shared_years": [
+          2012
+        ],
+        "test_rows": 134,
+        "test_rows_in_year_already_trained": 34,
+        "train_rows": 3773
+      },
+      {
+        "fold": 29,
+        "shared_years": [
+          2013
+        ],
+        "test_rows": 134,
+        "test_rows_in_year_already_trained": 22,
+        "train_rows": 3907
+      },
+      {
+        "fold": 30,
+        "shared_years": [
+          2014
+        ],
+        "test_rows": 134,
+        "test_rows_in_year_already_trained": 11,
+        "train_rows": 4041
+      }
+    ],
+    "folds_with_shared_train_test_years": 30,
+    "full_data_preprocessing_warning": "Cell 34 imputes with means computed over all X before CV; this is a separate leakage channel.",
+    "method": "Upstream row-wise TimeSeriesSplit on rows sorted by Year then variable.",
+    "warning": "Row-wise splitting can place different topics from the same year on both sides; it is not a clean public-time cutoff."
+  },
+  "versions": {
+    "numpy": "2.2.5",
+    "pandas": "2.3.2",
+    "python": "3.12.12 (main, Oct  9 2025, 22:40:06) [GCC 12.2.0]",
+    "sklearn": "1.7.2"
+  }
+}

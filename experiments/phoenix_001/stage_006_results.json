@@ -1,0 +1,22 @@
+{
+  "stage": "006-final-modules-gap-report-and-acceptance",
+  "candidate_modules": [
+    "experiments/phoenix_001/evidence_contract.py",
+    "experiments/phoenix_001/build_method_comparison.py",
+    "experiments/phoenix_001/fda_ai_longitudinal.py"
+  ],
+  "external_projects": 13,
+  "hypotheses": {
+    "supported": ["H1"], "refuted_within_protocol": ["H9"],
+    "blocked": ["H5", "H6"], "inconclusive": ["H2", "H3", "H4", "H7", "H8", "H10"]
+  },
+  "phoenix_tests": {"log": "031-evidence-contract-tests", "exit_code": 0, "passed": 11},
+  "legacy_v1": {"log": "032-final-legacy-v1", "exit_code": 0, "ok": true},
+  "phoenix_v2": {"record": "verifier/runs/009-v2-20261106T004711Z.json", "exit_code": 0, "ok": true},
+  "draft_pr": {"number": 23, "url": "https://github.com/ChazY11/medradar/pull/23", "merged": false},
+  "next_directions": [
+    "Restore read-only stores and run minimal feature ablations",
+    "Build a mature trial-to-FDA linked cohort",
+    "Accumulate category-4 prospective observations under a frozen registry"
+  ]
+}
