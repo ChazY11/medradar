@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Research — what the evidence can and cannot support &middot; MedRadar</title>
+<meta name="description" content="MedRadar research: the method contract, the event study with its caveat, the negative results, the E1b source-recovery verdict and the nine limitations that stay visible.">
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#081120">
+<link rel="icon" href="../assets/brand/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../assets/css/site.css">
+<script src="../assets/js/site.js" defer></script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="site-header">
+  <div class="wrap header-inner">
+    <a class="brand" href="../index.html">
+      <img src="../assets/brand/mark.svg" alt="" width="26" height="26">
+      <span>MedRadar</span>
+    </a>
+    <button class="nav-toggle" type="button" aria-expanded="true" aria-controls="site-nav">
+      <span class="nav-toggle-bars" aria-hidden="true"></span> Menu
+    </button>
+    <nav class="nav" id="site-nav" aria-label="Primary">
+      <ul>
+        <li><a href="../research/index.html" aria-current="page">Research</a></li>
+        <li><a href="../platform/index.html">Platform</a></li>
+        <li><a href="../explore/index.html">Explore</a></li>
+        <li><a href="../documentation/index.html">Documentation</a></li>
+      </ul>
+    </nav>
+    <div class="header-actions">
+      <a class="pill" href="https://github.com/ChazY11/medradar/blob/main/CHANGELOG.md">v0.5.0</a>
+      <a class="gh" href="https://github.com/ChazY11/medradar">GitHub <span aria-hidden="true">&#8599;</span></a>
+    </div>
+  </div>
+</header>
+<main id="main">
+  <section class="page-head">
+    <div class="wrap">
+      <p class="eyebrow">Research</p>
+      <h1 class="h1">What the evidence can and cannot support</h1>
+      <p class="lede">One question, one event store, and a record of what the store failed to
+      support. Every number below is in-sample and carries its artefact path.</p>
+      <p class="page-meta"><span>package v0.5.0</span><span>dataset 2026-10-31</span><span>375,378 events</span><span>no out-of-sample claim</span></p>
+    </div>
+  </section>
+
+  <section class="section section--tight">
+    <div class="wrap">
+      <div class="callout callout--plain">
+        <h3>The question</h3>
+        <p>Can publicly observable evidence give reliable early warning of meaningful change in
+        medical-technology development?</p>
+        <p class="src">source: README.md; research/MISSION.md</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="method">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">Method</p>
+        <h2 class="section-title">The method is fixed before the result is known.</h2>
+        <p class="lede">Three commitments make a number quotable, and a fourth makes it honest: the
+        limitation it inherits.</p>
+      </div>
+      <div class="grid grid--3">
+        <article class="card">
+          <h3 class="card-title">Frozen artefacts</h3>
+          <p>Experiments are immutable inputs. A rerun that changes a number produces a new artefact;
+          the old one stays and is cited by path, never edited.</p>
+          <span class="card-path">experiments/reverse_rd_v1/ &middot; experiments/reverse_rd_v2/</span>
+        </article>
+        <article class="card">
+          <h3 class="card-title">Named baselines</h3>
+          <p>Every model is scored against a stated base rate &mdash; for the market-to-R&amp;D
+          continuation target, a per-pair base rate of 0.7913 &mdash; never against an unnamed
+          default.</p>
+          <span class="card-path">docs/METHODS.md &middot; docs/SCHEMA.md</span>
+        </article>
+        <article class="card">
+          <h3 class="card-title">Holm-corrected block bootstrap</h3>
+          <p>Direction-aligned abnormal returns are bootstrapped in blocks; Holm correction runs over
+          the full category &times; horizon family, so no horizon can be quoted without its
+          correction.</p>
+          <span class="card-path">medradar/stats.py &middot; docs/METHODS.md</span>
+        </article>
+      </div>
+      <div class="callout callout--warn mt-m">
+        <h3>The limitation the method cannot remove</h3>
+        <p>The snapshot has no independent public time: <code>published_at = available_at =
+        event_date</code> on 375,378 / 375,378 rows, and <code>timestamp_quality = 'date'</code>.
+        Return studies therefore rest on a same-day-public-time assumption and are <strong>not</strong>
+        point-in-time results.</p>
+        <p class="src">source: docs/DATA.md &rarr; 时间戳质量; README.md &rarr; Limitations 1&ndash;2</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--soft" id="event-study">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">Result 01 &middot; event study</p>
+        <h2 class="section-title">Only the 60-day horizon survives.</h2>
+        <p class="lede">Direction-aligned abnormal returns over the simulated event study, block
+        bootstrap, Holm-corrected over the full category &times; horizon family.</p>
+      </div>
+      <div class="split split--wide-left">
+        <div class="table-wrap">
+          <table class="data">
+            <caption>Abnormal returns by horizon &mdash; in-sample simulation</caption>
+            <thead>
+              <tr><th scope="col">Horizon</th><th scope="col" class="num">n</th><th scope="col" class="num">Mean abnormal return</th><th scope="col" class="num">t</th><th scope="col" class="num">95&nbsp;% CI</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>+1&nbsp;d</td><td class="num">122</td><td class="num">+0.15&nbsp;%</td><td class="num">0.57</td><td class="num">[&minus;0.33&nbsp;%, +0.65&nbsp;%]</td></tr>
+              <tr><td>+5&nbsp;d</td><td class="num">109</td><td class="num">&minus;0.37&nbsp;%</td><td class="num">&minus;0.92</td><td class="num">[&minus;1.17&nbsp;%, +0.42&nbsp;%]</td></tr>
+              <tr><td>+20&nbsp;d</td><td class="num">89</td><td class="num">+1.14&nbsp;%</td><td class="num">1.17</td><td class="num">[&minus;0.65&nbsp;%, +3.13&nbsp;%]</td></tr>
+              <tr class="is-key"><td><strong>+60&nbsp;d</strong></td><td class="num"><strong>61</strong></td><td class="num"><strong>+5.65&nbsp;%</strong></td><td class="num"><strong>2.45</strong></td><td class="num"><strong>[+1.35&nbsp;%, +10.32&nbsp;%]</strong></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div>
+          <div class="callout callout--warn">
+            <h3>Read this with the table</h3>
+            <p>In-sample simulation, long-only, 38 simulated trades over about eleven months. No
+            independent public time in the snapshot, so this is <strong>not a point-in-time
+            result</strong> and not investment advice.</p>
+            <p class="src">source: docs/metrics.json &rarr; trading.event_study; README table</p>
+          </div>
+          <p class="mt-m"><a class="link-arrow" href="../metrics.json">metrics.json (machine-readable)</a></p>
+        </div>
+      </div>
+      <figure class="figure mt-l">
+        <div class="fig-media">
+          <img src="../assets/figures/event-study-en.svg"
+               alt="Event-study figure: mean direction-aligned abnormal return by horizon at +1, +5, +20 and +60 days with 95 percent confidence intervals; only the +60-day interval excludes zero. In-sample simulation, package v0.5.0, dataset snapshot 2026-10-31."
+               width="860" height="460" loading="lazy" decoding="async">
+        </div>
+        <figcaption class="figcaption">Committed snapshot &mdash; dataset 2026-10-31, package v0.5.0.
+        Plot of the table above; it is not a live series and not a forecast.
+        <p class="src">source: docs/assets/figures/event-study-en.svg; docs/metrics.json &rarr; trading.event_study</p>
+        </figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="section" id="negative">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">Result 02 &middot; negative results</p>
+        <h2 class="section-title">The negative results are the deliverable.</h2>
+        <p class="lede">Market-to-R&amp;D lane, 12-month horizon. Frozen artefacts:
+        <code>experiments/reverse_rd_v1/</code> and <code>experiments/reverse_rd_v2/</code>.</p>
+      </div>
+      <div class="table-wrap">
+        <table class="data">
+          <caption>Market-to-R&amp;D lane &mdash; what was tested and what it measured</caption>
+          <thead>
+            <tr><th scope="col">Tested</th><th scope="col">Measurement</th><th scope="col">Verdict</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Does any added source produce a detectable ranking gain?</td>
+              <td>Marginal PR-AUC on continuation: financial &minus;0.0013, market &minus;0.0015,
+              publication &minus;0.0001, all sources &minus;0.0068</td>
+              <td><strong>No detectable gain</strong></td>
+            </tr>
+            <tr>
+              <td>Does the model beat a per-pair base rate?</td>
+              <td>AP 0.7935 (model) vs 0.7913 (base rate), &Delta; +0.0022, 95&nbsp;% CI
+              [&minus;0.032, +0.037]</td>
+              <td><strong>Barely, and not beyond the interval</strong></td>
+            </tr>
+            <tr>
+              <td>Does more data improve ordering?</td>
+              <td>ECE 0.0811 &rarr; 0.0628, FPR 0.2753 &rarr; 0.2472</td>
+              <td><strong>Calibration only, not ordering</strong></td>
+            </tr>
+            <tr>
+              <td>Is the entry target stable across windows?</td>
+              <td>Differences sit inside the 0.014&ndash;0.026 window standard deviation</td>
+              <td><strong>Unstable, so not claimed</strong></td>
+            </tr>
+            <tr class="is-muted">
+              <td>Patents</td>
+              <td>USPTO Open Data Portal requires an API key</td>
+              <td>Not evaluated</td>
+            </tr>
+            <tr class="is-muted">
+              <td>Procurement</td>
+              <td>Snapshot is not point-in-time usable</td>
+              <td>Excluded</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="src">source: README.md &rarr; The negative results; experiments/reverse_rd_v1/,
+      experiments/reverse_rd_v2/; docs/REVERSE_RD.md</p>
+
+      <h3 class="card-title mt-l" id="e1b">Can the missing public timestamp be recovered?</h3>
+      <p class="lede mt-s">The E1b source-recovery experiment tested each source for a retrospective
+      public instant. This is a shape test &mdash; 28 requests, 5 records per source &mdash; not a
+      population estimate.</p>
+      <div class="table-wrap mt-s">
+        <table class="data">
+          <caption>E1b source recovery &mdash; public time by source</caption>
+          <thead>
+            <tr><th scope="col">Source</th><th scope="col">Retrospective public time</th><th scope="col">Verdict</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>SEC EDGAR</td>
+              <td><strong>Yes</strong> &mdash; <code>acceptanceDateTime</code>, immutable archive,
+              amendments arrive as new accessions</td>
+              <td><strong>STRONG</strong></td>
+            </tr>
+            <tr>
+              <td>ClinicalTrials.gov</td>
+              <td><strong>Partial</strong> &mdash; first-post date only, date granularity,
+              <code>ACTUAL</code> records only; historical content state is not recoverable</td>
+              <td><strong>MEDIUM</strong></td>
+            </tr>
+            <tr>
+              <td>openFDA 510(k) / PMA</td>
+              <td><strong>No</strong> &mdash; no public-posting field exists;
+              <code>decision_date</code> is the event date, not the publication date</td>
+              <td>Prospective observation only</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="src">source: docs/refoundation/phase2/E1B_SOURCE_RECOVERY.md; README.md</p>
+    </div>
+  </section>
+
+  <section class="section section--soft" id="no-go">
+    <div class="wrap split split--wide-left">
+      <div>
+        <p class="eyebrow">Result 03 &middot; early signal</p>
+        <h2 class="section-title">Five firms, and a lead-time gate that did not pass.</h2>
+        <div class="findings mt-m">
+          <article class="finding">
+            <div class="finding-head"><span class="badge">5 firms</span><span class="finding-num">Phase 0 &middot; CONDITIONAL-GO</span></div>
+            <h3>Early detection of corporate technology shifts</h3>
+            <p>Phase 0 is CONDITIONAL-GO: the deep-case study can continue, but only under the
+            stated conditions (sustained positive, earlier source, human adjudication).</p>
+          </article>
+          <article class="finding mt-s">
+            <div class="finding-head"><span class="badge">lead-time gate</span><span class="finding-num">Phase 1 &middot; NO-GO</span></div>
+            <h3>The change was not shown to be detectable earlier than the market</h3>
+            <p>The gate that matters is the lead time. It did not pass, so the study is recorded as a
+            NO-GO rather than reported as an early-warning capability.</p>
+          </article>
+        </div>
+        <p class="src mt-m">source: research/studies/early_signal_5firms/PHASE0_REPORT.md;
+        PROJECT_STATE.yaml &rarr; research_studies; docs/RESEARCH_INDEX.md</p>
+      </div>
+      <aside class="callout callout--warn">
+        <h3>Not shipped</h3>
+        <p>S-028 and S-029 are relation studies recorded as <strong>NO-GO</strong> and exist only as
+        draft branches (PR #15/#16). They are not presented here as capabilities or results.</p>
+        <p class="src">source: README.md &rarr; Not in main, not claimed; FACTS-level honesty rule</p>
+      </aside>
+    </div>
+  </section>
+
+  <section class="section" id="limitations">
+    <div class="wrap split split--wide-left">
+      <div>
+        <p class="eyebrow">Limitations</p>
+        <h2 class="section-title">Nine limitations, none of them decorative.</h2>
+        <p class="lede mt-s">These change how every number on this page may be read.</p>
+        <ol class="steps mt-m">
+          <li><h3>Event time only</h3><p><code>published_at = available_at = event_date</code> for
+          375,378 / 375,378 rows; independent public time = 0 rows.</p></li>
+          <li><h3>No genuine point-in-time claim</h3><p>Unsupported until source publication
+          timestamps are re-acquired.</p></li>
+          <li><h3>Partial entity resolution</h3><p>35.2&nbsp;% company key, 52.4&nbsp;% track;
+          unmatched events are counted, never guessed.</p></li>
+          <li><h3>The revision ledger is not tamper-proofing</h3><p>It records the application write
+          path; a database owner can still replace the file.</p></li>
+          <li><h3>510(k)/PMA rows carry no public timestamp</h3><p>They enter industry counts and
+          never return studies &mdash; a deliberate loss of sample.</p></li>
+          <li><h3>The AdCom collector parses zero rows</h3><p>The calendar is rendered client-side; it
+          returns <code>empty</code> / <code>source_changed</code>, never a silent
+          <code>ok</code>.</p></li>
+          <li><h3>The simulated book is in-sample and long-only</h3><p>38 trades; shorts are alerted
+          but never traded; fees, squeeze-outs and delisting are unmodelled.</p></li>
+          <li><h3>No causal claims</h3><p>Difference-in-differences and synthetic control are roadmap
+          items, not results.</p></li>
+          <li><h3>NMPA is deliberately not scraped</h3><p>Without a user-supplied CSV every China
+          value is <code>null</code>, never zero.</p></li>
+        </ol>
+        <p class="src">source: README.md &rarr; Limitations; docs/ASSUMPTIONS.md; docs/METHODS.md</p>
+      </div>
+      <aside>
+        <div class="callout callout--plain">
+          <h3>Where the record lives</h3>
+          <ul>
+            <li><a href="https://github.com/ChazY11/medradar/blob/main/docs/RESEARCH.md">docs/RESEARCH.md</a> &mdash; current research protocol</li>
+            <li><a href="https://github.com/ChazY11/medradar/blob/main/docs/RESEARCH_INDEX.md">docs/RESEARCH_INDEX.md</a> &mdash; generated study and decision index</li>
+            <li><a href="https://github.com/ChazY11/medradar/blob/main/docs/METHODS.md">docs/METHODS.md</a> &mdash; metric definitions and threats to validity</li>
+            <li><a href="https://github.com/ChazY11/medradar/blob/main/research/RESULTS/README.md">research/RESULTS/</a> &mdash; per-cycle result notes, append-only</li>
+            <li><a href="https://github.com/ChazY11/medradar/blob/main/papers/README.md">papers/</a> &mdash; drafts, not submitted or peer reviewed</li>
+            <li><a href="../metrics.json">metrics.json</a> &mdash; the machine-readable contract behind this page</li>
+          </ul>
+        </div>
+        <div class="callout callout--plain mt-m">
+          <h3>Canonical-claims rule</h3>
+          <p>A number is quotable only if it appears in a frozen artefact and has evidence for its
+          timestamp basis. Otherwise it is a descriptive statistic and is labelled as one.</p>
+          <p class="src">source: docs/INDEX.md &rarr; 2.2 Canonical-claims rule</p>
+        </div>
+      </aside>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-top">
+      <div>
+        <a class="footer-brand" href="../index.html">
+          <img src="../assets/brand/mark.svg" alt="" width="26" height="26">
+          <span>MedRadar</span>
+        </a>
+        <p class="footer-mission">Research infrastructure for public medical-technology evidence: one
+        auditable event store, frozen experiments with named baselines, and negative results published
+        at the same size as the positive ones. Not a validated predictive product.</p>
+      </div>
+      <div class="footer-cols">
+      <nav aria-labelledby="f-platform">
+        <p class="footer-h" id="f-platform">Platform</p>
+        <ul>
+          <li><a href="../platform/index.html">Overview</a></li>
+          <li><a href="../platform/index.html#architecture">Architecture</a></li>
+          <li><a href="../platform/index.html#sources">Data sources</a></li>
+          <li><a href="../platform/index.html#capabilities">Capability matrix</a></li>
+        </ul>
+      </nav>
+      <nav aria-labelledby="f-research">
+        <p class="footer-h" id="f-research">Research</p>
+        <ul>
+          <li><a href="../research/index.html">Research overview</a></li>
+          <li><a href="../research/index.html#method">Method</a></li>
+          <li><a href="../research/index.html#event-study">Event study</a></li>
+          <li><a href="../research/index.html#limitations">Limitations</a></li>
+        </ul>
+      </nav>
+      <nav aria-labelledby="f-resources">
+        <p class="footer-h" id="f-resources">Resources</p>
+        <ul>
+          <li><a href="../explore/index.html">Explore artefacts</a></li>
+          <li><a href="../documentation/index.html">Documentation</a></li>
+          <li><a href="../dashboard.html">Dashboard</a></li>
+          <li><a href="../report.html">Static report</a></li>
+          <li><a href="../metrics.json">Metrics JSON</a></li>
+        </ul>
+      </nav>
+      <nav aria-labelledby="f-repository">
+        <p class="footer-h" id="f-repository">Repository</p>
+        <ul>
+          <li><a href="https://github.com/ChazY11/medradar">GitHub</a></li>
+          <li><a href="https://github.com/ChazY11/medradar/blob/main/CHANGELOG.md">Changelog</a></li>
+          <li><a href="https://github.com/ChazY11/medradar/blob/main/ROADMAP.md">Roadmap</a></li>
+          <li><a href="https://github.com/ChazY11/medradar/blob/main/CONTRIBUTING.md">Contributing</a></li>
+        </ul>
+      </nav>
+      </div>
+    </div>
+    <div class="footer-base">
+      <p>Data snapshot <b>2026-10-31</b> &middot; package <b>v0.5.0</b> &middot; MIT</p>
+      <p><a href="https://github.com/ChazY11/medradar/blob/main/docs/INDEX.md">Documentation index</a> &middot;
+      <a href="https://github.com/ChazY11/medradar/blob/main/CHANGELOG.md">Changelog</a> &middot;
+      research and education, not investment advice.</p>
+    </div>
+  </div>
+</footer>
+</body>
+</html>

@@ -134,7 +134,9 @@ def _publish_docs(args: argparse.Namespace) -> dict:
     """Mirror generated artefacts into ``docs/`` so GitHub Pages serves them.
 
     Pages is configured to deploy from the ``main`` branch ``/docs`` folder, so
-    the weekly Action only needs to commit that directory.
+    the weekly Action only needs to commit that directory. The report HTML is
+    published as ``docs/report.html``: ``docs/index.html`` is the hand-authored
+    site landing page and must never be overwritten by a generated artefact.
     """
     import shutil
 
@@ -144,13 +146,18 @@ def _publish_docs(args: argparse.Namespace) -> dict:
     out_dir = Path(args.out_dir)
     ensure_dir(DOCS_DIR)
     copied: list[str] = []
-    for name in ("report_zh.md", "report_en.md", "summary.csv", "index.html", "frontier.json", "frontier.md"):
+    for name in ("report_zh.md", "report_en.md", "summary.csv", "frontier.json", "frontier.md"):
         source = out_dir / name
         if source.exists():
             shutil.copyfile(source, DOCS_DIR / name)
             copied.append(name)
             if name.endswith((".html", ".md")):
                 _rewrite_published_links(DOCS_DIR / name)
+    report_source = out_dir / "index.html"
+    if report_source.exists():
+        shutil.copyfile(report_source, DOCS_DIR / "report.html")
+        copied.append("report.html")
+        _rewrite_published_links(DOCS_DIR / "report.html")
     metrics_source = Path(args.metrics)
     if metrics_source.exists():
         shutil.copyfile(metrics_source, DOCS_DIR / "metrics.json")

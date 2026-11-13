@@ -8,9 +8,11 @@ GitHub Action must be able to render the dashboard on a bare Python.
 Design constraints that the offline test suite enforces:
 
 * ``report_zh.md`` has exactly twelve chapters, in the fixed order.
-* ``index.html`` is **fully self-contained**: inline CSS, inline vanilla JS and
-  server-side generated SVG. It must not reference a CDN, an external font or
-  any remote resource - it is served from GitHub Pages and has to work offline.
+* the HTML report (published as ``docs/report.html``; written as
+  ``out/index.html`` inside a run directory) is **fully self-contained**: inline
+  CSS, inline vanilla JS and server-side generated SVG. It must not reference a
+  CDN, an external font or any remote resource - it is served from GitHub Pages
+  and has to work offline.
 * ``cn_data_status == "unavailable"`` is reported as
   "不可用（NMPA 数据未加载）"; a ``null`` China count is never rendered as ``0``.
 * Missing fields / empty lists degrade to "暂无数据" instead of raising.
@@ -2405,7 +2407,7 @@ def _zh_signals(ctx: Mapping[str, Any]) -> str:
             if curve:
                 parts.append(
                     f"净值曲线共 {len(curve)} 个交易日，区间 {curve[0][0] or DASH} 至 {curve[-1][0] or DASH}；"
-                    "曲线与回撤明细见同目录 `index.html` 看板。"
+                    "曲线与回撤明细见同目录 `report.html` 看板。"
                 )
             if trading.get("by_kind"):
                 rows = [
@@ -4449,9 +4451,11 @@ def build_report(
 ) -> dict[str, Any]:
     """Render every report artefact from ``metrics_path`` into ``out_dir``.
 
-    The same ``index.html`` is copied to ``docs/`` so GitHub Pages always serves
-    the latest dashboard. ``docs_dir`` is exposed mainly so the offline tests can
-    write to a temporary directory instead of the checked-in Pages entry.
+    The rendered ``index.html`` is also published as ``docs/report.html`` so
+    GitHub Pages keeps a stable report URL. ``docs/index.html`` belongs to the
+    hand-authored site landing page and is never written by this module.
+    ``docs_dir`` is exposed mainly so the offline tests can write to a temporary
+    directory instead of the checked-in Pages entry.
     """
     metrics_path = Path(metrics_path)
     out_dir = Path(out_dir)
@@ -4479,7 +4483,7 @@ def build_report(
     csv_path = write_text(out_dir / "summary.csv", summary_csv)
     html_path = write_text(out_dir / "index.html", index_html)
 
-    docs_index = write_text(docs_target / "index.html", index_html)
+    docs_report = write_text(docs_target / "report.html", index_html)
     nojekyll = write_text(docs_target / ".nojekyll", "")
 
     return {
@@ -4490,7 +4494,7 @@ def build_report(
             "report_en": str(en_path),
             "summary_csv": str(csv_path),
             "index_html": str(html_path),
-            "docs_index": str(docs_index),
+            "docs_report": str(docs_report),
             "nojekyll": str(nojekyll),
         },
         "chapters_zh": len(CHAPTERS_ZH),
