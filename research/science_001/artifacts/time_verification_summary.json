@@ -1,0 +1,128 @@
+{
+ "after_hours_deferral": {
+  "after_cutoff": {
+   "max": 216906.0,
+   "mean": 69007.4705882353,
+   "median": 41717.0,
+   "min": 63.0,
+   "n": 17,
+   "over_one_day": 3,
+   "over_one_hour": 16,
+   "p05": 33062.0,
+   "p95": 215854.0
+  },
+  "after_cutoff_share": 0.02361111111111111,
+  "before_cutoff": {
+   "max": 21103825.0,
+   "mean": 81147.41963015647,
+   "median": 35.0,
+   "min": 12.0,
+   "n": 703,
+   "over_one_day": 5,
+   "over_one_hour": 5,
+   "p05": 20.0,
+   "p95": 141.0
+  },
+  "cutoff": "17:30 US/Eastern",
+  "cutoff_basis": "17 CFR 232.13(a)(2); EDGAR Filer Manual Vol. II p. 3-34"
+ },
+ "failures": 0,
+ "header_format_counts": {
+  "tag": 720
+ },
+ "header_match_rate": 1.0,
+ "identity_agreement": {
+  "accepted_after_1730": 17,
+  "accepted_after_1730_with_displaced_filing_date": 16,
+  "accession_agreement": 1.0,
+  "filing_date_displacement_days": {
+   "0": 704,
+   "1": 13,
+   "3": 3
+  },
+  "filing_date_equals_eastern_acceptance_date": 0.9777777777777777,
+  "form_type_agreement": 1.0,
+  "n": 720
+ },
+ "local_time_status_counts": {
+  "unique": 720
+ },
+ "n_filings": 720,
+ "offset_counts": {
+  "-4": 463,
+  "-5": 257
+ },
+ "public_interval_bounded": 720,
+ "public_interval_bounded_share": 1.0,
+ "public_interval_seconds": {
+  "max": 21103825.0,
+  "mean": 80860.78194444445,
+  "median": 35.0,
+  "min": 12.0,
+  "n": 720,
+  "p05": 20.0,
+  "p95": 326.0
+ },
+ "residual_counts": {
+  "0": 720
+ },
+ "residual_seconds_max_abs": 0,
+ "tier_counts": {
+  "A_acceptance_verified": 720
+ },
+ "tier_semantics": {
+  "A2_acceptance_header_only": {
+   "does_not_support": [
+    "independent corroboration by a second SEC field"
+   ],
+   "label": "A2",
+   "meaning": "Raw header present; API value absent or inconsistent. The UTC instant is derived from the header alone.",
+   "supports": [
+    "same as A, against the primitive field only"
+   ]
+  },
+  "A_acceptance_verified": {
+   "does_not_support": [
+    "that the content was retrievable by an outsider at this instant",
+    "that the market had processed it",
+    "any claim about when the described event happened"
+   ],
+   "label": "A",
+   "meaning": "Raw header ACCEPTANCE-DATETIME (US/Eastern) is present and its DST-correct conversion equals data.sec.gov acceptanceDateTime.",
+   "supports": [
+    "the filing was accepted by EDGAR no later than this UTC instant",
+    "intraday ordering of filings by this issuer",
+    "a lower bound for public availability"
+   ]
+  },
+  "B_acceptance_api_only": {
+   "does_not_support": [
+    "verification of the field's encoding or offset"
+   ],
+   "label": "B",
+   "meaning": "Only the API acceptanceDateTime is available; no raw header read.",
+   "supports": [
+    "a SEC-supplied acceptance instant, unverified against the archive"
+   ]
+  },
+  "C_filing_date_only": {
+   "does_not_support": [
+    "any intraday ordering",
+    "an exact availability instant"
+   ],
+   "label": "C",
+   "meaning": "Only the calendar filingDate (US/Eastern day) is available.",
+   "supports": [
+    "day-level membership: the filing is dated this Eastern day"
+   ]
+  },
+  "D_unknown": {
+   "does_not_support": [
+    "any point-in-time claim"
+   ],
+   "label": "D",
+   "meaning": "No usable time field. Must be excluded from timed analysis.",
+   "supports": []
+  }
+ }
+}

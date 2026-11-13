@@ -27,3 +27,9 @@ Thumbs.db
 
 # cycle-2 per-row prediction dumps: regenerable intermediates, not aggregates (~7 MB)
 experiments/**/pred_*.json
+
+# SCIENCE-001: the bulk SEC response cache and the raw captured source documents
+# stay local. Committed instead: the per-filing index with URLs, SHA-256 hashes,
+# collection times and the derived artifacts (see research/science_001/README.md).
+research/science_001/data/
+research/science_001/evidence/sec_docs/raw/
