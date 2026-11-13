@@ -1,0 +1,81 @@
+{
+  "torch_version": "2.9.1+cu128",
+  "torch_cuda_version": "12.8",
+  "cudnn_version": 91002,
+  "python": "3.12.10",
+  "checks": [
+    {
+      "check": "cuda_available",
+      "passed": true,
+      "detail": true
+    },
+    {
+      "check": "compute_capability",
+      "passed": true,
+      "detail": {
+        "reported": [
+          12,
+          0
+        ],
+        "expected": [
+          12,
+          0
+        ]
+      }
+    },
+    {
+      "check": "memory_info",
+      "passed": true,
+      "detail": {
+        "free_mib": 14957.0,
+        "total_mib": 16303.0
+      }
+    },
+    {
+      "check": "fp32_matmul_matches_cpu",
+      "passed": true,
+      "detail": {
+        "size": 1024,
+        "max_abs_error": 0.0001220703125
+      }
+    },
+    {
+      "check": "bf16_supported",
+      "passed": true,
+      "detail": true
+    },
+    {
+      "check": "bf16_matmul_matches_fp32",
+      "passed": true,
+      "detail": {
+        "mean_relative_error": 0.01780455932021141
+      }
+    },
+    {
+      "check": "autograd_and_optimizer",
+      "passed": true,
+      "detail": {
+        "loss": 256.3031005859375,
+        "grad_norm": 4.91737174987793,
+        "parameter_delta": 0.25599923729896545
+      }
+    },
+    {
+      "check": "fp32_matmul_throughput",
+      "passed": true,
+      "detail": {
+        "median_s": 0.000155,
+        "tflops": 13.81
+      }
+    }
+  ],
+  "device_name": "NVIDIA GeForce RTX 5080 Laptop GPU",
+  "vram_total_mib": 16303.0,
+  "multiprocessor_count": 60,
+  "fp32_matmul_max_abs_error": 0.0001220703125,
+  "bf16_mean_relative_error": 0.01780455932021141,
+  "matmul_median_s": 0.000155,
+  "matmul_tflops": 13.81,
+  "peak_allocated_mib": 33.5,
+  "verdict": "PASSED"
+}

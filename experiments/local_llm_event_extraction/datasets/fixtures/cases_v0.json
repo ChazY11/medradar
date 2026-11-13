@@ -1,0 +1,435 @@
+{
+  "dataset": "synthetic_event_extraction_v0",
+  "version": "v0",
+  "label_tier": "synthetic_fixture",
+  "notes": [
+    "SYNTHETIC_FIXTURE_ONLY: 14 hand-written medtech documents for exercising the harness.",
+    "No document is copied from, or derived from, any real press release, filing or paper.",
+    "All companies, products and events are invented. The similarity to real names is coincidental.",
+    "Every case carries label_tier='synthetic_fixture'; no number computed on this dataset is an empirical result.",
+    "Deliberate traps: (i) press release date 2024-03-05 vs trial start 2023-09-12, (ii) a subsidiary alias that must map to the parent, (iii) a month-only date, (iv) a competitor mentioned in a document about another company."
+  ],
+  "cases": [
+    {
+      "case_id": "nv-001",
+      "group": "novapulse-medical",
+      "expected_abstain": false,
+      "label_tier": "synthetic_fixture",
+      "document": {
+        "doc_id": "nv-001",
+        "source_type": "press_release",
+        "title": "NovaPulse Cardiac wins 510(k) clearance for RhythmGuard X2",
+        "publisher": "NovaPulse Medical Newsroom",
+        "text": "NovaPulse Cardiac, a business unit of NovaPulse Medical, said today that the US Food and Drug Administration granted 510(k) clearance for the RhythmGuard X2 insertable cardiac monitor on 18 February 2025. The device is intended for long-term rhythm monitoring in adults with suspected arrhythmia. NovaPulse Medical said the clearance validates its cardiac monitoring roadmap and that the system will be sold through its existing US sales channel. The company noted that the Tidewell Orthopedics StrataLock system addresses a different clinical need, and that comparisons between the two products in trade press were inaccurate.",
+        "published_at": "2025-02-20",
+        "first_seen_at": "2025-02-21",
+        "retrieved_at": "2025-02-21",
+        "url": null,
+        "metadata": {}
+      },
+      "gold_events": [
+        {
+          "event_id": "nv-001-e1",
+          "company_canonical_id": "novapulse-medical",
+          "event_category": "regulatory_clearance",
+          "event_date": "2025-02-18",
+          "published_at": "2025-02-20",
+          "product_or_technology": "RhythmGuard X2 insertable cardiac monitor",
+          "technology_domains": ["cardiac_monitoring"],
+          "evidence_quote": "the US Food and Drug Administration granted 510(k) clearance for the RhythmGuard X2 insertable cardiac monitor on 18 February 2025.",
+          "label_tier": "synthetic_fixture",
+          "label_source": "hand-authored synthetic fixture"
+        }
+      ]
+    },
+    {
+      "case_id": "nv-002",
+      "group": "novapulse-medical",
+      "expected_abstain": false,
+      "label_tier": "synthetic_fixture",
+      "document": {
+        "doc_id": "nv-002",
+        "source_type": "press_release",
+        "title": "NovaPulse Medical reports completion of PULSE-HF enrolment",
+        "publisher": "NovaPulse Medical Newsroom",
+        "text": "NovaPulse Medical today reported completion of enrolment in the PULSE-HF pivotal study of the RhythmGuard X2 insertable cardiac monitor. The study began on 12 September 2023 and enrolled 412 patients across 38 centres in the United States and Europe. Completion of enrolment follows the interim safety review completed in January 2024. NovaPulse Medical said the study's main safety measure remains a composite of arrhythmia detection and device-related adverse events.",
+        "published_at": "2024-03-05",
+        "first_seen_at": "2024-03-06",
+        "retrieved_at": "2024-03-06",
+        "url": null,
+        "metadata": {}
+      },
+      "gold_events": [
+        {
+          "event_id": "nv-002-e1",
+          "company_canonical_id": "novapulse-medical",
+          "event_category": "clinical_trial_start",
+          "event_date": "2023-09-12",
+          "published_at": "2024-03-05",
+          "product_or_technology": "RhythmGuard X2 insertable cardiac monitor",
+          "technology_domains": ["cardiac_monitoring"],
+          "evidence_quote": "The study began on 12 September 2023 and enrolled 412 patients across 38 centres in the United States and Europe.",
+          "label_tier": "synthetic_fixture",
+          "label_source": "hand-authored synthetic fixture"
+        }
+      ]
+    },
+    {
+      "case_id": "nv-003",
+      "group": "novapulse-medical",
+      "expected_abstain": true,
+      "label_tier": "synthetic_fixture",
+      "document": {
+        "doc_id": "nv-003",
+        "source_type": "press_release",
+        "title": "NovaPulse Medical appoints chief medical officer",
+        "publisher": "NovaPulse Medical Newsroom",
+        "text": "NovaPulse Medical announced the appointment of Dr Lena Ortiz as chief medical officer, effective 1 May 2025. Dr Ortiz joins from a regional hospital network and will lead the company's clinical affairs organisation. NovaPulse Medical will host an investor day in New York on 14 May 2025 to discuss its cardiac monitoring portfolio.",
+        "published_at": "2025-04-02",
+        "first_seen_at": "2025-04-03",
+        "retrieved_at": "2025-04-03",
+        "url": null,
+        "metadata": {}
+      },
+      "gold_events": []
+    },
+    {
+      "case_id": "as-001",
+      "group": "asterion-surgical",
+      "expected_abstain": false,
+      "label_tier": "synthetic_fixture",
+      "document": {
+        "doc_id": "as-001",
+        "source_type": "press_release",
+        "title": "Asterion Surgical receives FDA premarket approval for Vue stapler",
+        "publisher": "Asterion Surgical Communications",
+        "text": "Asterion Surgical said the US Food and Drug Administration granted premarket approval for its Vue robotic stapler on 7 November 2024. The PMA covers the stapler's use in minimally invasive colorectal procedures. Asterion Surgical expects a limited US release in the first quarter of 2025.",
+        "published_at": "2024-11-08",
+        "first_seen_at": "2024-11-09",
+        "retrieved_at": "2024-11-09",
+        "url": null,
+        "metadata": {}
+      },
+      "gold_events": [
+        {
+          "event_id": "as-001-e1",
+          "company_canonical_id": "asterion-surgical",
+          "event_category": "regulatory_approval",
+          "event_date": "2024-11-07",
+          "published_at": "2024-11-08",
+          "product_or_technology": "Vue robotic stapler",
+          "technology_domains": ["surgical_robotics"],
+          "evidence_quote": "Asterion Surgical said the US Food and Drug Administration granted premarket approval for its Vue robotic stapler on 7 November 2024.",
+          "label_tier": "synthetic_fixture",
+          "label_source": "hand-authored synthetic fixture"
+        }
+      ]
+    },
+    {
+      "case_id": "as-002",
+      "group": "asterion-surgical",
+      "expected_abstain": false,
+      "label_tier": "synthetic_fixture",
+      "document": {
+        "doc_id": "as-002",
+        "source_type": "regulatory_notice",
+        "title": "FDA issues complete response letter for Asterion Surgical's Halo device",
+        "publisher": "Asterion Surgical Communications",
+        "text": "Asterion Surgical disclosed that the US Food and Drug Administration issued a complete response letter for the Halo endovascular system on 16 January 2025. The agency declined to approve the device in its current form and requested additional bench testing. Asterion Surgical said it will not resubmit before the second half of 2025.",
+        "published_at": "2025-01-17",
+        "first_seen_at": "2025-01-18",
+        "retrieved_at": "2025-01-18",
+        "url": null,
+        "metadata": {}
+      },
+      "gold_events": [
+        {
+          "event_id": "as-002-e1",
+          "company_canonical_id": "asterion-surgical",
+          "event_category": "regulatory_negative",
+          "event_date": "2025-01-16",
+          "published_at": "2025-01-17",
+          "product_or_technology": "Halo endovascular system",
+          "technology_domains": ["endovascular"],
+          "evidence_quote": "Asterion Surgical disclosed that the US Food and Drug Administration issued a complete response letter for the Halo endovascular system on 16 January 2025.",
+          "label_tier": "synthetic_fixture",
+          "label_source": "hand-authored synthetic fixture"
+        }
+      ]
+    },
+    {
+      "case_id": "hx-001",
+      "group": "helixor-diagnostics",
+      "expected_abstain": false,
+      "label_tier": "synthetic_fixture",
+      "document": {
+        "doc_id": "hx-001",
+        "source_type": "fda_recall",
+        "title": "Helixor Diagnostics initiates voluntary recall of LumeTrace reagent kit",
+        "publisher": "Helixor Diagnostics Quality Affairs",
+        "text": "Helixor Diagnostics initiated a voluntary recall of its LumeTrace reagent kit on 3 June 2025 after internal testing found a calibration drift in two production lots. The company said the affected lots were distributed in the United States and Canada. Helixor Diagnostics has notified the US Food and Drug Administration and is contacting customers to arrange replacement kits.",
+        "published_at": "2025-06-04",
+        "first_seen_at": "2025-06-05",
+        "retrieved_at": "2025-06-05",
+        "url": null,
+        "metadata": {}
+      },
+      "gold_events": [
+        {
+          "event_id": "hx-001-e1",
+          "company_canonical_id": "helixor-diagnostics",
+          "event_category": "safety_recall",
+          "event_date": "2025-06-03",
+          "published_at": "2025-06-04",
+          "product_or_technology": "LumeTrace reagent kit",
+          "technology_domains": ["in_vitro_diagnostics"],
+          "evidence_quote": "Helixor Diagnostics initiated a voluntary recall of its LumeTrace reagent kit on 3 June 2025 after internal testing found a calibration drift in two production lots.",
+          "label_tier": "synthetic_fixture",
+          "label_source": "hand-authored synthetic fixture"
+        }
+      ]
+    },
+    {
+      "case_id": "hx-002",
+      "group": "helixor-diagnostics",
+      "expected_abstain": false,
+      "label_tier": "synthetic_fixture",
+      "document": {
+        "doc_id": "hx-002",
+        "source_type": "scientific_publication",
+        "title": "Peer-reviewed study validates Helixor Diagnostics' LumeTrace assay",
+        "publisher": "Helixor Diagnostics Medical Affairs",
+        "text": "A peer-reviewed study of the LumeTrace assay from Helixor Diagnostics was published in the Journal of Molecular Diagnostics on 7 April 2025. The study evaluated 1,204 residual clinical samples across three hospital laboratories. Helixor Diagnostics said the results support the assay's analytical specificity and that it will seek expanded US regulatory authorisation later in 2025.",
+        "published_at": "2025-04-09",
+        "first_seen_at": "2025-04-10",
+        "retrieved_at": "2025-04-10",
+        "url": null,
+        "metadata": {}
+      },
+      "gold_events": [
+        {
+          "event_id": "hx-002-e1",
+          "company_canonical_id": "helixor-diagnostics",
+          "event_category": "scientific_publication",
+          "event_date": "2025-04-07",
+          "published_at": "2025-04-09",
+          "product_or_technology": "LumeTrace assay",
+          "technology_domains": ["in_vitro_diagnostics"],
+          "evidence_quote": "A peer-reviewed study of the LumeTrace assay from Helixor Diagnostics was published in the Journal of Molecular Diagnostics on 7 April 2025.",
+          "label_tier": "synthetic_fixture",
+          "label_source": "hand-authored synthetic fixture"
+        }
+      ]
+    },
+    {
+      "case_id": "tw-001",
+      "group": "tidewell-orthopedics",
+      "expected_abstain": false,
+      "label_tier": "synthetic_fixture",
+      "document": {
+        "doc_id": "tw-001",
+        "source_type": "press_release",
+        "title": "Tidewell Orthopedics launches StrataLock femoral system in the United States",
+        "publisher": "Tidewell Orthopedics Media Relations",
+        "text": "Tidewell Orthopedics launched the StrataLock femoral fixation system in the United States on 20 May 2025. The system is the company's first hip fracture product built on its StrataLock plating platform. Tidewell Orthopedics said the launch follows FDA authorisation received in late 2024 and a limited clinical introduction at three trauma centres.",
+        "published_at": "2025-05-21",
+        "first_seen_at": "2025-05-22",
+        "retrieved_at": "2025-05-22",
+        "url": null,
+        "metadata": {}
+      },
+      "gold_events": [
+        {
+          "event_id": "tw-001-e1",
+          "company_canonical_id": "tidewell-orthopedics",
+          "event_category": "product_launch",
+          "event_date": "2025-05-20",
+          "published_at": "2025-05-21",
+          "product_or_technology": "StrataLock femoral fixation system",
+          "technology_domains": ["orthopedics"],
+          "evidence_quote": "Tidewell Orthopedics launched the StrataLock femoral fixation system in the United States on 20 May 2025.",
+          "label_tier": "synthetic_fixture",
+          "label_source": "hand-authored synthetic fixture"
+        }
+      ]
+    },
+    {
+      "case_id": "tw-002",
+      "group": "tidewell-orthopedics",
+      "expected_abstain": false,
+      "label_tier": "synthetic_fixture",
+      "document": {
+        "doc_id": "tw-002",
+        "source_type": "press_release",
+        "title": "Tidewell Orthopedics and Corvane Biosciences sign joint development agreement",
+        "publisher": "Tidewell Orthopedics Media Relations",
+        "text": "Tidewell Orthopedics will collaborate with Corvane Biosciences on a next-generation bone graft substitute under a joint development agreement announced on 11 March 2025. The two companies will share preclinical work and early clinical costs. Tidewell Orthopedics retains commercial rights in the United States while Corvane Biosciences holds rights in Europe.",
+        "published_at": "2025-03-12",
+        "first_seen_at": "2025-03-13",
+        "retrieved_at": "2025-03-13",
+        "url": null,
+        "metadata": {}
+      },
+      "gold_events": [
+        {
+          "event_id": "tw-002-e1",
+          "company_canonical_id": "tidewell-orthopedics",
+          "event_category": "rd_collaboration",
+          "event_date": "2025-03-11",
+          "published_at": "2025-03-12",
+          "product_or_technology": "next-generation bone graft substitute",
+          "technology_domains": ["orthopedics", "biomaterials"],
+          "evidence_quote": "Tidewell Orthopedics will collaborate with Corvane Biosciences on a next-generation bone graft substitute under a joint development agreement announced on 11 March 2025.",
+          "label_tier": "synthetic_fixture",
+          "label_source": "hand-authored synthetic fixture"
+        }
+      ]
+    },
+    {
+      "case_id": "cv-001",
+      "group": "corvane-biosciences",
+      "expected_abstain": false,
+      "label_tier": "synthetic_fixture",
+      "document": {
+        "doc_id": "cv-001",
+        "source_type": "press_release",
+        "title": "Corvane Biosciences receives 510(k) clearance for HepaQuant assay",
+        "publisher": "Corvane Biosciences Investor Relations",
+        "text": "In March 2025, the US Food and Drug Administration granted 510(k) clearance to Corvane Biosciences for its HepaQuant liver function assay. The assay is intended for use in hospital laboratories and measures five serum markers. Corvane Biosciences said the clearance follows a two-year clinical validation programme and that it will begin distribution in April 2025.",
+        "published_at": "2025-03-19",
+        "first_seen_at": "2025-03-20",
+        "retrieved_at": "2025-03-20",
+        "url": null,
+        "metadata": {}
+      },
+      "gold_events": [
+        {
+          "event_id": "cv-001-e1",
+          "company_canonical_id": "corvane-biosciences",
+          "event_category": "regulatory_clearance",
+          "event_date": "2025-03",
+          "published_at": "2025-03-19",
+          "product_or_technology": "HepaQuant liver function assay",
+          "technology_domains": ["in_vitro_diagnostics"],
+          "evidence_quote": "In March 2025, the US Food and Drug Administration granted 510(k) clearance to Corvane Biosciences for its HepaQuant liver function assay.",
+          "label_tier": "synthetic_fixture",
+          "label_source": "hand-authored synthetic fixture"
+        }
+      ]
+    },
+    {
+      "case_id": "cv-002",
+      "group": "corvane-biosciences",
+      "expected_abstain": true,
+      "label_tier": "synthetic_fixture",
+      "document": {
+        "doc_id": "cv-002",
+        "source_type": "sec_filing",
+        "title": "Corvane Biosciences reports third-quarter revenue",
+        "publisher": "Corvane Biosciences Investor Relations",
+        "text": "Corvane Biosciences reported third-quarter revenue of 48 million dollars, up 12 percent from the prior year. Gross margin improved to 61 percent on a mix shift toward reagent sales. Corvane Biosciences reiterated its full-year revenue guidance and said operating expenses would grow more slowly than revenue.",
+        "published_at": "2025-07-22",
+        "first_seen_at": "2025-07-23",
+        "retrieved_at": "2025-07-23",
+        "url": null,
+        "metadata": {}
+      },
+      "gold_events": []
+    },
+    {
+      "case_id": "ml-001",
+      "group": "marrowline-devices",
+      "expected_abstain": false,
+      "label_tier": "synthetic_fixture",
+      "document": {
+        "doc_id": "ml-001",
+        "source_type": "press_release",
+        "title": "Marrowline Devices wins clearance and launches Aspire system",
+        "publisher": "Marrowline Devices Corporate Communications",
+        "text": "The US Food and Drug Administration granted 510(k) clearance to Marrowline Devices for its Aspire bone marrow aspiration system on 9 May 2025. Marrowline Devices then launched the Aspire system in the United States on 1 June 2025 at four transplant centres. The company said the system reduces procedure time by roughly 20 percent compared with manual aspiration.",
+        "published_at": "2025-06-02",
+        "first_seen_at": "2025-06-03",
+        "retrieved_at": "2025-06-03",
+        "url": null,
+        "metadata": {}
+      },
+      "gold_events": [
+        {
+          "event_id": "ml-001-e1",
+          "company_canonical_id": "marrowline-devices",
+          "event_category": "regulatory_clearance",
+          "event_date": "2025-05-09",
+          "published_at": "2025-06-02",
+          "product_or_technology": "Aspire bone marrow aspiration system",
+          "technology_domains": ["hematology"],
+          "evidence_quote": "The US Food and Drug Administration granted 510(k) clearance to Marrowline Devices for its Aspire bone marrow aspiration system on 9 May 2025.",
+          "label_tier": "synthetic_fixture",
+          "label_source": "hand-authored synthetic fixture"
+        },
+        {
+          "event_id": "ml-001-e2",
+          "company_canonical_id": "marrowline-devices",
+          "event_category": "product_launch",
+          "event_date": "2025-06-01",
+          "published_at": "2025-06-02",
+          "product_or_technology": "Aspire bone marrow aspiration system",
+          "technology_domains": ["hematology"],
+          "evidence_quote": "Marrowline Devices then launched the Aspire system in the United States on 1 June 2025 at four transplant centres.",
+          "label_tier": "synthetic_fixture",
+          "label_source": "hand-authored synthetic fixture"
+        }
+      ]
+    },
+    {
+      "case_id": "ml-002",
+      "group": "marrowline-devices",
+      "expected_abstain": true,
+      "label_tier": "synthetic_fixture",
+      "document": {
+        "doc_id": "ml-002",
+        "source_type": "other",
+        "title": "Marrowline Devices publishes sustainability report",
+        "publisher": "Marrowline Devices Corporate Communications",
+        "text": "Marrowline Devices published its annual sustainability report covering energy use, water consumption and supplier audits. The report states that the company reduced energy intensity by 9 percent across its three sites. Marrowline Devices said it will publish a climate transition plan in 2026.",
+        "published_at": "2025-08-14",
+        "first_seen_at": "2025-08-15",
+        "retrieved_at": "2025-08-15",
+        "url": null,
+        "metadata": {}
+      },
+      "gold_events": []
+    },
+    {
+      "case_id": "ke-001",
+      "group": "kestrel-endoscopy",
+      "expected_abstain": false,
+      "label_tier": "synthetic_fixture",
+      "document": {
+        "doc_id": "ke-001",
+        "source_type": "press_release",
+        "title": "Kestrel Endoscopy reports topline results from Kestrel-2 trial",
+        "publisher": "Kestrel Endoscopy Media Relations",
+        "text": "Kestrel Endoscopy reported topline results from its Kestrel-2 pivotal study of the ClearPath duodenoscope on 30 September 2025. The trial met its primary endpoint of complete visualization of the biliary tree. Kestrel Endoscopy said it plans to file a 510(k) premarket notification with the US Food and Drug Administration in early 2026.",
+        "published_at": "2025-10-01",
+        "first_seen_at": "2025-10-02",
+        "retrieved_at": "2025-10-02",
+        "url": null,
+        "metadata": {}
+      },
+      "gold_events": [
+        {
+          "event_id": "ke-001-e1",
+          "company_canonical_id": "kestrel-endoscopy",
+          "event_category": "clinical_trial_result",
+          "event_date": "2025-09-30",
+          "published_at": "2025-10-01",
+          "product_or_technology": "ClearPath duodenoscope",
+          "technology_domains": ["endoscopy"],
+          "evidence_quote": "Kestrel Endoscopy reported topline results from its Kestrel-2 pivotal study of the ClearPath duodenoscope on 30 September 2025.",
+          "label_tier": "synthetic_fixture",
+          "label_source": "hand-authored synthetic fixture"
+        }
+      ]
+    }
+  ]
+}
