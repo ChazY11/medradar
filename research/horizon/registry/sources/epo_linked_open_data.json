@@ -1,0 +1,34 @@
+{
+  "access_evidence": "SOURCE_PROBES/patents: API root 500 / 114 B; landing page 200 / 2793 B",
+  "access_state": "BLOCKED_TECHNICAL",
+  "auth_required": true,
+  "blockers": [
+    "API root returns 500",
+    "robots.txt disallows the document/data/id paths, so not crawled even if up"
+  ],
+  "bulk_available": false,
+  "domain": "data.epo.org/linked-data",
+  "entity_types": [
+    "patent_publication"
+  ],
+  "first_verified_at": "2026-11-10",
+  "historical_depth": "EP bibliographic + classification",
+  "id_schemes": [
+    "epo_publication_number"
+  ],
+  "licence_note": "",
+  "licence_status": "unknown",
+  "licence_url": null,
+  "machine_interface": "RDF/SPARQL-style API behind a SPA",
+  "name": "Linked open EP data (LOD)",
+  "notes": "",
+  "operator": "European Patent Office",
+  "probe_suite": "patents",
+  "rate_policy": "",
+  "registration_url": null,
+  "robots_summary": "",
+  "robots_url": null,
+  "source_id": "epo_linked_open_data",
+  "unlock_route": "Re-probe later; if it returns, consume only via the documented API root, not the disallowed paths.",
+  "what_is_new": "Classification and citation triples in RDF; would be useful if the endpoint is restored."
+}

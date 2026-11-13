@@ -1,0 +1,34 @@
+{
+  "access_evidence": "PROBES.json reg_tga_001: TRANSPORT_ERROR — ConnectionError('Connection aborted.', RemoteDisconnected('Remote end closed connection without response')) on https://www.tga.gov.au/robots.txt. Repeated for https://www.tga.gov.au/ (read timeout) and http://www.tga.gov.au/robots.txt (ConnectionResetError 10054). https://apps.tga.gov.au/ answers HTTP 200 but its only content is a 221-byte meta-refresh to the blocked corporate site. data.gov.au CKAN package_search for 'artg' / 'therapeutic goods' returned no ARTG dataset (rows are NSW gazettes and unrelated PDFs).",
+  "access_state": "BLOCKED_TECHNICAL",
+  "auth_required": false,
+  "blockers": [
+    "www.tga.gov.au resets/closes the TCP connection from this host (RemoteDisconnected, then ConnectionResetError 10054).",
+    "No ARTG dataset is published on data.gov.au (CKAN package_search verified)."
+  ],
+  "bulk_available": false,
+  "domain": "www.tga.gov.au",
+  "entity_types": [
+    "regulatory_listing"
+  ],
+  "first_verified_at": "2026-11-10T07:30:00Z",
+  "historical_depth": "Unknown (no access).",
+  "id_schemes": [
+    "artg_id"
+  ],
+  "licence_note": "Not determinable: the licence statement lives on the unreachable www.tga.gov.au. TGA material is normally published under a Creative Commons Attribution 3.0 Australia licence, but that could not be read from the source, so it is recorded as unknown rather than assumed.",
+  "licence_status": "unknown",
+  "licence_url": null,
+  "machine_interface": "None reachable. ARTG public search is a human HTML application.",
+  "name": "Therapeutic Goods Administration — Australian Register of Therapeutic Goods (ARTG)",
+  "notes": "",
+  "operator": "Therapeutic Goods Administration, Australia",
+  "probe_suite": "regulatory",
+  "rate_policy": "n/a — the host closes the connection before any HTTP response.",
+  "registration_url": null,
+  "robots_summary": "Not retrievable — TCP connection reset before a response.",
+  "robots_url": "https://www.tga.gov.au/robots.txt",
+  "source_id": "australia_tga_artg",
+  "unlock_route": "ARTG is queried through the human search at https://www.tga.gov.au/resources/artg. For machine access, request data from TGA (https://www.tga.gov.au/about-us/contact-us) or via the Australian Government data-sharing process; there is no published keyless ARTG bulk export.",
+  "what_is_new": "Nothing obtained. Recorded as a clean negative with the exact transport evidence so the next workstream does not repeat the attempt blind."
+}

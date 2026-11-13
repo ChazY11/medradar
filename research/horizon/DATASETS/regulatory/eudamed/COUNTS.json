@@ -1,0 +1,40 @@
+{
+  "source_id": "eudamed",
+  "generated_at": "2026-11-09T23:24:15Z",
+  "attempts": [
+    {
+      "name": "eudamed_root.html",
+      "url": "https://ec.europa.eu/tools/eudamed/",
+      "note": "EUDAMED public application entry point",
+      "status": 200,
+      "outcome": null,
+      "bytes": 48323,
+      "sha256": "",
+      "error": null
+    },
+    {
+      "name": "eudamed_api_devices.json",
+      "url": "https://ec.europa.eu/tools/eudamed/api/devices",
+      "note": "guessed public REST path — the server answers 429 with an explicit machine-access instruction",
+      "status": 200,
+      "outcome": null,
+      "bytes": 321,
+      "sha256": "",
+      "error": null,
+      "body_head": "{\"error\":\"Too many requests. Please try again later.\",\"message\":\"For automated/machine-to-machine access, please use the official EUDAMED data API instead of scraping the public endpoints.\",\"machineToMachineApi\":\"https://developer.datalake.sante.service.ec.europa.eu/api-details#api=94b9e658-d721-4b58-8d96-022c490f7a17\"}"
+    },
+    {
+      "name": "eudamed_developer_portal.html",
+      "url": "https://developer.datalake.sante.service.ec.europa.eu/api-details",
+      "note": "EU Health Data Lake developer portal named by EUDAMED's own 429 body",
+      "status": 200,
+      "outcome": null,
+      "bytes": 9981,
+      "sha256": "",
+      "error": null
+    }
+  ],
+  "summary": "EUDAMED has a public web search but no keyless machine interface. A request to the public API path returns HTTP 429 whose JSON body says: 'For automated/machine-to-machine access, please use the official EUDAMED data API instead of scraping the public endpoints.' That official API lives behind the EU Health Data Lake developer portal.",
+  "official_identifier": "EUDAMED device SRU / Basic UDI-DI",
+  "unlock_route": "Request an API subscription at the EU Health Data Lake developer portal: https://developer.datalake.sante.service.ec.europa.eu/api-details (EU login + subscription key). Then use the EUDAMED data API instead of the web application."
+}

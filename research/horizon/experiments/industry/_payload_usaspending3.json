@@ -1,0 +1,26 @@
+{
+  "filters": {
+    "award_type_codes": ["A", "B", "C", "D"],
+    "psc_codes": ["6515", "6525", "6540", "6530", "6520", "6510"],
+    "time_period": [{"start_date": "2022-10-01", "end_date": "2023-09-30"}]
+  },
+  "fields": [
+    "Award ID",
+    "Recipient Name",
+    "Award Amount",
+    "Description",
+    "Start Date",
+    "End Date",
+    "Action Date",
+    "Awarding Agency",
+    "Awarding Sub Agency",
+    "NAICS",
+    "PSC",
+    "generated_internal_id"
+  ],
+  "page": 1,
+  "limit": 5,
+  "sort": "Award Amount",
+  "order": "desc",
+  "subawards": false
+}

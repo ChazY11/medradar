@@ -1,0 +1,76 @@
+{
+  "source_id": "cipo_canada",
+  "ckan_package_id": "fe1dfbb9-0fc3-42ca-b2a9-6ca4c05dbac9",
+  "licence": "Open Government Licence - Canada",
+  "licence_url": "https://open.canada.ca/en/open-government-licence-canada",
+  "tls": {
+    "leaf_subject": "CN=*.opic-cipo.ca",
+    "leaf_issuer": "CN=RapidSSL TLS RSA CA G1,OU=www.digicert.com,O=DigiCert Inc,C=US",
+    "intermediates": [
+      "CN=RapidSSL TLS RSA CA G1,OU=www.digicert.com,O=DigiCert Inc,C=US"
+    ],
+    "ai_uris": [
+      "http://cacerts.rapidssl.com/RapidSSLTLSRSACAG1.crt"
+    ],
+    "note": "server omits intermediate; obtained from leaf AIA and verified against platform roots (verification NOT disabled)"
+  },
+  "files": [
+    {
+      "table": "PT_main",
+      "file": "PT_main_1_to_2000000_2024-10-11.zip",
+      "url": "https://opic-cipo.ca/cipo/client_downloads/Patent_CSV_2024_10_11/PT_main_1_to_2000000_2024-10-11.zip",
+      "bytes": 37519051,
+      "sha256": "f7b38e1ac7a4d8bab89dfb3d8c64010e51071ccc584ca65223d1453234534519",
+      "last_modified": null
+    },
+    {
+      "table": "PT_main",
+      "file": "PT_main_2000001_to_4000000_2024-10-11.zip",
+      "url": "https://opic-cipo.ca/cipo/client_downloads/Patent_CSV_2024_10_11/PT_main_2000001_to_4000000_2024-10-11.zip",
+      "bytes": 76795115,
+      "sha256": "39ef67eb9d4494c08a77b566987a9bedc8ae25735f9eae63173b515a25da57b3",
+      "last_modified": null
+    },
+    {
+      "table": "PT_interested_party",
+      "file": "PT_interested_party_1_to_2000000_2024-10-11.zip",
+      "url": "https://opic-cipo.ca/cipo/client_downloads/Patent_CSV_2024_10_11/PT_interested_party_1_to_2000000_2024-10-11.zip",
+      "bytes": 63391956,
+      "sha256": "82e02cd40ee62cc6e42403f0c1d3a532f000300458f3f03c8348754e6548aab7",
+      "last_modified": null
+    },
+    {
+      "table": "PT_interested_party",
+      "file": "PT_interested_party_2000001_to_4000000_2024-10-11.zip",
+      "url": "https://opic-cipo.ca/cipo/client_downloads/Patent_CSV_2024_10_11/PT_interested_party_2000001_to_4000000_2024-10-11.zip",
+      "bytes": 159239964,
+      "sha256": "a8507d4303a6478320949c517ce9ec40f74a4a0d565bb2c038d1d97fa1e16bec",
+      "last_modified": null
+    },
+    {
+      "table": "PT_priority_claim",
+      "file": "PT_priority_claim_1_to_2000000_2024-10-11.zip",
+      "url": "https://opic-cipo.ca/cipo/client_downloads/Patent_CSV_2024_10_11/PT_priority_claim_1_to_2000000_2024-10-11.zip",
+      "bytes": 2761870,
+      "sha256": "9486d650adc660faeba25db5ecb8a7723af076af10f68091af402bf0610bca80",
+      "last_modified": null
+    },
+    {
+      "table": "PT_priority_claim",
+      "file": "PT_priority_claim_2000001_to_4000000_2024-10-11.zip",
+      "url": "https://opic-cipo.ca/cipo/client_downloads/Patent_CSV_2024_10_11/PT_priority_claim_2000001_to_4000000_2024-10-11.zip",
+      "bytes": 14155424,
+      "sha256": "56c858206ff70e5364f313420b6e7d3a69d4510f17d712c4d33a483784e8d89e",
+      "last_modified": null
+    }
+  ],
+  "generated_at": "2026-11-09T23:07:05Z",
+  "skipped_by_budget": [
+    {
+      "table": "PT_IPC_classification",
+      "reason": ">230 MB per range split observed mid-download; stopped deliberately to stay inside the round's disk/time budget",
+      "measured_partial_bytes": null,
+      "effect": "IPC/technology classification is absent for CIPO records; medtech_ipc_subclasses is empty for cipo_canada and the records carry MISSING_CLASSIFICATION"
+    }
+  ]
+}

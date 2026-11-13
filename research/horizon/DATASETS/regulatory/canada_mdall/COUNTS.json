@@ -1,0 +1,235 @@
+{
+  "source_id": "canada_mdall",
+  "generated_at": "2026-11-09T23:17:06Z",
+  "documentation_url": "https://health-products.canada.ca/api/documentation/mdall-documentation-en.html",
+  "base_uri": "https://health-products.canada.ca/api/medical-devices",
+  "records_emitted": 174,
+  "by_entity_type": {
+    "regulatory_clearance": 60,
+    "regulatory_listing": 65,
+    "product_identifier": 49
+  },
+  "records_with_official_identifier": 174,
+  "records_with_event_at": 174,
+  "records_with_source_public_at": 0,
+  "per_target_firm": {
+    "Medtronic": 29,
+    "GE HealthCare": 45,
+    "Philips": 12,
+    "Draeger": 12,
+    "Mindray": 76
+  },
+  "pulls": [
+    {
+      "name": "company__medtronic.json",
+      "url": "https://health-products.canada.ca/api/medical-devices/company/?company_name=MEDTRONIC&lang=en&type=json",
+      "status": 200,
+      "bytes": 6909,
+      "sha256": "c82d2ca51834c0f7",
+      "from_disk": true,
+      "items": 29,
+      "raw": "DATASETS/regulatory/canada_mdall/raw/company__medtronic.json",
+      "company_ids_found": 29,
+      "company_names_sample": [
+        "MEDTRONIC INC.",
+        "MEDTRONIC OPHTHALMICS",
+        "MEDTRONIC POWERED SURGICAL SOLUTIONS",
+        "MEDTRONIC NAVIGATION, INC."
+      ]
+    },
+    {
+      "name": "company__ge_healthcare.json",
+      "url": "https://health-products.canada.ca/api/medical-devices/company/?company_name=GE%20HEALTHCARE&lang=en&type=json",
+      "status": 200,
+      "bytes": 3836,
+      "sha256": "71a03923049354d6",
+      "from_disk": true,
+      "items": 16,
+      "raw": "DATASETS/regulatory/canada_mdall/raw/company__ge_healthcare.json",
+      "company_ids_found": 16,
+      "company_names_sample": [
+        "GE HEALTHCARE FINLAND OY",
+        "GE HEALTHCARE CANADA INC.",
+        "GE HEALTHCARE FINLAND OY",
+        "VITAL SIGNS, INC. A GE HEALTHCARE COMPANY"
+      ]
+    },
+    {
+      "name": "company__philips.json",
+      "url": "https://health-products.canada.ca/api/medical-devices/company/?company_name=PHILIPS&lang=en&type=json",
+      "status": 200,
+      "bytes": 7604,
+      "sha256": "c511ea01a62f2094",
+      "from_disk": true,
+      "items": 31,
+      "raw": "DATASETS/regulatory/canada_mdall/raw/company__philips.json",
+      "company_ids_found": 31,
+      "company_names_sample": [
+        "PHILIPS ULTRASOUND",
+        "PHILIPS MEDICAL SYSTEMS NEDERLAND B.V..",
+        "PHILIPS MEDICAL SYSTEMS TECHNOLOGIES LTD.",
+        "PHILIPS OY"
+      ]
+    },
+    {
+      "name": "company__draeger.json",
+      "url": "https://health-products.canada.ca/api/medical-devices/company/?company_name=DRAEGER&lang=en&type=json",
+      "status": 200,
+      "bytes": 928,
+      "sha256": "f6778ad7b3a950fc",
+      "from_disk": true,
+      "items": 4,
+      "raw": "DATASETS/regulatory/canada_mdall/raw/company__draeger.json",
+      "company_ids_found": 4,
+      "company_names_sample": [
+        "DRAEGER MEDICAL SYSTEMS, INC.",
+        "DRAEGER MEDICAL SYSTEMS, INC.",
+        "DRAEGERWERK AG & CO. KGAA",
+        "DRAEGER MEDICAL INFANT CARE, INC."
+      ]
+    },
+    {
+      "name": "company__mindray.json",
+      "url": "https://health-products.canada.ca/api/medical-devices/company/?company_name=MINDRAY&lang=en&type=json",
+      "status": 200,
+      "bytes": 532,
+      "sha256": "63a0cebb2d306732",
+      "from_disk": true,
+      "items": 2,
+      "raw": "DATASETS/regulatory/canada_mdall/raw/company__mindray.json",
+      "company_ids_found": 2,
+      "company_names_sample": [
+        "MINDRAY DS USA, INC.",
+        "SHENZHEN MINDRAY BIO-MEDICAL ELECTRONICS CO., LTD."
+      ]
+    },
+    {
+      "name": "licence_name__monitor.json",
+      "url": "https://health-products.canada.ca/api/medical-devices/licence/?licence_name=monitor&lang=en&type=json",
+      "status": 200,
+      "bytes": 436071,
+      "sha256": "71b0a497e7f89fd8",
+      "from_disk": true,
+      "items": 1483,
+      "raw": "DATASETS/regulatory/canada_mdall/raw/licence_name__monitor.json",
+      "licences_returned": 1483,
+      "licences_attributed_to_target_firms": 60
+    },
+    {
+      "name": "licence_name__ventilator.json",
+      "url": "https://health-products.canada.ca/api/medical-devices/licence/?licence_name=ventilator&lang=en&type=json",
+      "status": 200,
+      "bytes": 55291,
+      "sha256": "7afd1e1f00663af1",
+      "from_disk": true,
+      "items": 193,
+      "raw": "DATASETS/regulatory/canada_mdall/raw/licence_name__ventilator.json",
+      "licences_returned": 193,
+      "licences_attributed_to_target_firms": 0
+    },
+    {
+      "name": "licence_name__infusion.json",
+      "url": "https://health-products.canada.ca/api/medical-devices/licence/?licence_name=infusion&lang=en&type=json",
+      "status": 200,
+      "bytes": 101493,
+      "sha256": "ed2c52e294ecb2ac",
+      "from_disk": true,
+      "items": 346,
+      "raw": "DATASETS/regulatory/canada_mdall/raw/licence_name__infusion.json",
+      "licences_returned": 346,
+      "licences_attributed_to_target_firms": 0
+    },
+    {
+      "name": "licence_name__ultrasound.json",
+      "url": "https://health-products.canada.ca/api/medical-devices/licence/?licence_name=ultrasound&lang=en&type=json",
+      "status": 200,
+      "bytes": 183473,
+      "sha256": "93a2abb7190d75bf",
+      "from_disk": true,
+      "items": 634,
+      "raw": "DATASETS/regulatory/canada_mdall/raw/licence_name__ultrasound.json",
+      "licences_returned": 634,
+      "licences_attributed_to_target_firms": 0
+    },
+    {
+      "name": "device_name__monitor.json",
+      "url": "https://health-products.canada.ca/api/medical-devices/device/?device_name=monitor&state=active&lang=en&type=json",
+      "status": 200,
+      "bytes": 202641,
+      "sha256": "81ae4000efeffe11",
+      "from_disk": false,
+      "items": 1289,
+      "raw": "DATASETS/regulatory/canada_mdall/raw/device_name__monitor.json",
+      "devices_returned": 1289,
+      "devices_attributed_to_target_firms": 66
+    },
+    {
+      "name": "device_name__ventilator.json",
+      "url": "https://health-products.canada.ca/api/medical-devices/device/?device_name=ventilator&state=active&lang=en&type=json",
+      "status": 200,
+      "bytes": 45068,
+      "sha256": "78a00829041a2bc9",
+      "from_disk": false,
+      "items": 278,
+      "raw": "DATASETS/regulatory/canada_mdall/raw/device_name__ventilator.json",
+      "devices_returned": 278,
+      "devices_attributed_to_target_firms": 0
+    },
+    {
+      "name": "device_name__infusion.json",
+      "url": "https://health-products.canada.ca/api/medical-devices/device/?device_name=infusion&state=active&lang=en&type=json",
+      "status": 200,
+      "bytes": 56410,
+      "sha256": "012adb46c546e0ce",
+      "from_disk": false,
+      "items": 360,
+      "raw": "DATASETS/regulatory/canada_mdall/raw/device_name__infusion.json",
+      "devices_returned": 360,
+      "devices_attributed_to_target_firms": 0
+    },
+    {
+      "name": "deviceidentifier__809991.json",
+      "url": "https://health-products.canada.ca/api/medical-devices/deviceidentifier/?id=809991&lang=en&type=json",
+      "status": 200,
+      "bytes": 929,
+      "sha256": "06aadaaac9646cc8",
+      "from_disk": false,
+      "items": 7,
+      "raw": "DATASETS/regulatory/canada_mdall/raw/deviceidentifier__809991.json"
+    },
+    {
+      "name": "deviceidentifier__804057.json",
+      "url": "https://health-products.canada.ca/api/medical-devices/deviceidentifier/?id=804057&lang=en&type=json",
+      "status": 200,
+      "bytes": 5584,
+      "sha256": "c666b739e6b97e55",
+      "from_disk": false,
+      "items": 42,
+      "raw": "DATASETS/regulatory/canada_mdall/raw/deviceidentifier__804057.json"
+    }
+  ],
+  "budget": {
+    "client": "regulatory-mdall",
+    "requests_made": 5,
+    "max_requests": 24,
+    "bytes_received": 310632,
+    "max_total_bytes": 16000000,
+    "retries": 0,
+    "errors": []
+  },
+  "temporal_answer": {
+    "first_licence_date_field": "first_licence_status_dt (documented: 'The date of the first issued licence')",
+    "current_licence_status_date_field": null,
+    "what_exists_instead": [
+      "licence_status (a code, not a dated event)",
+      "last_refresh_dt (documented: 'The refresh date of the mdall database' — a snapshot stamp for the whole extract)",
+      "end_date (cancellation date, null while active)",
+      "per-device/identifier first_licence_dt and end_date"
+    ],
+    "consequence": "MDALL cannot date a status change. It supports 'first licensed' and 'removed' reasoning only, and it has no publication clock, so no MDALL record may be used to claim a record became observable at a known time."
+  },
+  "archive_probe": {
+    "archived_state_documented": true,
+    "note": "The documented state=archived parameter returns licences that carry a cancellation date, so past licences are retained with the same object shape. It was NOT pulled here: the parameter has no result limit and the full archived list is outside this workstream's byte/time budget."
+  }
+}

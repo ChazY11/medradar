@@ -1,0 +1,32 @@
+{
+  "access_evidence": "GET https://www.descartes.com/datamyne returned HTTP 200 but redirected to https://www.descartes.com/about/investor-relations/acquisitions/descartes-datamyne (a corporate acquisition page, not a product page). /legal-compliance returned HTTP 200 (353,715 B) and lists the governing instruments: 'Descartes Online Subscription Terms for SaaS Services', 'End User License Agreement (EULA)', 'Descartes Software Support Policy'.",
+  "access_state": "REQUIRES_LICENCE",
+  "auth_required": true,
+  "blockers": [
+    "SAAS_EULA_ONLY: no open data or open API licence.",
+    "PRODUCT_PAGE_REDIRECTS: /datamyne no longer resolves to a product page."
+  ],
+  "bulk_available": false,
+  "domain": "www.descartes.com",
+  "entity_types": [
+    "trade_flow"
+  ],
+  "first_verified_at": "2026-11-09T23:18:28Z",
+  "historical_depth": "not assessed",
+  "id_schemes": [],
+  "licence_note": "The Descartes legal-compliance page lists 'Descartes Online Subscription Terms for SaaS Services ... (these \"Online Terms\") govern the purchase and Use of Descartes SaaS Services' and an 'End User License Agreement (EULA)'. Access to shipment data is therefore contractual.",
+  "licence_status": "requires_licence",
+  "licence_url": "https://www.descartes.com/legal-compliance",
+  "machine_interface": "commercial SaaS / licensed data",
+  "name": "Descartes Datamyne — US/global customs shipment data",
+  "notes": "Homepage, /datamyne, /legal-compliance and robots.txt only.",
+  "operator": "The Descartes Systems Group Inc.",
+  "probe_suite": "industry",
+  "rate_policy": "Per subscription terms.",
+  "registration_url": null,
+  "robots_summary": "standard allow-list for CSS/JS assets (2,141 B)",
+  "robots_url": "https://www.descartes.com/robots.txt",
+  "source_id": "descartes_datamyne",
+  "unlock_route": "A Descartes commercial subscription. No licence-free route exists.",
+  "what_is_new": "Nothing collected. Datamyne is a subscription product whose terms are EULA/SaaS-based."
+}

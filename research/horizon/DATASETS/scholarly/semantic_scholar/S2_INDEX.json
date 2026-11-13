@@ -1,0 +1,3312 @@
+{
+  "source_id": "semantic_scholar",
+  "generated_at": "2026-11-09T23:12:55Z",
+  "endpoint": "https://api.semanticscholar.org/graph/v1/paper/batch",
+  "method": "POST",
+  "fields": "title,externalIds,publicationDate,venue,year,authors,publicationTypes,journal",
+  "fields_param_location": "query string",
+  "batch_size": 100,
+  "anchor_count": 60,
+  "raw_files": [
+    {
+      "path": "DATASETS/scholarly/semantic_scholar/raw/batch_01.json",
+      "bytes": 53716,
+      "sha256": "5c3cff6469e785c68d549c828000864ddb9239bed428b9355664450dd5c098de",
+      "requested_url": "https://api.semanticscholar.org/graph/v1/paper/batch?fields=title%2CexternalIds%2CpublicationDate%2Cvenue%2Cyear%2Cauthors%2CpublicationTypes%2Cjournal",
+      "final_url": "https://api.semanticscholar.org/graph/v1/paper/batch?fields=title%2CexternalIds%2CpublicationDate%2Cvenue%2Cyear%2Cauthors%2CpublicationTypes%2Cjournal",
+      "status": 200,
+      "content_type": "application/json",
+      "fetched_at": "2026-11-09T23:12:55Z",
+      "note": "EXP-H1 S2 batch lookup, 60 DOIs, fields passed as query parameter",
+      "dois_requested": [
+        "10.1016/j.yrtph.2021.104987",
+        "10.1016/j.yrtph.2021.105004",
+        "10.1111/jace.18041",
+        "10.1016/s0378-4274(21)00463-x",
+        "10.1016/j.mpmed.2021.08.009",
+        "10.1253/circj.cj-21-0491",
+        "10.33564/ijeast.2021.v06i07.046",
+        "10.1161/circ.144.suppl_1.13385",
+        "10.1016/j.yrtph.2021.105096",
+        "10.31478/202201b",
+        "10.1115/1.4053565",
+        "10.1161/jaha.121.023848",
+        "10.2345/0899-8205-54.4.311",
+        "10.2345/0899-8205-54.4.291",
+        "10.1097/rli.0000000000000673",
+        "10.1016/j.ejvs.2021.11.001",
+        "10.1007/s00535-022-01932-1",
+        "10.1002/bit.27335",
+        "10.1111/jch.13851",
+        "10.1097/sla.0000000000003958",
+        "10.1109/icoei48184.2020.9142931",
+        "10.1093/jbi/wbaa070",
+        "10.1002/jmri.27492",
+        "10.2967/jnumed.120.261881",
+        "10.1021/acsami.9b21808",
+        "10.1145/3385032.3385047",
+        "10.1016/j.arbres.2020.05.032",
+        "10.1007/978-3-030-54403-4",
+        "10.1016/j.arbr.2021.02.001",
+        "10.1002/mp.14881",
+        "10.1212/wnl.96.15_supplement.4100",
+        "10.1109/rams48097.2021.9605713",
+        "10.1109/ccta48906.2021.9659125",
+        "10.1109/ius52206.2021.9593683",
+        "10.1007/978-3-030-83864-5_33",
+        "10.1080/17434440.2022.2054334",
+        "10.2196/43905",
+        "10.1021/acssensors.0c00712",
+        "10.1117/12.2618126",
+        "10.1007/978-3-662-59715-6_42",
+        "10.1515/9783110591026-005",
+        "10.3390/polym12051033",
+        "10.1097/ccm.0000000000004892",
+        "10.4414/smw.2021.20515",
+        "10.25368/2021.11",
+        "10.3389/fped.2021.722497",
+        "10.12968/s2514-9768(22)90086-9",
+        "10.1093/ageing/afab278",
+        "10.1364/boe.469747",
+        "10.2991/artres.k.201209.041",
+        "10.1109/mems51670.2022.9699652",
+        "10.1136/bmjopen-2022-064581",
+        "10.1186/s13244-022-01259-8",
+        "10.3969/j.issn.1671-7104.2022.04.023",
+        "10.21037/atm-22-3491",
+        "10.21595/jve.2022.22479",
+        "10.1148/radiol.212257",
+        "10.1177/1358863x221117608",
+        "10.21037/atm-22-3767",
+        "10.21037/atm-22-4589"
+      ]
+    }
+  ],
+  "batches": [
+    {
+      "status": 200,
+      "raw": "DATASETS/scholarly/semantic_scholar/raw/batch_01.json",
+      "dois_requested": [
+        "10.1016/j.yrtph.2021.104987",
+        "10.1016/j.yrtph.2021.105004",
+        "10.1111/jace.18041",
+        "10.1016/s0378-4274(21)00463-x",
+        "10.1016/j.mpmed.2021.08.009",
+        "10.1253/circj.cj-21-0491",
+        "10.33564/ijeast.2021.v06i07.046",
+        "10.1161/circ.144.suppl_1.13385",
+        "10.1016/j.yrtph.2021.105096",
+        "10.31478/202201b",
+        "10.1115/1.4053565",
+        "10.1161/jaha.121.023848",
+        "10.2345/0899-8205-54.4.311",
+        "10.2345/0899-8205-54.4.291",
+        "10.1097/rli.0000000000000673",
+        "10.1016/j.ejvs.2021.11.001",
+        "10.1007/s00535-022-01932-1",
+        "10.1002/bit.27335",
+        "10.1111/jch.13851",
+        "10.1097/sla.0000000000003958",
+        "10.1109/icoei48184.2020.9142931",
+        "10.1093/jbi/wbaa070",
+        "10.1002/jmri.27492",
+        "10.2967/jnumed.120.261881",
+        "10.1021/acsami.9b21808",
+        "10.1145/3385032.3385047",
+        "10.1016/j.arbres.2020.05.032",
+        "10.1007/978-3-030-54403-4",
+        "10.1016/j.arbr.2021.02.001",
+        "10.1002/mp.14881",
+        "10.1212/wnl.96.15_supplement.4100",
+        "10.1109/rams48097.2021.9605713",
+        "10.1109/ccta48906.2021.9659125",
+        "10.1109/ius52206.2021.9593683",
+        "10.1007/978-3-030-83864-5_33",
+        "10.1080/17434440.2022.2054334",
+        "10.2196/43905",
+        "10.1021/acssensors.0c00712",
+        "10.1117/12.2618126",
+        "10.1007/978-3-662-59715-6_42",
+        "10.1515/9783110591026-005",
+        "10.3390/polym12051033",
+        "10.1097/ccm.0000000000004892",
+        "10.4414/smw.2021.20515",
+        "10.25368/2021.11",
+        "10.3389/fped.2021.722497",
+        "10.12968/s2514-9768(22)90086-9",
+        "10.1093/ageing/afab278",
+        "10.1364/boe.469747",
+        "10.2991/artres.k.201209.041",
+        "10.1109/mems51670.2022.9699652",
+        "10.1136/bmjopen-2022-064581",
+        "10.1186/s13244-022-01259-8",
+        "10.3969/j.issn.1671-7104.2022.04.023",
+        "10.21037/atm-22-3491",
+        "10.21595/jve.2022.22479",
+        "10.1148/radiol.212257",
+        "10.1177/1358863x221117608",
+        "10.21037/atm-22-3767",
+        "10.21037/atm-22-4589"
+      ],
+      "returned": 60,
+      "results": [
+        {
+          "paperId": "4c4b037a8857caab304bb2ccd8f4dce92e5fb61b",
+          "externalIds": {
+            "DOI": "10.1016/j.yrtph.2021.104987",
+            "CorpusId": 235758847,
+            "PubMed": "34229014"
+          },
+          "title": "Carcinogenic Assessment of Cobalt-Containing Alloys in Medical Devices or Cobalt in Occupational Settings: A Systematic Review and Meta-Analysis of Overall Cancer Risk from Published Epidemiologic Studies.",
+          "venue": "Regulatory toxicology and pharmacology : RTP",
+          "year": 2021,
+          "publicationTypes": [
+            "JournalArticle",
+            "Review"
+          ],
+          "publicationDate": "2021-07-03",
+          "journal": {
+            "name": "Regulatory toxicology and pharmacology : RTP",
+            "pages": "\n          104987\n        "
+          },
+          "authors": [
+            {
+              "authorId": "2117915310",
+              "name": "Shumin Zhang"
+            },
+            {
+              "authorId": "3719430",
+              "name": "C. Holy"
+            },
+            {
+              "authorId": "4964103",
+              "name": "G. Eichenbaum"
+            },
+            {
+              "authorId": "2079616596",
+              "name": "L. Perkins"
+            },
+            {
+              "authorId": "4086307",
+              "name": "P. Hasgall"
+            },
+            {
+              "authorId": "40083204",
+              "name": "L. B. Katz"
+            },
+            {
+              "authorId": "2281909757",
+              "name": "J. Brown"
+            },
+            {
+              "authorId": "9902030",
+              "name": "L. Orlandini"
+            },
+            {
+              "authorId": "4975054",
+              "name": "G. Fessel"
+            },
+            {
+              "authorId": "2079605389",
+              "name": "Behrooz Nasseri-Aghbosh"
+            },
+            {
+              "authorId": "35557564",
+              "name": "N. Egnot"
+            },
+            {
+              "authorId": "2122464656",
+              "name": "Meijia Zhou"
+            },
+            {
+              "authorId": "2117745376",
+              "name": "Richard Beech"
+            },
+            {
+              "authorId": "2051946122",
+              "name": "Stephen Marcello"
+            },
+            {
+              "authorId": "47496751",
+              "name": "P. Coplan"
+            }
+          ]
+        },
+        {
+          "paperId": "34053607d17f6fb0e131d1009aef70510f776ec7",
+          "externalIds": {
+            "DOI": "10.1016/j.yrtph.2021.105004",
+            "CorpusId": 235823337,
+            "PubMed": "34256083"
+          },
+          "title": "An Integrated Benefit-Risk Assessment of Cobalt-Containing Alloys Used in Medical Devices: Implications for Regulatory Requirements in the European Union.",
+          "venue": "Regulatory toxicology and pharmacology : RTP",
+          "year": 2021,
+          "publicationTypes": [
+            "JournalArticle",
+            "Review"
+          ],
+          "publicationDate": "2021-07-10",
+          "journal": {
+            "name": "Regulatory toxicology and pharmacology : RTP",
+            "pages": "\n          105004\n        "
+          },
+          "authors": [
+            {
+              "authorId": "4964103",
+              "name": "G. Eichenbaum"
+            },
+            {
+              "authorId": "5792284",
+              "name": "J. Wilsey"
+            },
+            {
+              "authorId": "4975054",
+              "name": "G. Fessel"
+            },
+            {
+              "authorId": "2051947692",
+              "name": "Qing-Qing Qiu"
+            },
+            {
+              "authorId": "2079616596",
+              "name": "L. Perkins"
+            },
+            {
+              "authorId": "4086307",
+              "name": "P. Hasgall"
+            },
+            {
+              "authorId": "6341686",
+              "name": "Andrew D. Monnot"
+            },
+            {
+              "authorId": "1491398879",
+              "name": "Sharlee L. More"
+            },
+            {
+              "authorId": "35557564",
+              "name": "N. Egnot"
+            },
+            {
+              "authorId": "12286021",
+              "name": "Jorge L. Sagué"
+            },
+            {
+              "authorId": "2051946122",
+              "name": "Stephen Marcello"
+            },
+            {
+              "authorId": "46418646",
+              "name": "K. Connor"
+            },
+            {
+              "authorId": "80974571",
+              "name": "J. Scutti"
+            },
+            {
+              "authorId": "5396471",
+              "name": "W. V. Christian"
+            },
+            {
+              "authorId": "47496751",
+              "name": "P. Coplan"
+            },
+            {
+              "authorId": "2115870681",
+              "name": "John Wright"
+            },
+            {
+              "authorId": "117749336",
+              "name": "Bob Hastings"
+            },
+            {
+              "authorId": "40083204",
+              "name": "L. B. Katz"
+            },
+            {
+              "authorId": "4442439",
+              "name": "M. Vreeke"
+            },
+            {
+              "authorId": "2051948304",
+              "name": "Millie Calistri-Yeh"
+            },
+            {
+              "authorId": "4776466",
+              "name": "B. Faiola"
+            },
+            {
+              "authorId": "94151964",
+              "name": "B. Purushothaman"
+            },
+            {
+              "authorId": "6552997",
+              "name": "J. Nevelos"
+            },
+            {
+              "authorId": "66251659",
+              "name": "M. Bashiri"
+            },
+            {
+              "authorId": "2211686900",
+              "name": "J. B. Christensen"
+            },
+            {
+              "authorId": "6525007",
+              "name": "M. Kovochich"
+            },
+            {
+              "authorId": "6323311",
+              "name": "K. Unice"
+            }
+          ]
+        },
+        {
+          "paperId": "b29d0657a0317ad739c5894fabc60fae097a9948",
+          "externalIds": {
+            "MAG": "3183138114",
+            "DOI": "10.1111/jace.18041",
+            "CorpusId": 237734322
+          },
+          "title": "Advanced glass seals for implantable medical devices",
+          "venue": "Journal of The American Ceramic Society",
+          "year": 2021,
+          "publicationTypes": null,
+          "publicationDate": "2021-07-28",
+          "journal": {
+            "name": "Journal of the American Ceramic Society"
+          },
+          "authors": [
+            {
+              "authorId": "116916362",
+              "name": "Andy Thom"
+            },
+            {
+              "authorId": "11945451",
+              "name": "B. Tischendorf"
+            },
+            {
+              "authorId": "11872924",
+              "name": "L. Lohstreter"
+            }
+          ]
+        },
+        {
+          "paperId": "959312e3b29282f77ac855ab11fdebeee3701f9a",
+          "externalIds": {
+            "MAG": "3201698131",
+            "DOI": "10.1016/s0378-4274(21)00463-x",
+            "CorpusId": 244226960
+          },
+          "title": "In vitro strategy for biocompatibility testing of medical devices: ISO's perspective on irritation and sensitization",
+          "venue": "Toxicology Letters",
+          "year": 2021,
+          "publicationTypes": null,
+          "publicationDate": "2021-09-01",
+          "journal": {
+            "name": "Toxicology Letters"
+          },
+          "authors": [
+            {
+              "authorId": "4021802",
+              "name": "C. Pellevoisin"
+            },
+            {
+              "authorId": "39153041",
+              "name": "K. Coleman"
+            },
+            {
+              "authorId": "3148713",
+              "name": "W. D. de Jong"
+            }
+          ]
+        },
+        null,
+        {
+          "paperId": "481000a5291be346fcae2aaf0bdd37d655280fdb",
+          "externalIds": {
+            "DOI": "10.1253/circj.CJ-21-0491",
+            "CorpusId": 238422507,
+            "PubMed": "34615815"
+          },
+          "title": "Real-World Clinical Outcomes of IN.PACT Admiral Drug-Coated Balloon for Femoropopliteal Artery Disease　- 12-Month Results From Japan Post-Market Surveillance Study.",
+          "venue": "Circulation Journal",
+          "year": 2021,
+          "publicationTypes": [
+            "JournalArticle"
+          ],
+          "publicationDate": "2021-10-06",
+          "journal": {
+            "name": "Circulation journal : official journal of the Japanese Circulation Society"
+          },
+          "authors": [
+            {
+              "authorId": "1867104",
+              "name": "Y. Soga"
+            },
+            {
+              "authorId": "144793750",
+              "name": "O. Iida"
+            },
+            {
+              "authorId": "11920359",
+              "name": "M. Fujihara"
+            },
+            {
+              "authorId": "2935782",
+              "name": "Daizo Kawasaki"
+            },
+            {
+              "authorId": "2632073",
+              "name": "S. Saito"
+            },
+            {
+              "authorId": "4884196",
+              "name": "K. Urasawa"
+            },
+            {
+              "authorId": "66895245",
+              "name": "H. Yokoi"
+            },
+            {
+              "authorId": "2111794784",
+              "name": "E. J. Fernandez"
+            },
+            {
+              "authorId": "80607562",
+              "name": "Jia Guo"
+            },
+            {
+              "authorId": "145694956",
+              "name": "Masato Nakamura"
+            }
+          ]
+        },
+        {
+          "paperId": "df9f3511b8a2d7afef2e3902be204c3f5914ae4b",
+          "externalIds": {
+            "DOI": "10.33564/ijeast.2021.v06i07.046",
+            "CorpusId": 249425787
+          },
+          "title": "THE FUTURE: 3D MANUFACTURING OF MEDICAL DEVICES",
+          "venue": "International Journal of Engineering Applied Sciences and Technology",
+          "year": 2021,
+          "publicationTypes": null,
+          "publicationDate": "2021-11-01",
+          "journal": {
+            "name": "International Journal of Engineering Applied Sciences and Technology"
+          },
+          "authors": [
+            {
+              "authorId": "47854382",
+              "name": "A. Panwar"
+            },
+            {
+              "authorId": "2181720385",
+              "name": "Jasdeep Shangari"
+            }
+          ]
+        },
+        null,
+        {
+          "paperId": "2d91b9cf8a846f4043357e681985a04b4b3cbf6b",
+          "externalIds": {
+            "DOI": "10.1016/j.yrtph.2021.105096",
+            "CorpusId": 245073936,
+            "PubMed": "34896478"
+          },
+          "title": "Site-specific cancer risk following cobalt exposure via orthopedic implants or in occupational settings: A systematic review and meta-analysis.",
+          "venue": "Regulatory toxicology and pharmacology : RTP",
+          "year": 2021,
+          "publicationTypes": [
+            "Review",
+            "JournalArticle"
+          ],
+          "publicationDate": "2021-12-01",
+          "journal": {
+            "name": "Regulatory toxicology and pharmacology : RTP",
+            "pages": "\n          105096\n        "
+          },
+          "authors": [
+            {
+              "authorId": "3719430",
+              "name": "C. Holy"
+            },
+            {
+              "authorId": "2117915310",
+              "name": "Shumin Zhang"
+            },
+            {
+              "authorId": "2079616596",
+              "name": "L. Perkins"
+            },
+            {
+              "authorId": "4086307",
+              "name": "P. Hasgall"
+            },
+            {
+              "authorId": "40083204",
+              "name": "L. B. Katz"
+            },
+            {
+              "authorId": "40415623",
+              "name": "Jason Brown"
+            },
+            {
+              "authorId": "9902030",
+              "name": "L. Orlandini"
+            },
+            {
+              "authorId": "4975054",
+              "name": "G. Fessel"
+            },
+            {
+              "authorId": "2079605389",
+              "name": "Behrooz Nasseri-Aghbosh"
+            },
+            {
+              "authorId": "4964103",
+              "name": "G. Eichenbaum"
+            },
+            {
+              "authorId": "35557564",
+              "name": "N. Egnot"
+            },
+            {
+              "authorId": "2051946122",
+              "name": "Stephen Marcello"
+            },
+            {
+              "authorId": "47496751",
+              "name": "P. Coplan"
+            }
+          ]
+        },
+        {
+          "paperId": "f67c2ff08012b51e61e335e635a15f8e7dea900b",
+          "externalIds": {
+            "DOI": "10.31478/202201b",
+            "CorpusId": 245966757,
+            "PubMed": "35402857"
+          },
+          "title": "Health Product Manufacturers and Innovators COVID-19 Impact Assessment: Lessons Learned and Compelling Needs.",
+          "venue": "NAM Perspectives",
+          "year": 2022,
+          "publicationTypes": [
+            "Review",
+            "JournalArticle"
+          ],
+          "publicationDate": "2022-01-18",
+          "journal": {
+            "name": "NAM perspectives",
+            "volume": "2022"
+          },
+          "authors": [
+            {
+              "authorId": "145941361",
+              "name": "M. Mammen"
+            },
+            {
+              "authorId": "40344037",
+              "name": "Vasant Narasimhan"
+            },
+            {
+              "authorId": "1708252890",
+              "name": "Richard M. Kuntz"
+            },
+            {
+              "authorId": "1398774202",
+              "name": "F. Lewis-Hall"
+            },
+            {
+              "authorId": "2150156249",
+              "name": "Mojdeh Poul"
+            },
+            {
+              "authorId": "2070684067",
+              "name": "A. Schechter"
+            }
+          ]
+        },
+        null,
+        {
+          "paperId": "d286e5466767ef459058b2bff95b33277cd84b19",
+          "externalIds": {
+            "PubMedCentral": "9075277",
+            "DOI": "10.1161/JAHA.121.023848",
+            "CorpusId": 247228171,
+            "PubMed": "35243902"
+          },
+          "title": "Practice Patterns and Outcomes of Transcatheter Aortic Valve Replacement in the United States and Japan: A Report From Joint Data Harmonization Initiative of STS/ACC TVT and J‐TVT",
+          "venue": "Journal of the American Heart Association : Cardiovascular and Cerebrovascular Disease",
+          "year": 2022,
+          "publicationTypes": [
+            "JournalArticle"
+          ],
+          "publicationDate": "2022-03-04",
+          "journal": {
+            "name": "Journal of the American Heart Association: Cardiovascular and Cerebrovascular Disease",
+            "volume": "11"
+          },
+          "authors": [
+            {
+              "authorId": "3315685",
+              "name": "T. Kaneko"
+            },
+            {
+              "authorId": "2294489",
+              "name": "Sreekanth Vemulapalli"
+            },
+            {
+              "authorId": "3510773",
+              "name": "S. Kohsaka"
+            },
+            {
+              "authorId": "1765443",
+              "name": "K. Shimamura"
+            },
+            {
+              "authorId": "1401134667",
+              "name": "Amanda Stebbins"
+            },
+            {
+              "authorId": "4289969",
+              "name": "H. Kumamaru"
+            },
+            {
+              "authorId": "26553958",
+              "name": "A. Nelson"
+            },
+            {
+              "authorId": "1886297",
+              "name": "A. Kosinski"
+            },
+            {
+              "authorId": "3138101",
+              "name": "K. Maeda"
+            },
+            {
+              "authorId": "5252183",
+              "name": "J. Bavaria"
+            },
+            {
+              "authorId": "2632073",
+              "name": "S. Saito"
+            },
+            {
+              "authorId": "2195873",
+              "name": "M. Reardon"
+            },
+            {
+              "authorId": "2933379",
+              "name": "T. Kuratani"
+            },
+            {
+              "authorId": "1870265",
+              "name": "J. Popma"
+            },
+            {
+              "authorId": "2028455",
+              "name": "T. Inohara"
+            },
+            {
+              "authorId": "4946299",
+              "name": "V. Thourani"
+            },
+            {
+              "authorId": "144676039",
+              "name": "J. Carroll"
+            },
+            {
+              "authorId": "17697057",
+              "name": "H. Shimizu"
+            },
+            {
+              "authorId": "2623273",
+              "name": "Morimasa Takayama"
+            },
+            {
+              "authorId": "144302636",
+              "name": "M. Leon"
+            },
+            {
+              "authorId": "2930274",
+              "name": "M. Mack"
+            },
+            {
+              "authorId": "145424146",
+              "name": "Y. Sawa"
+            }
+          ]
+        },
+        {
+          "paperId": "15c31af787ced4668b2942fa0bc3a1fe884df181",
+          "externalIds": {
+            "MAG": "3046626404",
+            "DOI": "10.2345/0899-8205-54.4.311",
+            "CorpusId": 229548151,
+            "PubMed": "33171508"
+          },
+          "title": "Reading Room: Applied Human Factors in Medical Device Design.",
+          "venue": "Biomedical Instrumentation & Technology",
+          "year": 2020,
+          "publicationTypes": [
+            "JournalArticle"
+          ],
+          "publicationDate": "2020-07-01",
+          "journal": {
+            "name": "Biomedical instrumentation & technology",
+            "pages": "\n          311\n        ",
+            "volume": "54 4"
+          },
+          "authors": [
+            {
+              "authorId": "2061011963",
+              "name": "Mark R. Swanson"
+            }
+          ]
+        },
+        {
+          "paperId": "2849ae0ac3b6b129f297c89e225b9f88b50fae77",
+          "externalIds": {
+            "MAG": "3088455311",
+            "DOI": "10.2345/0899-8205-54.4.291",
+            "CorpusId": 225604894,
+            "PubMed": "33171502"
+          },
+          "title": "View From The Top: Reliability and Resiliency: Vital to Dealing with Incredibly Complex, Fragile Healthcare Supply Chains.",
+          "venue": "Biomedical Instrumentation & Technology",
+          "year": 2020,
+          "publicationTypes": [
+            "JournalArticle"
+          ],
+          "publicationDate": "2020-07-01",
+          "journal": {
+            "name": "Biomedical instrumentation & technology",
+            "pages": "\n          291-293\n        ",
+            "volume": "54 4"
+          },
+          "authors": [
+            {
+              "authorId": "12316920",
+              "name": "P. Settimi"
+            }
+          ]
+        },
+        {
+          "paperId": "8d75bb319408f116bd5c4ea73d903886e3dfc4c9",
+          "externalIds": {
+            "MAG": "3045617901",
+            "DOI": "10.1097/RLI.0000000000000673",
+            "CorpusId": 221102257,
+            "PubMed": "32776769"
+          },
+          "title": "Artificial Intelligence and Machine Learning in Radiology",
+          "venue": "Investigative Radiology",
+          "year": 2020,
+          "publicationTypes": [
+            "JournalArticle",
+            "Review"
+          ],
+          "publicationDate": "2020-07-29",
+          "journal": {
+            "name": "Investigative Radiology",
+            "pages": "619 - 627",
+            "volume": "55"
+          },
+          "authors": [
+            {
+              "authorId": "3279057",
+              "name": "J. Wichmann"
+            },
+            {
+              "authorId": "4127337",
+              "name": "M. Willemink"
+            },
+            {
+              "authorId": "4869285",
+              "name": "C. D. De Cecco"
+            }
+          ]
+        },
+        {
+          "paperId": "22b19028c9236a08dda93ea08e8f14683bce9d7f",
+          "externalIds": {
+            "DOI": "10.1016/j.ejvs.2021.11.001",
+            "CorpusId": 245900116,
+            "PubMed": "35027273"
+          },
+          "title": "Re \"Pre-Surgical and Post-Surgical Aortic Aneurysm Maximum Diameter Measurement: Full Automation by Artificial Intelligence\".",
+          "venue": "European Journal of Vascular and Endovascular Surgery",
+          "year": 2022,
+          "publicationTypes": [
+            "LettersAndComments"
+          ],
+          "publicationDate": "2022-01-01",
+          "journal": {
+            "name": "European journal of vascular and endovascular surgery : the official journal of the European Society for Vascular Surgery"
+          },
+          "authors": [
+            {
+              "authorId": "31594558",
+              "name": "Chloé Adam"
+            },
+            {
+              "authorId": "3234370",
+              "name": "R. Ardon"
+            },
+            {
+              "authorId": "6181232",
+              "name": "S. Haulon"
+            }
+          ]
+        },
+        {
+          "paperId": "6c18baf15e9e3f7cd2933d15242d55c381c0b6e3",
+          "externalIds": {
+            "PubMedCentral": "9735102",
+            "DOI": "10.1007/s00535-022-01932-1",
+            "CorpusId": 254245783,
+            "PubMed": "36469127"
+          },
+          "title": "SWOT analysis of noninvasive tests for diagnosing NAFLD with severe fibrosis: an expert review by the JANIT Forum",
+          "venue": "Journal of gastroenterology",
+          "year": 2022,
+          "publicationTypes": [
+            "Review",
+            "JournalArticle"
+          ],
+          "publicationDate": "2022-12-05",
+          "journal": {
+            "name": "Journal of Gastroenterology",
+            "pages": "79 - 97",
+            "volume": "58"
+          },
+          "authors": [
+            {
+              "authorId": "3790496",
+              "name": "Y. Kamada"
+            },
+            {
+              "authorId": "1390631843",
+              "name": "Takahiro I Nakamura"
+            },
+            {
+              "authorId": "2266666106",
+              "name": "S. Isobe"
+            },
+            {
+              "authorId": "66860053",
+              "name": "Kumiko Hosono"
+            },
+            {
+              "authorId": "2193545024",
+              "name": "Yukiko Suama"
+            },
+            {
+              "authorId": "2040447371",
+              "name": "Yukie Ohtakaki"
+            },
+            {
+              "authorId": "3676086",
+              "name": "Arihito Nauchi"
+            },
+            {
+              "authorId": "2193548944",
+              "name": "N. Yasuda"
+            },
+            {
+              "authorId": "2193552232",
+              "name": "Soh Mitsuta"
+            },
+            {
+              "authorId": "4219205",
+              "name": "Kouichi Miura"
+            },
+            {
+              "authorId": "2152296663",
+              "name": "Takuma Yamamoto"
+            },
+            {
+              "authorId": "2193538071",
+              "name": "Tatsunori Hosono"
+            },
+            {
+              "authorId": "2053663892",
+              "name": "Akihiro Yoshida"
+            },
+            {
+              "authorId": "47445708",
+              "name": "Ippei Kawanishi"
+            },
+            {
+              "authorId": "1503955188",
+              "name": "H. Fukushima"
+            },
+            {
+              "authorId": "2068018122",
+              "name": "M. Kinoshita"
+            },
+            {
+              "authorId": "2351538761",
+              "name": "Atsushi Umeda"
+            },
+            {
+              "authorId": "2055806230",
+              "name": "Yuichi Kinoshita"
+            },
+            {
+              "authorId": "2148257399",
+              "name": "Kana Fukami"
+            },
+            {
+              "authorId": "2535104",
+              "name": "T. Miyawaki"
+            },
+            {
+              "authorId": "39014768",
+              "name": "H. Fujii"
+            },
+            {
+              "authorId": "152897863",
+              "name": "Yuichi Yoshida"
+            },
+            {
+              "authorId": "5894081",
+              "name": "M. Kawanaka"
+            },
+            {
+              "authorId": "5367441",
+              "name": "H. Hyogo"
+            },
+            {
+              "authorId": "144227489",
+              "name": "A. Morishita"
+            },
+            {
+              "authorId": "72984071",
+              "name": "H. Hayashi"
+            },
+            {
+              "authorId": "35328645",
+              "name": "Hiroshi Tobita"
+            },
+            {
+              "authorId": "34325295",
+              "name": "K. Tomita"
+            },
+            {
+              "authorId": "3824762",
+              "name": "T. Ikegami"
+            },
+            {
+              "authorId": "2149045998",
+              "name": "Hirokazu Takahashi"
+            },
+            {
+              "authorId": "145866923",
+              "name": "M. Yoneda"
+            },
+            {
+              "authorId": "5493948",
+              "name": "D. Jun"
+            },
+            {
+              "authorId": "34867727",
+              "name": "Y. Sumida"
+            },
+            {
+              "authorId": "6440678",
+              "name": "T. Okanoue"
+            },
+            {
+              "authorId": "2052592992",
+              "name": "A. Nakajima"
+            },
+            {
+              "authorId": null,
+              "name": "Janit Forum"
+            }
+          ]
+        },
+        {
+          "paperId": "c6eaeab2f10e447b5fc393dd19505d47b5491409",
+          "externalIds": {
+            "MAG": "3011464495",
+            "DOI": "10.1002/bit.27335",
+            "CorpusId": 212739570,
+            "PubMed": "32181883"
+          },
+          "title": "Hydrocyclones as cell retention device for CHO perfusion processes in single‐use bioreactors",
+          "venue": "Biotechnology and Bioengineering",
+          "year": 2020,
+          "publicationTypes": [
+            "JournalArticle"
+          ],
+          "publicationDate": "2020-03-17",
+          "journal": {
+            "name": "Biotechnology and Bioengineering",
+            "pages": "1915 - 1928",
+            "volume": "117"
+          },
+          "authors": [
+            {
+              "authorId": "87131546",
+              "name": "Ioná W Bettinardi"
+            },
+            {
+              "authorId": "145505283",
+              "name": "A. Castan"
+            },
+            {
+              "authorId": "39920184",
+              "name": "R. Medronho"
+            },
+            {
+              "authorId": "7164480",
+              "name": "L. Castilho"
+            }
+          ]
+        },
+        {
+          "paperId": "114136e243eae58524ef0f717a0011160c832d6d",
+          "externalIds": {
+            "MAG": "3014951558",
+            "DOI": "10.1111/jch.13851",
+            "CorpusId": 214809492,
+            "PubMed": "32248602"
+          },
+          "title": "Evaluating the impact of motion artifact on noninvasive blood pressure devices",
+          "venue": "The Journal of Clinical Hypertension",
+          "year": 2020,
+          "publicationTypes": [
+            "JournalArticle"
+          ],
+          "publicationDate": "2020-04-01",
+          "journal": {
+            "name": "The Journal of Clinical Hypertension",
+            "pages": "585 - 589",
+            "volume": "22"
+          },
+          "authors": [
+            {
+              "authorId": "2763520",
+              "name": "B. Alpert"
+            },
+            {
+              "authorId": "2054489366",
+              "name": "David E. Quinn"
+            },
+            {
+              "authorId": "2057043085",
+              "name": "Bruce Friedman"
+            },
+            {
+              "authorId": "102832028",
+              "name": "Paul Matsumura"
+            },
+            {
+              "authorId": "6671433",
+              "name": "R. Dart"
+            },
+            {
+              "authorId": "1612993673",
+              "name": "Robert F. Donehoo"
+            }
+          ]
+        },
+        {
+          "paperId": "57ad11fe645e51dc50e8f1da7ad38778b8918730",
+          "externalIds": {
+            "MAG": "3026027432",
+            "PubMedCentral": "7268851",
+            "DOI": "10.1097/SLA.0000000000003958",
+            "CorpusId": 218765854,
+            "PubMed": "32433280"
+          },
+          "title": "An Emergency Surgery in Severe Case Infected by COVID-19 With Perforated Duodenal Bulb Ulcer",
+          "venue": "Annals of Surgery",
+          "year": 2020,
+          "publicationTypes": [
+            "JournalArticle"
+          ],
+          "publicationDate": "2020-05-19",
+          "journal": {
+            "name": "Annals of Surgery"
+          },
+          "authors": [
+            {
+              "authorId": "2112469601",
+              "name": "Lei He"
+            },
+            {
+              "authorId": "1492022242",
+              "name": "Wei Zhao"
+            },
+            {
+              "authorId": "2118882382",
+              "name": "Wenming Zhou"
+            },
+            {
+              "authorId": "2079407",
+              "name": "P. Pang"
+            },
+            {
+              "authorId": "1610772481",
+              "name": "Yu-Ting Liao"
+            },
+            {
+              "authorId": "49722346",
+              "name": "J. Liu"
+            }
+          ]
+        },
+        {
+          "paperId": "ef5f5fe95234167a5b9cdde39fbd048872365531",
+          "externalIds": {
+            "MAG": "3042266791",
+            "DOI": "10.1109/ICOEI48184.2020.9142931",
+            "CorpusId": 220668211
+          },
+          "title": "Analysing the Performance of Blood Pressure Parameters Using EMF Method",
+          "venue": "2020 4th International Conference on Trends in Electronics and Informatics (ICOEI)(48184)",
+          "year": 2020,
+          "publicationTypes": [
+            "Conference"
+          ],
+          "publicationDate": "2020-06-01",
+          "journal": {
+            "name": "2020 4th International Conference on Trends in Electronics and Informatics (ICOEI)(48184)",
+            "pages": "832-836"
+          },
+          "authors": [
+            {
+              "authorId": "47914451",
+              "name": "S. Subramani"
+            },
+            {
+              "authorId": "1825767433",
+              "name": "Suhashine Sukumar"
+            },
+            {
+              "authorId": "2262287554",
+              "name": "Zuber Ahmed"
+            },
+            {
+              "authorId": "1825766848",
+              "name": "V. Venkat"
+            },
+            {
+              "authorId": "2308292169",
+              "name": "S. V."
+            },
+            {
+              "authorId": "9444651",
+              "name": "B. Geethanjali"
+            }
+          ]
+        },
+        {
+          "paperId": "f605c58fcad081f5e44db4bf3025602648e91d99",
+          "externalIds": {
+            "MAG": "3084079981",
+            "DOI": "10.1093/jbi/wbaa070",
+            "CorpusId": 225252677,
+            "PubMed": "38424851"
+          },
+          "title": "Pressure-based Compression Guidance of the Breast in Digital Breast Tomosynthesis Using Flexible Paddles Compared to Conventional Compression.",
+          "venue": "Journal of Breast Imaging",
+          "year": 2020,
+          "publicationTypes": [
+            "JournalArticle",
+            "Review"
+          ],
+          "publicationDate": "2020-09-08",
+          "journal": {
+            "name": "Journal of breast imaging",
+            "pages": "\n          541-551\n        ",
+            "volume": "2 6"
+          },
+          "authors": [
+            {
+              "authorId": "39928530",
+              "name": "M. G. van Lier"
+            },
+            {
+              "authorId": "2497004651",
+              "name": "J. D. de Groot"
+            },
+            {
+              "authorId": "5522762",
+              "name": "S. Muller"
+            },
+            {
+              "authorId": "120553915",
+              "name": "G. den Heeten"
+            },
+            {
+              "authorId": "48188253",
+              "name": "K. Schilling"
+            }
+          ]
+        },
+        {
+          "paperId": "fab1774a5da3e89ee7dbe10c37ed2cc0c6916cfc",
+          "externalIds": {
+            "PubMedCentral": "8564805",
+            "DOI": "10.1002/jmri.27492",
+            "CorpusId": 229930939,
+            "PubMed": "33382171"
+          },
+          "title": "Diffusion-weighted double-echo steady-state with a three-dimensional cones trajectory for non-contrast-enhanced breast MRI",
+          "venue": "Journal of Magnetic Resonance Imaging",
+          "year": 2020,
+          "publicationTypes": [
+            "JournalArticle"
+          ],
+          "publicationDate": "2020-12-31",
+          "journal": {
+            "name": "Journal of magnetic resonance imaging : JMRI",
+            "pages": "1594 - 1605",
+            "volume": "53"
+          },
+          "authors": [
+            {
+              "authorId": "46596676",
+              "name": "C. Moran"
+            },
+            {
+              "authorId": "144891195",
+              "name": "J. Cheng"
+            },
+            {
+              "authorId": "150957405",
+              "name": "Christopher M. Sandino"
+            },
+            {
+              "authorId": "48537011",
+              "name": "M. Carl"
+            },
+            {
+              "authorId": "2268789",
+              "name": "M. Alley"
+            },
+            {
+              "authorId": "145001209",
+              "name": "J. Rosenberg"
+            },
+            {
+              "authorId": "144457934",
+              "name": "B. Daniel"
+            },
+            {
+              "authorId": "2000382265",
+              "name": "Sarah M. Pittman"
+            },
+            {
+              "authorId": "40508920",
+              "name": "E. Rosen"
+            },
+            {
+              "authorId": "2735749",
+              "name": "B. Hargreaves"
+            }
+          ]
+        },
+        {
+          "paperId": "bf1033248aea6d292580b6f8223f060080c43f68",
+          "externalIds": {
+            "PubMedCentral": "8973286",
+            "DOI": "10.2967/jnumed.120.261881",
+            "CorpusId": 236210869,
+            "PubMed": "34301784"
+          },
+          "title": "A Path to Qualification of PET/MRI Scanners for Multicenter Brain Imaging Studies: Evaluation of MRI-Based Attenuation Correction Methods Using a Patient Phantom",
+          "venue": "Journal of Nuclear Medicine",
+          "year": 2021,
+          "publicationTypes": [
+            "JournalArticle"
+          ],
+          "publicationDate": "2021-07-22",
+          "journal": {
+            "name": "Journal of Nuclear Medicine",
+            "pages": "615 - 621",
+            "volume": "63"
+          },
+          "authors": [
+            {
+              "authorId": "1734333",
+              "name": "C. Catana"
+            },
+            {
+              "authorId": "2359270",
+              "name": "R. Laforest"
+            },
+            {
+              "authorId": "144567089",
+              "name": "H. An"
+            },
+            {
+              "authorId": "3063564",
+              "name": "F. Boada"
+            },
+            {
+              "authorId": "143692691",
+              "name": "T. Cao"
+            },
+            {
+              "authorId": "50328308",
+              "name": "D. Faul"
+            },
+            {
+              "authorId": "31999735",
+              "name": "B. Jakoby"
+            },
+            {
+              "authorId": "40055546",
+              "name": "F. Jansen"
+            },
+            {
+              "authorId": "2272118467",
+              "name": "B. Kemp"
+            },
+            {
+              "authorId": "2132638",
+              "name": "Paul Kinahan"
+            },
+            {
+              "authorId": "1434860592",
+              "name": "P. Larson"
+            },
+            {
+              "authorId": "2140784528",
+              "name": "M. A. Levine"
+            },
+            {
+              "authorId": "2431502",
+              "name": "P. Maniawski"
+            },
+            {
+              "authorId": "31107434",
+              "name": "O. Mawlawi"
+            },
+            {
+              "authorId": "4859934",
+              "name": "J. McConathy"
+            },
+            {
+              "authorId": "2206407",
+              "name": "A. McMillan"
+            },
+            {
+              "authorId": "2412051010",
+              "name": "J. Price"
+            },
+            {
+              "authorId": "145657392",
+              "name": "Abhejit Rajagopal"
+            },
+            {
+              "authorId": "152910894",
+              "name": "J. Sunderland"
+            },
+            {
+              "authorId": "1396355556",
+              "name": "P. Veit-Haibach"
+            },
+            {
+              "authorId": "33447091",
+              "name": "Kristen A. Wangerin"
+            },
+            {
+              "authorId": "2086738005",
+              "name": "Chun-Wei Ying"
+            },
+            {
+              "authorId": "29336482",
+              "name": "T. Hope"
+            }
+          ]
+        },
+        {
+          "paperId": "e287d89a7a57a0eb48fc358a9be57d91ae0bb317",
+          "externalIds": {
+            "PubMedCentral": "7068717",
+            "MAG": "3006164353",
+            "DOI": "10.1021/acsami.9b21808",
+            "CorpusId": 211070621,
+            "PubMed": "32037804"
+          },
+          "title": "Electrodeposited Assembly of Additive-Free Silk Fibroin Coating from Pre-Assembled Nanospheres for Drug Delivery",
+          "venue": "ACS Applied Materials and Interfaces",
+          "year": 2020,
+          "publicationTypes": [
+            "JournalArticle"
+          ],
+          "publicationDate": "2020-02-10",
+          "journal": {
+            "name": "ACS Applied Materials & Interfaces",
+            "pages": "12018 - 12029",
+            "volume": "12"
+          },
+          "authors": [
+            {
+              "authorId": "144794126",
+              "name": "Xian Cheng"
+            },
+            {
+              "authorId": "34772846",
+              "name": "D. Deng"
+            },
+            {
+              "authorId": "2145275955",
+              "name": "Lili Chen"
+            },
+            {
+              "authorId": "144628762",
+              "name": "J. Jansen"
+            },
+            {
+              "authorId": "145145695",
+              "name": "S. Leeuwenburgh"
+            },
+            {
+              "authorId": "2234195350",
+              "name": "F. Yang"
+            }
+          ]
+        },
+        {
+          "paperId": "551bafafbae067b8b2362d5913a08837a0dbaf81",
+          "externalIds": {
+            "MAG": "3013237367",
+            "DBLP": "conf/indiaSE/BadanahattiP20",
+            "DOI": "10.1145/3385032.3385047",
+            "CorpusId": 214624722
+          },
+          "title": "Interleaving Software Craftsmanship Practices in Medical Device Agile Development",
+          "venue": "International Symposium on Electronic Commerce",
+          "year": 2020,
+          "publicationTypes": [
+            "JournalArticle",
+            "Book"
+          ],
+          "publicationDate": "2020-02-27",
+          "journal": {
+            "name": "Proceedings of the 13th Innovations in Software Engineering Conference (formerly known as India Software Engineering Conference)"
+          },
+          "authors": [
+            {
+              "authorId": "1588293286",
+              "name": "Arpitha Badanahatti"
+            },
+            {
+              "authorId": "1588293291",
+              "name": "Sapna Pillutla"
+            }
+          ]
+        },
+        {
+          "paperId": "3d22cf99b775a90e3e0857b9635c3ad7ee4eb563",
+          "externalIds": {
+            "MAG": "3038275139",
+            "PubMedCentral": "7338031",
+            "DOI": "10.1016/j.arbres.2020.05.032",
+            "CorpusId": 220469627,
+            "PubMed": "32646601"
+          },
+          "title": "Posicionamiento de la Sociedad Española de Neumología y Cirugía Torácica en el uso de la telemedicina en los trastornos respiratorios del sueño y ventilación mecánica",
+          "venue": "Archivos de Bronconeumologia",
+          "year": 2020,
+          "publicationTypes": [
+            "JournalArticle"
+          ],
+          "publicationDate": "2020-07-06",
+          "journal": {
+            "name": "Archivos De Bronconeumologia"
+          },
+          "authors": [
+            {
+              "authorId": "2497337760",
+              "name": "J. M. Montserrat Canal"
+            },
+            {
+              "authorId": "1387471591",
+              "name": "M. Suarez-Girón"
+            },
+            {
+              "authorId": "4714931",
+              "name": "C. Egea"
+            },
+            {
+              "authorId": "3520316",
+              "name": "C. Embid"
+            },
+            {
+              "authorId": "2406304892",
+              "name": "Mónica Matute-Villacís"
+            },
+            {
+              "authorId": "2497337115",
+              "name": "Luis de Manuel Martínez"
+            },
+            {
+              "authorId": "1796285153",
+              "name": "Ángel Orteu"
+            },
+            {
+              "authorId": "1422076682",
+              "name": "Javier Gonzalez-Cappa"
+            },
+            {
+              "authorId": "2497340821",
+              "name": "María Tato Cerdeiras"
+            },
+            {
+              "authorId": "8097801",
+              "name": "O. Mediano"
+            }
+          ]
+        },
+        {
+          "paperId": "f5f2a2bcbbc1d91b8b4a700170cc65da862355a4",
+          "externalIds": {
+            "DOI": "10.1007/978-3-030-54403-4",
+            "CorpusId": 240891664
+          },
+          "title": "Innovative Technologies and Signal Processing in Perinatal Medicine",
+          "venue": "",
+          "year": 2021,
+          "publicationTypes": null,
+          "publicationDate": null,
+          "journal": null,
+          "authors": []
+        },
+        {
+          "paperId": "64e32da3b60d2d9efe8ae2eba40c5836f78e263f",
+          "externalIds": {
+            "MAG": "3131845590",
+            "DOI": "10.1016/J.ARBR.2021.02.001",
+            "CorpusId": 291381645
+          },
+          "title": "Spanish Society of Pulmonology and Thoracic Surgery positioning on the use of telemedine in sleep-disordered breathing and mechanical ventilation",
+          "venue": "Archivos de Bronconeumologia",
+          "year": 2021,
+          "publicationTypes": null,
+          "publicationDate": "2021-02-19",
+          "journal": {
+            "name": "Archivos de Bronconeumología (English Edition)"
+          },
+          "authors": [
+            {
+              "authorId": "2262284030",
+              "name": "J. Montserrat"
+            },
+            {
+              "authorId": "1387471591",
+              "name": "M. Suarez-Girón"
+            },
+            {
+              "authorId": "4714931",
+              "name": "C. Egea"
+            },
+            {
+              "authorId": "2230185226",
+              "name": "C. Embid"
+            },
+            {
+              "authorId": "2406304892",
+              "name": "Mónica Matute-Villacís"
+            },
+            {
+              "authorId": "2497337115",
+              "name": "Luis de Manuel Martínez"
+            },
+            {
+              "authorId": "1796285153",
+              "name": "Ángel Orteu"
+            },
+            {
+              "authorId": "1422076682",
+              "name": "Javier Gonzalez-Cappa"
+            },
+            {
+              "authorId": "2497340821",
+              "name": "María Tato Cerdeiras"
+            },
+            {
+              "authorId": "8097801",
+              "name": "O. Mediano"
+            }
+          ]
+        },
+        {
+          "paperId": "25cd38721b67681837aa5a0d55b2f7973609dceb",
+          "externalIds": {
+            "PubMedCentral": "9291042",
+            "DOI": "10.1002/mp.14881",
+            "CorpusId": 233213065,
+            "PubMed": "33843097"
+          },
+          "title": "Shape accuracy of fiber optic sensing for medical devices characterized in bench experiments",
+          "venue": "Medical Physics (Lancaster)",
+          "year": 2021,
+          "publicationTypes": [
+            "JournalArticle"
+          ],
+          "publicationDate": "2021-04-12",
+          "journal": {
+            "name": "Medical Physics",
+            "pages": "3936 - 3947",
+            "volume": "48"
+          },
+          "authors": [
+            {
+              "authorId": "2410891",
+              "name": "M. Megens"
+            },
+            {
+              "authorId": "16020985",
+              "name": "M. Leistikow"
+            },
+            {
+              "authorId": null,
+              "name": "Anneke van Dusschoten"
+            },
+            {
+              "authorId": "2488785643",
+              "name": "M. B. Van Der Mark"
+            },
+            {
+              "authorId": "13346233",
+              "name": "J. Horikx"
+            },
+            {
+              "authorId": "2490941080",
+              "name": "E. V. van Putten"
+            },
+            {
+              "authorId": "1398388546",
+              "name": "G. 'T Hooft"
+            }
+          ]
+        },
+        {
+          "paperId": "65cc884ae0c215c35d04488ef9eb8069ef135ede",
+          "externalIds": {
+            "DOI": "10.1212/wnl.96.15_supplement.4100",
+            "CorpusId": 266101782
+          },
+          "title": "Evidence for Reliability and Validity of the Philips IntelliSpace Cognition (ISC) Digital Test Battery in a Healthy US-Based Sample (4100)",
+          "venue": "Neurology",
+          "year": 2021,
+          "publicationTypes": [
+            "JournalArticle"
+          ],
+          "publicationDate": "2021-04-13",
+          "journal": {
+            "name": "Neurology"
+          },
+          "authors": [
+            {
+              "authorId": "8315619",
+              "name": "S. Vermeent"
+            },
+            {
+              "authorId": "2273147355",
+              "name": "Mandy Spaltman"
+            },
+            {
+              "authorId": "2503256402",
+              "name": "G. van Elswijk"
+            },
+            {
+              "authorId": "2272654116",
+              "name": "Manuel Oliveira"
+            },
+            {
+              "authorId": "2272620348",
+              "name": "Ben Schmand"
+            }
+          ]
+        },
+        {
+          "paperId": "ddb045e0590f7ea22281054586df4f3da6f4e032",
+          "externalIds": {
+            "DOI": "10.1109/rams48097.2021.9605713",
+            "CorpusId": 244501465
+          },
+          "title": "Big Data Driven Reliability Growth for Healthcare Systems",
+          "venue": "Reliability and Maintainability Symposium",
+          "year": 2021,
+          "publicationTypes": null,
+          "publicationDate": "2021-05-24",
+          "journal": {
+            "name": "2021 Annual Reliability and Maintainability Symposium (RAMS)",
+            "pages": "1-6"
+          },
+          "authors": [
+            {
+              "authorId": null,
+              "name": "Olaf van der Burgt"
+            },
+            {
+              "authorId": "2141703940",
+              "name": "Luc Castermans"
+            }
+          ]
+        },
+        {
+          "paperId": "972c54a34ea713bd071aee5bb2ae97e5b0c0a59b",
+          "externalIds": {
+            "DBLP": "conf/ccta/Borrello21",
+            "DOI": "10.1109/ccta48906.2021.9659125",
+            "CorpusId": 245694694
+          },
+          "title": "The Application of Controls in Critical Care Ventilation",
+          "venue": "Conference on Control Technology and Applications",
+          "year": 2021,
+          "publicationTypes": [
+            "JournalArticle",
+            "Conference"
+          ],
+          "publicationDate": "2021-08-09",
+          "journal": {
+            "name": "2021 IEEE Conference on Control Technology and Applications (CCTA)",
+            "pages": "701-718"
+          },
+          "authors": [
+            {
+              "authorId": "48030469",
+              "name": "M. Borrello"
+            }
+          ]
+        },
+        {
+          "paperId": "2bbcb336569b3f69e4a4befcdbeaad021a4fbb21",
+          "externalIds": {
+            "DOI": "10.1109/IUS52206.2021.9593683",
+            "CorpusId": 244044522
+          },
+          "title": "The long-term reliability of pre-charged CMUTs for the powering of deep implanted devices",
+          "venue": "IUS",
+          "year": 2021,
+          "publicationTypes": null,
+          "publicationDate": "2021-09-11",
+          "journal": {
+            "name": "2021 IEEE International Ultrasonics Symposium (IUS)",
+            "pages": "1-4"
+          },
+          "authors": [
+            {
+              "authorId": "1572544517",
+              "name": "Marta Saccher"
+            },
+            {
+              "authorId": "101840208",
+              "name": "Shinnosuke Kawasaki"
+            },
+            {
+              "authorId": "145535307",
+              "name": "R. Dekker"
+            }
+          ]
+        },
+        {
+          "paperId": "9c39cab0b3523ec41692500f3d85a1ac4fbf6a5b",
+          "externalIds": {
+            "DOI": "10.1007/978-3-030-83864-5_33",
+            "CorpusId": 244507868
+          },
+          "title": "Augmented, Virtual and Robotic Capabilities in Cardiovascular Program Capacity Building",
+          "venue": "Sustainable Development Goals Series",
+          "year": 2021,
+          "publicationTypes": null,
+          "publicationDate": "2021-11-23",
+          "journal": {
+            "name": "Sustainable Development Goals Series"
+          },
+          "authors": [
+            {
+              "authorId": "2110603300",
+              "name": "A. Gupta"
+            },
+            {
+              "authorId": "14475622",
+              "name": "R. Metzke"
+            },
+            {
+              "authorId": "2141693193",
+              "name": "O. Struk"
+            },
+            {
+              "authorId": "39627313",
+              "name": "A. Popovic"
+            }
+          ]
+        },
+        {
+          "paperId": "d1223bd9d8d1c8f374e2fc108d44d0905e34fd4e",
+          "externalIds": {
+            "PubMedCentral": "11229789",
+            "DOI": "10.1080/17434440.2022.2054334",
+            "CorpusId": 247520492,
+            "PubMed": "35298323"
+          },
+          "title": "Steering light in fiber-optic medical devices: a patent review",
+          "venue": "Expert Review of Medical Devices",
+          "year": 2022,
+          "publicationTypes": [
+            "JournalArticle",
+            "Review"
+          ],
+          "publicationDate": "2022-03-04",
+          "journal": {
+            "name": "Expert Review of Medical Devices",
+            "pages": "259 - 271",
+            "volume": "19"
+          },
+          "authors": [
+            {
+              "authorId": "2045757849",
+              "name": "Merle S. Losch"
+            },
+            {
+              "authorId": "2159219321",
+              "name": "Famke Kardux"
+            },
+            {
+              "authorId": "1856559",
+              "name": "J. Dankelman"
+            },
+            {
+              "authorId": "6137371",
+              "name": "B. Hendriks"
+            }
+          ]
+        },
+        {
+          "paperId": "5b1383676a4740ec2b3f64be744a54002962eb48",
+          "externalIds": {
+            "PubMedCentral": "9872976",
+            "DOI": "10.2196/43905",
+            "CorpusId": 254922571,
+            "PubMed": "36538379"
+          },
+          "title": "What Makes a Quality Health App—Developing a Global Research-Based Health App Quality Assessment Framework for CEN-ISO/TS 82304-2: Delphi Study",
+          "venue": "JMIR Formative Research",
+          "year": 2022,
+          "publicationTypes": [
+            "JournalArticle",
+            "Review"
+          ],
+          "publicationDate": "2022-10-28",
+          "journal": {
+            "name": "JMIR Formative Research",
+            "volume": "7"
+          },
+          "authors": [
+            {
+              "authorId": "84253958",
+              "name": "P. Hoogendoorn"
+            },
+            {
+              "authorId": "49408860",
+              "name": "A. Versluis"
+            },
+            {
+              "authorId": "3968515",
+              "name": "S. V. van Kampen"
+            },
+            {
+              "authorId": "89278075",
+              "name": "C. McCay"
+            },
+            {
+              "authorId": "2336670814",
+              "name": "Matthew J. Leahy"
+            },
+            {
+              "authorId": "122522893",
+              "name": "M. Bijlsma"
+            },
+            {
+              "authorId": "2913235",
+              "name": "S. Bonacina"
+            },
+            {
+              "authorId": "1399284601",
+              "name": "T. Bonten"
+            },
+            {
+              "authorId": "2061833152",
+              "name": "M. Bonthuis"
+            },
+            {
+              "authorId": "2197653311",
+              "name": "Anouk Butterlin"
+            },
+            {
+              "authorId": "119523392",
+              "name": "Koen Cobbaert"
+            },
+            {
+              "authorId": "1791118524",
+              "name": "T. Duijnhoven"
+            },
+            {
+              "authorId": "88016698",
+              "name": "Cynthia Hallensleben"
+            },
+            {
+              "authorId": "1784677970",
+              "name": "S. Harrison"
+            },
+            {
+              "authorId": "2429073",
+              "name": "M. Hastenteufel"
+            },
+            {
+              "authorId": "2443209793",
+              "name": "T. Holappa"
+            },
+            {
+              "authorId": "2197655011",
+              "name": "Ben Kokx"
+            },
+            {
+              "authorId": "35027152",
+              "name": "B. Morlion"
+            },
+            {
+              "authorId": "2197655434",
+              "name": "Norbert Pauli"
+            },
+            {
+              "authorId": "119020710",
+              "name": "F. Ploeg"
+            },
+            {
+              "authorId": "2118536981",
+              "name": "Mark Salmon"
+            },
+            {
+              "authorId": "2087554713",
+              "name": "Kyma Schnoor"
+            },
+            {
+              "authorId": "143830354",
+              "name": "Mary Sharp"
+            },
+            {
+              "authorId": "2272953",
+              "name": "P. Sottile"
+            },
+            {
+              "authorId": "3245280",
+              "name": "A. Värri"
+            },
+            {
+              "authorId": "2158705822",
+              "name": "Patricia A. H. Williams"
+            },
+            {
+              "authorId": "2555671",
+              "name": "Georg Heidenreich"
+            },
+            {
+              "authorId": "2721132",
+              "name": "Nicholas Oughtibridge"
+            },
+            {
+              "authorId": "2987780",
+              "name": "R. Stegwee"
+            },
+            {
+              "authorId": "2203569",
+              "name": "N. Chavannes"
+            }
+          ]
+        },
+        {
+          "paperId": "5d9050debb0dbb1098dfddc3885125aea980595c",
+          "externalIds": {
+            "MAG": "3039286389",
+            "DOI": "10.1021/acssensors.0c00712",
+            "CorpusId": 220367822,
+            "PubMed": "32627540"
+          },
+          "title": "High stability of Rh oxide-based thermoresistive catalytic combustion sensors proven by operando XAS and XRD.",
+          "venue": "ACS Sensors",
+          "year": 2020,
+          "publicationTypes": [
+            "JournalArticle"
+          ],
+          "publicationDate": "2020-07-06",
+          "journal": {
+            "name": "ACS sensors"
+          },
+          "authors": [
+            {
+              "authorId": "2474385339",
+              "name": "Sabrina A. Müller"
+            },
+            {
+              "authorId": "40613850",
+              "name": "A. Zimina"
+            },
+            {
+              "authorId": "3596862",
+              "name": "R. Steininger"
+            },
+            {
+              "authorId": "9896303",
+              "name": "Sandra Flessau"
+            },
+            {
+              "authorId": "2096575814",
+              "name": "J. Osswald"
+            },
+            {
+              "authorId": "144666428",
+              "name": "J. Grunwaldt"
+            }
+          ]
+        },
+        {
+          "paperId": "85f1ccd2865ade888b29bdb505a150c5547184cd",
+          "externalIds": {
+            "DOI": "10.1117/12.2618126",
+            "CorpusId": 249224490
+          },
+          "title": "Automation platform for remote use of colorimetric chemical sensors",
+          "venue": "Defense + Commercial Sensing",
+          "year": 2022,
+          "publicationTypes": null,
+          "publicationDate": "2022-05-30",
+          "journal": {
+            "pages": "121160I - 121160I-6",
+            "volume": "12116"
+          },
+          "authors": [
+            {
+              "authorId": "2280713722",
+              "name": "E. Battaglia"
+            },
+            {
+              "authorId": "2205811199",
+              "name": "James O. Jensen"
+            },
+            {
+              "authorId": "2120917",
+              "name": "J. Jensen"
+            },
+            {
+              "authorId": "145370163",
+              "name": "Daniele Packard"
+            },
+            {
+              "authorId": "2242805",
+              "name": "M. Mirotznik"
+            }
+          ]
+        },
+        null,
+        {
+          "paperId": "b495722ab379e8563823ab92b9b600afcbd17e69",
+          "externalIds": {
+            "MAG": "3016051702",
+            "DOI": "10.1515/9783110591026-005",
+            "CorpusId": 216504807
+          },
+          "title": "Strukturentwicklungspläne und Zielvereinbarungen",
+          "venue": "Lernwelt Hochschule",
+          "year": 2020,
+          "publicationTypes": null,
+          "publicationDate": "2020-04-06",
+          "journal": {
+            "name": "Lernwelt Hochschule"
+          },
+          "authors": [
+            {
+              "authorId": "1659024735",
+              "name": "H. Weichert"
+            }
+          ]
+        },
+        {
+          "paperId": "57673f23bcc340c514cee47cab30be396ede7343",
+          "externalIds": {
+            "PubMedCentral": "7284835",
+            "MAG": "3021686167",
+            "DOI": "10.3390/polym12051033",
+            "CorpusId": 218519045,
+            "PubMed": "32370122"
+          },
+          "title": "Large, Rapid Swelling of High-cis Polydicyclopentadiene Aerogels Suitable for Solvent-Responsive Actuators",
+          "venue": "Polymers",
+          "year": 2020,
+          "publicationTypes": [
+            "JournalArticle"
+          ],
+          "publicationDate": "2020-05-01",
+          "journal": {
+            "name": "Polymers",
+            "volume": "12"
+          },
+          "authors": [
+            {
+              "authorId": "40994889",
+              "name": "Despoina Chriti"
+            },
+            {
+              "authorId": "6021763",
+              "name": "Grigorios Raptopoulos"
+            },
+            {
+              "authorId": "1923525",
+              "name": "Benjamin J. Brandenburg"
+            },
+            {
+              "authorId": "3715407",
+              "name": "P. Paraskevopoulou"
+            }
+          ]
+        },
+        {
+          "paperId": "f25b1aa484e24a221a2b4e09d42242fb3e927eb6",
+          "externalIds": {
+            "DOI": "10.1097/CCM.0000000000004892",
+            "CorpusId": 231954777,
+            "PubMed": "33595959"
+          },
+          "title": "Assessment of Electrical Impedance Tomography to Set Optimal Positive End-Expiratory Pressure for Venoarterial Extracorporeal Membrane Oxygenation-Treated Patients*",
+          "venue": "Critical Care Medicine",
+          "year": 2021,
+          "publicationTypes": [
+            "JournalArticle"
+          ],
+          "publicationDate": "2021-02-17",
+          "journal": {
+            "name": "Critical Care Medicine",
+            "pages": "923 - 933",
+            "volume": "49"
+          },
+          "authors": [
+            {
+              "authorId": "1846267870",
+              "name": "Christelle Soulé"
+            },
+            {
+              "authorId": "5416733",
+              "name": "L. Crognier"
+            },
+            {
+              "authorId": "38430024",
+              "name": "Floriane Puel"
+            },
+            {
+              "authorId": "32835523",
+              "name": "S. Ruiz"
+            },
+            {
+              "authorId": "39194483",
+              "name": "T. Seguin"
+            },
+            {
+              "authorId": "4271373",
+              "name": "O. Fourcade"
+            },
+            {
+              "authorId": "4179407",
+              "name": "B. Georges"
+            },
+            {
+              "authorId": "50036552",
+              "name": "J. Conil"
+            },
+            {
+              "authorId": "6609882",
+              "name": "V. Minville"
+            },
+            {
+              "authorId": "1404177154",
+              "name": "Fanny Vardon-Bounes"
+            }
+          ]
+        },
+        {
+          "paperId": "089aa3eea5069c57dd076fa68a80a76ce76f94b5",
+          "externalIds": {
+            "DOI": "10.4414/smw.2021.20515",
+            "CorpusId": 235625376,
+            "PubMed": "34161597"
+          },
+          "title": "Organ donation in the ICU - a survey on next of kin response in two Swiss academic centres.",
+          "venue": "Swiss medical weekly",
+          "year": 2021,
+          "publicationTypes": [
+            "JournalArticle",
+            "Review"
+          ],
+          "publicationDate": "2021-06-21",
+          "journal": {
+            "name": "Swiss medical weekly",
+            "pages": "\n          w20515\n        ",
+            "volume": "151"
+          },
+          "authors": [
+            {
+              "authorId": "14124583",
+              "name": "Mathias Nebiker"
+            },
+            {
+              "authorId": "11259002",
+              "name": "A. Bloch"
+            },
+            {
+              "authorId": "2114908365",
+              "name": "Pelin Fedakar"
+            },
+            {
+              "authorId": "2114912830",
+              "name": "Lucienne Christen"
+            },
+            {
+              "authorId": "2114908373",
+              "name": "Anita Hurni"
+            },
+            {
+              "authorId": "2072334513",
+              "name": "Delphine Carré"
+            },
+            {
+              "authorId": "2114894069",
+              "name": "Sylvie Cluzet"
+            },
+            {
+              "authorId": "50745013",
+              "name": "P. Eckert"
+            },
+            {
+              "authorId": "3767741",
+              "name": "J. Schefold"
+            }
+          ]
+        },
+        {
+          "paperId": "f1c9c27b86b0833a6fe093d9fccf741ec4b9ed4d",
+          "externalIds": {
+            "MAG": "3197993635",
+            "DOI": "10.25368/2021.11",
+            "CorpusId": 239677960
+          },
+          "title": "Kontrollierte Fragebogenentwicklung zur Messung erlebter Qualität von Produkten der Dräger Safety auf haptischer, optischer und akustischer Ebene",
+          "venue": "Entwerfen Entwickeln Erleben in Produktentwicklung und Design 2021",
+          "year": 2021,
+          "publicationTypes": null,
+          "publicationDate": "2021-09-06",
+          "journal": {
+            "name": "Entwerfen Entwickeln Erleben in Produktentwicklung und Design 2021"
+          },
+          "authors": [
+            {
+              "authorId": "2113528124",
+              "name": "Julia A. Schneider"
+            },
+            {
+              "authorId": "2081505583",
+              "name": "Christian Wölfel"
+            },
+            {
+              "authorId": "47075732",
+              "name": "S. Wandel"
+            },
+            {
+              "authorId": "2135128239",
+              "name": "Michael Richenberger"
+            }
+          ]
+        },
+        {
+          "paperId": "db707f25ae7ddd32ee19efc696aa7309100c3e28",
+          "externalIds": {
+            "MAG": "3114335996",
+            "PubMedCentral": "8505982",
+            "DOI": "10.3389/fped.2021.722497",
+            "CorpusId": 234590456,
+            "PubMed": "34650941"
+          },
+          "title": "Intratracheal Keratinocyte Growth Factor Enhances Surfactant Protein B Expression in Mechanically Ventilated Preterm Pigs",
+          "venue": "Frontiers in Pediatrics",
+          "year": 2020,
+          "publicationTypes": [
+            "JournalArticle"
+          ],
+          "publicationDate": "2020-11-24",
+          "journal": {
+            "name": "Frontiers in Pediatrics",
+            "volume": "9"
+          },
+          "authors": [
+            {
+              "authorId": "143645837",
+              "name": "Ramesh Krishnan"
+            },
+            {
+              "authorId": "46626932",
+              "name": "Esmond L. Arrindell"
+            },
+            {
+              "authorId": "2503113434",
+              "name": "Caminita Frank"
+            },
+            {
+              "authorId": "2483596112",
+              "name": "Zhan-Bing Jie"
+            },
+            {
+              "authorId": "6767705",
+              "name": "R. Buddington"
+            }
+          ]
+        },
+        {
+          "paperId": "18eb6f70d06c100724e47730955ae6f7bb2731ac",
+          "externalIds": {
+            "DOI": "10.12968/s2514-9768(22)90086-9",
+            "CorpusId": 255931413
+          },
+          "title": "A Missed Opportunity?",
+          "venue": "Manufacturing Management",
+          "year": 2021,
+          "publicationTypes": null,
+          "publicationDate": "2021-11-01",
+          "journal": {
+            "name": "Manufacturing Management"
+          },
+          "authors": [
+            {
+              "authorId": "2078340176",
+              "name": "Andrew Bligh"
+            }
+          ]
+        },
+        {
+          "paperId": "cad8d31cf28efb149b9be7e5bbf8f59c5cd3bbb1",
+          "externalIds": {
+            "PubMedCentral": "8825757",
+            "DOI": "10.1093/ageing/afab278",
+            "CorpusId": 246678370,
+            "PubMed": "35136896"
+          },
+          "title": "Health-related quality of life in older patients surviving ICU treatment for COVID-19: results from an international observational study of patients older than 70 years",
+          "venue": "Age and Ageing",
+          "year": 2022,
+          "publicationTypes": [
+            "JournalArticle"
+          ],
+          "publicationDate": "2022-02-01",
+          "journal": {
+            "name": "Age and Ageing",
+            "volume": "51"
+          },
+          "authors": [
+            {
+              "authorId": "35116277",
+              "name": "I. W. Soliman"
+            },
+            {
+              "authorId": "3342442",
+              "name": "S. Leaver"
+            },
+            {
+              "authorId": "49901747",
+              "name": "H. Flaatten"
+            },
+            {
+              "authorId": "1398282939",
+              "name": "J. Fjølner"
+            },
+            {
+              "authorId": "5207998",
+              "name": "B. Wernly"
+            },
+            {
+              "authorId": "31969335",
+              "name": "R. Bruno"
+            },
+            {
+              "authorId": "145556079",
+              "name": "A. Artigas"
+            },
+            {
+              "authorId": "48290141",
+              "name": "Bernardo Bollen Pinto"
+            },
+            {
+              "authorId": "2251724588",
+              "name": "J. Schefold"
+            },
+            {
+              "authorId": "1453128227",
+              "name": "M. Beil"
+            },
+            {
+              "authorId": "3924637",
+              "name": "S. Sviri"
+            },
+            {
+              "authorId": "1400796355",
+              "name": "P. V. van Heerden"
+            },
+            {
+              "authorId": "3800158",
+              "name": "W. Szczeklik"
+            },
+            {
+              "authorId": "1670066052",
+              "name": "M. Elhadi"
+            },
+            {
+              "authorId": "4670377",
+              "name": "M. Joannidis"
+            },
+            {
+              "authorId": "4802829",
+              "name": "S. Oeyen"
+            },
+            {
+              "authorId": "4737826",
+              "name": "T. Zafeiridis"
+            },
+            {
+              "authorId": "2238941660",
+              "name": "Jakob Wollborn"
+            },
+            {
+              "authorId": "2198519361",
+              "name": "Maria Jose Arche Banzo"
+            },
+            {
+              "authorId": "47677880",
+              "name": "K. Fuest"
+            },
+            {
+              "authorId": "145982654",
+              "name": "B. Marsh"
+            },
+            {
+              "authorId": "40180030",
+              "name": "Finn H. Andersen"
+            },
+            {
+              "authorId": "33171688",
+              "name": "R. Moreno"
+            },
+            {
+              "authorId": "5009624",
+              "name": "A. Boumendil"
+            },
+            {
+              "authorId": "2239087507",
+              "name": "B. Guidet"
+            },
+            {
+              "authorId": "2242646292",
+              "name": "Christian Jung"
+            },
+            {
+              "authorId": "145717216",
+              "name": "D. de Lange"
+            }
+          ]
+        },
+        {
+          "paperId": "d60d745de1f4a0746ba6f8ae8ab80672d3b711ca",
+          "externalIds": {
+            "DOI": "10.1364/boe.469747",
+            "CorpusId": 252390156,
+            "PubMed": "36425613"
+          },
+          "title": "Validation of photoacoustic/ultrasound dual imaging in evaluating blood oxygen saturation.",
+          "venue": "Biomedical Optics Express",
+          "year": 2022,
+          "publicationTypes": [
+            "JournalArticle"
+          ],
+          "publicationDate": "2022-09-19",
+          "journal": {
+            "name": "Biomedical optics express",
+            "pages": "\n          5551-5570\n        ",
+            "volume": "13 10"
+          },
+          "authors": [
+            {
+              "authorId": "1766038",
+              "name": "Si-Rui Liu"
+            },
+            {
+              "authorId": "2311394240",
+              "name": "Rui Zhang"
+            },
+            {
+              "authorId": "2075302139",
+              "name": "Tao Han"
+            },
+            {
+              "authorId": "1943094835",
+              "name": "Yinhao Pan"
+            },
+            {
+              "authorId": "47776890",
+              "name": "Guangjie Zhang"
+            },
+            {
+              "authorId": "2143508194",
+              "name": "Xing Long"
+            },
+            {
+              "authorId": "2023526",
+              "name": "Chenyang Zhao"
+            },
+            {
+              "authorId": "2115446001",
+              "name": "Ming Wang"
+            },
+            {
+              "authorId": "2108804400",
+              "name": "Xue-Lan Li"
+            },
+            {
+              "authorId": "2156127447",
+              "name": "Fang Yang"
+            },
+            {
+              "authorId": "52331983",
+              "name": "Yuchao Sang"
+            },
+            {
+              "authorId": "2112583278",
+              "name": "Lei Zhu"
+            },
+            {
+              "authorId": "20862190",
+              "name": "Xu-Jin He"
+            },
+            {
+              "authorId": "2109609655",
+              "name": "Jian-Chu Li"
+            },
+            {
+              "authorId": "46868279",
+              "name": "Ye-Wei Zhang"
+            },
+            {
+              "authorId": "2411109",
+              "name": "Changhui Li"
+            },
+            {
+              "authorId": "2144645858",
+              "name": "Yu-Xin Jiang"
+            },
+            {
+              "authorId": "2155579917",
+              "name": "Meng-Ge Yang"
+            }
+          ]
+        },
+        {
+          "paperId": "22d1cd4449bb6efe243cfad3eb3e6b65f2a53792",
+          "externalIds": {
+            "MAG": "3118972171",
+            "DOI": "10.2991/artres.k.201209.041",
+            "CorpusId": 234569428
+          },
+          "title": "P.28 Comparison of Regional vs Local Arterial Parameters Using New US Technology",
+          "venue": "Artery Research",
+          "year": 2020,
+          "publicationTypes": null,
+          "publicationDate": "2020-12-01",
+          "journal": {
+            "name": "Artery Research",
+            "pages": "S51 - S51",
+            "volume": "26"
+          },
+          "authors": [
+            {
+              "authorId": "4665148",
+              "name": "P. Forcada"
+            },
+            {
+              "authorId": "2092165853",
+              "name": "NG Kendy"
+            },
+            {
+              "authorId": "1575804911",
+              "name": "Ricardo Garcia"
+            },
+            {
+              "authorId": "2092165771",
+              "name": "Romina Maur"
+            },
+            {
+              "authorId": "2477333924",
+              "name": "Joseph Florio"
+            },
+            {
+              "authorId": "2092430945",
+              "name": "H. Almada"
+            }
+          ]
+        },
+        {
+          "paperId": "f465d5c7cae51b6d0cdb9bb76ef9157fd9e45fb6",
+          "externalIds": {
+            "DOI": "10.1109/MEMS51670.2022.9699652",
+            "CorpusId": 246751824
+          },
+          "title": "A Paper-Based Microfluidic Analytical Device with A Highly Integrated On-Chip Valve For Autonomous ELISA",
+          "venue": "IEEE/LEOS International Conference on Optical MEMS",
+          "year": 2022,
+          "publicationTypes": [
+            "Conference"
+          ],
+          "publicationDate": "2022-01-09",
+          "journal": {
+            "name": "2022 IEEE 35th International Conference on Micro Electro Mechanical Systems Conference (MEMS)",
+            "pages": "271-274"
+          },
+          "authors": [
+            {
+              "authorId": "2077450732",
+              "name": "Tianyu Cai"
+            },
+            {
+              "authorId": "2114261433",
+              "name": "Sixuan Duan"
+            },
+            {
+              "authorId": "2113504898",
+              "name": "Hao Fu"
+            },
+            {
+              "authorId": "2145041933",
+              "name": "Jia Zhu"
+            },
+            {
+              "authorId": "2057770112",
+              "name": "E. Lim"
+            },
+            {
+              "authorId": "5380819",
+              "name": "Kai-Zhu Huang"
+            },
+            {
+              "authorId": "3595844",
+              "name": "K. Hoettges"
+            },
+            {
+              "authorId": "2110788109",
+              "name": "Xin-Yu Liu"
+            },
+            {
+              "authorId": "50404735",
+              "name": "Pengfei Song"
+            }
+          ]
+        },
+        {
+          "paperId": "22dccfd7bdee0fbd01eba3260a8d15299b63aaa6",
+          "externalIds": {
+            "PubMedCentral": "9670915",
+            "DOI": "10.1136/bmjopen-2022-064581",
+            "CorpusId": 253572514,
+            "PubMed": "36385038"
+          },
+          "title": "Effects of hydromorphone-based intravenous patient-controlled analgesia with and without a low basal infusion on postoperative hypoxaemia: study protocol for a randomised controlled clinical trial",
+          "venue": "BMJ Open",
+          "year": 2022,
+          "publicationTypes": [
+            "JournalArticle",
+            "Review"
+          ],
+          "publicationDate": "2022-11-01",
+          "journal": {
+            "name": "BMJ Open",
+            "volume": "12"
+          },
+          "authors": [
+            {
+              "authorId": "2188586410",
+              "name": "Yumei Ma"
+            },
+            {
+              "authorId": "2191034570",
+              "name": "Zhuo-Min Deng"
+            },
+            {
+              "authorId": "14261975",
+              "name": "Xiang-Ying Feng"
+            },
+            {
+              "authorId": "2191049905",
+              "name": "Jia-Lin Luo"
+            },
+            {
+              "authorId": "2191025598",
+              "name": "Yang Meng"
+            },
+            {
+              "authorId": "2118747477",
+              "name": "JingJing Lin"
+            },
+            {
+              "authorId": "2188555687",
+              "name": "Xiaoxiao Mu"
+            },
+            {
+              "authorId": "2191002726",
+              "name": "Xuan Yang"
+            },
+            {
+              "authorId": "2772543",
+              "name": "H. Nie"
+            }
+          ]
+        },
+        {
+          "paperId": "0d91227bb966560cdb43572b79cfdb9c12a7517f",
+          "externalIds": {
+            "PubMedCentral": "9334487",
+            "DOI": "10.1186/s13244-022-01259-8",
+            "CorpusId": 251108686,
+            "PubMed": "35900608"
+          },
+          "title": "Deep learning based on ultrasound images assists breast lesion diagnosis in China: a multicenter diagnostic study",
+          "venue": "Insights into Imaging",
+          "year": 2022,
+          "publicationTypes": [
+            "JournalArticle"
+          ],
+          "publicationDate": "2022-07-28",
+          "journal": {
+            "name": "Insights into Imaging",
+            "volume": "13"
+          },
+          "authors": [
+            {
+              "authorId": "2112565591",
+              "name": "Yang Gu"
+            },
+            {
+              "authorId": "2152921501",
+              "name": "Wen Xu"
+            },
+            {
+              "authorId": "2068284676",
+              "name": "Bin Lin"
+            },
+            {
+              "authorId": "2143709634",
+              "name": "X. An"
+            },
+            {
+              "authorId": "2425282334",
+              "name": "Jiawei Tian"
+            },
+            {
+              "authorId": "2125466713",
+              "name": "Hai-Tao Ran"
+            },
+            {
+              "authorId": "144687796",
+              "name": "Weidong Ren"
+            },
+            {
+              "authorId": "2864299",
+              "name": "Cai Chang"
+            },
+            {
+              "authorId": "2118572753",
+              "name": "Jian-Jun Yuan"
+            },
+            {
+              "authorId": "7341916",
+              "name": "Chun-Song Kang"
+            },
+            {
+              "authorId": "66357885",
+              "name": "You-Bin Deng"
+            },
+            {
+              "authorId": "2113634419",
+              "name": "Hui Wang"
+            },
+            {
+              "authorId": "152863528",
+              "name": "B. Luo"
+            },
+            {
+              "authorId": "148053977",
+              "name": "Sheng-Lan Guo"
+            },
+            {
+              "authorId": "2282956678",
+              "name": "Qi Zhou"
+            },
+            {
+              "authorId": "145409095",
+              "name": "En-Sheng Xue"
+            },
+            {
+              "authorId": "2130308716",
+              "name": "Wei-Wei Zhan"
+            },
+            {
+              "authorId": "2148652929",
+              "name": "Qing Zhou"
+            },
+            {
+              "authorId": "2155871368",
+              "name": "Jie Li"
+            },
+            {
+              "authorId": "152967312",
+              "name": "P. Zhou"
+            },
+            {
+              "authorId": "51041999",
+              "name": "Man Chen"
+            },
+            {
+              "authorId": "1705611383",
+              "name": "Ying Gu"
+            },
+            {
+              "authorId": "2143565911",
+              "name": "Wu Chen"
+            },
+            {
+              "authorId": "2108545821",
+              "name": "Yu-Hong Zhang"
+            },
+            {
+              "authorId": "2138207507",
+              "name": "Jian-Chu Li"
+            },
+            {
+              "authorId": "32685130",
+              "name": "L. Cong"
+            },
+            {
+              "authorId": "2112583278",
+              "name": "Lei Zhu"
+            },
+            {
+              "authorId": "2274933959",
+              "name": "Hong-Yan Wang"
+            },
+            {
+              "authorId": "2243911609",
+              "name": "Yu-Xin Jiang"
+            }
+          ]
+        },
+        {
+          "paperId": "20a50881fe088d6776b21c56fbbe82e2220c2138",
+          "externalIds": {
+            "DOI": "10.3969/j.issn.1671-7104.2022.04.023",
+            "CorpusId": 251348449,
+            "PubMed": "35929167"
+          },
+          "title": "[Clinical Investigation of Key Parameter Range of AMG Muscle Relaxant Monitor].",
+          "venue": "Zhongguo yi liao qi xie za zhi = Chinese journal of medical instrumentation",
+          "year": 2022,
+          "publicationTypes": [
+            "JournalArticle"
+          ],
+          "publicationDate": "2022-07-30",
+          "journal": {
+            "name": "Zhongguo yi liao qi xie za zhi = Chinese journal of medical instrumentation",
+            "pages": "\n          464-468\n        ",
+            "volume": "46 4"
+          },
+          "authors": [
+            {
+              "authorId": "2062861044",
+              "name": "Jian Cen"
+            },
+            {
+              "authorId": "2113322080",
+              "name": "Z. Yao"
+            },
+            {
+              "authorId": "2382029158",
+              "name": "Yu-Xiang He"
+            },
+            {
+              "authorId": "2180553915",
+              "name": "Hua Tao"
+            },
+            {
+              "authorId": "2140192137",
+              "name": "Qi-Ling Liu"
+            },
+            {
+              "authorId": "4933786",
+              "name": "Q. Yuan"
+            }
+          ]
+        },
+        {
+          "paperId": "774b80a8dbb4f0fa90adce64e0d6028e3819283d",
+          "externalIds": {
+            "PubMedCentral": "9469145",
+            "DOI": "10.21037/atm-22-3491",
+            "CorpusId": 251653388,
+            "PubMed": "36111004"
+          },
+          "title": "A new haematological model for the diagnosis and prognosis of severe community-acquired pneumonia: a single-center retrospective study",
+          "venue": "Annals of Translational Medicine",
+          "year": 2022,
+          "publicationTypes": [
+            "JournalArticle"
+          ],
+          "publicationDate": "2022-01-01",
+          "journal": {
+            "name": "Annals of Translational Medicine",
+            "volume": "10"
+          },
+          "authors": [
+            {
+              "authorId": "14205323",
+              "name": "Xiaohe Zheng"
+            },
+            {
+              "authorId": "14042508",
+              "name": "Ze-Na Huang"
+            },
+            {
+              "authorId": "2152690461",
+              "name": "Dong Wang"
+            },
+            {
+              "authorId": "2111780141",
+              "name": "Shi-Yao Pan"
+            },
+            {
+              "authorId": "2308976602",
+              "name": "Ya-Ting Zhao"
+            },
+            {
+              "authorId": "2118399220",
+              "name": "Jin Li"
+            },
+            {
+              "authorId": "2144169030",
+              "name": "Jian-Qing Zhang"
+            },
+            {
+              "authorId": "2088876411",
+              "name": "M. Ye"
+            },
+            {
+              "authorId": "2145409079",
+              "name": "S. Zhang"
+            }
+          ]
+        },
+        {
+          "paperId": "6edf5fdf91013c751b8b9850e57523056f44fbda",
+          "externalIds": {
+            "DOI": "10.21595/jve.2022.22479",
+            "CorpusId": 251427527
+          },
+          "title": "Carbon deposition fault diagnosis of small piston engine based on optimized VMD",
+          "venue": "Journal of Vibroengineering",
+          "year": 2022,
+          "publicationTypes": null,
+          "publicationDate": "2022-08-06",
+          "journal": {
+            "name": "Journal of Vibroengineering"
+          },
+          "authors": [
+            {
+              "authorId": "2107515888",
+              "name": "Jun Gu"
+            },
+            {
+              "authorId": "49372798",
+              "name": "Fei Zhao"
+            },
+            {
+              "authorId": "2144531780",
+              "name": "Yao Zhang"
+            }
+          ]
+        },
+        {
+          "paperId": "db77520eee35a65046aae930156c96f147567ee0",
+          "externalIds": {
+            "DOI": "10.1148/radiol.212257",
+            "CorpusId": 251743703,
+            "PubMed": "35997608"
+          },
+          "title": "Synovial Oxygenation at Photoacoustic Imaging to Assess Rheumatoid Arthritis Disease Activity.",
+          "venue": "Radiology",
+          "year": 2022,
+          "publicationTypes": [
+            "JournalArticle"
+          ],
+          "publicationDate": "2022-08-23",
+          "journal": {
+            "name": "Radiology",
+            "pages": "\n          212257\n        "
+          },
+          "authors": [
+            {
+              "authorId": "48857419",
+              "name": "Meng Yang"
+            },
+            {
+              "authorId": "2023526",
+              "name": "Chenyang Zhao"
+            },
+            {
+              "authorId": "2115446001",
+              "name": "Ming Wang"
+            },
+            {
+              "authorId": "50621394",
+              "name": "Q. Wang"
+            },
+            {
+              "authorId": "2311394240",
+              "name": "Rui Zhang"
+            },
+            {
+              "authorId": "1492194094",
+              "name": "Wei Bai"
+            },
+            {
+              "authorId": "2150169815",
+              "name": "Jian Liu"
+            },
+            {
+              "authorId": "2116574723",
+              "name": "S. Zhang"
+            },
+            {
+              "authorId": "2181383373",
+              "name": "Dong Xu"
+            },
+            {
+              "authorId": "1766038",
+              "name": "Si-Rui Liu"
+            },
+            {
+              "authorId": "2108804400",
+              "name": "Xue-Lan Li"
+            },
+            {
+              "authorId": "7755526",
+              "name": "Z. Qi"
+            },
+            {
+              "authorId": "2156127447",
+              "name": "Fang Yang"
+            },
+            {
+              "authorId": "2112583278",
+              "name": "Lei Zhu"
+            },
+            {
+              "authorId": "20862190",
+              "name": "Xu-Jin He"
+            },
+            {
+              "authorId": "34612778",
+              "name": "Xin-Ping Tian"
+            },
+            {
+              "authorId": "2111551233",
+              "name": "Xiaofeng Zeng"
+            },
+            {
+              "authorId": "2109609655",
+              "name": "Jian-Chu Li"
+            },
+            {
+              "authorId": "2144645858",
+              "name": "Yu-Xin Jiang"
+            }
+          ]
+        },
+        {
+          "paperId": "d604e62d1cf855d4e6eceb0483a8e053bc8a7cf1",
+          "externalIds": {
+            "DOI": "10.1177/1358863X221117608",
+            "CorpusId": 251766785,
+            "PubMed": "36000474"
+          },
+          "title": "Phasicity and resistance of the arterial spectral Doppler waveform in a canine femoral focal artery stenosis model",
+          "venue": "Vascular Medicine",
+          "year": 2022,
+          "publicationTypes": [
+            "JournalArticle"
+          ],
+          "publicationDate": "2022-08-24",
+          "journal": {
+            "name": "Vascular Medicine",
+            "pages": "542 - 550",
+            "volume": "27"
+          },
+          "authors": [
+            {
+              "authorId": "48321428",
+              "name": "R. Zhao"
+            },
+            {
+              "authorId": "26678246",
+              "name": "Haining Zheng"
+            },
+            {
+              "authorId": "2158505571",
+              "name": "Wei Wang"
+            },
+            {
+              "authorId": "28835105",
+              "name": "Yi-Gang Du"
+            },
+            {
+              "authorId": "48429014",
+              "name": "Y. Tong"
+            },
+            {
+              "authorId": "3168339",
+              "name": "G. Mahé"
+            },
+            {
+              "authorId": "13905079",
+              "name": "Chao-Yang Wen"
+            }
+          ]
+        },
+        {
+          "paperId": "7bfdcb029c0352eb42e2e6314faa0c2103921002",
+          "externalIds": {
+            "PubMedCentral": "9622480",
+            "DOI": "10.21037/atm-22-3767",
+            "CorpusId": 252348059,
+            "PubMed": "36330417"
+          },
+          "title": "Development and validation of the diagnostic accuracy of artificial intelligence-assisted ultrasound in the classification of splenic trauma",
+          "venue": "Annals of Translational Medicine",
+          "year": 2022,
+          "publicationTypes": [
+            "JournalArticle"
+          ],
+          "publicationDate": "2022-01-01",
+          "journal": {
+            "name": "Annals of Translational Medicine",
+            "volume": "10"
+          },
+          "authors": [
+            {
+              "authorId": "2144280744",
+              "name": "Xue Jiang"
+            },
+            {
+              "authorId": "144574686",
+              "name": "Yukun Luo"
+            },
+            {
+              "authorId": "12036284",
+              "name": "Xue-Lei He"
+            },
+            {
+              "authorId": "2519779664",
+              "name": "K. Wang"
+            },
+            {
+              "authorId": "2118727288",
+              "name": "Wen-Jing Song"
+            },
+            {
+              "authorId": "32807090",
+              "name": "Qing-Gui Ye"
+            },
+            {
+              "authorId": "2117930777",
+              "name": "Lei Feng"
+            },
+            {
+              "authorId": "47825073",
+              "name": "Wen Wang"
+            },
+            {
+              "authorId": "2109637808",
+              "name": "Xiao-Juan Hu"
+            },
+            {
+              "authorId": "2346758672",
+              "name": "Hua Li"
+            }
+          ]
+        },
+        {
+          "paperId": "0dcdce0c620932b1bded67b822b07befb12f2156",
+          "externalIds": {
+            "PubMedCentral": "9652509",
+            "DOI": "10.21037/atm-22-4589",
+            "CorpusId": 253216953,
+            "PubMed": "36388840"
+          },
+          "title": "Comparison on the consistency of Mindray and Siemens chemiluminescence analyzers for detecting FT3, FT4 and TSH in patients with hyper- and hypothyroidism",
+          "venue": "Annals of Translational Medicine",
+          "year": 2022,
+          "publicationTypes": [
+            "JournalArticle"
+          ],
+          "publicationDate": "2022-10-01",
+          "journal": {
+            "name": "Annals of Translational Medicine",
+            "volume": "10"
+          },
+          "authors": [
+            {
+              "authorId": "12196525",
+              "name": "Pingfeng Feng"
+            },
+            {
+              "authorId": "2114003261",
+              "name": "D. Wei"
+            },
+            {
+              "authorId": "2108066185",
+              "name": "Yajie Zhang"
+            },
+            {
+              "authorId": "39724818",
+              "name": "Ye Zhang"
+            },
+            {
+              "authorId": "16215102",
+              "name": "Huifei Zheng"
+            },
+            {
+              "authorId": "2313026128",
+              "name": "Guorui Suo"
+            },
+            {
+              "authorId": "50080477",
+              "name": "Xin Li"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

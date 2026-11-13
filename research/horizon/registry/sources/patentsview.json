@@ -1,0 +1,33 @@
+{
+  "access_evidence": "SOURCE_PROBES/patents: legacy api.patentsview.org answered 200 with 20666 B that is the ODP single-page-app shell (expected marker 'patents' absent); search.patentsview.org does not resolve in DNS; s3://data.patentsview.org/download/... returns 403",
+  "access_state": "BLOCKED_TECHNICAL",
+  "auth_required": true,
+  "blockers": [
+    "legacy API host now serves the USPTO ODP shell instead of JSON",
+    "search.patentsview.org: DNS resolution failure from this host",
+    "bulk S3 objects return 403"
+  ],
+  "bulk_available": false,
+  "domain": "patentsview.org / search.patentsview.org",
+  "entity_types": [
+    "patent_publication"
+  ],
+  "first_verified_at": "2026-11-10",
+  "historical_depth": "n/a (retired)",
+  "id_schemes": [],
+  "licence_note": "",
+  "licence_status": "unknown",
+  "licence_url": null,
+  "machine_interface": "retired search API; bulk S3 no longer public",
+  "name": "PatentsView (USPTO)",
+  "notes": "",
+  "operator": "USPTO (formerly a joint USPTO/American Institutes for Research project)",
+  "probe_suite": "patents",
+  "rate_policy": "",
+  "registration_url": "https://patentsview.org/",
+  "robots_summary": "",
+  "robots_url": null,
+  "source_id": "patentsview",
+  "unlock_route": "Use USPTO ODP instead (same underlying data). PatentsView-era bulk tables were absorbed into ODP, which needs a free API key.",
+  "what_is_new": "Nothing now: this is a documentation of a retired channel so the next round does not chase it again."
+}

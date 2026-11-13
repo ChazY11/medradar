@@ -1,0 +1,31 @@
+{
+  "source_id": "eudamed",
+  "workstream": "regulatory",
+  "generated_at": "2026-11-09T23:24:15Z",
+  "raw_files": [
+    {
+      "path": "DATASETS/regulatory/eudamed/raw/eudamed_root.html",
+      "bytes": 48323,
+      "status": 200,
+      "from_disk": true,
+      "note": "EUDAMED public application entry point",
+      "requested_url": "https://ec.europa.eu/tools/eudamed/"
+    },
+    {
+      "path": "DATASETS/regulatory/eudamed/raw/eudamed_api_devices.json",
+      "bytes": 321,
+      "status": 200,
+      "from_disk": true,
+      "note": "guessed public REST path — the server answers 429 with an explicit machine-access instruction",
+      "requested_url": "https://ec.europa.eu/tools/eudamed/api/devices"
+    },
+    {
+      "path": "DATASETS/regulatory/eudamed/raw/eudamed_developer_portal.html",
+      "bytes": 9981,
+      "status": 200,
+      "from_disk": true,
+      "note": "EU Health Data Lake developer portal named by EUDAMED's own 429 body",
+      "requested_url": "https://developer.datalake.sante.service.ec.europa.eu/api-details"
+    }
+  ]
+}
