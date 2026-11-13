@@ -1,0 +1,1035 @@
+[
+  {
+    "id": "S1",
+    "url": "https://www.sec.gov/search-filings/edgar-application-programming-interfaces",
+    "url_requested": null,
+    "final_url": "https://www.sec.gov/search-filings/edgar-application-programming-interfaces",
+    "http_status": 200,
+    "retrieved_at_utc": "2026-11-13T18:20:28Z",
+    "title": "EDGAR Application Programming Interfaces (APIs) - SEC, Last Reviewed or Updated: April 8, 2025",
+    "reliability": "primary-doc",
+    "source_kind": "SEC's own documentation page for the data.sec.gov APIs",
+    "cached_file": "api-doc-edgar-apis.html",
+    "content_type": "text/html; charset=utf-8",
+    "sha256_of_cached_bytes": "11171fd0e470c2a28e71cbab6151a02b9ed48ea67578ba2c81ed62cabf823af5",
+    "supports": [
+      "SEC publishes a documentation page for the data.sec.gov APIs including the submissions API.",
+      "SEC describes API freshness in terms of dissemination ('as filings are disseminated'), not acceptance.",
+      "The page is silent on every field name, including acceptanceDateTime; it defines no JSON field schema at all.",
+      "SEC does label times elsewhere on the same page ('approximately 3:00 a.m. ET'), so the absence of a timezone for submission timestamps is not a lack of vocabulary."
+    ],
+    "does_not_support": [
+      "It does NOT define acceptanceDateTime, its format, or its timezone.",
+      "It does NOT state that any submission-API timestamp is UTC.",
+      "It does NOT describe how any date/time field is serialised."
+    ],
+    "quotes": [
+      {
+        "text": "The JSON structures are updated throughout the day, in real time, as submissions are disseminated.",
+        "locator": "(page body)",
+        "supports": "API freshness is described relative to dissemination"
+      },
+      {
+        "text": "In addition, a bulk ZIP file is available to download all the JSON structures for an API. This ZIP file is updated and republished nightly at approximately 3:00 a.m. ET.",
+        "locator": "(page body)",
+        "supports": "SEC does use an explicit ET label when it wants one"
+      },
+      {
+        "text": "The APIs are updated in real-time as filings are disseminated. The submissions API is updated with a typical processing delay of less than a second; the xbrl APIs are updated with a typical processing delay of under a minute. However these processing delays may be longer during peak filing times.",
+        "locator": "section: Update Schedule",
+        "supports": "submissions API updated in real-time as filings are disseminated"
+      },
+      {
+        "text": "Last Reviewed or Updated: April 8, 2025",
+        "locator": "(footer)",
+        "supports": "page currency / retrieval sanity check"
+      }
+    ]
+  },
+  {
+    "id": "S2",
+    "url": "https://www.sec.gov/search-filings/edgar-application-programming-interfaces",
+    "url_requested": "https://www.sec.gov/edgar/sec-api-documentation",
+    "final_url": "https://www.sec.gov/search-filings/edgar-application-programming-interfaces",
+    "http_status": 200,
+    "retrieved_at_utc": "2026-11-13T18:20:29Z",
+    "title": "Legacy sec-api-documentation URL (redirects to S1)",
+    "reliability": "primary-doc",
+    "source_kind": "redirect check requested by the task",
+    "cached_file": "api-doc-legacy.html",
+    "content_type": "text/html; charset=utf-8",
+    "sha256_of_cached_bytes": "11171fd0e470c2a28e71cbab6151a02b9ed48ea67578ba2c81ed62cabf823af5",
+    "supports": [
+      "The URL named in the task redirects (HTTP 200 after one redirect) to S1; it is not a separate document.",
+      "Cached bytes are byte-identical to S1 (identical sha256), so there is no second, richer API document."
+    ],
+    "does_not_support": [
+      "No independent content."
+    ],
+    "quotes": []
+  },
+  {
+    "id": "S3",
+    "url": "https://data.sec.gov/",
+    "url_requested": null,
+    "final_url": "https://data.sec.gov/",
+    "http_status": 200,
+    "retrieved_at_utc": "2026-11-13T18:20:36Z",
+    "title": "data.sec.gov root page",
+    "reliability": "primary-doc",
+    "source_kind": "host root page",
+    "cached_file": "data-sec-root.html",
+    "content_type": "text/html",
+    "sha256_of_cached_bytes": "d94083d6ff7a993768164369674927c66065f8138cd9b4d46550c86c71e06fd0",
+    "supports": [
+      "data.sec.gov itself points readers to S1 for documentation."
+    ],
+    "does_not_support": [
+      "It contains no field documentation."
+    ],
+    "quotes": [
+      {
+        "text": "Please visit https://www.sec.gov/edgar/sec-api-documentation for documentation. More developer resources and Fair Access guidelines can be found at https://www.sec.gov/developer.",
+        "locator": "(page body)",
+        "supports": "data.sec.gov defers all documentation to S1"
+      }
+    ]
+  },
+  {
+    "id": "S4",
+    "url": "https://www.sec.gov/about/webmaster-frequently-asked-questions",
+    "url_requested": "https://www.sec.gov/os/webmaster-faq",
+    "final_url": "https://www.sec.gov/about/webmaster-frequently-asked-questions",
+    "http_status": 200,
+    "retrieved_at_utc": "2026-11-13T18:20:31Z",
+    "title": "Webmaster Frequently Asked Questions - SEC, Last Reviewed or Updated: Aug. 23, 2024",
+    "reliability": "secondary-doc",
+    "source_kind": "SEC staff FAQ (informal support page, not a technical specification)",
+    "cached_file": "webmaster-faq.html",
+    "content_type": "text/html; charset=utf-8",
+    "sha256_of_cached_bytes": "00091c5c2db2498ef71e0c7d98e3af76a24cd41bcf21b00ecc09eee6dd1c0ba2",
+    "supports": [
+      "This FAQ is the ONLY SEC web page located that names the ACCEPTANCE-DATETIME header, defines Acceptance Date / Acceptance Time, and states a timezone for acceptance time: EST.",
+      "It defines FILED AS OF DATE and contrasts it with the acceptance timestamps.",
+      "It states explicitly that no timestamp exists for when filing content first becomes available on sec.gov.",
+      "It quantifies the acceptance-to-availability lag (often within 1-3 minutes) and disclaims any guarantee.",
+      "It points readers to the PDS Technical Specification for header tag definitions - a pointer that does not actually hold for ACCEPTANCE-DATETIME (see S10)."
+    ],
+    "does_not_support": [
+      "It does NOT cover acceptanceDateTime in the data.sec.gov JSON API.",
+      "Its EST label is not DST-aware on its face (it says EST, not Eastern time) and it never mentions daylight saving time.",
+      "It is an FAQ, not a normative specification, and carries no effective-date semantics beyond Last Reviewed or Updated."
+    ],
+    "quotes": [
+      {
+        "text": "Submissions by company and extracted XBRL data are available via RESTful APIs on data.sec.gov, offering JSON formatted data.",
+        "locator": "section: Developers",
+        "supports": "SEC confirms the submissions API exists on data.sec.gov"
+      },
+      {
+        "text": "Filings are often available on sec.gov within 1-3 minutes of the EDGAR system timestamp. The lag time can increase significantly with high server load. We don’t guarantee and cannot predict this lag.",
+        "locator": "section: Developers (lag-time answer)",
+        "supports": "documented SEC statement about the acceptance-to-availability lag"
+      },
+      {
+        "text": "Please see the EDGAR PDS Technical Specification. This describes the header tag elements and document text tag elements. See especially 3.3 EDGAR Header and Document Tag Definitions.",
+        "locator": "section: Developers (header documentation answer)",
+        "supports": "SEC's own pointer to the PDS Technical Specification for header tag definitions"
+      },
+      {
+        "text": "The EDGAR Filer System assigns various timestamps to the filing when approved. You can see these in the top header part of the “Complete submission text file.” For example:",
+        "locator": "section: How can I understand EDGAR Timestamps?",
+        "supports": "SEC framing: timestamps are visible in the top header of the complete submission text file"
+      },
+      {
+        "text": "[…] <ACCEPTANCE-DATETIME>20190311165759 […] CONFORMED PERIOD OF REPORT: 20181231 FILED AS OF DATE: 20190311 DATE AS OF CHANGE: 20190311",
+        "locator": "same section (worked example)",
+        "supports": "the exact header fragment SEC itself quotes, including ACCEPTANCE-DATETIME 20190311165759"
+      },
+      {
+        "text": "FILED AS OF DATE: EDGAR assigned official filing date, or post acceptance new filing date (Post Acceptance Correction).",
+        "locator": "same section (field list)",
+        "supports": "SEC's definition of FILED AS OF DATE"
+      },
+      {
+        "text": "Acceptance Date: Date the submission was accepted by EDGAR. Format is YYYYMMDD\nAcceptance Time: Time (EST) at which the submission was accepted by EDGAR. Format is HHMMSS",
+        "locator": "same section (field list)",
+        "supports": "THE decisive documented statement: acceptance date YYYYMMDD, acceptance time EST, HHMMSS"
+      },
+      {
+        "text": "There is no timestamp to indicate when filing content is first available on sec.gov.",
+        "locator": "same section (final sentence)",
+        "supports": "THE decisive negative statement: no timestamp for first public availability on sec.gov"
+      },
+      {
+        "text": "Our Latest Filings search and associated RSS are the best resources for getting as close to real time availability as possible. These resources are heavily accessed. To maintain equitable access for all users, please see Internet Security Policy. See also the subscription option to the EDGAR Public Dissemination Service.",
+        "locator": "section: Developers (fastest availability)",
+        "supports": "SEC directs users to Latest Filings RSS / PDS for near-real-time availability"
+      },
+      {
+        "text": "Please email webmaster@sec.gov if your publicly-disseminated document is not displaying as expected on sec.gov. Please indicate the URL and CIK. If the presentation issue involves XML, XBRL, or iXBRL, please also email structureddata@sec.gov.",
+        "locator": "section: Filers",
+        "supports": "SEC's use of publicly-disseminated as a distinct status word"
+      },
+      {
+        "text": "Last Reviewed or Updated: Aug. 23, 2024",
+        "locator": "(footer)",
+        "supports": "page currency / retrieval sanity check"
+      }
+    ]
+  },
+  {
+    "id": "S5",
+    "url": "https://www.sec.gov/about/developer-resources",
+    "url_requested": null,
+    "final_url": "https://www.sec.gov/about/developer-resources",
+    "http_status": 200,
+    "retrieved_at_utc": "2026-11-13T18:20:32Z",
+    "title": "Developer Resources - SEC, Last Reviewed or Updated: March 10, 2025",
+    "reliability": "primary-doc",
+    "source_kind": "developer landing page",
+    "cached_file": "developer-resources.html",
+    "content_type": "text/html; charset=utf-8",
+    "sha256_of_cached_bytes": "0132f992f88c24f4e0edb78b8d6f08c7bfbc6acdf2a603f42b678243c191abf2",
+    "supports": [
+      "Confirms the API offering and that EDGAR index files exist in html/xml/json form.",
+      "No timestamp semantics anywhere on the page."
+    ],
+    "does_not_support": [
+      "No field-level or timezone documentation."
+    ],
+    "quotes": [
+      {
+        "text": "Submissions by company and extracted XBRL data are available via RESTful APIs on data.sec.gov, offering JSON formatted data.",
+        "locator": "section: Data APIs Now Available",
+        "supports": "API offering restated; no field documentation"
+      },
+      {
+        "text": "Last Reviewed or Updated: March 10, 2025",
+        "locator": "(footer)",
+        "supports": "page currency"
+      }
+    ]
+  },
+  {
+    "id": "S6",
+    "url": "https://www.sec.gov/search-filings/edgar-search-assistance/accessing-edgar-data",
+    "url_requested": "https://www.sec.gov/os/accessing-edgar-data",
+    "final_url": "https://www.sec.gov/search-filings/edgar-search-assistance/accessing-edgar-data",
+    "http_status": 200,
+    "retrieved_at_utc": "2026-11-13T18:20:35Z",
+    "title": "Accessing EDGAR Data - SEC, Last Reviewed or Updated: June 26, 2024",
+    "reliability": "primary-doc",
+    "source_kind": "SEC operational documentation for EDGAR data access",
+    "cached_file": "accessing-edgar-data.html",
+    "content_type": "text/html; charset=utf-8",
+    "sha256_of_cached_bytes": "978c442508b63f5a3bae147232c7b10446a289b1f8b50c35ce8f9c89845e18cf",
+    "supports": [
+      "Documents EDGAR's daily operating window (6:00 a.m. to 10:00 p.m. ET) and the nightly index build starting about 10:00 p.m. ET.",
+      "Documents the 5:30 p.m. ET submission cut-off and that affected filings are disseminated the NEXT business day and appear in the following business day's index.",
+      "Documents that the index files carry only a date filed field - no time of day.",
+      "Documents that post-acceptance corrections are folded into index builds and that full/quarterly indexes are rebuilt weekly (so indexes are not immutable).",
+      "Points to the PDS Technical Specification for SGML header structure."
+    ],
+    "does_not_support": [
+      "It gives no timezone for any acceptance timestamp.",
+      "It publishes no per-filing public-availability time."
+    ],
+    "quotes": [
+      {
+        "text": "EDGAR accepts new filer applications, new filings, and changes to filer data each business day, Monday through Friday, from 6:00 a.m. to 10:00 p.m., ET. Indexes incorporating the current business day's filings are updated nightly starting about 10:00 p.m., ET; the process is usually completed within a few hours. Some filing submissions that begin after 5:30 p.m. ET—or 10:00 p.m. for Ownership forms 3, 4, 5—will be disseminated the next business day, showing up in the following business day's index.",
+        "locator": "section: Business hours and dissemination",
+        "supports": "operating window, nightly index build, 5:30 p.m. ET / next-business-day dissemination rule"
+      },
+      {
+        "text": "Filings are sometimes authorized by SEC staff for removal or correction for a variety of reasons at the filer's request including, but not limited to, the document was submitted for the wrong filer, the document was a duplicate of a previously filed document, the document in its current form was unreadable, or the document contained sensitive information. Corrections processed during a given business day will be incorporated in the indexes built that evening. However, removals processed on subsequent business days will not be reflected in any previous daily, feed, or oldload index. The full and quarterly index files are rebuilt weekly, early on Saturday mornings, so that any post-acceptance correction (PAC) deletes or updates are incorporated.",
+        "locator": "section: Post-acceptance corrections and deletions",
+        "supports": "PAC handling and index rebuild cadence"
+      },
+      {
+        "text": "The EDGAR indexes list the following information for each filing:\ncompany name\nform type\ncentral index key (CIK)\ndate filed\nfile name (including folder path)",
+        "locator": "section: Using the EDGAR index files",
+        "supports": "complete list of index columns - date only, no time of day"
+      },
+      {
+        "text": "See EDGAR Public Dissemination Service (PDS) Technical Specification for details on type of disseminations and SGML header structure.",
+        "locator": "section: Feed and oldloads directories",
+        "supports": "SEC's pointer to the PDS Technical Specification for SGML header structure"
+      },
+      {
+        "text": "Last Reviewed or Updated: June 26, 2024",
+        "locator": "(footer)",
+        "supports": "page currency"
+      }
+    ]
+  },
+  {
+    "id": "S7",
+    "url": "https://www.sec.gov/submit-filings/edgar-filer-manual",
+    "url_requested": "https://www.sec.gov/info/edgar/edmanuals.htm",
+    "final_url": "https://www.sec.gov/submit-filings/edgar-filer-manual",
+    "http_status": 200,
+    "retrieved_at_utc": "2026-11-13T18:21:53Z",
+    "title": "EDGAR Filer Manual index page (current and draft versions) - SEC",
+    "reliability": "primary-doc",
+    "source_kind": "version index for the Filer Manual",
+    "cached_file": "filer-manual-index-old.html",
+    "content_type": "text/html; charset=utf-8",
+    "sha256_of_cached_bytes": "b00fe1c6ec1476272937d85e1859b3242597cdf76f8963988a3cda1a6d578d92",
+    "supports": [
+      "Establishes which Filer Manual versions are current at retrieval: Volume II Version 78 (deployment 2026-09-14) and Volume I Version 43 (deployment 2026-03-16).",
+      "Shows a forthcoming draft Volume II Version 79 for 2026-12-07, i.e. not yet in force when retrieved.",
+      "Lists the Volume II chapter structure, which is how the manual splits topics."
+    ],
+    "does_not_support": [
+      "It contains no substantive time semantics itself."
+    ],
+    "quotes": [
+      {
+        "text": "Version 78 | Deployment Date: September 14, 2026 | full volume (PDF, 4.9 mb)",
+        "locator": "section: Volume II: EDGAR Filing",
+        "supports": "current Volume II version and deployment date"
+      },
+      {
+        "text": "Version 43 | Deployment Date: March 16, 2026 | full volume (PDF, 0.4 mb)",
+        "locator": "section: Volume I: General Information",
+        "supports": "current Volume I version and deployment date"
+      },
+      {
+        "text": "Version 79 | Deployment Date: December 7, 2026 | full volume (PDF, 6.89 mb)",
+        "locator": "section: Draft/Forthcoming Version",
+        "supports": "draft v79 (not in force at retrieval)"
+      }
+    ]
+  },
+  {
+    "id": "S8",
+    "url": "https://www.sec.gov/files/edgar/filermanual/edgarfm-vol2-v78.pdf",
+    "url_requested": null,
+    "final_url": "https://www.sec.gov/files/edgar/filermanual/edgarfm-vol2-v78.pdf",
+    "http_status": 200,
+    "retrieved_at_utc": "2026-11-13T18:22:33Z",
+    "title": "EDGAR Filer Manual, Volume II: EDGAR Filing, Version 78, September 14, 2026 (full-volume PDF)",
+    "reliability": "primary-doc",
+    "source_kind": "the normative filer-facing manual for EDGAR filing",
+    "cached_file": "filer-manual-vol2-v78.pdf",
+    "content_type": "application/pdf",
+    "sha256_of_cached_bytes": "816bbe2b5d2677ddc94e6199b446a8a856a54596704021a7b9ff592c0bc26cf3",
+    "supports": [
+      "Defines what EDGAR acceptance means operationally: the filing passed EDGAR's processing rules and, if live, will be disseminated.",
+      "States that dissemination can often occur within seconds of transmission and that acceptance processing and dissemination take place immediately upon receipt of live filings.",
+      "Documents the 6:00 a.m. to 10:00 p.m. Eastern Time operating window.",
+      "Documents the 5:30 p.m. Eastern time filing-date rule and the exception list (forms 3/4/5, 144, 13D/13G, MEFs, etc.) whose Filing Date equals the Received Date.",
+      "Uses Eastern Time / ET consistently - a DST-aware civil-time label - for every operational deadline it states."
+    ],
+    "does_not_support": [
+      "Does NOT contain the string ACCEPTANCE-DATETIME anywhere (0 occurrences in the v78 full volume).",
+      "Does NOT contain the phrase acceptance date or acceptance time anywhere (0 occurrences).",
+      "Does NOT define the submission header tags; section 7.1.2 only says headers are auto-generated by EDGARLink Online.",
+      "Does NOT contain the phrase filed as of date.",
+      "Does NOT state the timezone of any machine-readable acceptance timestamp."
+    ],
+    "quotes": [
+      {
+        "text": "and detailed error messages. EDGAR will either accept or suspend your filing. Acceptance means that the filing meets all of the EDGAR processing rules and, if live, the filing will be disseminated. Suspended means that the filing contains serious errors that you must correct. You can correct the errors and resubmit the filing. A suspended filing will not be disseminated nor will fees be deducted from your account.",
+        "locator": "p. 2-4",
+        "supports": "normative meaning of acceptance vs suspension; accepted live filings are disseminated"
+      },
+      {
+        "text": "When the EDGAR system has completed the processing of your submission, if it is live and public, it will be transmitted electronically to a number of third parties. (Certain non-public documents will not be immediately disseminated but may be subsequently disseminated if they meet certain criteria.) Dissemination can often occur within seconds of your transmission. Private companies may post your filing on their websites for public use of their subscribers. The filings are also posted on SEC.gov.",
+        "locator": "p. 2-4",
+        "supports": "dissemination timing in practice, and that SEC.gov posting is part of it"
+      },
+      {
+        "text": "2.3.1 Hours of Operation EDGAR is available for filings and changes to company information each business day, Monday through Friday, from 6:00 A.M. to 10:00 P.M., Eastern Time. Transmissions to EDGAR submitted before 10:00 P.M. Eastern Time will be processed. EDGAR is unavailable after 10:00 P.M. Eastern Time and all transmissions after that time will have to be submitted the next business day.",
+        "locator": "p. 2-6 (section 2.3.1 Hours of Operation)",
+        "supports": "system hours in Eastern Time; nothing after 10:00 p.m. ET is processed that day"
+      },
+      {
+        "text": "Issuers are advised that filings with the submission types listed below will receive a “Filing Date” identical to the EDGAR “Received Date” even if received after 5:30 P.M. Eastern time, which is different than normal filings. In addition these filings will be disseminated until 10:00 P.M. Eastern time. Normally filings received after 5:30 P.M. Eastern time will receive a filing date of the next business day and will not be disseminated until the next business day.",
+        "locator": "p. 3-34",
+        "supports": "THE key operational rule: Filing Date vs Received Date, 5:30 p.m. Eastern time cut-off, next-business-day filing date and dissemination"
+      },
+      {
+        "text": "Header information for your filing documents is still required in EDGAR, but you should not add them if you use EDGARLink Online. By using EDGARLink Online, your header tags and information are automatically placed in the correct nesting order and in the correct places within your submission.",
+        "locator": "p. 7-9 (section 7.1.2 Information on Headers)",
+        "supports": "the manual deliberately does not document header tags; nothing here defines a timestamp field"
+      },
+      {
+        "text": "Acceptance processing and public dissemination is an automated process that takes place immediately upon receipt of live filings. Public portions of a live filing are immediately disseminated to the public.",
+        "locator": "p. 7-38 (section 7.3.3.3)",
+        "supports": "acceptance processing and public dissemination are automated and immediate on receipt of live filings"
+      }
+    ]
+  },
+  {
+    "id": "S9",
+    "url": "https://www.sec.gov/files/edgar/filer-information/edgarfm-vol1-v43.pdf",
+    "url_requested": null,
+    "final_url": "https://www.sec.gov/files/edgar/filer-information/edgarfm-vol1-v43.pdf",
+    "http_status": 200,
+    "retrieved_at_utc": "2026-11-13T18:22:34Z",
+    "title": "EDGAR Filer Manual, Volume I: General Information, Version 43, Effective March 16, 2026 (full-volume PDF)",
+    "reliability": "primary-doc",
+    "source_kind": "normative filer-facing manual (general)",
+    "cached_file": "filer-manual-vol1-v43.pdf",
+    "content_type": "application/pdf",
+    "sha256_of_cached_bytes": "1abb4c0faf4ce9261fddc147fb2cf28ffe4ba434b0cc7420707c0d001511aeb7",
+    "supports": [
+      "SEC's standing statement in the manual that EDGAR accepts submissions 6 a.m. to 10 p.m. Eastern Time, citing Rule 12 of Regulation S-T.",
+      "Explicit deferral of filing-date semantics to Rule 13 of Regulation S-T (17 CFR 232.13): the legally operative statement is in the CFR, not the manual."
+    ],
+    "does_not_support": [
+      "No timezone statement for acceptance timestamps as data fields.",
+      "No mention of ACCEPTANCE-DATETIME."
+    ],
+    "quotes": [
+      {
+        "text": "The SEC accepts electronic submissions on EDGAR Monday through Friday, except federal holidays, from 6 a.m. to 10 p.m. Eastern Time. See also Rule 12 of Regulation S-T, 17 CFR 232.12. Rule 13 of Regulation S-T, 17 CFR 232.13, governs the date upon which electronic submissions are deemed filed with the SEC.",
+        "locator": "p. 2 (section 2 Filing Times)",
+        "supports": "operating hours and explicit pointer to 17 CFR 232.12 and 232.13"
+      }
+    ]
+  },
+  {
+    "id": "S10",
+    "url": "https://www.sec.gov/files/edgar/pds_dissemination_spec.pdf",
+    "url_requested": "https://www.sec.gov/info/edgar/specifications/pds_dissemination_spec.pdf",
+    "final_url": "https://www.sec.gov/files/edgar/pds_dissemination_spec.pdf",
+    "http_status": 200,
+    "retrieved_at_utc": "2026-11-13T18:24:12Z",
+    "title": "EDGAR Public Dissemination Service (PDS) Technical Specification, Version 2.0, March 2025 (every page watermarked DRAFT)",
+    "reliability": "primary-doc",
+    "source_kind": "SEC technical specification for the dissemination feed - but a DRAFT",
+    "cached_file": "pds-spec-current.pdf",
+    "content_type": "application/pdf",
+    "sha256_of_cached_bytes": "fd9d0359cf0687c00536d57d2aad9dc7ab9ce3625e7ee545977ee11f97bbf165",
+    "supports": [
+      "The dissemination feed control block carries Acceptance Date (YYYYMMDD) and Acceptance Time defined as 'Time (EST) at which the submission was accepted by EDGAR. Format is HHMMSS.'",
+      "The spec claims to list all SGML tags used within EDGAR submission headers; that list contains FILED AS OF DATE (FILING-DATE) and RECEIVED DATE (RECEIVED-DATE) but NOT ACCEPTANCE-DATETIME.",
+      "The only dissemination timestamp in the spec is TIMESTAMP, expressly limited to post-acceptance corrections.",
+      "FILED AS OF DATE is defined as the EDGAR assigned official filing date, distinct from any acceptance time."
+    ],
+    "does_not_support": [
+      "Does NOT define or mention ACCEPTANCE-DATETIME anywhere (0 occurrences of that token).",
+      "Does NOT provide a dissemination timestamp for ordinary filings.",
+      "Its EST label is not stated to be DST-aware.",
+      "It is marked DRAFT on every page, so it is not a settled normative document."
+    ],
+    "quotes": [
+      {
+        "text": "Receipt Date || 8 || Date the submission was received by EDGAR. Format is || YYYYMMDD. || Acceptance Date || 8 || Date the submission was accepted by EDGAR. Format is || YYYYMMDD.",
+        "locator": "p. 9 (section 2.1 Control Block)",
+        "supports": "control-block Receipt Date vs Acceptance Date definitions"
+      },
+      {
+        "text": "Acceptance Time || 6 || Time (EST) at which the submission was accepted by EDGAR. || Format is HHMMSS.",
+        "locator": "p. 10 (section 2.1 Control Block)",
+        "supports": "THE documented Time (EST) acceptance-time definition"
+      },
+      {
+        "text": "3.2 EDGAR Header and Document SGML Tag Identification The following is a list of all SGML tags used within EDGAR submission headers and ASCII/SGML documents. For a complete definition of these tags, see Section 4.3 EDGAR Header and Document Tag Definitions.",
+        "locator": "p. 14 (section 3.2)",
+        "supports": "claim of completeness for the SGML tag inventory that follows"
+      },
+      {
+        "text": "TIMESTAMP TAG: <TIMESTAMP> DESCRIPTION: Edgar Dissemination date-time, used for Post Acceptance Corrections only. Defines the time which the correction is disseminated by EDGAR, supplied by the R/A Subsystem. Optional.",
+        "locator": "p. 41 (section 4.3 tag definitions)",
+        "supports": "TIMESTAMP is a DISSEMINATION date-time but ONLY for post-acceptance corrections"
+      },
+      {
+        "text": "FILED AS OF DATE TAG:",
+        "locator": "p. 45",
+        "supports": "FILED AS OF DATE maps to FILING-DATE (no acceptance tag in this inventory)"
+      },
+      {
+        "text": "DESCRIPTION: EDGAR assigned official filing date, or post acceptance new filing date (Post Acceptance Correction). Required.",
+        "locator": "p. 46",
+        "supports": "definition of the official filing date"
+      }
+    ]
+  },
+  {
+    "id": "S11",
+    "url": "https://www.sec.gov/info/edgar/pdsdissemspec910.pdf",
+    "url_requested": null,
+    "final_url": "https://www.sec.gov/info/edgar/pdsdissemspec910.pdf",
+    "http_status": 200,
+    "retrieved_at_utc": "2026-11-13T18:21:59Z",
+    "title": "EDGAR Public Dissemination Service Technical Specification (earlier version; 57 pages; no cover date, filename suggests 2010-09)",
+    "reliability": "primary-doc",
+    "source_kind": "superseded technical specification, still served by sec.gov",
+    "cached_file": "pds-spec-910.pdf",
+    "content_type": "application/pdf",
+    "sha256_of_cached_bytes": "57f5be8b896d7176512921c32d47ec6eec81211d2753bdffbefc41cf33da9514",
+    "supports": [
+      "Same Time (EST) acceptance-time definition in the control block, showing the phrasing has been stable across spec revisions.",
+      "States there are four (4) types of public disseminations and that the acceptance and dissemination process usually takes no longer than two minutes - SEC treats dissemination as near-simultaneous with acceptance rather than a separately stamped event.",
+      "TIMESTAMP again defined as dissemination date-time for post-acceptance corrections only."
+    ],
+    "does_not_support": [
+      "No ACCEPTANCE-DATETIME tag definition.",
+      "No per-filing dissemination timestamp."
+    ],
+    "quotes": [
+      {
+        "text": "Acceptance Date || 8 || Date the submission was accepted by EDGAR. Format is || YYYYMMDD. || Acceptance Time || 6 || Time (EST) at which the submission was accepted by EDGAR. || Format is HHMMSS.",
+        "locator": "p. 8 (section 2.1 Control Block)",
+        "supports": "control-block Acceptance Date / Acceptance Time (EST)"
+      },
+      {
+        "text": "internet site. The acceptance and dissemination process usually takes no longer than two (2) minutes from the receipt of submission by EDGAR.",
+        "locator": "p. 4 (section 1.0)",
+        "supports": "acceptance and dissemination process usually takes no longer than two minutes"
+      },
+      {
+        "text": "TIMESTAMP TAG: <TIMESTAMP> DESCRIPTION: Edgar Dissemination date-time, used for Post Acceptance Corrections only.",
+        "locator": "p. 24 (section 3.3 tag definitions)",
+        "supports": "TIMESTAMP = Edgar Dissemination date-time, used for Post Acceptance Corrections only"
+      },
+      {
+        "text": "FILED AS OF DATE <FILING-DATE>",
+        "locator": "p. 12 (section 3.2 tag identification)",
+        "supports": "FILED AS OF DATE is FILING-DATE; no acceptance tag is listed"
+      },
+      {
+        "text": "EDGAR assigned official filing date, or post acceptance new filing date (Post Acceptance Correction). Required.",
+        "locator": "p. 27 (section 3.3)",
+        "supports": "FILED AS OF DATE definition"
+      }
+    ]
+  },
+  {
+    "id": "S12",
+    "url": "https://www.sec.gov/info/edgar/specifications/pds-dissemination-spec022315.pdf",
+    "url_requested": null,
+    "final_url": "https://www.sec.gov/info/edgar/specifications/pds-dissemination-spec022315.pdf",
+    "http_status": 200,
+    "retrieved_at_utc": "2026-11-13T18:22:01Z",
+    "title": "EDGAR Public Dissemination Service (PDS) Technical Specification, Updated February 23, 2015",
+    "reliability": "primary-doc",
+    "source_kind": "dated intermediate revision of the PDS spec",
+    "cached_file": "pds-spec-022315.pdf",
+    "content_type": "application/pdf",
+    "sha256_of_cached_bytes": "b80cc90b5b7a55c37b661cc829a1a5165dbdc066abce70f767d382ed67e4605d",
+    "supports": [
+      "The same (EST) acceptance-time definition persisted through the 2015 revision - three independent spec revisions all say EST and none says DST."
+    ],
+    "does_not_support": [
+      "No ACCEPTANCE-DATETIME tag; no dissemination timestamp for ordinary filings."
+    ],
+    "quotes": [
+      {
+        "text": "Acceptance Date || 8 || Date the submission was accepted by EDGAR. Format is || YYYYMMDD. || Acceptance Time || 6 || Time (EST) at which the submission was accepted by EDGAR.",
+        "locator": "p. 9 (section 2.1 Control Block)",
+        "supports": "2015 revision: Acceptance Date / Acceptance Time (EST)"
+      }
+    ]
+  },
+  {
+    "id": "S13",
+    "url": "https://www.govinfo.gov/content/pkg/CFR-2025-title17-vol3/xml/CFR-2025-title17-vol3-sec232-13.xml",
+    "url_requested": null,
+    "final_url": "https://www.govinfo.gov/content/pkg/CFR-2025-title17-vol3/xml/CFR-2025-title17-vol3-sec232-13.xml",
+    "http_status": 200,
+    "retrieved_at_utc": "2026-11-13T18:24:13Z",
+    "title": "17 CFR 232.13 - Date of filing; adjustment of filing date (Regulation S-T Rule 13); GPO/govinfo CFR compilation dated 2025-04-01",
+    "reliability": "primary-doc",
+    "source_kind": "federal regulation (legally operative text)",
+    "cached_file": "govinfo-232-13.xml",
+    "content_type": "application/xml",
+    "sha256_of_cached_bytes": "094bd92f8fdea6394ac29962681eec73a9e23262e254192f381a4a064d86f6bd",
+    "supports": [
+      "The legally operative rule is the business day on which a filing is received by the Commission (receipt-based), subject to conditions.",
+      "The 5:30 p.m. cut-off is defined in terms of Eastern Standard Time or Eastern Daylight Saving Time, whichever is currently in effect - the regulation is explicitly DST-aware.",
+      "Special later cut-offs (10 p.m.) exist for Rule 462(b) registrations and for forms 3/4/5, 144, 13D/13G, 14N.",
+      "The rule time-stamps the moment a direct transmission commences, not the moment EDGAR finishes accepting."
+    ],
+    "does_not_support": [
+      "It does not mention EDGAR's ACCEPTANCE-DATETIME field or any data format.",
+      "It does not define a public-dissemination timestamp."
+    ],
+    "quotes": [
+      {
+        "text": "(1) Except as provided in paragraph (b) of this section, the business day on which a filing is received by the Commission shall be the date of filing thereof, if:",
+        "locator": "section 232.13(a)(1)",
+        "supports": "filing date = business day of receipt, subject to conditions"
+      },
+      {
+        "text": "(2) If the conditions of paragraph (a)(1) of this section are otherwise satisfied, all filings submitted by direct transmission commencing on or before 5:30 p.m. Eastern Standard Time or Eastern Daylight Saving Time, whichever is currently in effect, shall be deemed filed on the same business day, and all filings submitted by direct transmission commencing after 5:30 p.m. Eastern Standard Time or Eastern Daylight Saving Time, whichever is currently in effect, shall be deemed filed as of the next business day.",
+        "locator": "section 232.13(a)(2)",
+        "supports": "THE decisive legal statement: 5:30 p.m. Eastern Standard/Daylight time, DST-aware, next business day otherwise"
+      },
+      {
+        "text": "(4) Notwithstanding paragraph (a)(2) of this section, a Form 3, 4, or 5 (referenced in §§ 249.103, 249.104, and 249.105 of this chapter, respectively), a Schedule 14N (referenced in § 240.14n-101 of this chapter), a Form 144 (referenced in § 239.144 of this chapter), or a Schedule 13D or Schedule 13G, inclusive of any amendments thereto (§§ 240.13d-101 and 240.13d-102 of this chapter), submitted by direct transmission commencing on or before 10 p.m. Eastern Standard Time or Eastern Daylight Time, whichever is currently in effect, shall be deemed filed on the same business day.",
+        "locator": "section 232.13(a)(4)",
+        "supports": "10 p.m. cut-off for forms 3/4/5, 144, 13D/13G, 14N"
+      }
+    ]
+  },
+  {
+    "id": "S14",
+    "url": "https://www.govinfo.gov/content/pkg/CFR-2025-title17-vol3/xml/CFR-2025-title17-vol3-sec232-12.xml",
+    "url_requested": null,
+    "final_url": "https://www.govinfo.gov/content/pkg/CFR-2025-title17-vol3/xml/CFR-2025-title17-vol3-sec232-12.xml",
+    "http_status": 200,
+    "retrieved_at_utc": "2026-11-13T18:24:13Z",
+    "title": "17 CFR 232.12 - Business hours of the Commission (Regulation S-T Rule 12); GPO/govinfo CFR compilation dated 2025-04-01",
+    "reliability": "primary-doc",
+    "source_kind": "federal regulation",
+    "cached_file": "govinfo-232-12.xml",
+    "content_type": "application/xml",
+    "sha256_of_cached_bytes": "8daaffdc87b9221dc93c06dd3adb3c6df16d49e49476eb97b1a8ee361444c113",
+    "supports": [
+      "Direct transmission is permitted 6 a.m. to 10 p.m. Eastern Standard Time or Eastern Daylight Saving Time, whichever is currently in effect."
+    ],
+    "does_not_support": [
+      "No data-field or dissemination-timestamp content."
+    ],
+    "quotes": [
+      {
+        "text": "Submissions by direct transmission. Electronic filings and other documents may be submitted to the Commission each day, except Saturdays, Sundays, and Federal holidays, from 6 a.m. to 10 p.m., Eastern Standard Time or Eastern Daylight Saving Time, whichever is currently in effect.",
+        "locator": "section 232.12(c)",
+        "supports": "EDGAR direct-transmission hours, DST-aware"
+      }
+    ]
+  },
+  {
+    "id": "S15",
+    "url": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000064670&type=8-K&output=atom",
+    "url_requested": null,
+    "final_url": "https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000064670&type=8-K&output=atom",
+    "http_status": 200,
+    "retrieved_at_utc": "2026-11-13T18:22:34Z",
+    "title": "EDGAR company filing Atom feed (CIK 0000064670, form 8-K) - SEC",
+    "reliability": "primary-doc",
+    "source_kind": "SEC-published data artifact (no accompanying documentation)",
+    "cached_file": "atom-cik-0000064670-8K.xml",
+    "content_type": "application/atom+xml",
+    "sha256_of_cached_bytes": "79be79301244d252725e958c1ea3ab64dadfdb87f4a83cdb1ffb4731179abdb3",
+    "supports": [
+      "Each entry carries updated as an ISO-8601 date-time WITH an explicit UTC offset.",
+      "Across the 40 entries the offset is -05:00 for winter dates and -04:00 for summer dates: the feed serialises a DST-aware US Eastern clock, not a fixed EST clock.",
+      "The feed contains no published element - only updated.",
+      "For the filings cross-checked here, updated equals the raw header ACCEPTANCE-DATETIME digits to the second (see the inference section)."
+    ],
+    "does_not_support": [
+      "SEC publishes no documentation of what updated means for EDGAR feeds (see S21).",
+      "It does not say whether updated is acceptance, dissemination, or last-modification time."
+    ],
+    "quotes": [
+      {
+        "text": "        <accession-number>0000064670-15-000002</accession-number>\n        <act>34</act>\n        <file-number>001-07707</file-number>\n        <file-number-href>https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&amp;filenum=001-07707&amp;owner=include&amp;count=40</file-number-href>\n        <filing-date>2015-02-17</filing-date>\n        <filing-href>https://www.sec.gov/Archives/edgar/data/64670/000006467015000002/0000064670-15-000002-index.htm</filing-href>\n        <filing-type>8-K</filing-type>",
+        "locator": "entry for accession 0000064670-15-000002",
+        "supports": "entry metadata including filing-date 2015-02-17"
+      },
+      {
+        "text": "<updated>2015-02-17T07:18:53-05:00</updated>",
+        "locator": "same entry",
+        "supports": "winter filing: updated 2015-02-17T07:18:53-05:00"
+      },
+      {
+        "text": "<updated>2013-08-20T07:33:33-04:00</updated>",
+        "locator": "entry for accession 0000064670-13-000009",
+        "supports": "summer filing: updated 2013-08-20T07:33:33-04:00"
+      },
+      {
+        "text": "<updated>2026-11-13T13:22:34-05:00</updated>",
+        "locator": "feed-level metadata",
+        "supports": "feed generation timestamp with offset"
+      }
+    ]
+  },
+  {
+    "id": "S16",
+    "url": "https://www.sec.gov/Archives/edgar/daily-index/2024/QTR4/form.20241101.idx",
+    "url_requested": null,
+    "final_url": "https://www.sec.gov/Archives/edgar/daily-index/2024/QTR4/form.20241101.idx",
+    "http_status": 200,
+    "retrieved_at_utc": "2026-11-13T18:22:36Z",
+    "title": "EDGAR daily index form.idx for 2024-11-01 (SEC-published artifact)",
+    "reliability": "primary-doc",
+    "source_kind": "SEC-published data artifact",
+    "cached_file": "form-idx-sample.bin",
+    "content_type": "binary/octet-stream",
+    "sha256_of_cached_bytes": "22f0fd036edb302194b438203e037f1304007929fc105adda1b8eded972d6a40",
+    "supports": [
+      "Columns are Form Type / Company Name / CIK / Date Filed / File Name: Date Filed is YYYYMMDD with no time of day.",
+      "The only timestamp in the file is the file-level Last Data Received date."
+    ],
+    "does_not_support": [
+      "No acceptance time, no dissemination time, no timezone."
+    ],
+    "quotes": [
+      {
+        "text": "Description:           Daily Index of EDGAR Dissemination Feed by Form Type\nLast Data Received:    Nov  1, 2024\nComments:              webmaster@sec.gov\nAnonymous FTP:         ftp://ftp.sec.gov/edgar/\n\n\n\n\nForm Type   Company Name                                                  CIK\n      Date Filed  File Name\n---------------------------------------------------------------------------------------------------------------------------------------------",
+        "locator": "file header block",
+        "supports": "complete column header; a single Date Filed column, no time of day"
+      },
+      {
+        "text": "1-A POS Armed Forces Brewing Company, Inc. 1832987 20241101 edgar/data/1832987/0001832987-24-000012.txt",
+        "locator": "first data row",
+        "supports": "a real row: 20241101 is the only date, and it is date-only"
+      }
+    ]
+  },
+  {
+    "id": "S17",
+    "url": "https://www.sec.gov/Archives/edgar/daily-index/2024/QTR4/company.20241101.idx",
+    "url_requested": null,
+    "final_url": "https://www.sec.gov/Archives/edgar/daily-index/2024/QTR4/company.20241101.idx",
+    "http_status": 200,
+    "retrieved_at_utc": "2026-11-13T18:22:37Z",
+    "title": "EDGAR daily index company.idx for 2024-11-01 (SEC-published artifact)",
+    "reliability": "primary-doc",
+    "source_kind": "SEC-published data artifact",
+    "cached_file": "company-idx-sample.bin",
+    "content_type": "binary/octet-stream",
+    "sha256_of_cached_bytes": "fb112778bdf7dfb8d1765082a4ee31c68f2609d54f034419e1dce9039bcb79ca",
+    "supports": [
+      "Same field set sorted by company name; still a single date-only Date Filed column."
+    ],
+    "does_not_support": [
+      "No time of day, no timezone."
+    ],
+    "quotes": [
+      {
+        "text": "Description:           Daily Index of EDGAR Dissemination Feed by Company Name\nLast Data Received:    Nov  1, 2024\nComments:              webmaster@sec.gov\nAnonymous FTP:         ftp://ftp.sec.gov/edgar/\n\n\n\n\nCompany Name                                                  Form Type   CIK\n      Date Filed  File Name\n-------------------------------------------------------------------------------------------------------------------------------------------------",
+        "locator": "file header block",
+        "supports": "company-sorted variant of the daily index header"
+      }
+    ]
+  },
+  {
+    "id": "S18",
+    "url": "https://www.sec.gov/Archives/edgar/daily-index/",
+    "url_requested": null,
+    "final_url": "https://www.sec.gov/Archives/edgar/daily-index/",
+    "http_status": 200,
+    "retrieved_at_utc": "2026-11-13T18:22:02Z",
+    "title": "EDGAR daily-index directory listing - SEC",
+    "reliability": "primary-doc",
+    "source_kind": "directory index",
+    "cached_file": "daily-index-root.html",
+    "content_type": "text/html",
+    "sha256_of_cached_bytes": "c80c32192ab0ff0e6df9e7edcb62e20c0fb050925c61eb1ac30d6c930d97ff16",
+    "supports": [
+      "The daily-index tree is organised by year; the listing exposes only names, sizes and Last Modified times of index files, not per-filing times."
+    ],
+    "does_not_support": [
+      "No per-filing timestamps."
+    ],
+    "quotes": [
+      {
+        "text": "Name || Size || Last Modified 1994 || 11/24/2017 09:00:40 AM",
+        "locator": "table header of the listing",
+        "supports": "only file-level Last Modified metadata is exposed"
+      }
+    ]
+  },
+  {
+    "id": "S19",
+    "url": "https://efts.sec.gov/LATEST/search-index?q=%22accepted%22&dateRange=custom&startdt=2024-11-01&enddt=2024-11-01&forms=8-K",
+    "url_requested": null,
+    "final_url": "https://efts.sec.gov/LATEST/search-index?q=%22accepted%22&dateRange=custom&startdt=2024-11-01&enddt=2024-11-01&forms=8-K",
+    "http_status": 200,
+    "retrieved_at_utc": "2026-11-13T18:24:16Z",
+    "title": "EDGAR full-text search backing API response (JSON) for 2024-11-01 8-K filings - SEC",
+    "reliability": "primary-doc",
+    "source_kind": "SEC-published data artifact (undocumented backing endpoint of the public search UI)",
+    "cached_file": "fts-api.json",
+    "content_type": "application/json",
+    "sha256_of_cached_bytes": "cae67b86e91b5485b0e1dedf9b0b4d1de1e696bfaf58b5e7f589de482fc6eb0a",
+    "supports": [
+      "Each hit's _source exposes ciks, period_ending, file_num, display_names, root_forms, file_date, sics, form, adsh, film_num and similar; file_date is date-only (YYYY-MM-DD).",
+      "There is no acceptance or dissemination timestamp in the search payload."
+    ],
+    "does_not_support": [
+      "No time of day and no timezone anywhere in the result payload."
+    ],
+    "quotes": [
+      {
+        "text": "\"file_date\":\"2024-11-01\"",
+        "locator": "one hit's _source",
+        "supports": "the only date field in a full-text-search hit is date-only"
+      }
+    ]
+  },
+  {
+    "id": "S20",
+    "url": "https://www.sec.gov/edgar/search/",
+    "url_requested": null,
+    "final_url": "https://www.sec.gov/edgar/search/",
+    "http_status": 200,
+    "retrieved_at_utc": "2026-11-13T18:24:15Z",
+    "title": "EDGAR Full-Text Search UI - SEC",
+    "reliability": "primary-doc",
+    "source_kind": "public search interface",
+    "cached_file": "efs-fts-page.html",
+    "content_type": "text/html",
+    "sha256_of_cached_bytes": "f579d267808650fff72d0cde0e4beb1a23a39dbe4a765caac6b6d1117e3b50c9",
+    "supports": [
+      "The result grid offers a Filed column (date-only) and no time-of-day column."
+    ],
+    "does_not_support": [
+      "No timestamps beyond the filing date are shown to users."
+    ],
+    "quotes": [
+      {
+        "text": "Form & File || Filed || Reporting for || Filing entity/person || CIK || Located || Incorporated || File number || Film number || MA-I Individual",
+        "locator": "results grid column header row",
+        "supports": "user-visible columns include Filed only (page shell; grid is rendered client-side)"
+      }
+    ]
+  },
+  {
+    "id": "S21",
+    "url": "https://www.sec.gov/about/rss-feeds",
+    "url_requested": null,
+    "final_url": "https://www.sec.gov/about/rss-feeds",
+    "http_status": 200,
+    "retrieved_at_utc": "2026-11-13T18:26:46Z",
+    "title": "RSS Feeds - SEC, Last Reviewed or Updated: June 24, 2026",
+    "reliability": "primary-doc",
+    "source_kind": "SEC documentation of its RSS/Atom offerings",
+    "cached_file": "rss-feeds-doc.html",
+    "content_type": "text/html; charset=utf-8",
+    "sha256_of_cached_bytes": "ce202d7db97a4c193900c921e1a9b9a3e6236de4e802e45a7ce4dd272311022a",
+    "supports": [
+      "SEC documents that EDGAR search results are available as RSS feeds and which searches offer them.",
+      "It says nothing about the meaning, source, or timezone of any feed timestamp element."
+    ],
+    "does_not_support": [
+      "Does not document updated/published semantics."
+    ],
+    "quotes": [
+      {
+        "text": "The following SEC RSS feeds are a helpful online resource for staying current on the most recent materials posted to the SEC website, including EDGAR filings. Most current browsers include an RSS component, allowing the user to subscribe to and aggregate feeds. For more information on using RSS, see RSS Feeds from USA.gov.",
+        "locator": "intro",
+        "supports": "framing of SEC feeds"
+      },
+      {
+        "text": "## EDGAR Search RSS Feeds\nSome EDGAR search results can be captured as RSS Feeds. The RSS link on various EDGAR searches is located on the left, immediately above the filings result list.\nCompany Search. Using the Company Search to find the company of interest, you can subscribe to this search to receive the most recent filings from this company. You can further filter your results by Filing Type.\nLatest Filings. Using the Latest Filings Search, you can subscribe to all filings, or filter by company, CIK, or Form Type. You can also choose to include, exclude, or select only Ownership filings (Forms 3, 4, 5). For example, here are the most recent Form 10-Ks (Annual Reports).",
+        "locator": "section: EDGAR Search RSS Feeds",
+        "supports": "the complete EDGAR-feed documentation SEC offers - no timestamp semantics"
+      },
+      {
+        "text": "Last Reviewed or Updated: June 24, 2026",
+        "locator": "(footer)",
+        "supports": "page currency"
+      }
+    ]
+  },
+  {
+    "id": "S22",
+    "url": "https://www.sec.gov/search-filings/public-dissemination-service-system-contact",
+    "url_requested": null,
+    "final_url": "https://www.sec.gov/search-filings/public-dissemination-service-system-contact",
+    "http_status": 200,
+    "retrieved_at_utc": "2026-11-13T18:24:14Z",
+    "title": "EDGAR Public Dissemination Service (PDS) System - SEC, Last Reviewed or Updated: Aug. 1, 2025",
+    "reliability": "primary-doc",
+    "source_kind": "SEC page describing the paid dissemination feed",
+    "cached_file": "pds-page.html",
+    "content_type": "text/html; charset=utf-8",
+    "sha256_of_cached_bytes": "76c99d5871ec464598696cc668ec28fe7bfb16310ff9e24dfd6c9ff2e8ef0709",
+    "supports": [
+      "PDS exists to give the public an accurate, complete and fast method of obtaining all accepted and valid EDGAR filings; transmission is as soon as reasonably feasible after receipt by PDS.",
+      "SEC states the system was changed specifically to ensure SEC.gov availability precedes PDS availability - so PDS delivery is not even the first public moment.",
+      "This is the closest SEC comes to a public-dissemination definition, and it deliberately avoids promising a per-filing dissemination time."
+    ],
+    "does_not_support": [
+      "No per-filing dissemination timestamp is published or promised."
+    ],
+    "quotes": [
+      {
+        "text": "The EDGAR Public Dissemination Service (PDS) System became operational on November 1, 1998, to provide the public an accurate, complete and fast method of obtaining all accepted and valid EDGAR filings. This privatized PDS System is managed by Maximus Federal Consulting, LLC and is the primary source to receive a dedicated feed of all public EDGAR filings. Subscribers are required to enter into a paid Subscription Agreement with Maximus Federal Consulting, LLC to access this service.",
+        "locator": "page body",
+        "supports": "PDS purpose and paid-subscription nature"
+      },
+      {
+        "text": "Transmission by Internet connection of all public filings acquired and accepted by EDGAR as soon as reasonably feasible following receipt of filing data by the PDS.",
+        "locator": "section: PDS subscriber services include",
+        "supports": "as soon as reasonably feasible - explicitly not a fixed timestamp"
+      },
+      {
+        "text": "The EDGAR PDS New Subscriber Document (updated 08/01/2025) provides configuration, testing, maintenance, and billing information to potential and existing subscribers of the EDGAR public dissemination service feed. This document was updated to reflect modifications to the EDGAR system to ensure that EDGAR filings are available to the public on the SEC website before such filings are made available to the public dissemination system (PDS).",
+        "locator": "section: EDGAR PDS New Subscriber Document",
+        "supports": "SEC.gov availability is engineered to precede PDS availability"
+      },
+      {
+        "text": "Last Reviewed or Updated: Aug. 1, 2025",
+        "locator": "(footer)",
+        "supports": "page currency"
+      }
+    ]
+  },
+  {
+    "id": "S23",
+    "url": "https://www.sec.gov/Archives/edgar/data/64670/000006467015000002/0000064670-15-000002-index.htm",
+    "url_requested": null,
+    "final_url": "https://www.sec.gov/Archives/edgar/data/64670/000006467015000002/0000064670-15-000002-index.htm",
+    "http_status": 200,
+    "retrieved_at_utc": "2026-11-13T18:24:17Z",
+    "title": "SEC filing detail page for accession 0000064670-15-000002 (Medtronic 8-K, 2015-02-17)",
+    "reliability": "primary-doc",
+    "source_kind": "SEC-published web page rendered from the same filing metadata",
+    "cached_file": "filing-index-htm.html",
+    "content_type": "text/html",
+    "sha256_of_cached_bytes": "4b9bdc4c033a95af9955c172b73159317a9b582346d913843066ca95466c0d2f",
+    "supports": [
+      "SEC's public filing page displays two distinct fields: Filing Date (date only) and Accepted (date AND time, no timezone label).",
+      "The displayed Accepted value is 2015-02-17 07:18:53, identical to the raw header ACCEPTANCE-DATETIME 20150217071853."
+    ],
+    "does_not_support": [
+      "The page prints no timezone for Accepted."
+    ],
+    "quotes": [
+      {
+        "text": "Filing Date 2015-02-17 Accepted 2015-02-17 07:18:53 Documents 3",
+        "locator": "Filing Detail header block (HTML tags stripped)",
+        "supports": "Filing Date vs Accepted fields as SEC displays them, with no timezone"
+      }
+    ]
+  },
+  {
+    "id": "S24",
+    "url": "https://www.sec.gov/Archives/edgar/data/64670/000006467015000002/0000064670-15-000002.hdr.sgml",
+    "url_requested": null,
+    "final_url": "https://www.sec.gov/Archives/edgar/data/64670/000006467015000002/0000064670-15-000002.hdr.sgml",
+    "http_status": 200,
+    "retrieved_at_utc": "2026-11-13T18:25:16Z",
+    "title": "Raw SGML header (.hdr.sgml) for accession 0000064670-15-000002 (Medtronic 8-K)",
+    "reliability": "primary-doc",
+    "source_kind": "SEC-published data artifact - the exact header block in question 4",
+    "cached_file": "hdr-sgml-medtronic-8k.bin",
+    "content_type": "text/sgml",
+    "sha256_of_cached_bytes": "2566a99732347ffaa12451319e7bbe105f36ef95945d46a723a7d6d6e5a6b54b",
+    "supports": [
+      "The header contains ACCEPTANCE-DATETIME 20150217071853 with no timezone marker, no offset and no suffix.",
+      "It also contains FILING-DATE 20150217 and PUBLIC-DOCUMENT-COUNT 3, matching the field names in S4 and S10.",
+      "There is no TIMEZONE, UTC-OFFSET or equivalent element anywhere in the header."
+    ],
+    "does_not_support": [
+      "The header itself documents nothing about its own timezone."
+    ],
+    "quotes": [
+      {
+        "text": "<SEC-HEADER>0000064670-15-000002.hdr.sgml : 20150216\n<ACCEPTANCE-DATETIME>20150217071853\n<ACCESSION-NUMBER>0000064670-15-000002\n<TYPE>8-K\n<PUBLIC-DOCUMENT-COUNT>3\n<PERIOD>20150217\n<ITEMS>2.02\n<ITEMS>9.01\n<FILING-DATE>20150217\n<DATE-OF-FILING-DATE-CHANGE>20150217",
+        "locator": "whole file is 41 lines",
+        "supports": "acceptance datetime, accession, public document count, filing date, date as of change"
+      }
+    ]
+  },
+  {
+    "id": "S25",
+    "url": "https://www.sec.gov/Archives/edgar/data/64670/000006467015000002/0000064670-15-000002.txt",
+    "url_requested": null,
+    "final_url": "https://www.sec.gov/Archives/edgar/data/64670/000006467015000002/0000064670-15-000002.txt",
+    "http_status": 200,
+    "retrieved_at_utc": "2026-11-13T18:25:17Z",
+    "title": "Complete submission text file (.txt) for accession 0000064670-15-000002 - leading header block",
+    "reliability": "primary-doc",
+    "source_kind": "SEC-published data artifact",
+    "cached_file": "fullsub-txt-medtronic-8k.txt",
+    "content_type": "text/plain",
+    "sha256_of_cached_bytes": "e01a671bc4abe77aaf84882d68d94e23571a673636571f8886893f6dc8aabb0e",
+    "supports": [
+      "The full-submission .txt begins with SEC-DOCUMENT / SEC-HEADER and carries the same ACCEPTANCE-DATETIME 20150217071853 as the .hdr.sgml, followed by the label/value header fields (PUBLIC DOCUMENT COUNT, FILED AS OF DATE, DATE AS OF CHANGE).",
+      "Confirms the ACCEPTANCE-DATETIME element is present in the very file the SEC FAQ points at (S4)."
+    ],
+    "does_not_support": [
+      "No timezone marker of any kind."
+    ],
+    "quotes": [
+      {
+        "text": "<SEC-DOCUMENT>0000064670-15-000002.txt : 20150218\n<SEC-HEADER>0000064670-15-000002.hdr.sgml : 20150216\n<ACCEPTANCE-DATETIME>20150217071853\nACCESSION NUMBER:\t\t0000064670-15-000002\nCONFORMED SUBMISSION TYPE:\t8-K\nPUBLIC DOCUMENT COUNT:\t\t3\nCONFORMED PERIOD OF REPORT:\t20150217\nITEM INFORMATION:\t\tResults of Operations and Financial Condition\nITEM INFORMATION:\t\tFinancial Statements and Exhibits\nFILED AS OF DATE:\t\t20150217\nDATE AS OF CHANGE:\t\t20150217",
+        "locator": "first 11 lines of the file",
+        "supports": "the header block as it appears in the complete submission text file"
+      }
+    ]
+  },
+  {
+    "id": "S26",
+    "url": "https://www.sec.gov/Archives/edgar/data/64670/000006467014000008/0000064670-14-000008.hdr.sgml",
+    "url_requested": null,
+    "final_url": "https://www.sec.gov/Archives/edgar/data/64670/000006467014000008/0000064670-14-000008.hdr.sgml",
+    "http_status": 200,
+    "retrieved_at_utc": "2026-11-13T18:25:41Z",
+    "title": "Raw SGML header for accession 0000064670-14-000008 (Medtronic 8-K, accepted 2014-05-20, DST in effect)",
+    "reliability": "primary-doc",
+    "source_kind": "SEC-published data artifact (spot check)",
+    "cached_file": "hdr-0000064670-14-000008.bin",
+    "content_type": "text/sgml",
+    "sha256_of_cached_bytes": "a1b8cff8d0f0818abac4da6353193b599b99e110bc3037f53eadab6d29adb243",
+    "supports": [
+      "A summer (EDT) filing's header gives ACCEPTANCE-DATETIME 20140520072054 with no offset."
+    ],
+    "does_not_support": [
+      "No timezone marker in the header."
+    ],
+    "quotes": [
+      {
+        "text": "<SEC-HEADER>0000064670-14-000008.hdr.sgml : 20140520\n<ACCEPTANCE-DATETIME>20140520072054\n<ACCESSION-NUMBER>0000064670-14-000008",
+        "locator": "file head",
+        "supports": "raw acceptance datetime for a DST-period filing"
+      }
+    ]
+  },
+  {
+    "id": "S27",
+    "url": "https://www.sec.gov/Archives/edgar/data/64670/000006467013000009/0000064670-13-000009.hdr.sgml",
+    "url_requested": null,
+    "final_url": "https://www.sec.gov/Archives/edgar/data/64670/000006467013000009/0000064670-13-000009.hdr.sgml",
+    "http_status": 200,
+    "retrieved_at_utc": "2026-11-13T18:25:42Z",
+    "title": "Raw SGML header for accession 0000064670-13-000009 (Medtronic 8-K, accepted 2013-08-20, DST in effect)",
+    "reliability": "primary-doc",
+    "source_kind": "SEC-published data artifact (spot check)",
+    "cached_file": "hdr-0000064670-13-000009.bin",
+    "content_type": "text/sgml",
+    "sha256_of_cached_bytes": "0d50746939baf9b4c1c7066ecf751c7af83aecbb52eb3c3ab9ff0065c20a1a43",
+    "supports": [
+      "Second summer (EDT) header: ACCEPTANCE-DATETIME 20130820073333, no offset."
+    ],
+    "does_not_support": [
+      "No timezone marker in the header."
+    ],
+    "quotes": [
+      {
+        "text": "<SEC-HEADER>0000064670-13-000009.hdr.sgml : 20130820\n<ACCEPTANCE-DATETIME>20130820073333\n<ACCESSION-NUMBER>0000064670-13-000009",
+        "locator": "file head",
+        "supports": "second raw acceptance datetime for a DST-period filing"
+      }
+    ]
+  },
+  {
+    "id": "S28",
+    "url": "https://data.sec.gov/submissions/CIK0000064670.json",
+    "url_requested": null,
+    "final_url": "https://data.sec.gov/submissions/CIK0000064670.json",
+    "http_status": 200,
+    "retrieved_at_utc": "2026-11-13T18:26:45Z",
+    "title": "data.sec.gov submissions API payload for CIK 0000064670 (SEC-published artifact)",
+    "reliability": "primary-doc",
+    "source_kind": "SEC-published data artifact - the exact API the study uses",
+    "cached_file": "submissions-json-CIK0000064670.json",
+    "content_type": "application/json",
+    "sha256_of_cached_bytes": "a9fde7d6faf5f42061db5335a3970a00abd01983812393c90367830f7510625b",
+    "supports": [
+      "The submissions JSON serialises acceptance as acceptanceDateTime with a literal Z suffix and millisecond precision, e.g. 2015-02-17T12:18:53.000Z.",
+      "For this CIK all 1001 rows in filings.recent use the same ...000Z shape; no row carries a numeric offset such as -05:00.",
+      "The JSON exposes filingDate separately (date-only), mirroring the .txt FILED AS OF DATE field."
+    ],
+    "does_not_support": [
+      "Nothing in the payload or in SEC documentation says what the Z means or how the value was derived (see S1)."
+    ],
+    "quotes": [
+      {
+        "text": "\"2015-02-17T12:18:53.000Z\"",
+        "locator": "filings.recent.acceptanceDateTime",
+        "supports": "the Z-suffixed serialisation for the same filing whose header reads 20150217071853"
+      }
+    ]
+  }
+]
