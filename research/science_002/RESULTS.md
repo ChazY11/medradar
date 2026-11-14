@@ -35,16 +35,29 @@ about early signal.
 | attributable cleared 510(k)s, 2015-01-01..2026-08-31 | **3,143** |
 | issuer-months constructed | 2,771 |
 | dropped: SEC history shorter than 400 days before t | 397 |
-| dropped: incomplete R&D features | 78 |
+| dropped: incomplete R&D features | **217** (78 of them have no R&D feature at all) |
+| firms contributing at least one row | **46** of 48 |
 | complete-case rows | **2,554** |
 | train (2021-01..2024-12) | 1,772 |
 | holdout (2025-01..2026-06) | **782** |
 | holdout firms / firms in the stratified statistic | 44 / **31** |
 | holdout prevalence | **53.1%** (train 49.9%) |
 
-The holdout has 415 clearance months and 367 empty months. Fifteen of the 44
-holdout firms have only one class and are therefore excluded from every
+The holdout has 415 clearance months and 367 empty months. Thirteen of the 44
+complete-case holdout firms have only one class and are therefore excluded from every
 within-firm statistic; they still contribute to fitting.
+
+> **Audit disclosure (SCIENCE-002R).** Universe membership was decided on
+> clearances through **2026-08-31**, i.e. using events that occur after every
+> training row and, for early rows, after the prediction instant. 17 of the 48 firms
+> would not qualify if eligibility had been decided before the panel began
+> (PROCEPT BioRobotics and Hyperfine have zero pre-2021 clearances). Rebuilding with
+> pre-panel eligibility gives 31 firms, holdout prevalence 0.649 and
+> delta = **-0.011** (permutation p = 0.63, 95% CI [-0.058, +0.042]); the verdict is
+> unchanged. The sample is therefore a **sample selected on the full window**, not an
+> as-of-prediction sample, and the point estimate below should be read as
+> sample-dependent. See `research/science_002r/SELECTION_BIAS.md` and
+> `research/science_002r/ERRATA.md` (E7).
 
 ## 3. Primary result
 
@@ -63,10 +76,12 @@ firm-stratified AUC (unweighted mean of per-firm AUCs, 31 firms).
 
 **Reading.** No positive effect. The point estimate is negative and is not
 significant under either null; the magnitude is driven by a few firms with very
-negative per-firm deltas rather than by a uniform shift. The upper confidence bound
-is the informative part: **a within-firm improvement larger than +0.017 AUC can be
-excluded at 95%** on this holdout. Smaller effects cannot be excluded, and the
-minimum detectable delta at 80% power is **0.055**.
+negative per-firm deltas rather than by a uniform shift. On precision: the bootstrap
+interval puts +0.017 at its upper edge, but an independent leave-one-firm-out
+jackknife gives [-0.100, +0.032] (§9), so a positive within-firm effect of about
++0.03 is *disfavoured but not excluded*. Effects of 0.055 or larger were detectable at
+80% power and were not found. The minimum detectable effect is a property of the
+design, not a bound on the true effect.
 
 ## 4. The model ladder
 
@@ -187,7 +202,8 @@ placebo flagged in section 7. It is reported as a caution, not as a finding.
 | Hanley-McNeil minimum detectable AUC at 80% power | **0.642** |
 | permutation-null sd of delta | 0.0197 |
 | minimum detectable delta at 80% power (2.8 x sd) | **0.055** |
-| 95% CI upper bound on delta | **+0.017** |
+| 95% CI upper bound on delta (cluster bootstrap) | **+0.017** |
+| 95% CI upper bound on delta (leave-one-firm-out jackknife) | **+0.032** |
 
 So: effects of a size that would matter (say +0.05 AUC within firm) were
 detectable and were not found; effects below +0.017 are excluded; effects between
@@ -208,8 +224,11 @@ with a tight null on the upper side and a soft floor on the lower side.
   discrimination is at chance - replicated across two different outcome families.
 * A pooled model does not transfer across firms: leave-one-firm-out AUC is 0.385,
   i.e. worse than chance.
-* Cross-source SEC->FDA linkage is feasible but partial: 8.8% of cleared 510(k)s in
-  the window are attributable to the 48 firms with exact-name evidence only.
+* Cross-source SEC->FDA linkage is feasible but its recall is **unknown**: the 48
+  firms account for 3,143 of 35,680 cleared 510(k)s in the window (8.8% of FDA's
+  filing population by volume), and no public source publishes a firm's true
+  clearance total at legal-entity level. Visible blind spots are enumerated in
+  `research/science_002r/ENTITY_AUDIT.md`.
 
 **Cannot say**
 
