@@ -1,0 +1,94 @@
+{
+ "block_permutation": {
+  "n_used": 2000,
+  "null_mean": -0.006357649389931173,
+  "null_sd": 0.02667953184351773,
+  "p_two_sided": 0.22288855572213892
+ },
+ "jackknife": {
+  "jackknife_ci": [
+   -0.09971825162143717,
+   0.032390312851373185
+  ],
+  "jackknife_mean": -0.033663969385031994,
+  "jackknife_se": 0.03370116440632917,
+  "leave_one_out_max": -0.009786101697866397,
+  "leave_one_out_min": -0.04589721280897751,
+  "n_leave_one_firm_out": 44
+ },
+ "leakage": {
+  "feature_window_disjointness": {
+   "n_rows": 2554,
+   "note": "max clearance date read by a feature must be earlier than the first date in the outcome window",
+   "passed": true,
+   "violations": 0
+  },
+  "future_filing_injection": {
+   "n_changed": 0,
+   "n_checked": 30,
+   "passed": true
+  }
+ },
+ "meta": {
+  "n_holdout": 782,
+  "n_perm": 2000,
+  "n_rows": 2554,
+  "seed": 20261114
+ },
+ "overlap": {
+  "design_effect_note": "with 90-day windows on monthly rows, three consecutive rows measure largely the same window; the number of effectively independent time points per firm is about one third of the number of rows",
+  "label_autocorrelation_holdout": {
+   "lag_1": {
+    "correlation": 0.7170706224503577,
+    "pairs": 738,
+    "window_overlap_fraction": 0.662
+   },
+   "lag_2": {
+    "correlation": 0.5256401707121899,
+    "pairs": 694,
+    "window_overlap_fraction": 0.324
+   },
+   "lag_3": {
+    "correlation": 0.36997378139070053,
+    "pairs": 650,
+    "window_overlap_fraction": 0.0
+   }
+  },
+  "label_autocorrelation_train": {
+   "lag_1": {
+    "correlation": 0.7420476638409339,
+    "pairs": 1729,
+    "window_overlap_fraction": 0.662
+   },
+   "lag_2": {
+    "correlation": 0.5361936557444255,
+    "pairs": 1686,
+    "window_overlap_fraction": 0.324
+   },
+   "lag_3": {
+    "correlation": 0.3913792135952631,
+    "pairs": 1643,
+    "window_overlap_fraction": 0.0
+   }
+  },
+  "n_months_per_firm": 18
+ },
+ "quarterly": {
+  "delta": 0.011590038314176244,
+  "n_firms_stratified": 29,
+  "n_holdout": 260,
+  "n_rows": 844,
+  "n_train": 584,
+  "null_sd": 0.03930737929858413,
+  "p_two_sided": 0.7891054472763618,
+  "prevalence_holdout": 0.5115384615384615,
+  "stratified_B2c": 0.38840996168582376,
+  "stratified_B3c": 0.39999999999999997
+ },
+ "xbrl_restatement": {
+  "n_changed": 0,
+  "n_checked": 40,
+  "note": "a restatement filed after the prediction instant must be invisible",
+  "passed": true
+ }
+}

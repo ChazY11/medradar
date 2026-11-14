@@ -1,0 +1,216 @@
+{
+ "C1_universe_share": {
+  "denominator_all_cleared_510k_in_window": 35680,
+  "distinct_applicants_in_window": 10093,
+  "note": "a property of the universe, not a recall of the firms",
+  "numerator_attributed_clearances": 3143,
+  "share": 0.08808856502242153
+ },
+ "C2_recall": {
+  "candidate_miss_clearances": 444,
+  "candidate_misses_found": 167,
+  "candidate_misses_unadjudicated": true,
+  "denominator": "the firms' true total FDA clearance activity is not published at the legal-entity level, so no recall can be computed from public evidence",
+  "interpretation": "These are applicant strings that carry a registrant's brand token but were not attributed. They are unadjudicated: some are genuinely the same group (a 'dba' name that never appears as an FDA registration, so the owner/operator hop cannot see it), others belong to a different company that shares a word. The count is therefore evidence of a structural blind spot in the name channel, not a measurement of recall.",
+  "top_candidate_misses": [
+   {
+    "applicant_root": "HOWMEDICA OSTEONICS DBA STRYKER ORTHOPAEDICS",
+    "clearances_window": 28,
+    "ticker": "SYK",
+    "token": "STRYKER"
+   },
+   {
+    "applicant_root": "STRYKER SPINE",
+    "clearances_window": 14,
+    "ticker": "SYK",
+    "token": "STRYKER"
+   },
+   {
+    "applicant_root": "ABBOTT DIABETES CARE",
+    "clearances_window": 14,
+    "ticker": "TNDM",
+    "token": "DIABETES"
+   },
+   {
+    "applicant_root": "GE HUALUN MEDICAL SYSTEMS",
+    "clearances_window": 12,
+    "ticker": "GEHC",
+    "token": "GE"
+   },
+   {
+    "applicant_root": "ROCHE DIABETES CARE",
+    "clearances_window": 12,
+    "ticker": "TNDM",
+    "token": "DIABETES"
+   },
+   {
+    "applicant_root": "FX SHOULDER",
+    "clearances_window": 11,
+    "ticker": "SI",
+    "token": "SHOULDER"
+   },
+   {
+    "applicant_root": "HOWMEDICA OSTEONICS A K A STRYKER ORTHOPAEDICS",
+    "clearances_window": 9,
+    "ticker": "SYK",
+    "token": "STRYKER"
+   },
+   {
+    "applicant_root": "STRYKER ORTHOPAEDICS",
+    "clearances_window": 9,
+    "ticker": "SYK",
+    "token": "STRYKER"
+   },
+   {
+    "applicant_root": "ARROW INTERNATIONAL SUBSIDIARY OF TELEFLEX",
+    "clearances_window": 9,
+    "ticker": "TFX",
+    "token": "TELEFLEX"
+   },
+   {
+    "applicant_root": "MEDTRONIC ADVANCED ENERGY",
+    "clearances_window": 7,
+    "ticker": "MDT",
+    "token": "MEDTRONIC"
+   },
+   {
+    "applicant_root": "GE HEALTHCARE COILS INSTRUMENTS",
+    "clearances_window": 7,
+    "ticker": "GEHC",
+    "token": "GE"
+   },
+   {
+    "applicant_root": "STERIS CORPORATIONS",
+    "clearances_window": 7,
+    "ticker": "STE",
+    "token": "STERIS"
+   },
+   {
+    "applicant_root": "BONE SOLUTIONS",
+    "clearances_window": 7,
+    "ticker": "SIBN",
+    "token": "BONE"
+   },
+   {
+    "applicant_root": "ASCENSIA DIABETES CARE U S",
+    "clearances_window": 7,
+    "ticker": "TNDM",
+    "token": "DIABETES"
+   },
+   {
+    "applicant_root": "SURGICAL INFORMATION SCIENCES",
+    "clearances_window": 7,
+    "ticker": "SGHT",
+    "token": "SCIENCES"
+   },
+   {
+    "applicant_root": "BOSTON AESTHETICS",
+    "clearances_window": 6,
+    "ticker": "BSX",
+    "token": "BOSTON"
+   },
+   {
+    "applicant_root": "3M HEALTHCARE",
+    "clearances_window": 6,
+    "ticker": "MMM",
+    "token": "3M"
+   },
+   {
+    "applicant_root": "ARROW INTERNATIONAL A SUBSIDIARY OF TELEFLEX",
+    "clearances_window": 6,
+    "ticker": "TFX",
+    "token": "TELEFLEX"
+   },
+   {
+    "applicant_root": "BAUSCH LOMB",
+    "clearances_window": 6,
+    "ticker": "BLCO",
+    "token": "BAUSCH"
+   },
+   {
+    "applicant_root": "ASCENSIA DIABETES CARE",
+    "clearances_window": 6,
+    "ticker": "TNDM",
+    "token": "DIABETES"
+   },
+   {
+    "applicant_root": "NOVADAQ TECHNOLOGIES ULC NOW A PART OF STRYKER",
+    "clearances_window": 5,
+    "ticker": "SYK",
+    "token": "STRYKER"
+   },
+   {
+    "applicant_root": "WRIGHT MEDICAL TECHNOLOGY STRYKER",
+    "clearances_window": 5,
+    "ticker": "SYK",
+    "token": "STRYKER"
+   },
+   {
+    "applicant_root": "GE MEDICAL SYSTEMS ULTRASOUND AND",
+    "clearances_window": 5,
+    "ticker": "GEHC",
+    "token": "GE"
+   },
+   {
+    "applicant_root": "3M ESPE DENTAL PRODUCTS",
+    "clearances_window": 5,
+    "ticker": "MMM",
+    "token": "3M"
+   },
+   {
+    "applicant_root": "3M HEALTHCARE BUSINESS",
+    "clearances_window": 5,
+    "ticker": "MMM",
+    "token": "3M"
+   }
+  ],
+  "value": "unknown"
+ },
+ "C3_precision": {
+  "links_with_owner_conflict": [
+   {
+    "applicant_root": "TELEFLEX",
+    "fda_owner_is_other_universe_firm": [],
+    "fda_owner_roots": [
+     "VASCULAR SOLUTIONS"
+    ],
+    "n_window_clearances": 3,
+    "ticker": "TFX",
+    "tier": "T_A"
+   }
+  ],
+  "n_links": 148,
+  "n_links_with_fda_owner_conflict": 1,
+  "n_links_without_registration_record": 3,
+  "note": "the only independent FDA statement about an establishment is the 2026 owner/operator record; a conflict means FDA attributes that establishment to a different firm, not that the 510(k) belonged to a different firm"
+ },
+ "C4_clearances_by_tier": {
+  "T_A": 1945,
+  "T_A2": 88,
+  "T_B": 1110
+ },
+ "C4_links_by_tier": {
+  "T_A": 46,
+  "T_A2": 4,
+  "T_B": 98
+ },
+ "establishment_identifiers": {
+  "distinct_registration_sets": 4049,
+  "interpretation": "The identifiers are a product-code-level aggregate inherited from device listing, not the establishment that filed the submission: the median record carries 104 registration numbers, only 0.7% carry one, and 3,282 of 4,049 distinct sets are shared across different applicants.",
+  "largest_shared_set_applicants": 1104,
+  "max": 1438,
+  "median_registration_numbers_per_record": 104,
+  "p90": 431,
+  "rows": 176625,
+  "sets_shared_by_more_than_one_applicant": 3282,
+  "share_with_any_registration_number": 0.9818881811748054,
+  "share_with_exactly_one": 0.007354564755838641
+ },
+ "meta": {
+  "n_firms": 48,
+  "window": [
+   "2015-01-01",
+   "2026-08-31"
+  ]
+ }
+}
