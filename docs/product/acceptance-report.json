@@ -1,0 +1,112 @@
+{
+  "product": "MedRadar PRODUCT-001",
+  "baseUrl": "http://127.0.0.1:8787",
+  "ranAt": "2026-11-14T22:35:45.818Z",
+  "viewport": "1440x900 desktop, 390x844 mobile",
+  "browser": "Google Chrome via Playwright",
+  "checks": [
+    {
+      "id": "A1",
+      "description": "Homepage loads with product title and 5 navigation items",
+      "passed": true,
+      "evidence": "Medical technology intelligence workbench, nav=5"
+    },
+    {
+      "id": "A2",
+      "description": "Overview shows tracked organizations and record totals from the live API",
+      "passed": true,
+      "evidence": "orgs=59, attributed=91384"
+    },
+    {
+      "id": "A3",
+      "description": "Search by company name opens the organization page",
+      "passed": true,
+      "evidence": "result=Medtronic, h1=Medtronic"
+    },
+    {
+      "id": "A4",
+      "description": "Organization page counts match the API measurement layer",
+      "passed": true,
+      "evidence": "records=17473"
+    },
+    {
+      "id": "A5",
+      "description": "Organization event tab lists real records with official FDA identifiers",
+      "passed": true,
+      "evidence": "rows=25, first=P200026:S020, total=17473"
+    },
+    {
+      "id": "A6",
+      "description": "Evidence drawer shows the official record URL and the separate time fields",
+      "passed": true,
+      "evidence": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpma/pma.cfm?id=P200026&supplement_number=S020"
+    },
+    {
+      "id": "A6b",
+      "description": "510(k)/PMA records state that the source publishes no publication time",
+      "passed": true,
+      "evidence": "publication-time rule visible"
+    },
+    {
+      "id": "A7",
+      "description": "Filter changes are reflected in the URL and the rendered result count",
+      "passed": true,
+      "evidence": "total=252, url=/events?types=510k&org=medtronic&from=2020-01-01"
+    },
+    {
+      "id": "A8",
+      "description": "CSV export contains exactly the filtered records and an official URL column",
+      "passed": true,
+      "evidence": "csv_rows=252, expected=252"
+    },
+    {
+      "id": "A9",
+      "description": "Comparison shows both organizations, warnings and the records-are-not-innovation disclaimer",
+      "passed": true,
+      "evidence": "warnings=4, banners=4"
+    },
+    {
+      "id": "A10",
+      "description": "Markdown comparison report contains the window, warnings, source links and counting rule",
+      "passed": true,
+      "evidence": "chars=5612"
+    },
+    {
+      "id": "A11",
+      "description": "Sources page shows the snapshot manifest, attribution audit and out-of-scope list",
+      "passed": true,
+      "evidence": "snapshot=2026-11-14T22:09:22Z-openfda"
+    },
+    {
+      "id": "A12",
+      "description": "Mobile layout fits the viewport and exposes the navigation menu",
+      "passed": true,
+      "evidence": "overflow=0px, menu=true"
+    },
+    {
+      "id": "A13",
+      "description": "Interface language toggles to Chinese",
+      "passed": true,
+      "evidence": "总览/企业/监管事件/企业对比/数据来源与覆盖"
+    },
+    {
+      "id": "A14",
+      "description": "No console errors or failed network requests during the walkthrough",
+      "passed": true,
+      "evidence": "console=0, failedRequests=0"
+    }
+  ],
+  "passed": 15,
+  "failed": 0,
+  "screenshots": {
+    "01-overview": "D:\\DEPPSKK\\medradar-product\\docs\\product\\screenshots\\01-overview.png",
+    "02-organization": "D:\\DEPPSKK\\medradar-product\\docs\\product\\screenshots\\02-organization.png",
+    "03-organization-events": "D:\\DEPPSKK\\medradar-product\\docs\\product\\screenshots\\03-organization-events.png",
+    "04-evidence-drawer": "D:\\DEPPSKK\\medradar-product\\docs\\product\\screenshots\\04-evidence-drawer.png",
+    "05-events-filtered": "D:\\DEPPSKK\\medradar-product\\docs\\product\\screenshots\\05-events-filtered.png",
+    "06-compare": "D:\\DEPPSKK\\medradar-product\\docs\\product\\screenshots\\06-compare.png",
+    "07-sources": "D:\\DEPPSKK\\medradar-product\\docs\\product\\screenshots\\07-sources.png",
+    "08-mobile-organization": "D:\\DEPPSKK\\medradar-product\\docs\\product\\screenshots\\08-mobile-organization.png",
+    "09-overview-zh": "D:\\DEPPSKK\\medradar-product\\docs\\product\\screenshots\\09-overview-zh.png"
+  }
+}

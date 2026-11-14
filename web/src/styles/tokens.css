@@ -1,0 +1,69 @@
+:root {
+  /* Surfaces and lines */
+  --bg: #f6f7f9;
+  --surface: #ffffff;
+  --surface-2: #fbfcfd;
+  --border: #e4e7ec;
+  --border-strong: #cfd5de;
+
+  /* Text */
+  --text: #0d1526;
+  --text-2: #465063;
+  --text-3: #6b7689;
+  --text-inv: #ffffff;
+
+  /* Accent and status */
+  --accent: #1f4bd8;
+  --accent-hover: #1740be;
+  --accent-soft: #edf2ff;
+  --ok: #0f7b52;
+  --ok-soft: #e8f6ef;
+  --warn: #a8610a;
+  --warn-soft: #fdf3e3;
+  --danger: #b42318;
+  --danger-soft: #fdeceb;
+
+  /* Event types */
+  --510k: #1f4bd8;
+  --pma: #7a2fd1;
+  --pma_supplement: #b28ae0;
+  --recall: #c0362c;
+
+  /* Shape and type */
+  --radius: 6px;
+  --radius-lg: 10px;
+  --shadow-1: 0 1px 2px rgba(13, 21, 38, .05);
+  --font: -apple-system, "Segoe UI", "Helvetica Neue", Arial, "PingFang SC", "Microsoft YaHei", sans-serif;
+  --mono: "SFMono-Regular", "Cascadia Mono", Consolas, monospace;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font);
+  font-size: 14px;
+  background: var(--bg);
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+}
+
+.num {
+  font-variant-numeric: tabular-nums;
+}
+
+a {
+  color: var(--accent);
+}
+
+button {
+  font: inherit;
+}
+
+.mono {
+  font-family: var(--mono);
+}

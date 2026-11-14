@@ -9,7 +9,7 @@
 # paths so a new approval does not require its own approval. It is reviewed in
 # the PR diff like any other governance file.
 schema: medradar.decision_log.v1
-updated: "2026-11-13"
+updated: "2026-11-15"
 decisions:
   - id: GOV-0001
     date: "2026-11-13"
@@ -32,3 +32,11 @@ decisions:
     source: "Lead assignment REFOUNDATION-003 final merge gate / task-21 (Workflow S)"
     scope: "PROJECT_STATE schema v2 (git.head, verified.commit, release.version/commit, data_snapshot, tests.tested_head); stale-but-ancestor is WARN; bump_state.py refreshes observed head + verified baseline + views in one command"
     notes: "Removes the merge-induced permanent state failure while keeping wrong-lineage drift a hard failure. Not a scientific decision."
+  - id: GOV-0004
+    date: "2026-11-15"
+    title: "Hash-declared derived binaries for public-domain product data (PRODUCT-001)"
+    approved_by: ChazY11
+    source: "PRODUCT-001 product-engineering task (MedRadar Product Rebirth)"
+    scope: "tools/governance/check_licence.py + docs/governance/DATA_LICENSES.yaml: add policy.derived_binary_allowlist; a restricted binary may be committed only when the inventory entry is GREEN, the source is redistributable and the declared SHA-256 matches the bytes"
+    notes: "Motivated by the PRODUCT-001 openFDA snapshot: 91k public-domain records that are only practical to commit compressed (13 MB vs 140 MB plain). This is not a licence expansion (openFDA is public domain / GREEN) and not a weakening of the content scan: the exact bytes are hash-bound in the inventory, undeclared gzip still fails, and the reason is printed by the gate. Frozen science artefacts are untouched."
+

@@ -21,6 +21,41 @@
   <a href="README.md">English</a>
 </p>
 
+## 产品工作台（PRODUCT-001）
+
+除研究计划外，本仓库现在还交付一个**可实际使用的分析工作台**：搜索一家医疗器械企业、查看其 FDA 监管记录、
+打开官方原始证据、在同一统计口径下对比两家企业，并导出带来源的分析报告。
+
+![MedRadar 工作台总览](docs/product/screenshots/01-overview.png)
+
+* **数据**：91,457 条 FDA 器械记录（510(k)、PMA 原始批准与补充批准、召回），覆盖 59 家收录企业；
+  数据于 2026-11-14/15 从 openFDA 采集，并以带哈希清单的快照形式提交入库。
+* **证据**：每条记录保留官方 FDA 标识与链接；证据面板分别展示四类时间字段，以及归属所用的申请人原始字符串。
+* **诚实**：未归属的申请人名称、明确排除的近似名称、暂定归属（1,590 个写法中 1,410 个）、来源覆盖差异与
+  不在范围内的数据来源，都在产品中可见，而不是被隐藏。
+* **技术栈**：FastAPI 提供 JSON 接口，React 19 + TypeScript + Vite 构建界面；单进程运行，无数据库服务，
+  不依赖任何付费基础设施。
+
+### 快速开始
+
+```bash
+pip install -e '.[product]'          # fastapi + uvicorn
+python -m medradar web --port 8787   # 同时提供 API 与已提交的前端构建
+# 打开 http://127.0.0.1:8787
+```
+
+已提交的快照与 `web/dist` 使产品可以离线运行，无需 Node，也不需要重新采集。更新数据或重新构建前端见
+[docs/product/ARCHITECTURE.md](docs/product/ARCHITECTURE.md) 第 8 节。
+
+延伸阅读：[产品定位](docs/product/PRODUCT_VISION.md) · [架构](docs/product/ARCHITECTURE.md) ·
+[数据契约](docs/product/DATA_CONTRACT.md) · [用户流程](docs/product/USER_JOURNEYS.md) ·
+[验收记录](docs/product/ACCEPTANCE.md) · [已知限制](docs/product/KNOWN_LIMITATIONS.md) ·
+[后续规划](docs/product/NEXT_STEPS.md)
+
+> 产品明确采用**快照制**：不声称实时或持续监控，也不做任何预测性声明。下方研究计划保持不变，仍可照常运行。
+
+---
+
 ## 公开证据，能否提前看见医疗技术的变化？
 
 MedRadar 把公开、免费的监管、临床试验与公司披露证据，收集进一个可审计的事件库；然后用冻结的实验、

@@ -49,6 +49,7 @@ from __future__ import annotations
 
 import argparse
 import fnmatch
+import hashlib
 import json
 import sys
 from pathlib import Path
@@ -221,6 +222,18 @@ class Policy:
             for item in (inventory.get("exempt_patterns") or [])
             if isinstance(item, str) and item
         ]
+        # Declared derived binaries (GOV-0004). A restricted binary format is normally
+        # forbidden outside synthetic fixtures because its provenance cannot be reviewed.
+        # A GREEN, redistributable source may opt in for a *derived* projection when the
+        # inventory declares the file's SHA-256, so the exact bytes are bound to a reviewed
+        # artefact instead of being an opaque blob. Disabled unless the policy enables it.
+        allowlist = (document.get("policy") or {}).get("derived_binary_allowlist") or {}
+        self.derived_binary_allowed = bool(allowlist.get("enabled"))
+        self.derived_binary_require_sha256 = bool(allowlist.get("require_sha256", True))
+        self.derived_binary_require_redistributable = bool(
+            allowlist.get("require_may_redistribute", True)
+        )
+        self.derived_binary_reason = str(allowlist.get("reason") or "")
         for index, source in enumerate(document.get("sources") or []):
             where = "sources[%d]" % index
             if not isinstance(source, dict):
@@ -392,6 +405,33 @@ def _inventory_exempt(path: str, policy: Policy) -> bool:
     return any(fnmatch.fnmatch(path, pattern) for pattern in policy.inventory_exempt_patterns)
 
 
+def _declared_derived_binary(
+    entry: dict, data: bytes, policy: Policy
+) -> tuple[bool, str]:
+    """Judge a committed restricted binary against the derived-binary allowlist (GOV-0004).
+
+    All three conditions are required: the policy opts in, the inventory entry is GREEN and
+    its source is redistributable, and the declared SHA-256 equals the actual bytes. Anything
+    else keeps the historical hard failure.
+    """
+    if not policy.derived_binary_allowed:
+        return False, "derived-binary allowlist is disabled by policy"
+    if entry.get("status") != "GREEN":
+        return False, "inventory entry status is %r, not GREEN" % (entry.get("status"),)
+    source = policy.sources.get(str(entry.get("source_id") or ""), {})
+    if policy.derived_binary_require_redistributable and not source.get("may_redistribute"):
+        return False, "source %r is not declared redistributable" % (entry.get("source_id"),)
+    declared = str(entry.get("sha256") or "")
+    if policy.derived_binary_require_sha256 and not declared:
+        return False, "inventory entry declares no sha256"
+    actual = hashlib.sha256(data).hexdigest()
+    if declared and declared != actual:
+        return False, "sha256 mismatch (declared %s, actual %s)" % (declared[:12], actual[:12])
+    source_id = entry.get("source_id")
+    reason = policy.derived_binary_reason or "policy permits declared derived binaries"
+    return True, "%s (source %s, sha256 %s)" % (reason, source_id, actual[:12])
+
+
 def check_tree(
     root: Path,
     policy: Policy,
@@ -403,6 +443,7 @@ def check_tree(
     by_path = inventory.get("by_path") or {}
     data_files: list[tuple[str, bytes]] = []
     flagged: list[dict] = []
+    derived_binaries: list[str] = []
     for path in paths:
         data = read_content(root, path)
         kind = detect_kind(data)
@@ -453,10 +494,14 @@ def check_tree(
             flagged.append({"path": path, "kind": kind, "reason": "content-mismatch"})
             continue
         if kind in policy.restricted_kinds and not _synthetic_entry(entry, policy):
+            allowed, why = _declared_derived_binary(entry, data, policy)
+            if allowed:
+                derived_binaries.append("%s (%s, %s)" % (path, kind, why))
+                continue
             report.fail(
                 "content.restricted_kind",
-                "restricted binary format committed outside synthetic fixtures: %s (%s)"
-                % (path, kind),
+                "restricted binary format committed outside synthetic fixtures: %s (%s); %s"
+                % (path, kind, why),
             )
             flagged.append({"path": path, "kind": kind, "reason": "restricted-kind"})
             continue
@@ -487,6 +532,13 @@ def check_tree(
         "%d tracked data-like files classified, %d flagged"
         % (len(data_files), len(flagged)),
     )
+    if policy.derived_binary_allowed:
+        report.check(
+            "content.derived_binary",
+            True,
+            "%d declared derived binary file(s) accepted with a matching sha256: %s"
+            % (len(derived_binaries), "; ".join(derived_binaries) or "none"),
+        )
     # inventory entries that no longer exist are stale (renamed/deleted files)
     tracked_set = set(paths)
     stale = [path for path in by_path if path not in tracked_set]
@@ -610,15 +662,22 @@ def generate_inventory(root: Path, policy: Policy) -> dict:
         else:
             source_id, status, _pattern = match
             synthetic = bool(policy.sources.get(source_id, {}).get("synthetic"))
-        entries.append(
-            {
-                "path": path,
-                "source_id": source_id,
-                "status": status,
-                "content": kind,
-                "synthetic": synthetic,
-            }
-        )
+        entry = {
+            "path": path,
+            "source_id": source_id,
+            "status": status,
+            "content": kind,
+            "synthetic": synthetic,
+        }
+        if (
+            kind in policy.restricted_kinds
+            and policy.derived_binary_allowed
+            and status == "GREEN"
+            and not synthetic
+        ):
+            # Bind the committed bytes to the reviewed inventory entry (GOV-0004).
+            entry["sha256"] = hashlib.sha256(data).hexdigest()
+        entries.append(entry)
     return {
         "schema": SCHEMA_INVENTORY,
         "generated_by": "tools/governance/check_licence.py --write-inventory",
@@ -682,6 +741,18 @@ def _check_policy_sections(report: common.Report, document: dict, root: Path) ->
         isinstance(inventory.get("disclaimer"), str) and "legal guarantee" in inventory["disclaimer"],
         "disclaimer says this is not a legal guarantee",
     )
+    allowlist = (document.get("policy") or {}).get("derived_binary_allowlist")
+    if allowlist is not None:
+        report.check(
+            "policy.derived_binary_allowlist",
+            isinstance(allowlist, dict)
+            and isinstance(allowlist.get("enabled"), bool)
+            and isinstance(allowlist.get("reason"), str)
+            and allowlist["reason"].strip() != "",
+            "declared derived-binary allowlist: %r" % (allowlist.get("reason"),)
+            if isinstance(allowlist, dict)
+            else "expected a mapping",
+        )
     report.check(
         "policy.inventory.data_extensions",
         isinstance(inventory.get("data_extensions"), list) and len(inventory["data_extensions"]) > 0,

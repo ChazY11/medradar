@@ -19,6 +19,50 @@ _Snapshot of [`PROJECT_STATE.yaml`](PROJECT_STATE.yaml) at `2026-11-13T04:50:58+
 - **Data snapshot:** 2026-10-31, 375,378 events (local build; `data/` is gitignored)
 <!-- END GENERATED: unreleased -->
 
+## [Unreleased product] — 2026-11-15 (PRODUCT-001: core intelligence workbench)
+
+### Added
+- **Product workbench** (`medradar/product/`, `web/`): a FastAPI JSON layer plus a React 19 +
+  TypeScript workbench over an immutable openFDA snapshot. Six screens: overview, organizations,
+  organization profile (overview / events / attribution tabs), regulatory event browser with URL
+  state, evidence drawer, two-to-four organization comparison, and a sources/coverage audit page.
+- **Committed product snapshot** (`medradar/product/snapshot/`): 91,457 FDA device records
+  (23,400 510(k), 574 PMA originals, 37,658 PMA supplements, 29,825 recalls) for 59 tracked
+  organizations, collected from openFDA on 2026-11-14/15, with a manifest recording every request
+  URL, per-file SHA-256 and data-quality counters.
+- **Reviewed identity registry** (`medradar/product/identity/organizations.json`): 59
+  organizations, 1,590 accepted applicant spellings (180 curated, 1,410 machine-proposed and
+  labelled provisional), 9 explicitly rejected look-alike names, load-time integrity checks.
+- **Evidence-first API**: record identity from official FDA identifiers, four separate time fields
+  with an explicit no-publication-time rule for 510(k)/PMA, attribution basis/review per record,
+  verbatim source fields, snapshot provenance, coverage/attribution audit endpoints.
+- **Exports**: CSV of exactly the filtered records (UTF-8 BOM, official URLs, snapshot provenance)
+  and Markdown organization briefs and comparison reports with warnings, counting rule and source
+  links.
+- **Collection tooling** (`scripts/product_collect.py`, `product_curate_aliases.py`,
+  `gen_org_registry.py`) with sharded collection, deterministic merge, text compaction, implausible
+  date quarantine and an auditable alias-proposal rule.
+- **Tests and acceptance**: 47 product pytest tests, plus `scripts/product_acceptance.mjs`
+  (Playwright) whose 15 real-browser checks pass; screenshots and the machine-readable report are
+  committed under `docs/product/`.
+- **Documentation**: `docs/product/` (vision, architecture, data contract, API contract, user
+  journeys, legacy reuse assessment, acceptance record, known limitations, next steps).
+- **CLI**: `python -m medradar web` serves the API and the built UI from one process.
+
+### Changed
+- `pyproject.toml`: new `product` extra (fastapi, uvicorn), `dev` extra gains httpx for API tests,
+  package data and sdist manifest include the snapshot, identity registry and built UI.
+- `medradar/__main__.py`: added the `web` subcommand. No research command changed.
+- **Governance (GOV-0004 / RC-0004)**: the licence gate's restricted-binary rule now accepts a
+  committed compressed snapshot only when its inventory entry is GREEN, the source is
+  redistributable and the declared SHA-256 matches the bytes. Undeclared restricted formats still
+  fail. `docs/governance/DATA_LICENSES.yaml`, `DECISION_LOG.yaml`, `RULE_CHANGES.yaml` and the
+  generated `DATA_INVENTORY.yaml` updated accordingly.
+
+### Notes
+- Product-first, research-preserving: no research module, frozen result or study artefact was
+  modified. The product makes no live-monitoring and no predictive claim.
+
 ## [0.5.0] — 2026-11-02 (Phase 3: unified forecast cycle, temporal graph, evidence-grounded research agent)
 
 ### Added

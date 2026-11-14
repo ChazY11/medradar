@@ -1,0 +1,2134 @@
+{
+  "classification_query": {
+    "records": 7098,
+    "source": "merged from shard snapshot"
+  },
+  "collected_at": "2026-11-14T22:09:22.451315Z",
+  "collection_started_at": "2026-11-14T22:06:56.233940Z",
+  "collector": {
+    "api_base": "https://api.fda.gov",
+    "mode": "sharded-merge",
+    "name": "medradar-collector/1.0.0",
+    "user_agent": "MedRadar/1.0 (medical technology intelligence; +https://github.com/ChazY11/medradar)"
+  },
+  "counts": {
+    "applicant_strings": 1563,
+    "by_event_type": {
+      "510k": 23400,
+      "pma": 574,
+      "pma_supplement": 37658,
+      "recall": 29825
+    },
+    "by_source": {
+      "openfda_510k": 23400,
+      "openfda_pma": 38232,
+      "openfda_recall": 29825
+    },
+    "product_codes": 7098,
+    "records": 91457
+  },
+  "coverage": {
+    "max_event_date": "2026-10-30",
+    "min_event_date": "1960-10-14"
+  },
+  "data_quality": {
+    "implausible_event_date": 16,
+    "records": 91457,
+    "truncated_text_fields": 0
+  },
+  "errors": [],
+  "files": {
+    "applicants.jsonl.gz": {
+      "bytes": 22428,
+      "records": 1563,
+      "sha256": "309a7cf4199fbb2f043b31e05b0de46a6260588b0a2cdb2e16ee3a4e2581f5fa"
+    },
+    "classifications.jsonl.gz": {
+      "bytes": 159193,
+      "records": 7098,
+      "sha256": "bbee2d1109abbbe5c70f97f08e7dbbd64462dec755b2b495de8e6a74e011e5db"
+    },
+    "events.jsonl.gz": {
+      "bytes": 12842998,
+      "records": 91457,
+      "sha256": "f2676ef7494467ae8256694c13c9da4a39b0da2c814c5d557c6dfb276c142971"
+    }
+  },
+  "id": "2026-11-14T22:09:22Z-openfda",
+  "notes": [
+    "Merged from sharded openFDA collection (see scripts/product_collect.py).",
+    "Records are organisational data from the source; applicant-to-organization attribution happens at read time using medradar/product/identity/organizations.json.",
+    "510(k) and PMA records expose no publication timestamp in openFDA; published_at is null for those sources by rule."
+  ],
+  "openfda": {
+    "last_updated": "2026-11-02"
+  },
+  "organization_count": 59,
+  "organizations": [
+    {
+      "display_name": "Abbott",
+      "key": "abbott",
+      "queries": [
+        {
+          "pages": 2,
+          "records": 1381,
+          "source_id": "openfda_510k",
+          "total_reported": 1381,
+          "urls": [
+            "https://api.fda.gov/device/510k.json?search=applicant%3A%28%22ABBOTT%22%20OR%20%22ABBOTT%20LABORATORIES%22%20OR%20%22ABBOTT%20VASCULAR%22%20OR%20%22ABBOTT%20MEDICAL%22%20OR%20%22ABBOTT%20DIABETES%20CARE%22%20OR%20%22ABBOTT%20POINT%20OF%20CARE%22%20OR%20%22ABBOTT%20NEUROMODULATION%22%20OR%20%22ST%20JUDE%20MEDICAL%22%20OR%20%22ST%20JUDE%20MEDICAL%20CARDIOLOGY%22%29&limit=1000&skip=0",
+            "https://api.fda.gov/device/510k.json?search=applicant%3A%28%22ABBOTT%22%20OR%20%22ABBOTT%20LABORATORIES%22%20OR%20%22ABBOTT%20VASCULAR%22%20OR%20%22ABBOTT%20MEDICAL%22%20OR%20%22ABBOTT%20DIABETES%20CARE%22%20OR%20%22ABBOTT%20POINT%20OF%20CARE%22%20OR%20%22ABBOTT%20NEUROMODULATION%22%20OR%20%22ST%20JUDE%20MEDICAL%22%20OR%20%22ST%20JUDE%20MEDICAL%20CARDIOLOGY%22%29&limit=1000&skip=1000"
+          ]
+        },
+        {
+          "pages": 7,
+          "records": 6287,
+          "source_id": "openfda_pma",
+          "total_reported": 6287,
+          "urls": [
+            "https://api.fda.gov/device/pma.json?search=applicant%3A%28%22ABBOTT%22%20OR%20%22ABBOTT%20LABORATORIES%22%20OR%20%22ABBOTT%20VASCULAR%22%20OR%20%22ABBOTT%20MEDICAL%22%20OR%20%22ABBOTT%20DIABETES%20CARE%22%20OR%20%22ABBOTT%20POINT%20OF%20CARE%22%20OR%20%22ABBOTT%20NEUROMODULATION%22%20OR%20%22ST%20JUDE%20MEDICAL%22%20OR%20%22ST%20JUDE%20MEDICAL%20CARDIOLOGY%22%29&limit=1000&skip=0",
+            "https://api.fda.gov/device/pma.json?search=applicant%3A%28%22ABBOTT%22%20OR%20%22ABBOTT%20LABORATORIES%22%20OR%20%22ABBOTT%20VASCULAR%22%20OR%20%22ABBOTT%20MEDICAL%22%20OR%20%22ABBOTT%20DIABETES%20CARE%22%20OR%20%22ABBOTT%20POINT%20OF%20CARE%22%20OR%20%22ABBOTT%20NEUROMODULATION%22%20OR%20%22ST%20JUDE%20MEDICAL%22%20OR%20%22ST%20JUDE%20MEDICAL%20CARDIOLOGY%22%29&limit=1000&skip=1000",
+            "https://api.fda.gov/device/pma.json?search=applicant%3A%28%22ABBOTT%22%20OR%20%22ABBOTT%20LABORATORIES%22%20OR%20%22ABBOTT%20VASCULAR%22%20OR%20%22ABBOTT%20MEDICAL%22%20OR%20%22ABBOTT%20DIABETES%20CARE%22%20OR%20%22ABBOTT%20POINT%20OF%20CARE%22%20OR%20%22ABBOTT%20NEUROMODULATION%22%20OR%20%22ST%20JUDE%20MEDICAL%22%20OR%20%22ST%20JUDE%20MEDICAL%20CARDIOLOGY%22%29&limit=1000&skip=2000",
+            "https://api.fda.gov/device/pma.json?search=applicant%3A%28%22ABBOTT%22%20OR%20%22ABBOTT%20LABORATORIES%22%20OR%20%22ABBOTT%20VASCULAR%22%20OR%20%22ABBOTT%20MEDICAL%22%20OR%20%22ABBOTT%20DIABETES%20CARE%22%20OR%20%22ABBOTT%20POINT%20OF%20CARE%22%20OR%20%22ABBOTT%20NEUROMODULATION%22%20OR%20%22ST%20JUDE%20MEDICAL%22%20OR%20%22ST%20JUDE%20MEDICAL%20CARDIOLOGY%22%29&limit=1000&skip=3000",
+            "https://api.fda.gov/device/pma.json?search=applicant%3A%28%22ABBOTT%22%20OR%20%22ABBOTT%20LABORATORIES%22%20OR%20%22ABBOTT%20VASCULAR%22%20OR%20%22ABBOTT%20MEDICAL%22%20OR%20%22ABBOTT%20DIABETES%20CARE%22%20OR%20%22ABBOTT%20POINT%20OF%20CARE%22%20OR%20%22ABBOTT%20NEUROMODULATION%22%20OR%20%22ST%20JUDE%20MEDICAL%22%20OR%20%22ST%20JUDE%20MEDICAL%20CARDIOLOGY%22%29&limit=1000&skip=4000",
+            "https://api.fda.gov/device/pma.json?search=applicant%3A%28%22ABBOTT%22%20OR%20%22ABBOTT%20LABORATORIES%22%20OR%20%22ABBOTT%20VASCULAR%22%20OR%20%22ABBOTT%20MEDICAL%22%20OR%20%22ABBOTT%20DIABETES%20CARE%22%20OR%20%22ABBOTT%20POINT%20OF%20CARE%22%20OR%20%22ABBOTT%20NEUROMODULATION%22%20OR%20%22ST%20JUDE%20MEDICAL%22%20OR%20%22ST%20JUDE%20MEDICAL%20CARDIOLOGY%22%29&limit=1000&skip=5000",
+            "https://api.fda.gov/device/pma.json?search=applicant%3A%28%22ABBOTT%22%20OR%20%22ABBOTT%20LABORATORIES%22%20OR%20%22ABBOTT%20VASCULAR%22%20OR%20%22ABBOTT%20MEDICAL%22%20OR%20%22ABBOTT%20DIABETES%20CARE%22%20OR%20%22ABBOTT%20POINT%20OF%20CARE%22%20OR%20%22ABBOTT%20NEUROMODULATION%22%20OR%20%22ST%20JUDE%20MEDICAL%22%20OR%20%22ST%20JUDE%20MEDICAL%20CARDIOLOGY%22%29&limit=1000&skip=6000"
+          ]
+        },
+        {
+          "pages": 2,
+          "records": 1086,
+          "source_id": "openfda_recall",
+          "total_reported": 1086,
+          "urls": [
+            "https://api.fda.gov/device/recall.json?search=recalling_firm%3A%28%22ABBOTT%22%20OR%20%22ABBOTT%20LABORATORIES%22%20OR%20%22ABBOTT%20VASCULAR%22%20OR%20%22ABBOTT%20MEDICAL%22%20OR%20%22ABBOTT%20DIABETES%20CARE%22%20OR%20%22ABBOTT%20POINT%20OF%20CARE%22%20OR%20%22ABBOTT%20NEUROMODULATION%22%20OR%20%22ST%20JUDE%20MEDICAL%22%20OR%20%22ST%20JUDE%20MEDICAL%20CARDIOLOGY%22%29&limit=1000&skip=0",
+            "https://api.fda.gov/device/recall.json?search=recalling_firm%3A%28%22ABBOTT%22%20OR%20%22ABBOTT%20LABORATORIES%22%20OR%20%22ABBOTT%20VASCULAR%22%20OR%20%22ABBOTT%20MEDICAL%22%20OR%20%22ABBOTT%20DIABETES%20CARE%22%20OR%20%22ABBOTT%20POINT%20OF%20CARE%22%20OR%20%22ABBOTT%20NEUROMODULATION%22%20OR%20%22ST%20JUDE%20MEDICAL%22%20OR%20%22ST%20JUDE%20MEDICAL%20CARDIOLOGY%22%29&limit=1000&skip=1000"
+          ]
+        }
+      ],
+      "records": 8754
+    },
+    {
+      "display_name": "Alcon",
+      "key": "alcon",
+      "queries": [
+        {
+          "pages": 1,
+          "records": 129,
+          "source_id": "openfda_510k",
+          "total_reported": 129,
+          "urls": [
+            "https://api.fda.gov/device/510k.json?search=applicant%3A%28%22ALCON%22%20OR%20%22ALCON%20LABORATORIES%22%20OR%20%22ALCON%20RESEARCH%22%29&limit=1000&skip=0"
+          ]
+        },
+        {
+          "pages": 2,
+          "records": 1390,
+          "source_id": "openfda_pma",
+          "total_reported": 1390,
+          "urls": [
+            "https://api.fda.gov/device/pma.json?search=applicant%3A%28%22ALCON%22%20OR%20%22ALCON%20LABORATORIES%22%20OR%20%22ALCON%20RESEARCH%22%29&limit=1000&skip=0",
+            "https://api.fda.gov/device/pma.json?search=applicant%3A%28%22ALCON%22%20OR%20%22ALCON%20LABORATORIES%22%20OR%20%22ALCON%20RESEARCH%22%29&limit=1000&skip=1000"
+          ]
+        },
+        {
+          "pages": 1,
+          "records": 143,
+          "source_id": "openfda_recall",
+          "total_reported": 143,
+          "urls": [
+            "https://api.fda.gov/device/recall.json?search=recalling_firm%3A%28%22ALCON%22%20OR%20%22ALCON%20LABORATORIES%22%20OR%20%22ALCON%20RESEARCH%22%29&limit=1000&skip=0"
+          ]
+        }
+      ],
+      "records": 1662
+    },
+    {
+      "display_name": "Ambu",
+      "key": "ambu",
+      "queries": [
+        {
+          "pages": 1,
+          "records": 75,
+          "source_id": "openfda_510k",
+          "total_reported": 75,
+          "urls": [
+            "https://api.fda.gov/device/510k.json?search=applicant%3A%28%22AMBU%22%20OR%20%22AMBU%20A%2FS%22%29&limit=1000&skip=0"
+          ]
+        },
+        {
+          "pages": 1,
+          "records": 0,
+          "source_id": "openfda_pma",
+          "total_reported": 0,
+          "urls": [
+            "https://api.fda.gov/device/pma.json?search=applicant%3A%28%22AMBU%22%20OR%20%22AMBU%20A%2FS%22%29&limit=1000&skip=0"
+          ]
+        },
+        {
+          "pages": 1,
+          "records": 22,
+          "source_id": "openfda_recall",
+          "total_reported": 22,
+          "urls": [
+            "https://api.fda.gov/device/recall.json?search=recalling_firm%3A%28%22AMBU%22%20OR%20%22AMBU%20A%2FS%22%29&limit=1000&skip=0"
+          ]
+        }
+      ],
+      "records": 97
+    },
+    {
+      "display_name": "AtriCure",
+      "key": "atricure",
+      "queries": [
+        {
+          "pages": 1,
+          "records": 60,
+          "source_id": "openfda_510k",
+          "total_reported": 60,
+          "urls": [
+            "https://api.fda.gov/device/510k.json?search=applicant%3A%28%22ATRICURE%22%20OR%20%22ATRICURE%20INC%22%29&limit=1000&skip=0"
+          ]
+        },
+        {
+          "pages": 1,
+          "records": 37,
+          "source_id": "openfda_pma",
+          "total_reported": 37,
+          "urls": [
+            "https://api.fda.gov/device/pma.json?search=applicant%3A%28%22ATRICURE%22%20OR%20%22ATRICURE%20INC%22%29&limit=1000&skip=0"
+          ]
+        },
+        {
+          "pages": 1,
+          "records": 13,
+          "source_id": "openfda_recall",
+          "total_reported": 13,
+          "urls": [
+            "https://api.fda.gov/device/recall.json?search=recalling_firm%3A%28%22ATRICURE%22%20OR%20%22ATRICURE%20INC%22%29&limit=1000&skip=0"
+          ]
+        }
+      ],
+      "records": 110
+    },
+    {
+      "display_name": "Baxter",
+      "key": "baxter",
+      "queries": [
+        {
+          "pages": 1,
+          "records": 822,
+          "source_id": "openfda_510k",
+          "total_reported": 822,
+          "urls": [
+            "https://api.fda.gov/device/510k.json?search=applicant%3A%28%22BAXTER%22%20OR%20%22BAXTER%20HEALTHCARE%22%20OR%20%22BAXTER%20INTERNATIONAL%22%29&limit=1000&skip=0"
+          ]
+        },
+        {
+          "pages": 1,
+          "records": 194,
+          "source_id": "openfda_pma",
+          "total_reported": 194,
+          "urls": [
+            "https://api.fda.gov/device/pma.json?search=applicant%3A%28%22BAXTER%22%20OR%20%22BAXTER%20HEALTHCARE%22%20OR%20%22BAXTER%20INTERNATIONAL%22%29&limit=1000&skip=0"
+          ]
+        },
+        {
+          "pages": 1,
+          "records": 821,
+          "source_id": "openfda_recall",
+          "total_reported": 821,
+          "urls": [
+            "https://api.fda.gov/device/recall.json?search=recalling_firm%3A%28%22BAXTER%22%20OR%20%22BAXTER%20HEALTHCARE%22%20OR%20%22BAXTER%20INTERNATIONAL%22%29&limit=1000&skip=0"
+          ]
+        }
+      ],
+      "records": 1837
+    },
+    {
+      "display_name": "B. Braun",
+      "key": "bbraun",
+      "queries": [
+        {
+          "pages": 1,
+          "records": 364,
+          "source_id": "openfda_510k",
+          "total_reported": 364,
+          "urls": [
+            "https://api.fda.gov/device/510k.json?search=applicant%3A%28%22B%20BRAUN%22%20OR%20%22AESCULAP%22%29&limit=1000&skip=0"
+          ]
+        },
+        {
+          "pages": 1,
+          "records": 21,
+          "source_id": "openfda_pma",
+          "total_reported": 21,
+          "urls": [
+            "https://api.fda.gov/device/pma.json?search=applicant%3A%28%22B%20BRAUN%22%20OR%20%22AESCULAP%22%29&limit=1000&skip=0"
+          ]
+        },
+        {
+          "pages": 1,
+          "records": 633,
+          "source_id": "openfda_recall",
+          "total_reported": 633,
+          "urls": [
+            "https://api.fda.gov/device/recall.json?search=recalling_firm%3A%28%22B%20BRAUN%22%20OR%20%22AESCULAP%22%29&limit=1000&skip=0"
+          ]
+        }
+      ],
+      "records": 1018
+    },
+    {
+      "display_name": "Becton Dickinson",
+      "key": "bd",
+      "queries": [
+        {
+          "pages": 2,
+          "records": 1255,
+          "source_id": "openfda_510k",
+          "total_reported": 1255,
+          "urls": [
+            "https://api.fda.gov/device/510k.json?search=applicant%3A%28%22BECTON%20DICKINSON%22%20OR%20%22BECTON%22%20OR%20%22BD%20BARD%22%20OR%20%22C%20R%20BARD%22%20OR%20%22BARD%20ACCESS%20SYSTEMS%22%20OR%20%22BD%20MEDICAL%22%20OR%20%22CAREFUSION%22%29&limit=1000&skip=0",
+            "https://api.fda.gov/device/510k.json?search=applicant%3A%28%22BECTON%20DICKINSON%22%20OR%20%22BECTON%22%20OR%20%22BD%20BARD%22%20OR%20%22C%20R%20BARD%22%20OR%20%22BARD%20ACCESS%20SYSTEMS%22%20OR%20%22BD%20MEDICAL%22%20OR%20%22CAREFUSION%22%29&limit=1000&skip=1000"
+          ]
+        },
+        {
+          "pages": 1,
+          "records": 97,
+          "source_id": "openfda_pma",
+          "total_reported": 97,
+          "urls": [
+            "https://api.fda.gov/device/pma.json?search=applicant%3A%28%22BECTON%20DICKINSON%22%20OR%20%22BECTON%22%20OR%20%22BD%20BARD%22%20OR%20%22C%20R%20BARD%22%20OR%20%22BARD%20ACCESS%20SYSTEMS%22%20OR%20%22BD%20MEDICAL%22%20OR%20%22CAREFUSION%22%29&limit=1000&skip=0"
+          ]
+        },
+        {
+          "pages": 2,
+          "records": 1216,
+          "source_id": "openfda_recall",
+          "total_reported": 1216,
+          "urls": [
+            "https://api.fda.gov/device/recall.json?search=recalling_firm%3A%28%22BECTON%20DICKINSON%22%20OR%20%22BECTON%22%20OR%20%22BD%20BARD%22%20OR%20%22C%20R%20BARD%22%20OR%20%22BARD%20ACCESS%20SYSTEMS%22%20OR%20%22BD%20MEDICAL%22%20OR%20%22CAREFUSION%22%29&limit=1000&skip=0",
+            "https://api.fda.gov/device/recall.json?search=recalling_firm%3A%28%22BECTON%20DICKINSON%22%20OR%20%22BECTON%22%20OR%20%22BD%20BARD%22%20OR%20%22C%20R%20BARD%22%20OR%20%22BARD%20ACCESS%20SYSTEMS%22%20OR%20%22BD%20MEDICAL%22%20OR%20%22CAREFUSION%22%29&limit=1000&skip=1000"
+          ]
+        }
+      ],
+      "records": 2568
+    },
+    {
+      "display_name": "Biotronik",
+      "key": "biotronik",
+      "queries": [
+        {
+          "pages": 1,
+          "records": 148,
+          "source_id": "openfda_510k",
+          "total_reported": 148,
+          "urls": [
+            "https://api.fda.gov/device/510k.json?search=applicant%3A%28%22BIOTRONIK%22%29&limit=1000&skip=0"
+          ]
+        },
+        {
+          "pages": 2,
+          "records": 1138,
+          "source_id": "openfda_pma",
+          "total_reported": 1138,
+          "urls": [
+            "https://api.fda.gov/device/pma.json?search=applicant%3A%28%22BIOTRONIK%22%29&limit=1000&skip=0",
+            "https://api.fda.gov/device/pma.json?search=applicant%3A%28%22BIOTRONIK%22%29&limit=1000&skip=1000"
+          ]
+        },
+        {
+          "pages": 1,
+          "records": 42,
+          "source_id": "openfda_recall",
+          "total_reported": 42,
+          "urls": [
+            "https://api.fda.gov/device/recall.json?search=recalling_firm%3A%28%22BIOTRONIK%22%29&limit=1000&skip=0"
+          ]
+        }
+      ],
+      "records": 1328
+    },
+    {
+      "display_name": "Boston Scientific",
+      "key": "boston_scientific",
+      "queries": [
+        {
+          "pages": 1,
+          "records": 982,
+          "source_id": "openfda_510k",
+          "total_reported": 982,
+          "urls": [
+            "https://api.fda.gov/device/510k.json?search=applicant%3A%28%22BOSTON%20SCIENTIFIC%22%20OR%20%22BOSTON%20SCIENTIFIC%20SCIMED%22%20OR%20%22BOSTON%20SCIENTIFIC%20NEUROMODULATION%22%20OR%20%22GUIDANT%22%20OR%20%22AXONICS%22%29&limit=1000&skip=0"
+          ]
+        },
+        {
+          "pages": 8,
+          "records": 7108,
+          "source_id": "openfda_pma",
+          "total_reported": 7108,
+          "urls": [
+            "https://api.fda.gov/device/pma.json?search=applicant%3A%28%22BOSTON%20SCIENTIFIC%22%20OR%20%22BOSTON%20SCIENTIFIC%20SCIMED%22%20OR%20%22BOSTON%20SCIENTIFIC%20NEUROMODULATION%22%20OR%20%22GUIDANT%22%20OR%20%22AXONICS%22%29&limit=1000&skip=0",
+            "https://api.fda.gov/device/pma.json?search=applicant%3A%28%22BOSTON%20SCIENTIFIC%22%20OR%20%22BOSTON%20SCIENTIFIC%20SCIMED%22%20OR%20%22BOSTON%20SCIENTIFIC%20NEUROMODULATION%22%20OR%20%22GUIDANT%22%20OR%20%22AXONICS%22%29&limit=1000&skip=1000",
+            "https://api.fda.gov/device/pma.json?search=applicant%3A%28%22BOSTON%20SCIENTIFIC%22%20OR%20%22BOSTON%20SCIENTIFIC%20SCIMED%22%20OR%20%22BOSTON%20SCIENTIFIC%20NEUROMODULATION%22%20OR%20%22GUIDANT%22%20OR%20%22AXONICS%22%29&limit=1000&skip=2000",
+            "https://api.fda.gov/device/pma.json?search=applicant%3A%28%22BOSTON%20SCIENTIFIC%22%20OR%20%22BOSTON%20SCIENTIFIC%20SCIMED%22%20OR%20%22BOSTON%20SCIENTIFIC%20NEUROMODULATION%22%20OR%20%22GUIDANT%22%20OR%20%22AXONICS%22%29&limit=1000&skip=3000",
+            "https://api.fda.gov/device/pma.json?search=applicant%3A%28%22BOSTON%20SCIENTIFIC%22%20OR%20%22BOSTON%20SCIENTIFIC%20SCIMED%22%20OR%20%22BOSTON%20SCIENTIFIC%20NEUROMODULATION%22%20OR%20%22GUIDANT%22%20OR%20%22AXONICS%22%29&limit=1000&skip=4000",
+            "https://api.fda.gov/device/pma.json?search=applicant%3A%28%22BOSTON%20SCIENTIFIC%22%20OR%20%22BOSTON%20SCIENTIFIC%20SCIMED%22%20OR%20%22BOSTON%20SCIENTIFIC%20NEUROMODULATION%22%20OR%20%22GUIDANT%22%20OR%20%22AXONICS%22%29&limit=1000&skip=5000",
+            "https://api.fda.gov/device/pma.json?search=applicant%3A%28%22BOSTON%20SCIENTIFIC%22%20OR%20%22BOSTON%20SCIENTIFIC%20SCIMED%22%20OR%20%22BOSTON%20SCIENTIFIC%20NEUROMODULATION%22%20OR%20%22GUIDANT%22%20OR%20%22AXONICS%22%29&limit=1000&skip=6000",
+            "https://api.fda.gov/device/pma.json?search=applicant%3A%28%22BOSTON%20SCIENTIFIC%22%20OR%20%22BOSTON%20SCIENTIFIC%20SCIMED%22%20OR%20%22BOSTON%20SCIENTIFIC%20NEUROMODULATION%22%20OR%20%22GUIDANT%22%20OR%20%22AXONICS%22%29&limit=1000&skip=7000"
+          ]
+        },
+        {
+          "pages": 2,
+          "records": 1585,
+          "source_id": "openfda_recall",
+          "total_reported": 1585,
+          "urls": [
+            "https://api.fda.gov/device/recall.json?search=recalling_firm%3A%28%22BOSTON%20SCIENTIFIC%22%20OR%20%22BOSTON%20SCIENTIFIC%20SCIMED%22%20OR%20%22BOSTON%20SCIENTIFIC%20NEUROMODULATION%22%20OR%20%22GUIDANT%22%20OR%20%22AXONICS%22%29&limit=1000&skip=0",
+            "https://api.fda.gov/device/recall.json?search=recalling_firm%3A%28%22BOSTON%20SCIENTIFIC%22%20OR%20%22BOSTON%20SCIENTIFIC%20SCIMED%22%20OR%20%22BOSTON%20SCIENTIFIC%20NEUROMODULATION%22%20OR%20%22GUIDANT%22%20OR%20%22AXONICS%22%29&limit=1000&skip=1000"
+          ]
+        }
+      ],
+      "records": 9675
+    },
+    {
+      "display_name": "Canon Medical Systems",
+      "key": "canon_medical",
+      "queries": [
+        {
+          "pages": 1,
+          "records": 174,
+          "source_id": "openfda_510k",
+          "total_reported": 174,
+          "urls": [
+            "https://api.fda.gov/device/510k.json?search=applicant%3A%28%22CANON%20MEDICAL%22%20OR%20%22TOSHIBA%20MEDICAL%22%29&limit=1000&skip=0"
+          ]
+        },
+        {
+          "pages": 1,
+          "records": 0,
+          "source_id": "openfda_pma",
+          "total_reported": 0,
+          "urls": [
+            "https://api.fda.gov/device/pma.json?search=applicant%3A%28%22CANON%20MEDICAL%22%20OR%20%22TOSHIBA%20MEDICAL%22%29&limit=1000&skip=0"
+          ]
+        },
+        {
+          "pages": 1,
+          "records": 54,
+          "source_id": "openfda_recall",
+          "total_reported": 54,
+          "urls": [
+            "https://api.fda.gov/device/recall.json?search=recalling_firm%3A%28%22CANON%20MEDICAL%22%20OR%20%22TOSHIBA%20MEDICAL%22%29&limit=1000&skip=0"
+          ]
+        }
+      ],
+      "records": 228
+    },
+    {
+      "display_name": "Cochlear",
+      "key": "cochlear",
+      "queries": [
+        {
+          "pages": 1,
+          "records": 27,
+          "source_id": "openfda_510k",
+          "total_reported": 27,
+          "urls": [
+            "https://api.fda.gov/device/510k.json?search=applicant%3A%28%22COCHLEAR%22%20OR%20%22COCHLEAR%20AMERICAS%22%20OR%20%22COCHLEAR%20LIMITED%22%20OR%20%22COCHLEAR%20LTD%22%20OR%20%22COCHLEAR%20BONE%20ANCHORED%20SOLUTIONS%22%29&limit=1000&skip=0"
+          ]
+        },
+        {
+          "pages": 1,
+          "records": 506,
+          "source_id": "openfda_pma",
+          "total_reported": 506,
+          "urls": [
+            "https://api.fda.gov/device/pma.json?search=applicant%3A%28%22COCHLEAR%22%20OR%20%22COCHLEAR%20AMERICAS%22%20OR%20%22COCHLEAR%20LIMITED%22%20OR%20%22COCHLEAR%20LTD%22%20OR%20%22COCHLEAR%20BONE%20ANCHORED%20SOLUTIONS%22%29&limit=1000&skip=0"
+          ]
+        },
+        {
+          "pages": 1,
+          "records": 6,
+          "source_id": "openfda_recall",
+          "total_reported": 6,
+          "urls": [
+            "https://api.fda.gov/device/recall.json?search=recalling_firm%3A%28%22COCHLEAR%22%20OR%20%22COCHLEAR%20AMERICAS%22%20OR%20%22COCHLEAR%20LIMITED%22%20OR%20%22COCHLEAR%20LTD%22%20OR%20%22COCHLEAR%20BONE%20ANCHORED%20SOLUTIONS%22%29&limit=1000&skip=0"
+          ]
+        }
+      ],
+      "records": 539
+    },
+    {
+      "display_name": "Cook Medical",
+      "key": "cook_medical",
+      "queries": [
+        {
+          "pages": 1,
+          "records": 431,
+          "source_id": "openfda_510k",
+          "total_reported": 431,
+          "urls": [
+            "https://api.fda.gov/device/510k.json?search=applicant%3A%28%22COOK%20MEDICAL%22%20OR%20%22COOK%20INCORPORATED%22%20OR%20%22COOK%20GROUP%22%20OR%20%22COOK%20UROLOGICAL%22%29&limit=1000&skip=0"
+          ]
+        },
+        {
+          "pages": 1,
+          "records": 30,
+          "source_id": "openfda_pma",
+          "total_reported": 30,
+          "urls": [
+            "https://api.fda.gov/device/pma.json?search=applicant%3A%28%22COOK%20MEDICAL%22%20OR%20%22COOK%20INCORPORATED%22%20OR%20%22COOK%20GROUP%22%20OR%20%22COOK%20UROLOGICAL%22%29&limit=1000&skip=0"
+          ]
+        },
+        {
+          "pages": 1,
+          "records": 193,
+          "source_id": "openfda_recall",
+          "total_reported": 193,
+          "urls": [
+            "https://api.fda.gov/device/recall.json?search=recalling_firm%3A%28%22COOK%20MEDICAL%22%20OR%20%22COOK%20INCORPORATED%22%20OR%20%22COOK%20GROUP%22%20OR%20%22COOK%20UROLOGICAL%22%29&limit=1000&skip=0"
+          ]
+        }
+      ],
+      "records": 654
+    },
+    {
+      "display_name": "Cooper Companies",
+      "key": "cooper_companies",
+      "queries": [
+        {
+          "pages": 1,
+          "records": 120,
+          "source_id": "openfda_510k",
+          "total_reported": 120,
+          "urls": [
+            "https://api.fda.gov/device/510k.json?search=applicant%3A%28%22COOPER%20COMPANIES%22%20OR%20%22COOPERVISION%22%20OR%20%22COOPER%20MEDICAL%22%20OR%20%22COOPER%20SURGICAL%22%29&limit=1000&skip=0"
+          ]
+        },
+        {
+          "pages": 1,
+          "records": 646,
+          "source_id": "openfda_pma",
+          "total_reported": 646,
+          "urls": [
+            "https://api.fda.gov/device/pma.json?search=applicant%3A%28%22COOPER%20COMPANIES%22%20OR%20%22COOPERVISION%22%20OR%20%22COOPER%20MEDICAL%22%20OR%20%22COOPER%20SURGICAL%22%29&limit=1000&skip=0"
+          ]
+        },
+        {
+          "pages": 1,
+          "records": 70,
+          "source_id": "openfda_recall",
+          "total_reported": 70,
+          "urls": [
+            "https://api.fda.gov/device/recall.json?search=recalling_firm%3A%28%22COOPER%20COMPANIES%22%20OR%20%22COOPERVISION%22%20OR%20%22COOPER%20MEDICAL%22%20OR%20%22COOPER%20SURGICAL%22%29&limit=1000&skip=0"
+          ]
+        }
+      ],
+      "records": 836
+    },
+    {
+      "display_name": "Dentsply Sirona",
+      "key": "dentsply_sirona",
+      "queries": [
+        {
+          "pages": 1,
+          "records": 459,
+          "source_id": "openfda_510k",
+          "total_reported": 459,
+          "urls": [
+            "https://api.fda.gov/device/510k.json?search=applicant%3A%28%22DENTSPLY%20SIRONA%22%20OR%20%22DENTSPLY%22%20OR%20%22DENTSPLY%20INTERNATIONAL%22%29&limit=1000&skip=0"
+          ]
+        },
+        {
+          "pages": 1,
+          "records": 0,
+          "source_id": "openfda_pma",
+          "total_reported": 0,
+          "urls": [
+            "https://api.fda.gov/device/pma.json?search=applicant%3A%28%22DENTSPLY%20SIRONA%22%20OR%20%22DENTSPLY%22%20OR%20%22DENTSPLY%20INTERNATIONAL%22%29&limit=1000&skip=0"
+          ]
+        },
+        {
+          "pages": 1,
+          "records": 14,
+          "source_id": "openfda_recall",
+          "total_reported": 14,
+          "urls": [
+            "https://api.fda.gov/device/recall.json?search=recalling_firm%3A%28%22DENTSPLY%20SIRONA%22%20OR%20%22DENTSPLY%22%20OR%20%22DENTSPLY%20INTERNATIONAL%22%29&limit=1000&skip=0"
+          ]
+        }
+      ],
+      "records": 473
+    },
+    {
+      "display_name": "Dexcom",
+      "key": "dexcom",
+      "queries": [
+        {
+          "pages": 1,
+          "records": 28,
+          "source_id": "openfda_510k",
+          "total_reported": 28,
+          "urls": [
+            "https://api.fda.gov/device/510k.json?search=applicant%3A%28%22DEXCOM%22%20OR%20%22DEXCOM%20INC%22%29&limit=1000&skip=0"
+          ]
+        },
+        {
+          "pages": 1,
+          "records": 134,
+          "source_id": "openfda_pma",
+          "total_reported": 134,
+          "urls": [
+            "https://api.fda.gov/device/pma.json?search=applicant%3A%28%22DEXCOM%22%20OR%20%22DEXCOM%20INC%22%29&limit=1000&skip=0"
+          ]
+        },
+        {
+          "pages": 1,
+          "records": 29,
+          "source_id": "openfda_recall",
+          "total_reported": 29,
+          "urls": [
+            "https://api.fda.gov/device/recall.json?search=recalling_firm%3A%28%22DEXCOM%22%20OR%20%22DEXCOM%20INC%22%29&limit=1000&skip=0"
+          ]
+        }
+      ],
+      "records": 191
+    },
+    {
+      "display_name": "Draeger",
+      "key": "draeger",
+      "queries": [
+        {
+          "pages": 1,
+          "records": 201,
+          "source_id": "openfda_510k",
+          "total_reported": 201,
+          "urls": [
+            "https://api.fda.gov/device/510k.json?search=applicant%3A%28%22DRAEGER%20MEDICAL%20INC%22%20OR%20%22DRAEGER%20MEDICAL%20SYSTEMS%20INC%22%20OR%20%22DRAEGER%20MEDICAL%20SYTEMS%20INC%22%20OR%20%22DRAEGER%20MEDICAL%20AG%20%26%20CO%20KG%22%20OR%20%22DRAEGER%20MEDICAL%20AG%20%26%20CO%20KGAA%22%20OR%20%22DRAEGERWERK%20AG%20%26%20CO%20KGAA%22%20OR%20%22DRAEGET%20MEDICAL%20AG%20%26%20CO%20KGAA%22%20OR%20%22DRAEGER%20MEDICAL%20GMBH%22%20OR%20%22DRAEGER%20MEDICAL%20B%20V%22%20OR%20%22DRAEGER%20MEDICAL%20INFANT%20CARE%20INC%22%20OR%20%22DRAEGER%20INC%22%20OR%20%22DRAEGERWERK%20AG%22%20OR%20%22DRAGER%20INC%22%20OR%20%22DRAGER%20MEDIZINTECHNIK%20GMBH%22%20OR%20%22DRAGER%20MEDICAL%20AG%20%26%20CO%20KGAA%22%20OR%20%22DRAGERWERK%20AG%22%20OR%20%22DRAGERWERK%20AG%20%26%20CO%20KGAA%22%20OR%20%22DRAGER%20MEDICAL%20GMBH%22%20OR%20%22DRAGER%20MEDICAL%20B%20V%22%20OR%20%22NATIONAL%20DRAEGER%20INC%22%20OR%20%22SHANGHAI%20DRAEGER%20MEDICAL%20INSTRUMENT%20CO%20LTD%22%20OR%20%22DRAGER%22%20OR%20%22DRAEGER%22%29&limit=1000&skip=0"
+          ]
+        },
+        {
+          "pages": 1,
+          "records": 0,
+          "source_id": "openfda_pma",
+          "total_reported": 0,
+          "urls": [
+            "https://api.fda.gov/device/pma.json?search=applicant%3A%28%22DRAEGER%20MEDICAL%20INC%22%20OR%20%22DRAEGER%20MEDICAL%20SYSTEMS%20INC%22%20OR%20%22DRAEGER%20MEDICAL%20SYTEMS%20INC%22%20OR%20%22DRAEGER%20MEDICAL%20AG%20%26%20CO%20KG%22%20OR%20%22DRAEGER%20MEDICAL%20AG%20%26%20CO%20KGAA%22%20OR%20%22DRAEGERWERK%20AG%20%26%20CO%20KGAA%22%20OR%20%22DRAEGET%20MEDICAL%20AG%20%26%20CO%20KGAA%22%20OR%20%22DRAEGER%20MEDICAL%20GMBH%22%20OR%20%22DRAEGER%20MEDICAL%20B%20V%22%20OR%20%22DRAEGER%20MEDICAL%20INFANT%20CARE%20INC%22%20OR%20%22DRAEGER%20INC%22%20OR%20%22DRAEGERWERK%20AG%22%20OR%20%22DRAGER%20INC%22%20OR%20%22DRAGER%20MEDIZINTECHNIK%20GMBH%22%20OR%20%22DRAGER%20MEDICAL%20AG%20%26%20CO%20KGAA%22%20OR%20%22DRAGERWERK%20AG%22%20OR%20%22DRAGERWERK%20AG%20%26%20CO%20KGAA%22%20OR%20%22DRAGER%20MEDICAL%20GMBH%22%20OR%20%22DRAGER%20MEDICAL%20B%20V%22%20OR%20%22NATIONAL%20DRAEGER%20INC%22%20OR%20%22SHANGHAI%20DRAEGER%20MEDICAL%20INSTRUMENT%20CO%20LTD%22%20OR%20%22DRAGER%22%20OR%20%22DRAEGER%22%29&limit=1000&skip=0"
+          ]
+        },
+        {
+          "pages": 1,
+          "records": 147,
+          "source_id": "openfda_recall",
+          "total_reported": 147,
+          "urls": [
+            "https://api.fda.gov/device/recall.json?search=recalling_firm%3A%28%22DRAEGER%20MEDICAL%20INC%22%20OR%20%22DRAEGER%20MEDICAL%20SYSTEMS%20INC%22%20OR%20%22DRAEGER%20MEDICAL%20SYTEMS%20INC%22%20OR%20%22DRAEGER%20MEDICAL%20AG%20%26%20CO%20KG%22%20OR%20%22DRAEGER%20MEDICAL%20AG%20%26%20CO%20KGAA%22%20OR%20%22DRAEGERWERK%20AG%20%26%20CO%20KGAA%22%20OR%20%22DRAEGET%20MEDICAL%20AG%20%26%20CO%20KGAA%22%20OR%20%22DRAEGER%20MEDICAL%20GMBH%22%20OR%20%22DRAEGER%20MEDICAL%20B%20V%22%20OR%20%22DRAEGER%20MEDICAL%20INFANT%20CARE%20INC%22%20OR%20%22DRAEGER%20INC%22%20OR%20%22DRAEGERWERK%20AG%22%20OR%20%22DRAGER%20INC%22%20OR%20%22DRAGER%20MEDIZINTECHNIK%20GMBH%22%20OR%20%22DRAGER%20MEDICAL%20AG%20%26%20CO%20KGAA%22%20OR%20%22DRAGERWERK%20AG%22%20OR%20%22DRAGERWERK%20AG%20%26%20CO%20KGAA%22%20OR%20%22DRAGER%20MEDICAL%20GMBH%22%20OR%20%22DRAGER%20MEDICAL%20B%20V%22%20OR%20%22NATIONAL%20DRAEGER%20INC%22%20OR%20%22SHANGHAI%20DRAEGER%20MEDICAL%20INSTRUMENT%20CO%20LTD%22%20OR%20%22DRAGER%22%20OR%20%22DRAEGER%22%29&limit=1000&skip=0"
+          ]
+        }
+      ],
+      "records": 348
+    },
+    {
+      "display_name": "Edwards Lifesciences",
+      "key": "edwards_lifesciences",
+      "queries": [
+        {
+          "pages": 1,
+          "records": 167,
+          "source_id": "openfda_510k",
+          "total_reported": 167,
+          "urls": [
+            "https://api.fda.gov/device/510k.json?search=applicant%3A%28%22EDWARDS%20LIFESCIENCES%22%20OR%20%22EDWARDS%20LIFESCIENCES%20CORP%22%29&limit=1000&skip=0"
+          ]
+        },
+        {
+          "pages": 2,
+          "records": 1197,
+          "source_id": "openfda_pma",
+          "total_reported": 1197,
+          "urls": [
+            "https://api.fda.gov/device/pma.json?search=applicant%3A%28%22EDWARDS%20LIFESCIENCES%22%20OR%20%22EDWARDS%20LIFESCIENCES%20CORP%22%29&limit=1000&skip=0",
+            "https://api.fda.gov/device/pma.json?search=applicant%3A%28%22EDWARDS%20LIFESCIENCES%22%20OR%20%22EDWARDS%20LIFESCIENCES%20CORP%22%29&limit=1000&skip=1000"
+          ]
+        },
+        {
+          "pages": 1,
+          "records": 192,
+          "source_id": "openfda_recall",
+          "total_reported": 192,
+          "urls": [
+            "https://api.fda.gov/device/recall.json?search=recalling_firm%3A%28%22EDWARDS%20LIFESCIENCES%22%20OR%20%22EDWARDS%20LIFESCIENCES%20CORP%22%29&limit=1000&skip=0"
+          ]
+        }
+      ],
+      "records": 1556
+    },
+    {
+      "display_name": "Elekta",
+      "key": "elekta",
+      "queries": [
+        {
+          "pages": 1,
+          "records": 96,
+          "source_id": "openfda_510k",
+          "total_reported": 96,
+          "urls": [
+            "https://api.fda.gov/device/510k.json?search=applicant%3A%28%22ELEKTA%22%20OR%20%22ELEKTA%20INSTRUMENT%20AB%22%20OR%20%22ELEKTA%20INSTRUMENT%22%20OR%20%22ELEKTA%20LIMITED%22%20OR%20%22ELEKTA%20LTD%22%20OR%20%22ELEKTA%20AB%22%29&limit=1000&skip=0"
+          ]
+        },
+        {
+          "pages": 1,
+          "records": 0,
+          "source_id": "openfda_pma",
+          "total_reported": 0,
+          "urls": [
+            "https://api.fda.gov/device/pma.json?search=applicant%3A%28%22ELEKTA%22%20OR%20%22ELEKTA%20INSTRUMENT%20AB%22%20OR%20%22ELEKTA%20INSTRUMENT%22%20OR%20%22ELEKTA%20LIMITED%22%20OR%20%22ELEKTA%20LTD%22%20OR%20%22ELEKTA%20AB%22%29&limit=1000&skip=0"
+          ]
+        },
+        {
+          "pages": 1,
+          "records": 170,
+          "source_id": "openfda_recall",
+          "total_reported": 170,
+          "urls": [
+            "https://api.fda.gov/device/recall.json?search=recalling_firm%3A%28%22ELEKTA%22%20OR%20%22ELEKTA%20INSTRUMENT%20AB%22%20OR%20%22ELEKTA%20INSTRUMENT%22%20OR%20%22ELEKTA%20LIMITED%22%20OR%20%22ELEKTA%20LTD%22%20OR%20%22ELEKTA%20AB%22%29&limit=1000&skip=0"
+          ]
+        }
+      ],
+      "records": 266
+    },
+    {
+      "display_name": "Envista",
+      "key": "envista",
+      "queries": [
+        {
+          "pages": 1,
+          "records": 190,
+          "source_id": "openfda_510k",
+          "total_reported": 190,
+          "urls": [
+            "https://api.fda.gov/device/510k.json?search=applicant%3A%28%22ENVISTA%22%20OR%20%22NOBEL%20BIOCARE%22%20OR%20%22ORMCO%22%29&limit=1000&skip=0"
+          ]
+        },
+        {
+          "pages": 1,
+          "records": 0,
+          "source_id": "openfda_pma",
+          "total_reported": 0,
+          "urls": [
+            "https://api.fda.gov/device/pma.json?search=applicant%3A%28%22ENVISTA%22%20OR%20%22NOBEL%20BIOCARE%22%20OR%20%22ORMCO%22%29&limit=1000&skip=0"
+          ]
+        },
+        {
+          "pages": 1,
+          "records": 103,
+          "source_id": "openfda_recall",
+          "total_reported": 103,
+          "urls": [
+            "https://api.fda.gov/device/recall.json?search=recalling_firm%3A%28%22ENVISTA%22%20OR%20%22NOBEL%20BIOCARE%22%20OR%20%22ORMCO%22%29&limit=1000&skip=0"
+          ]
+        }
+      ],
+      "records": 293
+    },
+    {
+      "display_name": "Fresenius Medical Care",
+      "key": "fresenius_medical_care",
+      "queries": [
+        {
+          "pages": 1,
+          "records": 178,
+          "source_id": "openfda_510k",
+          "total_reported": 178,
+          "urls": [
+            "https://api.fda.gov/device/510k.json?search=applicant%3A%28%22FRESENIUS%20MEDICAL%20CARE%22%20OR%20%22FRESENIUS%22%20OR%20%22FRESENIUS%20KABI%22%29&limit=1000&skip=0"
+          ]
+        },
+        {
+          "pages": 1,
+          "records": 21,
+          "source_id": "openfda_pma",
+          "total_reported": 21,
+          "urls": [
+            "https://api.fda.gov/device/pma.json?search=applicant%3A%28%22FRESENIUS%20MEDICAL%20CARE%22%20OR%20%22FRESENIUS%22%20OR%20%22FRESENIUS%20KABI%22%29&limit=1000&skip=0"
+          ]
+        },
+        {
+          "pages": 1,
+          "records": 242,
+          "source_id": "openfda_recall",
+          "total_reported": 242,
+          "urls": [
+            "https://api.fda.gov/device/recall.json?search=recalling_firm%3A%28%22FRESENIUS%20MEDICAL%20CARE%22%20OR%20%22FRESENIUS%22%20OR%20%22FRESENIUS%20KABI%22%29&limit=1000&skip=0"
+          ]
+        }
+      ],
+      "records": 441
+    },
+    {
+      "display_name": "Fujifilm",
+      "key": "fujifilm",
+      "queries": [
+        {
+          "pages": 1,
+          "records": 243,
+          "source_id": "openfda_510k",
+          "total_reported": 243,
+          "urls": [
+            "https://api.fda.gov/device/510k.json?search=applicant%3A%28%22FUJIFILM%22%20OR%20%22FUJIFILM%20MEDICAL%22%20OR%20%22FUJIFILM%20SONOSITE%22%29&limit=1000&skip=0"
+          ]
+        },
+        {
+          "pages": 1,
+          "records": 8,
+          "source_id": "openfda_pma",
+          "total_reported": 8,
+          "urls": [
+            "https://api.fda.gov/device/pma.json?search=applicant%3A%28%22FUJIFILM%22%20OR%20%22FUJIFILM%20MEDICAL%22%20OR%20%22FUJIFILM%20SONOSITE%22%29&limit=1000&skip=0"
+          ]
+        },
+        {
+          "pages": 1,
+          "records": 70,
+          "source_id": "openfda_recall",
+          "total_reported": 70,
+          "urls": [
+            "https://api.fda.gov/device/recall.json?search=recalling_firm%3A%28%22FUJIFILM%22%20OR%20%22FUJIFILM%20MEDICAL%22%20OR%20%22FUJIFILM%20SONOSITE%22%29&limit=1000&skip=0"
+          ]
+        }
+      ],
+      "records": 321
+    },
+    {
+      "display_name": "GE HealthCare",
+      "key": "ge_healthcare",
+      "queries": [
+        {
+          "pages": 1,
+          "records": 960,
+          "source_id": "openfda_510k",
+          "total_reported": 960,
+          "urls": [
+            "https://api.fda.gov/device/510k.json?search=applicant%3A%28%22GE%20HEALTHCARE%22%20OR%20%22GE%20MEDICAL%20SYSTEMS%22%20OR%20%22GE%20HEALTHCARE%20GLOBAL%22%20OR%20%22GE%20MEDICAL%22%20OR%20%22GE%20MEDICAL%20SYSTEMS%20INFORMATION%20TECHNOLOGIES%22%29&limit=1000&skip=0"
+          ]
+        },
+        {
+          "pages": 1,
+          "records": 71,
+          "source_id": "openfda_pma",
+          "total_reported": 71,
+          "urls": [
+            "https://api.fda.gov/device/pma.json?search=applicant%3A%28%22GE%20HEALTHCARE%22%20OR%20%22GE%20MEDICAL%20SYSTEMS%22%20OR%20%22GE%20HEALTHCARE%20GLOBAL%22%20OR%20%22GE%20MEDICAL%22%20OR%20%22GE%20MEDICAL%20SYSTEMS%20INFORMATION%20TECHNOLOGIES%22%29&limit=1000&skip=0"
+          ]
+        },
+        {
+          "pages": 2,
+          "records": 1280,
+          "source_id": "openfda_recall",
+          "total_reported": 1280,
+          "urls": [
+            "https://api.fda.gov/device/recall.json?search=recalling_firm%3A%28%22GE%20HEALTHCARE%22%20OR%20%22GE%20MEDICAL%20SYSTEMS%22%20OR%20%22GE%20HEALTHCARE%20GLOBAL%22%20OR%20%22GE%20MEDICAL%22%20OR%20%22GE%20MEDICAL%20SYSTEMS%20INFORMATION%20TECHNOLOGIES%22%29&limit=1000&skip=0",
+            "https://api.fda.gov/device/recall.json?search=recalling_firm%3A%28%22GE%20HEALTHCARE%22%20OR%20%22GE%20MEDICAL%20SYSTEMS%22%20OR%20%22GE%20HEALTHCARE%20GLOBAL%22%20OR%20%22GE%20MEDICAL%22%20OR%20%22GE%20MEDICAL%20SYSTEMS%20INFORMATION%20TECHNOLOGIES%22%29&limit=1000&skip=1000"
+          ]
+        }
+      ],
+      "records": 2311
+    },
+    {
+      "display_name": "Getinge",
+      "key": "getinge",
+      "queries": [
+        {
+          "pages": 1,
+          "records": 131,
+          "source_id": "openfda_510k",
+          "total_reported": 131,
+          "urls": [
+            "https://api.fda.gov/device/510k.json?search=applicant%3A%28%22GETINGE%22%20OR%20%22GETINGE%20USA%22%20OR%20%22GETINGE%20USA%20INC%22%20OR%20%22MAQUET%22%20OR%20%22MAQUET%20CARDIOVASCULAR%22%20OR%20%22GETINGE%20STERILIZATION%22%20OR%20%22GETINGE%20DEUTSCHLAND%20GMBH%22%29&limit=1000&skip=0"
+          ]
+        },
+        {
+          "pages": 1,
+          "records": 12,
+          "source_id": "openfda_pma",
+          "total_reported": 12,
+          "urls": [
+            "https://api.fda.gov/device/pma.json?search=applicant%3A%28%22GETINGE%22%20OR%20%22GETINGE%20USA%22%20OR%20%22GETINGE%20USA%20INC%22%20OR%20%22MAQUET%22%20OR%20%22MAQUET%20CARDIOVASCULAR%22%20OR%20%22GETINGE%20STERILIZATION%22%20OR%20%22GETINGE%20DEUTSCHLAND%20GMBH%22%29&limit=1000&skip=0"
+          ]
+        },
+        {
+          "pages": 1,
+          "records": 532,
+          "source_id": "openfda_recall",
+          "total_reported": 532,
+          "urls": [
+            "https://api.fda.gov/device/recall.json?search=recalling_firm%3A%28%22GETINGE%22%20OR%20%22GETINGE%20USA%22%20OR%20%22GETINGE%20USA%20INC%22%20OR%20%22MAQUET%22%20OR%20%22MAQUET%20CARDIOVASCULAR%22%20OR%20%22GETINGE%20STERILIZATION%22%20OR%20%22GETINGE%20DEUTSCHLAND%20GMBH%22%29&limit=1000&skip=0"
+          ]
+        }
+      ],
+      "records": 675
+    },
+    {
+      "display_name": "Globus Medical",
+      "key": "globus_medical",
+      "queries": [
+        {
+          "pages": 1,
+          "records": 292,
+          "source_id": "openfda_510k",
+          "total_reported": 292,
+          "urls": [
+            "https://api.fda.gov/device/510k.json?search=applicant%3A%28%22GLOBUS%20MEDICAL%22%20OR%20%22NUVASIVE%22%29&limit=1000&skip=0"
+          ]
+        },
+        {
+          "pages": 1,
+          "records": 35,
+          "source_id": "openfda_pma",
+          "total_reported": 35,
+          "urls": [
+            "https://api.fda.gov/device/pma.json?search=applicant%3A%28%22GLOBUS%20MEDICAL%22%20OR%20%22NUVASIVE%22%29&limit=1000&skip=0"
+          ]
+        },
+        {
+          "pages": 1,
+          "records": 76,
+          "source_id": "openfda_recall",
+          "total_reported": 76,
+          "urls": [
+            "https://api.fda.gov/device/recall.json?search=recalling_firm%3A%28%22GLOBUS%20MEDICAL%22%20OR%20%22NUVASIVE%22%29&limit=1000&skip=0"
+          ]
+        }
+      ],
+      "records": 403
+    },
+    {
+      "display_name": "Hologic",
+      "key": "hologic",
+      "queries": [
+        {
+          "pages": 1,
+          "records": 128,
+          "source_id": "openfda_510k",
+          "total_reported": 128,
+          "urls": [
+            "https://api.fda.gov/device/510k.json?search=applicant%3A%28%22HOLOGIC%22%20OR%20%22HOLOGIC%20INC%22%29&limit=1000&skip=0"
+          ]
+        },
+        {
+          "pages": 1,
+          "records": 345,
+          "source_id": "openfda_pma",
+          "total_reported": 345,
+          "urls": [
+            "https://api.fda.gov/device/pma.json?search=applicant%3A%28%22HOLOGIC%22%20OR%20%22HOLOGIC%20INC%22%29&limit=1000&skip=0"
+          ]
+        },
+        {
+          "pages": 1,
+          "records": 72,
+          "source_id": "openfda_recall",
+          "total_reported": 72,
+          "urls": [
+            "https://api.fda.gov/device/recall.json?search=recalling_firm%3A%28%22HOLOGIC%22%20OR%20%22HOLOGIC%20INC%22%29&limit=1000&skip=0"
+          ]
+        }
+      ],
+      "records": 545
+    },
+    {
+      "display_name": "ICU Medical",
+      "key": "icu_medical",
+      "queries": [
+        {
+          "pages": 1,
+          "records": 159,
+          "source_id": "openfda_510k",
+          "total_reported": 159,
+          "urls": [
+            "https://api.fda.gov/device/510k.json?search=applicant%3A%28%22ICU%20MEDICAL%22%20OR%20%22SMITHS%20MEDICAL%22%29&limit=1000&skip=0"
+          ]
+        },
+        {
+          "pages": 1,
+          "records": 18,
+          "source_id": "openfda_pma",
+          "total_reported": 18,
+          "urls": [
+            "https://api.fda.gov/device/pma.json?search=applicant%3A%28%22ICU%20MEDICAL%22%20OR%20%22SMITHS%20MEDICAL%22%29&limit=1000&skip=0"
+          ]
+        },
+        {
+          "pages": 2,
+          "records": 1311,
+          "source_id": "openfda_recall",
+          "total_reported": 1311,
+          "urls": [
+            "https://api.fda.gov/device/recall.json?search=recalling_firm%3A%28%22ICU%20MEDICAL%22%20OR%20%22SMITHS%20MEDICAL%22%29&limit=1000&skip=0",
+            "https://api.fda.gov/device/recall.json?search=recalling_firm%3A%28%22ICU%20MEDICAL%22%20OR%20%22SMITHS%20MEDICAL%22%29&limit=1000&skip=1000"
+          ]
+        }
+      ],
+      "records": 1488
+    },
+    {
+      "display_name": "Inspire Medical Systems",
+      "key": "inspire_medical",
+      "queries": [
+        {
+          "pages": 1,
+          "records": 0,
+          "source_id": "openfda_510k",
+          "total_reported": 0,
+          "urls": [
+            "https://api.fda.gov/device/510k.json?search=applicant%3A%28%22INSPIRE%20MEDICAL%22%20OR%20%22INSPIRE%20MEDICAL%20SYSTEMS%22%29&limit=1000&skip=0"
+          ]
+        },
+        {
+          "pages": 1,
+          "records": 138,
+          "source_id": "openfda_pma",
+          "total_reported": 138,
+          "urls": [
+            "https://api.fda.gov/device/pma.json?search=applicant%3A%28%22INSPIRE%20MEDICAL%22%20OR%20%22INSPIRE%20MEDICAL%20SYSTEMS%22%29&limit=1000&skip=0"
+          ]
+        },
+        {
+          "pages": 1,
+          "records": 6,
+          "source_id": "openfda_recall",
+          "total_reported": 6,
+          "urls": [
+            "https://api.fda.gov/device/recall.json?search=recalling_firm%3A%28%22INSPIRE%20MEDICAL%22%20OR%20%22INSPIRE%20MEDICAL%20SYSTEMS%22%29&limit=1000&skip=0"
+          ]
+        }
+      ],
+      "records": 144
+    },
+    {
+      "display_name": "Insulet",
+      "key": "insulet",
+      "queries": [
+        {
+          "pages": 1,
+          "records": 25,
+          "source_id": "openfda_510k",
+          "total_reported": 25,
+          "urls": [
+            "https://api.fda.gov/device/510k.json?search=applicant%3A%28%22INSULET%22%20OR%20%22INSULET%20CORP%22%29&limit=1000&skip=0"
+          ]
+        },
+        {
+          "pages": 1,
+          "records": 0,
+          "source_id": "openfda_pma",
+          "total_reported": 0,
+          "urls": [
+            "https://api.fda.gov/device/pma.json?search=applicant%3A%28%22INSULET%22%20OR%20%22INSULET%20CORP%22%29&limit=1000&skip=0"
+          ]
+        },
+        {
+          "pages": 1,
+          "records": 21,
+          "source_id": "openfda_recall",
+          "total_reported": 21,
+          "urls": [
+            "https://api.fda.gov/device/recall.json?search=recalling_firm%3A%28%22INSULET%22%20OR%20%22INSULET%20CORP%22%29&limit=1000&skip=0"
+          ]
+        }
+      ],
+      "records": 46
+    },
+    {
+      "display_name": "Integra LifeSciences",
+      "key": "integra_lifesciences",
+      "queries": [
+        {
+          "pages": 1,
+          "records": 154,
+          "source_id": "openfda_510k",
+          "total_reported": 154,
+          "urls": [
+            "https://api.fda.gov/device/510k.json?search=applicant%3A%28%22INTEGRA%20LIFESCIENCES%22%20OR%20%22INTEGRA%22%29&limit=1000&skip=0"
+          ]
+        },
+        {
+          "pages": 1,
+          "records": 501,
+          "source_id": "openfda_pma",
+          "total_reported": 501,
+          "urls": [
+            "https://api.fda.gov/device/pma.json?search=applicant%3A%28%22INTEGRA%20LIFESCIENCES%22%20OR%20%22INTEGRA%22%29&limit=1000&skip=0"
+          ]
+        },
+        {
+          "pages": 1,
+          "records": 430,
+          "source_id": "openfda_recall",
+          "total_reported": 430,
+          "urls": [
+            "https://api.fda.gov/device/recall.json?search=recalling_firm%3A%28%22INTEGRA%20LIFESCIENCES%22%20OR%20%22INTEGRA%22%29&limit=1000&skip=0"
+          ]
+        }
+      ],
+      "records": 1085
+    },
+    {
+      "display_name": "Intuitive Surgical",
+      "key": "intuitive_surgical",
+      "queries": [
+        {
+          "pages": 1,
+          "records": 200,
+          "source_id": "openfda_510k",
+          "total_reported": 200,
+          "urls": [
+            "https://api.fda.gov/device/510k.json?search=applicant%3A%28%22INTUITIVE%20SURGICAL%22%20OR%20%22INTUITIVE%20SURGICAL%20OPERATIONS%22%29&limit=1000&skip=0"
+          ]
+        },
+        {
+          "pages": 1,
+          "records": 0,
+          "source_id": "openfda_pma",
+          "total_reported": 0,
+          "urls": [
+            "https://api.fda.gov/device/pma.json?search=applicant%3A%28%22INTUITIVE%20SURGICAL%22%20OR%20%22INTUITIVE%20SURGICAL%20OPERATIONS%22%29&limit=1000&skip=0"
+          ]
+        },
+        {
+          "pages": 1,
+          "records": 277,
+          "source_id": "openfda_recall",
+          "total_reported": 277,
+          "urls": [
+            "https://api.fda.gov/device/recall.json?search=recalling_firm%3A%28%22INTUITIVE%20SURGICAL%22%20OR%20%22INTUITIVE%20SURGICAL%20OPERATIONS%22%29&limit=1000&skip=0"
+          ]
+        }
+      ],
+      "records": 477
+    },
+    {
+      "display_name": "Invacare",
+      "key": "invacare",
+      "queries": [
+        {
+          "pages": 1,
+          "records": 133,
+          "source_id": "openfda_510k",
+          "total_reported": 133,
+          "urls": [
+            "https://api.fda.gov/device/510k.json?search=applicant%3A%28%22INVACARE%22%29&limit=1000&skip=0"
+          ]
+        },
+        {
+          "pages": 1,
+          "records": 0,
+          "source_id": "openfda_pma",
+          "total_reported": 0,
+          "urls": [
+            "https://api.fda.gov/device/pma.json?search=applicant%3A%28%22INVACARE%22%29&limit=1000&skip=0"
+          ]
+        },
+        {
+          "pages": 1,
+          "records": 68,
+          "source_id": "openfda_recall",
+          "total_reported": 68,
+          "urls": [
+            "https://api.fda.gov/device/recall.json?search=recalling_firm%3A%28%22INVACARE%22%29&limit=1000&skip=0"
+          ]
+        }
+      ],
+      "records": 201
+    },
+    {
+      "display_name": "iRhythm Technologies",
+      "key": "irhythm",
+      "queries": [
+        {
+          "pages": 1,
+          "records": 18,
+          "source_id": "openfda_510k",
+          "total_reported": 18,
+          "urls": [
+            "https://api.fda.gov/device/510k.json?search=applicant%3A%28%22IRHYTHM%22%20OR%20%22IRHYTHM%20TECHNOLOGIES%22%29&limit=1000&skip=0"
+          ]
+        },
+        {
+          "pages": 1,
+          "records": 0,
+          "source_id": "openfda_pma",
+          "total_reported": 0,
+          "urls": [
+            "https://api.fda.gov/device/pma.json?search=applicant%3A%28%22IRHYTHM%22%20OR%20%22IRHYTHM%20TECHNOLOGIES%22%29&limit=1000&skip=0"
+          ]
+        },
+        {
+          "pages": 1,
+          "records": 1,
+          "source_id": "openfda_recall",
+          "total_reported": 1,
+          "urls": [
+            "https://api.fda.gov/device/recall.json?search=recalling_firm%3A%28%22IRHYTHM%22%20OR%20%22IRHYTHM%20TECHNOLOGIES%22%29&limit=1000&skip=0"
+          ]
+        }
+      ],
+      "records": 19
+    },
+    {
+      "display_name": "Johnson & Johnson MedTech",
+      "key": "johnson_johnson_medtech",
+      "queries": [
+        {
+          "pages": 2,
+          "records": 1784,
+          "source_id": "openfda_510k",
+          "total_reported": 1784,
+          "urls": [
+            "https://api.fda.gov/device/510k.json?search=applicant%3A%28%22JOHNSON%20%26%20JOHNSON%22%20OR%20%22JOHNSON%20AND%20JOHNSON%22%20OR%20%22ETHICON%22%20OR%20%22ETHICON%20ENDO%20SURGERY%22%20OR%20%22ETHICON%20INC%22%20OR%20%22DEPUY%22%20OR%20%22DEPUY%20SYNTHES%22%20OR%20%22DEPUY%20ORTHOPAEDICS%22%20OR%20%22DEPUY%20SPINE%22%20OR%20%22BIOSENSE%20WEBSTER%22%20OR%20%22CERENOVUS%22%20OR%20%22ACCLARENT%22%20OR%20%22MENTOR%20WORLDWIDE%22%20OR%20%22AURIS%20HEALTH%22%20OR%20%22SHOCKWAVE%20MEDICAL%22%20OR%20%22NEUWAVE%20MEDICAL%22%20OR%20%22VERB%20SURGICAL%22%20OR%20%22ORTHOTAXY%22%29&limit=1000&skip=0",
+            "https://api.fda.gov/device/510k.json?search=applicant%3A%28%22JOHNSON%20%26%20JOHNSON%22%20OR%20%22JOHNSON%20AND%20JOHNSON%22%20OR%20%22ETHICON%22%20OR%20%22ETHICON%20ENDO%20SURGERY%22%20OR%20%22ETHICON%20INC%22%20OR%20%22DEPUY%22%20OR%20%22DEPUY%20SYNTHES%22%20OR%20%22DEPUY%20ORTHOPAEDICS%22%20OR%20%22DEPUY%20SPINE%22%20OR%20%22BIOSENSE%20WEBSTER%22%20OR%20%22CERENOVUS%22%20OR%20%22ACCLARENT%22%20OR%20%22MENTOR%20WORLDWIDE%22%20OR%20%22AURIS%20HEALTH%22%20OR%20%22SHOCKWAVE%20MEDICAL%22%20OR%20%22NEUWAVE%20MEDICAL%22%20OR%20%22VERB%20SURGICAL%22%20OR%20%22ORTHOTAXY%22%29&limit=1000&skip=1000"
+          ]
+        },
+        {
+          "pages": 3,
+          "records": 2482,
+          "source_id": "openfda_pma",
+          "total_reported": 2482,
+          "urls": [
+            "https://api.fda.gov/device/pma.json?search=applicant%3A%28%22JOHNSON%20%26%20JOHNSON%22%20OR%20%22JOHNSON%20AND%20JOHNSON%22%20OR%20%22ETHICON%22%20OR%20%22ETHICON%20ENDO%20SURGERY%22%20OR%20%22ETHICON%20INC%22%20OR%20%22DEPUY%22%20OR%20%22DEPUY%20SYNTHES%22%20OR%20%22DEPUY%20ORTHOPAEDICS%22%20OR%20%22DEPUY%20SPINE%22%20OR%20%22BIOSENSE%20WEBSTER%22%20OR%20%22CERENOVUS%22%20OR%20%22ACCLARENT%22%20OR%20%22MENTOR%20WORLDWIDE%22%20OR%20%22AURIS%20HEALTH%22%20OR%20%22SHOCKWAVE%20MEDICAL%22%20OR%20%22NEUWAVE%20MEDICAL%22%20OR%20%22VERB%20SURGICAL%22%20OR%20%22ORTHOTAXY%22%29&limit=1000&skip=0",
+            "https://api.fda.gov/device/pma.json?search=applicant%3A%28%22JOHNSON%20%26%20JOHNSON%22%20OR%20%22JOHNSON%20AND%20JOHNSON%22%20OR%20%22ETHICON%22%20OR%20%22ETHICON%20ENDO%20SURGERY%22%20OR%20%22ETHICON%20INC%22%20OR%20%22DEPUY%22%20OR%20%22DEPUY%20SYNTHES%22%20OR%20%22DEPUY%20ORTHOPAEDICS%22%20OR%20%22DEPUY%20SPINE%22%20OR%20%22BIOSENSE%20WEBSTER%22%20OR%20%22CERENOVUS%22%20OR%20%22ACCLARENT%22%20OR%20%22MENTOR%20WORLDWIDE%22%20OR%20%22AURIS%20HEALTH%22%20OR%20%22SHOCKWAVE%20MEDICAL%22%20OR%20%22NEUWAVE%20MEDICAL%22%20OR%20%22VERB%20SURGICAL%22%20OR%20%22ORTHOTAXY%22%29&limit=1000&skip=1000",
+            "https://api.fda.gov/device/pma.json?search=applicant%3A%28%22JOHNSON%20%26%20JOHNSON%22%20OR%20%22JOHNSON%20AND%20JOHNSON%22%20OR%20%22ETHICON%22%20OR%20%22ETHICON%20ENDO%20SURGERY%22%20OR%20%22ETHICON%20INC%22%20OR%20%22DEPUY%22%20OR%20%22DEPUY%20SYNTHES%22%20OR%20%22DEPUY%20ORTHOPAEDICS%22%20OR%20%22DEPUY%20SPINE%22%20OR%20%22BIOSENSE%20WEBSTER%22%20OR%20%22CERENOVUS%22%20OR%20%22ACCLARENT%22%20OR%20%22MENTOR%20WORLDWIDE%22%20OR%20%22AURIS%20HEALTH%22%20OR%20%22SHOCKWAVE%20MEDICAL%22%20OR%20%22NEUWAVE%20MEDICAL%22%20OR%20%22VERB%20SURGICAL%22%20OR%20%22ORTHOTAXY%22%29&limit=1000&skip=2000"
+          ]
+        },
+        {
+          "pages": 2,
+          "records": 1310,
+          "source_id": "openfda_recall",
+          "total_reported": 1310,
+          "urls": [
+            "https://api.fda.gov/device/recall.json?search=recalling_firm%3A%28%22JOHNSON%20%26%20JOHNSON%22%20OR%20%22JOHNSON%20AND%20JOHNSON%22%20OR%20%22ETHICON%22%20OR%20%22ETHICON%20ENDO%20SURGERY%22%20OR%20%22ETHICON%20INC%22%20OR%20%22DEPUY%22%20OR%20%22DEPUY%20SYNTHES%22%20OR%20%22DEPUY%20ORTHOPAEDICS%22%20OR%20%22DEPUY%20SPINE%22%20OR%20%22BIOSENSE%20WEBSTER%22%20OR%20%22CERENOVUS%22%20OR%20%22ACCLARENT%22%20OR%20%22MENTOR%20WORLDWIDE%22%20OR%20%22AURIS%20HEALTH%22%20OR%20%22SHOCKWAVE%20MEDICAL%22%20OR%20%22NEUWAVE%20MEDICAL%22%20OR%20%22VERB%20SURGICAL%22%20OR%20%22ORTHOTAXY%22%29&limit=1000&skip=0",
+            "https://api.fda.gov/device/recall.json?search=recalling_firm%3A%28%22JOHNSON%20%26%20JOHNSON%22%20OR%20%22JOHNSON%20AND%20JOHNSON%22%20OR%20%22ETHICON%22%20OR%20%22ETHICON%20ENDO%20SURGERY%22%20OR%20%22ETHICON%20INC%22%20OR%20%22DEPUY%22%20OR%20%22DEPUY%20SYNTHES%22%20OR%20%22DEPUY%20ORTHOPAEDICS%22%20OR%20%22DEPUY%20SPINE%22%20OR%20%22BIOSENSE%20WEBSTER%22%20OR%20%22CERENOVUS%22%20OR%20%22ACCLARENT%22%20OR%20%22MENTOR%20WORLDWIDE%22%20OR%20%22AURIS%20HEALTH%22%20OR%20%22SHOCKWAVE%20MEDICAL%22%20OR%20%22NEUWAVE%20MEDICAL%22%20OR%20%22VERB%20SURGICAL%22%20OR%20%22ORTHOTAXY%22%29&limit=1000&skip=1000"
+          ]
+        }
+      ],
+      "records": 5576
+    },
+    {
+      "display_name": "Karl Storz",
+      "key": "karl_storz",
+      "queries": [
+        {
+          "pages": 1,
+          "records": 460,
+          "source_id": "openfda_510k",
+          "total_reported": 460,
+          "urls": [
+            "https://api.fda.gov/device/510k.json?search=applicant%3A%28%22KARL%20STORZ%22%29&limit=1000&skip=0"
+          ]
+        },
+        {
+          "pages": 1,
+          "records": 47,
+          "source_id": "openfda_pma",
+          "total_reported": 47,
+          "urls": [
+            "https://api.fda.gov/device/pma.json?search=applicant%3A%28%22KARL%20STORZ%22%29&limit=1000&skip=0"
+          ]
+        },
+        {
+          "pages": 1,
+          "records": 92,
+          "source_id": "openfda_recall",
+          "total_reported": 92,
+          "urls": [
+            "https://api.fda.gov/device/recall.json?search=recalling_firm%3A%28%22KARL%20STORZ%22%29&limit=1000&skip=0"
+          ]
+        }
+      ],
+      "records": 599
+    },
+    {
+      "display_name": "Masimo",
+      "key": "masimo",
+      "queries": [
+        {
+          "pages": 1,
+          "records": 116,
+          "source_id": "openfda_510k",
+          "total_reported": 116,
+          "urls": [
+            "https://api.fda.gov/device/510k.json?search=applicant%3A%28%22MASIMO%22%20OR%20%22MASIMO%20CORP%22%29&limit=1000&skip=0"
+          ]
+        },
+        {
+          "pages": 1,
+          "records": 0,
+          "source_id": "openfda_pma",
+          "total_reported": 0,
+          "urls": [
+            "https://api.fda.gov/device/pma.json?search=applicant%3A%28%22MASIMO%22%20OR%20%22MASIMO%20CORP%22%29&limit=1000&skip=0"
+          ]
+        },
+        {
+          "pages": 1,
+          "records": 16,
+          "source_id": "openfda_recall",
+          "total_reported": 16,
+          "urls": [
+            "https://api.fda.gov/device/recall.json?search=recalling_firm%3A%28%22MASIMO%22%20OR%20%22MASIMO%20CORP%22%29&limit=1000&skip=0"
+          ]
+        }
+      ],
+      "records": 132
+    },
+    {
+      "display_name": "Medline Industries",
+      "key": "medline",
+      "queries": [
+        {
+          "pages": 1,
+          "records": 301,
+          "source_id": "openfda_510k",
+          "total_reported": 301,
+          "urls": [
+            "https://api.fda.gov/device/510k.json?search=applicant%3A%28%22MEDLINE%20INDUSTRIES%22%20OR%20%22MEDLINE%22%29&limit=1000&skip=0"
+          ]
+        },
+        {
+          "pages": 1,
+          "records": 0,
+          "source_id": "openfda_pma",
+          "total_reported": 0,
+          "urls": [
+            "https://api.fda.gov/device/pma.json?search=applicant%3A%28%22MEDLINE%20INDUSTRIES%22%20OR%20%22MEDLINE%22%29&limit=1000&skip=0"
+          ]
+        },
+        {
+          "pages": 2,
+          "records": 1544,
+          "source_id": "openfda_recall",
+          "total_reported": 1544,
+          "urls": [
+            "https://api.fda.gov/device/recall.json?search=recalling_firm%3A%28%22MEDLINE%20INDUSTRIES%22%20OR%20%22MEDLINE%22%29&limit=1000&skip=0",
+            "https://api.fda.gov/device/recall.json?search=recalling_firm%3A%28%22MEDLINE%20INDUSTRIES%22%20OR%20%22MEDLINE%22%29&limit=1000&skip=1000"
+          ]
+        }
+      ],
+      "records": 1845
+    },
+    {
+      "display_name": "Medtronic",
+      "key": "medtronic",
+      "queries": [
+        {
+          "pages": 2,
+          "records": 1913,
+          "source_id": "openfda_510k",
+          "total_reported": 1913,
+          "urls": [
+            "https://api.fda.gov/device/510k.json?search=applicant%3A%28%22MEDTRONIC%22%20OR%20%22MEDTRONIC%20MINIMED%22%20OR%20%22MEDTRONIC%20SOFAMOR%20DANEK%22%20OR%20%22MEDTRONIC%20VASCULAR%22%20OR%20%22MEDTRONIC%20NEUROMODULATION%22%20OR%20%22MEDTRONIC%20CRYOCATH%22%20OR%20%22MEDTRONIC%20XOMED%22%20OR%20%22MEDTRONIC%20PUERTO%20RICO%22%20OR%20%22MEDTRONIC%20BAKKEN%22%20OR%20%22COVIDIEN%22%20OR%20%22COVIDIEN%20LP%22%20OR%20%22TYCO%20HEALTHCARE%22%29&limit=1000&skip=0",
+            "https://api.fda.gov/device/510k.json?search=applicant%3A%28%22MEDTRONIC%22%20OR%20%22MEDTRONIC%20MINIMED%22%20OR%20%22MEDTRONIC%20SOFAMOR%20DANEK%22%20OR%20%22MEDTRONIC%20VASCULAR%22%20OR%20%22MEDTRONIC%20NEUROMODULATION%22%20OR%20%22MEDTRONIC%20CRYOCATH%22%20OR%20%22MEDTRONIC%20XOMED%22%20OR%20%22MEDTRONIC%20PUERTO%20RICO%22%20OR%20%22MEDTRONIC%20BAKKEN%22%20OR%20%22COVIDIEN%22%20OR%20%22COVIDIEN%20LP%22%20OR%20%22TYCO%20HEALTHCARE%22%29&limit=1000&skip=1000"
+          ]
+        },
+        {
+          "pages": 13,
+          "records": 12938,
+          "source_id": "openfda_pma",
+          "total_reported": 12938,
+          "urls": [
+            "https://api.fda.gov/device/pma.json?search=applicant%3A%28%22MEDTRONIC%22%20OR%20%22MEDTRONIC%20MINIMED%22%20OR%20%22MEDTRONIC%20SOFAMOR%20DANEK%22%20OR%20%22MEDTRONIC%20VASCULAR%22%20OR%20%22MEDTRONIC%20NEUROMODULATION%22%20OR%20%22MEDTRONIC%20CRYOCATH%22%20OR%20%22MEDTRONIC%20XOMED%22%20OR%20%22MEDTRONIC%20PUERTO%20RICO%22%20OR%20%22MEDTRONIC%20BAKKEN%22%20OR%20%22COVIDIEN%22%20OR%20%22COVIDIEN%20LP%22%20OR%20%22TYCO%20HEALTHCARE%22%29&limit=1000&skip=0",
+            "https://api.fda.gov/device/pma.json?search=applicant%3A%28%22MEDTRONIC%22%20OR%20%22MEDTRONIC%20MINIMED%22%20OR%20%22MEDTRONIC%20SOFAMOR%20DANEK%22%20OR%20%22MEDTRONIC%20VASCULAR%22%20OR%20%22MEDTRONIC%20NEUROMODULATION%22%20OR%20%22MEDTRONIC%20CRYOCATH%22%20OR%20%22MEDTRONIC%20XOMED%22%20OR%20%22MEDTRONIC%20PUERTO%20RICO%22%20OR%20%22MEDTRONIC%20BAKKEN%22%20OR%20%22COVIDIEN%22%20OR%20%22COVIDIEN%20LP%22%20OR%20%22TYCO%20HEALTHCARE%22%29&limit=1000&skip=1000",
+            "https://api.fda.gov/device/pma.json?search=applicant%3A%28%22MEDTRONIC%22%20OR%20%22MEDTRONIC%20MINIMED%22%20OR%20%22MEDTRONIC%20SOFAMOR%20DANEK%22%20OR%20%22MEDTRONIC%20VASCULAR%22%20OR%20%22MEDTRONIC%20NEUROMODULATION%22%20OR%20%22MEDTRONIC%20CRYOCATH%22%20OR%20%22MEDTRONIC%20XOMED%22%20OR%20%22MEDTRONIC%20PUERTO%20RICO%22%20OR%20%22MEDTRONIC%20BAKKEN%22%20OR%20%22COVIDIEN%22%20OR%20%22COVIDIEN%20LP%22%20OR%20%22TYCO%20HEALTHCARE%22%29&limit=1000&skip=2000",
+            "https://api.fda.gov/device/pma.json?search=applicant%3A%28%22MEDTRONIC%22%20OR%20%22MEDTRONIC%20MINIMED%22%20OR%20%22MEDTRONIC%20SOFAMOR%20DANEK%22%20OR%20%22MEDTRONIC%20VASCULAR%22%20OR%20%22MEDTRONIC%20NEUROMODULATION%22%20OR%20%22MEDTRONIC%20CRYOCATH%22%20OR%20%22MEDTRONIC%20XOMED%22%20OR%20%22MEDTRONIC%20PUERTO%20RICO%22%20OR%20%22MEDTRONIC%20BAKKEN%22%20OR%20%22COVIDIEN%22%20OR%20%22COVIDIEN%20LP%22%20OR%20%22TYCO%20HEALTHCARE%22%29&limit=1000&skip=3000",
+            "https://api.fda.gov/device/pma.json?search=applicant%3A%28%22MEDTRONIC%22%20OR%20%22MEDTRONIC%20MINIMED%22%20OR%20%22MEDTRONIC%20SOFAMOR%20DANEK%22%20OR%20%22MEDTRONIC%20VASCULAR%22%20OR%20%22MEDTRONIC%20NEUROMODULATION%22%20OR%20%22MEDTRONIC%20CRYOCATH%22%20OR%20%22MEDTRONIC%20XOMED%22%20OR%20%22MEDTRONIC%20PUERTO%20RICO%22%20OR%20%22MEDTRONIC%20BAKKEN%22%20OR%20%22COVIDIEN%22%20OR%20%22COVIDIEN%20LP%22%20OR%20%22TYCO%20HEALTHCARE%22%29&limit=1000&skip=4000",
+            "https://api.fda.gov/device/pma.json?search=applicant%3A%28%22MEDTRONIC%22%20OR%20%22MEDTRONIC%20MINIMED%22%20OR%20%22MEDTRONIC%20SOFAMOR%20DANEK%22%20OR%20%22MEDTRONIC%20VASCULAR%22%20OR%20%22MEDTRONIC%20NEUROMODULATION%22%20OR%20%22MEDTRONIC%20CRYOCATH%22%20OR%20%22MEDTRONIC%20XOMED%22%20OR%20%22MEDTRONIC%20PUERTO%20RICO%22%20OR%20%22MEDTRONIC%20BAKKEN%22%20OR%20%22COVIDIEN%22%20OR%20%22COVIDIEN%20LP%22%20OR%20%22TYCO%20HEALTHCARE%22%29&limit=1000&skip=5000",
+            "https://api.fda.gov/device/pma.json?search=applicant%3A%28%22MEDTRONIC%22%20OR%20%22MEDTRONIC%20MINIMED%22%20OR%20%22MEDTRONIC%20SOFAMOR%20DANEK%22%20OR%20%22MEDTRONIC%20VASCULAR%22%20OR%20%22MEDTRONIC%20NEUROMODULATION%22%20OR%20%22MEDTRONIC%20CRYOCATH%22%20OR%20%22MEDTRONIC%20XOMED%22%20OR%20%22MEDTRONIC%20PUERTO%20RICO%22%20OR%20%22MEDTRONIC%20BAKKEN%22%20OR%20%22COVIDIEN%22%20OR%20%22COVIDIEN%20LP%22%20OR%20%22TYCO%20HEALTHCARE%22%29&limit=1000&skip=6000",
+            "https://api.fda.gov/device/pma.json?search=applicant%3A%28%22MEDTRONIC%22%20OR%20%22MEDTRONIC%20MINIMED%22%20OR%20%22MEDTRONIC%20SOFAMOR%20DANEK%22%20OR%20%22MEDTRONIC%20VASCULAR%22%20OR%20%22MEDTRONIC%20NEUROMODULATION%22%20OR%20%22MEDTRONIC%20CRYOCATH%22%20OR%20%22MEDTRONIC%20XOMED%22%20OR%20%22MEDTRONIC%20PUERTO%20RICO%22%20OR%20%22MEDTRONIC%20BAKKEN%22%20OR%20%22COVIDIEN%22%20OR%20%22COVIDIEN%20LP%22%20OR%20%22TYCO%20HEALTHCARE%22%29&limit=1000&skip=7000",
+            "https://api.fda.gov/device/pma.json?search=applicant%3A%28%22MEDTRONIC%22%20OR%20%22MEDTRONIC%20MINIMED%22%20OR%20%22MEDTRONIC%20SOFAMOR%20DANEK%22%20OR%20%22MEDTRONIC%20VASCULAR%22%20OR%20%22MEDTRONIC%20NEUROMODULATION%22%20OR%20%22MEDTRONIC%20CRYOCATH%22%20OR%20%22MEDTRONIC%20XOMED%22%20OR%20%22MEDTRONIC%20PUERTO%20RICO%22%20OR%20%22MEDTRONIC%20BAKKEN%22%20OR%20%22COVIDIEN%22%20OR%20%22COVIDIEN%20LP%22%20OR%20%22TYCO%20HEALTHCARE%22%29&limit=1000&skip=8000",
+            "https://api.fda.gov/device/pma.json?search=applicant%3A%28%22MEDTRONIC%22%20OR%20%22MEDTRONIC%20MINIMED%22%20OR%20%22MEDTRONIC%20SOFAMOR%20DANEK%22%20OR%20%22MEDTRONIC%20VASCULAR%22%20OR%20%22MEDTRONIC%20NEUROMODULATION%22%20OR%20%22MEDTRONIC%20CRYOCATH%22%20OR%20%22MEDTRONIC%20XOMED%22%20OR%20%22MEDTRONIC%20PUERTO%20RICO%22%20OR%20%22MEDTRONIC%20BAKKEN%22%20OR%20%22COVIDIEN%22%20OR%20%22COVIDIEN%20LP%22%20OR%20%22TYCO%20HEALTHCARE%22%29&limit=1000&skip=9000",
+            "https://api.fda.gov/device/pma.json?search=applicant%3A%28%22MEDTRONIC%22%20OR%20%22MEDTRONIC%20MINIMED%22%20OR%20%22MEDTRONIC%20SOFAMOR%20DANEK%22%20OR%20%22MEDTRONIC%20VASCULAR%22%20OR%20%22MEDTRONIC%20NEUROMODULATION%22%20OR%20%22MEDTRONIC%20CRYOCATH%22%20OR%20%22MEDTRONIC%20XOMED%22%20OR%20%22MEDTRONIC%20PUERTO%20RICO%22%20OR%20%22MEDTRONIC%20BAKKEN%22%20OR%20%22COVIDIEN%22%20OR%20%22COVIDIEN%20LP%22%20OR%20%22TYCO%20HEALTHCARE%22%29&limit=1000&skip=10000",
+            "https://api.fda.gov/device/pma.json?search=applicant%3A%28%22MEDTRONIC%22%20OR%20%22MEDTRONIC%20MINIMED%22%20OR%20%22MEDTRONIC%20SOFAMOR%20DANEK%22%20OR%20%22MEDTRONIC%20VASCULAR%22%20OR%20%22MEDTRONIC%20NEUROMODULATION%22%20OR%20%22MEDTRONIC%20CRYOCATH%22%20OR%20%22MEDTRONIC%20XOMED%22%20OR%20%22MEDTRONIC%20PUERTO%20RICO%22%20OR%20%22MEDTRONIC%20BAKKEN%22%20OR%20%22COVIDIEN%22%20OR%20%22COVIDIEN%20LP%22%20OR%20%22TYCO%20HEALTHCARE%22%29&limit=1000&skip=11000",
+            "https://api.fda.gov/device/pma.json?search=applicant%3A%28%22MEDTRONIC%22%20OR%20%22MEDTRONIC%20MINIMED%22%20OR%20%22MEDTRONIC%20SOFAMOR%20DANEK%22%20OR%20%22MEDTRONIC%20VASCULAR%22%20OR%20%22MEDTRONIC%20NEUROMODULATION%22%20OR%20%22MEDTRONIC%20CRYOCATH%22%20OR%20%22MEDTRONIC%20XOMED%22%20OR%20%22MEDTRONIC%20PUERTO%20RICO%22%20OR%20%22MEDTRONIC%20BAKKEN%22%20OR%20%22COVIDIEN%22%20OR%20%22COVIDIEN%20LP%22%20OR%20%22TYCO%20HEALTHCARE%22%29&limit=1000&skip=12000"
+          ]
+        },
+        {
+          "pages": 3,
+          "records": 2622,
+          "source_id": "openfda_recall",
+          "total_reported": 2622,
+          "urls": [
+            "https://api.fda.gov/device/recall.json?search=recalling_firm%3A%28%22MEDTRONIC%22%20OR%20%22MEDTRONIC%20MINIMED%22%20OR%20%22MEDTRONIC%20SOFAMOR%20DANEK%22%20OR%20%22MEDTRONIC%20VASCULAR%22%20OR%20%22MEDTRONIC%20NEUROMODULATION%22%20OR%20%22MEDTRONIC%20CRYOCATH%22%20OR%20%22MEDTRONIC%20XOMED%22%20OR%20%22MEDTRONIC%20PUERTO%20RICO%22%20OR%20%22MEDTRONIC%20BAKKEN%22%20OR%20%22COVIDIEN%22%20OR%20%22COVIDIEN%20LP%22%20OR%20%22TYCO%20HEALTHCARE%22%29&limit=1000&skip=0",
+            "https://api.fda.gov/device/recall.json?search=recalling_firm%3A%28%22MEDTRONIC%22%20OR%20%22MEDTRONIC%20MINIMED%22%20OR%20%22MEDTRONIC%20SOFAMOR%20DANEK%22%20OR%20%22MEDTRONIC%20VASCULAR%22%20OR%20%22MEDTRONIC%20NEUROMODULATION%22%20OR%20%22MEDTRONIC%20CRYOCATH%22%20OR%20%22MEDTRONIC%20XOMED%22%20OR%20%22MEDTRONIC%20PUERTO%20RICO%22%20OR%20%22MEDTRONIC%20BAKKEN%22%20OR%20%22COVIDIEN%22%20OR%20%22COVIDIEN%20LP%22%20OR%20%22TYCO%20HEALTHCARE%22%29&limit=1000&skip=1000",
+            "https://api.fda.gov/device/recall.json?search=recalling_firm%3A%28%22MEDTRONIC%22%20OR%20%22MEDTRONIC%20MINIMED%22%20OR%20%22MEDTRONIC%20SOFAMOR%20DANEK%22%20OR%20%22MEDTRONIC%20VASCULAR%22%20OR%20%22MEDTRONIC%20NEUROMODULATION%22%20OR%20%22MEDTRONIC%20CRYOCATH%22%20OR%20%22MEDTRONIC%20XOMED%22%20OR%20%22MEDTRONIC%20PUERTO%20RICO%22%20OR%20%22MEDTRONIC%20BAKKEN%22%20OR%20%22COVIDIEN%22%20OR%20%22COVIDIEN%20LP%22%20OR%20%22TYCO%20HEALTHCARE%22%29&limit=1000&skip=2000"
+          ]
+        }
+      ],
+      "records": 17473
+    },
+    {
+      "display_name": "Merit Medical",
+      "key": "merit_medical",
+      "queries": [
+        {
+          "pages": 1,
+          "records": 194,
+          "source_id": "openfda_510k",
+          "total_reported": 194,
+          "urls": [
+            "https://api.fda.gov/device/510k.json?search=applicant%3A%28%22MERIT%20MEDICAL%22%20OR%20%22MERIT%20MEDICAL%20SYSTEMS%22%29&limit=1000&skip=0"
+          ]
+        },
+        {
+          "pages": 1,
+          "records": 5,
+          "source_id": "openfda_pma",
+          "total_reported": 5,
+          "urls": [
+            "https://api.fda.gov/device/pma.json?search=applicant%3A%28%22MERIT%20MEDICAL%22%20OR%20%22MERIT%20MEDICAL%20SYSTEMS%22%29&limit=1000&skip=0"
+          ]
+        },
+        {
+          "pages": 1,
+          "records": 301,
+          "source_id": "openfda_recall",
+          "total_reported": 301,
+          "urls": [
+            "https://api.fda.gov/device/recall.json?search=recalling_firm%3A%28%22MERIT%20MEDICAL%22%20OR%20%22MERIT%20MEDICAL%20SYSTEMS%22%29&limit=1000&skip=0"
+          ]
+        }
+      ],
+      "records": 500
+    },
+    {
+      "display_name": "Mindray",
+      "key": "mindray",
+      "queries": [
+        {
+          "pages": 1,
+          "records": 180,
+          "source_id": "openfda_510k",
+          "total_reported": 180,
+          "urls": [
+            "https://api.fda.gov/device/510k.json?search=applicant%3A%28%22SHENZHEN%20MINDRAY%20BIO-MEDICAL%20ELECTRONICS%20CO%20LTD%22%20OR%20%22SHENZHEN%20MINDRAY%20BIO-MEIDCAL%20ELECTRONICS%20CO%20LTD%22%20OR%20%22SHENZHEN%20MINDRAY%20BIOMEDICAL%20ELECTRONICS%20CO%20LTD%22%20OR%20%22SHENZHEN%20MINDRAY%20BIO-MEDICAL%20ELECTRONICS%20CO%22%20OR%20%22MINDRAY%20BIO-MEDICAL%20ELECTRONICS%20CO%20LTD%22%20OR%20%22MINDRAY%20DS%20USA%20INC%22%20OR%20%22MINDRAY%20DS%20USA%20INC%20DBA%20MINDRAY%20NORTH%20AMERICA%22%20OR%20%22MINDRAY%20DS%20USA%20INC%20D%20B%20A%20MINDRAY%20NORTH%20AMERICA%22%20OR%20%22MINDRAY%20DS%20USA%20INC%20DBA%20DATASCOPE%20PATIENT%20MONITORING%22%20OR%20%22MINDRAY%20NORTH%20AMERICA%22%20OR%20%22MINDRAY%22%29&limit=1000&skip=0"
+          ]
+        },
+        {
+          "pages": 1,
+          "records": 0,
+          "source_id": "openfda_pma",
+          "total_reported": 0,
+          "urls": [
+            "https://api.fda.gov/device/pma.json?search=applicant%3A%28%22SHENZHEN%20MINDRAY%20BIO-MEDICAL%20ELECTRONICS%20CO%20LTD%22%20OR%20%22SHENZHEN%20MINDRAY%20BIO-MEIDCAL%20ELECTRONICS%20CO%20LTD%22%20OR%20%22SHENZHEN%20MINDRAY%20BIOMEDICAL%20ELECTRONICS%20CO%20LTD%22%20OR%20%22SHENZHEN%20MINDRAY%20BIO-MEDICAL%20ELECTRONICS%20CO%22%20OR%20%22MINDRAY%20BIO-MEDICAL%20ELECTRONICS%20CO%20LTD%22%20OR%20%22MINDRAY%20DS%20USA%20INC%22%20OR%20%22MINDRAY%20DS%20USA%20INC%20DBA%20MINDRAY%20NORTH%20AMERICA%22%20OR%20%22MINDRAY%20DS%20USA%20INC%20D%20B%20A%20MINDRAY%20NORTH%20AMERICA%22%20OR%20%22MINDRAY%20DS%20USA%20INC%20DBA%20DATASCOPE%20PATIENT%20MONITORING%22%20OR%20%22MINDRAY%20NORTH%20AMERICA%22%20OR%20%22MINDRAY%22%29&limit=1000&skip=0"
+          ]
+        },
+        {
+          "pages": 1,
+          "records": 64,
+          "source_id": "openfda_recall",
+          "total_reported": 64,
+          "urls": [
+            "https://api.fda.gov/device/recall.json?search=recalling_firm%3A%28%22SHENZHEN%20MINDRAY%20BIO-MEDICAL%20ELECTRONICS%20CO%20LTD%22%20OR%20%22SHENZHEN%20MINDRAY%20BIO-MEIDCAL%20ELECTRONICS%20CO%20LTD%22%20OR%20%22SHENZHEN%20MINDRAY%20BIOMEDICAL%20ELECTRONICS%20CO%20LTD%22%20OR%20%22SHENZHEN%20MINDRAY%20BIO-MEDICAL%20ELECTRONICS%20CO%22%20OR%20%22MINDRAY%20BIO-MEDICAL%20ELECTRONICS%20CO%20LTD%22%20OR%20%22MINDRAY%20DS%20USA%20INC%22%20OR%20%22MINDRAY%20DS%20USA%20INC%20DBA%20MINDRAY%20NORTH%20AMERICA%22%20OR%20%22MINDRAY%20DS%20USA%20INC%20D%20B%20A%20MINDRAY%20NORTH%20AMERICA%22%20OR%20%22MINDRAY%20DS%20USA%20INC%20DBA%20DATASCOPE%20PATIENT%20MONITORING%22%20OR%20%22MINDRAY%20NORTH%20AMERICA%22%20OR%20%22MINDRAY%22%29&limit=1000&skip=0"
+          ]
+        }
+      ],
+      "records": 244
+    },
+    {
+      "display_name": "Nevro",
+      "key": "nevro",
+      "queries": [
+        {
+          "pages": 1,
+          "records": 0,
+          "source_id": "openfda_510k",
+          "total_reported": 0,
+          "urls": [
+            "https://api.fda.gov/device/510k.json?search=applicant%3A%28%22NEVRO%22%20OR%20%22NEVRO%20CORP%22%29&limit=1000&skip=0"
+          ]
+        },
+        {
+          "pages": 1,
+          "records": 64,
+          "source_id": "openfda_pma",
+          "total_reported": 64,
+          "urls": [
+            "https://api.fda.gov/device/pma.json?search=applicant%3A%28%22NEVRO%22%20OR%20%22NEVRO%20CORP%22%29&limit=1000&skip=0"
+          ]
+        },
+        {
+          "pages": 1,
+          "records": 0,
+          "source_id": "openfda_recall",
+          "total_reported": 0,
+          "urls": [
+            "https://api.fda.gov/device/recall.json?search=recalling_firm%3A%28%22NEVRO%22%20OR%20%22NEVRO%20CORP%22%29&limit=1000&skip=0"
+          ]
+        }
+      ],
+      "records": 64
+    },
+    {
+      "display_name": "Nihon Kohden",
+      "key": "nihon_kohden",
+      "queries": [
+        {
+          "pages": 1,
+          "records": 204,
+          "source_id": "openfda_510k",
+          "total_reported": 204,
+          "urls": [
+            "https://api.fda.gov/device/510k.json?search=applicant%3A%28%22NIHON%20KOHDEN%20AMERICA%20INC%22%20OR%20%22NIHON%20KOHDEN%20AMERICA%22%20OR%20%22NIHON%20KOHDEN%20CORPORATION%22%20OR%20%22NIHON%20KOHDEN%20CORP%22%20OR%20%22NIHON%20KOHDEN%22%29&limit=1000&skip=0"
+          ]
+        },
+        {
+          "pages": 1,
+          "records": 0,
+          "source_id": "openfda_pma",
+          "total_reported": 0,
+          "urls": [
+            "https://api.fda.gov/device/pma.json?search=applicant%3A%28%22NIHON%20KOHDEN%20AMERICA%20INC%22%20OR%20%22NIHON%20KOHDEN%20AMERICA%22%20OR%20%22NIHON%20KOHDEN%20CORPORATION%22%20OR%20%22NIHON%20KOHDEN%20CORP%22%20OR%20%22NIHON%20KOHDEN%22%29&limit=1000&skip=0"
+          ]
+        },
+        {
+          "pages": 1,
+          "records": 14,
+          "source_id": "openfda_recall",
+          "total_reported": 14,
+          "urls": [
+            "https://api.fda.gov/device/recall.json?search=recalling_firm%3A%28%22NIHON%20KOHDEN%20AMERICA%20INC%22%20OR%20%22NIHON%20KOHDEN%20AMERICA%22%20OR%20%22NIHON%20KOHDEN%20CORPORATION%22%20OR%20%22NIHON%20KOHDEN%20CORP%22%20OR%20%22NIHON%20KOHDEN%22%29&limit=1000&skip=0"
+          ]
+        }
+      ],
+      "records": 218
+    },
+    {
+      "display_name": "Olympus",
+      "key": "olympus",
+      "queries": [
+        {
+          "pages": 1,
+          "records": 624,
+          "source_id": "openfda_510k",
+          "total_reported": 624,
+          "urls": [
+            "https://api.fda.gov/device/510k.json?search=applicant%3A%28%22OLYMPUS%22%20OR%20%22OLYMPUS%20CORPORATION%22%20OR%20%22OLYMPUS%20MEDICAL%22%29&limit=1000&skip=0"
+          ]
+        },
+        {
+          "pages": 1,
+          "records": 0,
+          "source_id": "openfda_pma",
+          "total_reported": 0,
+          "urls": [
+            "https://api.fda.gov/device/pma.json?search=applicant%3A%28%22OLYMPUS%22%20OR%20%22OLYMPUS%20CORPORATION%22%20OR%20%22OLYMPUS%20MEDICAL%22%29&limit=1000&skip=0"
+          ]
+        },
+        {
+          "pages": 1,
+          "records": 603,
+          "source_id": "openfda_recall",
+          "total_reported": 603,
+          "urls": [
+            "https://api.fda.gov/device/recall.json?search=recalling_firm%3A%28%22OLYMPUS%22%20OR%20%22OLYMPUS%20CORPORATION%22%20OR%20%22OLYMPUS%20MEDICAL%22%29&limit=1000&skip=0"
+          ]
+        }
+      ],
+      "records": 1227
+    },
+    {
+      "display_name": "Orthofix",
+      "key": "orthofix",
+      "queries": [
+        {
+          "pages": 1,
+          "records": 104,
+          "source_id": "openfda_510k",
+          "total_reported": 104,
+          "urls": [
+            "https://api.fda.gov/device/510k.json?search=applicant%3A%28%22ORTHOFIX%22%20OR%20%22ORTHOFIX%20MEDICAL%22%29&limit=1000&skip=0"
+          ]
+        },
+        {
+          "pages": 1,
+          "records": 64,
+          "source_id": "openfda_pma",
+          "total_reported": 64,
+          "urls": [
+            "https://api.fda.gov/device/pma.json?search=applicant%3A%28%22ORTHOFIX%22%20OR%20%22ORTHOFIX%20MEDICAL%22%29&limit=1000&skip=0"
+          ]
+        },
+        {
+          "pages": 1,
+          "records": 90,
+          "source_id": "openfda_recall",
+          "total_reported": 90,
+          "urls": [
+            "https://api.fda.gov/device/recall.json?search=recalling_firm%3A%28%22ORTHOFIX%22%20OR%20%22ORTHOFIX%20MEDICAL%22%29&limit=1000&skip=0"
+          ]
+        }
+      ],
+      "records": 258
+    },
+    {
+      "display_name": "Pentax Medical",
+      "key": "pentax_medical",
+      "queries": [
+        {
+          "pages": 1,
+          "records": 146,
+          "source_id": "openfda_510k",
+          "total_reported": 146,
+          "urls": [
+            "https://api.fda.gov/device/510k.json?search=applicant%3A%28%22PENTAX%20MEDICAL%22%20OR%20%22PENTAX%22%29&limit=1000&skip=0"
+          ]
+        },
+        {
+          "pages": 1,
+          "records": 0,
+          "source_id": "openfda_pma",
+          "total_reported": 0,
+          "urls": [
+            "https://api.fda.gov/device/pma.json?search=applicant%3A%28%22PENTAX%20MEDICAL%22%20OR%20%22PENTAX%22%29&limit=1000&skip=0"
+          ]
+        },
+        {
+          "pages": 1,
+          "records": 68,
+          "source_id": "openfda_recall",
+          "total_reported": 68,
+          "urls": [
+            "https://api.fda.gov/device/recall.json?search=recalling_firm%3A%28%22PENTAX%20MEDICAL%22%20OR%20%22PENTAX%22%29&limit=1000&skip=0"
+          ]
+        }
+      ],
+      "records": 214
+    },
+    {
+      "display_name": "Penumbra",
+      "key": "penumbra",
+      "queries": [
+        {
+          "pages": 1,
+          "records": 88,
+          "source_id": "openfda_510k",
+          "total_reported": 88,
+          "urls": [
+            "https://api.fda.gov/device/510k.json?search=applicant%3A%28%22PENUMBRA%22%20OR%20%22PENUMBRA%20INC%22%29&limit=1000&skip=0"
+          ]
+        },
+        {
+          "pages": 1,
+          "records": 0,
+          "source_id": "openfda_pma",
+          "total_reported": 0,
+          "urls": [
+            "https://api.fda.gov/device/pma.json?search=applicant%3A%28%22PENUMBRA%22%20OR%20%22PENUMBRA%20INC%22%29&limit=1000&skip=0"
+          ]
+        },
+        {
+          "pages": 1,
+          "records": 12,
+          "source_id": "openfda_recall",
+          "total_reported": 12,
+          "urls": [
+            "https://api.fda.gov/device/recall.json?search=recalling_firm%3A%28%22PENUMBRA%22%20OR%20%22PENUMBRA%20INC%22%29&limit=1000&skip=0"
+          ]
+        }
+      ],
+      "records": 100
+    },
+    {
+      "display_name": "Philips",
+      "key": "philips",
+      "queries": [
+        {
+          "pages": 1,
+          "records": 994,
+          "source_id": "openfda_510k",
+          "total_reported": 994,
+          "urls": [
+            "https://api.fda.gov/device/510k.json?search=applicant%3A%28%22PHILIPS%22%20OR%20%22PHILIPS%20HEALTHCARE%22%20OR%20%22PHILIPS%20MEDICAL%20SYSTEMS%22%20OR%20%22PHILIPS%20NORTH%20AMERICA%22%20OR%20%22PHILIPS%20ULTRASOUND%22%20OR%20%22PHILIPS%20IMAGE%20GUIDED%20THERAPY%22%20OR%20%22PHILIPS%20ELECTRONICS%20NORTH%20AMERICA%22%29&limit=1000&skip=0"
+          ]
+        },
+        {
+          "pages": 1,
+          "records": 169,
+          "source_id": "openfda_pma",
+          "total_reported": 169,
+          "urls": [
+            "https://api.fda.gov/device/pma.json?search=applicant%3A%28%22PHILIPS%22%20OR%20%22PHILIPS%20HEALTHCARE%22%20OR%20%22PHILIPS%20MEDICAL%20SYSTEMS%22%20OR%20%22PHILIPS%20NORTH%20AMERICA%22%20OR%20%22PHILIPS%20ULTRASOUND%22%20OR%20%22PHILIPS%20IMAGE%20GUIDED%20THERAPY%22%20OR%20%22PHILIPS%20ELECTRONICS%20NORTH%20AMERICA%22%29&limit=1000&skip=0"
+          ]
+        },
+        {
+          "pages": 3,
+          "records": 2274,
+          "source_id": "openfda_recall",
+          "total_reported": 2274,
+          "urls": [
+            "https://api.fda.gov/device/recall.json?search=recalling_firm%3A%28%22PHILIPS%22%20OR%20%22PHILIPS%20HEALTHCARE%22%20OR%20%22PHILIPS%20MEDICAL%20SYSTEMS%22%20OR%20%22PHILIPS%20NORTH%20AMERICA%22%20OR%20%22PHILIPS%20ULTRASOUND%22%20OR%20%22PHILIPS%20IMAGE%20GUIDED%20THERAPY%22%20OR%20%22PHILIPS%20ELECTRONICS%20NORTH%20AMERICA%22%29&limit=1000&skip=0",
+            "https://api.fda.gov/device/recall.json?search=recalling_firm%3A%28%22PHILIPS%22%20OR%20%22PHILIPS%20HEALTHCARE%22%20OR%20%22PHILIPS%20MEDICAL%20SYSTEMS%22%20OR%20%22PHILIPS%20NORTH%20AMERICA%22%20OR%20%22PHILIPS%20ULTRASOUND%22%20OR%20%22PHILIPS%20IMAGE%20GUIDED%20THERAPY%22%20OR%20%22PHILIPS%20ELECTRONICS%20NORTH%20AMERICA%22%29&limit=1000&skip=1000",
+            "https://api.fda.gov/device/recall.json?search=recalling_firm%3A%28%22PHILIPS%22%20OR%20%22PHILIPS%20HEALTHCARE%22%20OR%20%22PHILIPS%20MEDICAL%20SYSTEMS%22%20OR%20%22PHILIPS%20NORTH%20AMERICA%22%20OR%20%22PHILIPS%20ULTRASOUND%22%20OR%20%22PHILIPS%20IMAGE%20GUIDED%20THERAPY%22%20OR%20%22PHILIPS%20ELECTRONICS%20NORTH%20AMERICA%22%29&limit=1000&skip=2000"
+          ]
+        }
+      ],
+      "records": 3437
+    },
+    {
+      "display_name": "PROCEPT BioRobotics",
+      "key": "procept_biorobotics",
+      "queries": [
+        {
+          "pages": 1,
+          "records": 9,
+          "source_id": "openfda_510k",
+          "total_reported": 9,
+          "urls": [
+            "https://api.fda.gov/device/510k.json?search=applicant%3A%28%22PROCEPT%20BIOROBOTICS%22%20OR%20%22PROCEPT%22%29&limit=1000&skip=0"
+          ]
+        },
+        {
+          "pages": 1,
+          "records": 0,
+          "source_id": "openfda_pma",
+          "total_reported": 0,
+          "urls": [
+            "https://api.fda.gov/device/pma.json?search=applicant%3A%28%22PROCEPT%20BIOROBOTICS%22%20OR%20%22PROCEPT%22%29&limit=1000&skip=0"
+          ]
+        },
+        {
+          "pages": 1,
+          "records": 2,
+          "source_id": "openfda_recall",
+          "total_reported": 2,
+          "urls": [
+            "https://api.fda.gov/device/recall.json?search=recalling_firm%3A%28%22PROCEPT%20BIOROBOTICS%22%20OR%20%22PROCEPT%22%29&limit=1000&skip=0"
+          ]
+        }
+      ],
+      "records": 11
+    },
+    {
+      "display_name": "ResMed",
+      "key": "resmed",
+      "queries": [
+        {
+          "pages": 1,
+          "records": 137,
+          "source_id": "openfda_510k",
+          "total_reported": 137,
+          "urls": [
+            "https://api.fda.gov/device/510k.json?search=applicant%3A%28%22RESMED%22%20OR%20%22RESMED%20CORP%22%29&limit=1000&skip=0"
+          ]
+        },
+        {
+          "pages": 1,
+          "records": 0,
+          "source_id": "openfda_pma",
+          "total_reported": 0,
+          "urls": [
+            "https://api.fda.gov/device/pma.json?search=applicant%3A%28%22RESMED%22%20OR%20%22RESMED%20CORP%22%29&limit=1000&skip=0"
+          ]
+        },
+        {
+          "pages": 1,
+          "records": 14,
+          "source_id": "openfda_recall",
+          "total_reported": 14,
+          "urls": [
+            "https://api.fda.gov/device/recall.json?search=recalling_firm%3A%28%22RESMED%22%20OR%20%22RESMED%20CORP%22%29&limit=1000&skip=0"
+          ]
+        }
+      ],
+      "records": 151
+    },
+    {
+      "display_name": "Siemens Healthineers",
+      "key": "siemens_healthineers",
+      "queries": [
+        {
+          "pages": 2,
+          "records": 1444,
+          "source_id": "openfda_510k",
+          "total_reported": 1444,
+          "urls": [
+            "https://api.fda.gov/device/510k.json?search=applicant%3A%28%22SIEMENS%20HEALTHINEERS%22%20OR%20%22SIEMENS%20MEDICAL%20SOLUTIONS%22%20OR%20%22SIEMENS%20MEDICAL%22%20OR%20%22VARIAN%20MEDICAL%20SYSTEMS%22%20OR%20%22SIEMENS%20HEALTHCARE%22%29&limit=1000&skip=0",
+            "https://api.fda.gov/device/510k.json?search=applicant%3A%28%22SIEMENS%20HEALTHINEERS%22%20OR%20%22SIEMENS%20MEDICAL%20SOLUTIONS%22%20OR%20%22SIEMENS%20MEDICAL%22%20OR%20%22VARIAN%20MEDICAL%20SYSTEMS%22%20OR%20%22SIEMENS%20HEALTHCARE%22%29&limit=1000&skip=1000"
+          ]
+        },
+        {
+          "pages": 1,
+          "records": 490,
+          "source_id": "openfda_pma",
+          "total_reported": 490,
+          "urls": [
+            "https://api.fda.gov/device/pma.json?search=applicant%3A%28%22SIEMENS%20HEALTHINEERS%22%20OR%20%22SIEMENS%20MEDICAL%20SOLUTIONS%22%20OR%20%22SIEMENS%20MEDICAL%22%20OR%20%22VARIAN%20MEDICAL%20SYSTEMS%22%20OR%20%22SIEMENS%20HEALTHCARE%22%29&limit=1000&skip=0"
+          ]
+        },
+        {
+          "pages": 3,
+          "records": 2220,
+          "source_id": "openfda_recall",
+          "total_reported": 2220,
+          "urls": [
+            "https://api.fda.gov/device/recall.json?search=recalling_firm%3A%28%22SIEMENS%20HEALTHINEERS%22%20OR%20%22SIEMENS%20MEDICAL%20SOLUTIONS%22%20OR%20%22SIEMENS%20MEDICAL%22%20OR%20%22VARIAN%20MEDICAL%20SYSTEMS%22%20OR%20%22SIEMENS%20HEALTHCARE%22%29&limit=1000&skip=0",
+            "https://api.fda.gov/device/recall.json?search=recalling_firm%3A%28%22SIEMENS%20HEALTHINEERS%22%20OR%20%22SIEMENS%20MEDICAL%20SOLUTIONS%22%20OR%20%22SIEMENS%20MEDICAL%22%20OR%20%22VARIAN%20MEDICAL%20SYSTEMS%22%20OR%20%22SIEMENS%20HEALTHCARE%22%29&limit=1000&skip=1000",
+            "https://api.fda.gov/device/recall.json?search=recalling_firm%3A%28%22SIEMENS%20HEALTHINEERS%22%20OR%20%22SIEMENS%20MEDICAL%20SOLUTIONS%22%20OR%20%22SIEMENS%20MEDICAL%22%20OR%20%22VARIAN%20MEDICAL%20SYSTEMS%22%20OR%20%22SIEMENS%20HEALTHCARE%22%29&limit=1000&skip=2000"
+          ]
+        }
+      ],
+      "records": 4154
+    },
+    {
+      "display_name": "Smith & Nephew",
+      "key": "smith_nephew",
+      "queries": [
+        {
+          "pages": 1,
+          "records": 821,
+          "source_id": "openfda_510k",
+          "total_reported": 821,
+          "urls": [
+            "https://api.fda.gov/device/510k.json?search=applicant%3A%28%22SMITH%20%26%20NEPHEW%22%20OR%20%22SMITH%20AND%20NEPHEW%22%20OR%20%22SMITH%20NEPHEW%22%29&limit=1000&skip=0"
+          ]
+        },
+        {
+          "pages": 1,
+          "records": 167,
+          "source_id": "openfda_pma",
+          "total_reported": 167,
+          "urls": [
+            "https://api.fda.gov/device/pma.json?search=applicant%3A%28%22SMITH%20%26%20NEPHEW%22%20OR%20%22SMITH%20AND%20NEPHEW%22%20OR%20%22SMITH%20NEPHEW%22%29&limit=1000&skip=0"
+          ]
+        },
+        {
+          "pages": 1,
+          "records": 618,
+          "source_id": "openfda_recall",
+          "total_reported": 618,
+          "urls": [
+            "https://api.fda.gov/device/recall.json?search=recalling_firm%3A%28%22SMITH%20%26%20NEPHEW%22%20OR%20%22SMITH%20AND%20NEPHEW%22%20OR%20%22SMITH%20NEPHEW%22%29&limit=1000&skip=0"
+          ]
+        }
+      ],
+      "records": 1606
+    },
+    {
+      "display_name": "Sonova",
+      "key": "sonova",
+      "queries": [
+        {
+          "pages": 1,
+          "records": 41,
+          "source_id": "openfda_510k",
+          "total_reported": 41,
+          "urls": [
+            "https://api.fda.gov/device/510k.json?search=applicant%3A%28%22SONOVA%22%20OR%20%22SONOVA%20AG%22%20OR%20%22ADVANCED%20BIONICS%22%20OR%20%22ADVANCED%20BIONICS%20LLC%22%20OR%20%22PHONAK%22%20OR%20%22PHONAK%20LLC%22%29&limit=1000&skip=0"
+          ]
+        },
+        {
+          "pages": 1,
+          "records": 174,
+          "source_id": "openfda_pma",
+          "total_reported": 174,
+          "urls": [
+            "https://api.fda.gov/device/pma.json?search=applicant%3A%28%22SONOVA%22%20OR%20%22SONOVA%20AG%22%20OR%20%22ADVANCED%20BIONICS%22%20OR%20%22ADVANCED%20BIONICS%20LLC%22%20OR%20%22PHONAK%22%20OR%20%22PHONAK%20LLC%22%29&limit=1000&skip=0"
+          ]
+        },
+        {
+          "pages": 1,
+          "records": 35,
+          "source_id": "openfda_recall",
+          "total_reported": 35,
+          "urls": [
+            "https://api.fda.gov/device/recall.json?search=recalling_firm%3A%28%22SONOVA%22%20OR%20%22SONOVA%20AG%22%20OR%20%22ADVANCED%20BIONICS%22%20OR%20%22ADVANCED%20BIONICS%20LLC%22%20OR%20%22PHONAK%22%20OR%20%22PHONAK%20LLC%22%29&limit=1000&skip=0"
+          ]
+        }
+      ],
+      "records": 250
+    },
+    {
+      "display_name": "STERIS",
+      "key": "steris",
+      "queries": [
+        {
+          "pages": 1,
+          "records": 243,
+          "source_id": "openfda_510k",
+          "total_reported": 243,
+          "urls": [
+            "https://api.fda.gov/device/510k.json?search=applicant%3A%28%22STERIS%22%20OR%20%22STERIS%20CORP%22%29&limit=1000&skip=0"
+          ]
+        },
+        {
+          "pages": 1,
+          "records": 0,
+          "source_id": "openfda_pma",
+          "total_reported": 0,
+          "urls": [
+            "https://api.fda.gov/device/pma.json?search=applicant%3A%28%22STERIS%22%20OR%20%22STERIS%20CORP%22%29&limit=1000&skip=0"
+          ]
+        },
+        {
+          "pages": 1,
+          "records": 157,
+          "source_id": "openfda_recall",
+          "total_reported": 157,
+          "urls": [
+            "https://api.fda.gov/device/recall.json?search=recalling_firm%3A%28%22STERIS%22%20OR%20%22STERIS%20CORP%22%29&limit=1000&skip=0"
+          ]
+        }
+      ],
+      "records": 400
+    },
+    {
+      "display_name": "Straumann",
+      "key": "straumann",
+      "queries": [
+        {
+          "pages": 1,
+          "records": 182,
+          "source_id": "openfda_510k",
+          "total_reported": 182,
+          "urls": [
+            "https://api.fda.gov/device/510k.json?search=applicant%3A%28%22INSTITUT%20STRAUMANN%20AG%22%20OR%20%22INSTITUT%20STRAUMANN%22%20OR%20%22STRAUMANN%22%20OR%20%22STRAUMANN%20USA%22%20OR%20%22STRAUMANN%20USA%20LLC%22%29&limit=1000&skip=0"
+          ]
+        },
+        {
+          "pages": 1,
+          "records": 35,
+          "source_id": "openfda_pma",
+          "total_reported": 35,
+          "urls": [
+            "https://api.fda.gov/device/pma.json?search=applicant%3A%28%22INSTITUT%20STRAUMANN%20AG%22%20OR%20%22INSTITUT%20STRAUMANN%22%20OR%20%22STRAUMANN%22%20OR%20%22STRAUMANN%20USA%22%20OR%20%22STRAUMANN%20USA%20LLC%22%29&limit=1000&skip=0"
+          ]
+        },
+        {
+          "pages": 1,
+          "records": 48,
+          "source_id": "openfda_recall",
+          "total_reported": 48,
+          "urls": [
+            "https://api.fda.gov/device/recall.json?search=recalling_firm%3A%28%22INSTITUT%20STRAUMANN%20AG%22%20OR%20%22INSTITUT%20STRAUMANN%22%20OR%20%22STRAUMANN%22%20OR%20%22STRAUMANN%20USA%22%20OR%20%22STRAUMANN%20USA%20LLC%22%29&limit=1000&skip=0"
+          ]
+        }
+      ],
+      "records": 265
+    },
+    {
+      "display_name": "Stryker",
+      "key": "stryker",
+      "queries": [
+        {
+          "pages": 2,
+          "records": 1656,
+          "source_id": "openfda_510k",
+          "total_reported": 1656,
+          "urls": [
+            "https://api.fda.gov/device/510k.json?search=applicant%3A%28%22STRYKER%22%20OR%20%22STRYKER%20SPINE%22%20OR%20%22STRYKER%20TRAUMA%22%20OR%20%22STRYKER%20ENDOSCOPY%22%20OR%20%22STRYKER%20INSTRUMENTS%22%20OR%20%22STRYKER%20NAVIGATION%22%20OR%20%22STRYKER%20ORTHOPAEDICS%22%20OR%20%22HOWMEDICA%22%20OR%20%22WRIGHT%20MEDICAL%22%20OR%20%22MAKO%20SURGICAL%22%29&limit=1000&skip=0",
+            "https://api.fda.gov/device/510k.json?search=applicant%3A%28%22STRYKER%22%20OR%20%22STRYKER%20SPINE%22%20OR%20%22STRYKER%20TRAUMA%22%20OR%20%22STRYKER%20ENDOSCOPY%22%20OR%20%22STRYKER%20INSTRUMENTS%22%20OR%20%22STRYKER%20NAVIGATION%22%20OR%20%22STRYKER%20ORTHOPAEDICS%22%20OR%20%22HOWMEDICA%22%20OR%20%22WRIGHT%20MEDICAL%22%20OR%20%22MAKO%20SURGICAL%22%29&limit=1000&skip=1000"
+          ]
+        },
+        {
+          "pages": 1,
+          "records": 181,
+          "source_id": "openfda_pma",
+          "total_reported": 181,
+          "urls": [
+            "https://api.fda.gov/device/pma.json?search=applicant%3A%28%22STRYKER%22%20OR%20%22STRYKER%20SPINE%22%20OR%20%22STRYKER%20TRAUMA%22%20OR%20%22STRYKER%20ENDOSCOPY%22%20OR%20%22STRYKER%20INSTRUMENTS%22%20OR%20%22STRYKER%20NAVIGATION%22%20OR%20%22STRYKER%20ORTHOPAEDICS%22%20OR%20%22HOWMEDICA%22%20OR%20%22WRIGHT%20MEDICAL%22%20OR%20%22MAKO%20SURGICAL%22%29&limit=1000&skip=0"
+          ]
+        },
+        {
+          "pages": 3,
+          "records": 2578,
+          "source_id": "openfda_recall",
+          "total_reported": 2578,
+          "urls": [
+            "https://api.fda.gov/device/recall.json?search=recalling_firm%3A%28%22STRYKER%22%20OR%20%22STRYKER%20SPINE%22%20OR%20%22STRYKER%20TRAUMA%22%20OR%20%22STRYKER%20ENDOSCOPY%22%20OR%20%22STRYKER%20INSTRUMENTS%22%20OR%20%22STRYKER%20NAVIGATION%22%20OR%20%22STRYKER%20ORTHOPAEDICS%22%20OR%20%22HOWMEDICA%22%20OR%20%22WRIGHT%20MEDICAL%22%20OR%20%22MAKO%20SURGICAL%22%29&limit=1000&skip=0",
+            "https://api.fda.gov/device/recall.json?search=recalling_firm%3A%28%22STRYKER%22%20OR%20%22STRYKER%20SPINE%22%20OR%20%22STRYKER%20TRAUMA%22%20OR%20%22STRYKER%20ENDOSCOPY%22%20OR%20%22STRYKER%20INSTRUMENTS%22%20OR%20%22STRYKER%20NAVIGATION%22%20OR%20%22STRYKER%20ORTHOPAEDICS%22%20OR%20%22HOWMEDICA%22%20OR%20%22WRIGHT%20MEDICAL%22%20OR%20%22MAKO%20SURGICAL%22%29&limit=1000&skip=1000",
+            "https://api.fda.gov/device/recall.json?search=recalling_firm%3A%28%22STRYKER%22%20OR%20%22STRYKER%20SPINE%22%20OR%20%22STRYKER%20TRAUMA%22%20OR%20%22STRYKER%20ENDOSCOPY%22%20OR%20%22STRYKER%20INSTRUMENTS%22%20OR%20%22STRYKER%20NAVIGATION%22%20OR%20%22STRYKER%20ORTHOPAEDICS%22%20OR%20%22HOWMEDICA%22%20OR%20%22WRIGHT%20MEDICAL%22%20OR%20%22MAKO%20SURGICAL%22%29&limit=1000&skip=2000"
+          ]
+        }
+      ],
+      "records": 4415
+    },
+    {
+      "display_name": "Tandem Diabetes Care",
+      "key": "tandem_diabetes",
+      "queries": [
+        {
+          "pages": 1,
+          "records": 26,
+          "source_id": "openfda_510k",
+          "total_reported": 26,
+          "urls": [
+            "https://api.fda.gov/device/510k.json?search=applicant%3A%28%22TANDEM%20DIABETES%22%20OR%20%22TANDEM%20DIABETES%20CARE%22%29&limit=1000&skip=0"
+          ]
+        },
+        {
+          "pages": 1,
+          "records": 37,
+          "source_id": "openfda_pma",
+          "total_reported": 37,
+          "urls": [
+            "https://api.fda.gov/device/pma.json?search=applicant%3A%28%22TANDEM%20DIABETES%22%20OR%20%22TANDEM%20DIABETES%20CARE%22%29&limit=1000&skip=0"
+          ]
+        },
+        {
+          "pages": 1,
+          "records": 15,
+          "source_id": "openfda_recall",
+          "total_reported": 15,
+          "urls": [
+            "https://api.fda.gov/device/recall.json?search=recalling_firm%3A%28%22TANDEM%20DIABETES%22%20OR%20%22TANDEM%20DIABETES%20CARE%22%29&limit=1000&skip=0"
+          ]
+        }
+      ],
+      "records": 78
+    },
+    {
+      "display_name": "Teleflex",
+      "key": "teleflex",
+      "queries": [
+        {
+          "pages": 1,
+          "records": 88,
+          "source_id": "openfda_510k",
+          "total_reported": 88,
+          "urls": [
+            "https://api.fda.gov/device/510k.json?search=applicant%3A%28%22TELEFLEX%22%20OR%20%22TELEFLEX%20MEDICAL%22%29&limit=1000&skip=0"
+          ]
+        },
+        {
+          "pages": 1,
+          "records": 15,
+          "source_id": "openfda_pma",
+          "total_reported": 15,
+          "urls": [
+            "https://api.fda.gov/device/pma.json?search=applicant%3A%28%22TELEFLEX%22%20OR%20%22TELEFLEX%20MEDICAL%22%29&limit=1000&skip=0"
+          ]
+        },
+        {
+          "pages": 1,
+          "records": 490,
+          "source_id": "openfda_recall",
+          "total_reported": 490,
+          "urls": [
+            "https://api.fda.gov/device/recall.json?search=recalling_firm%3A%28%22TELEFLEX%22%20OR%20%22TELEFLEX%20MEDICAL%22%29&limit=1000&skip=0"
+          ]
+        }
+      ],
+      "records": 593
+    },
+    {
+      "display_name": "Terumo",
+      "key": "terumo",
+      "queries": [
+        {
+          "pages": 1,
+          "records": 358,
+          "source_id": "openfda_510k",
+          "total_reported": 358,
+          "urls": [
+            "https://api.fda.gov/device/510k.json?search=applicant%3A%28%22TERUMO%22%20OR%20%22TERUMO%20MEDICAL%22%20OR%20%22TERUMO%20CARDIOVASCULAR%22%29&limit=1000&skip=0"
+          ]
+        },
+        {
+          "pages": 1,
+          "records": 133,
+          "source_id": "openfda_pma",
+          "total_reported": 133,
+          "urls": [
+            "https://api.fda.gov/device/pma.json?search=applicant%3A%28%22TERUMO%22%20OR%20%22TERUMO%20MEDICAL%22%20OR%20%22TERUMO%20CARDIOVASCULAR%22%29&limit=1000&skip=0"
+          ]
+        },
+        {
+          "pages": 1,
+          "records": 630,
+          "source_id": "openfda_recall",
+          "total_reported": 630,
+          "urls": [
+            "https://api.fda.gov/device/recall.json?search=recalling_firm%3A%28%22TERUMO%22%20OR%20%22TERUMO%20MEDICAL%22%20OR%20%22TERUMO%20CARDIOVASCULAR%22%29&limit=1000&skip=0"
+          ]
+        }
+      ],
+      "records": 1121
+    },
+    {
+      "display_name": "W. L. Gore & Associates",
+      "key": "wl_gore",
+      "queries": [
+        {
+          "pages": 1,
+          "records": 171,
+          "source_id": "openfda_510k",
+          "total_reported": 171,
+          "urls": [
+            "https://api.fda.gov/device/510k.json?search=applicant%3A%28%22W%20L%20GORE%22%20OR%20%22GORE%20MEDICAL%22%20OR%20%22GORE%20ASSOCIATES%22%20OR%20%22GORE%22%29&limit=1000&skip=0"
+          ]
+        },
+        {
+          "pages": 2,
+          "records": 1008,
+          "source_id": "openfda_pma",
+          "total_reported": 1008,
+          "urls": [
+            "https://api.fda.gov/device/pma.json?search=applicant%3A%28%22W%20L%20GORE%22%20OR%20%22GORE%20MEDICAL%22%20OR%20%22GORE%20ASSOCIATES%22%20OR%20%22GORE%22%29&limit=1000&skip=0",
+            "https://api.fda.gov/device/pma.json?search=applicant%3A%28%22W%20L%20GORE%22%20OR%20%22GORE%20MEDICAL%22%20OR%20%22GORE%20ASSOCIATES%22%20OR%20%22GORE%22%29&limit=1000&skip=1000"
+          ]
+        },
+        {
+          "pages": 1,
+          "records": 34,
+          "source_id": "openfda_recall",
+          "total_reported": 34,
+          "urls": [
+            "https://api.fda.gov/device/recall.json?search=recalling_firm%3A%28%22W%20L%20GORE%22%20OR%20%22GORE%20MEDICAL%22%20OR%20%22GORE%20ASSOCIATES%22%20OR%20%22GORE%22%29&limit=1000&skip=0"
+          ]
+        }
+      ],
+      "records": 1213
+    },
+    {
+      "display_name": "Zimmer Biomet",
+      "key": "zimmer_biomet",
+      "queries": [
+        {
+          "pages": 2,
+          "records": 1389,
+          "source_id": "openfda_510k",
+          "total_reported": 1389,
+          "urls": [
+            "https://api.fda.gov/device/510k.json?search=applicant%3A%28%22ZIMMER%20BIOMET%22%20OR%20%22ZIMMER%22%20OR%20%22BIOMET%22%20OR%20%22ZIMMER%20INC%22%20OR%20%22BIOMET%20MICROFIXATION%22%20OR%20%22ZIMMER%20DENTAL%22%20OR%20%22ZIMMER%20SPINE%22%29&limit=1000&skip=0",
+            "https://api.fda.gov/device/510k.json?search=applicant%3A%28%22ZIMMER%20BIOMET%22%20OR%20%22ZIMMER%22%20OR%20%22BIOMET%22%20OR%20%22ZIMMER%20INC%22%20OR%20%22BIOMET%20MICROFIXATION%22%20OR%20%22ZIMMER%20DENTAL%22%20OR%20%22ZIMMER%20SPINE%22%29&limit=1000&skip=1000"
+          ]
+        },
+        {
+          "pages": 1,
+          "records": 289,
+          "source_id": "openfda_pma",
+          "total_reported": 289,
+          "urls": [
+            "https://api.fda.gov/device/pma.json?search=applicant%3A%28%22ZIMMER%20BIOMET%22%20OR%20%22ZIMMER%22%20OR%20%22BIOMET%22%20OR%20%22ZIMMER%20INC%22%20OR%20%22BIOMET%20MICROFIXATION%22%20OR%20%22ZIMMER%20DENTAL%22%20OR%20%22ZIMMER%20SPINE%22%29&limit=1000&skip=0"
+          ]
+        },
+        {
+          "pages": 4,
+          "records": 3066,
+          "source_id": "openfda_recall",
+          "total_reported": 3066,
+          "urls": [
+            "https://api.fda.gov/device/recall.json?search=recalling_firm%3A%28%22ZIMMER%20BIOMET%22%20OR%20%22ZIMMER%22%20OR%20%22BIOMET%22%20OR%20%22ZIMMER%20INC%22%20OR%20%22BIOMET%20MICROFIXATION%22%20OR%20%22ZIMMER%20DENTAL%22%20OR%20%22ZIMMER%20SPINE%22%29&limit=1000&skip=0",
+            "https://api.fda.gov/device/recall.json?search=recalling_firm%3A%28%22ZIMMER%20BIOMET%22%20OR%20%22ZIMMER%22%20OR%20%22BIOMET%22%20OR%20%22ZIMMER%20INC%22%20OR%20%22BIOMET%20MICROFIXATION%22%20OR%20%22ZIMMER%20DENTAL%22%20OR%20%22ZIMMER%20SPINE%22%29&limit=1000&skip=1000",
+            "https://api.fda.gov/device/recall.json?search=recalling_firm%3A%28%22ZIMMER%20BIOMET%22%20OR%20%22ZIMMER%22%20OR%20%22BIOMET%22%20OR%20%22ZIMMER%20INC%22%20OR%20%22BIOMET%20MICROFIXATION%22%20OR%20%22ZIMMER%20DENTAL%22%20OR%20%22ZIMMER%20SPINE%22%29&limit=1000&skip=2000",
+            "https://api.fda.gov/device/recall.json?search=recalling_firm%3A%28%22ZIMMER%20BIOMET%22%20OR%20%22ZIMMER%22%20OR%20%22BIOMET%22%20OR%20%22ZIMMER%20INC%22%20OR%20%22BIOMET%20MICROFIXATION%22%20OR%20%22ZIMMER%20DENTAL%22%20OR%20%22ZIMMER%20SPINE%22%29&limit=1000&skip=3000"
+          ]
+        }
+      ],
+      "records": 4744
+    }
+  ],
+  "request_count": 258,
+  "response_bytes": 1335152476,
+  "schema": "medradar.snapshot.v1"
+}

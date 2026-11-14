@@ -13,6 +13,13 @@ include docs/metrics.json
 include docs/SCHEMA.md
 
 recursive-include medradar *.py
+# PRODUCT-001 product data: the reviewed identity registry and the hash-addressed snapshot.
+recursive-include medradar/product/identity *.json
+recursive-include medradar/product/snapshot *
+include scripts/product_collect.py
+include scripts/product_curate_aliases.py
+include scripts/product_acceptance.mjs
+recursive-include web/dist *
 recursive-include tests *.py
 recursive-include tests/fixtures *
 recursive-include scripts *.py

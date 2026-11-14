@@ -43,3 +43,11 @@ changes:
     reason: "REFOUNDATION-003 task-21: replace the single main.head equality with the five-concept state scheme. check_state now treats a stale-but-ancestor git.head as WARN (so a merge does not fail the gate) and a non-ancestor head as FAIL; counts are validated against the observed commit; verified/release commits and tests.tested_head are ancestry-checked; bump_state.py refreshes the three blocks and the views in one command."
     paths:
       - tools/governance/**
+  - change_id: RC-0004
+    date: "2026-11-15"
+    decision_id: GOV-0004
+    approved_by: ChazY11
+    reason: "PRODUCT-001: allow a restricted binary format to be committed only when it is a derived projection of a GREEN, redistributable public source and the inventory entry declares the file SHA-256 (policy.derived_binary_allowlist). Motivated by the 91k-record openFDA product snapshot, which is 13 MB compressed and 140 MB as plain JSONL. Undeclared gzip still fails, non-GREEN entries still fail, and the gate prints the allowlist reason and hash prefix. No scientific artefact or frozen result is touched."
+    paths:
+      - tools/governance/**
+      - docs/governance/DATA_LICENSES.yaml

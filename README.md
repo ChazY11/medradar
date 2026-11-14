@@ -21,6 +21,50 @@
   <a href="README.zh-CN.md">中文</a>
 </p>
 
+## Product workbench (PRODUCT-001)
+
+The repository now also ships a **working analyst workbench**, not only the research programme:
+search a medical-technology company, read its FDA regulatory record, open the official evidence,
+compare two companies on one explicit counting rule, and export a sourced report.
+
+![MedRadar workbench overview](docs/product/screenshots/01-overview.png)
+
+* **Data**: 91,457 FDA device records (510(k), PMA originals and supplements, recalls) for
+  59 tracked organizations, collected from openFDA on 2026-11-14/15 and committed as a
+  hash-addressed snapshot (snapshot `2026-11-14T22:09:22Z-openfda`).
+* **Evidence**: every record keeps its official FDA identifier and URL; the evidence drawer shows
+  the four separate time fields and the verbatim applicant string used for attribution.
+* **Honesty**: unattributed applicant strings, explicitly rejected look-alike names, provisional
+  attributions (1,410 of 1,590 spellings), source coverage differences and out-of-scope sources are
+  all visible in the product, not hidden.
+* **Stack**: FastAPI serving a React 19 + TypeScript + Vite build; one Python process, no database
+  server and no paid infrastructure.
+
+### Workbench quick start
+
+```bash
+pip install -e '.[product]'          # fastapi + uvicorn
+python -m medradar web --port 8787   # serves the API and the committed UI build
+# open http://127.0.0.1:8787
+```
+
+The committed snapshot and the committed `web/dist` let the product run offline, without Node and
+without re-collecting. To refresh the data or rebuild the UI, see
+[docs/product/ARCHITECTURE.md](docs/product/ARCHITECTURE.md) `8.
+
+Read more:
+
+* [Product vision](docs/product/PRODUCT_VISION.md) · [Architecture](docs/product/ARCHITECTURE.md)
+* [Data contract](docs/product/DATA_CONTRACT.md) · [API contract](docs/product/API_CONTRACT.md)
+* [User journeys](docs/product/USER_JOURNEYS.md) · [Acceptance record](docs/product/ACCEPTANCE.md)
+* [Known limitations](docs/product/KNOWN_LIMITATIONS.md) · [Next steps](docs/product/NEXT_STEPS.md)
+* [Legacy reuse assessment](docs/product/LEGACY_REUSE.md)
+
+> The product is deliberately **snapshot-based**: it never claims live or real-time data, and it
+> makes no predictive claim. The research programme below is unchanged and still runs.
+
+---
+
 ## Can public evidence see medical-technology change coming?
 
 MedRadar collects free regulatory, clinical-trial and corporate-filing evidence about medical-device

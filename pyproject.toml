@@ -13,8 +13,10 @@ dependencies = []
 [project.optional-dependencies]
 excel = ["openpyxl>=3.1"]
 pdf = ["pypdf>=4.0"]
-dev = ["pytest>=8.0"]
+dev = ["pytest>=8.0", "httpx>=0.27"]
 bulk = ["ijson>=3.3"]
+# PRODUCT-001 workbench: JSON API + server for the built React UI.
+product = ["fastapi>=0.110", "uvicorn>=0.27"]
 
 [project.urls]
 Homepage = "https://chazy11.github.io/medradar/"
@@ -31,6 +33,9 @@ build-backend = "setuptools.build_meta"
 [tool.setuptools.packages.find]
 include = ["medradar*"]
 
+[tool.setuptools.package-data]
+"medradar.product" = ["identity/*.json", "snapshot/*"]
+
 # JSON config is knowledge, not code: install it next to the wheel so a pip
 # install is usable without the git checkout. `medradar.config` resolves this
 # `share/medradar/config` location; the demo snapshot rides along so
@@ -38,6 +43,9 @@ include = ["medradar*"]
 [tool.setuptools.data-files]
 "share/medradar/config" = ["config/*.json", "config/*.csv"]
 "share/medradar/docs" = ["docs/metrics.json"]
+# PRODUCT-001: the reviewed identity registry ships with the package, and the built
+# workbench plus the snapshot are installed so `medradar web` works from a wheel.
+"share/medradar/web" = ["web/dist/index.html", "web/dist/favicon.svg", "web/dist/assets/*"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

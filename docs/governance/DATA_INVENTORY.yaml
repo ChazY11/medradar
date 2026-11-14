@@ -80,7 +80,62 @@ entries:
     status: GREEN
     content: json
     synthetic: false
+  - path: docs/product/acceptance-report.json
+    source_id: medradar_derived_artifacts
+    status: GREEN
+    content: json
+    synthetic: false
   - path: docs/refoundation/phase0/_evidence/governance/pytest_count.json
+    source_id: medradar_derived_artifacts
+    status: GREEN
+    content: json
+    synthetic: false
+  - path: docs/refoundation/phase2/_evidence/e1b/collection.jsonl
+    source_id: medradar_derived_artifacts
+    status: GREEN
+    content: csv
+    synthetic: false
+  - path: docs/refoundation/phase2/_evidence/e1b/findings.json
+    source_id: medradar_derived_artifacts
+    status: GREEN
+    content: json
+    synthetic: false
+  - path: docs/refoundation/phase2/_evidence/e1b/prospective.json
+    source_id: medradar_derived_artifacts
+    status: GREEN
+    content: json
+    synthetic: false
+  - path: docs/refoundation/phase2/_evidence/e1b/retrospective.json
+    source_id: medradar_derived_artifacts
+    status: GREEN
+    content: json
+    synthetic: false
+  - path: docs/refoundation/phase2/_evidence/e1b/summary.json
+    source_id: medradar_derived_artifacts
+    status: GREEN
+    content: json
+    synthetic: false
+  - path: docs/refoundation/phase2/_evidence/evidence_core/evidence_core.json
+    source_id: medradar_derived_artifacts
+    status: GREEN
+    content: json
+    synthetic: false
+  - path: docs/refoundation/phase3/_evidence/core_acceptance/acceptance.json
+    source_id: medradar_derived_artifacts
+    status: GREEN
+    content: json
+    synthetic: false
+  - path: docs/refoundation/phase3/_evidence/data_safety/data_safety_final.json
+    source_id: medradar_derived_artifacts
+    status: GREEN
+    content: json
+    synthetic: false
+  - path: docs/refoundation/phase3/_evidence/pr_metadata_raw.json
+    source_id: medradar_derived_artifacts
+    status: GREEN
+    content: json
+    synthetic: false
+  - path: docs/refoundation/phase3/_evidence/pr_triage.json
     source_id: medradar_derived_artifacts
     status: GREEN
     content: json
@@ -530,6 +585,34 @@ entries:
     status: GREEN
     content: json
     synthetic: false
+  - path: medradar/product/identity/organizations.json
+    source_id: medradar_derived_artifacts
+    status: GREEN
+    content: json
+    synthetic: false
+  - path: medradar/product/snapshot/applicants.jsonl.gz
+    source_id: openfda_device
+    status: GREEN
+    content: gzip
+    synthetic: false
+    sha256: 2a84343d843d1a159d300c727ce0b96a8cb3f8466326ef9514729332bc9ed7c8
+  - path: medradar/product/snapshot/classifications.jsonl.gz
+    source_id: openfda_device
+    status: GREEN
+    content: gzip
+    synthetic: false
+    sha256: 69b06d08ffb3ded7d73c893b828810978dbd45e05f7c4d63d514c9cae710b767
+  - path: medradar/product/snapshot/events.jsonl.gz
+    source_id: openfda_device
+    status: GREEN
+    content: gzip
+    synthetic: false
+    sha256: 044736477d6e8b010f0dd830d4b50c97a0e7988178aca67a678b70392058c778
+  - path: medradar/product/snapshot/snapshot.json
+    source_id: openfda_device
+    status: GREEN
+    content: json
+    synthetic: false
   - path: papers/CLAIMS.json
     source_id: medradar_derived_artifacts
     status: GREEN
@@ -937,6 +1020,26 @@ entries:
     synthetic: true
   - path: tools/round_end.json
     source_id: medradar_derived_artifacts
+    status: GREEN
+    content: json
+    synthetic: false
+  - path: web/package-lock.json
+    source_id: product_workbench_source
+    status: GREEN
+    content: json
+    synthetic: false
+  - path: web/package.json
+    source_id: product_workbench_source
+    status: GREEN
+    content: json
+    synthetic: false
+  - path: web/tsconfig.json
+    source_id: product_workbench_source
+    status: GREEN
+    content: json
+    synthetic: false
+  - path: web/tsconfig.node.json
+    source_id: product_workbench_source
     status: GREEN
     content: json
     synthetic: false

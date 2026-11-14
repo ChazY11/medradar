@@ -764,6 +764,21 @@ def cmd_selftest(args: argparse.Namespace) -> int:
     return 0 if result.wasSuccessful() else 1
 
 
+# ---------------------------------------------------------------------- product
+def cmd_web(args: argparse.Namespace) -> int:
+    """Serve the PRODUCT-001 workbench (JSON API + built React UI, same origin)."""
+    from .product.web import main as web_main
+
+    argv = ["--host", args.host, "--port", str(args.port)]
+    if args.data_dir:
+        argv += ["--data-dir", args.data_dir]
+    if args.web_dir:
+        argv += ["--web-dir", args.web_dir]
+    if args.open:
+        argv.append("--open")
+    return int(web_main(argv) or 0)
+
+
 # ---------------------------------------------------------------------- argparse
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
@@ -960,6 +975,14 @@ def build_parser() -> argparse.ArgumentParser:
 
     selftest = sub.add_parser("selftest", help="run the offline test suite")
     selftest.set_defaults(func=cmd_selftest)
+
+    web = sub.add_parser("web", help="serve the product workbench (API + web UI)")
+    web.add_argument("--host", default="127.0.0.1")
+    web.add_argument("--port", type=int, default=8787)
+    web.add_argument("--data-dir", default=None, help="snapshot directory (default: data/product)")
+    web.add_argument("--web-dir", default=None, help="built UI directory (default: web/dist)")
+    web.add_argument("--open", action="store_true", help="open a browser once the server is up")
+    web.set_defaults(func=cmd_web)
     return parser
 
 

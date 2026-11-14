@@ -29,13 +29,24 @@
 # reviews every inventory change and owns the licence judgement.
 
 schema: medradar.data_licenses.v2
-updated: "2026-11-13"
+updated: "2026-11-15"
 
 policy:
   default_status: RED
   raw_root: data/
   rule: "GREEN may be redistributed with attribution. AMBER may contribute only explicitly listed derived artefacts. RED may not be committed at all. Unlisted sources are RED."
   tracked_source: "git ls-files (final tree: committed + staged); untracked data files fail separately"
+  # GOV-0004: a restricted binary format is normally forbidden outside synthetic fixtures
+  # because its bytes cannot be reviewed. A GREEN, redistributable source may opt in for a
+  # *derived* projection of its own public data when the inventory entry declares the file's
+  # SHA-256, so the committed blob is bound to a reviewed artefact. Compressed public-domain
+  # record snapshots (PRODUCT-001) are the motivating case; opaque third-party blobs stay
+  # forbidden.
+  derived_binary_allowlist:
+    enabled: true
+    require_sha256: true
+    require_may_redistribute: true
+    reason: "GOV-0004: hash-declared, GREEN, redistributable derived data may be committed compressed"
 
 inventory:
   file: docs/governance/DATA_INVENTORY.yaml
@@ -85,6 +96,11 @@ sources:
     attribution: "U.S. Food and Drug Administration openFDA (510(k), PMA and device-recall endpoints). U.S. Government work; not endorsed by the FDA."
     raw_patterns:
       - data/**
+    # PRODUCT-001 ships an immutable, hash-addressed snapshot of these public records as
+    # vendored product data (not runtime output). The file is a derived projection: compact
+    # records with source identifiers and dates, no additional third-party content.
+    tracked_patterns:
+      - medradar/product/snapshot/**
     docs: docs/DATA.md
   - source_id: openfda_drug
     status: GREEN
@@ -148,8 +164,10 @@ sources:
       - docs/*.csv
       - docs/research/**
       - docs/refoundation/**
+      - docs/product/**
+      - medradar/product/identity/**
       - tools/*.json
-    docs: docs/DATA.md
+    docs: docs/product/DATA_CONTRACT.md
   - source_id: curated_configuration
     status: GREEN
     may_redistribute: true
@@ -165,6 +183,13 @@ sources:
     tracked_patterns:
       - tests/**
     docs: tests/governance/fixtures/README.md
+  - source_id: product_workbench_source
+    status: GREEN
+    may_redistribute: true
+    attribution: "MedRadar PRODUCT-001 workbench source and configuration (MIT). No third-party code, fonts, images or data are vendored in this tree except openFDA-derived records declared above."
+    tracked_patterns:
+      - web/**
+    docs: docs/product/ARCHITECTURE.md
   - source_id: yahoo_chart_bars
     status: RED
     may_redistribute: false
