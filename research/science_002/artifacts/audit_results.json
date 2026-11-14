@@ -1,0 +1,101 @@
+{
+ "checks": {
+  "A1_feature_recomputation": {
+   "mismatches": [],
+   "n_checked": 60,
+   "n_mismatch": 0,
+   "passed": true
+  },
+  "A2_no_future_evidence": {
+   "n_checked": 60,
+   "passed": true,
+   "violations": []
+  },
+  "A3_label_independence": {
+   "mismatches": [],
+   "n_mismatch": 0,
+   "n_rows": 2771,
+   "n_window_overlap_with_feature_cut": 0,
+   "passed": true
+  },
+  "A4_attribution_uniqueness": {
+   "n_applicant_roots": 148,
+   "n_k_numbers": 8176,
+   "passed": true,
+   "shared_k_numbers": {},
+   "shared_roots": {}
+  },
+  "A5_selection_audit": {
+   "dropped": {
+    "maturity_cut": "rows whose 90-day window would cross 2026-09-30 are omitted at construction",
+    "sec_coverage": 397
+   },
+   "firms_with_single_class_in_panel": {
+    "bio-rad-laboratories": {
+     "label": 0,
+     "n": 66
+    },
+    "boston-scientific": {
+     "label": 1,
+     "n": 66
+    },
+    "ceribell": {
+     "label": 1,
+     "n": 8
+    },
+    "ge-healthcare-technologies": {
+     "label": 1,
+     "n": 30
+    },
+    "medtronic": {
+     "label": 1,
+     "n": 66
+    },
+    "stryker": {
+     "label": 1,
+     "n": 66
+    }
+   },
+   "n_firms_single_class": 6,
+   "note": "single-class firms contribute to model fitting but are excluded from the stratified AUC, which is reported with its firm count",
+   "passed": true,
+   "rows_by_split": {
+    "holdout": 815,
+    "train": 1956
+   }
+  },
+  "A6_future_filing_injection": {
+   "changed": [],
+   "n_changed": 0,
+   "n_checked": 20,
+   "passed": true
+  },
+  "A7_reproducibility": {
+   "committed_matches": true,
+   "committed_sha256": "088afd0fad469fb606e07f83065ee987cfacefcc5ed5d7a1cb411e8f106fa17f",
+   "first_sha256": "088afd0fad469fb606e07f83065ee987cfacefcc5ed5d7a1cb411e8f106fa17f",
+   "identical": true,
+   "passed": true,
+   "second_sha256": "088afd0fad469fb606e07f83065ee987cfacefcc5ed5d7a1cb411e8f106fa17f"
+  },
+  "A8_permutation_seed_stability": {
+   "delta_seed_a": -0.033663969385031994,
+   "delta_seed_b": -0.033663969385031994,
+   "p_seed_a": 0.095952023988006,
+   "p_seed_b": 0.09145427286356822,
+   "passed": true,
+   "same_verdict": true
+  }
+ },
+ "meta": {
+  "n_firms": 48,
+  "n_rows": 2771,
+  "sample_rows": 60,
+  "seed": 20261114
+ },
+ "verdict": {
+  "failed": [],
+  "passed": true,
+  "summary": "all audit checks passed"
+ }
+}
