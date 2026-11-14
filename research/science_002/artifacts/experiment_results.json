@@ -1,0 +1,459 @@
+{
+ "_payload_sha256": "0098a84e501b3648bfd1f6022e418b6cecd38c4f4b8eeafa2cfb505373c65d61",
+ "bootstrap": {
+  "B1c": {
+   "hi": 0.5231003718503718,
+   "lo": 0.38710945722500345,
+   "mean": 0.45439669035181696,
+   "median": 0.4546932778550426,
+   "n": 2000
+  },
+  "B2c": {
+   "hi": 0.5572530339793768,
+   "lo": 0.41661462462546056,
+   "mean": 0.486765320185272,
+   "median": 0.48710137085137084,
+   "n": 2000
+  },
+  "B3c": {
+   "hi": 0.5184293046135151,
+   "lo": 0.38440981533086793,
+   "mean": 0.4522409447143926,
+   "median": 0.4522487724693607,
+   "n": 2000
+  },
+  "delta_B3c_minus_B1c": {
+   "hi": 0.07903791469967941,
+   "lo": -0.0732902267151493,
+   "mean": -0.0021557456374243986,
+   "median": -0.0026909501174206926,
+   "n": 2000
+  },
+  "delta_B3c_minus_B2c": {
+   "hi": 0.016650740327210926,
+   "lo": -0.08255059599597414,
+   "mean": -0.03452437547087946,
+   "median": -0.03565833676127793,
+   "n": 2000
+  }
+ },
+ "bootstrap_pooled_delta_B3_minus_B2": {
+  "hi": 0.017044679787282413,
+  "lo": -0.004623518082738642,
+  "mean": 0.005461017682286796,
+  "median": 0.005082681257852051,
+  "n": 2000
+ },
+ "conditional": {
+  "B0c": {
+   "n_firms": 44,
+   "note": "constant within firm by construction",
+   "value": 0.5
+  },
+  "B1c": {
+   "n_firms": 31,
+   "value": 0.4538349682680802
+  },
+  "B2c": {
+   "n_firms": 31,
+   "value": 0.48635317876304596
+  },
+  "B3c": {
+   "n_firms": 31,
+   "value": 0.452689209378014
+  }
+ },
+ "controls": {
+  "activity_conditional": {
+   "n_firms": 31,
+   "value": 0.48635317876304596
+  },
+  "history_conditional": {
+   "n_firms": 31,
+   "value": 0.4538349682680802
+  },
+  "label_transplant_pooled": {
+   "pooled": {
+    "B0": 0.5,
+    "B1": 0.4959254143646409,
+    "B2": 0.49707971586424626,
+    "B3": 0.5042094185740594
+   },
+   "stratified": {
+    "B0": 0.5,
+    "B1": 0.5270078224537428,
+    "B2": 0.5161168738493217,
+    "B3": 0.5178714312253211
+   }
+  },
+  "placebo_features": {
+   "n": 100,
+   "null_mean": -0.007559537566060336,
+   "null_q025": -0.03739166299650171,
+   "null_q975": 0.01748886918478949,
+   "observed_delta": -0.033663969385031994,
+   "p_two_sided": 0.04950495049504951
+  },
+  "placebo_outcome_507": {
+   "delta": -0.011220511741345062,
+   "n_firms": 44,
+   "pooled_B2": 0.47696225803777964,
+   "pooled_B3": 0.475018271962145,
+   "prevalence": 0.31841432225063937,
+   "stratified_B2": 0.5165124805749806,
+   "stratified_B3": 0.5052919688336355
+  },
+  "positive_control_any8k": {
+   "delta": 0.07297794117647058,
+   "n_firms": 10,
+   "pooled_B2": 0.6323546751562316,
+   "pooled_B3": 0.6465039500058956,
+   "prevalence": 0.9859335038363172,
+   "stratified_B2": 0.5378676470588235,
+   "stratified_B3": 0.6108455882352941
+  }
+ },
+ "lofo": {
+  "B2": {
+   "mean_auc": 0.38477625052577613,
+   "n_firms": 31,
+   "per_firm": {
+    "align-technology": 0.475,
+    "alphatec": 0.09375,
+    "angiodynamics": 0.05,
+    "anika-therapeutics": 0.5357142857142857,
+    "atricure": 0.5,
+    "bausch-and-lomb": 0.3230769230769231,
+    "becton-dickinson-and": 0.25,
+    "conmed": 0.375,
+    "dentsply-sirona": 0.058823529411764705,
+    "dexcom": 0.625,
+    "edwards-lifesciences": 0.7647058823529411,
+    "globus-medical": 0.90625,
+    "haemonetics": 0.26666666666666666,
+    "hyperfine": 0.325,
+    "icu-medical": 0.15,
+    "insulet": 0.3611111111111111,
+    "integra-lifesciences": 0.37662337662337664,
+    "orthopediatrics": 0.2916666666666667,
+    "outset-medical": 0.08888888888888889,
+    "penumbra": 0.3472222222222222,
+    "procept-biorobotics": 0.5194805194805194,
+    "resmed": 0.6153846153846154,
+    "si-bone": 0.375,
+    "sight-sciences": 0.2375,
+    "solventum": 0.3125,
+    "sonoma-pharmaceuticals": 0.28888888888888886,
+    "stereotaxis": 0.7662337662337663,
+    "steris": 0.676923076923077,
+    "tandem-diabetes-care": 0.3076923076923077,
+    "teleflex": 0.3392857142857143,
+    "treace-medical-concepts": 0.3246753246753247
+   }
+  },
+  "B3": {
+   "mean_auc": 0.3826094222560067,
+   "n_firms": 31,
+   "per_firm": {
+    "align-technology": 0.425,
+    "alphatec": 0.03125,
+    "angiodynamics": 0.15,
+    "anika-therapeutics": 0.5892857142857143,
+    "atricure": 0.375,
+    "bausch-and-lomb": 0.38461538461538464,
+    "becton-dickinson-and": 0.25,
+    "conmed": 0.32142857142857145,
+    "dentsply-sirona": 0.058823529411764705,
+    "dexcom": 0.5892857142857143,
+    "edwards-lifesciences": 0.47058823529411764,
+    "globus-medical": 0.1875,
+    "haemonetics": 0.35555555555555557,
+    "hyperfine": 0.35,
+    "icu-medical": 0.1625,
+    "insulet": 0.5277777777777778,
+    "integra-lifesciences": 0.4025974025974026,
+    "orthopediatrics": 0.3055555555555556,
+    "outset-medical": 0.1111111111111111,
+    "penumbra": 0.4305555555555556,
+    "procept-biorobotics": 0.4155844155844156,
+    "resmed": 0.6615384615384615,
+    "si-bone": 0.375,
+    "sight-sciences": 0.225,
+    "solventum": 0.375,
+    "sonoma-pharmaceuticals": 0.8222222222222222,
+    "stereotaxis": 0.7402597402597403,
+    "steris": 0.676923076923077,
+    "tandem-diabetes-care": 0.3230769230769231,
+    "teleflex": 0.3392857142857143,
+    "treace-medical-concepts": 0.42857142857142855
+   }
+  },
+  "delta_B3_minus_B2": {
+   "mean": -0.0021668282697694403,
+   "n_firms": 31,
+   "n_firms_positive": 16
+  }
+ },
+ "meta": {
+  "estimator_primary": "ridge logistic with firm fixed effects",
+  "features": {
+   "B0": [],
+   "B1": [
+    "clr_rate_365",
+    "clr_rate_730",
+    "months_since_clear"
+   ],
+   "B2": [
+    "clr_rate_365",
+    "clr_rate_730",
+    "months_since_clear",
+    "n_8k_90",
+    "n_8k_365",
+    "n_801_90",
+    "n_801_365",
+    "n_202_90",
+    "days_since_8k",
+    "t_years",
+    "month_sin",
+    "month_cos"
+   ],
+   "B3": [
+    "clr_rate_365",
+    "clr_rate_730",
+    "months_since_clear",
+    "n_8k_90",
+    "n_8k_365",
+    "n_801_90",
+    "n_801_365",
+    "n_202_90",
+    "days_since_8k",
+    "t_years",
+    "month_sin",
+    "month_cos",
+    "rd_ttm_log",
+    "rd_yoy",
+    "rd_to_sales",
+    "rd_growth_vol"
+   ],
+   "B4": [
+    "clr_rate_365",
+    "clr_rate_730",
+    "months_since_clear",
+    "n_8k_90",
+    "n_8k_365",
+    "n_801_90",
+    "n_801_365",
+    "n_202_90",
+    "days_since_8k",
+    "t_years",
+    "month_sin",
+    "month_cos",
+    "rd_ttm_log",
+    "rd_yoy",
+    "rd_to_sales",
+    "rd_growth_vol",
+    "rd_yoy_lag1",
+    "rd_yoy_lag2",
+    "rd_yoy_lag3",
+    "rd_intensity_rel"
+   ]
+  },
+  "lambda": 1.0,
+  "n_boot": 2000,
+  "n_firms_holdout": 44,
+  "n_holdout": 782,
+  "n_perm": 2000,
+  "n_rows_complete_case": 2554,
+  "n_train": 1772,
+  "prevalence_holdout": 0.530690537084399,
+  "prevalence_train": 0.49887133182844245,
+  "seed": 20261114,
+  "statistic_primary": "firm-stratified AUC difference B3c - B2c"
+ },
+ "per_firm": {
+  "B1c": {
+   "align-technology": 0.6,
+   "alphatec": 0.125,
+   "angiodynamics": 0.06875,
+   "anika-therapeutics": 0.7678571428571429,
+   "atricure": 0.5555555555555556,
+   "bausch-and-lomb": 0.3230769230769231,
+   "becton-dickinson-and": 0.34375,
+   "conmed": 0.5714285714285714,
+   "dentsply-sirona": 0.11764705882352941,
+   "dexcom": 0.7857142857142857,
+   "edwards-lifesciences": 1.0,
+   "globus-medical": 0.46875,
+   "haemonetics": 0.044444444444444446,
+   "hyperfine": 0.35,
+   "icu-medical": 0.15,
+   "insulet": 0.3055555555555556,
+   "integra-lifesciences": 0.5974025974025974,
+   "orthopediatrics": 0.3472222222222222,
+   "outset-medical": 0.6,
+   "penumbra": 0.3333333333333333,
+   "procept-biorobotics": 0.5974025974025974,
+   "resmed": 0.676923076923077,
+   "si-bone": 0.5625,
+   "sight-sciences": 0.2125,
+   "solventum": 0.3125,
+   "sonoma-pharmaceuticals": 0.9111111111111111,
+   "stereotaxis": 0.5064935064935064,
+   "steris": 0.6923076923076923,
+   "tandem-diabetes-care": 0.49230769230769234,
+   "teleflex": 0.14285714285714285,
+   "treace-medical-concepts": 0.5064935064935064
+  },
+  "B2c": {
+   "align-technology": 0.65,
+   "alphatec": 0.125,
+   "angiodynamics": 0.15,
+   "anika-therapeutics": 0.8392857142857143,
+   "atricure": 0.1111111111111111,
+   "bausch-and-lomb": 0.8769230769230769,
+   "becton-dickinson-and": 0.1875,
+   "conmed": 0.42857142857142855,
+   "dentsply-sirona": 0.0,
+   "dexcom": 0.625,
+   "edwards-lifesciences": 0.47058823529411764,
+   "globus-medical": 1.0,
+   "haemonetics": 0.06666666666666667,
+   "hyperfine": 0.3875,
+   "icu-medical": 0.225,
+   "insulet": 0.75,
+   "integra-lifesciences": 0.4805194805194805,
+   "orthopediatrics": 0.3194444444444444,
+   "outset-medical": 0.7333333333333333,
+   "penumbra": 0.4583333333333333,
+   "procept-biorobotics": 0.6233766233766234,
+   "resmed": 0.6307692307692307,
+   "si-bone": 0.4875,
+   "sight-sciences": 0.55,
+   "solventum": 0.3125,
+   "sonoma-pharmaceuticals": 0.8444444444444444,
+   "stereotaxis": 0.5974025974025974,
+   "steris": 0.676923076923077,
+   "tandem-diabetes-care": 0.2923076923076923,
+   "teleflex": 0.5535714285714286,
+   "treace-medical-concepts": 0.6233766233766234
+  },
+  "B3c": {
+   "align-technology": 0.625,
+   "alphatec": 0.125,
+   "angiodynamics": 0.2,
+   "anika-therapeutics": 0.8392857142857143,
+   "atricure": 0.027777777777777776,
+   "bausch-and-lomb": 0.8923076923076924,
+   "becton-dickinson-and": 0.1875,
+   "conmed": 0.3392857142857143,
+   "dentsply-sirona": 0.0,
+   "dexcom": 0.5178571428571429,
+   "edwards-lifesciences": 0.23529411764705882,
+   "globus-medical": 0.25,
+   "haemonetics": 0.4,
+   "hyperfine": 0.3,
+   "icu-medical": 0.225,
+   "insulet": 0.7638888888888888,
+   "integra-lifesciences": 0.4155844155844156,
+   "orthopediatrics": 0.5833333333333334,
+   "outset-medical": 0.3333333333333333,
+   "penumbra": 0.5555555555555556,
+   "procept-biorobotics": 0.5324675324675324,
+   "resmed": 0.6923076923076923,
+   "si-bone": 0.4625,
+   "sight-sciences": 0.35,
+   "solventum": 0.375,
+   "sonoma-pharmaceuticals": 0.9333333333333333,
+   "stereotaxis": 0.6233766233766234,
+   "steris": 0.676923076923077,
+   "tandem-diabetes-care": 0.3230769230769231,
+   "teleflex": 0.625,
+   "treace-medical-concepts": 0.6233766233766234
+  }
+ },
+ "permutation": {
+  "n_used": 2000,
+  "null_mean": 0.0002983200925681949,
+  "null_q025": -0.04049825622406268,
+  "null_q975": 0.037934890852348156,
+  "null_sd": 0.019716857244504782,
+  "p_positive_tail": 0.9485257371314343,
+  "p_two_sided": 0.095952023988006
+ },
+ "permutation_circular": {
+  "n_used": 2000,
+  "null_mean": 0.0025589914045737105,
+  "null_q025": -0.048040521569933325,
+  "null_q975": 0.05149078862314156,
+  "null_sd": 0.025848298767029536,
+  "p_positive_tail": 0.9155422288855573,
+  "p_two_sided": 0.19990004997501248
+ },
+ "pooled": {
+  "B0": 0.5,
+  "B1": 0.8292209710777716,
+  "B2": 0.8279373625291356,
+  "B3": 0.8333147303108893
+ },
+ "pooled_bootstrap": {
+  "B1": {
+   "hi": 0.889250594792783,
+   "lo": 0.7513999410551134,
+   "mean": 0.8237831598835645,
+   "median": 0.8261847882231405,
+   "n": 2000
+  },
+  "B2": {
+   "hi": 0.8883745908346972,
+   "lo": 0.7487686086483284,
+   "mean": 0.8230996282941029,
+   "median": 0.825696061557153,
+   "n": 2000
+  },
+  "B3": {
+   "hi": 0.8911120075299179,
+   "lo": 0.7553145623984346,
+   "mean": 0.8285606459763898,
+   "median": 0.8315510471204188,
+   "n": 2000
+  }
+ },
+ "power": {
+  "mde_delta_80pct": 0.055207200284613386,
+  "min_detectable_auc_hanley": 0.6417788567238178,
+  "n_firms_used_stratified": 31,
+  "permutation_sd": 0.019716857244504782
+ },
+ "primary": {
+  "delta_stratified_auc_B3c_minus_B1c": -0.00114575889006628,
+  "delta_stratified_auc_B3c_minus_B2c": -0.033663969385031994,
+  "pooled_delta_B3_minus_B2": 0.005377367781753684
+ },
+ "secondary_B4": {
+  "delta_B4c_minus_B3c": 0.009281192926828604,
+  "n_holdout": 773,
+  "stratified_B3c": 0.4343441754850673,
+  "stratified_B4c": 0.4436253684118959
+ },
+ "verdict": {
+  "checks": {
+   "min_firms_stratified": true,
+   "min_holdout_rows": true,
+   "positive_control_activity_any8k": true,
+   "positive_control_firm_history": true,
+   "prevalence_band": true
+  },
+  "effect": {
+   "ci": [
+    -0.08255059599597414,
+    0.016650740327210926
+   ],
+   "delta": -0.033663969385031994,
+   "lofo_delta": -0.0021668282697694403,
+   "p": 0.095952023988006,
+   "placebo_p": 0.04950495049504951
+  },
+  "reason": "experiment valid; no incremental signal meets the pre-registered threshold",
+  "verdict": "NULL"
+ }
+}

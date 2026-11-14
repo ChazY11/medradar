@@ -1,0 +1,56 @@
+{
+ "availability_lag_days": 30,
+ "by_split": {
+  "holdout": {
+   "firms": 46,
+   "n": 815,
+   "positive": 426,
+   "prevalence": 0.5226993865030675
+  },
+  "train": {
+   "firms": 44,
+   "n": 1956,
+   "positive": 987,
+   "prevalence": 0.504601226993865
+  }
+ },
+ "fda_maturity_cut": "2026-09-30",
+ "feature_names": [
+  "clr_365",
+  "clr_730",
+  "clr_90",
+  "clr_rate_365",
+  "clr_rate_730",
+  "days_since_8k",
+  "month_cos",
+  "month_sin",
+  "months_since_clear",
+  "n_202_90",
+  "n_801_365",
+  "n_801_90",
+  "n_8k_365",
+  "n_8k_90",
+  "rd_growth_vol",
+  "rd_intensity_rel",
+  "rd_to_sales",
+  "rd_ttm_log",
+  "rd_yoy",
+  "rd_yoy_lag1",
+  "rd_yoy_lag2",
+  "rd_yoy_lag3",
+  "t_years"
+ ],
+ "holdout_start": "2025-01-01",
+ "horizon_days": 90,
+ "months": 66,
+ "n_firms": 48,
+ "n_missing_rd_feature_rows": 78,
+ "n_positive": 1413,
+ "n_rows": 2771,
+ "n_rows_dropped_sec_coverage": 397,
+ "panel_end_month": "2026-06-01",
+ "panel_sha256": "f4dafb1f5bc35399db57c3c59dd017cd2e674d7d12e158f416ddd4de12fbb9c4",
+ "panel_start": "2021-01-01",
+ "sec_coverage_margin_days": 400,
+ "train_end": "2024-12-31"
+}
