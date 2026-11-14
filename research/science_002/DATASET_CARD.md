@@ -27,6 +27,12 @@ The raw sources are not committed because of size (the 510(k) ZIP alone is
 normalised title (or an FDA owner/operator relation) could account for at least 8
 cleared 510(k)s in 2015-01-01..2026-08-31.
 
+> **Audit disclosure (SCIENCE-002R).** The 8-clearance threshold is evaluated over
+> 2015-01-01..2026-08-31, so membership depends on events after the training cutoff.
+> Under a pre-panel rule (eligibility decided before 2021-01-01) 31 of the 48 survive.
+> The universe should therefore be described as *selected on the full window*; see
+> `research/science_002r/SELECTION_BIAS.md`.
+
 **Final universe.** 48 registrants pass all four pre-declared inclusion rules
 (SIC in the device set; >= 8 attributable clearances; XBRL R&D available; at least
 one 8-K with a verified acceptance instant). 14 are excluded with a recorded
@@ -43,7 +49,9 @@ reason (see ENTITY_RESOLUTION.md section 5).
 | months per firm | 66 (2021-01 .. 2026-06) |
 | firm-month rows | **2,771** |
 | rows dropped for insufficient SEC coverage | **397** |
-| rows with any missing R&D feature | **78** |
+| rows dropped by the complete-case rule (all four B3 features present) | **217** |
+| ... of which rows with *no* R&D feature at all (`panel_summary.n_missing_rd_feature_rows`) | **78** |
+| firms contributing at least one panel row | **46** (CARLSMED and SHOULDER INNOVATIONS contribute none) |
 | complete-case rows used by the model ladder | **2,554** |
 | train (month_end <= 2024-12-31) | **1,772** |
 | holdout (month_end >= 2025-01-01) | **782** |
@@ -57,9 +65,10 @@ reason (see ENTITY_RESOLUTION.md section 5).
 
 The 90-day clearance indicator is **saturated for large firms and empty for small
 ones**. Holdout prevalence by firm ranges from 1.00 (SYK, MMSI, MDT, ISRG, GEHC,
-BSX, CBLL) to 0.00 (STIM, MMM, LNSR, LMAT, IRIX, CLPT, BIO, ARAY). Fifteen of 46
-holdout firms have a single class and therefore contribute nothing to a within-firm
-ranking.
+BSX, CBLL) to 0.00 (STIM, MMM, LNSR, LMAT, IRIX, CLPT, BIO, ARAY). **13 of the 44**
+complete-case holdout firms have a single class and therefore contribute nothing to a
+within-firm ranking (15 of 46 when every panel row is counted rather than the complete
+case; 44 - 31 = 13).
 
 That is not a defect to be fixed by reshuffling the sample: it is the substantive
 fact that FDA 510(k) clearance is a routine, firm-level process. It is also why the
@@ -95,9 +104,14 @@ and a weak *within-firm* one.
 
 ## 6. Known limitations (do not remove before citing)
 
-1. **8.8% attribution coverage.** Only 3,143 of 35,680 cleared 510(k)s in the
-   window are attributed to the 48 firms. The outcome series undercounts each
-   group's regulatory activity, firm-specifically.
+1. **The 8.8% is a universe share, not a recall.** Only 3,143 of the 35,680 cleared
+   510(k)s filed in 2015-2026 are attributable to the 48 firms - that is a property
+   of *which* firms were chosen (8.8% of FDA's filing population by volume), not a
+   statement about how much of each firm's own activity is captured. **Recall is
+   unknown**: no public source publishes a firm's true clearance total at
+   legal-entity level. The audit enumerates 167 unattributed applicant strings that
+   carry a universe firm's brand token (444 clearances) as visible blind spots
+   (`research/science_002r/ENTITY_AUDIT.md`).
 2. **2026 ownership snapshot.** Tier-B attribution uses the current FDA
    owner/operator map for the whole panel. Sensitivity S1 removes it.
 3. **One chronological split.** 44 holdout firms; 31 enter the stratified statistic.

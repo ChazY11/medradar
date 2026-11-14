@@ -44,8 +44,10 @@ Inc.` agree.
 | **T_B** | applicant root == an FDA establishment-registration name whose FDA-published **owner/operator firm name** root == the registrant's SEC title root | **126** |
 | **T_C** | rejected: root claimed by more than one registrant | 0 |
 
-**Total accepted: 189 links over 62 candidate registrants -> 48 firms in the
-universe.** Note that the *count* of links is not the count of firms: 126 of the
+**Total accepted: 189 links across the 62 candidate registrants; 148 of them
+belong to the 48 universe firms** (T_A 46 / T_A2 4 / T_B 98, carrying 1,945 / 88 /
+1,110 clearances). Note that the tier counts quoted in the table above are over all
+62 candidates, so they do not add up to the 148 that the experiment actually uses. Note that the *count* of links is not the count of firms: 126 of the
 links are subsidiary establishments hanging off 20 firms.
 
 T_A2 uses SEC's own `formerNames` array (with its rename dates), so the identity
