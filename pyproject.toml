@@ -45,7 +45,7 @@ include = ["medradar*"]
 "share/medradar/docs" = ["docs/metrics.json"]
 # PRODUCT-001: the reviewed identity registry ships with the package, and the built
 # workbench plus the snapshot are installed so `medradar web` works from a wheel.
-"share/medradar/web" = ["web/dist/index.html", "web/dist/favicon.svg", "web/dist/assets/*"]
+"share/medradar/web" = ["web/dist/index.html", "web/dist/favicon.svg", "web/dist/index-*.js", "web/dist/index-*.css"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

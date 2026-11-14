@@ -6,6 +6,11 @@ export default defineConfig({
   base: "/",
   build: {
     outDir: "dist",
+    // Hashed JS/CSS sit next to index.html rather than in an assets/ subdirectory. The
+    // Python wheel installs the built UI as setuptools data-files, which flattens globs into
+    // one directory; keeping the build flat means an installed wheel serves the same URLs as
+    // a source checkout (see pyproject.toml "share/medradar/web").
+    assetsDir: "",
   },
   server: {
     port: 5173,
