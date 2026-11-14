@@ -176,6 +176,8 @@ class InternalConsistencyTests(unittest.TestCase):
 
 class PathTests(unittest.TestCase):
     def test_repository_paths_resolve_inside_the_checkout(self):
-        self.assertTrue(str(common.REPO).endswith("science-002r"))
-        self.assertIn("science_002", str(common.CACHE_RAW))
-        self.assertIn("science_002", str(internal_consistency.FROZEN))
+        # portable on any checkout name (CI clones into 'medradar', not 'science-002r')
+        self.assertTrue((common.REPO / "research" / "science_002r").is_dir())
+        self.assertEqual(common.CACHE_RAW.name, "cache")
+        self.assertEqual(internal_consistency.FROZEN.name, "artifacts")
+        self.assertTrue(str(internal_consistency.FROZEN).startswith(str(common.REPO)))
