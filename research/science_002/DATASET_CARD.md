@@ -32,10 +32,9 @@ cleared 510(k)s in 2015-01-01..2026-08-31.
 one 8-K with a verified acceptance instant). 14 are excluded with a recorded
 reason (see ENTITY_RESOLUTION.md section 5).
 
-**Sector distribution (SEC SIC):** 3841 surgical/medical instruments (33 firms),
-3845 electromedical (6), 3842 orthopaedic (4), 3843 dental (1), 3844 X-ray (1),
-3851 ophthalmic (1), 3826 laboratory analytical (1), plus one registrant each whose
-SEC SIC sits in the set but whose business is broader.
+**Sector distribution (SEC SIC):** 3841 surgical/medical instruments **33** firms,
+3845 electromedical **7**, 3842 orthopaedic **4**, 3844 X-ray **1**, 3843 dental
+**1**, 3851 ophthalmic **1**, 3826 laboratory analytical **1** - exactly 48.
 
 ## 3. Panel geometry
 
