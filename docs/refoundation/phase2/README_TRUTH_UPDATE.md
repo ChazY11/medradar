@@ -1,4 +1,4 @@
-﻿# README 真实性修订（Phase 2 · D）
+# README 真实性修订（Phase 2 · D）
 
 **状态：** 已完成，待评审（单独文档 PR）。**未**改动 UI、未重做视觉、未删除任何文件。
 **分支：** `docs/readme-truth-phase2`（基于 `origin/main` `b2a14c0`）

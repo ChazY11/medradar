@@ -1,0 +1,120 @@
+{
+  "active_snapshot_id": "fda-snapshot-20261115T225602Z-0a543693f698",
+  "added": 0,
+  "counts": {
+    "changes": {
+      "added": 0,
+      "changed_sources": [],
+      "deferred_sources": [],
+      "failed_sources": [],
+      "first_reconciliation": false,
+      "full_reconciliation_sources": [],
+      "missing_on_recheck": 0,
+      "missing_retained": 0,
+      "partial": false,
+      "rebaselined": 0,
+      "records_seen": 0,
+      "removed_confirmed": 0,
+      "scope_changed": false,
+      "successful_sources": [
+        "openfda_classification"
+      ],
+      "unchanged": 0,
+      "unresolved": 0,
+      "updated": 0
+    },
+    "records": 91457,
+    "requests": 241,
+    "response_bytes": 1236019586
+  },
+  "failed_sources": [],
+  "full_reconciliation_sources": [],
+  "missing_on_recheck": 0,
+  "partial": false,
+  "post_publication_warning": null,
+  "previous_snapshot_id": "fda-snapshot-20261115T225311Z-0a543693f698",
+  "removed_confirmed": 0,
+  "run_id": "run_c474d1bb2d694524985364cd7baa037d",
+  "snapshot_path": "/tmp/data002/state/snapshots/fda-snapshot-20261115T225602Z-0a543693f698",
+  "status": "SUCCEEDED",
+  "successful_sources": [
+    "openfda_classification"
+  ],
+  "unresolved": 0,
+  "updated": 0,
+  "validation": {
+    "checks": {
+      "device_index": {
+        "applications": 61632,
+        "devices": 23974,
+        "families": 630,
+        "relations": 77823,
+        "stats": {
+          "applications": 61632,
+          "applications_by_kind": {
+            "510k": 23400,
+            "pma": 574,
+            "pma_supplement": 37658
+          },
+          "candidate_device_clusters": 1139,
+          "candidate_recall_relations": 20227,
+          "devices": 23974,
+          "families": 630,
+          "families_without_original": 56,
+          "not_modelled": {
+            "application_references_predicate": "openFDA exposes no predicate identifier for 510(k) submissions, and the 510(k) summary documents were not collected. A predicate relation cannot be established from this data, so it is not invented.",
+            "manufacturer_of_device": "the applicant field is a record claim, not proof of current manufacture. It is shown as the applicant, with its PRODUCT-002 attribution status, rather than modelled as a device relation.",
+            "record_mentions_device": "every application record names a device by definition; emitting a relation for it would be tautological. The device name is shown on the record and on the device page instead."
+          },
+          "recalls": 29825,
+          "recalls_with_confirmed_application": 15022,
+          "recalls_with_external_reference_only": 6227,
+          "recalls_without_any_reference": 8576,
+          "relation_types": {
+            "application_has_supplement": "confirmed",
+            "candidate_recall_application": "candidate",
+            "candidate_same_device": "candidate",
+            "device_has_version": "confirmed",
+            "recall_references_application": "confirmed"
+          }
+        }
+      },
+      "errors": 0,
+      "files_parsed": true,
+      "first_observed_range": {
+        "max": "2026-11-14T22:09:22.451315Z",
+        "min": "2026-11-14T22:09:22.451315Z"
+      },
+      "manifest_present": true,
+      "product_dataset": {
+        "events": 91457,
+        "global_records": 91384,
+        "organizations": 59,
+        "snapshot_id": "fda-snapshot-20261115T225602Z-0a543693f698"
+      },
+      "review_db_unchanged": true,
+      "unique_event_ids": 91457,
+      "unique_official_identities": 91457,
+      "unknown_source_versions": []
+    },
+    "errors": [],
+    "metrics": {
+      "by_source": {
+        "openfda_510k": 23400,
+        "openfda_pma": 38232,
+        "openfda_recall": 29825
+      },
+      "by_type": {
+        "510k": 23400,
+        "pma": 574,
+        "pma_supplement": 37658,
+        "recall": 29825
+      },
+      "pma_supplements_with_untracked_parent": 620,
+      "previous_records": 91457,
+      "record_drop_ratio": 0.0,
+      "records": 91457
+    },
+    "ok": true
+  }
+}

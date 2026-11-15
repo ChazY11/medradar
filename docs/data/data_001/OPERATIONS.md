@@ -137,5 +137,5 @@ surface; the user must approve any external alert destination.
 
 The real isolated run's measured elapsed time and peak RSS are in
 `DELIVERY_REPORT.md` and `evidence/real-sync.json`. The service has 2 vCPU / 4 GB and about
-2 GB available. The unit's `MemoryMax=1800M` leaves headroom for the web process. The
+2 GB available. The unit's measured `MemoryMax=2400M` leaves headroom for the web process; DATA-002 re-measures the full-source case. The
 pipeline does not run more than one collection concurrently.

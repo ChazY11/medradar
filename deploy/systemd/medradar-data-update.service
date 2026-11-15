@@ -1,6 +1,6 @@
 [Unit]
 Description=MedRadar continuous FDA update check and safe snapshot publication
-Documentation=file:///srv/medradar/app/docs/data/data_001/OPERATIONS.md
+Documentation=file:///srv/medradar/app/docs/data/data_002/PRODUCTION_READINESS.md
 After=network-online.target medradar-web.service
 Wants=network-online.target
 # This unit is a proposal. Do not enable it before the deployment plan is approved.
@@ -14,6 +14,8 @@ Environment=HOME=/srv/medradar
 Environment=PYTHONUNBUFFERED=1
 Environment=MEDRADAR_PIPELINE_ROOT=/srv/medradar/data/fda
 Environment=MEDRADAR_REVIEW_DB=/srv/medradar/data/identity/review.db
+Environment=MEDRADAR_PIPELINE_MAX_PRODUCT_SOURCES_PER_RUN=1
+Environment=MEDRADAR_PIPELINE_FULL_RECONCILE_HOURS=168
 EnvironmentFile=-/etc/medradar/pipeline.env
 UMask=0027
 ExecStart=/srv/medradar/.venv/bin/python -m medradar.data_pipeline run --json

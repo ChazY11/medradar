@@ -1,0 +1,33 @@
+{
+  "checked_at": "2026-11-15T23:09:20.128008Z",
+  "request_usage": {
+    "by_source": {
+      "openfda_510k": 69,
+      "openfda_classification": 34,
+      "openfda_pma": 181,
+      "openfda_recall": 78
+    },
+    "day": "2026-11-15",
+    "response_bytes": 1400571669,
+    "total_requests": 362
+  },
+  "results": [
+    {
+      "active_snapshot_id": "fda-snapshot-20261115T225953Z-5c8e966d8182",
+      "baseline_last_updated": "2026-11-02",
+      "baseline_total": 176625,
+      "check_interval_hours": 24,
+      "checked_at": "2026-11-15T23:09:17.965967Z",
+      "consecutive_failures": 1,
+      "declared_frequency": "Monthly (openFDA declared)",
+      "http_status": null,
+      "message": "source check failed 1 consecutive time(s): openFDA network failure for source probe openfda_510k",
+      "official_last_updated": "2026-11-02",
+      "official_total": 176625,
+      "source_id": "openfda_510k",
+      "status": "CHECK_FAILED",
+      "update_available": false
+    }
+  ],
+  "update_available": false
+}

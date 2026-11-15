@@ -410,6 +410,9 @@ class Collector:
         audit["reported_total"] = total
         audit["records"] = len(raw)
         audit["complete"] = len(raw) >= total
+        meta = first.data.get("meta") or {}
+        audit["official_last_updated"] = meta.get("last_updated")
+        audit["official_total"] = total
         audit["urls"] = audit["urls"][:3]
         audit["requests"] = self._request_count - start_requests
         audit["response_bytes"] = self._response_bytes - start_bytes

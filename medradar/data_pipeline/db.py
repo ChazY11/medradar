@@ -37,9 +37,13 @@ SCHEMA_STATEMENTS = [
     " last_check_evidence_json TEXT,"
     " last_success_check_at TEXT,"
     " last_success_sync_at TEXT,"
+    " last_success_official_last_updated TEXT,"
+    " last_success_official_total INTEGER,"
     " last_failed_at TEXT,"
     " consecutive_failures INTEGER NOT NULL DEFAULT 0,"
     " active_snapshot_id TEXT,"
+    " last_full_reconciliation_at TEXT,"
+    " last_full_reconciliation_snapshot_id TEXT,"
     " update_available INTEGER NOT NULL DEFAULT 0)",
     "CREATE TABLE IF NOT EXISTS sync_runs ("
     " run_id TEXT PRIMARY KEY,"
@@ -146,12 +150,23 @@ def _loads(value: str | None, fallback: Any) -> Any:
 
 
 class StateStore:
-    def __init__(self, path: Path | str) -> None:
+    def __init__(self, path: Path | str, *, read_only: bool = False) -> None:
         self.path = Path(path)
-        self.path.parent.mkdir(parents=True, exist_ok=True)
-        self.initialize()
+        self.read_only = read_only
+        if not read_only:
+            self.path.parent.mkdir(parents=True, exist_ok=True)
+            self.initialize()
 
     def _connect(self) -> sqlite3.Connection:
+        if self.read_only:
+            # Health/status must not run schema setup or mutate pipeline rows. SQLite still
+            # needs to open the WAL sidecar, so this is a query_only connection rather than a
+            # URI mode=ro connection (which cannot create a missing -shm file).
+            connection = sqlite3.connect(self.path, timeout=30, isolation_level=None)
+            connection.row_factory = sqlite3.Row
+            connection.execute("PRAGMA query_only=ON")
+            connection.execute("PRAGMA busy_timeout=30000")
+            return connection
         connection = sqlite3.connect(self.path, timeout=30, isolation_level=None)
         connection.row_factory = sqlite3.Row
         connection.execute("PRAGMA journal_mode=WAL")
@@ -185,6 +200,17 @@ class StateStore:
         with self._conn() as connection:
             for statement in SCHEMA_STATEMENTS:
                 connection.execute(statement)
+            columns = {
+                str(row["name"]) for row in connection.execute("PRAGMA table_info(sources)").fetchall()
+            }
+            for name, ddl in (
+                ("last_full_reconciliation_at", "TEXT"),
+                ("last_full_reconciliation_snapshot_id", "TEXT"),
+                ("last_success_official_last_updated", "TEXT"),
+                ("last_success_official_total", "INTEGER"),
+            ):
+                if name not in columns:
+                    connection.execute("ALTER TABLE sources ADD COLUMN " + name + " " + ddl)
             current = connection.execute("SELECT value FROM pipeline_meta WHERE key = 'schema_version'").fetchone()
             if current is None:
                 connection.execute(
@@ -278,9 +304,34 @@ class StateStore:
                 " update_available = 0, last_check_status = 'NO_CHANGE',"
                 " last_check_message = 'official version reconciled and published',"
                 " last_success_check_at = COALESCE(last_success_check_at, ?),"
+                " last_success_official_last_updated = COALESCE(?, last_success_official_last_updated),"
+                " last_success_official_total = COALESCE(?, last_success_official_total),"
                 " official_last_updated = COALESCE(?, official_last_updated),"
                 " official_total = COALESCE(?, official_total) WHERE source_id = ?",
-                (synced_at, snapshot_id, synced_at, official_last_updated, official_total, source_id),
+                (synced_at, snapshot_id, synced_at, official_last_updated, official_total,
+                 official_last_updated, official_total, source_id),
+            )
+
+    def mark_source_full_reconciled(self, source_id: str, snapshot_id: str, reconciled_at: str) -> None:
+        with self._conn() as connection:
+            connection.execute(
+                "UPDATE sources SET last_full_reconciliation_at = ?,"
+                " last_full_reconciliation_snapshot_id = ? WHERE source_id = ?",
+                (reconciled_at, snapshot_id, source_id),
+            )
+
+    def mark_source_attempt_failed(self, source_id: str, message: str, failed_at: str) -> None:
+        """Record a collection/validation failure without pretending the source synced.
+
+        The previous successful official version and event data stay in place, but the
+        source becomes due for an hourly retry and stays visibly failed.
+        """
+        with self._conn() as connection:
+            connection.execute(
+                "UPDATE sources SET last_check_status = 'CHECK_FAILED',"
+                " last_check_message = ?, last_failed_at = ?,"
+                " consecutive_failures = consecutive_failures + 1 WHERE source_id = ?",
+                (message, failed_at, source_id),
             )
 
     def set_source_active_snapshot(self, snapshot_id: str | None) -> None:

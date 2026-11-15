@@ -53,7 +53,7 @@ SSH policy were not changed by this task. This plan is the requested approval ar
 8. Install `medradar-data-update.service` and `.timer`, plus
    `/etc/medradar/pipeline.env` (mode 0640; no key committed). Run
    `systemctl enable --now medradar-data-update.timer` only if the user approves automatic
-   scheduling. The timer is every 6 hours; per-source due logic prevents unnecessary checks.
+   scheduling. DATA-002 changes the timer to an hourly wake-up; per-source due logic prevents unnecessary checks and retries failures after one hour.
 
 ## Rollback
 
@@ -67,7 +67,7 @@ SSH policy were not changed by this task. This plan is the requested approval ar
 
 ## Resource and risk controls
 
-* `MemoryMax=1800M`, `CPUQuota=150%`, idle I/O, 1-hour timeout.
+* `MemoryHigh=2200M`, `MemoryMax=2400M`, `CPUQuota=150%`, idle I/O, 1-hour timeout. DATA-002 supersedes this with measured full-sync limits and an hourly scheduler wake-up.
 * Daily request budget persisted; no key committed.
 * One process lock prevents overlap.
 * Disk guard refuses below 2 GiB free.

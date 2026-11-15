@@ -1,15 +1,17 @@
 [Unit]
-Description=Run the MedRadar continuous FDA update check every six hours
+Description=Run the MedRadar continuous FDA update check hourly (per-source intervals are enforced inside the job)
 Documentation=file:///srv/medradar/app/docs/data/data_001/OPERATIONS.md
 # Proposal only. Installation requires explicit approval of the deployment plan.
 
 [Timer]
 OnBootSec=10min
-OnUnitActiveSec=6h
+OnUnitActiveSec=1h
 AccuracySec=1min
 RandomizedDelaySec=5min
 Persistent=true
 Unit=medradar-data-update.service
+# Hourly wake-up is cheap: run() checks per-source intervals and retries failures
+# after one hour. It does not collect a source that is not due.
 
 [Install]
 WantedBy=timers.target

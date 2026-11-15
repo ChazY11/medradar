@@ -1,0 +1,1426 @@
+{
+  "active": {
+    "change_summary": {
+      "added": 0,
+      "changed_sources": [
+        "openfda_pma"
+      ],
+      "deferred_sources": [],
+      "failed_sources": [],
+      "first_reconciliation": false,
+      "full_reconciliation_sources": [
+        "openfda_pma"
+      ],
+      "missing_on_recheck": 0,
+      "missing_retained": 0,
+      "partial": false,
+      "rebaselined": 0,
+      "records_seen": 38232,
+      "removed_confirmed": 0,
+      "scope_changed": false,
+      "successful_sources": [
+        "openfda_classification",
+        "openfda_pma"
+      ],
+      "unchanged": 38232,
+      "unresolved": 0,
+      "updated": 0
+    },
+    "counts": {
+      "applicant_strings": 1563,
+      "by_event_type": {
+        "510k": 23400,
+        "pma": 574,
+        "pma_supplement": 37658,
+        "recall": 29825
+      },
+      "by_source": {
+        "openfda_510k": 23400,
+        "openfda_pma": 38232,
+        "openfda_recall": 29825
+      },
+      "product_codes": 7098,
+      "records": 91457
+    },
+    "path": "/tmp/data002/fail-state/snapshots/fda-snapshot-20261115T225953Z-5c8e966d8182",
+    "pointer": {
+      "action": "rollback",
+      "content_hash": "5c8e966d8182bc448f1c980a7eab2270fabd86589fa2cf8149db08f8261453e4",
+      "path": "snapshots/fda-snapshot-20261115T225953Z-5c8e966d8182",
+      "previous_snapshot_id": "fda-snapshot-20261115T225602Z-0a543693f698",
+      "published_at": "2026-11-15T23:02:31.170083Z",
+      "published_by": "operator",
+      "schema": "medradar.pipeline.active.v1",
+      "snapshot_id": "fda-snapshot-20261115T225953Z-5c8e966d8182"
+    },
+    "published_at": "2026-11-15T23:02:31.170083Z",
+    "snapshot_id": "fda-snapshot-20261115T225953Z-5c8e966d8182",
+    "source_versions": {
+      "openfda_510k": {
+        "check_interval_hours": 24,
+        "consecutive_failures": 0,
+        "declared_frequency": "Monthly (openFDA declared)",
+        "display_name": "FDA 510(k) premarket notifications",
+        "endpoint": "/device/510k.json",
+        "last_check_message": "official version reconciled and published",
+        "last_check_status": "NO_CHANGE",
+        "last_checked_at": "2026-11-15T22:44:06.188348Z",
+        "last_full_reconciliation_at": "2026-11-15T22:52:38.124441Z",
+        "last_full_reconciliation_snapshot_id": "fda-snapshot-20261115T225135Z-f18be2d125e5",
+        "last_success_sync_at": "2026-11-15T22:52:38.117206Z",
+        "last_sync_attempt_at": "2026-11-15T22:51:16.797785Z",
+        "last_sync_error": null,
+        "note": "OpenFDA exposes no publication timestamp for individual 510(k) records.",
+        "official_last_updated": "2026-11-02",
+        "official_total": 176625,
+        "reconciliation_mode": "VERSION_TRIGGERED",
+        "source_id": "openfda_510k",
+        "sync_status": "UNCHANGED"
+      },
+      "openfda_classification": {
+        "check_interval_hours": 24,
+        "consecutive_failures": 0,
+        "declared_frequency": "Monthly (openFDA declared)",
+        "display_name": "FDA device classification dictionary",
+        "endpoint": "/device/classification.json",
+        "last_check_message": "official version reconciled and published",
+        "last_check_status": "NO_CHANGE",
+        "last_checked_at": "2026-11-15T22:55:46.995053Z",
+        "last_full_reconciliation_at": null,
+        "last_full_reconciliation_snapshot_id": null,
+        "last_success_sync_at": "2026-11-15T22:56:44.838659Z",
+        "last_sync_attempt_at": "2026-11-15T22:59:50.512288Z",
+        "last_sync_error": null,
+        "note": "Supporting product-code dictionary; it does not create product events.",
+        "official_last_updated": "2026-11-02",
+        "official_total": 7098,
+        "reconciliation_mode": "SUPPORT_REFRESH",
+        "source_id": "openfda_classification",
+        "sync_status": "SYNCED"
+      },
+      "openfda_pma": {
+        "check_interval_hours": 24,
+        "consecutive_failures": 0,
+        "declared_frequency": "Monthly (openFDA declared)",
+        "display_name": "FDA PMA approvals and supplements",
+        "endpoint": "/device/pma.json",
+        "last_check_message": "official version reconciled and published",
+        "last_check_status": "NO_CHANGE",
+        "last_checked_at": "2026-11-15T22:44:06.489427Z",
+        "last_full_reconciliation_at": "2026-01-01T00:00:00Z",
+        "last_full_reconciliation_snapshot_id": "fda-snapshot-20261115T225135Z-f18be2d125e5",
+        "last_success_sync_at": "2026-11-15T22:52:38.134722Z",
+        "last_sync_attempt_at": "2026-11-15T22:59:50.512288Z",
+        "last_sync_error": null,
+        "note": "PMA originals and supplements share one official endpoint and one official update version.",
+        "official_last_updated": "2026-11-02",
+        "official_total": 57487,
+        "reconciliation_mode": "FULL",
+        "source_id": "openfda_pma",
+        "sync_status": "SYNCED"
+      },
+      "openfda_recall": {
+        "check_interval_hours": 6,
+        "consecutive_failures": 0,
+        "declared_frequency": "Weekly (openFDA declared)",
+        "display_name": "FDA device recall records",
+        "endpoint": "/device/recall.json",
+        "last_check_message": "official version reconciled and published",
+        "last_check_status": "NO_CHANGE",
+        "last_checked_at": "2026-11-15T22:44:07.665413Z",
+        "last_full_reconciliation_at": "2026-11-15T22:52:38.162717Z",
+        "last_full_reconciliation_snapshot_id": "fda-snapshot-20261115T225135Z-f18be2d125e5",
+        "last_success_sync_at": "2026-11-15T22:52:38.153527Z",
+        "last_sync_attempt_at": "2026-11-15T22:51:16.797785Z",
+        "last_sync_error": null,
+        "note": "Recall records expose event_date_posted; that is a publication date, not a record revision timestamp.",
+        "official_last_updated": "2026-11-12",
+        "official_total": 59705,
+        "reconciliation_mode": "VERSION_TRIGGERED",
+        "source_id": "openfda_recall",
+        "sync_status": "UNCHANGED"
+      }
+    }
+  },
+  "change_counts": {},
+  "incidents": [],
+  "pipeline_version": "medradar-data-pipeline/2.0.0",
+  "public": {
+    "change_counts": {},
+    "change_feed": [],
+    "configured": true,
+    "health": {
+      "data": {
+        "snapshot_id": null,
+        "state": "unavailable",
+        "using_fallback": false
+      },
+      "freshness": {
+        "failed_sources": [
+          "openfda_510k"
+        ],
+        "latest_official_version": "2026-11-12",
+        "note": "Official version age is not staleness by itself: FDA publishes monthly/weekly. A pending update or a failed check is what can make synchronization stale.",
+        "official_version_age_days": 3,
+        "pending_sources": [],
+        "snapshot_age_days": null,
+        "state": "degraded"
+      },
+      "sync": {
+        "failed_sources": [
+          "openfda_510k"
+        ],
+        "last_check_at": "2026-11-15T23:09:17.965967Z",
+        "last_successful_sync_at": "2026-11-15T23:00:36.932282Z",
+        "latest_incident": null,
+        "latest_run_id": "run_60b8033b3667433a8ab756f811d6f130",
+        "latest_run_status": "SUCCEEDED",
+        "note": "A web process being alive is not a successful synchronization; this is the sync-specific state.",
+        "pending_sources": [],
+        "state": "degraded",
+        "unknown_sources": []
+      }
+    },
+    "incidents": [],
+    "latency": {
+      "last_checked_by_medradar": "2026-11-15T23:09:17.965967Z",
+      "last_successful_sync": "2026-11-15T23:02:31.169853Z",
+      "official_source_version": null,
+      "statement": "Official version dates are endpoint-level source markers. MedRadar checks them on a schedule, then publishes only after a complete scoped collection and validation. A record's regulatory event date is never replaced by either time.",
+      "sync_lag_hours": 95.04
+    },
+    "message": "At least one source check or synchronization failed. The previous snapshot remains active for the affected source.",
+    "recent_runs": [
+      {
+        "active_before": "fda-snapshot-20261115T225602Z-0a543693f698",
+        "candidate_after": "fda-snapshot-20261115T225953Z-5c8e966d8182",
+        "counts": {
+          "changes": {
+            "added": 0,
+            "changed_sources": [
+              "openfda_pma"
+            ],
+            "deferred_sources": [],
+            "failed_sources": [],
+            "first_reconciliation": false,
+            "full_reconciliation_sources": [
+              "openfda_pma"
+            ],
+            "missing_on_recheck": 0,
+            "missing_retained": 0,
+            "partial": false,
+            "rebaselined": 0,
+            "records_seen": 38232,
+            "removed_confirmed": 0,
+            "scope_changed": false,
+            "successful_sources": [
+              "openfda_classification",
+              "openfda_pma"
+            ],
+            "unchanged": 38232,
+            "unresolved": 0,
+            "updated": 0
+          },
+          "records": 91457,
+          "requests": 241,
+          "response_bytes": 1236019586
+        },
+        "error": null,
+        "finished_at": "2026-11-15T23:00:36.939890Z",
+        "metrics": {
+          "failed_sources": [],
+          "inserted_changes": 0,
+          "post_publication_warning": null,
+          "validation": {
+            "checks": {
+              "device_index": {
+                "applications": 61632,
+                "devices": 23974,
+                "families": 630,
+                "relations": 77823,
+                "stats": {
+                  "applications": 61632,
+                  "applications_by_kind": {
+                    "510k": 23400,
+                    "pma": 574,
+                    "pma_supplement": 37658
+                  },
+                  "candidate_device_clusters": 1139,
+                  "candidate_recall_relations": 20227,
+                  "devices": 23974,
+                  "families": 630,
+                  "families_without_original": 56,
+                  "not_modelled": {
+                    "application_references_predicate": "openFDA exposes no predicate identifier for 510(k) submissions, and the 510(k) summary documents were not collected. A predicate relation cannot be established from this data, so it is not invented.",
+                    "manufacturer_of_device": "the applicant field is a record claim, not proof of current manufacture. It is shown as the applicant, with its PRODUCT-002 attribution status, rather than modelled as a device relation.",
+                    "record_mentions_device": "every application record names a device by definition; emitting a relation for it would be tautological. The device name is shown on the record and on the device page instead."
+                  },
+                  "recalls": 29825,
+                  "recalls_with_confirmed_application": 15022,
+                  "recalls_with_external_reference_only": 6227,
+                  "recalls_without_any_reference": 8576,
+                  "relation_types": {
+                    "application_has_supplement": "confirmed",
+                    "candidate_recall_application": "candidate",
+                    "candidate_same_device": "candidate",
+                    "device_has_version": "confirmed",
+                    "recall_references_application": "confirmed"
+                  }
+                }
+              },
+              "errors": 0,
+              "files_parsed": true,
+              "first_observed_range": {
+                "max": "2026-11-14T22:09:22.451315Z",
+                "min": "2026-11-14T22:09:22.451315Z"
+              },
+              "manifest_present": true,
+              "product_dataset": {
+                "events": 91457,
+                "global_records": 91384,
+                "organizations": 59,
+                "snapshot_id": "fda-snapshot-20261115T225953Z-5c8e966d8182"
+              },
+              "review_db_unchanged": true,
+              "unique_event_ids": 91457,
+              "unique_official_identities": 91457,
+              "unknown_source_versions": []
+            },
+            "errors": [],
+            "metrics": {
+              "by_source": {
+                "openfda_510k": 23400,
+                "openfda_pma": 38232,
+                "openfda_recall": 29825
+              },
+              "by_type": {
+                "510k": 23400,
+                "pma": 574,
+                "pma_supplement": 37658,
+                "recall": 29825
+              },
+              "pma_supplements_with_untracked_parent": 620,
+              "previous_records": 91457,
+              "record_drop_ratio": 0.0,
+              "records": 91457
+            },
+            "ok": true
+          }
+        },
+        "requested_sources": [
+          "openfda_pma"
+        ],
+        "run_id": "run_60b8033b3667433a8ab756f811d6f130",
+        "started_at": "2026-11-15T22:57:26.046580Z",
+        "status": "SUCCEEDED"
+      },
+      {
+        "active_before": "fda-snapshot-20261115T225311Z-0a543693f698",
+        "candidate_after": "fda-snapshot-20261115T225602Z-0a543693f698",
+        "counts": {
+          "changes": {
+            "added": 0,
+            "changed_sources": [],
+            "deferred_sources": [],
+            "failed_sources": [],
+            "first_reconciliation": false,
+            "full_reconciliation_sources": [],
+            "missing_on_recheck": 0,
+            "missing_retained": 0,
+            "partial": false,
+            "rebaselined": 0,
+            "records_seen": 0,
+            "removed_confirmed": 0,
+            "scope_changed": false,
+            "successful_sources": [
+              "openfda_classification"
+            ],
+            "unchanged": 0,
+            "unresolved": 0,
+            "updated": 0
+          },
+          "records": 91457,
+          "requests": 241,
+          "response_bytes": 1236019586
+        },
+        "error": null,
+        "finished_at": "2026-11-15T22:56:44.848075Z",
+        "metrics": {
+          "failed_sources": [],
+          "inserted_changes": 0,
+          "post_publication_warning": null,
+          "validation": {
+            "checks": {
+              "device_index": {
+                "applications": 61632,
+                "devices": 23974,
+                "families": 630,
+                "relations": 77823,
+                "stats": {
+                  "applications": 61632,
+                  "applications_by_kind": {
+                    "510k": 23400,
+                    "pma": 574,
+                    "pma_supplement": 37658
+                  },
+                  "candidate_device_clusters": 1139,
+                  "candidate_recall_relations": 20227,
+                  "devices": 23974,
+                  "families": 630,
+                  "families_without_original": 56,
+                  "not_modelled": {
+                    "application_references_predicate": "openFDA exposes no predicate identifier for 510(k) submissions, and the 510(k) summary documents were not collected. A predicate relation cannot be established from this data, so it is not invented.",
+                    "manufacturer_of_device": "the applicant field is a record claim, not proof of current manufacture. It is shown as the applicant, with its PRODUCT-002 attribution status, rather than modelled as a device relation.",
+                    "record_mentions_device": "every application record names a device by definition; emitting a relation for it would be tautological. The device name is shown on the record and on the device page instead."
+                  },
+                  "recalls": 29825,
+                  "recalls_with_confirmed_application": 15022,
+                  "recalls_with_external_reference_only": 6227,
+                  "recalls_without_any_reference": 8576,
+                  "relation_types": {
+                    "application_has_supplement": "confirmed",
+                    "candidate_recall_application": "candidate",
+                    "candidate_same_device": "candidate",
+                    "device_has_version": "confirmed",
+                    "recall_references_application": "confirmed"
+                  }
+                }
+              },
+              "errors": 0,
+              "files_parsed": true,
+              "first_observed_range": {
+                "max": "2026-11-14T22:09:22.451315Z",
+                "min": "2026-11-14T22:09:22.451315Z"
+              },
+              "manifest_present": true,
+              "product_dataset": {
+                "events": 91457,
+                "global_records": 91384,
+                "organizations": 59,
+                "snapshot_id": "fda-snapshot-20261115T225602Z-0a543693f698"
+              },
+              "review_db_unchanged": true,
+              "unique_event_ids": 91457,
+              "unique_official_identities": 91457,
+              "unknown_source_versions": []
+            },
+            "errors": [],
+            "metrics": {
+              "by_source": {
+                "openfda_510k": 23400,
+                "openfda_pma": 38232,
+                "openfda_recall": 29825
+              },
+              "by_type": {
+                "510k": 23400,
+                "pma": 574,
+                "pma_supplement": 37658,
+                "recall": 29825
+              },
+              "pma_supplements_with_untracked_parent": 620,
+              "previous_records": 91457,
+              "record_drop_ratio": 0.0,
+              "records": 91457
+            },
+            "ok": true
+          }
+        },
+        "requested_sources": [
+          "openfda_classification"
+        ],
+        "run_id": "run_c474d1bb2d694524985364cd7baa037d",
+        "started_at": "2026-11-15T22:55:47.268910Z",
+        "status": "SUCCEEDED"
+      },
+      {
+        "active_before": "fda-snapshot-20261115T225135Z-f18be2d125e5",
+        "candidate_after": "fda-snapshot-20261115T225311Z-0a543693f698",
+        "counts": {
+          "changes": {
+            "added": 0,
+            "changed_sources": [],
+            "failed_sources": [],
+            "first_reconciliation": false,
+            "full_reconciliation_sources": [],
+            "missing_on_recheck": 0,
+            "missing_retained": 0,
+            "partial": false,
+            "rebaselined": 0,
+            "records_seen": 0,
+            "removed_confirmed": 0,
+            "scope_changed": false,
+            "successful_sources": [
+              "openfda_classification"
+            ],
+            "unchanged": 0,
+            "unresolved": 0,
+            "updated": 0
+          },
+          "records": 91457,
+          "requests": 241,
+          "response_bytes": 1236019586
+        },
+        "error": null,
+        "finished_at": "2026-11-15T22:53:53.261317Z",
+        "metrics": {
+          "failed_sources": [],
+          "inserted_changes": 0,
+          "post_publication_warning": null,
+          "validation": {
+            "checks": {
+              "device_index": {
+                "applications": 61632,
+                "devices": 23974,
+                "families": 630,
+                "relations": 77823,
+                "stats": {
+                  "applications": 61632,
+                  "applications_by_kind": {
+                    "510k": 23400,
+                    "pma": 574,
+                    "pma_supplement": 37658
+                  },
+                  "candidate_device_clusters": 1139,
+                  "candidate_recall_relations": 20227,
+                  "devices": 23974,
+                  "families": 630,
+                  "families_without_original": 56,
+                  "not_modelled": {
+                    "application_references_predicate": "openFDA exposes no predicate identifier for 510(k) submissions, and the 510(k) summary documents were not collected. A predicate relation cannot be established from this data, so it is not invented.",
+                    "manufacturer_of_device": "the applicant field is a record claim, not proof of current manufacture. It is shown as the applicant, with its PRODUCT-002 attribution status, rather than modelled as a device relation.",
+                    "record_mentions_device": "every application record names a device by definition; emitting a relation for it would be tautological. The device name is shown on the record and on the device page instead."
+                  },
+                  "recalls": 29825,
+                  "recalls_with_confirmed_application": 15022,
+                  "recalls_with_external_reference_only": 6227,
+                  "recalls_without_any_reference": 8576,
+                  "relation_types": {
+                    "application_has_supplement": "confirmed",
+                    "candidate_recall_application": "candidate",
+                    "candidate_same_device": "candidate",
+                    "device_has_version": "confirmed",
+                    "recall_references_application": "confirmed"
+                  }
+                }
+              },
+              "errors": 0,
+              "files_parsed": true,
+              "first_observed_range": {
+                "max": "2026-11-14T22:09:22.451315Z",
+                "min": "2026-11-14T22:09:22.451315Z"
+              },
+              "manifest_present": true,
+              "product_dataset": {
+                "events": 91457,
+                "global_records": 91384,
+                "organizations": 59,
+                "snapshot_id": "fda-snapshot-20261115T225311Z-0a543693f698"
+              },
+              "review_db_unchanged": true,
+              "unique_event_ids": 91457,
+              "unique_official_identities": 91457,
+              "unknown_source_versions": []
+            },
+            "errors": [],
+            "metrics": {
+              "by_source": {
+                "openfda_510k": 23400,
+                "openfda_pma": 38232,
+                "openfda_recall": 29825
+              },
+              "by_type": {
+                "510k": 23400,
+                "pma": 574,
+                "pma_supplement": 37658,
+                "recall": 29825
+              },
+              "pma_supplements_with_untracked_parent": 620,
+              "previous_records": 91457,
+              "record_drop_ratio": 0.0,
+              "records": 91457
+            },
+            "ok": true
+          }
+        },
+        "requested_sources": [
+          "openfda_classification"
+        ],
+        "run_id": "run_9dc08bcae016421f8fbf1912794e163a",
+        "started_at": "2026-11-15T22:52:54.814824Z",
+        "status": "SUCCEEDED"
+      },
+      {
+        "active_before": "fda-snapshot-20261115T224314Z-744af6744386",
+        "candidate_after": "fda-snapshot-20261115T225135Z-f18be2d125e5",
+        "counts": {
+          "changes": {
+            "added": 0,
+            "changed_sources": [
+              "openfda_510k",
+              "openfda_pma",
+              "openfda_recall"
+            ],
+            "failed_sources": [],
+            "first_reconciliation": true,
+            "full_reconciliation_sources": [],
+            "missing_on_recheck": 0,
+            "missing_retained": 0,
+            "partial": false,
+            "rebaselined": 91457,
+            "records_seen": 91457,
+            "removed_confirmed": 0,
+            "scope_changed": false,
+            "successful_sources": [
+              "openfda_510k",
+              "openfda_classification",
+              "openfda_pma",
+              "openfda_recall"
+            ],
+            "unchanged": 91457,
+            "unresolved": 0,
+            "updated": 0
+          },
+          "records": 91457,
+          "requests": 241,
+          "response_bytes": 1236019586
+        },
+        "error": null,
+        "finished_at": "2026-11-15T22:52:38.174838Z",
+        "metrics": {
+          "failed_sources": [],
+          "inserted_changes": 0,
+          "post_publication_warning": null,
+          "validation": {
+            "checks": {
+              "device_index": {
+                "applications": 61632,
+                "devices": 23974,
+                "families": 630,
+                "relations": 77823,
+                "stats": {
+                  "applications": 61632,
+                  "applications_by_kind": {
+                    "510k": 23400,
+                    "pma": 574,
+                    "pma_supplement": 37658
+                  },
+                  "candidate_device_clusters": 1139,
+                  "candidate_recall_relations": 20227,
+                  "devices": 23974,
+                  "families": 630,
+                  "families_without_original": 56,
+                  "not_modelled": {
+                    "application_references_predicate": "openFDA exposes no predicate identifier for 510(k) submissions, and the 510(k) summary documents were not collected. A predicate relation cannot be established from this data, so it is not invented.",
+                    "manufacturer_of_device": "the applicant field is a record claim, not proof of current manufacture. It is shown as the applicant, with its PRODUCT-002 attribution status, rather than modelled as a device relation.",
+                    "record_mentions_device": "every application record names a device by definition; emitting a relation for it would be tautological. The device name is shown on the record and on the device page instead."
+                  },
+                  "recalls": 29825,
+                  "recalls_with_confirmed_application": 15022,
+                  "recalls_with_external_reference_only": 6227,
+                  "recalls_without_any_reference": 8576,
+                  "relation_types": {
+                    "application_has_supplement": "confirmed",
+                    "candidate_recall_application": "candidate",
+                    "candidate_same_device": "candidate",
+                    "device_has_version": "confirmed",
+                    "recall_references_application": "confirmed"
+                  }
+                }
+              },
+              "errors": 0,
+              "files_parsed": true,
+              "first_observed_range": {
+                "max": "2026-11-14T22:09:22.451315Z",
+                "min": "2026-11-14T22:09:22.451315Z"
+              },
+              "manifest_present": true,
+              "product_dataset": {
+                "events": 91457,
+                "global_records": 91384,
+                "organizations": 59,
+                "snapshot_id": "fda-snapshot-20261115T225135Z-f18be2d125e5"
+              },
+              "review_db_unchanged": true,
+              "unique_event_ids": 91457,
+              "unique_official_identities": 91457,
+              "unknown_source_versions": []
+            },
+            "errors": [],
+            "metrics": {
+              "by_source": {
+                "openfda_510k": 23400,
+                "openfda_pma": 38232,
+                "openfda_recall": 29825
+              },
+              "by_type": {
+                "510k": 23400,
+                "pma": 574,
+                "pma_supplement": 37658,
+                "recall": 29825
+              },
+              "pma_supplements_with_untracked_parent": 620,
+              "previous_records": 91457,
+              "record_drop_ratio": 0.0,
+              "records": 91457
+            },
+            "ok": true
+          }
+        },
+        "requested_sources": [
+          "openfda_510k",
+          "openfda_pma",
+          "openfda_recall"
+        ],
+        "run_id": "run_ab0ff684ef8b4168993f9c282ccc6913",
+        "started_at": "2026-11-15T22:44:08.846512Z",
+        "status": "SUCCEEDED"
+      }
+    ],
+    "request_usage_today": {
+      "by_source": {
+        "openfda_510k": 69,
+        "openfda_classification": 34,
+        "openfda_pma": 181,
+        "openfda_recall": 78
+      },
+      "day": "2026-11-15",
+      "response_bytes": 1400571669,
+      "total_requests": 362
+    },
+    "schema": "medradar.data_status.v1",
+    "snapshot": null,
+    "sources": [
+      {
+        "added_since_previous": 0,
+        "check_interval_hours": 24,
+        "consecutive_failures": 1,
+        "declared_frequency": "Monthly (openFDA declared)",
+        "endpoint": "/device/510k.json",
+        "freshness_age_days": 13,
+        "freshness_basis": "official endpoint version (not per-record revision time)",
+        "is_support_source": false,
+        "last_checked_at": "2026-11-15T23:09:17.965967Z",
+        "last_failed_at": "2026-11-15T23:09:17.965967Z",
+        "last_full_reconciliation_at": "2026-11-15T22:52:38.124441Z",
+        "last_full_reconciliation_snapshot_id": "fda-snapshot-20261115T225135Z-f18be2d125e5",
+        "last_success_check_at": "2026-11-15T22:44:06.188348Z",
+        "last_success_sync_at": "2026-11-15T22:52:38.117206Z",
+        "message": "source check failed 1 consecutive time(s): openFDA network failure for source probe openfda_510k",
+        "missing_on_recheck_since_previous": 0,
+        "note": "OpenFDA exposes no publication timestamp for individual 510(k) records.",
+        "official_last_updated": "2026-11-02",
+        "official_total": 176625,
+        "reconciliation_mode": null,
+        "record_count": 0,
+        "removed_confirmed_since_previous": 0,
+        "source_id": "openfda_510k",
+        "source_name": "FDA 510(k) premarket notifications",
+        "status": "CHECK_FAILED",
+        "sync_status": null,
+        "unresolved_since_previous": 0,
+        "update_available": false,
+        "updated_since_previous": 0
+      },
+      {
+        "added_since_previous": 0,
+        "check_interval_hours": 24,
+        "consecutive_failures": 0,
+        "declared_frequency": "Monthly (openFDA declared)",
+        "endpoint": "/device/pma.json",
+        "freshness_age_days": 13,
+        "freshness_basis": "official endpoint version (not per-record revision time)",
+        "is_support_source": false,
+        "last_checked_at": "2026-11-15T22:44:06.489427Z",
+        "last_failed_at": null,
+        "last_full_reconciliation_at": "2026-11-15T23:00:36.924815Z",
+        "last_full_reconciliation_snapshot_id": "fda-snapshot-20261115T225953Z-5c8e966d8182",
+        "last_success_check_at": "2026-11-15T22:44:06.489427Z",
+        "last_success_sync_at": "2026-11-15T23:00:36.916110Z",
+        "message": "official version reconciled and published",
+        "missing_on_recheck_since_previous": 0,
+        "note": "PMA originals and supplements share one official endpoint and one official update version.",
+        "official_last_updated": "2026-11-02",
+        "official_total": 57487,
+        "reconciliation_mode": null,
+        "record_count": 0,
+        "removed_confirmed_since_previous": 0,
+        "source_id": "openfda_pma",
+        "source_name": "FDA PMA approvals and supplements",
+        "status": "NO_CHANGE",
+        "sync_status": null,
+        "unresolved_since_previous": 0,
+        "update_available": false,
+        "updated_since_previous": 0
+      },
+      {
+        "added_since_previous": 0,
+        "check_interval_hours": 6,
+        "consecutive_failures": 0,
+        "declared_frequency": "Weekly (openFDA declared)",
+        "endpoint": "/device/recall.json",
+        "freshness_age_days": 3,
+        "freshness_basis": "official endpoint version (not per-record revision time)",
+        "is_support_source": false,
+        "last_checked_at": "2026-11-15T22:44:07.665413Z",
+        "last_failed_at": null,
+        "last_full_reconciliation_at": "2026-11-15T22:52:38.162717Z",
+        "last_full_reconciliation_snapshot_id": "fda-snapshot-20261115T225135Z-f18be2d125e5",
+        "last_success_check_at": "2026-11-15T22:44:07.665413Z",
+        "last_success_sync_at": "2026-11-15T22:52:38.153527Z",
+        "message": "official version reconciled and published",
+        "missing_on_recheck_since_previous": 0,
+        "note": "Recall records expose event_date_posted; that is a publication date, not a record revision timestamp.",
+        "official_last_updated": "2026-11-12",
+        "official_total": 59705,
+        "reconciliation_mode": null,
+        "record_count": 0,
+        "removed_confirmed_since_previous": 0,
+        "source_id": "openfda_recall",
+        "source_name": "FDA device recall records",
+        "status": "NO_CHANGE",
+        "sync_status": null,
+        "unresolved_since_previous": 0,
+        "update_available": false,
+        "updated_since_previous": 0
+      },
+      {
+        "added_since_previous": 0,
+        "check_interval_hours": 24,
+        "consecutive_failures": 0,
+        "declared_frequency": "Monthly (openFDA declared)",
+        "endpoint": "/device/classification.json",
+        "freshness_age_days": 13,
+        "freshness_basis": "official endpoint version (not per-record revision time)",
+        "is_support_source": true,
+        "last_checked_at": "2026-11-15T22:55:46.995053Z",
+        "last_failed_at": null,
+        "last_full_reconciliation_at": null,
+        "last_full_reconciliation_snapshot_id": null,
+        "last_success_check_at": "2026-11-15T22:55:46.995053Z",
+        "last_success_sync_at": "2026-11-15T23:00:36.932282Z",
+        "message": "official version reconciled and published",
+        "missing_on_recheck_since_previous": 0,
+        "note": "Supporting product-code dictionary; it does not create product events.",
+        "official_last_updated": "2026-11-02",
+        "official_total": 7098,
+        "reconciliation_mode": null,
+        "record_count": 0,
+        "removed_confirmed_since_previous": 0,
+        "source_id": "openfda_classification",
+        "source_name": "FDA device classification dictionary",
+        "status": "NO_CHANGE",
+        "sync_status": null,
+        "unresolved_since_previous": 0,
+        "update_available": false,
+        "updated_since_previous": 0
+      }
+    ],
+    "state": "degraded",
+    "synchronization": {
+      "action": "rollback",
+      "active_snapshot_id": null,
+      "actor": "operator",
+      "change_feed_available": true,
+      "last_check_attempt": "2026-11-15T23:09:17.965967Z",
+      "last_successful_sync": "2026-11-15T23:02:31.169853Z",
+      "state": "degraded",
+      "updated_sources": []
+    },
+    "terminology": {
+      "automatically_synchronized": true,
+      "continuously_monitored": true,
+      "labels": [
+        "Continuously Monitored",
+        "Automatically Synchronized",
+        "Last Successful Sync",
+        "Source Freshness",
+        "Data Snapshot"
+      ],
+      "real_time_claim": false
+    }
+  },
+  "recent_runs": [
+    {
+      "active_before": "fda-snapshot-20261115T225602Z-0a543693f698",
+      "candidate_after": "fda-snapshot-20261115T225953Z-5c8e966d8182",
+      "counts": {
+        "changes": {
+          "added": 0,
+          "changed_sources": [
+            "openfda_pma"
+          ],
+          "deferred_sources": [],
+          "failed_sources": [],
+          "first_reconciliation": false,
+          "full_reconciliation_sources": [
+            "openfda_pma"
+          ],
+          "missing_on_recheck": 0,
+          "missing_retained": 0,
+          "partial": false,
+          "rebaselined": 0,
+          "records_seen": 38232,
+          "removed_confirmed": 0,
+          "scope_changed": false,
+          "successful_sources": [
+            "openfda_classification",
+            "openfda_pma"
+          ],
+          "unchanged": 38232,
+          "unresolved": 0,
+          "updated": 0
+        },
+        "records": 91457,
+        "requests": 241,
+        "response_bytes": 1236019586
+      },
+      "error": null,
+      "finished_at": "2026-11-15T23:00:36.939890Z",
+      "metrics": {
+        "failed_sources": [],
+        "inserted_changes": 0,
+        "post_publication_warning": null,
+        "validation": {
+          "checks": {
+            "device_index": {
+              "applications": 61632,
+              "devices": 23974,
+              "families": 630,
+              "relations": 77823,
+              "stats": {
+                "applications": 61632,
+                "applications_by_kind": {
+                  "510k": 23400,
+                  "pma": 574,
+                  "pma_supplement": 37658
+                },
+                "candidate_device_clusters": 1139,
+                "candidate_recall_relations": 20227,
+                "devices": 23974,
+                "families": 630,
+                "families_without_original": 56,
+                "not_modelled": {
+                  "application_references_predicate": "openFDA exposes no predicate identifier for 510(k) submissions, and the 510(k) summary documents were not collected. A predicate relation cannot be established from this data, so it is not invented.",
+                  "manufacturer_of_device": "the applicant field is a record claim, not proof of current manufacture. It is shown as the applicant, with its PRODUCT-002 attribution status, rather than modelled as a device relation.",
+                  "record_mentions_device": "every application record names a device by definition; emitting a relation for it would be tautological. The device name is shown on the record and on the device page instead."
+                },
+                "recalls": 29825,
+                "recalls_with_confirmed_application": 15022,
+                "recalls_with_external_reference_only": 6227,
+                "recalls_without_any_reference": 8576,
+                "relation_types": {
+                  "application_has_supplement": "confirmed",
+                  "candidate_recall_application": "candidate",
+                  "candidate_same_device": "candidate",
+                  "device_has_version": "confirmed",
+                  "recall_references_application": "confirmed"
+                }
+              }
+            },
+            "errors": 0,
+            "files_parsed": true,
+            "first_observed_range": {
+              "max": "2026-11-14T22:09:22.451315Z",
+              "min": "2026-11-14T22:09:22.451315Z"
+            },
+            "manifest_present": true,
+            "product_dataset": {
+              "events": 91457,
+              "global_records": 91384,
+              "organizations": 59,
+              "snapshot_id": "fda-snapshot-20261115T225953Z-5c8e966d8182"
+            },
+            "review_db_unchanged": true,
+            "unique_event_ids": 91457,
+            "unique_official_identities": 91457,
+            "unknown_source_versions": []
+          },
+          "errors": [],
+          "metrics": {
+            "by_source": {
+              "openfda_510k": 23400,
+              "openfda_pma": 38232,
+              "openfda_recall": 29825
+            },
+            "by_type": {
+              "510k": 23400,
+              "pma": 574,
+              "pma_supplement": 37658,
+              "recall": 29825
+            },
+            "pma_supplements_with_untracked_parent": 620,
+            "previous_records": 91457,
+            "record_drop_ratio": 0.0,
+            "records": 91457
+          },
+          "ok": true
+        }
+      },
+      "requested_sources": [
+        "openfda_pma"
+      ],
+      "run_id": "run_60b8033b3667433a8ab756f811d6f130",
+      "started_at": "2026-11-15T22:57:26.046580Z",
+      "status": "SUCCEEDED"
+    },
+    {
+      "active_before": "fda-snapshot-20261115T225311Z-0a543693f698",
+      "candidate_after": "fda-snapshot-20261115T225602Z-0a543693f698",
+      "counts": {
+        "changes": {
+          "added": 0,
+          "changed_sources": [],
+          "deferred_sources": [],
+          "failed_sources": [],
+          "first_reconciliation": false,
+          "full_reconciliation_sources": [],
+          "missing_on_recheck": 0,
+          "missing_retained": 0,
+          "partial": false,
+          "rebaselined": 0,
+          "records_seen": 0,
+          "removed_confirmed": 0,
+          "scope_changed": false,
+          "successful_sources": [
+            "openfda_classification"
+          ],
+          "unchanged": 0,
+          "unresolved": 0,
+          "updated": 0
+        },
+        "records": 91457,
+        "requests": 241,
+        "response_bytes": 1236019586
+      },
+      "error": null,
+      "finished_at": "2026-11-15T22:56:44.848075Z",
+      "metrics": {
+        "failed_sources": [],
+        "inserted_changes": 0,
+        "post_publication_warning": null,
+        "validation": {
+          "checks": {
+            "device_index": {
+              "applications": 61632,
+              "devices": 23974,
+              "families": 630,
+              "relations": 77823,
+              "stats": {
+                "applications": 61632,
+                "applications_by_kind": {
+                  "510k": 23400,
+                  "pma": 574,
+                  "pma_supplement": 37658
+                },
+                "candidate_device_clusters": 1139,
+                "candidate_recall_relations": 20227,
+                "devices": 23974,
+                "families": 630,
+                "families_without_original": 56,
+                "not_modelled": {
+                  "application_references_predicate": "openFDA exposes no predicate identifier for 510(k) submissions, and the 510(k) summary documents were not collected. A predicate relation cannot be established from this data, so it is not invented.",
+                  "manufacturer_of_device": "the applicant field is a record claim, not proof of current manufacture. It is shown as the applicant, with its PRODUCT-002 attribution status, rather than modelled as a device relation.",
+                  "record_mentions_device": "every application record names a device by definition; emitting a relation for it would be tautological. The device name is shown on the record and on the device page instead."
+                },
+                "recalls": 29825,
+                "recalls_with_confirmed_application": 15022,
+                "recalls_with_external_reference_only": 6227,
+                "recalls_without_any_reference": 8576,
+                "relation_types": {
+                  "application_has_supplement": "confirmed",
+                  "candidate_recall_application": "candidate",
+                  "candidate_same_device": "candidate",
+                  "device_has_version": "confirmed",
+                  "recall_references_application": "confirmed"
+                }
+              }
+            },
+            "errors": 0,
+            "files_parsed": true,
+            "first_observed_range": {
+              "max": "2026-11-14T22:09:22.451315Z",
+              "min": "2026-11-14T22:09:22.451315Z"
+            },
+            "manifest_present": true,
+            "product_dataset": {
+              "events": 91457,
+              "global_records": 91384,
+              "organizations": 59,
+              "snapshot_id": "fda-snapshot-20261115T225602Z-0a543693f698"
+            },
+            "review_db_unchanged": true,
+            "unique_event_ids": 91457,
+            "unique_official_identities": 91457,
+            "unknown_source_versions": []
+          },
+          "errors": [],
+          "metrics": {
+            "by_source": {
+              "openfda_510k": 23400,
+              "openfda_pma": 38232,
+              "openfda_recall": 29825
+            },
+            "by_type": {
+              "510k": 23400,
+              "pma": 574,
+              "pma_supplement": 37658,
+              "recall": 29825
+            },
+            "pma_supplements_with_untracked_parent": 620,
+            "previous_records": 91457,
+            "record_drop_ratio": 0.0,
+            "records": 91457
+          },
+          "ok": true
+        }
+      },
+      "requested_sources": [
+        "openfda_classification"
+      ],
+      "run_id": "run_c474d1bb2d694524985364cd7baa037d",
+      "started_at": "2026-11-15T22:55:47.268910Z",
+      "status": "SUCCEEDED"
+    },
+    {
+      "active_before": "fda-snapshot-20261115T225135Z-f18be2d125e5",
+      "candidate_after": "fda-snapshot-20261115T225311Z-0a543693f698",
+      "counts": {
+        "changes": {
+          "added": 0,
+          "changed_sources": [],
+          "failed_sources": [],
+          "first_reconciliation": false,
+          "full_reconciliation_sources": [],
+          "missing_on_recheck": 0,
+          "missing_retained": 0,
+          "partial": false,
+          "rebaselined": 0,
+          "records_seen": 0,
+          "removed_confirmed": 0,
+          "scope_changed": false,
+          "successful_sources": [
+            "openfda_classification"
+          ],
+          "unchanged": 0,
+          "unresolved": 0,
+          "updated": 0
+        },
+        "records": 91457,
+        "requests": 241,
+        "response_bytes": 1236019586
+      },
+      "error": null,
+      "finished_at": "2026-11-15T22:53:53.261317Z",
+      "metrics": {
+        "failed_sources": [],
+        "inserted_changes": 0,
+        "post_publication_warning": null,
+        "validation": {
+          "checks": {
+            "device_index": {
+              "applications": 61632,
+              "devices": 23974,
+              "families": 630,
+              "relations": 77823,
+              "stats": {
+                "applications": 61632,
+                "applications_by_kind": {
+                  "510k": 23400,
+                  "pma": 574,
+                  "pma_supplement": 37658
+                },
+                "candidate_device_clusters": 1139,
+                "candidate_recall_relations": 20227,
+                "devices": 23974,
+                "families": 630,
+                "families_without_original": 56,
+                "not_modelled": {
+                  "application_references_predicate": "openFDA exposes no predicate identifier for 510(k) submissions, and the 510(k) summary documents were not collected. A predicate relation cannot be established from this data, so it is not invented.",
+                  "manufacturer_of_device": "the applicant field is a record claim, not proof of current manufacture. It is shown as the applicant, with its PRODUCT-002 attribution status, rather than modelled as a device relation.",
+                  "record_mentions_device": "every application record names a device by definition; emitting a relation for it would be tautological. The device name is shown on the record and on the device page instead."
+                },
+                "recalls": 29825,
+                "recalls_with_confirmed_application": 15022,
+                "recalls_with_external_reference_only": 6227,
+                "recalls_without_any_reference": 8576,
+                "relation_types": {
+                  "application_has_supplement": "confirmed",
+                  "candidate_recall_application": "candidate",
+                  "candidate_same_device": "candidate",
+                  "device_has_version": "confirmed",
+                  "recall_references_application": "confirmed"
+                }
+              }
+            },
+            "errors": 0,
+            "files_parsed": true,
+            "first_observed_range": {
+              "max": "2026-11-14T22:09:22.451315Z",
+              "min": "2026-11-14T22:09:22.451315Z"
+            },
+            "manifest_present": true,
+            "product_dataset": {
+              "events": 91457,
+              "global_records": 91384,
+              "organizations": 59,
+              "snapshot_id": "fda-snapshot-20261115T225311Z-0a543693f698"
+            },
+            "review_db_unchanged": true,
+            "unique_event_ids": 91457,
+            "unique_official_identities": 91457,
+            "unknown_source_versions": []
+          },
+          "errors": [],
+          "metrics": {
+            "by_source": {
+              "openfda_510k": 23400,
+              "openfda_pma": 38232,
+              "openfda_recall": 29825
+            },
+            "by_type": {
+              "510k": 23400,
+              "pma": 574,
+              "pma_supplement": 37658,
+              "recall": 29825
+            },
+            "pma_supplements_with_untracked_parent": 620,
+            "previous_records": 91457,
+            "record_drop_ratio": 0.0,
+            "records": 91457
+          },
+          "ok": true
+        }
+      },
+      "requested_sources": [
+        "openfda_classification"
+      ],
+      "run_id": "run_9dc08bcae016421f8fbf1912794e163a",
+      "started_at": "2026-11-15T22:52:54.814824Z",
+      "status": "SUCCEEDED"
+    },
+    {
+      "active_before": "fda-snapshot-20261115T224314Z-744af6744386",
+      "candidate_after": "fda-snapshot-20261115T225135Z-f18be2d125e5",
+      "counts": {
+        "changes": {
+          "added": 0,
+          "changed_sources": [
+            "openfda_510k",
+            "openfda_pma",
+            "openfda_recall"
+          ],
+          "failed_sources": [],
+          "first_reconciliation": true,
+          "full_reconciliation_sources": [],
+          "missing_on_recheck": 0,
+          "missing_retained": 0,
+          "partial": false,
+          "rebaselined": 91457,
+          "records_seen": 91457,
+          "removed_confirmed": 0,
+          "scope_changed": false,
+          "successful_sources": [
+            "openfda_510k",
+            "openfda_classification",
+            "openfda_pma",
+            "openfda_recall"
+          ],
+          "unchanged": 91457,
+          "unresolved": 0,
+          "updated": 0
+        },
+        "records": 91457,
+        "requests": 241,
+        "response_bytes": 1236019586
+      },
+      "error": null,
+      "finished_at": "2026-11-15T22:52:38.174838Z",
+      "metrics": {
+        "failed_sources": [],
+        "inserted_changes": 0,
+        "post_publication_warning": null,
+        "validation": {
+          "checks": {
+            "device_index": {
+              "applications": 61632,
+              "devices": 23974,
+              "families": 630,
+              "relations": 77823,
+              "stats": {
+                "applications": 61632,
+                "applications_by_kind": {
+                  "510k": 23400,
+                  "pma": 574,
+                  "pma_supplement": 37658
+                },
+                "candidate_device_clusters": 1139,
+                "candidate_recall_relations": 20227,
+                "devices": 23974,
+                "families": 630,
+                "families_without_original": 56,
+                "not_modelled": {
+                  "application_references_predicate": "openFDA exposes no predicate identifier for 510(k) submissions, and the 510(k) summary documents were not collected. A predicate relation cannot be established from this data, so it is not invented.",
+                  "manufacturer_of_device": "the applicant field is a record claim, not proof of current manufacture. It is shown as the applicant, with its PRODUCT-002 attribution status, rather than modelled as a device relation.",
+                  "record_mentions_device": "every application record names a device by definition; emitting a relation for it would be tautological. The device name is shown on the record and on the device page instead."
+                },
+                "recalls": 29825,
+                "recalls_with_confirmed_application": 15022,
+                "recalls_with_external_reference_only": 6227,
+                "recalls_without_any_reference": 8576,
+                "relation_types": {
+                  "application_has_supplement": "confirmed",
+                  "candidate_recall_application": "candidate",
+                  "candidate_same_device": "candidate",
+                  "device_has_version": "confirmed",
+                  "recall_references_application": "confirmed"
+                }
+              }
+            },
+            "errors": 0,
+            "files_parsed": true,
+            "first_observed_range": {
+              "max": "2026-11-14T22:09:22.451315Z",
+              "min": "2026-11-14T22:09:22.451315Z"
+            },
+            "manifest_present": true,
+            "product_dataset": {
+              "events": 91457,
+              "global_records": 91384,
+              "organizations": 59,
+              "snapshot_id": "fda-snapshot-20261115T225135Z-f18be2d125e5"
+            },
+            "review_db_unchanged": true,
+            "unique_event_ids": 91457,
+            "unique_official_identities": 91457,
+            "unknown_source_versions": []
+          },
+          "errors": [],
+          "metrics": {
+            "by_source": {
+              "openfda_510k": 23400,
+              "openfda_pma": 38232,
+              "openfda_recall": 29825
+            },
+            "by_type": {
+              "510k": 23400,
+              "pma": 574,
+              "pma_supplement": 37658,
+              "recall": 29825
+            },
+            "pma_supplements_with_untracked_parent": 620,
+            "previous_records": 91457,
+            "record_drop_ratio": 0.0,
+            "records": 91457
+          },
+          "ok": true
+        }
+      },
+      "requested_sources": [
+        "openfda_510k",
+        "openfda_pma",
+        "openfda_recall"
+      ],
+      "run_id": "run_ab0ff684ef8b4168993f9c282ccc6913",
+      "started_at": "2026-11-15T22:44:08.846512Z",
+      "status": "SUCCEEDED"
+    }
+  ],
+  "request_usage_today": {
+    "by_source": {
+      "openfda_510k": 69,
+      "openfda_classification": 34,
+      "openfda_pma": 181,
+      "openfda_recall": 78
+    },
+    "day": "2026-11-15",
+    "response_bytes": 1400571669,
+    "total_requests": 362
+  },
+  "root": "/tmp/data002/fail-state",
+  "sources": [
+    {
+      "active_snapshot_id": "fda-snapshot-20261115T225953Z-5c8e966d8182",
+      "consecutive_failures": 1,
+      "display_name": "FDA 510(k) premarket notifications",
+      "endpoint": "/device/510k.json",
+      "last_check_evidence_json": "{\"attempt\":2,\"checked_at\":\"2026-11-15T23:09:17.965967Z\",\"context\":\"source probe openfda_510k\",\"error\":\"openFDA network failure for source probe openfda_510k\",\"status\":\"network\",\"url\":\"http://127.0.0.1:9/device/510k.json?limit=1\"}",
+      "last_check_http_status": null,
+      "last_check_message": "source check failed 1 consecutive time(s): openFDA network failure for source probe openfda_510k",
+      "last_check_status": "CHECK_FAILED",
+      "last_checked_at": "2026-11-15T23:09:17.965967Z",
+      "last_failed_at": "2026-11-15T23:09:17.965967Z",
+      "last_full_reconciliation_at": "2026-11-15T22:52:38.124441Z",
+      "last_full_reconciliation_snapshot_id": "fda-snapshot-20261115T225135Z-f18be2d125e5",
+      "last_success_check_at": "2026-11-15T22:44:06.188348Z",
+      "last_success_sync_at": "2026-11-15T22:52:38.117206Z",
+      "official_export_date": null,
+      "official_last_updated": "2026-11-02",
+      "official_total": 176625,
+      "source_id": "openfda_510k",
+      "update_available": 0
+    },
+    {
+      "active_snapshot_id": "fda-snapshot-20261115T225953Z-5c8e966d8182",
+      "consecutive_failures": 0,
+      "display_name": "FDA device classification dictionary",
+      "endpoint": "/device/classification.json",
+      "last_check_evidence_json": "{\"baseline_last_updated\":\"2026-11-02\",\"baseline_total\":7098,\"bytes\":3155,\"checked_at\":\"2026-11-15T22:55:46.995053Z\",\"elapsed_ms\":233.26679800084094,\"http_status\":200,\"last_updated\":\"2026-11-02\",\"total\":7098,\"url\":\"https://api.fda.gov/device/classification.json?limit=1\"}",
+      "last_check_http_status": 200,
+      "last_check_message": "official version reconciled and published",
+      "last_check_status": "NO_CHANGE",
+      "last_checked_at": "2026-11-15T22:55:46.995053Z",
+      "last_failed_at": null,
+      "last_full_reconciliation_at": null,
+      "last_full_reconciliation_snapshot_id": null,
+      "last_success_check_at": "2026-11-15T22:55:46.995053Z",
+      "last_success_sync_at": "2026-11-15T23:00:36.932282Z",
+      "official_export_date": null,
+      "official_last_updated": "2026-11-02",
+      "official_total": 7098,
+      "source_id": "openfda_classification",
+      "update_available": 0
+    },
+    {
+      "active_snapshot_id": "fda-snapshot-20261115T225953Z-5c8e966d8182",
+      "consecutive_failures": 0,
+      "display_name": "FDA PMA approvals and supplements",
+      "endpoint": "/device/pma.json",
+      "last_check_evidence_json": "{\"baseline_last_updated\":null,\"baseline_total\":null,\"bytes\":3357,\"checked_at\":\"2026-11-15T22:44:06.489427Z\",\"elapsed_ms\":175.44532000101754,\"http_status\":200,\"last_updated\":\"2026-11-02\",\"total\":57487,\"url\":\"https://api.fda.gov/device/pma.json?limit=1\"}",
+      "last_check_http_status": 200,
+      "last_check_message": "official version reconciled and published",
+      "last_check_status": "NO_CHANGE",
+      "last_checked_at": "2026-11-15T22:44:06.489427Z",
+      "last_failed_at": null,
+      "last_full_reconciliation_at": "2026-11-15T23:00:36.924815Z",
+      "last_full_reconciliation_snapshot_id": "fda-snapshot-20261115T225953Z-5c8e966d8182",
+      "last_success_check_at": "2026-11-15T22:44:06.489427Z",
+      "last_success_sync_at": "2026-11-15T23:00:36.916110Z",
+      "official_export_date": null,
+      "official_last_updated": "2026-11-02",
+      "official_total": 57487,
+      "source_id": "openfda_pma",
+      "update_available": 0
+    },
+    {
+      "active_snapshot_id": "fda-snapshot-20261115T225953Z-5c8e966d8182",
+      "consecutive_failures": 0,
+      "display_name": "FDA device recall records",
+      "endpoint": "/device/recall.json",
+      "last_check_evidence_json": "{\"baseline_last_updated\":null,\"baseline_total\":null,\"bytes\":2079,\"checked_at\":\"2026-11-15T22:44:07.665413Z\",\"elapsed_ms\":180.41898499905074,\"http_status\":200,\"last_updated\":\"2026-11-12\",\"total\":59705,\"url\":\"https://api.fda.gov/device/recall.json?limit=1\"}",
+      "last_check_http_status": 200,
+      "last_check_message": "official version reconciled and published",
+      "last_check_status": "NO_CHANGE",
+      "last_checked_at": "2026-11-15T22:44:07.665413Z",
+      "last_failed_at": null,
+      "last_full_reconciliation_at": "2026-11-15T22:52:38.162717Z",
+      "last_full_reconciliation_snapshot_id": "fda-snapshot-20261115T225135Z-f18be2d125e5",
+      "last_success_check_at": "2026-11-15T22:44:07.665413Z",
+      "last_success_sync_at": "2026-11-15T22:52:38.153527Z",
+      "official_export_date": null,
+      "official_last_updated": "2026-11-12",
+      "official_total": 59705,
+      "source_id": "openfda_recall",
+      "update_available": 0
+    }
+  ]
+}

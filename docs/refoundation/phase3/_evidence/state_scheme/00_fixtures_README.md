@@ -1,4 +1,4 @@
-﻿# Static fixtures used by the state-scheme tests (copies of tests/governance/fixtures/)
+# Static fixtures used by the state-scheme tests (copies of tests/governance/fixtures/)
 
 The state-scheme flake fix replaces the old test seed that copied the **live**
 repository's PROJECT_STATE.yaml and pyproject.toml with these committed static
