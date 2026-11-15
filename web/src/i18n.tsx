@@ -19,6 +19,7 @@ const en = {
   "nav.events": "Regulatory events",
   "nav.compare": "Compare",
   "nav.sources": "Sources & coverage",
+  "nav.dataStatus": "Data status",
   "nav.devices": "Devices",
   "nav.review": "Identity review",
   "nav.primary": "Primary navigation",
@@ -119,6 +120,8 @@ const en = {
   "compare.desc": "Side-by-side regulatory activity over one complete-year window. Coverage differences and counting limits are stated above every comparison.",
   "sources.title": "Sources, coverage and limits",
   "sources.desc": "What this snapshot contains, what it does not, how records were collected and attributed, and which questions this data cannot answer.",
+  "dataStatus.title": "Data synchronization",
+  "dataStatus.desc": "Which FDA sources are monitored, when they were last checked, which official version the active snapshot represents, and what changed at the last publication. Discovery time is never used as a regulatory event date.",
 } as const;
 
 const zh: Record<keyof typeof en, string> = {
@@ -128,6 +131,7 @@ const zh: Record<keyof typeof en, string> = {
   "nav.events": "监管事件",
   "nav.compare": "企业对比",
   "nav.sources": "数据来源与覆盖",
+  "nav.dataStatus": "数据同步",
   "nav.devices": "医疗器械",
   "nav.review": "身份复核",
   "nav.primary": "主导航",
@@ -227,6 +231,8 @@ const zh: Record<keyof typeof en, string> = {
   "compare.desc": "在同一个完整年度窗口内并列比较监管活动。所有对比都会先说明覆盖差异与统计口径。",
   "sources.title": "数据来源、覆盖与限制",
   "sources.desc": "本快照包含什么、不包含什么、记录如何采集与归属，以及这批数据无法回答哪些问题。",
+  "dataStatus.title": "数据同步",
+  "dataStatus.desc": "哪些 FDA 数据源正在被监控、上次检查时间、当前快照对应的官方版本，以及上次发布发现了什么变化。发现时间绝不会被当作监管事件日期。",
 };
 
 type Dict = typeof en;

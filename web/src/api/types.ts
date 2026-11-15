@@ -13,6 +13,9 @@ export interface SnapshotRef {
   id: string;
   collected_at: string;
   openfda_last_updated: string | null;
+  previous_snapshot_id?: string | null;
+  content_hash?: string | null;
+  source_versions?: Record<string, string | null>;
   file_sha256: Record<string, string>;
   note: string;
 }
@@ -109,6 +112,8 @@ export interface EventRecord {
   available_at: string;
   record_updated_at: string | null;
   time_quality: "date_from_source" | "date_derived_from_source" | "unknown";
+  record_state?: "ACTIVE" | "MISSING_ON_RECHECK" | "QUERY_SCOPE_CHANGED" | "UNKNOWN";
+  missing_count?: number;
   organization_key: string | null;
   organization_name: string | null;
   applicant_name: string;
@@ -873,4 +878,119 @@ export interface CompareComparability {
   coverage_symmetric: boolean;
   single_pathway_only: boolean;
   verdict: string;
+}
+
+// ---------------------------------------------------------------- DATA-001
+export interface DataStatusSource {
+  source_id: string;
+  source_name: string;
+  endpoint: string;
+  is_support_source?: boolean;
+  declared_frequency: string;
+  check_interval_hours: number;
+  official_last_updated: string | null;
+  official_total: number | null;
+  record_count: number;
+  last_checked_at: string | null;
+  last_success_check_at: string | null;
+  last_success_sync_at: string | null;
+  last_failed_at: string | null;
+  consecutive_failures: number;
+  status: string;
+  message: string | null;
+  update_available: boolean;
+  added_since_previous: number | null;
+  updated_since_previous: number | null;
+  removed_confirmed_since_previous: number | null;
+  missing_on_recheck_since_previous: number | null;
+  unresolved_since_previous: number | null;
+  freshness_age_days: number | null;
+  freshness_basis: string;
+  note: string;
+}
+
+export interface ChangeRecord {
+  change_id: string;
+  source_id: string;
+  official_record_id: string;
+  event_id: string;
+  change_type: string;
+  detected_at: string;
+  source_updated_at: string | null;
+  previous_content_hash: string | null;
+  new_content_hash: string | null;
+  previous_snapshot_id: string | null;
+  candidate_snapshot_id: string;
+  changed_fields: Record<string, { previous: unknown; current: unknown }>;
+  evidence: Record<string, unknown>;
+  organization_key: string | null;
+  applicant_name: string | null;
+  event_type: string | null;
+  event_date: string | null;
+  record: EventRecord | null;
+}
+
+export interface DataStatusResponse {
+  schema: string;
+  configured: boolean;
+  state: string;
+  message: string;
+  terminology: {
+    continuously_monitored: boolean;
+    automatically_synchronized: boolean;
+    real_time_claim: boolean;
+    labels: string[];
+  };
+  snapshot: {
+    id: string;
+    schema: string;
+    collected_at: string;
+    published_at: string | null;
+    previous_snapshot_id: string | null;
+    content_hash: string | null;
+    openfda_last_updated: string | null;
+    counts: Record<string, unknown> | null;
+    change_summary: Record<string, number> | null;
+    source_versions: Record<string, { official_last_updated: string | null; official_total: number | null }> | null;
+    path: string | null;
+    time_semantics: { field: string; meaning: string }[];
+  } | null;
+  synchronization: {
+    state: string;
+    last_successful_sync: string | null;
+    last_check_attempt: string | null;
+    active_snapshot_id: string | null;
+    change_feed_available: boolean;
+    action?: string | null;
+    actor?: string | null;
+    updated_sources?: string[];
+    note?: string;
+  };
+  sources: DataStatusSource[];
+  change_counts: Record<string, number>;
+  recent_runs: Record<string, unknown>[];
+  incidents: Record<string, unknown>[];
+  request_usage_today: Record<string, unknown> | null;
+  change_feed: ChangeRecord[];
+  latency: {
+    official_source_version: string | null;
+    last_checked_by_medradar: string | null;
+    last_successful_sync: string | null;
+    sync_lag_hours: number | null;
+    statement: string;
+  };
+  data_snapshot?: SnapshotRef;
+  freshness?: Freshness;
+  dataset_error?: string | null;
+}
+
+export interface ChangesResponse {
+  configured: boolean;
+  items: ChangeRecord[];
+  total: number;
+  page?: number;
+  page_size?: number;
+  filters: Record<string, string | null>;
+  note?: string;
+  message?: string;
 }

@@ -1,0 +1,38 @@
+== date ==
+2026-11-16T05:04:55+08:00
+== host ==
+VM-0-12-ubuntu
+Linux VM-0-12-ubuntu 6.8.0-138-generic #138-Ubuntu SMP PREEMPT_DYNAMIC Fri Jul 31 22:41:49 UTC 2026 x86_64 x86_64 x86_64 GNU/Linux
+== resources ==
+2
+               total        used        free      shared  buff/cache   available
+Mem:           3.6Gi       1.5Gi       716Mi       2.5Mi       1.7Gi       2.1Gi
+Swap:          1.9Gi          0B       1.9Gi
+Filesystem      Size  Used Avail Use% Mounted on
+/dev/vda2        59G  6.6G   50G  12% /
+== service ==
+active
+ExecMainPID=14599
+WorkingDirectory=/srv/medradar
+User=medradar
+ActiveState=active
+SubState=running
+== sha ==
+1bdb1c349c59713e1a11426f15a6c06e892f87e0
+## feat/product-003-device-intelligence...origin/feat/product-003-device-intelligence
+== health ==
+{"status":"ok","snapshot":{"id":"2026-11-14T22:09:22Z-openfda","collected_at":"2026-11-14T22:09:22.451315Z","openfda_last_updated":"2026-11-02","file_sha256":{"applicants.jsonl.gz":"309a7cf4199fbb2f043b31e05b0de46a6260588b0a2cdb2e16ee3a4e2581f5fa","classifications.jsonl.gz":"bbee2d1109abbbe5c70f97f08e7dbbd64462dec755b2b495de8e6a74e011e5db","events.jsonl.gz":"f2676ef7494467ae8256694c13c9da4a39b0da2c814c5d557c6dfb276c142971"},"note":"Immutable openFDA snapshot. Attribution and time limits are stated per record."},"version":"2.0.0-product-002","store":"/srv/medradar/app/medradar/product/snapshot"}
+== data ==
+== timers ==
+NEXT                            LEFT LAST                              PASSED UNIT                           ACTIVATES
+Mon 2026-11-16 05:09:01 CST  4min 6s Mon 2026-11-16 05:04:01 CST      53s ago medradar-health.timer          medradar-health.service
+Mon 2026-11-16 05:09:48 CST 4min 53s Mon 2026-11-16 04:07:13 CST    57min ago fwupd-refresh.timer            fwupd-refresh.service
+Mon 2026-11-16 05:10:00 CST     5min Mon 2026-11-16 05:00:01 CST 4min 54s ago sysstat-collect.timer          sysstat-collect.service
+Mon 2026-11-16 06:15:25 CST 1h 10min Mon 2026-11-16 03:12:26 CST 1h 52min ago apt-daily-upgrade.timer        apt-daily-upgrade.service
+Mon 2026-11-16 08:33:32 CST 3h 28min Fri 2026-02-27 15:26:24 CST            - apt-daily.timer                apt-daily.service
+Mon 2026-11-16 14:36:38 CST       9h Fri 2026-02-27 13:45:42 CST            - motd-news.timer                motd-news.service
+Tue 2026-11-17 00:00:00 CST      18h Mon 2026-11-16 03:04:08 CST  2h 0min ago dpkg-db-backup.timer           dpkg-db-backup.service
+Tue 2026-11-17 00:00:00 CST      18h Mon 2026-11-16 03:04:08 CST  2h 0min ago logrotate.timer                logrotate.service
+Tue 2026-11-17 00:07:00 CST      19h -                                      - sysstat-summary.timer          sysstat-summary.service
+Tue 2026-11-17 03:09:01 CST      22h Mon 2026-11-16 03:09:01 CST 1h 55min ago update-notifier-download.timer update-notifier-download.service
+Tue 2026-11-17 03:19:01 CST      22h Mon 2026-11-16 03:19:01 CST 1h 45min ago systemd-tmpfiles-clean.timer   systemd-tmpfiles-clean.service

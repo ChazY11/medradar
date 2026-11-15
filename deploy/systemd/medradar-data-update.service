@@ -1,0 +1,40 @@
+[Unit]
+Description=MedRadar continuous FDA update check and safe snapshot publication
+Documentation=file:///srv/medradar/app/docs/data/data_001/OPERATIONS.md
+After=network-online.target medradar-web.service
+Wants=network-online.target
+# This unit is a proposal. Do not enable it before the deployment plan is approved.
+
+[Service]
+Type=oneshot
+User=medradar
+Group=medradar
+WorkingDirectory=/srv/medradar
+Environment=HOME=/srv/medradar
+Environment=PYTHONUNBUFFERED=1
+Environment=MEDRADAR_PIPELINE_ROOT=/srv/medradar/data/fda
+Environment=MEDRADAR_REVIEW_DB=/srv/medradar/data/identity/review.db
+EnvironmentFile=-/etc/medradar/pipeline.env
+UMask=0027
+ExecStart=/srv/medradar/.venv/bin/python -m medradar.data_pipeline run --json
+TimeoutStartSec=1h
+Nice=10
+IOSchedulingClass=idle
+IOSchedulingPriority=7
+NoNewPrivileges=yes
+PrivateTmp=yes
+PrivateDevices=yes
+ProtectSystem=strict
+ProtectHome=yes
+ProtectKernelTunables=yes
+ProtectControlGroups=yes
+RestrictSUIDSGID=yes
+LockPersonality=yes
+ReadWritePaths=/srv/medradar/data
+# Measured isolated peak on the 2 vCPU/4 GB host: 2,077,936 KiB (~1.98 GiB) for a
+# recall reconciliation including product + device-index validation. 2.4 GiB leaves
+# headroom for the release save-memory change and normal Python allocator variance.
+MemoryHigh=2200M
+MemoryMax=2400M
+CPUQuota=150%
+TasksMax=64

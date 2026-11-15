@@ -1,0 +1,15 @@
+[Unit]
+Description=Run the MedRadar continuous FDA update check every six hours
+Documentation=file:///srv/medradar/app/docs/data/data_001/OPERATIONS.md
+# Proposal only. Installation requires explicit approval of the deployment plan.
+
+[Timer]
+OnBootSec=10min
+OnUnitActiveSec=6h
+AccuracySec=1min
+RandomizedDelaySec=5min
+Persistent=true
+Unit=medradar-data-update.service
+
+[Install]
+WantedBy=timers.target

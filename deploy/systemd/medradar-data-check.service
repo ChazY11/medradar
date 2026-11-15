@@ -1,0 +1,29 @@
+[Unit]
+Description=MedRadar manual/independent source freshness check (no collection)
+Documentation=file:///srv/medradar/app/docs/data/data_001/OPERATIONS.md
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+User=medradar
+Group=medradar
+WorkingDirectory=/srv/medradar
+Environment=HOME=/srv/medradar
+Environment=MEDRADAR_PIPELINE_ROOT=/srv/medradar/data/fda
+Environment=MEDRADAR_REVIEW_DB=/srv/medradar/data/identity/review.db
+EnvironmentFile=-/etc/medradar/pipeline.env
+UMask=0027
+ExecStart=/srv/medradar/.venv/bin/python -m medradar.data_pipeline check --due --json
+TimeoutStartSec=10min
+Nice=10
+IOSchedulingClass=idle
+NoNewPrivileges=yes
+PrivateTmp=yes
+ProtectSystem=strict
+ProtectHome=yes
+ProtectKernelTunables=yes
+ProtectControlGroups=yes
+RestrictSUIDSGID=yes
+ReadWritePaths=/srv/medradar/data
+MemoryMax=512M

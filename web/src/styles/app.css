@@ -1125,3 +1125,35 @@ code.mono {
     padding-left: 16px;
   }
 }
+
+/* ---------------------------------------------------------------- DATA-001 synchronization */
+.change-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.change-row {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+}
+.change-row > summary {
+  cursor: pointer;
+  padding: 9px 12px;
+  font-size: 12.5px;
+  line-height: 1.5;
+}
+.change-row[open] > summary {
+  border-bottom: 1px solid var(--border);
+}
+.change-body {
+  padding: 12px;
+}
+.stack-sm {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.danger-text {
+  color: var(--danger);
+}

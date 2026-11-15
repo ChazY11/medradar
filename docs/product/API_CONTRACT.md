@@ -459,6 +459,50 @@ MedRadar id or by its official K/PMA number. Unknown ids return `404 device_not_
 `family_not_found` with a hint. Relation status is one of `confirmed`, `evidence_supported`,
 `candidate`, `unlinked`; a candidate is never presented as established.
 
+### Data lifecycle API (DATA-001, additive)
+
+| Route | Purpose |
+|---|---|
+| `GET /api/data-status` | active snapshot, per-source check/sync state, last successful sync, change counts, latency semantics and recent incidents. If the pipeline database is absent, returns `configured=false` and `state=not_configured`. |
+| `GET /api/changes?source=&type=&org=&limit=&offset=` | published change ledger only. `type` is one of `ADDED`, `UPDATED`, `REMOVED_CONFIRMED`, `UNCHANGED`, `MISSING_ON_RECHECK`, `UNRESOLVED`; `limit` 1–200. |
+
+```ts
+interface DataStatusResponse {
+  configured: boolean;
+  state: "not_configured" | "ok" | "unverified" | "update_available" | "degraded" | "configured_no_publication";
+  snapshot: SnapshotRef | null;
+  synchronization: {
+    state: string;
+    last_successful_sync: string | null;
+    last_check_attempt: string | null;
+    active_snapshot_id: string | null;
+    change_feed_available: boolean;
+  };
+  sources: {
+    source_id: SourceId | "openfda_classification";
+    status: "NO_CHANGE" | "UPDATE_AVAILABLE" | "CHECK_FAILED" | "SOURCE_DEGRADED" | "UNKNOWN";
+    official_last_updated: string | null;
+    last_checked_at: string | null;
+    last_success_sync_at: string | null;
+    added_since_previous: number | null;
+    updated_since_previous: number | null;
+    consecutive_failures: number;
+    declared_frequency: string;
+  }[];
+  change_counts: Record<string, number>;
+  latency: { official_source_version: string | null; last_checked_by_medradar: string | null;
+             last_successful_sync: string | null; sync_lag_hours: number | null; statement: string };
+  terminology: { continuously_monitored: boolean; automatically_synchronized: boolean;
+                 real_time_claim: false; labels: string[] };
+  dataset_error?: string | null; // present when the active snapshot cannot load
+}
+```
+
+`SnapshotRef` gained optional `previous_snapshot_id`, `content_hash` and
+`source_versions`. `EventRecord` gained optional `record_state` and `missing_count`.
+No existing response shape was removed. The change feed is not a claim that a new regulatory
+event occurred; it reports source-record changes detected by MedRadar.
+
 ### Internal review API (not part of the public contract)
 
 `/api/review/*` exists only on the loopback admin application

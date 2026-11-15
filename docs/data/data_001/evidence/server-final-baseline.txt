@@ -1,0 +1,19 @@
+== date ==
+2026-11-16T05:49:48+08:00
+== health ==
+{"status":"ok","snapshot":{"id":"2026-11-14T22:09:22Z-openfda","collected_at":"2026-11-14T22:09:22.451315Z","openfda_last_updated":"2026-11-02","file_sha256":{"applicants.jsonl.gz":"309a7cf4199fbb2f043b31e05b0de46a6260588b0a2cdb2e16ee3a4e2581f5fa","classifications.jsonl.gz":"bbee2d1109abbbe5c70f97f08e7dbbd64462dec755b2b495de8e6a74e011e5db","events.jsonl.gz":"f2676ef7494467ae8256694c13c9da4a39b0da2c814c5d557c6dfb276c142971"},"note":"Immutable openFDA snapshot. Attribution and time limits are stated per record."},"version":"2.0.0-product-002","store":"/srv/medradar/app/medradar/product/snapshot"}
+== sha ==
+1bdb1c349c59713e1a11426f15a6c06e892f87e0
+== service ==
+active
+== production data tree ==
+d /srv/medradar/data 4096
+d /srv/medradar/data/cache 4096
+d /srv/medradar/data/identity 4096
+== medradar timers ==
+NEXT                            LEFT LAST                              PASSED UNIT                           ACTIVATES
+Mon 2026-11-16 05:54:40 CST 4min 52s Mon 2026-11-16 05:49:40 CST       7s ago medradar-health.timer          medradar-health.service
+Tue 2026-11-17 04:30:00 CST      22h Mon 2026-11-16 04:30:01 CST 1h 19min ago medradar-backup.timer          medradar-backup.service
+== disk ==
+Filesystem      Size  Used Avail Use% Mounted on
+/dev/vda2        59G  6.8G   50G  12% /

@@ -181,6 +181,19 @@ empty dataset that looks like zero activity.
   public API (rate-limited without a key, hence the aggressive one-shot collection and committed
   snapshot).
 
+## 8a. DATA-001 continuous update path (additive)
+
+The manual collector remains reproducible, but the production-serving path can now use an
+immutable snapshot published by `medradar.data_pipeline`. The pipeline probes official source
+versions, reconciles the reviewed organization scope, writes a staged change ledger, validates
+a candidate (files, identities, coverage, product loader and device index) and switches an
+`active.json` pointer atomically. The FastAPI process fingerprints that pointer and reloads
+the dataset without restarting.
+
+See `docs/data/data_001/ARCHITECTURE.md`, `SOURCE_UPDATE_POLICY.md` and
+`SNAPSHOT_PUBLICATION.md`. The product version is `2.1.0-data-001`; the committed snapshot is
+still the legacy `2026-11-14` baseline until a deployment is approved.
+
 ## 9. Failure modes (designed behaviour)
 
 | Failure | Behaviour |
