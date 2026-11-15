@@ -441,6 +441,24 @@ symmetry, verdict), `not_evidence_of` (explicit list), per-side `verification` a
 `historical_ownership` blocks, and warnings `provisional_attribution_present`,
 `verification_asymmetry`, `historical_ownership_included` (replacing `pending_review_present`).
 
+### Device Intelligence API (PRODUCT-003, additive)
+
+| Route | Purpose |
+|---|---|
+| `GET /api/devices` | device explorer: `q` (name/trade name/applicant/official number), `org`, `pathway` (510k/pma), `product_code`, `category`, `relation` (confirmed/candidate/none/any), `sort` (relevance/date_desc/name_asc), `page`, `page_size` |
+| `GET /api/devices/quality` | relationship quality report: relation counts by type/status, evidence completeness, coverage, conflicts, and four separate verification levels (rule consistency, documentary evidence, human review = 0, accuracy = UNKNOWN) |
+| `GET /api/devices/unlinked` | recall records with no application link in the snapshot, each with a reason |
+| `GET /api/devices/{device_id}` | device detail: identity basis and disclosures, applicant attribution block, application/versions, family, timeline (event date vs first-observed), confirmed and candidate relations with evidence, related recalls (official K-number reference only) |
+| `GET /api/device-families/{family_id}` | PMA family: basis, versions ordered by decision date, missing-original disclosure, related recalls, timeline |
+| `GET /api/export/devices.csv` | CSV of every device matching the explorer filters, with provenance header and `X-MedRadar-Records` |
+| `GET /api/export/device.md` | Markdown device brief (identity, timeline, relations with evidence) |
+
+Identifiers: MedRadar ids are prefixed (`app:`, `device:`, `family:`) and never impersonate an FDA
+identifier; the official identifier is always a separate field. A device id can be looked up by its
+MedRadar id or by its official K/PMA number. Unknown ids return `404 device_not_found` /
+`family_not_found` with a hint. Relation status is one of `confirmed`, `evidence_supported`,
+`candidate`, `unlinked`; a candidate is never presented as established.
+
 ### Internal review API (not part of the public contract)
 
 `/api/review/*` exists only on the loopback admin application

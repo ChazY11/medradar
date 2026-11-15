@@ -288,6 +288,22 @@ decision and revocation tables. `effective()` folds the ledger: the latest non-w
 per applicant key wins. The committed `docs/product/product_002/identity_review_decisions.json` is an
 audit snapshot, not the live store.
 
+### Device Intelligence entities (PRODUCT-003)
+
+Derived deterministically from the same snapshot (no new committed data artefact):
+
+* application - official identifier (`k_number`, `pma_number`, `supplement_number`), applicant,
+  product code, decision date, official URL;
+* device identity - one per 510(k) clearance and per PMA approval (`identity_basis` 510k_clearance or
+  pma_approval); a supplement is a version, a recall record creates no identity;
+* product family - PMA application hierarchy keyed by the official PMA number; `original_in_snapshot`
+  states when only supplements are present;
+* relation - `relation_type`, `status` (confirmed/evidence_supported/candidate/unlinked),
+  `rule`, and an `evidence` list of `{kind, field, value, official_url}`. Confirmed relations
+  require official_identifier/record_field evidence; candidates carry similarity-rule evidence only.
+* per-device counts (applications, versions, recalls, confirmed/candidate relations) are precomputed in
+  the index; a relation about the device's own application is credited to the device.
+
 ### Validation artifacts
 
 `docs/product/product_002/validation/` contains `sample.json` (pre-registered design + cases),
