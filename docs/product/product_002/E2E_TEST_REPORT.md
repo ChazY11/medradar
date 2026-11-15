@@ -14,6 +14,15 @@ Browser end-to-end acceptance is now part of GitHub CI and runs against a real b
 The E2E job fails the pull request when any check fails: there is no `continue-on-error` and no
 `|| true` on the test step. Artefacts are uploaded with `if: always()` so a red run is diagnosable.
 
+**CI result on the delivered commit: PASS.** The `e2e` workflow completed in 2m30s as
+"product browser acceptance" together with `ci` and `governance` - 13/13 checks green on PR #47
+(`product browser acceptance`, `product workbench`, three Python offline suites, `windows
+data-files + demo`, `offline data stats`, `state`, `views`, `frozen`, `licence`, `links`,
+`rule-audit`). One earlier run failed on the *token handling of the review CLI* (the CLI ignored
+`MEDRADAR_REVIEW_TOKEN`, so CI generated a random file token and every review request returned 401);
+that was a real defect in the delivered code and was fixed rather than worked around - the CLI now
+resolves the token exactly as the API does.
+
 ## Why the data is reproducible without a synthetic fixture
 
 The product serves an immutable snapshot committed at `medradar/product/snapshot/`; the manifest

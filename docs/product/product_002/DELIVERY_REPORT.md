@@ -100,8 +100,11 @@ sample and worksheet are ready.**
 * `python -m pytest tests/governance -q`: **71 passed, 28 subtests**.
 * Browser suite: **16/16 passed**, executed twice locally against the real backend.
 * Governance gates: `check_licence`, `check_rule_audit`, `check_frozen`, `check_state` all PASS.
-* GitHub Actions: `ci`, `governance` and the new `e2e` workflow run on the PR; see the PR checks for
-  the authoritative result (this report does not claim green before the run).
+* GitHub Actions on the delivered commit: **13/13 checks passed**, including the new
+  `product browser acceptance` job (2m30s) inside the `e2e` workflow. The first `e2e` run failed on a
+  real defect - the review CLI ignored `MEDRADAR_REVIEW_TOKEN` and generated a random token file, so
+  the suite got 401 on every review request; the CLI was fixed to resolve the token exactly as the
+  API does, and the next run passed.
 
 ## 5. Data governance review result
 
@@ -130,7 +133,7 @@ snapshot identity are documented in `ALPHA_RELEASE_GUIDE.md`.
 | **G1 ATTRIBUTION HONESTY** | **PASS** | `/api/metrics`, UI blocks, exports and `tests/product/test_attribution_status.py` + `test_metrics.py`; attributed vs rule vs curated vs precision vs retrieval are distinct in code, API, UI and CSV/MD; 0 human-reviewed | Definition might still be misread without the in-UI banner; keep it |
 | **G2 REVIEW WORKFLOW** | **PASS** | `/review` workspace, append-only ledger with DB triggers, token + loopback boundary (E2E-16), impact report; real correction changed only Abbott (+17) and 58 organizations did not move; withdrawal preserved history | Token is a single shared secret; no per-user identity yet (P1 for a larger team) |
 | **G3 VALIDATION** | **PARTIAL** | Pre-registered 38-case sample, documentary rule, SEC evidence for 16 organizations, Wilson CI, undecidable share reported; no contradicted case | 66% undecidable; reviewer is an agent; human sample review not done - precision stays a provisional, caveated estimate |
-| **G4 ENGINEERING** | **PASS** | 96 product tests, 71 governance tests, new `e2e` workflow with 16/16 browser checks and artefact upload, failing checks fail the job | Chromium-only matrix; no visual-regression baseline |
+| **G4 ENGINEERING** | **PASS** | 96 product tests, 71 governance tests, 1,270-test offline suite; new `e2e` workflow with 16/16 browser checks and artefact upload; CI 13/13 green on the delivered commit | Chromium-only matrix; no visual-regression baseline |
 | **G5 GOVERNANCE** | **PASS** | GOV-0005 tightening + 10 counter-example tests + hash-bound inventory + all four gates PASS | Human licence judgement still required; not a legal opinion |
 | **G6 ALPHA READY** | **PARTIAL** | Alpha guide executed; 16/16 alpha smoke checks; export/basis/rollback documented | No external user test; no hosted deployment; Docker flow not verified in CI |
 
