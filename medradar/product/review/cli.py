@@ -20,7 +20,7 @@ from typing import Any
 from ..dataset import PRODUCT_VERSION, load_dataset
 from .admin import create_admin_app, load_or_create_token, required_token, token_path
 from .service import attribution_impact, build_case, build_queue, queue_summary
-from .store import ReviewError, ReviewStore
+from .store import ReviewError, ReviewStore, agent_authority
 
 LOOPBACK = ("127.0.0.1", "localhost", "::1")
 
@@ -118,6 +118,14 @@ def cmd_case(args: argparse.Namespace) -> int:
 
 def cmd_decide(args: argparse.Namespace) -> int:
     store = _store(args)
+    if args.status == "human_reviewed":
+        print(
+            "refused: human_reviewed cannot be recorded by this CLI. There is no server-side operator "
+            "authentication that can verify a human; use --status evidence_verified with --evidence, or "
+            "--status unresolved.",
+            file=sys.stderr,
+        )
+        return 1
     try:
         decision = store.append(
             applicant_name=args.applicant,
@@ -125,7 +133,7 @@ def cmd_decide(args: argparse.Namespace) -> int:
             status=args.status,
             organization_key=args.org,
             reviewer=args.reviewer,
-            reviewer_kind=args.reviewer_kind,
+            authority=agent_authority(args.reviewer, "cli_offline"),
             basis=args.basis,
             evidence_type=args.evidence_type,
             evidence=_evidence(args.evidence),
@@ -148,7 +156,7 @@ def cmd_revoke(args: argparse.Namespace) -> int:
             status="unresolved",
             organization_key=None,
             reviewer=args.reviewer,
-            reviewer_kind=args.reviewer_kind,
+            authority=agent_authority(args.reviewer, "cli_offline"),
             note=args.note or "revoked from the CLI",
             supersedes_uid=args.uid,
             source="cli",
@@ -211,14 +219,18 @@ def cmd_import(args: argparse.Namespace) -> int:
     for item in decisions:
         if not isinstance(item, dict) or item.get("action") == "revoke":
             continue
+        label = str(item.get("reviewer") or "").strip()
+        if not label:
+            errors.append({"applicant_name": item.get("applicant_name"), "error": "reviewer label is required"})
+            continue
         try:
             store.append(
                 applicant_name=str(item.get("applicant_name") or ""),
                 action=str(item.get("action") or "approve"),
                 status=str(item.get("status") or "evidence_verified"),
                 organization_key=item.get("organization_key"),
-                reviewer=str(item.get("reviewer") or ""),
-                reviewer_kind=str(item.get("reviewer_kind") or "human"),
+                reviewer=label,
+                authority=agent_authority(label, "cli_import"),
                 basis=item.get("basis"),
                 evidence=item.get("evidence"),
                 note=item.get("note"),
@@ -273,8 +285,7 @@ def build_parser() -> argparse.ArgumentParser:
     decide.add_argument("--action", required=True, choices=["approve", "reassign", "reject", "unresolved"])
     decide.add_argument("--status", required=True)
     decide.add_argument("--org", default=None)
-    decide.add_argument("--reviewer", required=True)
-    decide.add_argument("--reviewer-kind", default="human", choices=["human", "agent"])
+    decide.add_argument("--reviewer", required=True, help="actor label recorded with the decision (not a trust claim)")
     decide.add_argument("--basis", default=None)
     decide.add_argument("--evidence-type", default=None)
     decide.add_argument("--evidence", action="append", default=None, help="JSON evidence reference (repeatable)")
@@ -284,8 +295,7 @@ def build_parser() -> argparse.ArgumentParser:
     revoke = sub.add_parser("revoke", parents=[common], help="withdraw a decision (append-only)")
     revoke.add_argument("--uid", required=True)
     revoke.add_argument("--applicant", required=True)
-    revoke.add_argument("--reviewer", required=True)
-    revoke.add_argument("--reviewer-kind", default="human", choices=["human", "agent"])
+    revoke.add_argument("--reviewer", required=True, help="actor label recorded with the revocation")
     revoke.add_argument("--note", default=None)
     revoke.set_defaults(func=cmd_revoke)
 

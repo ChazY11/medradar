@@ -157,9 +157,18 @@ export function EvidenceDrawer({ eventId, onClose }: { eventId: string; onClose:
                         ...(event.attribution.rule
                           ? [{ label: bi("Rule / evidence", "规则/证据"), value: <span className="small mono">{event.attribution.rule}{event.attribution.evidence_count ? " + " + event.attribution.evidence_count + " evidence" : ""}</span> }]
                           : []),
-                        ...(event.attribution.predecessor_entity
-                          ? [{ label: bi("Historical entity", "历史实体"), value: <span className="small">{bi("Filed by an acquired predecessor entity; counted under the current group.", "由被收购的前身实体提交；按当前集团计入。")}</span> }]
-                          : []),
+                        {
+                          label: <span className="def" title="Who controlled the filing entity when the regulatory event happened. Only stated where a verified ownership relation with an effective date exists.">{bi("Owner at event time", "事件发生时所有者")}</span>,
+                          value: (
+                            <span className="small">
+                              {event.attribution.historical_owner?.state === "verified"
+                                ? event.attribution.historical_owner.reason === "verified_predecessor"
+                                  ? bi("Predecessor: ", "前身实体：") + (event.attribution.historical_owner.display ?? "")
+                                  : bi("This group", "本集团") + (event.attribution.historical_owner.effective_from ? " (relation effective " + event.attribution.historical_owner.effective_from + ")" : "")
+                                : bi("UNKNOWN - ", "未知 - ") + (event.attribution.historical_owner?.reason_text ?? "")}
+                            </span>
+                          ),
+                        },
                         {
                           label: bi("Basis", "归属依据"),
                           value: event.attribution.basis ? <Badge tone="outline">{event.attribution.basis}</Badge> : "-",

@@ -51,6 +51,7 @@ class Relation:
     effective_from: str | None
     effective_to: str | None
     historical_owner_before: str | None
+    predecessor_organization_key: str | None
     status: str
     reviewer: str
     reviewer_kind: str
@@ -81,6 +82,7 @@ class Relation:
             "effective_from": self.effective_from,
             "effective_to": self.effective_to,
             "historical_owner_before": self.historical_owner_before,
+            "predecessor_organization_key": self.predecessor_organization_key,
             "status": self.status,
             "verified": self.verified,
             "reviewer": self.reviewer,
@@ -134,6 +136,7 @@ def _build(document: dict[str, Any]) -> Ownership:
                 effective_from=raw.get("effective_from"),
                 effective_to=raw.get("effective_to"),
                 historical_owner_before=raw.get("historical_owner_before"),
+                predecessor_organization_key=raw.get("predecessor_organization_key"),
                 status=str(raw.get("status") or UNRESOLVED),
                 reviewer=str(raw.get("reviewer") or "unknown"),
                 reviewer_kind=str(raw.get("reviewer_kind") or "agent"),
@@ -155,6 +158,114 @@ def ownership() -> Ownership:
     if not OWNERSHIP_PATH.is_file():
         return Ownership(updated_at="", note="no ownership relation file", relations=())
     return _build(json.loads(OWNERSHIP_PATH.read_text(encoding="utf-8")))
+
+
+# ---------------------------------------------------------------------------
+# historical owner at event time (P0-B)
+# ---------------------------------------------------------------------------
+
+HISTORICAL_REASONS = {
+    "verified_current_group": "a verified ownership relation with an effective date shows this group controlled the applicant at the event date",
+    "verified_predecessor": "a verified ownership relation with an effective date shows a different owner controlled the applicant at the event date",
+    "no_relation": "no verified ownership relation covers this applicant string for this organization",
+    "no_effective_date": "the ownership relation covering this applicant has no verified effective date, so the owner at event time is unknown",
+    "no_event_date": "the record has no usable event date, so the owner at event time cannot be determined",
+}
+
+
+@dataclass(frozen=True)
+class HistoricalOwner:
+    """Who controlled the filing entity when the regulatory event happened.
+
+    This is deliberately NOT "is the applicant a predecessor name". The applicant name is fixed;
+    ownership changes over time. A 2012 record filed by an entity acquired in 2015 belonged to the
+    predecessor at event time; a 2020 record filed by the same applicant belongs to the acquirer. The
+    classification depends on the event date and on a verified relation with an effective date;
+    without either it is UNKNOWN.
+    """
+
+    state: str
+    reason: str
+    organization_key: str | None = None
+    display: str | None = None
+    relation_id: str | None = None
+    effective_from: str | None = None
+
+    @property
+    def verified(self) -> bool:
+        return self.state == "verified"
+
+    @property
+    def owner_is_current_group(self) -> bool:
+        return self.state == "verified" and self.reason == "verified_current_group"
+
+    def to_public(self) -> dict[str, Any]:
+        return {
+            "state": self.state,
+            "reason": self.reason,
+            "reason_text": HISTORICAL_REASONS.get(self.reason, ""),
+            "organization_key": self.organization_key,
+            "display": self.display,
+            "relation_id": self.relation_id,
+            "effective_from": self.effective_from,
+        }
+
+
+def _applicant_key(value: str) -> str:
+    return " ".join(str(value or "").casefold().split())
+
+
+def _verified_relations_for(organization_key: str, applicant_key: str) -> tuple[Relation, ...]:
+    applicant_words = words(applicant_key)
+    out = []
+    for relation in ownership().for_organization(organization_key):
+        if not relation.verified:
+            continue
+        for pattern in relation.patterns:
+            pattern_words = words(pattern)
+            if pattern_words and contains_token_sequence(applicant_words, pattern_words):
+                out.append(relation)
+                break
+    return tuple(out)
+
+
+@lru_cache(maxsize=16384)
+def _relations_for_applicant(organization_key: str, applicant_key: str) -> tuple[Relation, ...]:
+    """Memoised relation lookup: 91k records share ~1.5k applicant strings."""
+    return _verified_relations_for(organization_key, applicant_key)
+
+
+def historical_owner(organization_key: str, applicant_name: str, event_date: str | None) -> HistoricalOwner:
+    """Classify the owner of the filing entity at the event date, or UNKNOWN."""
+    relation_list = _relations_for_applicant(organization_key, _applicant_key(applicant_name))
+    if not relation_list:
+        return HistoricalOwner(state="unknown", reason="no_relation")
+    dated = [relation for relation in relation_list if relation.effective_from]
+    if not dated:
+        return HistoricalOwner(state="unknown", reason="no_effective_date", relation_id=relation_list[0].relation_id)
+    if not event_date:
+        return HistoricalOwner(state="unknown", reason="no_event_date", relation_id=dated[0].relation_id)
+    day = str(event_date)[:10]
+    applicable = [relation for relation in dated if str(relation.effective_from) <= day]
+    if applicable:
+        relation = max(applicable, key=lambda item: str(item.effective_from))
+        return HistoricalOwner(
+            state="verified",
+            reason="verified_current_group",
+            organization_key=organization_key,
+            display=None,
+            relation_id=relation.relation_id,
+            effective_from=relation.effective_from,
+        )
+    relation = min(dated, key=lambda item: str(item.effective_from))
+    return HistoricalOwner(
+        state="verified",
+        reason="verified_predecessor",
+        organization_key=relation.predecessor_organization_key,
+        display=relation.historical_owner_before,
+        relation_id=relation.relation_id,
+        effective_from=relation.effective_from,
+    )
 
 
 # ---------------------------------------------------------------------------

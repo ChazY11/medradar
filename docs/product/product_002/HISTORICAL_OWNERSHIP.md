@@ -64,14 +64,18 @@ Measured examples (snapshot, 5-year comparison window 2021-01-01 to 2025-12-31):
 
 GE HealthCare is the clearest case in the product: **under current-group attribution all 493 records
 in the window are counted under GE HealthCare, even though every one of them was filed while the
-business was part of General Electric.** Selecting the *original-registrant* basis returns **0
-records** for that window — the honest answer, and a much better teaching moment than a hidden
-aggregation rule.
+business was part of General Electric.** Selecting the *historical-owner* basis returns **301** counted records for that window (the post-spin
+records) and reports **192 excluded** records that General Electric owned on their event dates — the
+honest answer, and a much better teaching moment than a hidden aggregation rule.
 
 ## Comparison basis switch
 
-`GET /api/compare?...&basis=original_registrant` (and the UI selector) excludes records whose
-applicant string belongs to an acquired/predecessor entity. The basis is printed in the comparison
+`GET /api/compare?...&basis=historical_owner_verified` (and the UI selector) keeps only records where a
+verified relation with an effective date places control with this group on the record's event date.
+It is **not** a predecessor-name exclusion: the same applicant string is classified by date. Records
+whose owner at event time is unknown are excluded *and reported* (`basis_excluded_totals`), never
+counted as zero. The retired name `original_registrant` returns 400. See
+`docs/product/product_003/P0_FIXES.md` The basis is printed in the comparison
 payload, the Markdown export and the CSV provenance header, so an exported report cannot be mistaken
 for the other basis. For Medtronic in the same window the switch changes 3,426 -> 513 records; the
 product does not pick one for the user.

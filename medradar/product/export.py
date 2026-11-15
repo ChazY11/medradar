@@ -52,6 +52,11 @@ CSV_COLUMNS = [
     "attribution_reviewer",
     "attribution_reviewer_kind",
     "attribution_predecessor_entity",
+    "historical_owner_state",
+    "historical_owner_reason",
+    "historical_owner",
+    "historical_owner_relation",
+    "historical_owner_effective_from",
     "ownership_basis",
     "product_code",
     "category",
@@ -113,6 +118,11 @@ def events_csv(dataset: Dataset, events: Sequence[Event], basis: str | None = No
             event.attribution_reviewer or "",
             event.attribution_reviewer_kind or "",
             "true" if event.attribution_is_predecessor else "false",
+            event.historical_owner_state,
+            event.historical_owner_reason,
+            event.historical_owner_display or "",
+            event.historical_owner_relation_id or "",
+            event.historical_owner_effective_from or "",
             basis or "current_group",
             event.product_code or "",
             event.category.label if event.category else "",
@@ -161,6 +171,15 @@ def compare_markdown(dataset: Dataset, keys: Sequence[str], date_from: str | Non
     lines.append("- Complete calendar years used for rates: " + (", ".join(window["complete_years"]) if window["complete_years"] else "none"))
     lines.append("- Counting rule: " + payload["basis"]["rule"])
     lines.append("- Ownership basis: " + payload["comparability"]["ownership_basis"])
+    excluded = payload.get("basis_excluded_totals") or {}
+    if payload["comparability"]["ownership_basis"] == "historical_owner_verified":
+        lines.append(
+            "- Excluded by the historical-owner basis: "
+            + str(excluded.get("excluded_predecessor_owner", 0))
+            + " record(s) owned by a predecessor at event time and "
+            + str(excluded.get("excluded_unknown_owner", 0))
+            + " record(s) whose owner at event time is UNKNOWN (unknown is reported, not treated as zero)"
+        )
     lines.append("- Review filter: " + payload["comparability"]["review_filter"])
     lines.append("- Comparability: " + payload["comparability"]["verdict"])
     lines.append("- Product version: MedRadar PRODUCT-002 (metrics and status vocabulary are part of the output)")
@@ -218,6 +237,27 @@ def compare_markdown(dataset: Dataset, keys: Sequence[str], date_from: str | Non
     ))
     lines.append("")
     lines.append("Curated share counts only evidence-verified or human-reviewed mappings. Rule-verified mappings are a deterministic name rule, not review, and are reported separately.")
+    lines.append("")
+    lines.append("## Owner at event time")
+    lines.append("")
+    lines.append(_table(
+        ["Organization", "Records counted", "Owner was this group", "Owner was a predecessor", "Owner UNKNOWN"],
+        [
+            [
+                side["display_name"],
+                str(side["counts"]["records"]),
+                str(side["historical_ownership"]["verified_current_group"]),
+                str(side["historical_ownership"]["verified_predecessor"]),
+                str(side["historical_ownership"]["unknown"]),
+            ]
+            for side in sides
+        ],
+    ))
+    lines.append("")
+    lines.append(
+        "Owner at event time is derived from verified ownership relations with effective dates. UNKNOWN means no verified "
+        "relation, no effective date, or no event date: it is not a zero and not evidence of no activity."
+    )
     lines.append("")
     lines.append("## Records by event type")
     lines.append("")
@@ -321,6 +361,17 @@ def organization_markdown(dataset: Dataset, key: str) -> str:
         + str(ownership.get("unresolved_relation_count"))
         + " unresolved. Counts use current-group attribution."
     )
+    record_level = ownership.get("record_level") or {}
+    if record_level:
+        lines.append(
+            "- Owner at event time: "
+            + str(record_level.get("verified_current_group"))
+            + " record(s) controlled by this group on the event date, "
+            + str(record_level.get("verified_predecessor"))
+            + " controlled by a predecessor, "
+            + str(record_level.get("unknown"))
+            + " UNKNOWN (no verified relation, no effective date, or no event date). Unknown is reported, not counted as zero."
+        )
     lines.append("")
     lines.append(profile["description"])
     lines.append("")

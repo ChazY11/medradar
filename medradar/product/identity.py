@@ -522,6 +522,19 @@ def _build_registry(payload: dict[str, Any], overlay: Mapping[str, Mapping[str, 
     )
 
 
+def _overlay_status(override: Mapping[str, Any]) -> str:
+    """A ledger overlay cannot claim human review without a human authority.
+
+    The store refuses to write human_reviewed, but the overlay is also built from an imported file,
+    so the rule is enforced here too: without reviewer_kind="human" the claim degrades to
+    evidence_verified (when evidence exists) or unresolved. Nothing is silently upgraded.
+    """
+    status = str(override.get("status") or HUMAN_REVIEWED)
+    if status == HUMAN_REVIEWED and str(override.get("reviewer_kind") or "") != "human":
+        return EVIDENCE_VERIFIED if coerce_evidence(override.get("evidence")) else UNRESOLVED
+    return status
+
+
 def _apply_overlay(decision: Decision, override: Mapping[str, Any]) -> Decision:
     action = str(override.get("action") or "")
     status = str(override.get("status") or "")
@@ -548,7 +561,7 @@ def _apply_overlay(decision: Decision, override: Mapping[str, Any]) -> Decision:
         basis=str(override.get("basis") or decision.basis),
         review="curated" if status in (EVIDENCE_VERIFIED, HUMAN_REVIEWED) else decision.review,
         source="review_ledger",
-        status=status or HUMAN_REVIEWED,
+        status=_overlay_status(override),
         rule="review_ledger_v1",
         rule_detail="recorded in the internal identity review ledger",
         evidence=coerce_evidence(override.get("evidence")),

@@ -111,6 +111,12 @@ export interface ReviewDecisionRecord {
   note: string | null;
   reviewer: string;
   reviewer_kind: string;
+  authority_kind?: string;
+  authority_method?: string | null;
+  attestation?: string | null;
+  status_recorded?: string;
+  status_downgraded?: boolean;
+  status_downgraded_reason?: string | null;
   created_at: string;
   supersedes_uid: string | null;
   revoked: boolean;
@@ -247,6 +253,23 @@ export async function reviewImpact(): Promise<ReviewImpact> {
   return request<ReviewImpact>("/api/review/impact");
 }
 
+export interface ReviewCapabilities {
+  human_review_authority_available: boolean;
+  human_review_reason: string;
+  writable_statuses: string[];
+  authority_kinds: string[];
+  actor_kind_policy: string;
+  evidence_status_note: string;
+}
+
+export async function reviewCapabilities(): Promise<ReviewCapabilities> {
+  return request<ReviewCapabilities>("/api/review/capabilities");
+}
+
+/**
+ * The actor kind is NOT part of this payload: the service derives it on the server. Sending a
+ * reviewer_kind field is rejected with 400 by design, so the type does not allow it.
+ */
 export async function reviewDecide(body: {
   applicant_name: string;
   action: string;
@@ -257,7 +280,6 @@ export async function reviewDecide(body: {
   evidence?: ReviewEvidence[];
   note?: string | null;
   reviewer: string;
-  reviewer_kind: string;
 }): Promise<{ ok: boolean; decision: ReviewDecisionRecord }> {
   return request<{ ok: boolean; decision: ReviewDecisionRecord }>("/api/review/decisions", {
     method: "POST",
@@ -265,7 +287,7 @@ export async function reviewDecide(body: {
   });
 }
 
-export async function reviewRevoke(decisionUid: string, body: { reviewer: string; reviewer_kind: string; note?: string }) {
+export async function reviewRevoke(decisionUid: string, body: { reviewer: string; note?: string }) {
   return request<{ ok: boolean; revocation: ReviewDecisionRecord }>(
     "/api/review/decisions/" + encodeURIComponent(decisionUid) + "/revoke",
     { method: "POST", body: JSON.stringify(body) },

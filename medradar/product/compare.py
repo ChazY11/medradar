@@ -116,6 +116,7 @@ def build_compare(
 
     window = {"from": start, "to": end}
     sides = []
+    basis_exclusions: dict[str, dict[str, int]] = {}
     all_tracked_in_window: list[Event] = []
     for key in keys:
         org = dataset.organization(key)
@@ -123,6 +124,21 @@ def build_compare(
             org_keys=[key], event_types=types, date_from=start, date_to=end, review=review, basis=basis
         )
         side = _side(dataset, key, events, window, years)
+        # How much the historical basis dropped, so "0 records" can never masquerade as "no activity".
+        if basis == "historical_owner_verified":
+            unfiltered = dataset.filter_events(
+                org_keys=[key], event_types=types, date_from=start, date_to=end, review=review
+            )
+            counts_all = dataset.counts(unfiltered)
+            basis_exclusions[key] = {
+                "records_without_historical_basis": counts_all["records"],
+                "excluded_unknown_owner": int(counts_all["historical_unknown"]),
+                "excluded_predecessor_owner": int(counts_all["historical_verified_predecessor"]),
+                "counted_records": int(side["counts"]["records"]),
+            }
+            side["historical_ownership"]["excluded_unknown_owner"] = basis_exclusions[key]["excluded_unknown_owner"]
+            side["historical_ownership"]["excluded_predecessor_owner"] = basis_exclusions[key]["excluded_predecessor_owner"]
+            side["historical_ownership"]["records_without_historical_basis"] = basis_exclusions[key]["records_without_historical_basis"]
         sides.append(side)
     # denominator for shares: every tracked organization's attributed records in the same window
     for org in dataset.registry.organizations:
@@ -154,7 +170,23 @@ def build_compare(
     for row in class_matrix:
         row["device_class"] = row["id"]
 
+    total_excluded_unknown = sum(item["excluded_unknown_owner"] for item in basis_exclusions.values())
+    total_excluded_predecessor = sum(item["excluded_predecessor_owner"] for item in basis_exclusions.values())
     warnings = _warnings(dataset, sides, partial, types, denominator)
+    if basis == "historical_owner_verified" and (total_excluded_unknown or total_excluded_predecessor):
+        warnings.append({
+            "code": "historical_owner_basis_excludes_records",
+            "severity": "warning",
+            "message": (
+                "The historical-owner basis excludes "
+                + str(total_excluded_predecessor)
+                + " record(s) whose owner at event time was a predecessor entity and "
+                + str(total_excluded_unknown)
+                + " record(s) whose owner at event time is UNKNOWN (no verified relation, no effective date, or no event date). "
+                "An excluded record is not a zero: the unknown share is reported so a low count cannot be read as low activity."
+            ),
+            "org_keys": [side["key"] for side in sides],
+        })
     coverage_symmetric = len({tuple(sorted(row["source_id"] for row in side["coverage"]["sources"] if row["records"])) for side in sides}) == 1
     comparability = {
         "window_shared": True,
@@ -199,6 +231,11 @@ def build_compare(
         "warnings": warnings,
         "disclaimer": DISCLAIMER,
         "comparability": comparability,
+        "basis_exclusions": basis_exclusions if basis_exclusions else {},
+        "basis_excluded_totals": {
+            "excluded_unknown_owner": total_excluded_unknown,
+            "excluded_predecessor_owner": total_excluded_predecessor,
+        } if basis_exclusions else {},
         "not_evidence_of": [
             "innovation, research intensity or product quality",
             "market share or revenue",
@@ -210,7 +247,11 @@ def build_compare(
             event_types=types,
             window=window,
             rule="Count of attributed regulatory records inside the effective window; shares use all tracked organizations in the same window as the denominator. "
-            + ("Attribution uses the current group, so records filed by an acquired predecessor entity are counted under the acquirer." if (basis or "current_group") == "current_group" else "Attribution uses the original-registrant basis: records filed by acquired predecessor entities are excluded.")
+            + (
+                "Attribution uses the current group, so records filed by an acquired predecessor entity are counted under the acquirer; the owner at event time is reported separately."
+                if (basis or "current_group") == "current_group"
+                else "Attribution uses the historical_owner_verified basis: only records where a verified relation with an effective date places control with this group at the event date are counted; excluded unknown-owner records are reported in basis_excluded_totals."
+            )
             + (" Review filter: " + str(review) + "." if review else ""),
         ),
         "snapshot": dataset.snapshot_ref(),
@@ -250,10 +291,8 @@ def _side(dataset: Dataset, key: str, events: list[Event], window: dict[str, Any
         })
     aggregations = aggregate(events)
     stats = dataset.org_stats.get(key)
-    predecessor_records = 0
-    for event in events:
-        if event.attribution_is_predecessor:
-            predecessor_records += 1
+    historical_counts = dataset.counts(events)
+    predecessor_records = int(historical_counts["historical_verified_predecessor"])
     return {
         "key": key,
         "display_name": org.display_name,
@@ -279,13 +318,21 @@ def _side(dataset: Dataset, key: str, events: list[Event], window: dict[str, Any
             "by_status": counts["by_verification"],
         },
         "historical_ownership": {
+            "records_in_window": counts["records"],
+            "verified_current_group": int(historical_counts["historical_verified_current_group"]),
+            "verified_predecessor": int(historical_counts["historical_verified_predecessor"]),
+            "unknown": int(historical_counts["historical_unknown"]),
+            "unknown_by_reason": dict(historical_counts["historical_by_reason"]),
             "records_from_predecessor_entities": predecessor_records,
-            "records_from_original_registrant": counts["records"] - predecessor_records,
             "verified_relations": len(
                 [relation for relation in ownership_module.ownership().for_organization(key) if relation.verified]
             ),
-            "note": "Under current-group attribution, records filed by an acquired predecessor entity are counted under this organization. Select the original-registrant basis to exclude them.",
-            "all_organization_records": stats.counts["records"] if stats else counts["records"],
+            "note": (
+                "Owner at event time: verified_current_group means a verified relation with an effective date places "
+                "control with this organization on the record's event date; verified_predecessor means it places control "
+                "elsewhere; unknown means no verified relation, no effective date, or no event date. Unknown records are "
+                "excluded from the historical_owner_verified basis and reported, never treated as zero."
+            ),
         },
         "aggregations": aggregations,
         "per_year_totals": years_rows,
@@ -374,15 +421,27 @@ def _warnings(
             + "). A difference in data confidence is not a difference in activity.",
             "org_keys": [side["key"] for side in sides],
         })
-    predecessor = [side["historical_ownership"]["records_from_predecessor_entities"] for side in sides]
-    if any(predecessor):
+    predecessor = [side["historical_ownership"]["verified_predecessor"] for side in sides]
+    unknown_owner = [side["historical_ownership"]["unknown"] for side in sides]
+    if any(predecessor) or any(unknown_owner):
         warnings.append({
-            "code": "historical_ownership_included",
+            "code": "historical_ownership_basis",
             "severity": "info",
-            "message": "Current-group attribution includes records filed by acquired predecessor entities ("
-            + "; ".join(side["display_name"] + " " + str(side["historical_ownership"]["records_from_predecessor_entities"]) for side in sides)
-            + "). Those records were filed by a different legal entity at the time. Use the original-registrant basis to exclude them.",
-            "org_keys": [side["key"] for side in sides if side["historical_ownership"]["records_from_predecessor_entities"]],
+            "message": (
+                "Owner at event time is not the same as current-group ownership: "
+                + "; ".join(
+                    side["display_name"]
+                    + " has "
+                    + str(side["historical_ownership"]["verified_predecessor"])
+                    + " record(s) whose owner at event time was a predecessor, and "
+                    + str(side["historical_ownership"]["unknown"])
+                    + " record(s) whose owner at event time is UNKNOWN"
+                    for side in sides
+                )
+                + ". Current-group counts include the predecessor-owned records; the historical_owner_verified basis excludes "
+                "them and reports the excluded unknown records instead of treating them as zero."
+            ),
+            "org_keys": [side["key"] for side in sides if side["historical_ownership"]["verified_predecessor"] or side["historical_ownership"]["unknown"]],
         })
     shares = []
     for side in sides:

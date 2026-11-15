@@ -32,7 +32,7 @@ network. The suite additionally derives its expectations from the API at run tim
 count is compared with `/api/events?…` for the same filters), so it does not hard-code a count that
 could silently drift.
 
-## Check matrix (local run, 16/16, executed twice)
+## Check matrix (local run, 17/17 after the PRODUCT-003 P0 fixes)
 
 | ID | What it proves | Result |
 |---|---|---|
@@ -52,6 +52,7 @@ could silently drift.
 | E2E-14 | a review decision is appended and every unrelated organization keeps its exact count | PASS |
 | E2E-15 | a withdrawn decision leaves both entries in the append-only history | PASS |
 | E2E-16 | review writes require the token (401 without/with a wrong token) and the public application has no review route (404/405) | PASS |
+| E2E-17 | a client cannot choose its actor kind (400 `reviewer_kind_forbidden`) and cannot create `human_reviewed` (403 `human_review_authority_unavailable`); `/api/review/capabilities` reports the boundary | PASS |
 
 Report and screenshots: `build/e2e/report.json`, `build/e2e/screenshots/` (CI artefact
 `medradar-e2e`). A copy of the screenshots used in this delivery is in `screenshots/`.

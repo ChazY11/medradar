@@ -178,10 +178,10 @@ export function ComparePage() {
             <div className="field">
               <span className="field-label">{bi("Ownership basis", "所有权口径")}</span>
               <select className="select" value={basis} onChange={(event) => setExtra("basis", event.target.value)}>
-                <option value="current_group">{bi("Current group (acquired entities included)", "当前集团（含被收购实体）")}</option>
-                <option value="original_registrant">{bi("Original registrant only", "仅原始申请主体")}</option>
+                <option value="current_group">{bi("Current group (default)", "当前集团（默认）")}</option>
+                <option value="historical_owner_verified">{bi("Owner at event time (verified only)", "事件发生时的所有者（仅已核验）")}</option>
               </select>
-              <div className="tiny muted">{bi("Current-group counts credit an acquired business to its present owner; original-registrant counts only records filed under the organization's own applicant identities.", "当前集团口径把被收购业务计入现所有者；原始申请主体口径只计入以本企业自身申请人名称提交的记录。")}</div>
+              <div className="tiny muted">{bi("Current group counts every record attributed to the organization today. Owner at event time counts only records where a verified relation with an effective date places control with this group on the event date; records whose owner is unknown are excluded and reported, not treated as zero.", "当前集团口径计入今天归属该企业的全部记录。事件发生时所有者口径只计入：有已核验关系与生效日期证明事件当日控制权属于该企业的记录；归属未知的记录被排除并单独报告，不会当作零。")}</div>
             </div>
             <div className="field">
               <span className="field-label">{bi("Only verified mappings", "仅已核验映射")}</span>

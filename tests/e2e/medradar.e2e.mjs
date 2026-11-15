@@ -289,7 +289,6 @@ async function main() {
         action: "unresolved",
         status: "unresolved",
         reviewer: "e2e",
-        reviewer_kind: "agent",
         evidence_type: "third_party_report",
         evidence: [{ evidence_type: "third_party_report", url: "https://example.invalid/e2e", title: "e2e evidence", accessed_at: "2026-01-01" }],
         note: "e2e decision: leave the cross-scope Guidant string unresolved until a reviewer assigns it",
@@ -323,7 +322,7 @@ async function main() {
       ? await fetch(ADMIN_BASE + "/api/review/decisions/" + uid + "/revoke", {
           method: "POST",
           headers: { "Content-Type": "application/json", "X-MedRadar-Review-Token": REVIEW_TOKEN },
-          body: JSON.stringify({ reviewer: "e2e", reviewer_kind: "agent", note: "e2e withdrawal" }),
+          body: JSON.stringify({ reviewer: "e2e", note: "e2e withdrawal" }),
         })
       : null;
     const historyAfter = await fetch(ADMIN_BASE + "/api/review/history/" + encodeURIComponent(applicant), {
@@ -369,6 +368,48 @@ async function main() {
     );
     } catch (error) {
       record("E2E-16", "review writes require the token and do not exist on the public application", false, String(error).slice(0, 160));
+    }
+
+    /* ---------------------------------------------------------------- E2E-17 reviewer authority */
+    try {
+    const forged = await fetch(ADMIN_BASE + "/api/review/decisions", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "X-MedRadar-Review-Token": REVIEW_TOKEN },
+      body: JSON.stringify({
+        applicant_name: applicant,
+        action: "approve",
+        status: "evidence_verified",
+        organization_key: "abbott",
+        reviewer: "forger",
+        reviewer_kind: "human",
+        evidence: [{ evidence_type: "regulator_record", url: "https://example.invalid/x" }],
+      }),
+    });
+    const forgedBody = await forged.json().catch(() => ({}));
+    const humanAttempt = await fetch(ADMIN_BASE + "/api/review/decisions", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "X-MedRadar-Review-Token": REVIEW_TOKEN },
+      body: JSON.stringify({
+        applicant_name: applicant,
+        action: "approve",
+        status: "human_reviewed",
+        organization_key: "abbott",
+        reviewer: "forger",
+        evidence: [{ evidence_type: "regulator_record", url: "https://example.invalid/x" }],
+      }),
+    });
+    const capabilities = await (await fetch(ADMIN_BASE + "/api/review/capabilities", { headers: { "X-MedRadar-Review-Token": REVIEW_TOKEN } })).json();
+    record(
+      "E2E-17",
+      "a client cannot choose its actor kind and cannot create human_reviewed",
+      forged.status === 400 &&
+        forgedBody?.error?.code === "reviewer_kind_forbidden" &&
+        humanAttempt.status === 403 &&
+        capabilities.human_review_authority_available === false,
+      "forged=" + forged.status + " human=" + humanAttempt.status + " capabilities=" + capabilities.human_review_authority_available,
+    );
+    } catch (error) {
+      record("E2E-17", "a client cannot choose its actor kind and cannot create human_reviewed", false, String(error).slice(0, 160));
     }
 
     /* ---------------------------------------------------------------- E2E-09 mobile */

@@ -32,15 +32,16 @@ The API, the UI, the CSV and the Markdown exports all compute these from one mod
 | `proposed` | machine-proposed or authoring-time spelling, no independent verification recorded | no |
 | `rule_verified` | a deterministic rule justifies acceptance: name identity (`name_identity_v1`) or lexical equivalence (`lexical_equivalence_v1`) | no |
 | `evidence_verified` | an independent documentary source is recorded for this exact decision (URL + access date + reviewer) | **yes** |
-| `human_reviewed` | a **named human** made or confirmed the decision (reviewer_kind = human) | **yes** |
+| `human_reviewed` | a named human made or confirmed the decision, backed by **server-derived human review authority** | **yes, but unavailable in this release** (see PRODUCT-003 P0-A: no server-side operator authentication exists, so the store refuses the status and the API returns 403) |
 | `rejected` | reviewed and determined not to belong to the organization | no |
 | `unresolved` | reviewed and not determinable from the recorded evidence | no |
 
 Rules:
 
 1. **A rule is not a reviewer.** `rule_verified` is reported separately and never counted as curated.
-2. **An agent cannot award `human_reviewed`.** The ledger rejects the write
-   (`ReviewError: human_reviewed requires reviewer_kind=human`), and there is a test for it.
+2. **An agent cannot award `human_reviewed`.** The actor kind is derived on the server, never from the
+   request; the request field is rejected and the store refuses the status. Historical claims are
+   downgraded at read time. See `docs/product/product_003/P0_FIXES.md`.
 3. **No silent bulk upgrades.** The PRODUCT-001 registry flag (`curated` / `pending_review`) is
    interpreted, not trusted: a `curated` entry whose basis is a corporate relation becomes
    `proposed` until evidence is recorded; a `pending_review` entry can only reach `rule_verified`
@@ -56,7 +57,9 @@ Internal tool. It is not part of the public site and cannot be reached from it.
 * **Start:** `python -m medradar.product.review serve --port 8788` (loopback only; refuses other hosts
   unless `--allow-remote` is passed explicitly and the operator provides their own boundary).
 * **Token:** generated on first start at `data/identity/review.token` (32 bytes, file mode 600),
-  required on every `/api/review/*` request as `X-MedRadar-Review-Token`. The browser keeps it in
+  required on every `/api/review/*` request as `X-MedRadar-Review-Token`. A shared token identifies no
+  person, which is why human review authority is unavailable and reported as such
+  (`GET /api/review/capabilities`). The browser keeps it in
   sessionStorage after the operator pastes it once: no cookie, so a cross-site request cannot carry it.
 * **Defence in depth:** the service rejects non-loopback clients even when proxied, rejects
   cross-origin writes, and the public application (`create_app`) contains **no write route at all**

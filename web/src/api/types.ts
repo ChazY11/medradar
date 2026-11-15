@@ -56,6 +56,10 @@ export interface Counts {
   rule_verified_share?: number | null;
   provisional_share?: number | null;
   by_verification?: Record<string, number>;
+  historical_verified_current_group?: number;
+  historical_verified_predecessor?: number;
+  historical_unknown?: number;
+  historical_by_reason?: Record<string, number>;
   by_source: SourceCount[];
   by_type: TypeCount[];
 }
@@ -80,6 +84,16 @@ export interface EventAttribution {
   reviewer_kind?: "human" | "agent" | null;
   provenance?: string | null;
   predecessor_entity?: boolean;
+  /** PRODUCT-003: who controlled the filing entity on the event date (UNKNOWN when unproven). */
+  historical_owner?: {
+    state: "verified" | "unknown";
+    reason: string;
+    reason_text: string;
+    organization_key: string | null;
+    display: string | null;
+    relation_id: string | null;
+    effective_from: string | null;
+  };
 }
 
 export interface EventRecord {
@@ -464,6 +478,8 @@ export interface CompareResponse {
   warnings: CompareWarning[];
   disclaimer: string;
   comparability?: CompareComparability;
+  basis_exclusions?: Record<string, { records_without_historical_basis: number; excluded_unknown_owner: number; excluded_predecessor_owner: number; counted_records: number }>;
+  basis_excluded_totals?: { excluded_unknown_owner: number; excluded_predecessor_owner: number };
   not_evidence_of?: string[];
   basis: Basis;
   snapshot: SnapshotRef;
@@ -770,6 +786,15 @@ export interface HistoricalSplitRow {
   caveat: string;
 }
 
+export interface HistoricalRecordLevel {
+  records_total: number;
+  verified_current_group: number;
+  verified_predecessor: number;
+  unknown: number;
+  by_reason: Record<string, number>;
+  note: string;
+}
+
 export interface OrganizationOwnership {
   schema: string;
   updated_at: string;
@@ -780,6 +805,7 @@ export interface OrganizationOwnership {
   unresolved_relation_count: number;
   covered_applicant_patterns: string[];
   historical_split: HistoricalSplitRow[];
+  record_level?: HistoricalRecordLevel;
   uncertainty: string;
 }
 
@@ -825,11 +851,17 @@ export interface CompareVerification {
 }
 
 export interface CompareHistoricalOwnership {
+  records_in_window: number;
+  verified_current_group: number;
+  verified_predecessor: number;
+  unknown: number;
+  unknown_by_reason: Record<string, number>;
   records_from_predecessor_entities: number;
-  records_from_original_registrant: number;
   verified_relations: number;
   note: string;
-  all_organization_records: number;
+  excluded_unknown_owner?: number;
+  excluded_predecessor_owner?: number;
+  records_without_historical_basis?: number;
 }
 
 export interface CompareComparability {

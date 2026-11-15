@@ -269,6 +269,16 @@ Every accepted applicant spelling carries one of `proposed`, `rule_verified`,
 `evidence_verified` relation requires at least one evidence entry with a URL. Unresolved relations
 must carry no evidence.
 
+### Owner at event time (PRODUCT-003 P0-B)
+
+Each attributed record carries `historical_owner`: `{state: verified|unknown, reason,
+organization_key, display, relation_id, effective_from}`. It is derived from a verified ownership
+relation with an effective date compared against the record's event date:
+`verified_current_group`, `verified_predecessor`, or `unknown` (`no_relation`,
+`no_effective_date`, `no_event_date`). `basis=historical_owner_verified` keeps only
+`verified_current_group` records and reports the excluded counts. The retired
+`original_registrant` basis is refused.
+
 ### Identity review ledger
 
 Append-only SQLite (`data/identity/review.db`, gitignored) with three tables: `review_decisions`

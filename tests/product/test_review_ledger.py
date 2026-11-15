@@ -8,7 +8,13 @@ from pathlib import Path
 import pytest
 from fastapi.testclient import TestClient
 
-from medradar.product.review.store import ReviewError, ReviewStore
+from medradar.product.review.store import (
+    ReviewError,
+    ReviewStore,
+    agent_authority,
+    human_authority,
+    HumanAuthorityUnavailable,
+)
 
 EVIDENCE = [{"evidence_type": "jurisdiction_filing", "url": "https://example.org/filing", "title": "test filing"}]
 
@@ -19,14 +25,31 @@ def _store(tmp_path: Path) -> ReviewStore:
 
 def test_agent_cannot_claim_human_review(tmp_path: Path) -> None:
     store = _store(tmp_path)
-    with pytest.raises(ReviewError):
+    with pytest.raises(HumanAuthorityUnavailable):
         store.append(
             applicant_name="Some Applicant",
             action="approve",
             status="human_reviewed",
             organization_key="medtronic",
             reviewer="agent:lead",
-            reviewer_kind="agent",
+            authority=agent_authority("agent:lead"),
+            evidence=EVIDENCE,
+        )
+    assert store.effective() == {}, "a refused decision must not be written"
+
+
+def test_human_authority_cannot_be_constructed(tmp_path: Path) -> None:
+    with pytest.raises(HumanAuthorityUnavailable):
+        human_authority(label="alice", method="self_asserted")
+    store = _store(tmp_path)
+    with pytest.raises(ReviewError):
+        store.append(
+            applicant_name="Some Applicant",
+            action="approve",
+            status="evidence_verified",
+            organization_key="medtronic",
+            reviewer="alice",
+            authority="human",  # type: ignore[arg-type]
             evidence=EVIDENCE,
         )
 
@@ -40,7 +63,7 @@ def test_evidence_verified_requires_evidence(tmp_path: Path) -> None:
             status="evidence_verified",
             organization_key="medtronic",
             reviewer="alice",
-            reviewer_kind="human",
+            authority=agent_authority("alice"),
             evidence=[],
         )
     decision = store.append(
@@ -49,7 +72,7 @@ def test_evidence_verified_requires_evidence(tmp_path: Path) -> None:
         status="evidence_verified",
         organization_key="medtronic",
         reviewer="alice",
-        reviewer_kind="human",
+        authority=agent_authority("alice"),
         evidence=EVIDENCE,
     )
     assert decision.evidence
@@ -63,7 +86,7 @@ def test_ledger_is_append_only_at_the_database_level(tmp_path: Path) -> None:
         status="evidence_verified",
         organization_key="medtronic",
         reviewer="alice",
-        reviewer_kind="human",
+        authority=agent_authority("alice"),
         evidence=EVIDENCE,
     )
     connection = sqlite3.connect(str(store.path))
@@ -84,7 +107,7 @@ def test_revocation_restores_the_previous_state(tmp_path: Path) -> None:
         status="rejected",
         organization_key=None,
         reviewer="alice",
-        reviewer_kind="human",
+        authority=agent_authority("alice"),
         note="not this company",
     )
     assert "some applicant" in store.effective()
@@ -94,7 +117,7 @@ def test_revocation_restores_the_previous_state(tmp_path: Path) -> None:
         status="unresolved",
         organization_key=None,
         reviewer="alice",
-        reviewer_kind="human",
+        authority=agent_authority("alice"),
         supersedes_uid=first.decision_uid,
         note="withdrawn",
     )
@@ -119,7 +142,7 @@ def test_decision_changes_only_the_target_organization(tmp_path: Path) -> None:
         status="rule_verified",
         organization_key="abbott",
         reviewer="agent:lead",
-        reviewer_kind="agent",
+        authority=agent_authority("agent:lead"),
         basis="name_identity_v1",
         note="the string names Abbott Vascular",
     )
@@ -145,7 +168,7 @@ def test_overlay_marks_unresolved_strings(tmp_path: Path) -> None:
         status="unresolved",
         organization_key=None,
         reviewer="alice",
-        reviewer_kind="human",
+        authority=agent_authority("alice"),
         note="joint venture",
     )
     dataset = load_dataset(review_db=store.path)
@@ -225,7 +248,6 @@ def test_admin_decision_is_visible_and_revocable(tmp_path: Path) -> None:
             "organization_key": "abbott",
             "basis": "name_identity_v1",
             "reviewer": "alice",
-            "reviewer_kind": "human",
             "note": "names Abbott Vascular",
         },
     )
@@ -235,7 +257,7 @@ def test_admin_decision_is_visible_and_revocable(tmp_path: Path) -> None:
     assert case["current"]["organization_key"] == "abbott"
     impact = client.get("/api/review/impact", headers=headers).json()
     assert impact["changed_organizations"]
-    revoke = client.post("/api/review/decisions/" + uid + "/revoke", headers=headers, json={"reviewer": "alice", "reviewer_kind": "human"})
+    revoke = client.post("/api/review/decisions/" + uid + "/revoke", headers=headers, json={"reviewer": "alice"})
     assert revoke.status_code == 200
     case_after = client.get("/api/review/case/" + applicant, headers=headers).json()
     assert case_after["current"]["organization_key"] is None

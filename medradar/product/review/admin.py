@@ -36,7 +36,13 @@ from fastapi.responses import JSONResponse, Response
 from ..api import HTTPExceptionCompat, create_app
 from ..dataset import PRODUCT_VERSION, load_dataset
 from .service import attribution_impact, build_case, build_queue, queue_summary
-from .store import ReviewError, ReviewStore
+from .store import (
+    HUMAN_REVIEW_AUTHORITY_AVAILABLE,
+    ReviewError,
+    ReviewStore,
+    WRITABLE_STATUSES,
+    agent_authority,
+)
 
 TOKEN_HEADER = "X-MedRadar-Review-Token"
 TOKEN_FILE = Path("data") / "identity" / "review.token"
@@ -186,6 +192,26 @@ def _register_review_routes(app: FastAPI, store: ReviewStore, expected_token: st
         headers = {"Content-Disposition": 'attachment; filename="medradar-review-decisions.json"'}
         return Response(content=json.dumps(payload, indent=1, ensure_ascii=False), media_type="application/json", headers=headers)
 
+    @app.get("/api/review/capabilities")
+    def review_capabilities(request: Request) -> Any:
+        """What this service is able to attest, given its authentication model."""
+        _authorize(request)
+        return {
+            "human_review_authority_available": HUMAN_REVIEW_AUTHORITY_AVAILABLE,
+            "human_review_reason": (
+                "Human review authority requires server-side operator authentication and authorisation. "
+                "This release has a single shared loopback token, which identifies no person and cannot prove "
+                "that the operator is a human, so human_reviewed cannot be written."
+            ),
+            "writable_statuses": list(WRITABLE_STATUSES),
+            "authority_kinds": ["agent"],
+            "actor_kind_policy": "server-derived: the request body cannot choose it; a reviewer_kind field is rejected",
+            "evidence_status_note": (
+                "evidence_verified is still available and still requires at least one recorded evidence reference. "
+                "It is the strongest status this service can issue."
+            ),
+        }
+
     # ---------------------------------------------------------------- write routes
     @app.post("/api/review/decisions")
     async def review_decide(request: Request) -> Any:
@@ -196,6 +222,14 @@ def _register_review_routes(app: FastAPI, store: ReviewStore, expected_token: st
             raise HTTPExceptionCompat(400, "bad_json", "request body must be JSON")
         if not isinstance(body, dict):
             raise HTTPExceptionCompat(400, "bad_json", "request body must be a JSON object")
+        if "reviewer_kind" in body:
+            raise HTTPExceptionCompat(
+                400,
+                "reviewer_kind_forbidden",
+                "reviewer_kind is decided by the server and must not be sent by a client",
+                "remove the field; the service records the actor kind it can actually attest (agent), and "
+                "human_reviewed is refused because the operator's human status cannot be verified",
+            )
         data = _dataset()
         applicant_name = str(body.get("applicant_name") or "").strip()
         if not applicant_name:
@@ -213,6 +247,17 @@ def _register_review_routes(app: FastAPI, store: ReviewStore, expected_token: st
             status = "rejected"
         if action == "unresolved":
             status = "unresolved"
+        if status == "human_reviewed":
+            raise HTTPExceptionCompat(
+                403,
+                "human_review_authority_unavailable",
+                "human_reviewed cannot be written by this service",
+                "the service cannot verify that the operator is a human; record evidence_verified with evidence, "
+                "or unresolved when the evidence is insufficient",
+            )
+        reviewer_label = str(body.get("reviewer") or "").strip()
+        if not reviewer_label:
+            raise HTTPExceptionCompat(400, "missing_reviewer", "reviewer (actor label) is required")
         try:
             decision = store.append(
                 applicant_name=applicant_name,
@@ -220,8 +265,8 @@ def _register_review_routes(app: FastAPI, store: ReviewStore, expected_token: st
                 status=status,
                 organization_key=organization_key or prior_organization,
                 prior_organization_key=prior_organization,
-                reviewer=str(body.get("reviewer") or "").strip(),
-                reviewer_kind=str(body.get("reviewer_kind") or "human").strip(),
+                reviewer=reviewer_label,
+                authority=agent_authority(reviewer_label, "local_service_token"),
                 basis=body.get("basis"),
                 evidence_type=body.get("evidence_type"),
                 evidence=body.get("evidence"),
@@ -252,14 +297,17 @@ def _register_review_routes(app: FastAPI, store: ReviewStore, expected_token: st
         target = decisions.get(decision_uid)
         if target is None:
             raise HTTPExceptionCompat(404, "decision_not_found", "no decision with uid " + decision_uid)
+        if "reviewer_kind" in body:
+            raise HTTPExceptionCompat(400, "reviewer_kind_forbidden", "reviewer_kind is decided by the server")
+        revoker = str(body.get("reviewer") or "").strip() or target.reviewer
         try:
             decision = store.append(
                 applicant_name=target.applicant_name,
                 action="revoke",
                 status="unresolved",
                 organization_key=None,
-                reviewer=str(body.get("reviewer") or "").strip() or target.reviewer,
-                reviewer_kind=str(body.get("reviewer_kind") or "human").strip(),
+                reviewer=revoker,
+                authority=agent_authority(revoker, "local_service_token"),
                 note=body.get("note") or "revoked",
                 supersedes_uid=decision_uid,
                 source="admin_api",
@@ -282,8 +330,16 @@ def _register_review_routes(app: FastAPI, store: ReviewStore, expected_token: st
             raise HTTPExceptionCompat(400, "bad_import", "expected a JSON object with a decisions list")
         imported = 0
         errors = []
+        ignored_fields = 0
         for item in decisions:
             if not isinstance(item, dict) or item.get("action") == "revoke":
+                continue
+            if "reviewer_kind" in item:
+                # A file cannot assert authority either. The value is ignored and the import states so.
+                ignored_fields += 1
+            label = str(item.get("reviewer") or "").strip()
+            if not label:
+                errors.append({"applicant_name": item.get("applicant_name"), "error": "reviewer label is required"})
                 continue
             try:
                 store.append(
@@ -292,8 +348,8 @@ def _register_review_routes(app: FastAPI, store: ReviewStore, expected_token: st
                     status=str(item.get("status") or "evidence_verified"),
                     organization_key=item.get("organization_key"),
                     prior_organization_key=item.get("prior_organization_key"),
-                    reviewer=str(item.get("reviewer") or ""),
-                    reviewer_kind=str(item.get("reviewer_kind") or "human"),
+                    reviewer=label,
+                    authority=agent_authority(label, "offline_import"),
                     basis=item.get("basis"),
                     evidence_type=item.get("evidence_type"),
                     evidence=item.get("evidence"),
@@ -304,7 +360,13 @@ def _register_review_routes(app: FastAPI, store: ReviewStore, expected_token: st
             except ReviewError as error:
                 errors.append({"applicant_name": item.get("applicant_name"), "error": str(error)})
         _invalidate()
-        return {"ok": True, "imported": imported, "errors": errors}
+        return {
+            "ok": True,
+            "imported": imported,
+            "errors": errors,
+            "ignored_reviewer_kind_fields": ignored_fields,
+            "authority_note": "imported decisions are recorded with server-derived authority=agent; a reviewer_kind in the file is ignored",
+        }
 
     @app.exception_handler(HTTPExceptionCompat)
     async def handle_http_error(request: Request, exc: "HTTPExceptionCompat") -> JSONResponse:

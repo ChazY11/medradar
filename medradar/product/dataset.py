@@ -45,8 +45,14 @@ REVIEW_FILTERS = {
 
 #: ownership basis accepted by filters and the comparison.
 OWNERSHIP_BASES = {
-    "current_group": "count every record attributed to the organization today, including acquired predecessor entities",
-    "original_registrant": "count only records filed under the organization's own applicant identities, excluding acquired predecessor entities",
+    "current_group": "count every record attributed to the organization today, including records filed by acquired predecessor entities",
+    "historical_owner_verified": "count only records where a verified ownership relation with an effective date shows this group controlled the applicant at the event date; records whose owner at event time is unknown are excluded and reported, never treated as zero",
+}
+
+#: The previous name for the second basis was misleading (it excluded predecessor names, which is not
+#: the same as restoring historical control). The API rejects it instead of silently reinterpreting it.
+RETIRED_OWNERSHIP_BASES = {
+    "original_registrant": "historical_owner_verified",
 }
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -190,6 +196,13 @@ class Event:
     attribution_reviewer_kind: str | None = None
     attribution_provenance: str | None = None
     attribution_is_predecessor: bool = False
+    # PRODUCT-003 P0-B: who controlled the filing entity at the event date (UNKNOWN when unproven).
+    historical_owner_state: str = "unknown"
+    historical_owner_reason: str = "no_relation"
+    historical_owner_display: str | None = None
+    historical_owner_organization_key: str | None = None
+    historical_owner_relation_id: str | None = None
+    historical_owner_effective_from: str | None = None
 
     @property
     def year(self) -> str | None:
@@ -226,6 +239,15 @@ class Event:
                 "reviewer_kind": self.attribution_reviewer_kind,
                 "provenance": self.attribution_provenance,
                 "predecessor_entity": self.attribution_is_predecessor,
+                "historical_owner": {
+                    "state": self.historical_owner_state,
+                    "reason": self.historical_owner_reason,
+                    "reason_text": ownership_module.HISTORICAL_REASONS.get(self.historical_owner_reason, ""),
+                    "organization_key": self.historical_owner_organization_key,
+                    "display": self.historical_owner_display,
+                    "relation_id": self.historical_owner_relation_id,
+                    "effective_from": self.historical_owner_effective_from,
+                },
             },
             "product_code": self.product_code,
             "category": self.category.to_public() if self.category else None,
@@ -272,6 +294,10 @@ def empty_counts() -> dict[str, Any]:
         "curated_share": None,
         "rule_verified_share": None,
         "provisional_share": None,
+        "historical_verified_current_group": 0,
+        "historical_verified_predecessor": 0,
+        "historical_unknown": 0,
+        "historical_by_reason": {},
         "by_verification": {},
         "by_source": [],
         "by_type": [],
@@ -334,9 +360,11 @@ class OrgStats:
     verified_records: int = 0
     rule_verified_records: int = 0
     proposed_records: int = 0
-    predecessor_records: int = 0
-    original_registrant_records: int = 0
     status_counts: dict[str, int] = field(default_factory=dict)
+    historical_verified_current_group: int = 0
+    historical_verified_predecessor: int = 0
+    historical_unknown: int = 0
+    historical_by_reason: dict[str, int] = field(default_factory=dict)
 
 
 @dataclass
@@ -433,6 +461,8 @@ class Dataset:
         by_source: dict[str, int] = {}
         by_type: dict[str, int] = {}
         by_verification: dict[str, int] = {}
+        historical_by_reason: dict[str, int] = {}
+        historical_current = historical_predecessor = historical_unknown = 0
         dated = undated = unmapped = verified = rule_verified = provisional = 0
         for event in events:
             by_source[event.source_id] = by_source.get(event.source_id, 0) + 1
@@ -451,6 +481,15 @@ class Dataset:
                 rule_verified += 1
             else:
                 provisional += 1
+            if event.organization_key:
+                reason = event.historical_owner_reason
+                historical_by_reason[reason] = historical_by_reason.get(reason, 0) + 1
+                if event.historical_owner_state != "verified":
+                    historical_unknown += 1
+                elif reason == "verified_current_group":
+                    historical_current += 1
+                else:
+                    historical_predecessor += 1
         total = len(events)
         # A share of nothing is UNKNOWN, never 0.0: the product must not show "0% verified"
         # for an organization that has no attributed records at all.
@@ -466,6 +505,10 @@ class Dataset:
             "curated_share": round(verified / total, 6) if total else None,
             "rule_verified_share": round(rule_verified / total, 6) if total else None,
             "provisional_share": round(provisional / total, 6) if total else None,
+            "historical_verified_current_group": historical_current,
+            "historical_verified_predecessor": historical_predecessor,
+            "historical_unknown": historical_unknown,
+            "historical_by_reason": {name: count for name, count in sorted(historical_by_reason.items())},
             "by_verification": {name: count for name, count in sorted(by_verification.items())},
             "by_source": [
                 {"source_id": source_id, "count": by_source[source_id]}
@@ -512,6 +555,12 @@ class Dataset:
         if review and review not in REVIEW_FILTERS:
             raise ValueError("unknown review filter: " + review + "; expected one of " + ", ".join(REVIEW_FILTERS))
         basis = (basis or "").strip() or None
+        if basis in RETIRED_OWNERSHIP_BASES:
+            raise ValueError(
+                "the basis " + basis + " was retired in PRODUCT-003: excluding predecessor applicant names is not the "
+                "same as restoring the owner at event time. Use historical_owner_verified, which requires a verified "
+                "relation with an effective date and reports excluded unknown records."
+            )
         if basis and basis not in OWNERSHIP_BASES:
             raise ValueError("unknown ownership basis: " + basis + "; expected one of " + ", ".join(OWNERSHIP_BASES))
         out: list[Event] = []
@@ -534,8 +583,9 @@ class Dataset:
                     continue
             if review is not None and not _matches_review(event, review):
                 continue
-            if basis == "original_registrant" and event.attribution_is_predecessor:
-                continue
+            if basis == "historical_owner_verified":
+                if event.historical_owner_state != "verified" or event.historical_owner_reason != "verified_current_group":
+                    continue
             if needle:
                 haystack = " ".join(
                     item for item in (event.device_name, event.applicant_name, event.official_id, event.title, event.product_code) if item
@@ -646,7 +696,9 @@ class Dataset:
             "ownership": {
                 "verified_relations": sum(1 for relation in ownership_module.ownership().relations if relation.verified),
                 "unresolved_relations": sum(1 for relation in ownership_module.ownership().relations if not relation.verified),
-                "policy": "Counts use CURRENT GROUP attribution unless a caller selects the original-registrant basis. Historical owners are only stated where an independent filing with an effective date is recorded.",
+                "policy": "Counts use CURRENT GROUP attribution by default. The historical_owner_verified basis counts only records where a verified ownership relation with an effective date places control with this group at the event date; records whose owner at event time is unknown are excluded and reported separately, never treated as zero.",
+                "bases": OWNERSHIP_BASES,
+                "retired_bases": RETIRED_OWNERSHIP_BASES,
                 "updated_at": ownership_module.ownership().updated_at,
             },
             "review_ledger": {
@@ -810,7 +862,22 @@ class Dataset:
                     "Strings that are not accepted are counted in the audit, never folded into this organization."
                 ),
             },
-            "ownership": ownership_module.organization_ownership_summary(key, events=self.org_events(key)),
+            "ownership": {
+                **ownership_module.organization_ownership_summary(key, events=self.org_events(key)),
+                "record_level": {
+                    "records_total": stats.counts["records"],
+                    "verified_current_group": stats.counts["historical_verified_current_group"],
+                    "verified_predecessor": stats.counts["historical_verified_predecessor"],
+                    "unknown": stats.counts["historical_unknown"],
+                    "by_reason": stats.counts["historical_by_reason"],
+                    "note": (
+                        "Owner at event time, per record. verified_current_group means a verified relation with an "
+                        "effective date shows this group controlled the applicant on the event date; "
+                        "verified_predecessor means it shows a different owner did; unknown means no verified relation, "
+                        "no effective date, or no event date. Unknown is reported, never counted as zero."
+                    ),
+                },
+            },
             "verification": {
                 "definition": "Verification status of the applicant mappings that produced the counts on this page. Curated means evidence-verified or human-reviewed; a deterministic rule is reported separately and is NOT review.",
                 "attributed_records": stats.counts["records"],
@@ -920,9 +987,11 @@ def _empty_org_stats(key: str) -> OrgStats:
         verified_records=0,
         rule_verified_records=0,
         proposed_records=0,
-        predecessor_records=0,
-        original_registrant_records=0,
         status_counts={},
+        historical_verified_current_group=0,
+        historical_verified_predecessor=0,
+        historical_unknown=0,
+        historical_by_reason={},
     )
 
 
@@ -1018,6 +1087,7 @@ def load_dataset(data_dir: Path | str | None = None, review_db: Path | str | Non
             basis = None
             review = None
         predecessor = bool(org_key) and ownership_module.is_predecessor_applicant(org_key, applicant)
+        owner = ownership_module.historical_owner(org_key, applicant, row.get("event_date")) if org_key else None
         code = (row.get("product_code") or "").upper() or None
         category = category_by_code.get(code) if code else None
         published = row.get("published_at")
@@ -1056,6 +1126,12 @@ def load_dataset(data_dir: Path | str | None = None, review_db: Path | str | Non
                 attribution_reviewer_kind=reviewer_kind,
                 attribution_provenance=provenance,
                 attribution_is_predecessor=predecessor,
+                historical_owner_state=owner.state if owner else "unknown",
+                historical_owner_reason=owner.reason if owner else "no_relation",
+                historical_owner_display=owner.display if owner else None,
+                historical_owner_organization_key=owner.organization_key if owner else None,
+                historical_owner_relation_id=owner.relation_id if owner else None,
+                historical_owner_effective_from=owner.effective_from if owner else None,
             )
         )
 
@@ -1155,9 +1231,11 @@ def load_dataset(data_dir: Path | str | None = None, review_db: Path | str | Non
             verified_records=int(row_counts["verified_records"]),
             rule_verified_records=int(row_counts["rule_verified_records"]),
             proposed_records=int(row_counts["provisional"]),
-            predecessor_records=sum(1 for event in rows if event.attribution_is_predecessor),
-            original_registrant_records=sum(1 for event in rows if not event.attribution_is_predecessor),
             status_counts=status_counts,
+            historical_verified_current_group=int(row_counts["historical_verified_current_group"]),
+            historical_verified_predecessor=int(row_counts["historical_verified_predecessor"]),
+            historical_unknown=int(row_counts["historical_unknown"]),
+            historical_by_reason=dict(row_counts["historical_by_reason"]),
         )
 
     dataset.warnings = registry.warnings[:]

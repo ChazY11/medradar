@@ -42,11 +42,16 @@ def test_predecessor_applicants_are_detected() -> None:
     assert ownership_module.is_predecessor_applicant("ge_healthcare", "GE MEDICAL SYSTEMS") is True
 
 
-def test_original_registrant_basis_excludes_predecessor_records(dataset) -> None:
+def test_historical_basis_excludes_unverified_owner_records(dataset) -> None:
     current = dataset.filter_events(org_keys=["ge_healthcare"])
-    original = dataset.filter_events(org_keys=["ge_healthcare"], basis="original_registrant")
-    assert len(original) <= len(current)
-    assert all(not event.attribution_is_predecessor for event in original)
+    historical = dataset.filter_events(org_keys=["ge_healthcare"], basis="historical_owner_verified")
+    assert len(historical) <= len(current)
+    # The basis keeps only records whose owner at event time is verified as this group. It is not a
+    # predecessor-name exclusion: a pre-spin GE record is excluded because the owner was GE, not
+    # because its applicant name matched a pattern.
+    assert all(event.historical_owner_state == "verified" for event in historical)
+    assert all(event.historical_owner_reason == "verified_current_group" for event in historical)
+    assert any(event.historical_owner_reason == "verified_predecessor" for event in current)
 
 
 def test_unresolved_relation_is_not_used_as_evidence() -> None:
