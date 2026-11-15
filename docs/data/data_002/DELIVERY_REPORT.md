@@ -4,7 +4,7 @@
 **Branch:** `feat/data-002-production-readiness`
 **Draft PR:** https://github.com/ChazY11/medradar/pull/51
 **Base:** `feat/data-001-continuous-pipeline` (stacked; PR #50 remains Draft)
-**Fixed SHA:** `<filled after final commit>`
+**Fixed SHA:** ``bb1ef34df3c15e2b1339432abce899eebea5e1f6``
 **Production deployment:** **NOT EXECUTED** — requires the approval in
 `DEPLOYMENT_CHANGE_REQUEST.md`.
 
