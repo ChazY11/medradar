@@ -13,8 +13,8 @@ Nothing in this delivery treats PR #46 code as merged or as `main`.
   Coverage at record, applicant-string and organization level, and returns UNKNOWN where the data
   cannot support a claim. Definitions ship with the numbers (`GET /api/metrics`) so the API, the UI,
   the CSV and the Markdown exports cannot disagree.
-* **Real status vocabulary.** 1,590 accepted spellings are now classified as `proposed` (1,199),
-  `rule_verified` (221), `evidence_verified` (170), `human_reviewed` (0), `rejected` (9). The
+* **Real status vocabulary.** 1,590 accepted spellings are now classified as `proposed` (1,212),
+  `rule_verified` (221), `evidence_verified` (157), `human_reviewed` (0), `rejected` (9). The
   PRODUCT-001 "curated" flag is interpreted, never trusted: a corporate-relation spelling stays
   provisional until documentary evidence exists. A rule is reported separately and is never called
   review.
@@ -60,9 +60,9 @@ Nothing in this delivery treats PR #46 code as merged or as `main`.
 ## 2. Real problems fixed (not features)
 
 1. **A number that read as accuracy was not accuracy.** 99.92% -> Attributed Share, with Curated
-   Share (9.85%) and Precision (UNKNOWN) reported separately everywhere.
-2. **"Curated" in the registry was not evidence.** It is now derived: 221 rule-verified, 170
-   evidence-verified, 1,199 proposed, 0 human-reviewed - and the pending-proposal share is visible
+   Share (9.79%) and Precision (UNKNOWN) reported separately everywhere.
+2. **"Curated" in the registry was not evidence.** It is now derived: 221 rule-verified, 157
+   evidence-verified, 1,212 proposed, 0 human-reviewed - and the pending-proposal share is visible
    per organization instead of being a footnote.
 3. **The gzip exception was too broad.** Any GREEN hash-declared binary (including ELF/ZIP/SQLite)
    anywhere could pass. Now scoped by source, path, kind, size and hash, with counter-examples.
@@ -80,17 +80,17 @@ Nothing in this delivery treats PR #46 code as merged or as `main`.
 | Item | Value |
 |---|---|
 | Accepted spellings | 1,590 |
-| Status split | proposed 1,199 / rule_verified 221 / evidence_verified 170 / human_reviewed 0 / rejected 9 |
+| Status split | proposed 1,212 / rule_verified 221 / evidence_verified 157 / human_reviewed 0 / rejected 9 |
 | Attributed records | 91,384 of 91,457 (99.92%) |
-| Evidence-verified or human-reviewed records | 8,998 (**9.85%**) |
+| Evidence-verified or human-reviewed records | 8,944 (**9.79%**) |
 | Rule-verified records | 40,339 (**44.14%**) |
-| Provisional records | 42,047 (**46.01%**) |
-| Queue awaiting review | 1,172 strings / 42,050 records |
+| Provisional records | 42,101 (**46.07%**) |
+| Queue awaiting review | 1,186 strings / 42,121 records |
 | Pre-registered validation sample | 38 cases, 13 decidable, 13 supported, 0 contradicted, 25 undecidable |
 | Precision estimate (decidable only) | 100%, 95% CI **0.772-1.000**, reviewer = agent |
 | Human review completed | **no** |
 
-Honest headline: **the product can now prove how much of its attribution is verified (9.85%) and it
+Honest headline: **the product can now prove how much of its attribution is verified (9.79%) and it
 cannot yet claim an accuracy figure; a human sample review is the next step, and the protocol,
 sample and worksheet are ready.**
 
@@ -154,11 +154,11 @@ the four verified relations.
 
 **P0 (blocking a trustworthy claim, not the build):**
 1. Attribution precision cannot be stated until a human sample review is completed. Any external
-   communication must use "9.85% evidence-verified" and never a % accuracy figure.
+   communication must use "9.79% evidence-verified" and never a % accuracy figure.
 
 **P1:**
 1. 46% of attributed records rest on no rule and no evidence; the review queue is the path out and it
-   is large (1,172 strings / 42,050 records).
+   is large (1,186 strings / 42,121 records).
 2. Corporate-relation mappings (subsidiary/division/historical) have no evidence for 49 spellings;
    they are invisible to a user unless they read the verification block.
 3. Review service authentication is a single shared token; fine for a local alpha, not for a team.
@@ -168,7 +168,7 @@ the four verified relations.
 
 1. **Evidence pipeline for corporate relations.** Automate the jurisdiction-filing extraction
    (already a script) into a reviewed registry so the 49 corporate-relation spellings and the other 54
-   organizations become decidable; this is the highest-leverage path from 9.85% toward a defensible
+   organizations become decidable; this is the highest-leverage path from 9.79% toward a defensible
    curated share.
 2. **Human review round on the fixed sample.** The protocol, sample file, decision rule and UI exist;
    one analyst-day of review turns G3 from PARTIAL into a real, quoted precision estimate (and the

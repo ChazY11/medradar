@@ -24,13 +24,13 @@ the JSON file is authoritative (it is generated, this file is written around it)
 |---|---|
 | Collected records | 91,457 |
 | Attributed records | 91,384 (Attributed Share **99.92%**) |
-| Evidence-verified or human-reviewed | 8,998 (**Curated Share 9.85%**) |
+| Evidence-verified or human-reviewed | 8,944 (**Curated Share 9.79%**) |
 | Rule-verified but not reviewed | 40,339 (**Rule-verified Share 44.14%**) |
-| Provisional (no rule, no evidence) | 42,047 (**Provisional Share 46.01%**) |
+| Provisional (no rule, no evidence) | 42,101 (**Provisional Share 46.07%**) |
 | Human-reviewed | **0** |
 | Applicant strings observed / accepted spellings | 1,563 / 1,590 |
 | Organizations with records | 59 of 59 |
-| Median organization Curated Share | 0.0% (only organizations with a collected jurisdiction filing have verified records) |
+| Median organization Curated Share | 0.0% (56 of 59 organizations have no evidence-verified record) (only organizations with a collected jurisdiction filing have verified records) |
 
 These numbers are produced by `medradar/product/metrics.py` and served by `GET /api/metrics`; the
 tables here are a copy for review.
@@ -86,7 +86,7 @@ inflated by absence of evidence.
    organizations with collected filings), no wrong attribution was found.
 3. That is **not** a product-level precision claim: the decidable subset over-represents
    organizations with good filings, the interval is wide (0.77-1.00), and the reviewer is an agent.
-4. The correct statement for a user today is: **"9.85% of attributed records rest on independent
+4. The correct statement for a user today is: **"9.79% of attributed records rest on independent
    evidence; attribution accuracy has not yet been established by an independent human review."**
 5. Next step to close G3 fully: a human analyst repeats the same fixed sample (the worksheet and the
    decision rule are ready) and, where the answer is undecidable, adds a named independent source.

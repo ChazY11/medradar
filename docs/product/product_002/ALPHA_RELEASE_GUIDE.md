@@ -56,7 +56,7 @@ server command; nothing else changes.
 ## 5. Demo walkthrough with real data (15 minutes)
 
 1. **Overview** - read the five metrics. Note that Attributed Share (99.92%) and Curated Share
-   (9.85%) are different answers to different questions; the "most records are provisional" banner
+   (9.79%) are different answers to different questions; the "most records are provisional" banner
    says so in place.
 2. **Search "Medtronic"** - open the organization page. The yellow banner states that part of the
    counts rests on unverified mappings; the attribution-confidence block gives the exact split.
@@ -114,7 +114,7 @@ right cause.
   investment advice product.
 * Data is a frozen openFDA snapshot; it is not a live feed. Counts are regulatory records, not
   products, devices or innovations.
-* Attribution is only 9.85% independently verified at record level; treat unverified counts as
+* Attribution is only 9.79% independently verified at record level; treat unverified counts as
   working assumptions.
 * No claim of external user validation: no external alpha participant has tested this release yet
   (see `USER_TEST_TASKS.md`).

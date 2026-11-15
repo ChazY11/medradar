@@ -5,8 +5,8 @@ this file explains why.
 
 ## Data and attribution
 
-1. **Attributed Share is not accuracy.** 99.92% of collected records are attributed; only 9.85% rest
-   on independent evidence or a human decision. 46.01% rest on no rule and no evidence at all.
+1. **Attributed Share is not accuracy.** 99.92% of collected records are attributed; only 9.79% rest
+   on independent evidence or a human decision. 46.07% rest on no rule and no evidence at all.
 2. **No human review has happened.** `human_reviewed` count is 0. The review workspace and the ledger
    exist and are tested, but a named human has not yet recorded a decision in this release.
 3. **Attribution precision is not reliably estimated.** The pre-registered sample is 66% undecidable
