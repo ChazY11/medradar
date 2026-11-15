@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import {
   getReviewToken,
+  reviewCapabilities,
   reviewCase,
   reviewDecide,
   reviewImpact,
@@ -349,10 +350,10 @@ export function ReviewPage() {
                 setBusy(false);
               }
             }}
-            onRevoke={async (uid, reviewer, reviewerKind, note) => {
+            onRevoke={async (uid, reviewer, note) => {
               setBusy(true);
               try {
-                await reviewRevoke(uid, { reviewer, reviewer_kind: reviewerKind, note });
+                await reviewRevoke(uid, { reviewer, note });
                 setMessage(bi("Decision withdrawn (append-only): ", "已撤回判定（只可追加）：") + uid.slice(0, 8));
                 refresh();
               } catch (caught) {
@@ -412,16 +413,15 @@ function CasePanel({
     evidence?: ReviewEvidence[];
     note?: string | null;
     reviewer: string;
-    reviewer_kind: string;
   }) => Promise<void>;
-  onRevoke: (uid: string, reviewer: string, reviewerKind: string, note: string) => Promise<void>;
+  onRevoke: (uid: string, reviewer: string, note: string) => Promise<void>;
 }) {
   const { bi, t } = useI18n();
+  const capabilities = useAsync(() => reviewCapabilities(), []);
   const [action, setAction] = useState("approve");
   const [decisionStatus, setDecisionStatus] = useState("evidence_verified");
   const [organizationKey, setOrganizationKey] = useState("");
   const [reviewer, setReviewer] = useState("");
-  const [reviewerKind, setReviewerKind] = useState("human");
   const [evidenceType, setEvidenceType] = useState("regulator_record");
   const [evidenceUrl, setEvidenceUrl] = useState("");
   const [evidenceTitle, setEvidenceTitle] = useState("");
@@ -466,7 +466,6 @@ function CasePanel({
       evidence,
       note: note.trim() || null,
       reviewer: reviewer.trim(),
-      reviewer_kind: reviewerKind,
     });
 
   return (
@@ -584,7 +583,14 @@ function CasePanel({
           </>
         ) : null}
 
-        <SectionHead title={bi("Record a decision", "记录判定")} note={bi("Evidence is required for evidence-verified; the human-reviewed status is only available to a human reviewer.", "证据核验必须提供证据；人工复核状态仅限人工复核者使用。")} />
+        <SectionHead title={bi("Record a decision", "记录判定")} note={bi("Evidence is required for evidence-verified.", "证据核验必须提供证据。")} />
+        <Banner tone="info" title={bi("Human review is not available in this release", "本版本不提供人工复核状态")}>
+          {bi(
+            "The service records the server-derived actor kind (agent) and refuses human_reviewed, because it cannot verify that the operator is a human. A decision is evidence-verified with recorded evidence, or unresolved. The actor kind is not something a client may declare.",
+            "本服务只记录服务端判定的操作者类别（agent），并拒绝 human_reviewed，因为无法验证操作者是否为人类。判定要么附证据成为“证据核验”，要么标记为“无法判断”。操作者类别不能由客户端声明。",
+          )}
+          {capabilities.data ? <div className="small muted" style={{ marginTop: 4 }}>{capabilities.data.human_review_reason}</div> : null}
+        </Banner>
         <div className="row wrap" style={{ gap: 10, alignItems: "flex-end" }}>
           <label className="field">
             <span className="field-label">{bi("Action", "操作")}</span>
@@ -600,7 +606,6 @@ function CasePanel({
             <select className="select" value={decisionStatus} onChange={(event) => setDecisionStatus(event.target.value)} disabled={action === "reject" || action === "unresolved"}>
               <option value="rule_verified">rule_verified</option>
               <option value="evidence_verified">evidence_verified</option>
-              <option value="human_reviewed">human_reviewed</option>
             </select>
           </label>
           <label className="field" style={{ minWidth: 220 }}>
@@ -610,13 +615,6 @@ function CasePanel({
           <label className="field">
             <span className="field-label">{bi("Reviewer", "复核者")}</span>
             <input className="input" value={reviewer} onChange={(event) => setReviewer(event.target.value)} placeholder="name" />
-          </label>
-          <label className="field">
-            <span className="field-label">{bi("Reviewer is", "复核者类型")}</span>
-            <select className="select" value={reviewerKind} onChange={(event) => setReviewerKind(event.target.value)}>
-              <option value="human">{bi("a human", "人工")}</option>
-              <option value="agent">{bi("an AI agent", "AI 代理")}</option>
-            </select>
           </label>
         </div>
 
@@ -681,7 +679,10 @@ function CasePanel({
                   <td className="small">{entry.action}</td>
                   <td className="small">{entry.status}</td>
                   <td className="small">{entry.organization_key ?? "-"}</td>
-                  <td className="small">{entry.reviewer} ({entry.reviewer_kind})</td>
+                  <td className="small">
+                    {entry.reviewer} ({entry.authority_kind ?? entry.reviewer_kind}
+                    {entry.status_downgraded ? " - claim downgraded" : ""})
+                  </td>
                   <td className="small">{(entry.note ?? "").slice(0, 80)}</td>
                   <td>
                     {entry.action !== "revoke" && !entry.revoked ? (
@@ -689,7 +690,7 @@ function CasePanel({
                         type="button"
                         className="btn sm"
                         disabled={busy}
-                        onClick={() => void onRevoke(entry.decision_uid, reviewer.trim() || entry.reviewer, reviewerKind, note.trim() || "withdrawn")}
+                        onClick={() => void onRevoke(entry.decision_uid, reviewer.trim() || entry.reviewer, note.trim() || "withdrawn")}
                       >
                         {bi("Withdraw", "撤回")}
                       </button>

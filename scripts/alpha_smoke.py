@@ -124,7 +124,6 @@ def main() -> int:
             "status": "evidence_verified",
             "organization_key": "abbott",
             "reviewer": "smoke-reviewer",
-            "reviewer_kind": "human",
             "evidence_type": "regulator_record",
             "evidence": [{"evidence_type": "regulator_record", "url": case["sample_records"][0]["official_url"], "title": "openFDA record naming the applicant", "quote": "applicant: " + applicant}],
             "note": "the applicant string names Abbott Vascular (dba Guidant Corporation)",
@@ -143,7 +142,7 @@ def main() -> int:
         len(case_after["history"]) == 1 and case_after["history"][0]["decision_uid"] == uid,
         str(len(case_after["history"])) + " history entry",
     )
-    revoke = admin.post("/api/review/decisions/" + uid + "/revoke", headers=headers, json={"reviewer": "smoke-reviewer", "reviewer_kind": "human", "note": "smoke test withdrawal"})
+    revoke = admin.post("/api/review/decisions/" + uid + "/revoke", headers=headers, json={"reviewer": "smoke-reviewer", "note": "smoke test withdrawal"})
     case_restored = admin.get("/api/review/case/" + applicant, headers=headers).json()
     check(
         "T3-6",

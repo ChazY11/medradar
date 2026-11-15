@@ -65,8 +65,9 @@ server command; nothing else changes.
 4. **Regulatory events tab** - filter to recalls, open a row, read the evidence drawer: official ID,
    official FDA link, applicant string, verification status.
 5. **Compare Medtronic vs GE HealthCare** - read the comparability verdict, then switch
-   "Ownership basis" to "Original registrant only" and watch GE HealthCare drop to 0 records in the
-   window: every record predates the 2023 spin-off. Switch back.
+   "Ownership basis" to "Owner at event time (verified only)": the panel states how many records were
+   excluded because a predecessor owned them on the event date, and how many because the owner is
+   UNKNOWN. A lower count is thin evidence, not low activity. Switch back.
 6. **Export** - download the Markdown report and the CSV; both state the basis, the verification
    table and the disclaimer.
 7. **Chinese interface** - click 中文; the metrics, warnings and glossary are translated, not just

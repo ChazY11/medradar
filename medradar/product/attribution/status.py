@@ -26,8 +26,10 @@ Statuses (ordered from weakest to strongest claim):
     URL, an access date and the reviewer identity/kind that recorded it.
 
 `human_reviewed`
-    A named human reviewer made or confirmed the decision. Only a review-ledger decision whose
-    `reviewer_kind` is `human` can produce this status. An AI agent can never award it to itself.
+    A named human reviewer made or confirmed the decision. It requires server-derived *human review
+    authority*. This release has no server-side operator authentication, so the capability is
+    reported unavailable and the store refuses to write the status; legacy claims are downgraded at
+    read time. An AI agent can never award it to itself.
 
 `rejected`
     Reviewed and determined NOT to belong to the organization (a different business, an unrelated

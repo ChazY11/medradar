@@ -25,6 +25,7 @@ from .compare import build_compare
 from .dataset import (
     EVENT_TYPE_ORDER,
     OWNERSHIP_BASES,
+    RETIRED_OWNERSHIP_BASES,
     PRODUCT_NAME,
     PRODUCT_VERSION,
     REVIEW_FILTERS,
@@ -100,6 +101,22 @@ class DatasetHolder:
         return "ok", None
 
 
+def raise_for_basis(basis: str | None) -> None:
+    if not basis:
+        return
+    if basis in RETIRED_OWNERSHIP_BASES:
+        raise HTTPExceptionCompat(
+            400,
+            "retired_basis",
+            "the basis " + basis + " was retired in PRODUCT-003",
+            "it excluded predecessor applicant names, which is not the same as restoring the owner at event time; "
+            "use " + RETIRED_OWNERSHIP_BASES[basis] + ", which requires a verified relation with an effective date and "
+            "reports the excluded unknown records",
+        )
+    if basis not in OWNERSHIP_BASES:
+        raise HTTPExceptionCompat(400, "bad_basis", "basis must be one of " + ", ".join(OWNERSHIP_BASES))
+
+
 def _error(status_code: int, code: str, message: str, hint: str | None = None) -> JSONResponse:
     body: dict[str, Any] = {"error": {"code": code, "message": message}}
     if hint:
@@ -167,7 +184,11 @@ def _events_payload(dataset: Dataset, applied: dict[str, str], org_keys: list[st
             event_types=event_types or list(EVENT_TYPE_ORDER),
             window=window,
             rule="Count of attributed regulatory records matching the filters; "
-            + ("current-group attribution (acquired predecessor entities included)" if basis != "original_registrant" else "original-registrant attribution (acquired predecessor entities excluded)"),
+            + (
+                "current-group attribution (records filed by an acquired predecessor are counted under the current group; owner at event time is reported per record)"
+                if basis != "historical_owner_verified"
+                else "historical-owner basis (only records where a verified relation with an effective date places control with this group at the event date)"
+            ),
         ),
         "ownership_basis": basis or "current_group",
         "review_filter": review or "any",
@@ -286,8 +307,7 @@ def create_app(
             raise HTTPExceptionCompat(400, "bad_sort", "sort must be one of event_date_desc, event_date_asc, official_id_asc")
         if review and review not in REVIEW_FILTERS:
             raise HTTPExceptionCompat(400, "bad_review", "review must be one of " + ", ".join(REVIEW_FILTERS))
-        if basis and basis not in OWNERSHIP_BASES:
-            raise HTTPExceptionCompat(400, "bad_basis", "basis must be one of " + ", ".join(OWNERSHIP_BASES))
+        raise_for_basis(basis)
         applied = {
             "org": ",".join(org_keys),
             "types": ",".join(event_types),
@@ -349,8 +369,7 @@ def create_app(
             event_types = _parse_event_types(types)
         except ValueError as error:
             raise HTTPExceptionCompat(400, "bad_request", str(error))
-        if basis and basis not in OWNERSHIP_BASES:
-            raise HTTPExceptionCompat(400, "bad_basis", "basis must be one of " + ", ".join(OWNERSHIP_BASES))
+        raise_for_basis(basis)
         if review and review not in REVIEW_FILTERS:
             raise HTTPExceptionCompat(400, "bad_review", "review must be one of " + ", ".join(REVIEW_FILTERS))
         try:
@@ -383,8 +402,7 @@ def create_app(
             raise HTTPExceptionCompat(400, "bad_request", str(error))
         if review and review not in REVIEW_FILTERS:
             raise HTTPExceptionCompat(400, "bad_review", "review must be one of " + ", ".join(REVIEW_FILTERS))
-        if basis and basis not in OWNERSHIP_BASES:
-            raise HTTPExceptionCompat(400, "bad_basis", "basis must be one of " + ", ".join(OWNERSHIP_BASES))
+        raise_for_basis(basis)
         org_keys = _parse_csv(org)
         unknown = [key for key in org_keys if data.organization(key) is None]
         if unknown:
@@ -412,8 +430,7 @@ def create_app(
         keys = _parse_csv(orgs)
         if not keys:
             raise HTTPExceptionCompat(400, "missing_orgs", "orgs is required")
-        if basis and basis not in OWNERSHIP_BASES:
-            raise HTTPExceptionCompat(400, "bad_basis", "basis must be one of " + ", ".join(OWNERSHIP_BASES))
+        raise_for_basis(basis)
         if review and review not in REVIEW_FILTERS:
             raise HTTPExceptionCompat(400, "bad_review", "review must be one of " + ", ".join(REVIEW_FILTERS))
         try:

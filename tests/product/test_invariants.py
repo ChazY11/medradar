@@ -126,11 +126,14 @@ def test_compare_basis_switch_changes_counts_consistently(dataset) -> None:
     from medradar.product.compare import build_compare
 
     current = build_compare(dataset, ["medtronic", "ge_healthcare"])
-    original = build_compare(dataset, ["medtronic", "ge_healthcare"], basis="original_registrant")
+    historical = build_compare(dataset, ["medtronic", "ge_healthcare"], basis="historical_owner_verified")
     current_ge = next(side for side in current["organizations"] if side["key"] == "ge_healthcare")
-    original_ge = next(side for side in original["organizations"] if side["key"] == "ge_healthcare")
-    assert original_ge["counts"]["records"] <= current_ge["counts"]["records"]
-    assert original["comparability"]["ownership_basis"] == "original_registrant"
+    historical_ge = next(side for side in historical["organizations"] if side["key"] == "ge_healthcare")
+    assert historical_ge["counts"]["records"] <= current_ge["counts"]["records"]
+    assert historical["comparability"]["ownership_basis"] == "historical_owner_verified"
+    # Excluded records are accounted for, never silently dropped.
+    excluded = historical["basis_excluded_totals"]
+    assert excluded["excluded_predecessor_owner"] + excluded["excluded_unknown_owner"] > 0
 
 
 def test_missing_snapshot_is_an_error_not_zero_activity(tmp_path: Path) -> None:

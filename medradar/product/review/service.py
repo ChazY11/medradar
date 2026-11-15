@@ -197,7 +197,8 @@ def build_case(dataset: Any, store: ReviewStore, applicant_name: str) -> dict[st
         "history": [item.to_public() for item in history],
         "queue_hints": {
             "sort_key_records": len(events),
-            "reviewer_kinds": ["human", "agent"],
+            "reviewer_kinds": ["agent"],
+            "human_review_authority_available": False,
             "allowed_statuses": list(status_module.DECISION_STATUSES),
         },
     }

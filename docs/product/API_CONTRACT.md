@@ -428,8 +428,11 @@ recorded `evidence` (type, URL, title, access date, quote). Unresolved relations
 * `review` on `/api/events`, `/api/organizations/{key}/events`, `/api/compare`, CSV and Markdown
   exports: `curated` (alias `verified`), `rule_verified`, `provisional` (alias `pending_review`),
   `unverified`, `any`. Unknown values return 400.
-* `basis` on the same routes: `current_group` (default) or `original_registrant`. Unknown values
-  return 400. The effective basis is echoed in the payload and in every export header.
+* `basis` on the same routes: `current_group` (default) or `historical_owner_verified` (owner at event
+  time, from a verified relation with an effective date). Unknown values return 400; the retired
+  `original_registrant` returns `400 retired_basis` with a hint. The effective basis is echoed in the
+  payload and in every export header, and the historical basis reports excluded records in
+  `basis_excluded_totals`.
 
 ### Comparison additions
 
@@ -451,7 +454,8 @@ symmetry, verdict), `not_evidence_of` (explicit list), per-side `verification` a
 | `GET /api/review/case/{applicant}` | verbatim string, current mapping, risk flags, candidates, FDA records, ownership relations, history |
 | `GET /api/review/history/{applicant}` | append-only decision history |
 | `GET /api/review/impact` | which organizations changed, and how many did not |
-| `POST /api/review/decisions` | append a decision (approve/reassign/reject/unresolved) |
+| `GET /api/review/capabilities` | what the service can attest: `human_review_authority_available: false`, writable statuses, actor-kind policy |
+| `POST /api/review/decisions` | append a decision (approve/reassign/reject/unresolved); `reviewer_kind` in the body is rejected 400, `human_reviewed` is refused 403 |
 | `POST /api/review/decisions/{uid}/revoke` | withdraw a decision (append-only) |
 | `GET /api/review/export`, `POST /api/review/import` | offline review file |
 

@@ -91,16 +91,17 @@ def test_registry_status_counts_are_consistent() -> None:
     assert counts[status_module.HUMAN_REVIEWED] == 0, "no human reviewer has recorded a decision in this release"
 
 
-def test_overlay_can_set_human_reviewed_only_with_a_human_reviewer() -> None:
+def test_overlay_cannot_claim_human_review_without_authority() -> None:
+    """A ledger file is not a human authority: a human_reviewed claim degrades to evidence_verified."""
     applicant = "Medtronic Neuromodulation"
     evidence = json.dumps([{"evidence_type": "regulator_record", "url": "https://example.org/x"}])
-    human = registry_with_overlay(
-        ((applicant.casefold(), "medtronic", "approve", "human_reviewed", "alice", "human", evidence, "uid-1", "checked", applicant),)
+    agent_claim = registry_with_overlay(
+        ((applicant.casefold(), "medtronic", "approve", "human_reviewed", "agent:lead", "agent", evidence, "uid-1", "checked", applicant),)
     )
-    decision, _ = human.decide(applicant)
-    assert decision is not None and decision.status == status_module.HUMAN_REVIEWED
-    assert decision.verified is True
-    assert decision.reviewer_kind == "human"
+    decision, _ = agent_claim.decide(applicant)
+    assert decision is not None
+    assert decision.status == status_module.EVIDENCE_VERIFIED, "an agent claim must never survive as human_reviewed"
+    assert decision.status != status_module.HUMAN_REVIEWED
 
 
 def test_lexical_equivalence_is_rule_verified_not_reviewed() -> None:

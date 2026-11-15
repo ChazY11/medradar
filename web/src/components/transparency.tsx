@@ -397,15 +397,43 @@ export function OrgTransparency({ verification, ownership }: { verification?: Or
           <Banner tone="info" title={bi("Counting basis on this page: current group", "本页统计口径：当前集团")}>
             {ownership.current_group_policy}
           </Banner>
-          <Grid cols={3}>
+          <Grid cols={4}>
             <MetricTile label={bi("Verified relations", "已核验关系")} value={ownership.verified_relation_count} />
             <MetricTile label={bi("Unresolved relations", "未解决关系")} value={ownership.unresolved_relation_count} />
             <MetricTile
-              label={bi("Predecessor records", "前身实体记录")}
-              value={formatNumber(ownership.historical_split.reduce((sum, row) => sum + row.records_before_effective_date, 0))}
-              sub={bi("filed before the group relation took effect", "在集团关系生效之前提交")}
+              label={bi("Owner at event time: this group", "事件发生时所有者：本集团")}
+              value={formatNumber(ownership.record_level?.verified_current_group ?? 0)}
+              sub={bi("of " + formatNumber(ownership.record_level?.records_total ?? 0) + " attributed records", "占 " + formatNumber(ownership.record_level?.records_total ?? 0) + " 条已归属记录")}
+            />
+            <MetricTile
+              label={bi("Owner at event time: UNKNOWN", "事件发生时所有者：未知")}
+              value={formatNumber(ownership.record_level?.unknown ?? 0)}
+              sub={bi("no verified relation, no effective date, or no event date", "无已核验关系、无生效日期或无事件日期")}
             />
           </Grid>
+          {ownership.record_level ? (
+            <Banner tone="info" title={bi("Counts on this page use the current group", "本页计数采用当前集团口径")}>
+              {ownership.record_level.note}
+              <div className="small" style={{ marginTop: 4 }}>
+                {bi(
+                  "In this organization's records: " +
+                    ownership.record_level.verified_current_group +
+                    " were controlled by this group on the event date, " +
+                    ownership.record_level.verified_predecessor +
+                    " were controlled by a predecessor, and " +
+                    ownership.record_level.unknown +
+                    " have an UNKNOWN owner at event time. UNKNOWN is never counted as zero.",
+                  "该企业记录中：" +
+                    ownership.record_level.verified_current_group +
+                    " 条在事件当日由本集团控制，" +
+                    ownership.record_level.verified_predecessor +
+                    " 条由前身实体控制，" +
+                    ownership.record_level.unknown +
+                    " 条在事件当日的所有者未知。未知从不按零处理。",
+                )}
+              </div>
+            </Banner>
+          ) : null}
           {ownership.historical_split.length ? (
             <table className="data-table">
               <thead>
@@ -516,7 +544,13 @@ export function CompareTransparency({ compare }: { compare: CompareResponse }) {
               {bi("Provisional", "暂定")}
             </th>
             <th scope="col" className="num">
-              {bi("Predecessor records", "前身实体记录")}
+              {bi("Owner = this group", "所有者=本集团")}
+            </th>
+            <th scope="col" className="num">
+              {bi("Owner = predecessor", "所有者=前身")}
+            </th>
+            <th scope="col" className="num">
+              {bi("Owner UNKNOWN", "所有者未知")}
             </th>
           </tr>
         </thead>
@@ -534,11 +568,30 @@ export function CompareTransparency({ compare }: { compare: CompareResponse }) {
               </td>
               <td className="num mono">{formatNumber(side.verification?.rule_verified_records ?? side.counts.rule_verified_records)}</td>
               <td className="num mono">{formatNumber(side.verification?.provisional_records ?? side.counts.provisional)}</td>
-              <td className="num mono">{formatNumber(side.historical_ownership?.records_from_predecessor_entities ?? 0)}</td>
+              <td className="num mono">{formatNumber(side.historical_ownership?.verified_current_group ?? 0)}</td>
+              <td className="num mono">{formatNumber(side.historical_ownership?.verified_predecessor ?? 0)}</td>
+              <td className="num mono">{formatNumber(side.historical_ownership?.unknown ?? 0)}</td>
             </tr>
           ))}
         </tbody>
       </table>
+
+      {compare.comparability?.ownership_basis === "historical_owner_verified" ? (
+        <Banner tone="warning" title={bi("This comparison excludes records it cannot date or attribute", "本对比排除了无法判断日期或归属的记录")}>
+          {bi(
+            "Excluded by the historical-owner basis: " +
+              (compare.basis_excluded_totals?.excluded_predecessor_owner ?? 0) +
+              " record(s) owned by a predecessor at event time and " +
+              (compare.basis_excluded_totals?.excluded_unknown_owner ?? 0) +
+              " record(s) whose owner at event time is UNKNOWN. A low count here means the evidence is thin, not that activity was low.",
+            "事件发生时所有者口径排除了：" +
+              (compare.basis_excluded_totals?.excluded_predecessor_owner ?? 0) +
+              " 条当时由前身实体所有的记录，以及 " +
+              (compare.basis_excluded_totals?.excluded_unknown_owner ?? 0) +
+              " 条当时所有者未知的记录。计数偏低说明证据不足，不代表活动少。",
+          )}
+        </Banner>
+      ) : null}
 
       {compare.not_evidence_of ? (
         <>
