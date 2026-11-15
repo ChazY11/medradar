@@ -1,0 +1,37 @@
+DATA-001 acceptance test log
+Command: python -m pytest tests/data_pipeline tests/product -q
+Date: 2026-11-16 (Asia/Shanghai)
+Scope: offline only; no network, production data or service unit is touched.
+Result: 161 tests collected; all passed. The broader `python -m medradar selftest` ran 1,270 tests with OK (3 skipped).
+
+........................................................................ [ 44%]
+
+........................................................................ [ 89%]
+
+.................                                                        [100%]
+
+
+
+== Broader self-test (`python -m medradar selftest`) ==
+rom the canonical registry or the frozen model forecast table; unavailable probabilities are reported as null rather than estimated by the agent.
+- The event lane's availability time is decision_date + 14 days (estimated), and market bars are known by trading date only (the vendor publication time is unknown).
+- Company resolution and the product-code → track taxonomy are the current curated mappings, not historical ontology versions.
+- The canonical forecast registry is a sibling Phase-3 artifact; when it is absent every registry-backed claim is reported as unavailable instead of substituted.
+...................................ss.s................................................................................
+.......................................................................................................................
+..............usage: __main__.py ask [-h] --company COMPANY --track TRACK
+                       [--template {cross_source_validation,early_signal,entry_forecast,market_leading_indicator,strate
+gic_shift}]
+                       [--as-of AS_OF] [--db DB] [--registry REGISTRY]
+                       [--tkg TKG] [--format {json,markdown}] [--out OUT]
+__main__.py ask: error: argument --template: invalid choice: 'not-a-template' (choose from cross_source_validation, ear
+ly_signal, entry_forecast, market_leading_indicator, strategic_shift)
+.......................................................................................................................
+.......................................................................................................................
+.......................................................................................................................
+.......................................................................................................................
+..
+----------------------------------------------------------------------
+Ran 1270 tests in 69.535s
+
+OK (skipped=3)

@@ -30,10 +30,12 @@ from .dataset import (
     PRODUCT_VERSION,
     REVIEW_FILTERS,
     Dataset,
+    default_data_dir,
     load_dataset,
 )
 from .attribution import ownership as ownership_module
 from .attribution import status as status_module
+from medradar.data_pipeline.status_service import changes_feed, data_status
 from .export import (
     compare_markdown,
     compare_markdown_filename,
@@ -64,40 +66,82 @@ class DatasetHolder:
         self._lock = threading.Lock()
         self.fingerprint_fn: Any = None
         self._fingerprint: Any = None
+        self._snapshot_fingerprint: Any = None
         self.review_db: Path | None = None
+
+    def _data_state(self) -> tuple[Any, Any]:
+        review = None
+        if self.fingerprint_fn is not None:
+            try:
+                review = self.fingerprint_fn()
+            except Exception:
+                review = None
+        root = self.data_dir or default_data_dir()
+        parts = []
+        for name in ("active.json", "snapshot.json"):
+            candidate = Path(root) / name
+            try:
+                stat = candidate.stat()
+                parts.append((name, stat.st_mtime_ns, stat.st_size))
+            except OSError:
+                parts.append((name, None, None))
+        return tuple(parts), review
 
     def get(self) -> Dataset:
         with self._lock:
-            fingerprint = None
-            if self.fingerprint_fn is not None:
-                try:
-                    fingerprint = self.fingerprint_fn()
-                except Exception:
-                    fingerprint = None
-            if self._dataset is not None and (self.fingerprint_fn is None or fingerprint == self._fingerprint):
+            snapshot_fingerprint, fingerprint = self._data_state()
+            if (
+                self._dataset is not None
+                and (self.fingerprint_fn is None or fingerprint == self._fingerprint)
+                and snapshot_fingerprint == self._snapshot_fingerprint
+            ):
                 return self._dataset
-            if self._dataset is not None and fingerprint != self._fingerprint:
+            changed = (
+                self._dataset is None
+                or snapshot_fingerprint != self._snapshot_fingerprint
+                or (self.fingerprint_fn is not None and fingerprint != self._fingerprint)
+            )
+            previous_dataset = self._dataset
+            if changed:
+                # Keep the validated old dataset referenced until the new one has loaded
+                # successfully. A bad pointer must degrade the service, not blank it.
                 self._dataset = None
-            if self._error is not None:
-                raise FileNotFoundError(self._error)
+                self._error = None
             try:
-                self._dataset = load_dataset(self.data_dir, review_db=self.review_db)
+                loaded = load_dataset(self.data_dir, review_db=self.review_db)
+                self._dataset = loaded
+                self._error = None
                 self._fingerprint = fingerprint
-                return self._dataset
-            except Exception as error:  # surfaced as 503, never as a silent empty dataset
+                self._snapshot_fingerprint = snapshot_fingerprint
+                return loaded
+            except Exception as error:
                 self._error = str(error)
-                raise
+                if previous_dataset is not None:
+                    # The new pointer/review state is unusable. Keep serving the validated
+                    # previous dataset and expose a degraded health state.
+                    self._dataset = previous_dataset
+                    self._fingerprint = fingerprint
+                    self._snapshot_fingerprint = snapshot_fingerprint
+                    return previous_dataset
+                raise FileNotFoundError(str(error)) from error
+
+    @property
+    def degraded_error(self) -> str | None:
+        return self._error
 
     def invalidate(self) -> None:
         with self._lock:
             self._dataset = None
             self._error = None
+            self._snapshot_fingerprint = None
 
     def status(self) -> tuple[str, str | None]:
         try:
-            dataset = self.get()
+            self.get()
         except Exception as error:
             return "degraded", str(error)
+        if self._error:
+            return "degraded", self._error
         return "ok", None
 
 
@@ -200,6 +244,7 @@ def create_app(
     data_dir: Path | str | None = None,
     web_dir: Path | str | None = None,
     setup=None,
+    pipeline_db: Path | str | None = None,
 ) -> FastAPI:
     """Build the read-only public application.
 
@@ -219,6 +264,7 @@ def create_app(
     )
     app.state.holder = holder
     app.state.web_dir = resolved_web
+    app.state.pipeline_db = Path(pipeline_db) if pipeline_db is not None else None
 
     @app.middleware("http")
     async def timing(request: Request, call_next):  # type: ignore[no-untyped-def]
@@ -242,11 +288,70 @@ def create_app(
             data = holder.get()
         except Exception as error:
             return {"status": "degraded", "snapshot": None, "version": PRODUCT_VERSION, "store": str(error)}
+        if holder.degraded_error:
+            return {
+                "status": "degraded",
+                "snapshot": data.snapshot_ref(),
+                "version": PRODUCT_VERSION,
+                "store": str(data.data_dir),
+                "error": holder.degraded_error,
+                "serving": "previous_validated_snapshot",
+            }
         return {"status": "ok", "snapshot": data.snapshot_ref(), "version": PRODUCT_VERSION, "store": str(data.data_dir)}
 
     @app.get("/api/meta")
     def meta() -> Any:
         return dataset().meta()
+
+    # ---------------------------------------------------------------- data lifecycle
+    @app.get("/api/data-status")
+    def pipeline_status() -> Any:
+        status = data_status(
+            data_dir=holder.data_dir or dataset_module.default_data_dir(),
+            pipeline_db=app.state.pipeline_db,
+        )
+        try:
+            data = dataset()
+            status["data_snapshot"] = data.snapshot_ref()
+            status["freshness"] = data.freshness()
+            status["dataset_error"] = holder.degraded_error
+        except Exception as error:
+            # The lifecycle page must remain usable when the active snapshot is the thing
+            # that failed to load. Do not replace it with a 503 and hide the pipeline state.
+            status["data_snapshot"] = None
+            status["freshness"] = None
+            status["dataset_error"] = str(error)
+        return status
+
+    @app.get("/api/changes")
+    def changes(
+        source: str | None = None,
+        type: str | None = None,
+        org: str | None = None,
+        limit: int = Query(default=50),
+        offset: int = Query(default=0),
+    ) -> Any:
+        allowed_sources = {
+            "openfda_510k", "openfda_pma", "openfda_recall", "openfda_classification",
+        }
+        allowed_types = {
+            "ADDED", "UPDATED", "REMOVED_CONFIRMED", "UNCHANGED",
+            "MISSING_ON_RECHECK", "UNRESOLVED",
+        }
+        if source and source not in allowed_sources:
+            raise HTTPExceptionCompat(400, "bad_source", "source must be one of " + ", ".join(sorted(allowed_sources)))
+        if type and type not in allowed_types:
+            raise HTTPExceptionCompat(400, "bad_change_type", "type must be one of " + ", ".join(sorted(allowed_types)))
+        if limit < 1 or limit > 200:
+            raise HTTPExceptionCompat(400, "bad_limit", "limit must be between 1 and 200")
+        if offset < 0:
+            raise HTTPExceptionCompat(400, "bad_offset", "offset must be non-negative")
+        return changes_feed(
+            source_id=source, change_type=type, organization_key=org,
+            limit=int(limit), offset=int(offset),
+            pipeline_db=app.state.pipeline_db,
+            data_dir=holder.data_dir or dataset_module.default_data_dir(),
+        )
 
     # ---------------------------------------------------------------- search
     @app.get("/api/search")

@@ -17,6 +17,7 @@ const NAV_ITEMS: NavItem[] = [
   { to: "/events", labelKey: "nav.events" },
   { to: "/compare", labelKey: "nav.compare" },
   { to: "/sources", labelKey: "nav.sources" },
+  { to: "/data-status", labelKey: "nav.dataStatus" },
   { to: "/devices", labelKey: "nav.devices" },
   { to: "/review", labelKey: "nav.review" },
 ];

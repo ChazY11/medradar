@@ -1,0 +1,62 @@
+{
+  "evidence": "live openFDA source probe",
+  "command": "python -m medradar.data_pipeline check --json",
+  "executed_at": "2026-11-15T20:46:36.636451Z",
+  "request_usage": {
+    "by_source": {
+      "openfda_510k": 1,
+      "openfda_classification": 1,
+      "openfda_pma": 1,
+      "openfda_recall": 1
+    },
+    "day": "2026-11-15",
+    "response_bytes": 25735,
+    "total_requests": 4
+  },
+  "sources": [
+    {
+      "baseline_last_updated": null,
+      "checked_at": "2026-11-15T20:46:30.727529Z",
+      "declared_frequency": "Monthly (openFDA declared)",
+      "message": "no per-source official version is recorded in the active snapshot; one reconciliation is required",
+      "official_last_updated": "2026-11-02",
+      "official_total": 176625,
+      "source_id": "openfda_510k",
+      "status": "UNKNOWN",
+      "update_available": true
+    },
+    {
+      "baseline_last_updated": null,
+      "checked_at": "2026-11-15T20:46:31.638359Z",
+      "declared_frequency": "Monthly (openFDA declared)",
+      "message": "no per-source official version is recorded in the active snapshot; one reconciliation is required",
+      "official_last_updated": "2026-11-02",
+      "official_total": 57487,
+      "source_id": "openfda_pma",
+      "status": "UNKNOWN",
+      "update_available": true
+    },
+    {
+      "baseline_last_updated": null,
+      "checked_at": "2026-11-15T20:46:33.270386Z",
+      "declared_frequency": "Weekly (openFDA declared)",
+      "message": "no per-source official version is recorded in the active snapshot; one reconciliation is required",
+      "official_last_updated": "2026-11-12",
+      "official_total": 59705,
+      "source_id": "openfda_recall",
+      "status": "UNKNOWN",
+      "update_available": true
+    },
+    {
+      "baseline_last_updated": null,
+      "checked_at": "2026-11-15T20:46:34.878367Z",
+      "declared_frequency": "Monthly (openFDA declared)",
+      "message": "no per-source official version is recorded in the active snapshot; one reconciliation is required",
+      "official_last_updated": "2026-11-02",
+      "official_total": 7098,
+      "source_id": "openfda_classification",
+      "status": "UNKNOWN",
+      "update_available": true
+    }
+  ]
+}

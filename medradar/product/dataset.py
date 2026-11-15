@@ -22,6 +22,7 @@ from datetime import date, datetime, timezone
 from pathlib import Path
 from typing import Any, Iterable, Iterator, Sequence
 
+from .data_dir import resolve_snapshot_dir
 from .attribution import ownership as ownership_module
 from .attribution import status as status_module
 from .identity import (
@@ -75,7 +76,7 @@ def default_data_dir() -> Path:
     ]
     candidates = [candidate for candidate in candidates if candidate is not None]
     for candidate in candidates:
-        if (candidate / "snapshot.json").exists():
+        if (candidate / "snapshot.json").exists() or (candidate / "active.json").exists():
             return candidate
     return candidates[1] if len(candidates) > 1 else candidates[0]
 
@@ -83,7 +84,7 @@ def default_data_dir() -> Path:
 DEFAULT_DATA_DIR = default_data_dir()
 
 PRODUCT_NAME = "MedRadar"
-PRODUCT_VERSION = "2.0.0-product-002"
+PRODUCT_VERSION = "2.1.0-data-001"
 PRODUCT_POSITIONING_EN = (
     "Medical technology intelligence: traceable FDA regulatory records for the companies you "
     "compete with, with the identity and time limits stated on every screen."
@@ -203,6 +204,10 @@ class Event:
     historical_owner_organization_key: str | None = None
     historical_owner_relation_id: str | None = None
     historical_owner_effective_from: str | None = None
+    # DATA-001 lifecycle state. Active for a normal record; retained records can be
+    # MISSING_ON_RECHECK or QUERY_SCOPE_CHANGED without disappearing from the product.
+    record_state: str = "ACTIVE"
+    missing_count: int = 0
 
     @property
     def year(self) -> str | None:
@@ -222,6 +227,8 @@ class Event:
             "available_at": self.available_at,
             "record_updated_at": self.record_updated_at,
             "time_quality": self.time_quality,
+            "record_state": self.record_state,
+            "missing_count": self.missing_count,
             "organization_key": self.organization_key,
             "organization_name": self.organization_name,
             "applicant_name": self.applicant_name,
@@ -400,10 +407,17 @@ class Dataset:
 
     def snapshot_ref(self) -> dict[str, Any]:
         files = self.manifest.get("files") or {}
+        lineage = self.manifest.get("lineage") or {}
         return {
             "id": self.snapshot_id,
             "collected_at": self.collected_at,
             "openfda_last_updated": (self.manifest.get("openfda") or {}).get("last_updated"),
+            "previous_snapshot_id": lineage.get("previous_snapshot_id"),
+            "content_hash": lineage.get("content_hash"),
+            "source_versions": {
+                source_id: (row or {}).get("official_last_updated")
+                for source_id, row in (self.manifest.get("sources") or {}).items()
+            },
             "file_sha256": {name: str(meta.get("sha256") or "") for name, meta in files.items()},
             "note": "Immutable openFDA snapshot. Attribution and time limits are stated per record.",
         }
@@ -967,10 +981,11 @@ class Dataset:
     def device_index(self) -> Any:
         """Lazily built, deterministic device index (PRODUCT-003).
 
-        Built on first use and cached on the dataset instance, so organization and event pages do not
-        pay for it. A local pickle cache under data/cache (gitignored) makes the second process start
-        fast; the cache key includes the snapshot id and the builder version, so a new snapshot always
-        rebuilds. Set MEDRADAR_DEVICE_CACHE=off to disable the cache.
+        Built on first use and cached on the dataset instance for that process. DATA-001
+        deliberately does not deserialize a pickle cache: the index is rebuilt from the
+        immutable snapshot and the validation step proves that the rebuild works. A future
+        cache must be a versioned, safe format keyed by snapshot id, builder version and
+        schema version; see docs/data/data_001/KNOWN_LIMITATIONS.md.
         """
         if self._device_index is not None:
             return self._device_index
@@ -1040,7 +1055,7 @@ def _read_jsonl_gz(path: Path) -> list[dict[str, Any]]:
 
 
 def load_dataset(data_dir: Path | str | None = None, review_db: Path | str | None = None) -> Dataset:
-    base = Path(data_dir) if data_dir else DEFAULT_DATA_DIR
+    base = resolve_snapshot_dir(Path(data_dir) if data_dir else DEFAULT_DATA_DIR)
     manifest_path = base / "snapshot.json"
     if not manifest_path.exists():
         raise FileNotFoundError(
@@ -1122,6 +1137,7 @@ def load_dataset(data_dir: Path | str | None = None, review_db: Path | str | Non
         code = (row.get("product_code") or "").upper() or None
         category = category_by_code.get(code) if code else None
         published = row.get("published_at")
+        first_observed = str(row.get("first_observed_at") or collected_at)
         events.append(
             Event(
                 event_id=row["event_id"],
@@ -1131,9 +1147,9 @@ def load_dataset(data_dir: Path | str | None = None, review_db: Path | str | Non
                 event_date=row.get("event_date"),
                 published_at=published,
                 published_at_status=row.get("published_at_status") or ("from_source" if published else "not_published_by_source"),
-                first_observed_at=collected_at,
-                available_at=published or collected_at,
-                record_updated_at=openfda_updated,
+                first_observed_at=first_observed,
+                available_at=published or first_observed,
+                record_updated_at=row.get("source_updated_at") or openfda_updated,
                 time_quality=row.get("time_quality") or "unknown",
                 organization_key=org_key,
                 organization_name=org_name,
@@ -1163,6 +1179,8 @@ def load_dataset(data_dir: Path | str | None = None, review_db: Path | str | Non
                 historical_owner_organization_key=owner.organization_key if owner else None,
                 historical_owner_relation_id=owner.relation_id if owner else None,
                 historical_owner_effective_from=owner.effective_from if owner else None,
+                record_state=str(row.get("record_state") or "ACTIVE"),
+                missing_count=int(row.get("missing_count") or 0),
             )
         )
 
@@ -1232,18 +1250,20 @@ def load_dataset(data_dir: Path | str | None = None, review_db: Path | str | Non
         for source_id in SOURCES_ORDER:
             source_events = [event for event in rows if event.source_id == source_id]
             dates = [event.event_date for event in source_events if event.event_date]
+            first_observed = [event.first_observed_at for event in source_events if event.first_observed_at]
             sources.append({
                 "source_id": source_id,
                 "name": SOURCE_NAMES[source_id],
                 "records": len(source_events),
                 "min_event_date": min(dates) if dates else None,
                 "max_event_date": max(dates) if dates else None,
-                "first_observed_at": collected_at if source_events else None,
+                "first_observed_at": min(first_observed) if first_observed else None,
                 "published_field_available": source_id == "openfda_recall",
             })
         recent = sorted(rows, key=lambda event: (event.event_date is None, -(int(event.event_date.replace("-", "")) if event.event_date else 0), event.event_id))[:10]
         scope = scope_stats.get(org.key, {"unattributed": 0, "rejected": 0})
         row_counts = dataset.counts(rows)
+        org_first_observed = min((event.first_observed_at for event in rows if event.first_observed_at), default=None)
         status_counts: dict[str, int] = {}
         for event in rows:
             key_name = event.attribution_verification
@@ -1255,7 +1275,7 @@ def load_dataset(data_dir: Path | str | None = None, review_db: Path | str | Non
             window=window,
             sources=sources,
             recent_events=[event.to_public() for event in recent],
-            first_observed_at=collected_at if rows else None,
+            first_observed_at=org_first_observed,
             pending_review_records=int(row_counts["pending_review"]),
             unattributed_in_scope=int(scope["unattributed"]),
             rejected_in_scope=int(scope["rejected"]),

@@ -1,5 +1,7 @@
 import type {
   AttributionResponse,
+  ChangesResponse,
+  DataStatusResponse,
   MetricsResponse,
   OwnershipResponse,
   CompareResponse,
@@ -242,4 +244,18 @@ export function exportCompareMdUrl(orgs: string[], params: CompareQuery): string
 
 export function exportOrganizationMdUrl(key: string): string {
   return `/api/export/organization.md${buildQuery({ key })}`;
+}
+
+export async function getDataStatus(): Promise<DataStatusResponse> {
+  return request<DataStatusResponse>("/api/data-status");
+}
+
+export async function getChanges(params: {
+  source?: string;
+  type?: string;
+  org?: string;
+  limit?: number;
+  offset?: number;
+}): Promise<ChangesResponse> {
+  return request<ChangesResponse>(`/api/changes${buildQuery(params)}`);
 }

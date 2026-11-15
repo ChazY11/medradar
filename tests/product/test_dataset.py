@@ -50,13 +50,21 @@ def test_published_at_is_never_backfilled(dataset):
             assert event.published_at_status in ("from_source", "not_published_by_source")
 
 
-def test_first_observed_is_the_snapshot_time(dataset):
+def test_first_observed_is_preserved_not_rewritten_by_snapshot_time(dataset):
+    """DATA-001 changed the contract.
+
+    A new snapshot must not pretend every historical record was first seen today. For the
+    legacy committed snapshot, which has no per-record value, the collection time is the
+    only honest fallback. For DATA-001 snapshots the loader uses the stored
+    first_observed_at and available_at follows that value, not the latest collection time.
+    """
     for event in dataset.events:
-        assert event.first_observed_at == dataset.collected_at
+        assert event.first_observed_at
+        assert event.first_observed_at <= dataset.collected_at
         if event.published_at:
             assert event.available_at == event.published_at
         else:
-            assert event.available_at == dataset.collected_at
+            assert event.available_at == event.first_observed_at
 
 
 def test_category_comes_from_the_fda_dictionary(dataset):

@@ -9,6 +9,7 @@ import { ReviewPage } from "./pages/ReviewPage";
 import { DevicesPage } from "./pages/DevicesPage";
 import { DevicePage } from "./pages/DevicePage";
 import { SourcesPage } from "./pages/SourcesPage";
+import { DataStatusPage } from "./pages/DataStatusPage";
 import { EmptyState } from "./components/ui";
 
 export default function App() {
@@ -22,6 +23,7 @@ export default function App() {
         <Route path="/events/:eventId" element={<EventsPage />} />
         <Route path="/compare" element={<ComparePage />} />
         <Route path="/sources" element={<SourcesPage />} />
+        <Route path="/data-status" element={<DataStatusPage />} />
         <Route path="/devices" element={<DevicesPage />} />
         <Route path="/devices/:deviceId" element={<DevicePage />} />
         <Route path="/review" element={<ReviewPage />} />
