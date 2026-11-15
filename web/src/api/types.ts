@@ -645,6 +645,11 @@ export interface PrecisionEstimate {
   decidable_sample_size?: number;
   undecidable?: number | null;
   reviewer_kind: "human" | "agent" | null;
+  human_review_completed?: boolean;
+  supported?: number;
+  contradicted?: number;
+  caveats?: string[];
+  decision_rule?: string;
   reason?: string;
   protocol?: string;
 }

@@ -167,8 +167,31 @@ export function MetricsStrip({ data, compact = false }: { data?: MetricsResponse
         <MetricTile
           label={precisionDef.name}
           value={precision.state === "unknown" ? unknown : formatPercent(precision.estimate)}
-          sub={bi("no completed independent sample", "尚无已完成的独立抽样复核")}
-          title={precisionDef.text + " " + precisionDef.isNot}
+          sub={
+            precision.state === "unknown"
+              ? bi("no completed independent sample", "尚无已完成的独立抽样复核")
+              : bi(
+                  (precision.decidable_sample_size ?? 0) +
+                    " of " +
+                    precision.sample_size +
+                    " sampled cases decide it; reviewer: " +
+                    (precision.reviewer_kind ?? "unknown") +
+                    (precision.human_review_completed === false ? " (not human review)" : ""),
+                  "基于 " +
+                    precision.sample_size +
+                    " 个样本中的 " +
+                    (precision.decidable_sample_size ?? 0) +
+                    " 个可判定案例；复核者：" +
+                    (precision.reviewer_kind === "human" ? "人工" : "AI 代理") +
+                    (precision.human_review_completed === false ? "（非人工复核）" : ""),
+                )
+          }
+          title={
+            precisionDef.text +
+            (precision.confidence_interval_95
+              ? " 95% CI " + formatPercent(precision.confidence_interval_95[0]) + " - " + formatPercent(precision.confidence_interval_95[1]) + "."
+              : "")
+          }
         />
         <MetricTile
           label={retrievalDef.name}
