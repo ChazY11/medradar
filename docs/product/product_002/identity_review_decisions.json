@@ -1,0 +1,66 @@
+{
+ "schema": "medradar.review_export.v1",
+ "product_version": "2.0.0-product-002",
+ "decisions": [
+  {
+   "id": 1,
+   "decision_uid": "98fd92302dda463fabaa972ec7d74a5c",
+   "applicant_key": "abbott vascular-cardiac therapies dba guidant corporation",
+   "applicant_name": "Abbott Vascular-Cardiac Therapies dba Guidant Corporation",
+   "organization_key": "abbott",
+   "prior_organization_key": null,
+   "action": "approve",
+   "status": "rule_verified",
+   "basis": "name_identity_v1",
+   "evidence_type": "regulator_record",
+   "evidence": [
+    {
+     "evidence_type": "regulator_record",
+     "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfRes/res.cfm?id=53607",
+     "title": "openFDA device record naming the applicant",
+     "accessed_at": "2026-11-15",
+     "source_id": "openfda_device",
+     "quote": "applicant: Abbott Vascular-Cardiac Therapies dba Guidant Corporation",
+     "note": "The applicant string itself names Abbott Vascular; the Guidant cardiovascular-rhythm business was sold to Boston Scientific in 2006 while the vascular business went to Abbott, which is why the auto-proposer refused the cross-scope string."
+    }
+   ],
+   "note": "Cross-scope conflict resolved: the applicant string names Abbott Vascular (dba Guidant Corporation), so it belongs to Abbott. Guidant CRM records filed by Guidant Corporation itself are a separate string and stay out of this mapping.",
+   "reviewer": "agent:lead",
+   "reviewer_kind": "agent",
+   "created_at": "2026-11-15T00:12:18.904414Z",
+   "supersedes_uid": null,
+   "snapshot_id": "2026-11-14T22:09:22Z-openfda",
+   "source": "admin_api",
+   "revoked": false
+  },
+  {
+   "id": 2,
+   "decision_uid": "f9f1cbaace9546e3a464da7bd8d31cb1",
+   "applicant_key": "olympus terumo biomaterials corporation",
+   "applicant_name": "Olympus Terumo Biomaterials Corporation",
+   "organization_key": null,
+   "prior_organization_key": null,
+   "action": "unresolved",
+   "status": "unresolved",
+   "basis": null,
+   "evidence_type": null,
+   "evidence": [
+    {
+     "evidence_type": "third_party_report",
+     "url": "https://www.olympus-global.com/",
+     "title": "Joint venture between Olympus and Terumo",
+     "accessed_at": "2026-11-15",
+     "note": "A 50/50 joint venture: attributing its records to either parent alone would overstate that parent."
+    }
+   ],
+   "note": "Joint venture between Olympus and Terumo; no single-group attribution is correct, so the string is left unresolved rather than guessed.",
+   "reviewer": "agent:lead",
+   "reviewer_kind": "agent",
+   "created_at": "2026-11-15T00:12:28.773883Z",
+   "supersedes_uid": null,
+   "snapshot_id": "2026-11-14T22:09:22Z-openfda",
+   "source": "admin_api",
+   "revoked": false
+  }
+ ]
+}

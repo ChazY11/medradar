@@ -22,7 +22,32 @@ from datetime import date, datetime, timezone
 from pathlib import Path
 from typing import Any, Iterable, Iterator, Sequence
 
-from .identity import Decision, Rejection, Registry, normalise_applicant, registry as load_registry
+from .attribution import ownership as ownership_module
+from .attribution import status as status_module
+from .identity import (
+    Decision,
+    Rejection,
+    Registry,
+    normalise_applicant,
+    registry_with_overlay,
+)
+
+#: review= filter values accepted by filter_events / the API.
+REVIEW_FILTERS = {
+    "any": "no filter",
+    "curated": "records whose mapping is evidence-verified or human-reviewed",
+    "verified": "same as curated (explicit alias)",
+    "rule_verified": "records whose mapping is justified by a deterministic rule",
+    "provisional": "records whose mapping is neither evidence-verified nor human-reviewed",
+    "pending_review": "legacy alias for provisional",
+    "unverified": "records whose mapping has no rule and no evidence",
+}
+
+#: ownership basis accepted by filters and the comparison.
+OWNERSHIP_BASES = {
+    "current_group": "count every record attributed to the organization today, including acquired predecessor entities",
+    "original_registrant": "count only records filed under the organization's own applicant identities, excluding acquired predecessor entities",
+}
 
 ROOT = Path(__file__).resolve().parents[2]
 
@@ -52,7 +77,7 @@ def default_data_dir() -> Path:
 DEFAULT_DATA_DIR = default_data_dir()
 
 PRODUCT_NAME = "MedRadar"
-PRODUCT_VERSION = "1.0.0-product-001"
+PRODUCT_VERSION = "2.0.0-product-002"
 PRODUCT_POSITIONING_EN = (
     "Medical technology intelligence: traceable FDA regulatory records for the companies you "
     "compete with, with the identity and time limits stated on every screen."
@@ -156,6 +181,15 @@ class Event:
     summary: str | None
     official_url: str
     raw: dict[str, Any]
+    # PRODUCT-002 verification fields: the claim each record's attribution supports.
+    attribution_verification: str = status_module.PROPOSED
+    attribution_verified: bool = False
+    attribution_rule: str | None = None
+    attribution_evidence_count: int = 0
+    attribution_reviewer: str | None = None
+    attribution_reviewer_kind: str | None = None
+    attribution_provenance: str | None = None
+    attribution_is_predecessor: bool = False
 
     @property
     def year(self) -> str | None:
@@ -182,6 +216,16 @@ class Event:
                 "status": self.attribution_status,
                 "basis": self.attribution_basis,
                 "review": self.attribution_review,
+                "verification": self.attribution_verification,
+                "verification_label_en": status_module.STATUS_LABELS_EN.get(self.attribution_verification, self.attribution_verification),
+                "verification_label_zh": status_module.STATUS_LABELS_ZH.get(self.attribution_verification, self.attribution_verification),
+                "verified": self.attribution_verified,
+                "rule": self.attribution_rule,
+                "evidence_count": self.attribution_evidence_count,
+                "reviewer": self.attribution_reviewer,
+                "reviewer_kind": self.attribution_reviewer_kind,
+                "provenance": self.attribution_provenance,
+                "predecessor_entity": self.attribution_is_predecessor,
             },
             "product_code": self.product_code,
             "category": self.category.to_public() if self.category else None,
@@ -193,6 +237,28 @@ class Event:
         }
 
 
+UNATTRIBUTED = "unattributed"
+
+
+def _matches_review(event: "Event", review: str) -> bool:
+    """Semantics of the review= filter.
+
+    curated/verified .... mapping is evidence-verified or human-reviewed (the only "curated" claim)
+    rule_verified ....... mapping is justified by a deterministic rule
+    provisional ......... mapping is not independently verified (rule-verified counts as provisional)
+    unverified .......... mapping has neither a rule nor evidence
+    """
+    if review in ("curated", "verified"):
+        return bool(event.attribution_verified)
+    if review == "rule_verified":
+        return event.attribution_verification == status_module.RULE_VERIFIED
+    if review in ("provisional", "pending_review"):
+        return not event.attribution_verified
+    if review == "unverified":
+        return event.attribution_verification in status_module.PROVISIONAL_STATUSES
+    return True
+
+
 def empty_counts() -> dict[str, Any]:
     return {
         "records": 0,
@@ -200,6 +266,13 @@ def empty_counts() -> dict[str, Any]:
         "undated": 0,
         "unmapped_category": 0,
         "pending_review": 0,
+        "provisional": 0,
+        "verified_records": 0,
+        "rule_verified_records": 0,
+        "curated_share": None,
+        "rule_verified_share": None,
+        "provisional_share": None,
+        "by_verification": {},
         "by_source": [],
         "by_type": [],
     }
@@ -258,6 +331,12 @@ class OrgStats:
     pending_review_records: int
     unattributed_in_scope: int
     rejected_in_scope: int
+    verified_records: int = 0
+    rule_verified_records: int = 0
+    proposed_records: int = 0
+    predecessor_records: int = 0
+    original_registrant_records: int = 0
+    status_counts: dict[str, int] = field(default_factory=dict)
 
 
 @dataclass
@@ -275,6 +354,8 @@ class Dataset:
     global_by_type: dict[str, int] = field(default_factory=dict)
     warnings: list[str] = field(default_factory=list)
     applicant_by_name: dict[str, dict[str, Any]] = field(default_factory=dict)
+    review_overlay_applied: int = 0
+    review_db: str | None = None
     _org_events: dict[str, list[Event]] = field(default_factory=dict)
     _lock: threading.Lock = field(default_factory=threading.Lock)
 
@@ -351,7 +432,8 @@ class Dataset:
     def counts(self, events: Sequence[Event]) -> dict[str, Any]:
         by_source: dict[str, int] = {}
         by_type: dict[str, int] = {}
-        dated = undated = unmapped = pending = 0
+        by_verification: dict[str, int] = {}
+        dated = undated = unmapped = verified = rule_verified = provisional = 0
         for event in events:
             by_source[event.source_id] = by_source.get(event.source_id, 0) + 1
             by_type[event.event_type] = by_type.get(event.event_type, 0) + 1
@@ -361,14 +443,30 @@ class Dataset:
                 undated += 1
             if event.category is None:
                 unmapped += 1
-            if event.attribution_review == "pending_review":
-                pending += 1
+            verification = event.attribution_verification
+            by_verification[verification] = by_verification.get(verification, 0) + 1
+            if event.attribution_verified:
+                verified += 1
+            elif verification == status_module.RULE_VERIFIED:
+                rule_verified += 1
+            else:
+                provisional += 1
+        total = len(events)
+        # A share of nothing is UNKNOWN, never 0.0: the product must not show "0% verified"
+        # for an organization that has no attributed records at all.
         return {
-            "records": len(events),
+            "records": total,
             "dated": dated,
             "undated": undated,
             "unmapped_category": unmapped,
-            "pending_review": pending,
+            "pending_review": provisional + rule_verified,
+            "provisional": provisional,
+            "verified_records": verified,
+            "rule_verified_records": rule_verified,
+            "curated_share": round(verified / total, 6) if total else None,
+            "rule_verified_share": round(rule_verified / total, 6) if total else None,
+            "provisional_share": round(provisional / total, 6) if total else None,
+            "by_verification": {name: count for name, count in sorted(by_verification.items())},
             "by_source": [
                 {"source_id": source_id, "count": by_source[source_id]}
                 for source_id in SOURCES_ORDER
@@ -392,6 +490,7 @@ class Dataset:
         categories: Iterable[str] | None = None,
         query: str | None = None,
         review: str | None = None,
+        basis: str | None = None,
     ) -> list[Event]:
         pools: list[Event]
         if org_keys:
@@ -408,6 +507,13 @@ class Dataset:
         category_set = {item for item in categories or [] if item}
         needle = (query or "").strip().casefold()
         review = (review or "").strip() or None
+        if review == "any":
+            review = None
+        if review and review not in REVIEW_FILTERS:
+            raise ValueError("unknown review filter: " + review + "; expected one of " + ", ".join(REVIEW_FILTERS))
+        basis = (basis or "").strip() or None
+        if basis and basis not in OWNERSHIP_BASES:
+            raise ValueError("unknown ownership basis: " + basis + "; expected one of " + ", ".join(OWNERSHIP_BASES))
         out: list[Event] = []
         for event in pools:
             if type_set and event.event_type not in type_set:
@@ -426,7 +532,9 @@ class Dataset:
                 category_id = event.category.id if event.category else "unclassified"
                 if category_id not in category_set:
                     continue
-            if review and (event.attribution_review or "") != review:
+            if review is not None and not _matches_review(event, review):
+                continue
+            if basis == "original_registrant" and event.attribution_is_predecessor:
                 continue
             if needle:
                 haystack = " ".join(
@@ -533,6 +641,19 @@ class Dataset:
                 "earliest_event_date": self.manifest.get("coverage", {}).get("min_event_date"),
                 "latest_event_date": self.manifest.get("coverage", {}).get("max_event_date"),
             },
+            "metric_definitions": status_module.metric_definitions(),
+            "metrics": self.metrics_summary(),
+            "ownership": {
+                "verified_relations": sum(1 for relation in ownership_module.ownership().relations if relation.verified),
+                "unresolved_relations": sum(1 for relation in ownership_module.ownership().relations if not relation.verified),
+                "policy": "Counts use CURRENT GROUP attribution unless a caller selects the original-registrant basis. Historical owners are only stated where an independent filing with an effective date is recorded.",
+                "updated_at": ownership_module.ownership().updated_at,
+            },
+            "review_ledger": {
+                "decisions_applied": self.review_overlay_applied,
+                "db": self.review_db,
+                "note": "Internal identity review decisions are applied to every count on this page. Writes are only possible through the loopback-bound admin service.",
+            },
             "time_semantics": TIME_SEMANTICS,
             "limitations": self.limitations(),
             "methodology_url": "/sources",
@@ -604,9 +725,12 @@ class Dataset:
             "Coverage is limited to the tracked organizations in the registry and to the sources listed on the sources page.",
         ]
         items.extend(
-            org.display_name + ": attribution review is provisional for " + str(self.org_stats[org.key].pending_review_records) + " record(s)."
+            org.display_name
+            + ": "
+            + str(self.org_stats[org.key].proposed_records)
+            + " attributed record(s) rest on mappings with no independent verification (provisional attribution)."
             for org in self.registry.organizations
-            if org.registry_review == "pending_review" and org.key in self.org_stats and self.org_stats[org.key].pending_review_records
+            if org.key in self.org_stats and self.org_stats[org.key].proposed_records
         )
         return items
 
@@ -625,11 +749,15 @@ class Dataset:
                 "event_count": stats.counts["records"] if stats else 0,
                 "event_range": stats.window if stats else {"from": None, "to": None},
                 "attribution_review": org.registry_review,
+                "verified_records": stats.verified_records if stats else 0,
+                "rule_verified_records": stats.rule_verified_records if stats else 0,
+                "provisional_records": stats.proposed_records if stats else 0,
+                "curated_share": stats.counts["curated_share"] if stats else None,
             })
         return {
             "organizations": rows,
             "total": len(rows),
-            "note": "Tracked organizations in this snapshot. Attribution review state is shown per organization.",
+            "note": "Tracked organizations in this snapshot. Each row carries the verification state of the mappings behind its counts; curated_share is null when the organization has no attributed records.",
         }
 
     def organization_profile(self, key: str) -> dict[str, Any]:
@@ -638,16 +766,30 @@ class Dataset:
             raise KeyError(key)
         stats = self.org_stats.get(key) or _empty_org_stats(key)
         decisions = list(self.registry.accepted_spellings_by_org.get(key, ()))
+        pending_decisions = [item for item in decisions if item.provisional]
         examples = []
-        for decision in decisions[:12]:
+        for decision in decisions:
             row = self.applicant_by_name.get(decision.applicant_name) or {}
             examples.append({
                 "applicant_name": decision.applicant_name,
                 "basis": decision.basis,
+                "basis_label": decision.to_public()["basis_label"],
                 "review": decision.review,
+                "status": decision.status,
+                "status_label_en": decision.to_public()["status_label_en"],
+                "verified": decision.verified,
+                "rule": decision.rule,
+                "evidence_count": len(decision.evidence),
+                "decision_uid": decision.decision_uid,
+                "reviewer": decision.reviewer,
+                "reviewer_kind": decision.reviewer_kind,
                 "record_count": int(row.get("records") or 0),
             })
         examples.sort(key=lambda item: -item["record_count"])
+        top_examples = examples[:12]
+        status_counts: dict[str, int] = {}
+        for decision in decisions:
+            status_counts[decision.status] = status_counts.get(decision.status, 0) + 1
         return {
             "key": org.key,
             "display_name": org.display_name,
@@ -668,20 +810,38 @@ class Dataset:
                     "Strings that are not accepted are counted in the audit, never folded into this organization."
                 ),
             },
-            "ownership": {
-                "parent": None,
-                "children": [],
-                "note": org.ownership_note,
+            "ownership": ownership_module.organization_ownership_summary(key, events=self.org_events(key)),
+            "verification": {
+                "definition": "Verification status of the applicant mappings that produced the counts on this page. Curated means evidence-verified or human-reviewed; a deterministic rule is reported separately and is NOT review.",
+                "attributed_records": stats.counts["records"],
+                "verified_records": stats.verified_records,
+                "rule_verified_records": stats.rule_verified_records,
+                "provisional_records": stats.proposed_records,
+                "curated_share": stats.counts["curated_share"],
+                "rule_verified_share": stats.counts["rule_verified_share"],
+                "provisional_share": stats.counts["provisional_share"],
+                "by_status": stats.status_counts,
+                "accepted_spellings": len(decisions),
+                "verified_spellings": sum(1 for item in decisions if item.verified),
+                "rule_verified_spellings": sum(1 for item in decisions if item.rule_verified),
+                "provisional_spellings": len(pending_decisions),
+                "status_counts_spellings": status_counts,
+                "human_reviewed_spellings": sum(1 for item in decisions if item.status == "human_reviewed"),
+                "risk_note": (
+                    "This organization's counts depend on mappings that are not independently verified."
+                    if stats.proposed_records
+                    else "Every mapping behind these counts is rule-verified or better."
+                ),
             },
             "attribution": {
-                "accepted_spellings": len([item for item in decisions if item.review == "curated"]),
-                "pending_review_spellings": len([item for item in decisions if item.review == "pending_review"]),
+                "accepted_spellings": len([item for item in decisions if item.verified]),
+                "pending_review_spellings": len(pending_decisions),
                 "rejected_spellings": [
                     {"applicant_name": rejection.applicant_name, "reason": rejection.reason}
                     for rejection in org.reject_exact
                 ],
                 "unattributed_in_scope": stats.unattributed_in_scope,
-                "examples": examples,
+                "examples": top_examples,
             },
             "coverage": {
                 "window": stats.window,
@@ -715,6 +875,23 @@ class Dataset:
             notes.append("Coverage differs by source: " + ", ".join(row["source_id"] for row in sources_with_data) + " only.")
         return notes
 
+    def metrics_summary(self) -> dict[str, Any]:
+        """The attribution and coverage metrics, computed from this dataset only."""
+        from .metrics import attribution_metrics, summarise
+
+        metrics = attribution_metrics(self)
+        self._metrics = metrics
+        return summarise(metrics)
+
+    def metrics(self) -> dict[str, Any]:
+        from .metrics import attribution_metrics
+
+        cached = getattr(self, '_metrics', None)
+        if cached is not None:
+            return cached
+        self._metrics = attribution_metrics(self)
+        return self._metrics
+
     def global_share(self, events: Sequence[Event]) -> dict[str, float]:
         totals = {event_type: 0 for event_type in EVENT_TYPE_ORDER}
         for event in events:
@@ -740,6 +917,12 @@ def _empty_org_stats(key: str) -> OrgStats:
         pending_review_records=0,
         unattributed_in_scope=0,
         rejected_in_scope=0,
+        verified_records=0,
+        rule_verified_records=0,
+        proposed_records=0,
+        predecessor_records=0,
+        original_registrant_records=0,
+        status_counts={},
     )
 
 
@@ -756,7 +939,7 @@ def _read_jsonl_gz(path: Path) -> list[dict[str, Any]]:
     return rows
 
 
-def load_dataset(data_dir: Path | str | None = None) -> Dataset:
+def load_dataset(data_dir: Path | str | None = None, review_db: Path | str | None = None) -> Dataset:
     base = Path(data_dir) if data_dir else DEFAULT_DATA_DIR
     manifest_path = base / "snapshot.json"
     if not manifest_path.exists():
@@ -768,7 +951,19 @@ def load_dataset(data_dir: Path | str | None = None) -> Dataset:
     applicants = _read_jsonl_gz(base / "applicants.jsonl.gz")
     classifications = _read_jsonl_gz(base / "classifications.jsonl.gz")
 
-    registry = load_registry()
+    overlay_items: tuple = ()
+    resolved_review_db: Path | None
+    if review_db is not None:
+        resolved_review_db = Path(review_db)
+    else:
+        from .review.store import default_db_path
+
+        resolved_review_db = default_db_path()
+    if resolved_review_db is not None and resolved_review_db.exists():
+        from .review.store import ReviewStore
+
+        overlay_items = ReviewStore(resolved_review_db).overlay_items()
+    registry = registry_with_overlay(overlay_items)
     collected_at = str(manifest.get("collected_at") or "")
     openfda_updated = (manifest.get("openfda") or {}).get("last_updated")
 
@@ -786,24 +981,43 @@ def load_dataset(data_dir: Path | str | None = None) -> Dataset:
     for row in raw_events:
         applicant = str(row.get("applicant_name") or "")
         decision, rejection = registry.decide(applicant)
+        verification: str | None = UNATTRIBUTED
+        verified = False
+        rule: str | None = None
+        evidence_count = 0
+        reviewer: str | None = None
+        reviewer_kind: str | None = None
+        provenance: str | None = None
         if decision is not None:
             org_key = decision.organization_key
             org_name = registry.by_key[org_key].display_name if org_key in registry.by_key else None
             status = "attributed"
             basis = decision.basis
             review = decision.review
+            verification = decision.status
+            verified = decision.verified
+            rule = decision.rule
+            evidence_count = len(decision.evidence)
+            reviewer = decision.reviewer
+            reviewer_kind = decision.reviewer_kind
+            provenance = decision.provenance
         elif rejection is not None:
             org_key = None
             org_name = None
             status = "rejected"
             basis = None
             review = "rejected"
+            verification = status_module.REJECTED
+            reviewer = rejection.reviewer
+            reviewer_kind = rejection.reviewer_kind
+            provenance = "review_ledger"
         else:
             org_key = None
             org_name = None
             status = "unattributed"
             basis = None
             review = None
+        predecessor = bool(org_key) and ownership_module.is_predecessor_applicant(org_key, applicant)
         code = (row.get("product_code") or "").upper() or None
         category = category_by_code.get(code) if code else None
         published = row.get("published_at")
@@ -834,6 +1048,14 @@ def load_dataset(data_dir: Path | str | None = None) -> Dataset:
                 summary=row.get("summary"),
                 official_url=row.get("official_url") or "",
                 raw=row.get("raw") or {},
+                attribution_verification=verification or UNATTRIBUTED,
+                attribution_verified=verified,
+                attribution_rule=rule,
+                attribution_evidence_count=evidence_count,
+                attribution_reviewer=reviewer,
+                attribution_reviewer_kind=reviewer_kind,
+                attribution_provenance=provenance,
+                attribution_is_predecessor=predecessor,
             )
         )
 
@@ -895,6 +1117,7 @@ def load_dataset(data_dir: Path | str | None = None) -> Dataset:
         rows = org_events.get(org.key, [])
         if rows:
             dates = [event.event_date for event in rows if event.event_date]
+
             window = {"from": min(dates) if dates else None, "to": max(dates) if dates else None}
         else:
             window = {"from": None, "to": None}
@@ -913,18 +1136,31 @@ def load_dataset(data_dir: Path | str | None = None) -> Dataset:
             })
         recent = sorted(rows, key=lambda event: (event.event_date is None, -(int(event.event_date.replace("-", "")) if event.event_date else 0), event.event_id))[:10]
         scope = scope_stats.get(org.key, {"unattributed": 0, "rejected": 0})
+        row_counts = dataset.counts(rows)
+        status_counts: dict[str, int] = {}
+        for event in rows:
+            key_name = event.attribution_verification
+            status_counts[key_name] = status_counts.get(key_name, 0) + 1
         dataset.org_stats[org.key] = OrgStats(
             key=org.key,
-            counts=dataset.counts(rows),
+            counts=row_counts,
             aggregations=aggregate(rows),
             window=window,
             sources=sources,
             recent_events=[event.to_public() for event in recent],
             first_observed_at=collected_at if rows else None,
-            pending_review_records=sum(1 for event in rows if event.attribution_review == "pending_review"),
+            pending_review_records=int(row_counts["pending_review"]),
             unattributed_in_scope=int(scope["unattributed"]),
             rejected_in_scope=int(scope["rejected"]),
+            verified_records=int(row_counts["verified_records"]),
+            rule_verified_records=int(row_counts["rule_verified_records"]),
+            proposed_records=int(row_counts["provisional"]),
+            predecessor_records=sum(1 for event in rows if event.attribution_is_predecessor),
+            original_registrant_records=sum(1 for event in rows if not event.attribution_is_predecessor),
+            status_counts=status_counts,
         )
 
     dataset.warnings = registry.warnings[:]
+    dataset.review_overlay_applied = int(getattr(registry, "overlay_applied", 0))
+    dataset.review_db = str(resolved_review_db) if resolved_review_db is not None else None
     return dataset

@@ -93,6 +93,20 @@ DEFAULT_DATA_EXTENSIONS = [
 #: third-party data. They are allowed only for synthetic test fixtures.
 DEFAULT_RESTRICTED_KINDS = ["sqlite", "parquet", "hdf5", "gzip", "zip", "elf", "binary"]
 
+#: Repository extension(s) that are consistent with a detected content kind.
+#: A kind not listed here (ELF, opaque binary) has no consistent extension.
+DERIVED_BINARY_EXTENSIONS = {
+    "gzip": {".gz"},
+    "zip": {".zip"},
+    "sqlite": {".sqlite", ".db", ".duckdb"},
+    "parquet": {".parquet"},
+    "hdf5": {".h5", ".hdf5"},
+}
+
+#: Formats the derived-binary exception must never accept, even if a future
+#: policy lists them: their internal structure cannot be reviewed from a hash.
+DERIVED_BINARY_FORBIDDEN_KINDS = {"elf", "zip", "sqlite", "parquet", "hdf5"}
+
 #: Formats detected but not restricted (normal repository media).
 MEDIA_KINDS = {"png", "jpeg", "gif", "pdf"}
 
@@ -192,6 +206,19 @@ def _string_list(report: common.Report, mapping: dict, key: str, where: str) -> 
     return []
 
 
+def _nonempty_string_list(value: object) -> list[str]:
+    """Parse a scalar/list of strings, discarding empty/invalid items.
+
+    Missing keys and empty lists deliberately collapse to ``[]`` so every
+    caller can fail closed: an empty allowlist permits nothing.
+    """
+    if isinstance(value, str):
+        return [value] if value else []
+    if isinstance(value, list):
+        return [item for item in value if isinstance(item, str) and item]
+    return []
+
+
 class Policy:
     """Loaded, validated DATA_LICENSES.yml policy."""
 
@@ -222,18 +249,38 @@ class Policy:
             for item in (inventory.get("exempt_patterns") or [])
             if isinstance(item, str) and item
         ]
-        # Declared derived binaries (GOV-0004). A restricted binary format is normally
-        # forbidden outside synthetic fixtures because its provenance cannot be reviewed.
-        # A GREEN, redistributable source may opt in for a *derived* projection when the
-        # inventory declares the file's SHA-256, so the exact bytes are bound to a reviewed
-        # artefact instead of being an opaque blob. Disabled unless the policy enables it.
+        # Declared derived binaries (GOV-0004, narrowed by GOV-0005). A restricted binary
+        # format is normally forbidden outside synthetic fixtures because its provenance
+        # cannot be reviewed. Only the listed sources, paths, content kinds and byte cap may
+        # opt in, and only when the inventory declares the file's SHA-256, so the exact
+        # bytes are bound to a reviewed artefact instead of being an opaque blob.
         allowlist = (document.get("policy") or {}).get("derived_binary_allowlist") or {}
+        if not isinstance(allowlist, dict):
+            allowlist = {}
         self.derived_binary_allowed = bool(allowlist.get("enabled"))
         self.derived_binary_require_sha256 = bool(allowlist.get("require_sha256", True))
         self.derived_binary_require_redistributable = bool(
             allowlist.get("require_may_redistribute", True)
         )
         self.derived_binary_reason = str(allowlist.get("reason") or "")
+        # GOV-0005 narrows the exception to explicit source ids, repository paths,
+        # content kinds and a byte cap. Missing/empty keys parse to empty values on
+        # purpose, so the judge below refuses everything (fail closed).
+        self.derived_binary_source_ids = set(
+            _nonempty_string_list(allowlist.get("allowed_source_ids"))
+        )
+        self.derived_binary_paths = _nonempty_string_list(allowlist.get("allowed_paths"))
+        self.derived_binary_content_kinds = set(
+            _nonempty_string_list(allowlist.get("allowed_content_kinds"))
+        )
+        raw_max_bytes = allowlist.get("max_bytes")
+        self.derived_binary_max_bytes = (
+            raw_max_bytes
+            if isinstance(raw_max_bytes, int)
+            and not isinstance(raw_max_bytes, bool)
+            and raw_max_bytes >= 0
+            else None
+        )
         for index, source in enumerate(document.get("sources") or []):
             where = "sources[%d]" % index
             if not isinstance(source, dict):
@@ -405,29 +452,85 @@ def _inventory_exempt(path: str, policy: Policy) -> bool:
     return any(fnmatch.fnmatch(path, pattern) for pattern in policy.inventory_exempt_patterns)
 
 
-def _declared_derived_binary(
-    entry: dict, data: bytes, policy: Policy
-) -> tuple[bool, str]:
-    """Judge a committed restricted binary against the derived-binary allowlist (GOV-0004).
+def _derived_binary_scope_error(
+    path: str, data: bytes, policy: Policy, source_id: str
+) -> str | None:
+    """Check the GOV-0005 scope conditions (allowlist enabled, kind, source, path, size).
 
-    All three conditions are required: the policy opts in, the inventory entry is GREEN and
-    its source is redistributable, and the declared SHA-256 equals the actual bytes. Anything
-    else keeps the historical hard failure.
+    Returns a reason naming the failed condition, or ``None`` when the file is in
+    scope. Missing/empty policy keys fail closed instead of widening the match.
     """
     if not policy.derived_binary_allowed:
-        return False, "derived-binary allowlist is disabled by policy"
+        return "derived-binary allowlist is disabled by policy"
+    kind = detect_kind(data)
+    if kind in DERIVED_BINARY_FORBIDDEN_KINDS:
+        return "content kind %r is never allowed by the derived-binary exception" % kind
+    if not policy.derived_binary_content_kinds:
+        return "derived-binary allowlist declares no allowed_content_kinds"
+    if kind not in policy.derived_binary_content_kinds:
+        return "content kind %r is not in allowed_content_kinds %s" % (
+            kind,
+            sorted(policy.derived_binary_content_kinds),
+        )
+    expected_extensions = DERIVED_BINARY_EXTENSIONS.get(kind, set())
+    suffix = _suffix(path)
+    if suffix not in expected_extensions:
+        return "file extension %r is not consistent with content kind %r (expected %s)" % (
+            suffix,
+            kind,
+            ", ".join(sorted(expected_extensions)) or "no extension",
+        )
+    if not policy.derived_binary_source_ids:
+        return "derived-binary allowlist declares no allowed_source_ids"
+    if source_id not in policy.derived_binary_source_ids:
+        return "source_id %r is not in allowed_source_ids %s" % (
+            source_id,
+            sorted(policy.derived_binary_source_ids),
+        )
+    if not policy.derived_binary_paths:
+        return "derived-binary allowlist declares no allowed_paths"
+    if not any(
+        fnmatch.fnmatchcase(path, pattern) for pattern in policy.derived_binary_paths
+    ):
+        return "repository path %r does not match allowed_paths %s" % (
+            path,
+            policy.derived_binary_paths,
+        )
+    if policy.derived_binary_max_bytes is None:
+        return "derived-binary allowlist declares no valid max_bytes"
+    if len(data) > policy.derived_binary_max_bytes:
+        return "file size %d bytes exceeds max_bytes %d" % (
+            len(data),
+            policy.derived_binary_max_bytes,
+        )
+    return None
+
+
+def _declared_derived_binary(
+    entry: dict, data: bytes, policy: Policy, path: str
+) -> tuple[bool, str]:
+    """Judge a committed restricted binary against the derived-binary allowlist (GOV-0005).
+
+    The exception is deliberately narrow: enabled policy, an allowed content kind with a
+    matching extension, an allowed source id, an allowed repository path, a byte cap, a
+    GREEN entry, a redistributable source and a SHA-256 bound to the actual file bytes.
+    Every failed condition returns a reason naming that condition.
+    """
+    source_id = str(entry.get("source_id") or "")
+    scope_error = _derived_binary_scope_error(path, data, policy, source_id)
+    if scope_error is not None:
+        return False, scope_error
     if entry.get("status") != "GREEN":
         return False, "inventory entry status is %r, not GREEN" % (entry.get("status"),)
-    source = policy.sources.get(str(entry.get("source_id") or ""), {})
+    source = policy.sources.get(source_id, {})
     if policy.derived_binary_require_redistributable and not source.get("may_redistribute"):
-        return False, "source %r is not declared redistributable" % (entry.get("source_id"),)
+        return False, "source %r is not declared redistributable" % (source_id,)
     declared = str(entry.get("sha256") or "")
     if policy.derived_binary_require_sha256 and not declared:
         return False, "inventory entry declares no sha256"
     actual = hashlib.sha256(data).hexdigest()
     if declared and declared != actual:
         return False, "sha256 mismatch (declared %s, actual %s)" % (declared[:12], actual[:12])
-    source_id = entry.get("source_id")
     reason = policy.derived_binary_reason or "policy permits declared derived binaries"
     return True, "%s (source %s, sha256 %s)" % (reason, source_id, actual[:12])
 
@@ -494,7 +597,7 @@ def check_tree(
             flagged.append({"path": path, "kind": kind, "reason": "content-mismatch"})
             continue
         if kind in policy.restricted_kinds and not _synthetic_entry(entry, policy):
-            allowed, why = _declared_derived_binary(entry, data, policy)
+            allowed, why = _declared_derived_binary(entry, data, policy, path)
             if allowed:
                 derived_binaries.append("%s (%s, %s)" % (path, kind, why))
                 continue
@@ -671,11 +774,11 @@ def generate_inventory(root: Path, policy: Policy) -> dict:
         }
         if (
             kind in policy.restricted_kinds
-            and policy.derived_binary_allowed
             and status == "GREEN"
             and not synthetic
+            and _derived_binary_scope_error(path, data, policy, source_id) is None
         ):
-            # Bind the committed bytes to the reviewed inventory entry (GOV-0004).
+            # Bind the committed bytes to the reviewed inventory entry (GOV-0005).
             entry["sha256"] = hashlib.sha256(data).hexdigest()
         entries.append(entry)
     return {
@@ -743,16 +846,42 @@ def _check_policy_sections(report: common.Report, document: dict, root: Path) ->
     )
     allowlist = (document.get("policy") or {}).get("derived_binary_allowlist")
     if allowlist is not None:
+        valid_mapping = isinstance(allowlist, dict)
         report.check(
             "policy.derived_binary_allowlist",
-            isinstance(allowlist, dict)
+            valid_mapping
             and isinstance(allowlist.get("enabled"), bool)
             and isinstance(allowlist.get("reason"), str)
             and allowlist["reason"].strip() != "",
             "declared derived-binary allowlist: %r" % (allowlist.get("reason"),)
-            if isinstance(allowlist, dict)
+            if valid_mapping
             else "expected a mapping",
         )
+        if valid_mapping and allowlist.get("enabled") is True:
+            # GOV-0005: the exception only works when its scope is explicit.
+            for key in (
+                "allowed_source_ids",
+                "allowed_paths",
+                "allowed_content_kinds",
+            ):
+                value = allowlist.get(key)
+                report.check(
+                    "policy.derived_binary_allowlist.%s" % key,
+                    isinstance(value, list)
+                    and bool(value)
+                    and all(
+                        isinstance(item, str) and item.strip() != "" for item in value
+                    ),
+                    "non-empty list of strings required",
+                )
+            max_bytes = allowlist.get("max_bytes")
+            report.check(
+                "policy.derived_binary_allowlist.max_bytes",
+                isinstance(max_bytes, int)
+                and not isinstance(max_bytes, bool)
+                and max_bytes > 0,
+                "positive integer byte cap required, found %r" % (max_bytes,),
+            )
     report.check(
         "policy.inventory.data_extensions",
         isinstance(inventory.get("data_extensions"), list) and len(inventory["data_extensions"]) > 0,

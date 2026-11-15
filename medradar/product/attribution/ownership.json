@@ -1,0 +1,231 @@
+{
+  "schema": "medradar.ownership.v1",
+  "updated_at": "2026-11-15",
+  "note": "Historical and current ownership relations used to answer three different questions: who filed the FDA record (original applicant), who controlled the entity when the event happened (historical owner, only where an independent source with effective dates exists), and which group the entity belongs to today (current group). A relation without independent evidence stays 'unresolved' and is never used to upgrade an attribution status.",
+  "reviewer_kinds": {
+    "human": "a named human reviewer made the decision",
+    "agent": "an AI agent collected the evidence and recorded the decision; this is NOT human review"
+  },
+  "relations": [
+    {
+      "relation_id": "REL-0001",
+      "organization_key": "medtronic",
+      "entity": "Covidien plc and its operating subsidiaries (Covidien LP, Covidien LLC, Covidien AG, ...)",
+      "relation_type": "acquired_subsidiary",
+      "applicant_token_patterns": [
+        "COVIDIEN"
+      ],
+      "effective_from": "2015-01-26",
+      "effective_to": null,
+      "historical_owner_before": "Covidien plc (NYSE: COV), an independent public company before 2015-01-26",
+      "status": "evidence_verified",
+      "reviewer": "agent:lead",
+      "reviewer_kind": "agent",
+      "reviewed_at": "2026-11-15",
+      "caveat": "The acquisition completion date is evidenced. Individual Covidien legal entities that were divested after 2015 are not tracked; an entity-level ownership history is NOT claimed.",
+      "evidence": [
+        {
+          "evidence_type": "jurisdiction_filing",
+          "url": "https://www.sec.gov/Archives/edgar/data/1613103/000119312515020681/d859999dex991.htm",
+          "title": "Medtronic plc, Form 8-K filed 2015-01-27, Exhibit 99.1 - 'Medtronic Completes Acquisition of Covidien'",
+          "accessed_at": "2026-11-15",
+          "source_id": "sec_edgar",
+          "quote": "DUBLIN, Ireland - January 26, 2015 - Medtronic plc (NYSE: MDT) ... announced today that it has successfully completed the previously announced acquisition of Covidien plc (NYSE: COV)."
+        },
+        {
+          "evidence_type": "jurisdiction_filing",
+          "url": "https://www.sec.gov/Archives/edgar/data/1613103/000162828026044354/mdt-202610kxex21.htm",
+          "title": "Medtronic plc, Form 10-K (fiscal 2026, filed 2026-06-18), Exhibit 21 - Subsidiaries of the Registrant",
+          "accessed_at": "2026-11-15",
+          "source_id": "sec_edgar",
+          "quote": "Exhibit 21 lists 'Covidien LP', 'Covidien llc' and 'Covidien AG' among the subsidiaries of Medtronic plc."
+        }
+      ],
+      "notes": [
+        "TYCO HEALTHCARE is the pre-2007 name of the Covidien business. No independent source for the name change was collected in this release, so that spelling is recorded as unresolved (REL-0003) and is not upgraded by the 2015 acquisition evidence."
+      ]
+    },
+    {
+      "relation_id": "REL-0002",
+      "organization_key": "medtronic",
+      "entity": "Medtronic MiniMed, Medtronic Vascular, Medtronic Sofamor Danek and other Medtronic-branded legal entities",
+      "relation_type": "subsidiary",
+      "applicant_token_patterns": [
+        "MEDTRONIC MINIMED",
+        "MEDTRONIC VASCULAR",
+        "MEDTRONIC SOFAMOR DANEK",
+        "MINIMED"
+      ],
+      "effective_from": null,
+      "effective_to": null,
+      "historical_owner_before": "UNKNOWN - not verified in this release",
+      "status": "evidence_verified",
+      "reviewer": "agent:lead",
+      "reviewer_kind": "agent",
+      "reviewed_at": "2026-11-15",
+      "caveat": "Current subsidiary ownership is evidenced as of the fiscal 2026 filing. When each entity joined the group is not verified here.",
+      "evidence": [
+        {
+          "evidence_type": "jurisdiction_filing",
+          "url": "https://www.sec.gov/Archives/edgar/data/1613103/000162828026044354/mdt-202610kxex21.htm",
+          "title": "Medtronic plc, Form 10-K (fiscal 2026, filed 2026-06-18), Exhibit 21 - Subsidiaries of the Registrant",
+          "accessed_at": "2026-11-15",
+          "source_id": "sec_edgar",
+          "quote": "Exhibit 21 lists 'Medtronic MiniMed, Inc.', 'Medtronic Vascular, Inc.', 'Medtronic Sofamor Danek USA, Inc.' and 'Medtronic, Inc.'."
+        }
+      ],
+      "notes": []
+    },
+    {
+      "relation_id": "REL-0003",
+      "organization_key": "medtronic",
+      "entity": "Tyco Healthcare (pre-2007 name of the Covidien business)",
+      "relation_type": "historical_name",
+      "applicant_token_patterns": [
+        "TYCO HEALTHCARE"
+      ],
+      "effective_from": null,
+      "effective_to": "2015-01-26",
+      "historical_owner_before": "UNKNOWN - not verified in this release",
+      "status": "unresolved",
+      "reviewer": "agent:lead",
+      "reviewer_kind": "agent",
+      "reviewed_at": "2026-11-15",
+      "caveat": "No independent source for the Tyco Healthcare -> Covidien name change was collected. Kept as unresolved; it is not used to upgrade any attribution.",
+      "evidence": [],
+      "notes": [
+        "Zero records in the snapshot use this spelling."
+      ]
+    },
+    {
+      "relation_id": "REL-0004",
+      "organization_key": "ge_healthcare",
+      "entity": "GE Medical Systems / GE Healthcare legal entities",
+      "relation_type": "divested_business_unit",
+      "applicant_token_patterns": [
+        "GE MEDICAL SYSTEMS",
+        "GE MEDICAL",
+        "GE HEALTHCARE"
+      ],
+      "effective_from": "2023-01-03",
+      "effective_to": null,
+      "historical_owner_before": "General Electric Company (NYSE: GE; now GE Aerospace) - the medical business was a GE business unit before the spin-off",
+      "status": "evidence_verified",
+      "reviewer": "agent:lead",
+      "reviewer_kind": "agent",
+      "reviewed_at": "2026-11-15",
+      "caveat": "The spin-off date is evidenced. Which GE legal entity filed a record before 2023-01-03 is only known from the applicant name on the record, not from an ownership register.",
+      "evidence": [
+        {
+          "evidence_type": "jurisdiction_filing",
+          "url": "https://www.sec.gov/Archives/edgar/data/1932393/000193239326000007/gehc-20251231.htm",
+          "title": "GE HealthCare Technologies Inc., Form 10-K (fiscal 2025, filed 2026-02-04) - business description",
+          "accessed_at": "2026-11-15",
+          "source_id": "sec_edgar",
+          "quote": "On January 3, 2023, the General Electric Company, which now operates as GE Aerospace (\"GE\"), completed the spin-off of GE HealthCare (the \"Spin-Off\")."
+        },
+        {
+          "evidence_type": "jurisdiction_filing",
+          "url": "https://www.sec.gov/Archives/edgar/data/1932393/000193239326000007/gehc4q202510kexhibit211.htm",
+          "title": "GE HealthCare Technologies Inc., Form 10-K Exhibit 21.1 - Subsidiaries of the Registrant",
+          "accessed_at": "2026-11-15",
+          "source_id": "sec_edgar",
+          "quote": "Exhibit 21.1 lists 'GE Medical Systems Information Technologies, Inc.', 'GE Medical Systems (China) Co., Ltd.', 'GE Medical Systems (Schweiz) AG' and 'Datex-Ohmeda, Inc.'."
+        }
+      ],
+      "notes": []
+    },
+    {
+      "relation_id": "REL-0005",
+      "organization_key": "philips",
+      "entity": "Philips North America LLC and the Philips Medical Systems legal-entity family",
+      "relation_type": "subsidiary",
+      "applicant_token_patterns": [
+        "PHILIPS NORTH AMERICA",
+        "PHILIPS MEDICAL SYSTEMS"
+      ],
+      "effective_from": null,
+      "effective_to": null,
+      "historical_owner_before": "UNKNOWN - not verified in this release",
+      "status": "evidence_verified",
+      "reviewer": "agent:lead",
+      "reviewer_kind": "agent",
+      "reviewed_at": "2026-11-15",
+      "caveat": "The 20-F table lists consolidated subsidiaries that individually exceed 5% of group sales/income. It is evidence that these are Philips group entities; it is not a complete subsidiary register, so a spelling absent from it is not evidence of anything.",
+      "evidence": [
+        {
+          "evidence_type": "jurisdiction_filing",
+          "url": "https://www.sec.gov/Archives/edgar/data/313216/000162828026009470/phg-20251231.htm",
+          "title": "Koninklijke Philips N.V., Form 20-F (fiscal 2025, filed 2026-02-19) - interests in group companies",
+          "accessed_at": "2026-11-15",
+          "source_id": "sec_edgar",
+          "quote": "In the accompanying table is a list of subsidiaries that, as of December 31, 2025, individually exceed 5% ... Legal entity name ... 'Philips Medical Systems (Cleveland), Inc.', 'Philips North America LLC'."
+        }
+      ],
+      "notes": []
+    },
+    {
+      "relation_id": "REL-0006",
+      "organization_key": "philips",
+      "entity": "Philips Electronics North America (historical US holding entity)",
+      "relation_type": "historical_name",
+      "applicant_token_patterns": [
+        "PHILIPS ELECTRONICS NORTH AMERICA"
+      ],
+      "effective_from": null,
+      "effective_to": null,
+      "historical_owner_before": "UNKNOWN - not verified in this release",
+      "status": "unresolved",
+      "reviewer": "agent:lead",
+      "reviewer_kind": "agent",
+      "reviewed_at": "2026-11-15",
+      "caveat": "Not present in the fiscal 2025 group-company table; no independent source for this historical entity name was collected.",
+      "evidence": [],
+      "notes": []
+    },
+    {
+      "relation_id": "REL-0007",
+      "organization_key": "draeger",
+      "entity": "Draeger US operating entities",
+      "relation_type": "subsidiary",
+      "applicant_token_patterns": [
+        "DRAGER MEDICAL",
+        "DRAEGER MEDICAL",
+        "DRAGER, INC",
+        "DRAEGER, INC"
+      ],
+      "effective_from": null,
+      "effective_to": null,
+      "historical_owner_before": "UNKNOWN - not verified in this release",
+      "status": "unresolved",
+      "reviewer": "agent:lead",
+      "reviewer_kind": "agent",
+      "reviewed_at": "2026-11-15",
+      "caveat": "Draegerwerk AG & Co. KGaA is not an SEC registrant; no jurisdiction filing was collected in this release. The group relation remains a working assumption (provisional).",
+      "evidence": [],
+      "notes": [
+        "Collecting the German annual report or a Handelsregister extract is the next step; it is not claimed here."
+      ]
+    },
+    {
+      "relation_id": "REL-0008",
+      "organization_key": "mindray",
+      "entity": "Mindray DS USA / Datascope Patient Monitoring",
+      "relation_type": "subsidiary",
+      "applicant_token_patterns": [
+        "MINDRAY DS USA",
+        "DATASCOPE"
+      ],
+      "effective_from": null,
+      "effective_to": null,
+      "historical_owner_before": "UNKNOWN - not verified in this release",
+      "status": "unresolved",
+      "reviewer": "agent:lead",
+      "reviewer_kind": "agent",
+      "reviewed_at": "2026-11-15",
+      "caveat": "Shenzhen Mindray is not currently an SEC registrant; no jurisdiction filing was collected in this release. The group relation remains a working assumption (provisional).",
+      "evidence": [],
+      "notes": []
+    }
+  ]
+}

@@ -24,11 +24,15 @@ from . import dataset as dataset_module
 from .compare import build_compare
 from .dataset import (
     EVENT_TYPE_ORDER,
+    OWNERSHIP_BASES,
     PRODUCT_NAME,
     PRODUCT_VERSION,
+    REVIEW_FILTERS,
     Dataset,
     load_dataset,
 )
+from .attribution import ownership as ownership_module
+from .attribution import status as status_module
 from .export import (
     compare_markdown,
     compare_markdown_filename,
@@ -44,24 +48,49 @@ DEFAULT_PAGE_SIZE = 25
 
 
 class DatasetHolder:
+    """Caches the dataset and reloads it when the identity-review ledger changes.
+
+    The cache is the reason a review decision would otherwise appear to do nothing: the public app
+    computes every count from one Dataset instance. fingerprint_fn() is provided by the admin
+    service; when the ledger changes, the next request rebuilds the dataset, so a decision is
+    visible on the very next page load without restarting the process.
+    """
+
     def __init__(self, data_dir: Path | None = None) -> None:
         self.data_dir = data_dir
         self._dataset: Dataset | None = None
         self._error: str | None = None
         self._lock = threading.Lock()
+        self.fingerprint_fn: Any = None
+        self._fingerprint: Any = None
+        self.review_db: Path | None = None
 
     def get(self) -> Dataset:
         with self._lock:
-            if self._dataset is not None:
+            fingerprint = None
+            if self.fingerprint_fn is not None:
+                try:
+                    fingerprint = self.fingerprint_fn()
+                except Exception:
+                    fingerprint = None
+            if self._dataset is not None and (self.fingerprint_fn is None or fingerprint == self._fingerprint):
                 return self._dataset
+            if self._dataset is not None and fingerprint != self._fingerprint:
+                self._dataset = None
             if self._error is not None:
                 raise FileNotFoundError(self._error)
             try:
-                self._dataset = load_dataset(self.data_dir)
+                self._dataset = load_dataset(self.data_dir, review_db=self.review_db)
+                self._fingerprint = fingerprint
                 return self._dataset
             except Exception as error:  # surfaced as 503, never as a silent empty dataset
                 self._error = str(error)
                 raise
+
+    def invalidate(self) -> None:
+        with self._lock:
+            self._dataset = None
+            self._error = None
 
     def status(self) -> tuple[str, str | None]:
         try:
@@ -106,7 +135,7 @@ def _parse_int(value: str | None, name: str, default: int, minimum: int, maximum
 
 def _events_payload(dataset: Dataset, applied: dict[str, str], org_keys: list[str], event_types: list[str],
                     date_from: str | None, date_to: str | None, categories: list[str], query: str | None,
-                    review: str | None, sort: str, page: int, page_size: int) -> dict[str, Any]:
+                    review: str | None, basis: str | None, sort: str, page: int, page_size: int) -> dict[str, Any]:
     filtered = dataset.filter_events(
         org_keys=org_keys or None,
         event_types=event_types or None,
@@ -115,6 +144,7 @@ def _events_payload(dataset: Dataset, applied: dict[str, str], org_keys: list[st
         categories=categories or None,
         query=query,
         review=review,
+        basis=basis,
     )
     ordered = dataset.sort_events(filtered, sort)
     total = len(ordered)
@@ -132,12 +162,30 @@ def _events_payload(dataset: Dataset, applied: dict[str, str], org_keys: list[st
         "applied_filters": applied,
         "aggregations": dataset_module.aggregate(ordered),
         "counts": dataset.counts(ordered),
-        "basis": dataset.basis(ordered, event_types=event_types or list(EVENT_TYPE_ORDER), window=window),
+        "basis": dataset.basis(
+            ordered,
+            event_types=event_types or list(EVENT_TYPE_ORDER),
+            window=window,
+            rule="Count of attributed regulatory records matching the filters; "
+            + ("current-group attribution (acquired predecessor entities included)" if basis != "original_registrant" else "original-registrant attribution (acquired predecessor entities excluded)"),
+        ),
+        "ownership_basis": basis or "current_group",
+        "review_filter": review or "any",
         "snapshot": dataset.snapshot_ref(),
     }
 
 
-def create_app(data_dir: Path | str | None = None, web_dir: Path | str | None = None) -> FastAPI:
+def create_app(
+    data_dir: Path | str | None = None,
+    web_dir: Path | str | None = None,
+    setup=None,
+) -> FastAPI:
+    """Build the read-only public application.
+
+    setup(app) is invoked after the API routes and before the SPA static routes are registered.
+    The internal review service uses it to mount write routes on its own application; the public
+    application is this function without setup, so it contains no write route at all.
+    """
     holder = DatasetHolder(Path(data_dir) if data_dir else None)
     resolved_web = Path(web_dir) if web_dir else _default_web_dir()
 
@@ -202,28 +250,30 @@ def create_app(data_dir: Path | str | None = None, web_dir: Path | str | None = 
     @app.get("/api/organizations/{key}/events")
     def organization_events(key: str, types: str | None = None, date_from: str | None = Query(default=None, alias="from"),
                             date_to: str | None = Query(default=None, alias="to"), category: str | None = None,
-                            q: str | None = None, review: str | None = None, sort: str = "event_date_desc",
+                            q: str | None = None, review: str | None = None, basis: str | None = None,
+                            sort: str = "event_date_desc",
                             page: str | None = None, page_size: str | None = None) -> Any:
         data = dataset()
         if data.organization(key) is None:
             raise HTTPExceptionCompat(404, "organization_not_found", "unknown organization key: " + key)
-        return _event_response(data, [key], types, date_from, date_to, category, q, review, sort, page, page_size)
+        return _event_response(data, [key], types, date_from, date_to, category, q, review, basis, sort, page, page_size)
 
     # ---------------------------------------------------------------- events
     @app.get("/api/events")
     def events(org: str | None = None, types: str | None = None, date_from: str | None = Query(default=None, alias="from"),
                date_to: str | None = Query(default=None, alias="to"), category: str | None = None,
-               q: str | None = None, review: str | None = None, sort: str = "event_date_desc",
+               q: str | None = None, review: str | None = None, basis: str | None = None,
+               sort: str = "event_date_desc",
                page: str | None = None, page_size: str | None = None) -> Any:
         data = dataset()
         org_keys = _parse_csv(org)
         unknown = [key for key in org_keys if data.organization(key) is None]
         if unknown:
             raise HTTPExceptionCompat(400, "unknown_organization", "unknown organization key(s): " + ", ".join(unknown))
-        return _event_response(data, org_keys, types, date_from, date_to, category, q, review, sort, page, page_size)
+        return _event_response(data, org_keys, types, date_from, date_to, category, q, review, basis, sort, page, page_size)
 
     def _event_response(data: Dataset, org_keys: list[str], types: str | None, date_from: str | None, date_to: str | None,
-                        category: str | None, q: str | None, review: str | None, sort: str,
+                        category: str | None, q: str | None, review: str | None, basis: str | None, sort: str,
                         page: str | None, page_size: str | None) -> Any:
         try:
             event_types = _parse_event_types(types)
@@ -234,8 +284,10 @@ def create_app(data_dir: Path | str | None = None, web_dir: Path | str | None = 
             raise HTTPExceptionCompat(400, "bad_request", str(error))
         if sort not in ("event_date_desc", "event_date_asc", "official_id_asc"):
             raise HTTPExceptionCompat(400, "bad_sort", "sort must be one of event_date_desc, event_date_asc, official_id_asc")
-        if review and review not in ("curated", "pending_review", "any"):
-            raise HTTPExceptionCompat(400, "bad_review", "review must be curated, pending_review or any")
+        if review and review not in REVIEW_FILTERS:
+            raise HTTPExceptionCompat(400, "bad_review", "review must be one of " + ", ".join(REVIEW_FILTERS))
+        if basis and basis not in OWNERSHIP_BASES:
+            raise HTTPExceptionCompat(400, "bad_basis", "basis must be one of " + ", ".join(OWNERSHIP_BASES))
         applied = {
             "org": ",".join(org_keys),
             "types": ",".join(event_types),
@@ -244,10 +296,12 @@ def create_app(data_dir: Path | str | None = None, web_dir: Path | str | None = 
             "category": ",".join(categories),
             "q": q or "",
             "review": review or "",
+            "basis": basis or "current_group",
             "sort": sort,
         }
         return _events_payload(data, applied, org_keys, event_types, date_from, date_to, categories, q,
-                               None if review in (None, "", "any") else review, sort, page_number, size)
+                               None if review in (None, "", "any") else review,
+                               None if basis in (None, "", "current_group") else basis, sort, page_number, size)
 
     @app.get("/api/events/{event_id:path}")
     def event_detail(event_id: str) -> Any:
@@ -285,7 +339,8 @@ def create_app(data_dir: Path | str | None = None, web_dir: Path | str | None = 
     # ---------------------------------------------------------------- compare
     @app.get("/api/compare")
     def compare(orgs: str = Query(default=""), date_from: str | None = Query(default=None, alias="from"),
-                date_to: str | None = Query(default=None, alias="to"), types: str | None = None) -> Any:
+                date_to: str | None = Query(default=None, alias="to"), types: str | None = None,
+                basis: str | None = None, review: str | None = None) -> Any:
         data = dataset()
         keys = _parse_csv(orgs)
         if not keys:
@@ -294,8 +349,20 @@ def create_app(data_dir: Path | str | None = None, web_dir: Path | str | None = 
             event_types = _parse_event_types(types)
         except ValueError as error:
             raise HTTPExceptionCompat(400, "bad_request", str(error))
+        if basis and basis not in OWNERSHIP_BASES:
+            raise HTTPExceptionCompat(400, "bad_basis", "basis must be one of " + ", ".join(OWNERSHIP_BASES))
+        if review and review not in REVIEW_FILTERS:
+            raise HTTPExceptionCompat(400, "bad_review", "review must be one of " + ", ".join(REVIEW_FILTERS))
         try:
-            return build_compare(data, keys, date_from, date_to, event_types or None)
+            return build_compare(
+                data,
+                keys,
+                date_from,
+                date_to,
+                event_types or None,
+                basis=None if basis in (None, "", "current_group") else basis,
+                review=None if review in (None, "", "any") else review,
+            )
         except KeyError as error:
             raise HTTPExceptionCompat(404, "organization_not_found", "unknown organization key: " + str(error).strip("'"))
         except ValueError as error:
@@ -306,23 +373,30 @@ def create_app(data_dir: Path | str | None = None, web_dir: Path | str | None = 
     def export_events_csv(org: str | None = None, types: str | None = None,
                           date_from: str | None = Query(default=None, alias="from"),
                           date_to: str | None = Query(default=None, alias="to"), category: str | None = None,
-                          q: str | None = None, review: str | None = None, sort: str = "event_date_desc") -> Any:
+                          q: str | None = None, review: str | None = None, basis: str | None = None,
+                          sort: str = "event_date_desc") -> Any:
         data = dataset()
         try:
             event_types = _parse_event_types(types)
             categories = _parse_csv(category)
         except ValueError as error:
             raise HTTPExceptionCompat(400, "bad_request", str(error))
+        if review and review not in REVIEW_FILTERS:
+            raise HTTPExceptionCompat(400, "bad_review", "review must be one of " + ", ".join(REVIEW_FILTERS))
+        if basis and basis not in OWNERSHIP_BASES:
+            raise HTTPExceptionCompat(400, "bad_basis", "basis must be one of " + ", ".join(OWNERSHIP_BASES))
         org_keys = _parse_csv(org)
         unknown = [key for key in org_keys if data.organization(key) is None]
         if unknown:
             raise HTTPExceptionCompat(400, "unknown_organization", "unknown organization key(s): " + ", ".join(unknown))
         filtered = data.filter_events(org_keys=org_keys or None, event_types=event_types or None, date_from=date_from,
                                       date_to=date_to, categories=categories or None, query=q,
-                                      review=None if review in (None, "", "any") else review)
+                                      review=None if review in (None, "", "any") else review,
+                                      basis=None if basis in (None, "", "current_group") else basis)
         ordered = data.sort_events(filtered, sort)
-        body = events_csv(data, ordered)
-        filters = {"org": org_keys, "types": event_types, "from": date_from, "to": date_to, "category": categories, "q": q, "review": review}
+        body = events_csv(data, ordered, basis=basis or "current_group")
+        filters = {"org": org_keys, "types": event_types, "from": date_from, "to": date_to, "category": categories,
+                   "q": q, "review": review, "basis": basis or "current_group"}
         headers = {
             "Content-Disposition": 'attachment; filename="' + csv_filename(data) + '"',
             "X-MedRadar-Provenance": provenance_header(data, filters),
@@ -332,14 +406,27 @@ def create_app(data_dir: Path | str | None = None, web_dir: Path | str | None = 
 
     @app.get("/api/export/compare.md")
     def export_compare_md(orgs: str = Query(default=""), date_from: str | None = Query(default=None, alias="from"),
-                          date_to: str | None = Query(default=None, alias="to"), types: str | None = None) -> Any:
+                          date_to: str | None = Query(default=None, alias="to"), types: str | None = None,
+                          basis: str | None = None, review: str | None = None) -> Any:
         data = dataset()
         keys = _parse_csv(orgs)
         if not keys:
             raise HTTPExceptionCompat(400, "missing_orgs", "orgs is required")
+        if basis and basis not in OWNERSHIP_BASES:
+            raise HTTPExceptionCompat(400, "bad_basis", "basis must be one of " + ", ".join(OWNERSHIP_BASES))
+        if review and review not in REVIEW_FILTERS:
+            raise HTTPExceptionCompat(400, "bad_review", "review must be one of " + ", ".join(REVIEW_FILTERS))
         try:
             event_types = _parse_event_types(types)
-            body = compare_markdown(data, keys, date_from, date_to, event_types or None)
+            body = compare_markdown(
+                data,
+                keys,
+                date_from,
+                date_to,
+                event_types or None,
+                basis=None if basis in (None, "", "current_group") else basis,
+                review=None if review in (None, "", "any") else review,
+            )
         except KeyError as error:
             raise HTTPExceptionCompat(404, "organization_not_found", "unknown organization key: " + str(error).strip("'"))
         except ValueError as error:
@@ -357,6 +444,37 @@ def create_app(data_dir: Path | str | None = None, web_dir: Path | str | None = 
         return Response(content=body.encode("utf-8"), media_type="text/markdown; charset=utf-8", headers=headers)
 
     # ---------------------------------------------------------------- transparency
+    @app.get("/api/metrics")
+    def metrics() -> Any:
+        """Every attribution/coverage claim the product makes, with definitions and UNKNOWNs."""
+        data = dataset()
+        payload = data.metrics()
+        payload["snapshot"] = data.snapshot_ref()
+        payload["freshness"] = data.freshness()
+        payload["metric_definitions"] = status_module.metric_definitions()
+        return payload
+
+    @app.get("/api/ownership")
+    def ownership() -> Any:
+        """Ownership relations: what is verified, with dates and sources, and what is UNKNOWN."""
+        registry = ownership_module.ownership()
+        return {
+            "schema": "medradar.ownership.v1",
+            "updated_at": registry.updated_at,
+            "note": registry.note,
+            "concepts": {
+                "original_applicant": "The exact applicant string FDA recorded on the record.",
+                "historical_owner": "Who controlled the filing entity when the event happened; stated only where an independent source with an effective date exists.",
+                "current_group": "The tracked organization the entity belongs to today; this is what the product counts by default.",
+            },
+            "relations": [relation.to_public() for relation in registry.relations],
+            "verified_count": sum(1 for relation in registry.relations if relation.verified),
+            "unresolved_count": sum(1 for relation in registry.relations if not relation.verified),
+            "organizations_with_verified_history": sorted(
+                {relation.organization_key for relation in registry.relations if relation.verified}
+            ),
+        }
+
     @app.get("/api/coverage")
     def coverage() -> Any:
         data = dataset()
@@ -403,12 +521,19 @@ def create_app(data_dir: Path | str | None = None, web_dir: Path | str | None = 
                 "notes": data.manifest.get("notes") or [],
             },
             "limitations": data.limitations(),
+            "metrics": data.metrics_summary(),
+            "status_vocabulary": status_module.status_summary(data.registry.status_counts()),
             "attribution_summary": {
-                "curated_spellings": sum(1 for org in data.registry.organizations for item in data.registry.accepted_spellings_by_org.get(org.key, ()) if item.review == "curated"),
-                "pending_review_spellings": sum(1 for org in data.registry.organizations for item in data.registry.accepted_spellings_by_org.get(org.key, ()) if item.review == "pending_review"),
+                "accepted_spellings": len(data.registry.decisions),
+                "verified_spellings": sum(1 for decision in data.registry.decisions.values() if decision.verified),
+                "rule_verified_spellings": sum(1 for decision in data.registry.decisions.values() if decision.rule_verified),
+                "proposed_spellings": sum(1 for decision in data.registry.decisions.values() if decision.provisional),
+                "curated_spellings": sum(1 for decision in data.registry.decisions.values() if decision.verified),
+                "pending_review_spellings": sum(1 for decision in data.registry.decisions.values() if decision.provisional),
                 "rejected_spellings": sum(len(org.reject_exact) for org in data.registry.organizations),
                 "unattributed_applicant_strings": len(audit["unattributed"]),
                 "unattributed_records": len(data.events) - data.global_counts["records"],
+                "review_ledger_decisions_applied": data.review_overlay_applied,
             },
             "reproduce": {
                 "collect": "python scripts/product_collect.py",
@@ -461,9 +586,20 @@ def create_app(data_dir: Path | str | None = None, web_dir: Path | str | None = 
                     "applicant_name": decision.applicant_name,
                     "basis": decision.basis,
                     "review": decision.review,
-                    "confidence": "high" if decision.review == "curated" else "medium",
+                    "status": decision.status,
+                    "status_label_en": status_module.STATUS_LABELS_EN.get(decision.status, decision.status),
+                    "status_label_zh": status_module.STATUS_LABELS_ZH.get(decision.status, decision.status),
+                    "verified": decision.verified,
+                    "rule_verified": decision.rule_verified,
+                    "provisional": decision.provisional,
+                    "rule": decision.rule,
+                    "rule_detail": decision.rule_detail,
+                    "evidence": [item.to_public() for item in decision.evidence] or [{"evidence_type": "registry_record", "note": decision.source or "registry"}],
+                    "evidence_count": len(decision.evidence),
+                    "reviewer": decision.reviewer,
+                    "reviewer_kind": decision.reviewer_kind,
+                    "decision_uid": decision.decision_uid,
                     "record_count": int(row.get("records") or 0),
-                    "evidence": decision.source or "registry",
                 })
         decisions.sort(key=lambda item: (-item["record_count"], item["organization_key"], item["applicant_name"]))
         rejected = []
@@ -491,10 +627,18 @@ def create_app(data_dir: Path | str | None = None, web_dir: Path | str | None = 
                 "Attribution is exact applicant-name matching after case folding and whitespace collapse; the verbatim string is preserved.",
                 "No fuzzy, prefix or substring matching is used for attribution.",
                 "Strings not in the registry stay unattributed and are counted in the audit, never folded into an organization.",
-                "Attribution decisions marked pending_review are provisional; the product labels them as such.",
+                "Each mapping carries a verification status: proposed (no verification), rule_verified (deterministic rule), evidence_verified (independent document recorded) or human_reviewed (named human decision).",
+                "Rule-verified is NOT human review and is reported separately from curated share.",
+                "Only the internal review workspace can change a mapping; the public API is read-only.",
             ],
+            "status_counts": data.registry.status_counts(),
             "snapshot": data.snapshot_ref(),
         }
+
+    # ---------------------------------------------------------------- extension point
+    # Anything registered here is matched before the SPA catch-all below.
+    if setup is not None:
+        setup(app)
 
     # ---------------------------------------------------------------- static UI
     @app.get("/")

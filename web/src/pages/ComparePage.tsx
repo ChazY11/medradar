@@ -16,6 +16,7 @@ import {
   formatDate,
   formatPercent,
 } from "../components/ui";
+import { CompareTransparency } from "../components/transparency";
 import { useI18n } from "../i18n";
 import type { CompareResponse, EventType, OrgValue } from "../api/types";
 
@@ -38,6 +39,8 @@ export function ComparePage() {
   const orgs = useMemo(() => (searchParams.get("orgs") ?? "").split(",").filter(Boolean), [searchParams]);
   const windowYears = Number(searchParams.get("years") ?? "5");
   const types = useMemo(() => (searchParams.get("types") ?? "").split(",").filter(Boolean), [searchParams]);
+  const basis = searchParams.get("basis") ?? "current_group";
+  const reviewFilter = searchParams.get("review") ?? "";
   const organizations = useAsync(() => listOrganizations(), []);
   const meta = useAsync(() => getMeta(), []);
 
@@ -52,9 +55,23 @@ export function ComparePage() {
   const bounds = useMemo(() => windowBounds(meta.data?.coverage.latest_event_date ?? null, windowYears), [meta.data, windowYears]);
 
   const compare = useAsync(
-    () => getCompare(orgs, { from: bounds?.from, to: bounds?.to, types: types.length ? (types as EventType[]) : undefined }),
-    [orgs.join(","), bounds?.from ?? "", bounds?.to ?? "", types.join(",")],
+    () =>
+      getCompare(orgs, {
+        from: bounds?.from,
+        to: bounds?.to,
+        types: types.length ? (types as EventType[]) : undefined,
+        basis: basis === "current_group" ? undefined : basis,
+        review: reviewFilter || undefined,
+      }),
+    [orgs.join(","), bounds?.from ?? "", bounds?.to ?? "", types.join(","), basis, reviewFilter],
   );
+
+  const setExtra = (key: string, value: string) => {
+    const params = new URLSearchParams(searchParams);
+    if (!value || (key === "basis" && value === "current_group")) params.delete(key);
+    else params.set(key, value);
+    setSearchParams(params);
+  };
 
   const availableOrgs = organizations.data?.organizations ?? [];
 
@@ -76,7 +93,16 @@ export function ComparePage() {
         description={t("compare.desc")}
         actions={
           orgs.length >= 2 ? (
-            <ExportLink href={exportCompareMdUrl(orgs, { from: bounds?.from, to: bounds?.to, types: types.length ? (types as EventType[]) : undefined })} title="Markdown report with the same window, warnings and counting rule as this screen.">
+            <ExportLink
+              href={exportCompareMdUrl(orgs, {
+                from: bounds?.from,
+                to: bounds?.to,
+                types: types.length ? (types as EventType[]) : undefined,
+                basis: basis === "current_group" ? undefined : basis,
+                review: reviewFilter || undefined,
+              })}
+              title="Markdown report with the same window, basis, warnings and counting rule as this screen."
+            >
               {bi("Export report", "导出报告")} (MD)
             </ExportLink>
           ) : null
@@ -148,6 +174,23 @@ export function ComparePage() {
                 ))}
               </div>
               <div className="tiny muted">{bi("No selection means all event types.", "不选择即为全部事件类型。")}</div>
+            </div>
+            <div className="field">
+              <span className="field-label">{bi("Ownership basis", "所有权口径")}</span>
+              <select className="select" value={basis} onChange={(event) => setExtra("basis", event.target.value)}>
+                <option value="current_group">{bi("Current group (acquired entities included)", "当前集团（含被收购实体）")}</option>
+                <option value="original_registrant">{bi("Original registrant only", "仅原始申请主体")}</option>
+              </select>
+              <div className="tiny muted">{bi("Current-group counts credit an acquired business to its present owner; original-registrant counts only records filed under the organization's own applicant identities.", "当前集团口径把被收购业务计入现所有者；原始申请主体口径只计入以本企业自身申请人名称提交的记录。")}</div>
+            </div>
+            <div className="field">
+              <span className="field-label">{bi("Only verified mappings", "仅已核验映射")}</span>
+              <select className="select" value={reviewFilter} onChange={(event) => setExtra("review", event.target.value)}>
+                <option value="">{bi("All mappings", "全部映射")}</option>
+                <option value="curated">{bi("Evidence-verified or human-reviewed only", "仅经证据核验或人工复核")}</option>
+                <option value="rule_verified">{bi("Deterministic rule only", "仅确定性规则")}</option>
+              </select>
+              <div className="tiny muted">{bi("Filtering to verified mappings usually lowers both counts; it does not rank the organizations.", "仅看已核验映射通常会让双方计数都下降；它并不构成企业排名。")}</div>
             </div>
           </div>
         </Card>
@@ -221,6 +264,8 @@ function CompareBody({ data }: { data: CompareResponse }) {
 
   return (
     <div className="stack">
+      <CompareTransparency compare={data} />
+
       {data.warnings.length ? (
         <div className="stack" style={{ gap: 8 }}>
           {data.warnings.map((warning) => (

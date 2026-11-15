@@ -14,6 +14,7 @@ from __future__ import annotations
 from datetime import date
 from typing import Any, Sequence
 
+from .attribution import ownership as ownership_module
 from .dataset import (
     EVENT_TYPE_LABELS,
     EVENT_TYPE_ORDER,
@@ -86,6 +87,8 @@ def build_compare(
     date_from: str | None = None,
     date_to: str | None = None,
     event_types: Sequence[str] | None = None,
+    basis: str | None = None,
+    review: str | None = None,
 ) -> dict[str, Any]:
     keys = [key for key in dict.fromkeys(org_keys) if key]
     if len(keys) < MIN_ORGS:
@@ -116,12 +119,18 @@ def build_compare(
     all_tracked_in_window: list[Event] = []
     for key in keys:
         org = dataset.organization(key)
-        events = dataset.filter_events(org_keys=[key], event_types=types, date_from=start, date_to=end)
+        events = dataset.filter_events(
+            org_keys=[key], event_types=types, date_from=start, date_to=end, review=review, basis=basis
+        )
         side = _side(dataset, key, events, window, years)
         sides.append(side)
     # denominator for shares: every tracked organization's attributed records in the same window
     for org in dataset.registry.organizations:
-        all_tracked_in_window.extend(dataset.filter_events(org_keys=[org.key], event_types=types, date_from=start, date_to=end))
+        all_tracked_in_window.extend(
+            dataset.filter_events(
+                org_keys=[org.key], event_types=types, date_from=start, date_to=end, review=review, basis=basis
+            )
+        )
     denominator: dict[str, int] = {event_type: 0 for event_type in EVENT_TYPE_ORDER}
     for event in all_tracked_in_window:
         denominator[event.event_type] = denominator.get(event.event_type, 0) + 1
@@ -146,6 +155,19 @@ def build_compare(
         row["device_class"] = row["id"]
 
     warnings = _warnings(dataset, sides, partial, types, denominator)
+    coverage_symmetric = len({tuple(sorted(row["source_id"] for row in side["coverage"]["sources"] if row["records"])) for side in sides}) == 1
+    comparability = {
+        "window_shared": True,
+        "event_types_shared": True,
+        "counting_unit": "one regulatory record in the source dataset",
+        "ownership_basis": basis or "current_group",
+        "review_filter": review or "any",
+        "coverage_symmetric": coverage_symmetric,
+        "single_pathway_only": len(types) == 1,
+        "verdict": "comparable within the stated window and event types"
+        if coverage_symmetric and (basis or "current_group") == "current_group"
+        else "differences include a coverage or ownership-basis difference; read the warnings before comparing totals",
+    }
     return {
         "organizations": [
             {
@@ -160,6 +182,8 @@ def build_compare(
                 "aggregations": side["aggregations"],
                 "per_year_totals": side["per_year_totals"],
                 "share_of_all_tracked": side["share_of_all_tracked"],
+                "verification": side["verification"],
+                "historical_ownership": side["historical_ownership"],
             }
             for side in sides
         ],
@@ -174,7 +198,21 @@ def build_compare(
         "class_matrix": class_matrix,
         "warnings": warnings,
         "disclaimer": DISCLAIMER,
-        "basis": dataset.basis([], event_types=types, window=window, rule="Count of attributed regulatory records inside the effective window; shares use all tracked organizations in the same window as the denominator."),
+        "comparability": comparability,
+        "not_evidence_of": [
+            "innovation, research intensity or product quality",
+            "market share or revenue",
+            "safety performance (a recall is a safety action, not a product failure rate)",
+            "a ranking: the product never orders organizations by record count",
+        ],
+        "basis": dataset.basis(
+            [],
+            event_types=types,
+            window=window,
+            rule="Count of attributed regulatory records inside the effective window; shares use all tracked organizations in the same window as the denominator. "
+            + ("Attribution uses the current group, so records filed by an acquired predecessor entity are counted under the acquirer." if (basis or "current_group") == "current_group" else "Attribution uses the original-registrant basis: records filed by acquired predecessor entities are excluded.")
+            + (" Review filter: " + str(review) + "." if review else ""),
+        ),
         "snapshot": dataset.snapshot_ref(),
         "freshness": dataset.freshness(),
     }
@@ -211,6 +249,11 @@ def _side(dataset: Dataset, key: str, events: list[Event], window: dict[str, Any
             "max_event_date": max(dates) if dates else None,
         })
     aggregations = aggregate(events)
+    stats = dataset.org_stats.get(key)
+    predecessor_records = 0
+    for event in events:
+        if event.attribution_is_predecessor:
+            predecessor_records += 1
     return {
         "key": key,
         "display_name": org.display_name,
@@ -224,6 +267,25 @@ def _side(dataset: Dataset, key: str, events: list[Event], window: dict[str, Any
             "sources": sources,
             "unmapped_category": counts["unmapped_category"],
             "pending_review": counts["pending_review"],
+        },
+        "verification": {
+            "attributed_records": counts["records"],
+            "verified_records": counts["verified_records"],
+            "rule_verified_records": counts["rule_verified_records"],
+            "provisional_records": counts["provisional"],
+            "curated_share": counts["curated_share"],
+            "rule_verified_share": counts["rule_verified_share"],
+            "provisional_share": counts["provisional_share"],
+            "by_status": counts["by_verification"],
+        },
+        "historical_ownership": {
+            "records_from_predecessor_entities": predecessor_records,
+            "records_from_original_registrant": counts["records"] - predecessor_records,
+            "verified_relations": len(
+                [relation for relation in ownership_module.ownership().for_organization(key) if relation.verified]
+            ),
+            "note": "Under current-group attribution, records filed by an acquired predecessor entity are counted under this organization. Select the original-registrant basis to exclude them.",
+            "all_organization_records": stats.counts["records"] if stats else counts["records"],
         },
         "aggregations": aggregations,
         "per_year_totals": years_rows,
@@ -291,10 +353,36 @@ def _warnings(
         })
     if any(side["counts"]["pending_review"] for side in sides):
         warnings.append({
-            "code": "pending_review_present",
+            "code": "provisional_attribution_present",
             "severity": "warning",
-            "message": "Some attributed records come from applicant spellings whose attribution is pending human review. Treat those counts as provisional.",
+            "message": "Part of these counts rests on applicant mappings that are neither evidence-verified nor human-reviewed (rule-verified or proposed). "
+            + "; ".join(
+                side["display_name"] + ": " + str(side["counts"]["provisional"]) + " provisional, " + str(side["counts"]["verified_records"]) + " verified"
+                for side in sides
+            )
+            + ". Read the Curated Share before treating the difference as real.",
             "org_keys": [side["key"] for side in sides if side["counts"]["pending_review"]],
+        })
+    shares = [side["counts"]["curated_share"] for side in sides]
+    numeric = [value for value in shares if value is not None]
+    if numeric and max(numeric) - min(numeric) >= 0.10:
+        warnings.append({
+            "code": "verification_asymmetry",
+            "severity": "warning",
+            "message": "The share of records resting on independently verified mappings differs between organizations by at least 10 percentage points ("
+            + "; ".join(side["display_name"] + " " + ("UNKNOWN" if side["counts"]["curated_share"] is None else format(side["counts"]["curated_share"] * 100, ".1f") + "%") for side in sides)
+            + "). A difference in data confidence is not a difference in activity.",
+            "org_keys": [side["key"] for side in sides],
+        })
+    predecessor = [side["historical_ownership"]["records_from_predecessor_entities"] for side in sides]
+    if any(predecessor):
+        warnings.append({
+            "code": "historical_ownership_included",
+            "severity": "info",
+            "message": "Current-group attribution includes records filed by acquired predecessor entities ("
+            + "; ".join(side["display_name"] + " " + str(side["historical_ownership"]["records_from_predecessor_entities"]) for side in sides)
+            + "). Those records were filed by a different legal entity at the time. Use the original-registrant basis to exclude them.",
+            "org_keys": [side["key"] for side in sides if side["historical_ownership"]["records_from_predecessor_entities"]],
         })
     shares = []
     for side in sides:

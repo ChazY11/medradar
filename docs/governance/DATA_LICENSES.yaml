@@ -36,17 +36,24 @@ policy:
   raw_root: data/
   rule: "GREEN may be redistributed with attribution. AMBER may contribute only explicitly listed derived artefacts. RED may not be committed at all. Unlisted sources are RED."
   tracked_source: "git ls-files (final tree: committed + staged); untracked data files fail separately"
-  # GOV-0004: a restricted binary format is normally forbidden outside synthetic fixtures
-  # because its bytes cannot be reviewed. A GREEN, redistributable source may opt in for a
-  # *derived* projection of its own public data when the inventory entry declares the file's
-  # SHA-256, so the committed blob is bound to a reviewed artefact. Compressed public-domain
-  # record snapshots (PRODUCT-001) are the motivating case; opaque third-party blobs stay
-  # forbidden.
+  # GOV-0004, narrowed by GOV-0005: a restricted binary format is normally forbidden
+  # outside synthetic fixtures because its bytes cannot be reviewed. Only the explicit
+  # source ids, repository paths, content kinds and byte cap below may opt in, and only
+  # when the inventory entry is GREEN, the source is redistributable and the declared
+  # SHA-256 equals the committed file bytes. This keeps the PRODUCT-001 openFDA snapshot
+  # reviewable without opening a general "any hash-declared blob" route.
   derived_binary_allowlist:
     enabled: true
     require_sha256: true
     require_may_redistribute: true
-    reason: "GOV-0004: hash-declared, GREEN, redistributable derived data may be committed compressed"
+    allowed_source_ids:
+      - openfda_device
+    allowed_paths:
+      - "medradar/product/snapshot/*.gz"
+    allowed_content_kinds:
+      - gzip
+    max_bytes: 33554432
+    reason: "GOV-0005: openfda_device gzip snapshots under medradar/product/snapshot/*.gz only, at most 32 MiB, SHA-256 bound"
 
 inventory:
   file: docs/governance/DATA_INVENTORY.yaml
@@ -166,6 +173,7 @@ sources:
       - docs/refoundation/**
       - docs/product/**
       - medradar/product/identity/**
+      - medradar/product/attribution/**
       - tools/*.json
     docs: docs/product/DATA_CONTRACT.md
   - source_id: curated_configuration

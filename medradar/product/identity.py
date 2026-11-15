@@ -1,9 +1,9 @@
 """Organization identity, applicant attribution and organization search.
 
 The registry (medradar/product/identity/organizations.json) is the reviewed source of truth for
-which applicant spellings belong to which tracked organization. This module loads it, enforces
-its integrity rules, and exposes the *only* attribution function the rest of the product may
-use.
+which applicant spellings belong to which tracked organization. This module loads it, enforces its
+integrity rules, derives each decision's *verification status*, and exposes the attribution
+function the rest of the product uses.
 
 Rules enforced here (see docs/product/DATA_CONTRACT.md section 4):
 
@@ -12,6 +12,21 @@ Rules enforced here (see docs/product/DATA_CONTRACT.md section 4):
 * one applicant string cannot be accepted by two organizations (load-time error);
 * one string cannot be both accepted and rejected (load-time error);
 * unattributed strings stay unattributed; nothing is guessed.
+
+Verification status (PRODUCT-002)
+---------------------------------
+The registry's historical flag (curated | pending_review) is NOT a verification status. Each
+decision also carries a *status* derived from an explicit rule or an explicit evidence record:
+
+  proposed -> rule_verified -> evidence_verified -> human_reviewed
+
+and the negative statuses rejected / unresolved. "Curated" in the product metrics means only
+evidence_verified or human_reviewed; a deterministic name rule is reported separately and is never
+presented as review. See medradar/product/attribution/status.py for the definitions.
+
+A review-ledger overlay (medradar.product.review) can override any decision; the overlay is applied
+here so every consumer of the registry - the API, the exports, the metrics - sees the same
+effective mapping.
 """
 from __future__ import annotations
 
@@ -20,7 +35,27 @@ import unicodedata
 from dataclasses import dataclass, field
 from functools import lru_cache
 from pathlib import Path
-from typing import Any, Iterable, Iterator
+from typing import Any, Iterable, Iterator, Mapping, Sequence
+
+from .attribution import ownership as ownership_module
+from .attribution import status as status_module
+from .attribution.status import (
+    CURATED_STATUSES,
+    EVIDENCE_VERIFIED,
+    EvidenceRef,
+    HUMAN_REVIEWED,
+    PROPOSED,
+    REJECTED,
+    RULE_LEXICAL_EQUIVALENCE,
+    RULE_NAME_IDENTITY,
+    RULE_OWNERSHIP_EVIDENCE,
+    RULE_REGISTRY_AUTHORING,
+    RULE_MACHINE_PROPOSAL,
+    UNRESOLVED,
+    coerce_evidence,
+    lexical_key,
+    name_identity_rule,
+)
 
 REGISTRY_PATH = Path(__file__).with_name("identity") / "organizations.json"
 
@@ -45,6 +80,50 @@ class Decision:
     basis: str
     review: str
     source: str
+    status: str = PROPOSED
+    rule: str | None = None
+    rule_detail: str | None = None
+    evidence: tuple[EvidenceRef, ...] = ()
+    provenance: str = "registry_authoring"
+    decision_uid: str | None = None
+    reviewer: str | None = None
+    reviewer_kind: str | None = None
+
+    @property
+    def verified(self) -> bool:
+        return self.status in CURATED_STATUSES
+
+    @property
+    def rule_verified(self) -> bool:
+        return self.status == status_module.RULE_VERIFIED
+
+    @property
+    def provisional(self) -> bool:
+        return self.status in status_module.PROVISIONAL_STATUSES
+
+    def to_public(self) -> dict[str, Any]:
+        return {
+            "applicant_name": self.applicant_name,
+            "organization_key": self.organization_key,
+            "basis": self.basis,
+            "basis_label": BASIS_LABELS.get(self.basis, self.basis),
+            "registry_review_legacy": self.review,
+            "status": self.status,
+            "status_label_en": status_module.STATUS_LABELS_EN.get(self.status, self.status),
+            "status_label_zh": status_module.STATUS_LABELS_ZH.get(self.status, self.status),
+            "verified": self.verified,
+            "rule_verified": self.rule_verified,
+            "provisional": self.provisional,
+            "rule": self.rule,
+            "rule_detail": self.rule_detail,
+            "provenance": self.provenance,
+            "source": self.source,
+            "evidence": [item.to_public() for item in self.evidence],
+            "decision_uid": self.decision_uid,
+            "reviewer": self.reviewer,
+            "reviewer_kind": self.reviewer_kind,
+            "review_required": self.status == PROPOSED,
+        }
 
 
 @dataclass(frozen=True)
@@ -52,6 +131,10 @@ class Rejection:
     applicant_name: str
     organization_key: str
     reason: str
+    status: str = REJECTED
+    reviewer: str | None = None
+    reviewer_kind: str | None = None
+    decision_uid: str | None = None
 
 
 @dataclass(frozen=True)
@@ -106,6 +189,8 @@ class Registry:
     rejections: dict[str, Rejection]
     accepted_spellings_by_org: dict[str, tuple[Decision, ...]]
     warnings: list[str] = field(default_factory=list)
+    overlay_applied: int = 0
+    unresolved_strings: dict[str, str] = field(default_factory=dict)
 
     def organization(self, key: str) -> Organization | None:
         return self.by_key.get(key)
@@ -117,23 +202,152 @@ class Registry:
     def all_keys(self) -> list[str]:
         return [org.key for org in self.organizations]
 
+    def status_counts(self) -> dict[str, int]:
+        counts = {name: 0 for name in status_module.DECISION_STATUSES}
+        for decision in self.decisions.values():
+            counts[decision.status] = counts.get(decision.status, 0) + 1
+        counts[REJECTED] += len(self.rejections)
+        return counts
 
-def _build_registry(payload: dict[str, Any]) -> Registry:
+
+def _derive_status(decision: Decision, organization: Organization) -> Decision:
+    """Derive the verification status of one accepted spelling from explicit fields only."""
+    basis = decision.basis
+    if decision.review == "pending_review":
+        return Decision(
+            applicant_name=decision.applicant_name,
+            organization_key=decision.organization_key,
+            basis=basis,
+            review=decision.review,
+            source=decision.source,
+            status=PROPOSED,
+            rule=RULE_MACHINE_PROPOSAL,
+            rule_detail="proposed by the collection-scope token rule; no review recorded",
+            provenance="machine_proposal",
+        )
+    if decision.review == "curated" and basis in ("legal_name", "brand"):
+        result = name_identity_rule(
+            decision.applicant_name,
+            legal_names=[organization.legal_name or ""],
+            brands=organization.brands or (organization.display_name,),
+        )
+        if result.ok:
+            return Decision(
+                applicant_name=decision.applicant_name,
+                organization_key=decision.organization_key,
+                basis=basis,
+                review=decision.review,
+                source=decision.source,
+                status=status_module.RULE_VERIFIED,
+                rule=result.rule,
+                rule_detail=result.detail,
+                provenance="name_identity_rule",
+            )
+        return Decision(
+            applicant_name=decision.applicant_name,
+            organization_key=decision.organization_key,
+            basis=basis,
+            review=decision.review,
+            source=decision.source,
+            status=PROPOSED,
+            rule=RULE_REGISTRY_AUTHORING,
+            rule_detail="authored with the registry but the deterministic name-identity rule does not confirm it: " + result.detail,
+            provenance="registry_authoring",
+        )
+    # subsidiary / division / historical_name: acceptance is a corporate relation, which needs
+    # evidence. Without an evidence record it is a working assumption.
+    return Decision(
+        applicant_name=decision.applicant_name,
+        organization_key=decision.organization_key,
+        basis=basis,
+        review=decision.review,
+        source=decision.source,
+        status=PROPOSED,
+        rule=RULE_REGISTRY_AUTHORING,
+        rule_detail="corporate relation authored with the registry; no independent evidence recorded",
+        provenance="registry_authoring",
+    )
+
+
+def _upgrade_with_evidence(decision: Decision, organization: Organization) -> Decision:
+    """Upgrade to evidence_verified when a verified ownership relation covers the spelling."""
+    if decision.status in (REJECTED, UNRESOLVED):
+        return decision
+    relations = ownership_module.ownership().verified_for(organization.key, decision.applicant_name)
+    if not relations:
+        return decision
+    evidence: list[EvidenceRef] = []
+    for relation in relations:
+        evidence.extend(relation.evidence)
+    return Decision(
+        applicant_name=decision.applicant_name,
+        organization_key=decision.organization_key,
+        basis=decision.basis,
+        review=decision.review,
+        source=decision.source,
+        status=EVIDENCE_VERIFIED,
+        rule=RULE_OWNERSHIP_EVIDENCE,
+        rule_detail="covered by verified ownership relation(s): "
+        + ", ".join(relation.relation_id for relation in relations),
+        evidence=tuple(evidence),
+        provenance="ownership_evidence",
+        decision_uid=decision.decision_uid,
+        reviewer=relations[0].reviewer,
+        reviewer_kind=relations[0].reviewer_kind,
+    )
+
+
+def _apply_lexical_equivalence(decisions: list[Decision]) -> list[Decision]:
+    """Promote proposals that differ from a stronger sibling only by case/punctuation/legal form."""
+    stronger_keys: dict[str, str] = {}
+    for decision in decisions:
+        if decision.status in (status_module.RULE_VERIFIED, EVIDENCE_VERIFIED, HUMAN_REVIEWED):
+            stronger_keys.setdefault(lexical_key(decision.applicant_name), decision.applicant_name)
+    out: list[Decision] = []
+    for decision in decisions:
+        if decision.status != PROPOSED:
+            out.append(decision)
+            continue
+        key = lexical_key(decision.applicant_name)
+        sibling = stronger_keys.get(key)
+        if sibling and normalise_applicant(sibling) != normalise_applicant(decision.applicant_name):
+            out.append(
+                Decision(
+                    applicant_name=decision.applicant_name,
+                    organization_key=decision.organization_key,
+                    basis=decision.basis,
+                    review=decision.review,
+                    source=decision.source,
+                    status=status_module.RULE_VERIFIED,
+                    rule=RULE_LEXICAL_EQUIVALENCE,
+                    rule_detail="lexically equivalent to the verified spelling " + repr(sibling) + " (case/punctuation/legal-form suffix only)",
+                    provenance="lexical_equivalence_rule",
+                )
+            )
+            continue
+        out.append(decision)
+    return out
+
+
+def _build_registry(payload: dict[str, Any], overlay: Mapping[str, Mapping[str, Any]] | None = None) -> Registry:
     organizations: list[Organization] = []
     decisions: dict[str, Decision] = {}
     rejections: dict[str, Rejection] = {}
     accepted_by_org: dict[str, list[Decision]] = {}
     warnings: list[str] = []
+    overlay = overlay or {}
+    overlay_applied = 0
+    unresolved_strings: dict[str, str] = {}
 
     for raw in payload.get("organizations") or []:
         key = str(raw["key"]).strip()
-        accept: list[Decision] = []
+        provisional: list[Decision] = []
         for item in raw.get("accept_exact") or []:
             value = str(item["value"]).strip()
             if not value:
                 continue
             normalised = normalise_applicant(value)
-            decision = Decision(
+            base = Decision(
                 applicant_name=value,
                 organization_key=key,
                 basis=str(item.get("basis") or "brand"),
@@ -151,12 +365,9 @@ def _build_registry(payload: dict[str, Any]) -> Registry:
                         + " and "
                         + key
                     )
-                # A case-variant duplicate inside one organization is noise, not a decision:
-                # keep the first entry and drop the duplicate.
                 warnings.append("duplicate applicant spelling inside " + key + ": " + repr(value))
                 continue
-            decisions[normalised] = decision
-            accept.append(decision)
+            provisional.append(base)
         reject: list[Rejection] = []
         for item in raw.get("reject_exact") or []:
             value = str(item["value"]).strip()
@@ -172,7 +383,7 @@ def _build_registry(payload: dict[str, Any]) -> Registry:
             )
             rejections[normalised] = rejection
             reject.append(rejection)
-        accepted_by_org[key] = accept
+        accepted_by_org[key] = provisional
         organizations.append(
             Organization(
                 key=key,
@@ -190,32 +401,208 @@ def _build_registry(payload: dict[str, Any]) -> Registry:
                 registry_review=str(raw.get("registry_review") or "pending_review"),
                 metadata_source=str(raw.get("metadata_source") or ""),
                 ownership_note=str(raw.get("ownership_note") or ""),
-                accept_exact=tuple(accept),
+                accept_exact=(),
                 reject_exact=tuple(reject),
                 search_tokens=tuple(raw.get("search_tokens") or ()),
             )
         )
 
+    organization_by_key = {org.key: org for org in organizations}
+
+    # pass 1: derive a status from explicit registry fields and verified ownership evidence
+    derived: list[Decision] = []
+    for raw in payload.get("organizations") or []:
+        key = str(raw["key"]).strip()
+        organization = organization_by_key[key]
+        for base in accepted_by_org.get(key, []):
+            decision = _derive_status(base, organization)
+            decision = _upgrade_with_evidence(decision, organization)
+            derived.append(decision)
+
+    # pass 2: lexical-equivalence promotion inside each organization
+    promoted: list[Decision] = []
+    for key in {decision.organization_key for decision in derived}:
+        promoted.extend(_apply_lexical_equivalence([item for item in derived if item.organization_key == key]))
+
+    # pass 3: review-ledger overlay (highest precedence: a recorded decision)
+    final: list[Decision] = []
+    accepted_final: dict[str, list[Decision]] = {}
+    for decision in promoted:
+        normalised = normalise_applicant(decision.applicant_name)
+        override = overlay.get(normalised)
+        if override is not None:
+            overlay_applied += 1
+            decision = _apply_overlay(decision, override)
+        final.append(decision)
+        accepted_final.setdefault(decision.organization_key, []).append(decision)
+
+    for decision in final:
+        decisions[normalise_applicant(decision.applicant_name)] = decision
+
+    # overlay rejections/unresolved for strings that were previously unattributed
+    for normalised, override in overlay.items():
+        if normalised in decisions or normalised in rejections:
+            continue
+        action = str(override.get("action") or "")
+        organization_key = override.get("organization_key")
+        applicant_name = str(override.get("applicant_name") or normalised)
+        if action == "reject":
+            rejections[normalised] = Rejection(
+                applicant_name=applicant_name,
+                organization_key=str(organization_key or ""),
+                reason=str(override.get("note") or "rejected by identity review"),
+                reviewer=override.get("reviewer"),
+                reviewer_kind=override.get("reviewer_kind"),
+                decision_uid=override.get("decision_uid"),
+            )
+        elif action == "unresolved":
+            unresolved_strings[normalised] = str(override.get("note") or "reviewed and not determinable")
+            overlay_applied += 1
+        elif action in ("approve", "reassign") and organization_key in organization_by_key:
+            decision = Decision(
+                applicant_name=applicant_name,
+                organization_key=str(organization_key),
+                basis="review_decision",
+                review="curated",
+                source="review_ledger",
+                status=str(override.get("status") or HUMAN_REVIEWED),
+                rule="review_ledger_v1",
+                rule_detail="recorded in the internal identity review ledger",
+                evidence=coerce_evidence(override.get("evidence")),
+                provenance="review_ledger",
+                decision_uid=override.get("decision_uid"),
+                reviewer=override.get("reviewer"),
+                reviewer_kind=override.get("reviewer_kind"),
+            )
+            decisions[normalised] = decision
+            accepted_final.setdefault(str(organization_key), []).append(decision)
+            overlay_applied += 1
+
     pending = sum(1 for org in organizations if org.registry_review == "pending_review")
     if pending:
-        warnings.append(str(pending) + " organization(s) have pending-review attribution and must be labelled provisional in the UI")
+        warnings.append(str(pending) + " organization(s) have pending-review registry metadata and are labelled provisional in the UI")
+
+    # rebuild organizations with their final decision tuples
+    organizations_out = []
+    for organization in organizations:
+        organizations_out.append(
+            Organization(
+                key=organization.key,
+                display_name=organization.display_name,
+                display_name_zh=organization.display_name_zh,
+                legal_name=organization.legal_name,
+                ticker=organization.ticker,
+                exchange=organization.exchange,
+                country=organization.country,
+                country_name=organization.country_name,
+                organization_type=organization.organization_type,
+                featured=organization.featured,
+                description=organization.description,
+                brands=organization.brands,
+                registry_review=organization.registry_review,
+                metadata_source=organization.metadata_source,
+                ownership_note=organization.ownership_note,
+                accept_exact=tuple(accepted_final.get(organization.key, [])),
+                reject_exact=organization.reject_exact,
+                search_tokens=organization.search_tokens,
+            )
+        )
 
     return Registry(
         updated_at=str(payload.get("updated_at") or ""),
         matching_rule=str(payload.get("matching_rule") or ""),
-        organizations=tuple(organizations),
-        by_key={org.key: org for org in organizations},
+        organizations=tuple(organizations_out),
+        by_key={org.key: org for org in organizations_out},
         decisions=decisions,
         rejections=rejections,
-        accepted_spellings_by_org={key: tuple(values) for key, values in accepted_by_org.items()},
+        accepted_spellings_by_org={key: tuple(values) for key, values in accepted_final.items()},
         warnings=warnings,
+        overlay_applied=overlay_applied,
+        unresolved_strings=unresolved_strings,
+    )
+
+
+def _apply_overlay(decision: Decision, override: Mapping[str, Any]) -> Decision:
+    action = str(override.get("action") or "")
+    status = str(override.get("status") or "")
+    organization_key = override.get("organization_key") or decision.organization_key
+    if action == "reject":
+        return Decision(
+            applicant_name=decision.applicant_name,
+            organization_key=str(organization_key),
+            basis=decision.basis,
+            review="rejected",
+            source="review_ledger",
+            status=REJECTED,
+            rule="review_ledger_v1",
+            rule_detail="rejected in the internal identity review ledger",
+            evidence=coerce_evidence(override.get("evidence")),
+            provenance="review_ledger",
+            decision_uid=override.get("decision_uid"),
+            reviewer=override.get("reviewer"),
+            reviewer_kind=override.get("reviewer_kind"),
+        )
+    return Decision(
+        applicant_name=decision.applicant_name,
+        organization_key=str(organization_key),
+        basis=str(override.get("basis") or decision.basis),
+        review="curated" if status in (EVIDENCE_VERIFIED, HUMAN_REVIEWED) else decision.review,
+        source="review_ledger",
+        status=status or HUMAN_REVIEWED,
+        rule="review_ledger_v1",
+        rule_detail="recorded in the internal identity review ledger",
+        evidence=coerce_evidence(override.get("evidence")),
+        provenance="review_ledger",
+        decision_uid=override.get("decision_uid"),
+        reviewer=override.get("reviewer"),
+        reviewer_kind=override.get("reviewer_kind"),
     )
 
 
 @lru_cache(maxsize=1)
+def _payload() -> dict[str, Any]:
+    return json.loads(REGISTRY_PATH.read_text(encoding="utf-8"))
+
+
+@lru_cache(maxsize=2)
 def registry() -> Registry:
-    payload = json.loads(REGISTRY_PATH.read_text(encoding="utf-8"))
-    return _build_registry(payload)
+    return _build_registry(_payload())
+
+
+def registry_with_overlay(overlay_items: tuple) -> Registry:
+    """Registry with review-ledger decisions applied.
+
+    overlay_items is a hashable tuple of (applicant_key, organization_key, action, status,
+    reviewer, reviewer_kind, evidence_fingerprint, decision_uid, note) so it can be memoised.
+    """
+    if not overlay_items:
+        return registry()
+    overlay: dict[str, dict[str, Any]] = {}
+    for item in overlay_items:
+        (
+            applicant_key,
+            organization_key,
+            action,
+            status,
+            reviewer,
+            reviewer_kind,
+            evidence_json,
+            decision_uid,
+            note,
+            applicant_name,
+        ) = item
+        overlay[applicant_key] = {
+            "organization_key": organization_key,
+            "action": action,
+            "status": status,
+            "reviewer": reviewer,
+            "reviewer_kind": reviewer_kind,
+            "evidence": json.loads(evidence_json) if evidence_json else None,
+            "decision_uid": decision_uid,
+            "note": note,
+            "applicant_name": applicant_name,
+        }
+    return _build_registry(_payload(), overlay)
 
 
 # --------------------------------------------------------------------------- search
@@ -230,7 +617,6 @@ MATCH_RANK = {
 
 MATCH_FIELD_ORDER = tuple(MATCH_RANK)
 
-
 SHORT_QUERY_CHARS = 4
 
 
@@ -242,7 +628,11 @@ class SearchHit:
     rank: int
 
 
-def search_organizations(query: str, applicant_names: Iterable[str]) -> tuple[list[SearchHit], list[str]]:
+def search_organizations(
+    query: str,
+    applicant_names: Iterable[str],
+    active_registry: Registry | None = None,
+) -> tuple[list[SearchHit], list[str]]:
     """Rank tracked organizations for a query, with explicit match precedence.
 
     Precedence: exact legal name, exact brand, exact ticker, exact or prefix alias / brand,
@@ -252,13 +642,14 @@ def search_organizations(query: str, applicant_names: Iterable[str]) -> tuple[li
     two-letter query otherwise matches unrelated legal names. That is a deliberate anti-noise
     rule, documented in the API contract.
     """
+    data = active_registry or registry()
     needle = normalise_applicant(query)
     if not needle:
         return [], []
     allow_applicant_substring = len(needle) >= SHORT_QUERY_CHARS
     hits: list[SearchHit] = []
     matched_applicants: list[str] = []
-    for org in registry().organizations:
+    for org in data.organizations:
         best: SearchHit | None = None
 
         def consider(field: str, value: str) -> None:
@@ -307,7 +698,6 @@ def search_organizations(query: str, applicant_names: Iterable[str]) -> tuple[li
             if needle in normalise_applicant(name):
                 matched_applicants.append(name)
 
-    # Applicant-only matches already attributed to a hit organization are not interesting.
     attributed = {
         normalise_applicant(decision.applicant_name)
         for hit in hits

@@ -382,3 +382,78 @@ every cited aggregate (and up to 5 example record URLs per org). Filename
 `GET /` and any non-`/api` path serve `web/dist/index.html` (SPA fallback). Assets under
 `/assets/*`. `GET /favicon.svg`. If the build is missing, return a 503 JSON error with the
 build command in `hint`.
+
+## PRODUCT-002 additions (v2)
+
+The following are additive. No PRODUCT-001 field was removed; two changed meaning and are marked.
+
+### `GET /api/metrics`
+
+Returns the five measurements with their definitions, per level (record / applicant / organization):
+`attributed_share`, `rule_verified_share`, `curated_share`, `estimated_attribution_precision`,
+`retrieval_coverage`. `definitions` is the same text the documentation uses, so the API cannot drift
+from the docs. Precision and retrieval return `state: "unknown"` with a reason when unsupported.
+
+### `GET /api/ownership`
+
+Ownership relations with `relation_id`, `entity`, `relation_type`, `effective_from`,
+`historical_owner_before`, `status` (`evidence_verified` | `unresolved`), `reviewer_kind` and the
+recorded `evidence` (type, URL, title, access date, quote). Unresolved relations carry no evidence.
+
+### Event attribution object (additive fields)
+
+```json
+{
+  "status": "attributed",
+  "basis": "legal_name | brand | subsidiary | historical_name | division | review_decision",
+  "review": "curated | pending_review | rejected",
+  "verification": "proposed | rule_verified | evidence_verified | human_reviewed | rejected | unresolved | unattributed",
+  "verified": false,
+  "rule": "name_identity_v1 | lexical_equivalence_v1 | ownership_evidence_v1 | token_scope_proposal_v1 | registry_authoring_v1 | review_ledger_v1",
+  "evidence_count": 0,
+  "reviewer": null,
+  "reviewer_kind": "human | agent | null",
+  "provenance": "registry_authoring | machine_proposal | name_identity_rule | lexical_equivalence_rule | ownership_evidence | review_ledger",
+  "predecessor_entity": false
+}
+```
+
+`review` remains for compatibility but is no longer the product's claim; `verification` is.
+`counts.pending_review` now means "not evidence-verified and not human-reviewed" and is broken down by
+`counts.provisional`, `counts.rule_verified_records`, `counts.verified_records` and
+`counts.by_verification`.
+
+### Query parameters
+
+* `review` on `/api/events`, `/api/organizations/{key}/events`, `/api/compare`, CSV and Markdown
+  exports: `curated` (alias `verified`), `rule_verified`, `provisional` (alias `pending_review`),
+  `unverified`, `any`. Unknown values return 400.
+* `basis` on the same routes: `current_group` (default) or `original_registrant`. Unknown values
+  return 400. The effective basis is echoed in the payload and in every export header.
+
+### Comparison additions
+
+`comparability` (window/event-type sharing, counting unit, ownership basis, review filter, coverage
+symmetry, verdict), `not_evidence_of` (explicit list), per-side `verification` and
+`historical_ownership` blocks, and warnings `provisional_attribution_present`,
+`verification_asymmetry`, `historical_ownership_included` (replacing `pending_review_present`).
+
+### Internal review API (not part of the public contract)
+
+`/api/review/*` exists only on the loopback admin application
+(`python -m medradar.product.review serve`):
+
+| Route | Purpose |
+|---|---|
+| `GET /api/review/ping` | auth check and ledger identity |
+| `GET /api/review/queue` | queue: status, org, risk, q, sort, page, page_size, include_verified |
+| `GET /api/review/summary` | queue + ledger statistics + metrics |
+| `GET /api/review/case/{applicant}` | verbatim string, current mapping, risk flags, candidates, FDA records, ownership relations, history |
+| `GET /api/review/history/{applicant}` | append-only decision history |
+| `GET /api/review/impact` | which organizations changed, and how many did not |
+| `POST /api/review/decisions` | append a decision (approve/reassign/reject/unresolved) |
+| `POST /api/review/decisions/{uid}/revoke` | withdraw a decision (append-only) |
+| `GET /api/review/export`, `POST /api/review/import` | offline review file |
+
+Every route requires `X-MedRadar-Review-Token` and a loopback client; the public application has no
+`/api/review` route at all (404).

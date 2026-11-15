@@ -1,5 +1,7 @@
 import type {
   AttributionResponse,
+  MetricsResponse,
+  OwnershipResponse,
   CompareResponse,
   CoverageResponse,
   EventDetailResponse,
@@ -101,6 +103,7 @@ export interface EventsQuery {
   category?: string[];
   q?: string;
   review?: string;
+  basis?: string;
   sort?: string;
   page?: number;
   page_size?: number;
@@ -110,6 +113,8 @@ export interface CompareQuery {
   from?: string;
   to?: string;
   types?: string[];
+  basis?: string;
+  review?: string;
 }
 
 export function buildQuery(
@@ -146,6 +151,7 @@ function eventsQueryParams(
     category: params.category,
     q: params.q,
     review: params.review,
+    basis: params.basis,
     sort: params.sort,
     page: params.page,
     page_size: params.page_size,
@@ -199,8 +205,18 @@ export async function getCompare(
       from: params.from,
       to: params.to,
       types: params.types,
+      basis: params.basis,
+      review: params.review,
     })}`,
   );
+}
+
+export async function getMetrics(): Promise<MetricsResponse> {
+  return request<MetricsResponse>("/api/metrics");
+}
+
+export async function getOwnership(): Promise<OwnershipResponse> {
+  return request<OwnershipResponse>("/api/ownership");
 }
 
 export async function getCoverage(): Promise<CoverageResponse> {

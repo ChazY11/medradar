@@ -1,0 +1,915 @@
+{
+ "schema": "medradar.attribution_review_records.v1",
+ "generated_at": "2026-11-15T00:33:53.362212Z",
+ "decision_rule": "SUPPORTED when the applicant spelling matches an entity name in the collected jurisdiction filing of the attributed organization (exact match after NFC+casefold+punctuation collapse, or the entity name contains the spelling's distinctive token sequence as whole words), or when a verified ownership relation in medradar/product/attribution/ownership.json covers the spelling for that organization. CONTRADICTED only when the collected filing shows a different organization owns that exact entity name. UNDECIDABLE when no collected documentary source names the spelling: the case is excluded from the precision numerator and denominator and reported separately. No case is scored correct on the basis of the registry's own claim.",
+ "reviewer": "agent:lead",
+ "reviewer_kind": "agent",
+ "review_records": [
+  {
+   "stratum": "S1_high_volume",
+   "applicant_name": "ABBOTT MEDICAL",
+   "organization_key": "abbott",
+   "records": 3678,
+   "status": "rule_verified",
+   "basis": "brand",
+   "rule": "name_identity_v1",
+   "collection_scope": [
+    "abbott"
+   ],
+   "reviewer": "agent:lead",
+   "reviewer_kind": "agent",
+   "reviewed_at": "2026-11-15T00:33:53.350170Z",
+   "evidence": [
+    {
+     "evidence_type": "jurisdiction_filing",
+     "url": "https://www.sec.gov/Archives/edgar/data/1800/000162828026010185/subsidiariesofabbottlabora.htm",
+     "title": "ABBOTT LABORATORIES - latest annual filing exhibit 21 (filed 2026-02-20)",
+     "accessed_at": "2026-11-15T00:33:29.845064Z",
+     "quote": "Abbott Diagnostics Medical Private Limited",
+     "source": "jurisdiction filing 0001628280-26-010185"
+    }
+   ],
+   "verdict": "supported",
+   "reason": "the organization's jurisdiction filing lists the entity 'Abbott Diagnostics Medical Private Limited'"
+  },
+  {
+   "stratum": "S1_high_volume",
+   "applicant_name": "Siemens Medical Solutions USA, Inc",
+   "organization_key": "siemens_healthineers",
+   "records": 1002,
+   "status": "proposed",
+   "basis": "brand",
+   "rule": "token_scope_proposal_v1",
+   "collection_scope": [
+    "siemens_healthineers"
+   ],
+   "reviewer": "agent:lead",
+   "reviewer_kind": "agent",
+   "reviewed_at": "2026-11-15T00:33:53.352672Z",
+   "evidence": [],
+   "verdict": "undecidable",
+   "reason": "no jurisdiction filing or verified ownership relation was collected for this organization in this release; the attribution cannot be checked against independent documentation yet"
+  },
+  {
+   "stratum": "S1_high_volume",
+   "applicant_name": "W. L. Gore & Associates, Inc.",
+   "organization_key": "wl_gore",
+   "records": 1144,
+   "status": "proposed",
+   "basis": "brand",
+   "rule": "token_scope_proposal_v1",
+   "collection_scope": [
+    "wl_gore"
+   ],
+   "reviewer": "agent:lead",
+   "reviewer_kind": "agent",
+   "reviewed_at": "2026-11-15T00:33:53.352672Z",
+   "evidence": [],
+   "verdict": "undecidable",
+   "reason": "no jurisdiction filing or verified ownership relation was collected for this organization in this release; the attribution cannot be checked against independent documentation yet"
+  },
+  {
+   "stratum": "S1_high_volume",
+   "applicant_name": "Medtronic Cardiac Rhythm Disease Management",
+   "organization_key": "medtronic",
+   "records": 2701,
+   "status": "proposed",
+   "basis": "brand",
+   "rule": "token_scope_proposal_v1",
+   "collection_scope": [
+    "medtronic"
+   ],
+   "reviewer": "agent:lead",
+   "reviewer_kind": "agent",
+   "reviewed_at": "2026-11-15T00:33:53.352672Z",
+   "evidence": [
+    {
+     "evidence_type": "jurisdiction_filing",
+     "url": "https://www.sec.gov/Archives/edgar/data/1613103/000162828026044354/mdt-202610kxex21.htm",
+     "title": "Medtronic plc Form 10-K (fiscal 2026) Exhibit 21 - subsidiaries of the registrant",
+     "accessed_at": "2026-11-15T00:33:29.083985Z",
+     "quote": "searched 133 extracted entity names",
+     "source": "jurisdiction filing 0001628280-26-044354"
+    }
+   ],
+   "verdict": "undecidable",
+   "reason": "the collected jurisdiction filing for this organization does not list this exact entity; the filing lists only subsidiaries above a filing threshold (or the entity is not a subsidiary), so its absence is not evidence of a wrong attribution"
+  },
+  {
+   "stratum": "S1_high_volume",
+   "applicant_name": "Abbott Laboratories",
+   "organization_key": "abbott",
+   "records": 1607,
+   "status": "rule_verified",
+   "basis": "brand",
+   "rule": "name_identity_v1",
+   "collection_scope": [
+    "abbott"
+   ],
+   "reviewer": "agent:lead",
+   "reviewer_kind": "agent",
+   "reviewed_at": "2026-11-15T00:33:53.352672Z",
+   "evidence": [
+    {
+     "evidence_type": "jurisdiction_filing",
+     "url": "https://www.sec.gov/Archives/edgar/data/1800/000162828026010185/subsidiariesofabbottlabora.htm",
+     "title": "ABBOTT LABORATORIES - latest annual filing exhibit 21 (filed 2026-02-20)",
+     "accessed_at": "2026-11-15T00:33:29.845064Z",
+     "quote": "Abbott Laboratories (Bangladesh) Limited",
+     "source": "jurisdiction filing 0001628280-26-010185"
+    }
+   ],
+   "verdict": "supported",
+   "reason": "the organization's jurisdiction filing lists the entity 'Abbott Laboratories (Bangladesh) Limited'"
+  },
+  {
+   "stratum": "S1_high_volume",
+   "applicant_name": "Boston Scientific",
+   "organization_key": "boston_scientific",
+   "records": 2001,
+   "status": "rule_verified",
+   "basis": "brand",
+   "rule": "name_identity_v1",
+   "collection_scope": [
+    "boston_scientific"
+   ],
+   "reviewer": "agent:lead",
+   "reviewer_kind": "agent",
+   "reviewed_at": "2026-11-15T00:33:53.353687Z",
+   "evidence": [
+    {
+     "evidence_type": "jurisdiction_filing",
+     "url": "https://www.sec.gov/Archives/edgar/data/885725/000088572526000010/exhibit21-listofsubsidiari.htm",
+     "title": "BOSTON SCIENTIFIC CORP - latest annual filing exhibit 21 (filed 2026-02-17)",
+     "accessed_at": "2026-11-15T00:33:31.614986Z",
+     "quote": "Boston Scientific (South Africa) Proprietary Limited (South Africa)",
+     "source": "jurisdiction filing 0000885725-26-000010"
+    }
+   ],
+   "verdict": "supported",
+   "reason": "the organization's jurisdiction filing lists the entity 'Boston Scientific (South Africa) Proprietary Limited (South Africa)'"
+  },
+  {
+   "stratum": "S2_mid_volume",
+   "applicant_name": "Stryker Instruments Div. of Stryker Corporation",
+   "organization_key": "stryker",
+   "records": 448,
+   "status": "proposed",
+   "basis": "brand",
+   "rule": "token_scope_proposal_v1",
+   "collection_scope": [
+    "stryker"
+   ],
+   "reviewer": "agent:lead",
+   "reviewer_kind": "agent",
+   "reviewed_at": "2026-11-15T00:33:53.354685Z",
+   "evidence": [
+    {
+     "evidence_type": "jurisdiction_filing",
+     "url": "https://www.sec.gov/Archives/edgar/data/310764/000031076426000010/ex21i1231202510k.htm",
+     "title": "STRYKER CORP - latest annual filing exhibit 21 (filed 2026-02-11)",
+     "accessed_at": "2026-11-15T00:33:37.393787Z",
+     "quote": "searched 91 extracted entity names",
+     "source": "jurisdiction filing 0000310764-26-000010"
+    }
+   ],
+   "verdict": "undecidable",
+   "reason": "the collected jurisdiction filing for this organization does not list this exact entity; the filing lists only subsidiaries above a filing threshold (or the entity is not a subsidiary), so its absence is not evidence of a wrong attribution"
+  },
+  {
+   "stratum": "S2_mid_volume",
+   "applicant_name": "Dentsply Intl.",
+   "organization_key": "dentsply_sirona",
+   "records": 279,
+   "status": "proposed",
+   "basis": "brand",
+   "rule": "token_scope_proposal_v1",
+   "collection_scope": [
+    "dentsply_sirona"
+   ],
+   "reviewer": "agent:lead",
+   "reviewer_kind": "agent",
+   "reviewed_at": "2026-11-15T00:33:53.355197Z",
+   "evidence": [
+    {
+     "evidence_type": "jurisdiction_filing",
+     "url": "https://www.sec.gov/Archives/edgar/data/818479/000081847926000075/exhibit211q4202510-k.htm",
+     "title": "DENTSPLY SIRONA Inc. - latest annual filing exhibit 21 (filed 2026-02-26)",
+     "accessed_at": "2026-11-15T00:33:32.376274Z",
+     "quote": "searched 99 extracted entity names",
+     "source": "jurisdiction filing 0000818479-26-000075"
+    }
+   ],
+   "verdict": "undecidable",
+   "reason": "the collected jurisdiction filing for this organization does not list this exact entity; the filing lists only subsidiaries above a filing threshold (or the entity is not a subsidiary), so its absence is not evidence of a wrong attribution"
+  },
+  {
+   "stratum": "S2_mid_volume",
+   "applicant_name": "Vistakon, Johnson & Johnson Vision Products, Inc.",
+   "organization_key": "johnson_johnson_medtech",
+   "records": 116,
+   "status": "proposed",
+   "basis": "brand",
+   "rule": "token_scope_proposal_v1",
+   "collection_scope": [
+    "johnson_johnson_medtech"
+   ],
+   "reviewer": "agent:lead",
+   "reviewer_kind": "agent",
+   "reviewed_at": "2026-11-15T00:33:53.355197Z",
+   "evidence": [
+    {
+     "evidence_type": "jurisdiction_filing",
+     "url": "https://www.sec.gov/Archives/edgar/data/200406/000020040626000016/ex21-subsidiariesxform10xk.htm",
+     "title": "JOHNSON & JOHNSON - latest annual filing exhibit 21 (filed 2026-02-11)",
+     "accessed_at": "2026-11-15T00:33:35.405437Z",
+     "quote": "searched 183 extracted entity names",
+     "source": "jurisdiction filing 0000200406-26-000016"
+    }
+   ],
+   "verdict": "undecidable",
+   "reason": "the collected jurisdiction filing for this organization does not list this exact entity; the filing lists only subsidiaries above a filing threshold (or the entity is not a subsidiary), so its absence is not evidence of a wrong attribution"
+  },
+  {
+   "stratum": "S2_mid_volume",
+   "applicant_name": "Fresenius Medical Care Holdings, Inc.",
+   "organization_key": "fresenius_medical_care",
+   "records": 162,
+   "status": "proposed",
+   "basis": "brand",
+   "rule": "token_scope_proposal_v1",
+   "collection_scope": [
+    "fresenius_medical_care"
+   ],
+   "reviewer": "agent:lead",
+   "reviewer_kind": "agent",
+   "reviewed_at": "2026-11-15T00:33:53.356213Z",
+   "evidence": [],
+   "verdict": "undecidable",
+   "reason": "no subsidiary exhibit was located in this organization's latest annual filing, so no independent documentary source names this spelling yet"
+  },
+  {
+   "stratum": "S2_mid_volume",
+   "applicant_name": "Abbott Vascular",
+   "organization_key": "abbott",
+   "records": 403,
+   "status": "rule_verified",
+   "basis": "brand",
+   "rule": "name_identity_v1",
+   "collection_scope": [
+    "abbott"
+   ],
+   "reviewer": "agent:lead",
+   "reviewer_kind": "agent",
+   "reviewed_at": "2026-11-15T00:33:53.356213Z",
+   "evidence": [
+    {
+     "evidence_type": "jurisdiction_filing",
+     "url": "https://www.sec.gov/Archives/edgar/data/1800/000162828026010185/subsidiariesofabbottlabora.htm",
+     "title": "ABBOTT LABORATORIES - latest annual filing exhibit 21 (filed 2026-02-20)",
+     "accessed_at": "2026-11-15T00:33:29.845064Z",
+     "quote": "Abbott Vascular Devices (2) Limited",
+     "source": "jurisdiction filing 0001628280-26-010185"
+    }
+   ],
+   "verdict": "supported",
+   "reason": "the organization's jurisdiction filing lists the entity 'Abbott Vascular Devices (2) Limited'"
+  },
+  {
+   "stratum": "S2_mid_volume",
+   "applicant_name": "Olympus Medical Systems Corp.",
+   "organization_key": "olympus",
+   "records": 104,
+   "status": "proposed",
+   "basis": "brand",
+   "rule": "token_scope_proposal_v1",
+   "collection_scope": [
+    "olympus"
+   ],
+   "reviewer": "agent:lead",
+   "reviewer_kind": "agent",
+   "reviewed_at": "2026-11-15T00:33:53.357207Z",
+   "evidence": [],
+   "verdict": "undecidable",
+   "reason": "no jurisdiction filing or verified ownership relation was collected for this organization in this release; the attribution cannot be checked against independent documentation yet"
+  },
+  {
+   "stratum": "S3_low_volume",
+   "applicant_name": "Integra Burlington MA, Inc.",
+   "organization_key": "integra_lifesciences",
+   "records": 1,
+   "status": "proposed",
+   "basis": "brand",
+   "rule": "token_scope_proposal_v1",
+   "collection_scope": [
+    "integra_lifesciences"
+   ],
+   "reviewer": "agent:lead",
+   "reviewer_kind": "agent",
+   "reviewed_at": "2026-11-15T00:33:53.357207Z",
+   "evidence": [],
+   "verdict": "undecidable",
+   "reason": "no subsidiary exhibit was located in this organization's latest annual filing, so no independent documentary source names this spelling yet"
+  },
+  {
+   "stratum": "S3_low_volume",
+   "applicant_name": "W. L. Gore & Associates Inc.",
+   "organization_key": "wl_gore",
+   "records": 4,
+   "status": "proposed",
+   "basis": "brand",
+   "rule": "token_scope_proposal_v1",
+   "collection_scope": [
+    "wl_gore"
+   ],
+   "reviewer": "agent:lead",
+   "reviewer_kind": "agent",
+   "reviewed_at": "2026-11-15T00:33:53.357207Z",
+   "evidence": [],
+   "verdict": "undecidable",
+   "reason": "no jurisdiction filing or verified ownership relation was collected for this organization in this release; the attribution cannot be checked against independent documentation yet"
+  },
+  {
+   "stratum": "S3_low_volume",
+   "applicant_name": "Dentsply IH, Inc.",
+   "organization_key": "dentsply_sirona",
+   "records": 2,
+   "status": "proposed",
+   "basis": "brand",
+   "rule": "token_scope_proposal_v1",
+   "collection_scope": [
+    "dentsply_sirona"
+   ],
+   "reviewer": "agent:lead",
+   "reviewer_kind": "agent",
+   "reviewed_at": "2026-11-15T00:33:53.357207Z",
+   "evidence": [
+    {
+     "evidence_type": "jurisdiction_filing",
+     "url": "https://www.sec.gov/Archives/edgar/data/818479/000081847926000075/exhibit211q4202510-k.htm",
+     "title": "DENTSPLY SIRONA Inc. - latest annual filing exhibit 21 (filed 2026-02-26)",
+     "accessed_at": "2026-11-15T00:33:32.376274Z",
+     "quote": "10. Dentsply (Tianjin) International Trading Co. Ltd. (China)",
+     "source": "jurisdiction filing 0000818479-26-000075"
+    }
+   ],
+   "verdict": "supported",
+   "reason": "the organization's jurisdiction filing lists the entity '10. Dentsply (Tianjin) International Trading Co. Ltd. (China)'"
+  },
+  {
+   "stratum": "S3_low_volume",
+   "applicant_name": "Dentsply Intl., Inc.",
+   "organization_key": "dentsply_sirona",
+   "records": 12,
+   "status": "proposed",
+   "basis": "brand",
+   "rule": "token_scope_proposal_v1",
+   "collection_scope": [
+    "dentsply_sirona"
+   ],
+   "reviewer": "agent:lead",
+   "reviewer_kind": "agent",
+   "reviewed_at": "2026-11-15T00:33:53.358213Z",
+   "evidence": [
+    {
+     "evidence_type": "jurisdiction_filing",
+     "url": "https://www.sec.gov/Archives/edgar/data/818479/000081847926000075/exhibit211q4202510-k.htm",
+     "title": "DENTSPLY SIRONA Inc. - latest annual filing exhibit 21 (filed 2026-02-26)",
+     "accessed_at": "2026-11-15T00:33:32.376274Z",
+     "quote": "searched 99 extracted entity names",
+     "source": "jurisdiction filing 0000818479-26-000075"
+    }
+   ],
+   "verdict": "undecidable",
+   "reason": "the collected jurisdiction filing for this organization does not list this exact entity; the filing lists only subsidiaries above a filing threshold (or the entity is not a subsidiary), so its absence is not evidence of a wrong attribution"
+  },
+  {
+   "stratum": "S3_low_volume",
+   "applicant_name": "Varian Medical Systems Oncology Systems",
+   "organization_key": "siemens_healthineers",
+   "records": 29,
+   "status": "proposed",
+   "basis": "brand",
+   "rule": "token_scope_proposal_v1",
+   "collection_scope": [
+    "siemens_healthineers"
+   ],
+   "reviewer": "agent:lead",
+   "reviewer_kind": "agent",
+   "reviewed_at": "2026-11-15T00:33:53.359209Z",
+   "evidence": [],
+   "verdict": "undecidable",
+   "reason": "no jurisdiction filing or verified ownership relation was collected for this organization in this release; the attribution cannot be checked against independent documentation yet"
+  },
+  {
+   "stratum": "S3_low_volume",
+   "applicant_name": "Integra Lifesciences Production Corporation",
+   "organization_key": "integra_lifesciences",
+   "records": 9,
+   "status": "proposed",
+   "basis": "brand",
+   "rule": "token_scope_proposal_v1",
+   "collection_scope": [
+    "integra_lifesciences"
+   ],
+   "reviewer": "agent:lead",
+   "reviewer_kind": "agent",
+   "reviewed_at": "2026-11-15T00:33:53.359209Z",
+   "evidence": [],
+   "verdict": "undecidable",
+   "reason": "no subsidiary exhibit was located in this organization's latest annual filing, so no independent documentary source names this spelling yet"
+  },
+  {
+   "stratum": "S4_lexical_rule",
+   "applicant_name": "Ambu Inc.",
+   "organization_key": "ambu",
+   "records": 7,
+   "status": "rule_verified",
+   "basis": "brand",
+   "rule": "lexical_equivalence_v1",
+   "collection_scope": [
+    "ambu"
+   ],
+   "reviewer": "agent:lead",
+   "reviewer_kind": "agent",
+   "reviewed_at": "2026-11-15T00:33:53.359209Z",
+   "evidence": [],
+   "verdict": "undecidable",
+   "reason": "no jurisdiction filing or verified ownership relation was collected for this organization in this release; the attribution cannot be checked against independent documentation yet"
+  },
+  {
+   "stratum": "S4_lexical_rule",
+   "applicant_name": "Baxter Corp.",
+   "organization_key": "baxter",
+   "records": 1,
+   "status": "rule_verified",
+   "basis": "brand",
+   "rule": "lexical_equivalence_v1",
+   "collection_scope": [
+    "baxter"
+   ],
+   "reviewer": "agent:lead",
+   "reviewer_kind": "agent",
+   "reviewed_at": "2026-11-15T00:33:53.359209Z",
+   "evidence": [],
+   "verdict": "undecidable",
+   "reason": "no subsidiary exhibit was located in this organization's latest annual filing, so no independent documentary source names this spelling yet"
+  },
+  {
+   "stratum": "S4_lexical_rule",
+   "applicant_name": "Alcon Research LLC",
+   "organization_key": "alcon",
+   "records": 58,
+   "status": "rule_verified",
+   "basis": "brand",
+   "rule": "lexical_equivalence_v1",
+   "collection_scope": [
+    "alcon"
+   ],
+   "reviewer": "agent:lead",
+   "reviewer_kind": "agent",
+   "reviewed_at": "2026-11-15T00:33:53.359209Z",
+   "evidence": [],
+   "verdict": "undecidable",
+   "reason": "no jurisdiction filing or verified ownership relation was collected for this organization in this release; the attribution cannot be checked against independent documentation yet"
+  },
+  {
+   "stratum": "S4_lexical_rule",
+   "applicant_name": "Medline Industries, Inc.",
+   "organization_key": "medline",
+   "records": 264,
+   "status": "rule_verified",
+   "basis": "brand",
+   "rule": "lexical_equivalence_v1",
+   "collection_scope": [
+    "medline"
+   ],
+   "reviewer": "agent:lead",
+   "reviewer_kind": "agent",
+   "reviewed_at": "2026-11-15T00:33:53.359209Z",
+   "evidence": [],
+   "verdict": "undecidable",
+   "reason": "no jurisdiction filing or verified ownership relation was collected for this organization in this release; the attribution cannot be checked against independent documentation yet"
+  },
+  {
+   "stratum": "S4_lexical_rule",
+   "applicant_name": "Tandem Diabetes Care, Inc.",
+   "organization_key": "tandem_diabetes",
+   "records": 72,
+   "status": "rule_verified",
+   "basis": "brand",
+   "rule": "lexical_equivalence_v1",
+   "collection_scope": [
+    "tandem_diabetes"
+   ],
+   "reviewer": "agent:lead",
+   "reviewer_kind": "agent",
+   "reviewed_at": "2026-11-15T00:33:53.359209Z",
+   "evidence": [
+    {
+     "evidence_type": "jurisdiction_filing",
+     "url": "https://www.sec.gov/Archives/edgar/data/1438133/000143813326000010/ex211subsidiariesoftheregi.htm",
+     "title": "TANDEM DIABETES CARE INC - latest annual filing exhibit 21 (filed 2026-02-19)",
+     "accessed_at": "2026-11-15T00:33:37.832134Z",
+     "quote": "Tandem Diabetes Care International Sarl",
+     "source": "jurisdiction filing 0001438133-26-000010"
+    }
+   ],
+   "verdict": "supported",
+   "reason": "the organization's jurisdiction filing lists the entity 'Tandem Diabetes Care International Sarl'"
+  },
+  {
+   "stratum": "S4_lexical_rule",
+   "applicant_name": "Abbott Diabetes Care, Inc.",
+   "organization_key": "abbott",
+   "records": 209,
+   "status": "rule_verified",
+   "basis": "brand",
+   "rule": "lexical_equivalence_v1",
+   "collection_scope": [
+    "abbott"
+   ],
+   "reviewer": "agent:lead",
+   "reviewer_kind": "agent",
+   "reviewed_at": "2026-11-15T00:33:53.359209Z",
+   "evidence": [
+    {
+     "evidence_type": "jurisdiction_filing",
+     "url": "https://www.sec.gov/Archives/edgar/data/1800/000162828026010185/subsidiariesofabbottlabora.htm",
+     "title": "ABBOTT LABORATORIES - latest annual filing exhibit 21 (filed 2026-02-20)",
+     "accessed_at": "2026-11-15T00:33:29.845064Z",
+     "quote": "Abbott Diabetes Care Limited",
+     "source": "jurisdiction filing 0001628280-26-010185"
+    }
+   ],
+   "verdict": "supported",
+   "reason": "the organization's jurisdiction filing lists the entity 'Abbott Diabetes Care Limited'"
+  },
+  {
+   "stratum": "S5_ownership_evidence",
+   "applicant_name": "Ge Medical Systems Information T",
+   "organization_key": "ge_healthcare",
+   "records": 1,
+   "status": "evidence_verified",
+   "basis": "brand",
+   "rule": "ownership_evidence_v1",
+   "collection_scope": [
+    "ge_healthcare"
+   ],
+   "reviewer": "agent:lead",
+   "reviewer_kind": "agent",
+   "reviewed_at": "2026-11-15T00:33:53.360207Z",
+   "evidence": [
+    {
+     "evidence_type": "jurisdiction_filing",
+     "url": "https://www.sec.gov/Archives/edgar/data/1932393/000193239326000007/gehc-20251231.htm",
+     "title": "GE HealthCare Technologies Inc., Form 10-K (fiscal 2025, filed 2026-02-04) - business description",
+     "accessed_at": "2026-11-15",
+     "quote": "On January 3, 2023, the General Electric Company, which now operates as GE Aerospace (\"GE\"), completed the spin-off of GE HealthCare (the \"Spin-Off\").",
+     "source": "ownership relation REL-0004"
+    },
+    {
+     "evidence_type": "jurisdiction_filing",
+     "url": "https://www.sec.gov/Archives/edgar/data/1932393/000193239326000007/gehc4q202510kexhibit211.htm",
+     "title": "GE HealthCare Technologies Inc., Form 10-K Exhibit 21.1 - Subsidiaries of the Registrant",
+     "accessed_at": "2026-11-15",
+     "quote": "Exhibit 21.1 lists 'GE Medical Systems Information Technologies, Inc.', 'GE Medical Systems (China) Co., Ltd.', 'GE Medical Systems (Schweiz) AG' and 'Datex-Ohmeda, Inc.'.",
+     "source": "ownership relation REL-0004"
+    }
+   ],
+   "verdict": "supported",
+   "reason": "covered by verified ownership relation(s): REL-0004"
+  },
+  {
+   "stratum": "S5_ownership_evidence",
+   "applicant_name": "Ge Healthcare GmbH",
+   "organization_key": "ge_healthcare",
+   "records": 1,
+   "status": "evidence_verified",
+   "basis": "brand",
+   "rule": "ownership_evidence_v1",
+   "collection_scope": [
+    "ge_healthcare"
+   ],
+   "reviewer": "agent:lead",
+   "reviewer_kind": "agent",
+   "reviewed_at": "2026-11-15T00:33:53.360207Z",
+   "evidence": [
+    {
+     "evidence_type": "jurisdiction_filing",
+     "url": "https://www.sec.gov/Archives/edgar/data/1932393/000193239326000007/gehc-20251231.htm",
+     "title": "GE HealthCare Technologies Inc., Form 10-K (fiscal 2025, filed 2026-02-04) - business description",
+     "accessed_at": "2026-11-15",
+     "quote": "On January 3, 2023, the General Electric Company, which now operates as GE Aerospace (\"GE\"), completed the spin-off of GE HealthCare (the \"Spin-Off\").",
+     "source": "ownership relation REL-0004"
+    },
+    {
+     "evidence_type": "jurisdiction_filing",
+     "url": "https://www.sec.gov/Archives/edgar/data/1932393/000193239326000007/gehc4q202510kexhibit211.htm",
+     "title": "GE HealthCare Technologies Inc., Form 10-K Exhibit 21.1 - Subsidiaries of the Registrant",
+     "accessed_at": "2026-11-15",
+     "quote": "Exhibit 21.1 lists 'GE Medical Systems Information Technologies, Inc.', 'GE Medical Systems (China) Co., Ltd.', 'GE Medical Systems (Schweiz) AG' and 'Datex-Ohmeda, Inc.'.",
+     "source": "ownership relation REL-0004"
+    }
+   ],
+   "verdict": "supported",
+   "reason": "covered by verified ownership relation(s): REL-0004"
+  },
+  {
+   "stratum": "S5_ownership_evidence",
+   "applicant_name": "GE Healthcare GmbH",
+   "organization_key": "ge_healthcare",
+   "records": 3,
+   "status": "evidence_verified",
+   "basis": "brand",
+   "rule": "ownership_evidence_v1",
+   "collection_scope": [
+    "ge_healthcare"
+   ],
+   "reviewer": "agent:lead",
+   "reviewer_kind": "agent",
+   "reviewed_at": "2026-11-15T00:33:53.360207Z",
+   "evidence": [
+    {
+     "evidence_type": "jurisdiction_filing",
+     "url": "https://www.sec.gov/Archives/edgar/data/1932393/000193239326000007/gehc-20251231.htm",
+     "title": "GE HealthCare Technologies Inc., Form 10-K (fiscal 2025, filed 2026-02-04) - business description",
+     "accessed_at": "2026-11-15",
+     "quote": "On January 3, 2023, the General Electric Company, which now operates as GE Aerospace (\"GE\"), completed the spin-off of GE HealthCare (the \"Spin-Off\").",
+     "source": "ownership relation REL-0004"
+    },
+    {
+     "evidence_type": "jurisdiction_filing",
+     "url": "https://www.sec.gov/Archives/edgar/data/1932393/000193239326000007/gehc4q202510kexhibit211.htm",
+     "title": "GE HealthCare Technologies Inc., Form 10-K Exhibit 21.1 - Subsidiaries of the Registrant",
+     "accessed_at": "2026-11-15",
+     "quote": "Exhibit 21.1 lists 'GE Medical Systems Information Technologies, Inc.', 'GE Medical Systems (China) Co., Ltd.', 'GE Medical Systems (Schweiz) AG' and 'Datex-Ohmeda, Inc.'.",
+     "source": "ownership relation REL-0004"
+    }
+   ],
+   "verdict": "supported",
+   "reason": "covered by verified ownership relation(s): REL-0004"
+  },
+  {
+   "stratum": "S5_ownership_evidence",
+   "applicant_name": "GE Medical Systems SCS",
+   "organization_key": "ge_healthcare",
+   "records": 39,
+   "status": "evidence_verified",
+   "basis": "brand",
+   "rule": "ownership_evidence_v1",
+   "collection_scope": [
+    "ge_healthcare"
+   ],
+   "reviewer": "agent:lead",
+   "reviewer_kind": "agent",
+   "reviewed_at": "2026-11-15T00:33:53.360207Z",
+   "evidence": [
+    {
+     "evidence_type": "jurisdiction_filing",
+     "url": "https://www.sec.gov/Archives/edgar/data/1932393/000193239326000007/gehc-20251231.htm",
+     "title": "GE HealthCare Technologies Inc., Form 10-K (fiscal 2025, filed 2026-02-04) - business description",
+     "accessed_at": "2026-11-15",
+     "quote": "On January 3, 2023, the General Electric Company, which now operates as GE Aerospace (\"GE\"), completed the spin-off of GE HealthCare (the \"Spin-Off\").",
+     "source": "ownership relation REL-0004"
+    },
+    {
+     "evidence_type": "jurisdiction_filing",
+     "url": "https://www.sec.gov/Archives/edgar/data/1932393/000193239326000007/gehc4q202510kexhibit211.htm",
+     "title": "GE HealthCare Technologies Inc., Form 10-K Exhibit 21.1 - Subsidiaries of the Registrant",
+     "accessed_at": "2026-11-15",
+     "quote": "Exhibit 21.1 lists 'GE Medical Systems Information Technologies, Inc.', 'GE Medical Systems (China) Co., Ltd.', 'GE Medical Systems (Schweiz) AG' and 'Datex-Ohmeda, Inc.'.",
+     "source": "ownership relation REL-0004"
+    }
+   ],
+   "verdict": "supported",
+   "reason": "covered by verified ownership relation(s): REL-0004"
+  },
+  {
+   "stratum": "S5_ownership_evidence",
+   "applicant_name": "Philips Medical Systems Technologies",
+   "organization_key": "philips",
+   "records": 1,
+   "status": "evidence_verified",
+   "basis": "brand",
+   "rule": "ownership_evidence_v1",
+   "collection_scope": [
+    "philips"
+   ],
+   "reviewer": "agent:lead",
+   "reviewer_kind": "agent",
+   "reviewed_at": "2026-11-15T00:33:53.360207Z",
+   "evidence": [
+    {
+     "evidence_type": "jurisdiction_filing",
+     "url": "https://www.sec.gov/Archives/edgar/data/313216/000162828026009470/phg-20251231.htm",
+     "title": "Koninklijke Philips N.V., Form 20-F (fiscal 2025, filed 2026-02-19) - interests in group companies",
+     "accessed_at": "2026-11-15",
+     "quote": "In the accompanying table is a list of subsidiaries that, as of December 31, 2025, individually exceed 5% ... Legal entity name ... 'Philips Medical Systems (Cleveland), Inc.', 'Philips North America LLC'.",
+     "source": "ownership relation REL-0005"
+    }
+   ],
+   "verdict": "supported",
+   "reason": "covered by verified ownership relation(s): REL-0005"
+  },
+  {
+   "stratum": "S5_ownership_evidence",
+   "applicant_name": "Ge Medical Systems Ultrasound & Primary Care Diagnostic, LLC",
+   "organization_key": "ge_healthcare",
+   "records": 1,
+   "status": "evidence_verified",
+   "basis": "brand",
+   "rule": "ownership_evidence_v1",
+   "collection_scope": [
+    "ge_healthcare"
+   ],
+   "reviewer": "agent:lead",
+   "reviewer_kind": "agent",
+   "reviewed_at": "2026-11-15T00:33:53.360207Z",
+   "evidence": [
+    {
+     "evidence_type": "jurisdiction_filing",
+     "url": "https://www.sec.gov/Archives/edgar/data/1932393/000193239326000007/gehc-20251231.htm",
+     "title": "GE HealthCare Technologies Inc., Form 10-K (fiscal 2025, filed 2026-02-04) - business description",
+     "accessed_at": "2026-11-15",
+     "quote": "On January 3, 2023, the General Electric Company, which now operates as GE Aerospace (\"GE\"), completed the spin-off of GE HealthCare (the \"Spin-Off\").",
+     "source": "ownership relation REL-0004"
+    },
+    {
+     "evidence_type": "jurisdiction_filing",
+     "url": "https://www.sec.gov/Archives/edgar/data/1932393/000193239326000007/gehc4q202510kexhibit211.htm",
+     "title": "GE HealthCare Technologies Inc., Form 10-K Exhibit 21.1 - Subsidiaries of the Registrant",
+     "accessed_at": "2026-11-15",
+     "quote": "Exhibit 21.1 lists 'GE Medical Systems Information Technologies, Inc.', 'GE Medical Systems (China) Co., Ltd.', 'GE Medical Systems (Schweiz) AG' and 'Datex-Ohmeda, Inc.'.",
+     "source": "ownership relation REL-0004"
+    }
+   ],
+   "verdict": "supported",
+   "reason": "covered by verified ownership relation(s): REL-0004"
+  },
+  {
+   "stratum": "S6_corporate_relation",
+   "applicant_name": "Draeger, Inc.",
+   "organization_key": "draeger",
+   "records": 22,
+   "status": "proposed",
+   "basis": "subsidiary",
+   "rule": "token_scope_proposal_v1",
+   "collection_scope": [
+    "draeger"
+   ],
+   "reviewer": "agent:lead",
+   "reviewer_kind": "agent",
+   "reviewed_at": "2026-11-15T00:33:53.360207Z",
+   "evidence": [],
+   "verdict": "undecidable",
+   "reason": "no jurisdiction filing or verified ownership relation was collected for this organization in this release; the attribution cannot be checked against independent documentation yet"
+  },
+  {
+   "stratum": "S6_corporate_relation",
+   "applicant_name": "Philips Ultrasound",
+   "organization_key": "philips",
+   "records": 5,
+   "status": "proposed",
+   "basis": "subsidiary",
+   "rule": "registry_authoring_v1",
+   "collection_scope": [
+    "philips"
+   ],
+   "reviewer": "agent:lead",
+   "reviewer_kind": "agent",
+   "reviewed_at": "2026-11-15T00:33:53.360207Z",
+   "evidence": [
+    {
+     "evidence_type": "jurisdiction_filing",
+     "url": "https://www.sec.gov/Archives/edgar/data/313216/000162828026009470/phg-20251231.htm",
+     "title": "Koninklijke Philips N.V. Form 20-F (fiscal 2025) - interests in group companies",
+     "accessed_at": "2026-11-15T00:33:29.516100Z",
+     "quote": "searched 201 extracted entity names",
+     "source": "jurisdiction filing 0001628280-26-009470"
+    }
+   ],
+   "verdict": "undecidable",
+   "reason": "the collected jurisdiction filing for this organization does not list this exact entity; the filing lists only subsidiaries above a filing threshold (or the entity is not a subsidiary), so its absence is not evidence of a wrong attribution"
+  },
+  {
+   "stratum": "S6_corporate_relation",
+   "applicant_name": "Mindray DS USA, Inc. dba Mindray North America",
+   "organization_key": "mindray",
+   "records": 39,
+   "status": "proposed",
+   "basis": "subsidiary",
+   "rule": "token_scope_proposal_v1",
+   "collection_scope": [
+    "mindray"
+   ],
+   "reviewer": "agent:lead",
+   "reviewer_kind": "agent",
+   "reviewed_at": "2026-11-15T00:33:53.362212Z",
+   "evidence": [],
+   "verdict": "undecidable",
+   "reason": "no jurisdiction filing or verified ownership relation was collected for this organization in this release; the attribution cannot be checked against independent documentation yet"
+  },
+  {
+   "stratum": "S6_corporate_relation",
+   "applicant_name": "Shanghai Draeger Medical Instrument Co., Ltd.",
+   "organization_key": "draeger",
+   "records": 3,
+   "status": "proposed",
+   "basis": "subsidiary",
+   "rule": "token_scope_proposal_v1",
+   "collection_scope": [
+    "draeger"
+   ],
+   "reviewer": "agent:lead",
+   "reviewer_kind": "agent",
+   "reviewed_at": "2026-11-15T00:33:53.362212Z",
+   "evidence": [],
+   "verdict": "undecidable",
+   "reason": "no jurisdiction filing or verified ownership relation was collected for this organization in this release; the attribution cannot be checked against independent documentation yet"
+  },
+  {
+   "stratum": "S6_corporate_relation",
+   "applicant_name": "Mindray DS USA, Inc., dba Datascope Patient Monitoring",
+   "organization_key": "mindray",
+   "records": 7,
+   "status": "proposed",
+   "basis": "subsidiary",
+   "rule": "token_scope_proposal_v1",
+   "collection_scope": [
+    "mindray"
+   ],
+   "reviewer": "agent:lead",
+   "reviewer_kind": "agent",
+   "reviewed_at": "2026-11-15T00:33:53.362212Z",
+   "evidence": [],
+   "verdict": "undecidable",
+   "reason": "no jurisdiction filing or verified ownership relation was collected for this organization in this release; the attribution cannot be checked against independent documentation yet"
+  },
+  {
+   "stratum": "S6_corporate_relation",
+   "applicant_name": "Medtronic Neuromodulation",
+   "organization_key": "medtronic",
+   "records": 1611,
+   "status": "proposed",
+   "basis": "subsidiary",
+   "rule": "registry_authoring_v1",
+   "collection_scope": [
+    "medtronic"
+   ],
+   "reviewer": "agent:lead",
+   "reviewer_kind": "agent",
+   "reviewed_at": "2026-11-15T00:33:53.362212Z",
+   "evidence": [
+    {
+     "evidence_type": "jurisdiction_filing",
+     "url": "https://www.sec.gov/Archives/edgar/data/1613103/000162828026044354/mdt-202610kxex21.htm",
+     "title": "Medtronic plc Form 10-K (fiscal 2026) Exhibit 21 - subsidiaries of the registrant",
+     "accessed_at": "2026-11-15T00:33:29.083985Z",
+     "quote": "searched 133 extracted entity names",
+     "source": "jurisdiction filing 0001628280-26-044354"
+    }
+   ],
+   "verdict": "undecidable",
+   "reason": "the collected jurisdiction filing for this organization does not list this exact entity; the filing lists only subsidiaries above a filing threshold (or the entity is not a subsidiary), so its absence is not evidence of a wrong attribution"
+  },
+  {
+   "stratum": "S7_ambiguous_scope",
+   "applicant_name": "Abbott Vascular-Cardiac Therapies dba Guidant Corporation",
+   "organization_key": null,
+   "records": 17,
+   "status": "unattributed",
+   "basis": null,
+   "rule": null,
+   "collection_scope": [
+    "abbott",
+    "boston_scientific"
+   ],
+   "reviewer": "agent:lead",
+   "reviewer_kind": "agent",
+   "reviewed_at": "2026-11-15T00:33:53.362212Z",
+   "evidence": [],
+   "verdict": "undecidable",
+   "reason": "not attributed to any organization: no attribution claim exists to validate"
+  },
+  {
+   "stratum": "S7_ambiguous_scope",
+   "applicant_name": "Olympus Terumo Biomaterials Corporation",
+   "organization_key": null,
+   "records": 3,
+   "status": "unattributed",
+   "basis": null,
+   "rule": null,
+   "collection_scope": [
+    "olympus",
+    "terumo"
+   ],
+   "reviewer": "agent:lead",
+   "reviewer_kind": "agent",
+   "reviewed_at": "2026-11-15T00:33:53.362212Z",
+   "evidence": [],
+   "verdict": "undecidable",
+   "reason": "not attributed to any organization: no attribution claim exists to validate"
+  }
+ ]
+}

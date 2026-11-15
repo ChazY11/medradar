@@ -16,7 +16,7 @@
 #   docs/governance/DECISION_LOG.yaml
 #   docs/governance/DATA_INVENTORY.yaml   (generated data manifest, enforced by check_licence)
 schema: medradar.rule_changes.v1
-updated: "2026-11-13"
+updated: "2026-11-15"
 changes:
   - change_id: RC-0001
     date: "2026-11-13"
@@ -48,6 +48,14 @@ changes:
     decision_id: GOV-0004
     approved_by: ChazY11
     reason: "PRODUCT-001: allow a restricted binary format to be committed only when it is a derived projection of a GREEN, redistributable public source and the inventory entry declares the file SHA-256 (policy.derived_binary_allowlist). Motivated by the 91k-record openFDA product snapshot, which is 13 MB compressed and 140 MB as plain JSONL. Undeclared gzip still fails, non-GREEN entries still fail, and the gate prints the allowlist reason and hash prefix. No scientific artefact or frozen result is touched."
+    paths:
+      - tools/governance/**
+      - docs/governance/DATA_LICENSES.yaml
+  - change_id: RC-0005
+    date: "2026-11-15"
+    decision_id: GOV-0005
+    approved_by: ChazY11
+    reason: "Narrow the GOV-0004 derived-binary exception: openfda_device source only, medradar/product/snapshot/*.gz path only, gzip content kind (with a .gz extension) only, 32 MiB (33554432 bytes) cap, and a SHA-256 bound to the committed file bytes. The gate now fails closed when any scope key is missing or empty and still requires a GREEN entry and a redistributable source. ELF/zip/sqlite/parquet/hdf5 are never allowed by this exception. This is not a licence expansion: it reduces the set of files the exception can cover."
     paths:
       - tools/governance/**
       - docs/governance/DATA_LICENSES.yaml

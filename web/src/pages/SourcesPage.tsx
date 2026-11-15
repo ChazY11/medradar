@@ -4,6 +4,7 @@ import { getAttribution, getCoverage, getMeta } from "../api/client";
 import { useAsync } from "../api/hooks";
 import { AsyncSection } from "../components/async";
 import { Badge, Banner, Callout, Card, EmptyState, FreshnessBadge, Grid, MetricTile, PageHeader, SectionHead, formatDate, formatDateTime } from "../components/ui";
+import { Glossary, MetricDefinitions, StatusLegend } from "../components/transparency";
 import { useI18n } from "../i18n";
 
 export function SourcesPage() {
@@ -39,6 +40,20 @@ export function SourcesPage() {
       />
 
       <div className="stack">
+        <Card
+          title={bi("Metric definitions: what each claim means", "指标定义：每个结论的含义")}
+          note={bi("These definitions are served by the API, so the export, the page and the documentation cannot drift apart.", "这些定义由 API 提供，因此导出、页面与文档不会出现口径漂移。")}
+        >
+          <MetricDefinitions />
+        </Card>
+
+        <Card
+          title={bi("Glossary: professional terms used here", "术语表：本产品使用的专业术语")}
+          note={bi("First use of each term is explained on the page where it appears; this is the reference copy.", "每个术语首次出现时都会在所在页面解释；这里是参考版本。")}
+        >
+          <Glossary />
+        </Card>
+
         {coverage.status === "error" && coverage.error ? (
           <Card>
             <EmptyState title={bi("Coverage unavailable", "覆盖信息不可用")} description={coverage.error.message} actions={<button className="btn" onClick={coverage.reload}>{t("state.retry")}</button>} />
@@ -309,7 +324,12 @@ export function SourcesPage() {
 
               <AsyncSection status={attribution.status} data={attribution.data} error={attribution.error} reload={attribution.reload} loadingLines={6}>
                 {(payload) => (
-                  <Card title={bi("Attribution policy and unmatched strings", "归属规则与未匹配名称")} note={bi("The complete list behind the attribution numbers, for review.", "归属数字背后的完整名单，供复核。")}>
+                  <>
+                  <Card title={bi("Attribution status vocabulary", "归属状态词汇表")} note={bi("Curated means evidence-verified or human-reviewed only. A deterministic rule is reported separately and is not review.", "“已核验”只包括经证据核验或人工复核；确定性规则单独报告，不算复核。")}>
+          <StatusLegend />
+        </Card>
+
+        <Card title={bi("Attribution policy and unmatched strings", "归属规则与未匹配名称")} note={bi("The complete list behind the attribution numbers, for review.", "归属数字背后的完整名单，供复核。")}>
                     <ul className="small" style={{ margin: 0, paddingLeft: 18, lineHeight: 1.7 }}>
                       {payload.policy.map((line, index) => (
                         <li key={index}>{line}</li>
@@ -353,6 +373,7 @@ export function SourcesPage() {
                       </div>
                     ) : null}
                   </Card>
+                  </>
                 )}
               </AsyncSection>
 
