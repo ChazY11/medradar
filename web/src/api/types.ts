@@ -47,7 +47,15 @@ export interface Counts {
   dated: number;
   undated: number;
   unmapped_category: number;
+  /** Not evidence-verified and not human-reviewed (rule-verified counts as pending). */
   pending_review: number;
+  provisional?: number;
+  verified_records?: number;
+  rule_verified_records?: number;
+  curated_share?: number | null;
+  rule_verified_share?: number | null;
+  provisional_share?: number | null;
+  by_verification?: Record<string, number>;
   by_source: SourceCount[];
   by_type: TypeCount[];
 }
@@ -59,8 +67,19 @@ export interface Category {
 
 export interface EventAttribution {
   status: "attributed" | "unattributed" | "rejected";
-  basis: "legal_name" | "brand" | "subsidiary" | "historical_name" | "division" | null;
+  basis: string | null;
   review: "curated" | "pending_review" | "rejected" | null;
+  /** PRODUCT-002: the strength of the claim behind this row's organization attribution. */
+  verification?: VerificationStatus;
+  verification_label_en?: string;
+  verification_label_zh?: string;
+  verified?: boolean;
+  rule?: string | null;
+  evidence_count?: number;
+  reviewer?: string | null;
+  reviewer_kind?: "human" | "agent" | null;
+  provenance?: string | null;
+  predecessor_entity?: boolean;
 }
 
 export interface EventRecord {
@@ -227,6 +246,10 @@ export interface OrganizationSummary {
   event_count: number;
   event_range: EventWindow;
   attribution_review: "curated" | "pending_review";
+  verified_records?: number;
+  rule_verified_records?: number;
+  provisional_records?: number;
+  curated_share?: number | null;
 }
 
 export interface OrganizationsResponse {
@@ -263,7 +286,17 @@ export interface RejectedSpelling {
 export interface AttributionExample {
   applicant_name: string;
   basis: string;
+  basis_label?: string;
   review: "curated" | "pending_review";
+  status?: VerificationStatus;
+  status_label_en?: string;
+  status_label_zh?: string;
+  verified?: boolean;
+  rule?: string | null;
+  evidence_count?: number;
+  decision_uid?: string | null;
+  reviewer?: string | null;
+  reviewer_kind?: "human" | "agent" | null;
   record_count: number;
 }
 
@@ -302,8 +335,10 @@ export interface OrganizationProfile {
   organization_type: "public_company" | "private_company" | "subsidiary" | "unknown";
   description: string;
   registry: RegistryInfo;
-  ownership: Ownership;
+  ownership: OrganizationOwnership;
   attribution: OrganizationAttribution;
+  verification?: OrganizationVerification;
+  metrics?: Record<string, unknown>;
   coverage: OrganizationCoverage;
   counts: Counts;
   aggregations: Aggregations;
@@ -375,6 +410,8 @@ export interface CompareOrganization {
   aggregations: Aggregations;
   per_year_totals: PerYearTotal[];
   share_of_all_tracked: Record<EventType, number>;
+  verification?: CompareVerification;
+  historical_ownership?: CompareHistoricalOwnership;
 }
 
 export interface CompareWindow {
@@ -426,6 +463,8 @@ export interface CompareResponse {
   class_matrix: ClassMatrix[];
   warnings: CompareWarning[];
   disclaimer: string;
+  comparability?: CompareComparability;
+  not_evidence_of?: string[];
   basis: Basis;
   snapshot: SnapshotRef;
   freshness: Freshness;
@@ -555,4 +594,246 @@ export interface AttributionResponse {
   unmatched: UnmatchedApplicant[];
   policy: string[];
   snapshot: SnapshotRef;
+}
+
+/* ------------------------------------------------------------------ PRODUCT-002 */
+export type VerificationStatus =
+  | "proposed"
+  | "rule_verified"
+  | "evidence_verified"
+  | "human_reviewed"
+  | "rejected"
+  | "unresolved"
+  | "unattributed";
+
+export interface EvidenceRef {
+  evidence_type: string;
+  url: string | null;
+  title: string | null;
+  accessed_at: string | null;
+  source_id?: string | null;
+  quote?: string | null;
+  note?: string | null;
+}
+
+export interface StatusDefinition {
+  status: VerificationStatus;
+  label_en: string;
+  label_zh: string;
+  meaning_en: string;
+  curated: boolean;
+  rule_verified: boolean;
+  provisional: boolean;
+  count: number;
+}
+
+export interface MetricDefinition {
+  id: string;
+  name_en: string;
+  name_zh: string;
+  unit: string;
+  definition_en: string;
+  definition_zh: string;
+  is_not: string;
+}
+
+export interface PrecisionEstimate {
+  state: "unknown" | "estimated";
+  estimate: number | null;
+  confidence_interval_95: [number | null, number | null] | null;
+  sample_size: number;
+  decidable_sample_size?: number;
+  undecidable?: number | null;
+  reviewer_kind: "human" | "agent" | null;
+  reason?: string;
+  protocol?: string;
+}
+
+export interface RecordLevelMetrics {
+  collected_records: number;
+  attributed_records: number;
+  attributed_share: number | null;
+  verified_records: number;
+  curated_share: number | null;
+  rule_verified_records: number;
+  rule_verified_share: number | null;
+  provisional_records: number;
+  provisional_share: number | null;
+  by_status: Record<string, number>;
+  by_event_type: Record<string, Record<string, number>>;
+  by_source: Record<string, Record<string, number>>;
+}
+
+export interface ApplicantLevelMetrics {
+  applicant_strings_observed: number;
+  attributed_applicant_strings: number;
+  attributed_applicant_share: number | null;
+  accepted_spellings_in_registry: number;
+  verified_spellings: number;
+  verified_spelling_share: number | null;
+  rule_verified_spellings: number;
+  rule_verified_share: number | null;
+  attributed_records: number;
+  verified_record_share: number | null;
+  rule_verified_record_share: number | null;
+  top10_applicant_record_share: number | null;
+  largest_applicant_record_share: number | null;
+  largest_applicant: string | null;
+  by_status: Record<string, number>;
+  concentration_note: string;
+}
+
+export interface OrganizationLevelMetrics {
+  tracked_organizations: number;
+  organizations_with_records: number;
+  organizations_with_records_share: number | null;
+  median_curated_share: number | null;
+  min_curated_share: number | null;
+  max_curated_share: number | null;
+  organizations_with_zero_verified_records: number;
+  organizations_whose_records_are_all_provisional: number;
+  note: string;
+}
+
+export interface RetrievalCoverage {
+  state: "unknown";
+  value: null;
+  reason: string;
+  what_would_be_needed: string[];
+  what_is_known: Record<string, unknown>;
+  not_the_same_as: string;
+}
+
+export interface MetricsResponse {
+  snapshot: SnapshotRef;
+  collected_at: string;
+  definitions: MetricDefinition[];
+  status_vocabulary: StatusDefinition[];
+  levels: {
+    record: RecordLevelMetrics;
+    applicant: ApplicantLevelMetrics;
+    organization: OrganizationLevelMetrics;
+  };
+  estimated_attribution_precision: PrecisionEstimate;
+  retrieval_coverage: RetrievalCoverage;
+  ownership_basis: Record<string, string>;
+  warnings: string[];
+  review_ledger: { decisions_applied: number; db: string | null };
+  freshness?: Freshness;
+  metric_definitions?: MetricDefinition[];
+}
+
+export interface OwnershipEvidence {
+  evidence_type: string;
+  url: string | null;
+  title: string | null;
+  accessed_at: string | null;
+  source_id?: string | null;
+  quote?: string | null;
+  note?: string | null;
+}
+
+export interface OwnershipRelationPublic {
+  relation_id: string;
+  organization_key: string;
+  entity: string;
+  relation_type: string;
+  patterns: string[];
+  effective_from: string | null;
+  effective_to: string | null;
+  historical_owner_before: string | null;
+  status: "evidence_verified" | "unresolved" | string;
+  verified: boolean;
+  reviewer: string;
+  reviewer_kind: string;
+  reviewed_at: string | null;
+  caveat: string;
+  notes: string[];
+  evidence: OwnershipEvidence[];
+}
+
+export interface HistoricalSplitRow {
+  relation_id: string;
+  entity: string;
+  relation_type: string;
+  effective_from: string;
+  historical_owner_before: string | null;
+  records_before_effective_date: number;
+  records_on_or_after_effective_date: number;
+  records_without_event_date: number;
+  evidence_count: number;
+  caveat: string;
+}
+
+export interface OrganizationOwnership {
+  schema: string;
+  updated_at: string;
+  concepts: Record<string, string>;
+  current_group_policy: string;
+  relations: OwnershipRelationPublic[];
+  verified_relation_count: number;
+  unresolved_relation_count: number;
+  covered_applicant_patterns: string[];
+  historical_split: HistoricalSplitRow[];
+  uncertainty: string;
+}
+
+export interface OrganizationVerification {
+  definition: string;
+  attributed_records: number;
+  verified_records: number;
+  rule_verified_records: number;
+  provisional_records: number;
+  curated_share: number | null;
+  rule_verified_share: number | null;
+  provisional_share: number | null;
+  by_status: Record<string, number>;
+  accepted_spellings: number;
+  verified_spellings: number;
+  rule_verified_spellings: number;
+  provisional_spellings: number;
+  status_counts_spellings: Record<string, number>;
+  human_reviewed_spellings: number;
+  risk_note: string;
+}
+
+export interface OwnershipResponse {
+  schema: string;
+  updated_at: string;
+  note: string;
+  concepts: Record<string, string>;
+  relations: OwnershipRelationPublic[];
+  verified_count: number;
+  unresolved_count: number;
+  organizations_with_verified_history: string[];
+}
+
+export interface CompareVerification {
+  attributed_records: number;
+  verified_records: number;
+  rule_verified_records: number;
+  provisional_records: number;
+  curated_share: number | null;
+  rule_verified_share: number | null;
+  provisional_share: number | null;
+  by_status: Record<string, number>;
+}
+
+export interface CompareHistoricalOwnership {
+  records_from_predecessor_entities: number;
+  records_from_original_registrant: number;
+  verified_relations: number;
+  note: string;
+  all_organization_records: number;
+}
+
+export interface CompareComparability {
+  window_shared: boolean;
+  event_types_shared: boolean;
+  counting_unit: string;
+  ownership_basis: string;
+  review_filter: string;
+  coverage_symmetric: boolean;
+  single_pathway_only: boolean;
+  verdict: string;
 }

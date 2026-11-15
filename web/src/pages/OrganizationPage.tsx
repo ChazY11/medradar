@@ -29,6 +29,7 @@ import {
 import { useI18n } from "../i18n";
 import type { EventRecord } from "../api/types";
 import { defaultFilters, parseFilters, toQueryString, type EventsFilterState } from "./eventsFilters";
+import { OrgTransparency, VerificationBadge } from "../components/transparency";
 
 export function OrganizationPage() {
   const { key = "" } = useParams<{ key: string }>();
@@ -119,6 +120,8 @@ export function OrganizationPage() {
               <MetricTile label={bi("Recalls", "召回")} value={(data.counts.by_type.find((row) => row.event_type === "recall")?.count ?? 0).toLocaleString()} sub={bi("safety actions, not launches", "安全行动，非产品发布")} />
             </div>
 
+            <OrgTransparency verification={data.verification} ownership={data.ownership} />
+
             <Tabs
               active={tab}
               onChange={setTab}
@@ -145,7 +148,17 @@ export function OrganizationPage() {
                           label: bi("Records in scope but not attributed", "范围内但未归属的记录"),
                           value: data.attribution.unattributed_in_scope ? <Badge tone="warn">{data.attribution.unattributed_in_scope}</Badge> : 0,
                         },
-                        { label: bi("Ownership", "股权/母子公司关系"), value: <span className="small">{data.ownership.note}</span> },
+                        {
+                          label: bi("Ownership", "股权/母子公司关系"),
+                          value: (
+                            <span className="small">
+                              {bi(
+                                (data.ownership.verified_relation_count ?? 0) + " verified relation(s), " + (data.ownership.unresolved_relation_count ?? 0) + " unresolved. Counts use current-group attribution.",
+                                (data.ownership.verified_relation_count ?? 0) + " 个已核验关系，" + (data.ownership.unresolved_relation_count ?? 0) + " 个未解决。计数采用当前集团口径。",
+                              )}
+                            </span>
+                          ),
+                        },
                       ]}
                     />
                     <div className="mt-12">
@@ -283,7 +296,14 @@ export function OrganizationPage() {
                           <tr key={row.applicant_name}>
                             <td className="mono small">{row.applicant_name}</td>
                             <td className="small">{row.basis}</td>
-                            <td>{row.review === "pending_review" ? <Badge tone="warn">{t("review.pending_review")}</Badge> : <Badge tone="neutral">{t("review.curated")}</Badge>}</td>
+                            <td>
+                    <VerificationBadge
+                      status={row.status ?? (row.review === "pending_review" ? "proposed" : "rule_verified")}
+                      labelEn={row.status_label_en}
+                      labelZh={row.status_label_zh}
+                      compact
+                    />
+                  </td>
                             <td className="num">{row.record_count.toLocaleString()}</td>
                           </tr>
                         ))}

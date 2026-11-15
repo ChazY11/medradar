@@ -1,0 +1,117 @@
+# MedRadar browser end-to-end acceptance (PRODUCT-002).
+#
+# Runs the real workbench in Chromium against a real uvicorn backend serving the committed,
+# hash-pinned openFDA snapshot. A failed check fails the job; artefacts (screenshots, report,
+# server logs) are always uploaded.
+name: e2e
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: e2e-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  browser:
+    name: product browser acceptance
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      MEDRADAR_REVIEW_TOKEN: e2e-local-token
+      MEDRADAR_REVIEW_DB: build/e2e/review.db
+      MEDRADAR_REVIEW_TOKEN_FILE: build/e2e/review.token
+      ADMIN_BASE: http://127.0.0.1:8811
+      PUBLIC_BASE: http://127.0.0.1:8812
+      E2E_OUT_DIR: build/e2e
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+
+      - name: Install Python dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -e ".[dev,product]"
+
+      - name: Build the workbench UI
+        working-directory: web
+        run: |
+          npm ci
+          npm run build
+
+      - name: Install the browser suite
+        working-directory: tests/e2e
+        run: npm ci
+
+      - name: Install Chromium (fresh, no local cache dependency)
+        working-directory: tests/e2e
+        run: npx playwright install --with-deps chromium
+
+      - name: Start the review service (serves public API + UI)
+        run: |
+          mkdir -p build/e2e
+          python -m medradar.product.review serve --port 8811 --host 127.0.0.1 > build/e2e/admin.log 2>&1 &
+          echo $! > build/e2e/admin.pid
+
+      - name: Start the public application
+        run: |
+          python -m medradar.product.web --port 8812 --host 127.0.0.1 > build/e2e/public.log 2>&1 &
+          echo $! > build/e2e/public.pid
+
+      - name: Wait for the backend
+        run: |
+          for attempt in $(seq 1 60); do
+            if curl -fsS http://127.0.0.1:8811/api/health > /dev/null && curl -fsS http://127.0.0.1:8812/api/health > /dev/null; then
+              echo "backend ready after $attempt attempt(s)"
+              exit 0
+            fi
+            sleep 1
+          done
+          echo "::error::backend did not become ready"
+          cat build/e2e/admin.log || true
+          cat build/e2e/public.log || true
+          exit 1
+
+      - name: Product API guard (product test suite)
+        run: python -m pytest tests/product -q
+
+      - name: Browser acceptance suite
+        run: node tests/e2e/medradar.e2e.mjs
+
+      - name: Upload artefacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: medradar-e2e
+          path: build/e2e
+          if-no-files-found: warn
+
+      - name: Show server logs on failure
+        if: failure()
+        run: |
+          echo "=== review service ==="
+          cat build/e2e/admin.log || true
+          echo "=== public application ==="
+          cat build/e2e/public.log || true
+
+      - name: Stop the servers
+        if: always()
+        run: |
+          for file in build/e2e/admin.pid build/e2e/public.pid; do
+            if [ -f "$file" ]; then
+              kill "$(cat "$file")" 2>/dev/null || true
+            fi
+          done

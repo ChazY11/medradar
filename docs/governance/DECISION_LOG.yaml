@@ -39,4 +39,11 @@ decisions:
     source: "PRODUCT-001 product-engineering task (MedRadar Product Rebirth)"
     scope: "tools/governance/check_licence.py + docs/governance/DATA_LICENSES.yaml: add policy.derived_binary_allowlist; a restricted binary may be committed only when the inventory entry is GREEN, the source is redistributable and the declared SHA-256 matches the bytes"
     notes: "Motivated by the PRODUCT-001 openFDA snapshot: 91k public-domain records that are only practical to commit compressed (13 MB vs 140 MB plain). This is not a licence expansion (openFDA is public domain / GREEN) and not a weakening of the content scan: the exact bytes are hash-bound in the inventory, undeclared gzip still fails, and the reason is printed by the gate. Frozen science artefacts are untouched."
+  - id: GOV-0005
+    date: "2026-11-15"
+    title: "Narrow the hash-declared derived-binary exception (GOV-0004 follow-up)"
+    approved_by: ChazY11
+    source: "PRODUCT-002 trusted-intelligence governance hardening task"
+    scope: "tools/governance/check_licence.py + docs/governance/DATA_LICENSES.yaml: restrict policy.derived_binary_allowlist to allowed_source_ids [openfda_device], allowed_paths [medradar/product/snapshot/*.gz], allowed_content_kinds [gzip] and max_bytes 33554432; enforce enabled, content kind plus a .gz extension, source id, fnmatch path, byte cap, GREEN status, may_redistribute and a SHA-256 equal to the committed file bytes"
+    notes: "Narrows GOV-0004 after review: openfda_device only, medradar/product/snapshot/*.gz only, gzip only, 32 MiB cap, SHA-256 bound. This is not a licence expansion and not a new data source; it removes the general 'any GREEN hash-declared binary' route. ELF/zip/sqlite/parquet/hdf5 remain forbidden even with a declared hash, and missing/empty scope keys fail closed."
 

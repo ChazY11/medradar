@@ -4,6 +4,7 @@ import { useAsync } from "../api/hooks";
 import { useI18n, type TranslationKey } from "../i18n";
 import { AsyncSection } from "./async";
 import { Badge, EventTypeBadge, KeyValue, ReviewBadge, TimeQualityBadge, formatDate, formatDateTime } from "./ui";
+import { VerificationBadge } from "./transparency";
 
 export function EvidenceDrawer({ eventId, onClose }: { eventId: string; onClose: () => void }) {
   const { t, bi } = useI18n();
@@ -149,6 +150,16 @@ export function EvidenceDrawer({ eventId, onClose }: { eventId: string; onClose:
                         { label: t("common.applicant"), value: <span className="mono small">{event.applicant_name || "-"}</span> },
                         { label: t("common.organization"), value: event.organization_name ?? <span className="muted">{bi("Not attributed", "未归属")}</span> },
                         { label: t("common.review"), value: <ReviewBadge review={event.attribution.review} /> },
+                        {
+                          label: <span className="def" title="The strength of the claim behind this row's organization attribution. Rule-verified is not human review.">{bi("Verification", "核验状态")}</span>,
+                          value: <VerificationBadge status={event.attribution.verification} labelEn={event.attribution.verification_label_en} labelZh={event.attribution.verification_label_zh} compact />,
+                        },
+                        ...(event.attribution.rule
+                          ? [{ label: bi("Rule / evidence", "规则/证据"), value: <span className="small mono">{event.attribution.rule}{event.attribution.evidence_count ? " + " + event.attribution.evidence_count + " evidence" : ""}</span> }]
+                          : []),
+                        ...(event.attribution.predecessor_entity
+                          ? [{ label: bi("Historical entity", "历史实体"), value: <span className="small">{bi("Filed by an acquired predecessor entity; counted under the current group.", "由被收购的前身实体提交；按当前集团计入。")}</span> }]
+                          : []),
                         {
                           label: bi("Basis", "归属依据"),
                           value: event.attribution.basis ? <Badge tone="outline">{event.attribution.basis}</Badge> : "-",

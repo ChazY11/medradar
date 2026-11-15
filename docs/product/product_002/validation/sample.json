@@ -1,0 +1,621 @@
+{
+ "schema": "medradar.attribution_sample.v1",
+ "generated_at": "2026-11-15T00:33:11.246914Z",
+ "design": {
+  "seed": 20261115,
+  "per_stratum": 6,
+  "design_note": "Fixed before scoring. Strata cover the evidence situations the protocol names: high volume, mid volume, low volume, lexical-rule mappings, evidence-verified ownership mappings, corporate-relation proposals, and cross-scope/ambiguous strings.",
+  "strata": {
+   "S1_high_volume": "attributed spelling with >= 1000 records",
+   "S2_mid_volume": "attributed spelling with 100-999 records",
+   "S3_low_volume": "attributed spelling with 1-99 records",
+   "S4_lexical_rule": "spelling whose status came from lexical equivalence (case/punctuation/legal form)",
+   "S5_ownership_evidence": "spelling already evidence-verified through a recorded ownership relation",
+   "S6_corporate_relation": "spelling attributed through a subsidiary/division/historical-name basis with no evidence",
+   "S7_ambiguous_scope": "spelling retrieved under more than one organization's collection scope"
+  }
+ },
+ "decision_rule": "SUPPORTED when the applicant spelling matches an entity name in the collected jurisdiction filing of the attributed organization (exact match after NFC+casefold+punctuation collapse, or the entity name contains the spelling's distinctive token sequence as whole words), or when a verified ownership relation in medradar/product/attribution/ownership.json covers the spelling for that organization. CONTRADICTED only when the collected filing shows a different organization owns that exact entity name. UNDECIDABLE when no collected documentary source names the spelling: the case is excluded from the precision numerator and denominator and reported separately. No case is scored correct on the basis of the registry's own claim.",
+ "population_size": 1563,
+ "stratum_sizes": {
+  "S1_high_volume": 6,
+  "S2_mid_volume": 75,
+  "S3_low_volume": 1101,
+  "S4_lexical_rule": 146,
+  "S5_ownership_evidence": 176,
+  "S6_corporate_relation": 49,
+  "S7_ambiguous_scope": 2
+ },
+ "sample_size": 38,
+ "cases": [
+  {
+   "stratum": "S1_high_volume",
+   "applicant_name": "ABBOTT MEDICAL",
+   "records": 3678,
+   "organization_key": "abbott",
+   "status": "rule_verified",
+   "rule": "name_identity_v1",
+   "basis": "brand",
+   "collection_scope": [
+    "abbott"
+   ],
+   "by_source": {
+    "openfda_510k": 57,
+    "openfda_pma": 3621
+   }
+  },
+  {
+   "stratum": "S1_high_volume",
+   "applicant_name": "Siemens Medical Solutions USA, Inc",
+   "records": 1002,
+   "organization_key": "siemens_healthineers",
+   "status": "proposed",
+   "rule": "token_scope_proposal_v1",
+   "basis": "brand",
+   "collection_scope": [
+    "siemens_healthineers"
+   ],
+   "by_source": {
+    "openfda_recall": 1002
+   }
+  },
+  {
+   "stratum": "S1_high_volume",
+   "applicant_name": "W. L. Gore & Associates, Inc.",
+   "records": 1144,
+   "organization_key": "wl_gore",
+   "status": "proposed",
+   "rule": "token_scope_proposal_v1",
+   "basis": "brand",
+   "collection_scope": [
+    "wl_gore"
+   ],
+   "by_source": {
+    "openfda_510k": 163,
+    "openfda_pma": 981
+   }
+  },
+  {
+   "stratum": "S1_high_volume",
+   "applicant_name": "Medtronic Cardiac Rhythm Disease Management",
+   "records": 2701,
+   "organization_key": "medtronic",
+   "status": "proposed",
+   "rule": "token_scope_proposal_v1",
+   "basis": "brand",
+   "collection_scope": [
+    "medtronic"
+   ],
+   "by_source": {
+    "openfda_pma": 2701
+   }
+  },
+  {
+   "stratum": "S1_high_volume",
+   "applicant_name": "Abbott Laboratories",
+   "records": 1607,
+   "organization_key": "abbott",
+   "status": "rule_verified",
+   "rule": "name_identity_v1",
+   "basis": "brand",
+   "collection_scope": [
+    "abbott"
+   ],
+   "by_source": {
+    "openfda_510k": 884,
+    "openfda_pma": 549,
+    "openfda_recall": 174
+   }
+  },
+  {
+   "stratum": "S1_high_volume",
+   "applicant_name": "Boston Scientific",
+   "records": 2001,
+   "organization_key": "boston_scientific",
+   "status": "rule_verified",
+   "rule": "name_identity_v1",
+   "basis": "brand",
+   "collection_scope": [
+    "boston_scientific"
+   ],
+   "by_source": {
+    "openfda_510k": 61,
+    "openfda_pma": 1889,
+    "openfda_recall": 51
+   }
+  },
+  {
+   "stratum": "S2_mid_volume",
+   "applicant_name": "Stryker Instruments Div. of Stryker Corporation",
+   "records": 448,
+   "organization_key": "stryker",
+   "status": "proposed",
+   "rule": "token_scope_proposal_v1",
+   "basis": "brand",
+   "collection_scope": [
+    "stryker"
+   ],
+   "by_source": {
+    "openfda_recall": 448
+   }
+  },
+  {
+   "stratum": "S2_mid_volume",
+   "applicant_name": "Dentsply Intl.",
+   "records": 279,
+   "organization_key": "dentsply_sirona",
+   "status": "proposed",
+   "rule": "token_scope_proposal_v1",
+   "basis": "brand",
+   "collection_scope": [
+    "dentsply_sirona"
+   ],
+   "by_source": {
+    "openfda_510k": 279
+   }
+  },
+  {
+   "stratum": "S2_mid_volume",
+   "applicant_name": "Vistakon, Johnson & Johnson Vision Products, Inc.",
+   "records": 116,
+   "organization_key": "johnson_johnson_medtech",
+   "status": "proposed",
+   "rule": "token_scope_proposal_v1",
+   "basis": "brand",
+   "collection_scope": [
+    "johnson_johnson_medtech"
+   ],
+   "by_source": {
+    "openfda_510k": 8,
+    "openfda_pma": 108
+   }
+  },
+  {
+   "stratum": "S2_mid_volume",
+   "applicant_name": "Fresenius Medical Care Holdings, Inc.",
+   "records": 162,
+   "organization_key": "fresenius_medical_care",
+   "status": "proposed",
+   "rule": "token_scope_proposal_v1",
+   "basis": "brand",
+   "collection_scope": [
+    "fresenius_medical_care"
+   ],
+   "by_source": {
+    "openfda_recall": 162
+   }
+  },
+  {
+   "stratum": "S2_mid_volume",
+   "applicant_name": "Abbott Vascular",
+   "records": 403,
+   "organization_key": "abbott",
+   "status": "rule_verified",
+   "rule": "name_identity_v1",
+   "basis": "brand",
+   "collection_scope": [
+    "abbott"
+   ],
+   "by_source": {
+    "openfda_510k": 30,
+    "openfda_pma": 330,
+    "openfda_recall": 43
+   }
+  },
+  {
+   "stratum": "S2_mid_volume",
+   "applicant_name": "Olympus Medical Systems Corp.",
+   "records": 104,
+   "organization_key": "olympus",
+   "status": "proposed",
+   "rule": "token_scope_proposal_v1",
+   "basis": "brand",
+   "collection_scope": [
+    "olympus"
+   ],
+   "by_source": {
+    "openfda_510k": 104
+   }
+  },
+  {
+   "stratum": "S3_low_volume",
+   "applicant_name": "Integra Burlington MA, Inc.",
+   "records": 1,
+   "organization_key": "integra_lifesciences",
+   "status": "proposed",
+   "rule": "token_scope_proposal_v1",
+   "basis": "brand",
+   "collection_scope": [
+    "integra_lifesciences"
+   ],
+   "by_source": {
+    "openfda_recall": 1
+   }
+  },
+  {
+   "stratum": "S3_low_volume",
+   "applicant_name": "W. L. Gore & Associates Inc.",
+   "records": 4,
+   "organization_key": "wl_gore",
+   "status": "proposed",
+   "rule": "token_scope_proposal_v1",
+   "basis": "brand",
+   "collection_scope": [
+    "wl_gore"
+   ],
+   "by_source": {
+    "openfda_recall": 4
+   }
+  },
+  {
+   "stratum": "S3_low_volume",
+   "applicant_name": "Dentsply IH, Inc.",
+   "records": 2,
+   "organization_key": "dentsply_sirona",
+   "status": "proposed",
+   "rule": "token_scope_proposal_v1",
+   "basis": "brand",
+   "collection_scope": [
+    "dentsply_sirona"
+   ],
+   "by_source": {
+    "openfda_recall": 2
+   }
+  },
+  {
+   "stratum": "S3_low_volume",
+   "applicant_name": "Dentsply Intl., Inc.",
+   "records": 12,
+   "organization_key": "dentsply_sirona",
+   "status": "proposed",
+   "rule": "token_scope_proposal_v1",
+   "basis": "brand",
+   "collection_scope": [
+    "dentsply_sirona"
+   ],
+   "by_source": {
+    "openfda_510k": 12
+   }
+  },
+  {
+   "stratum": "S3_low_volume",
+   "applicant_name": "Varian Medical Systems Oncology Systems",
+   "records": 29,
+   "organization_key": "siemens_healthineers",
+   "status": "proposed",
+   "rule": "token_scope_proposal_v1",
+   "basis": "brand",
+   "collection_scope": [
+    "siemens_healthineers"
+   ],
+   "by_source": {
+    "openfda_recall": 29
+   }
+  },
+  {
+   "stratum": "S3_low_volume",
+   "applicant_name": "Integra Lifesciences Production Corporation",
+   "records": 9,
+   "organization_key": "integra_lifesciences",
+   "status": "proposed",
+   "rule": "token_scope_proposal_v1",
+   "basis": "brand",
+   "collection_scope": [
+    "integra_lifesciences"
+   ],
+   "by_source": {
+    "openfda_510k": 9
+   }
+  },
+  {
+   "stratum": "S4_lexical_rule",
+   "applicant_name": "Ambu Inc.",
+   "records": 7,
+   "organization_key": "ambu",
+   "status": "rule_verified",
+   "rule": "lexical_equivalence_v1",
+   "basis": "brand",
+   "collection_scope": [
+    "ambu"
+   ],
+   "by_source": {
+    "openfda_recall": 7
+   }
+  },
+  {
+   "stratum": "S4_lexical_rule",
+   "applicant_name": "Baxter Corp.",
+   "records": 1,
+   "organization_key": "baxter",
+   "status": "rule_verified",
+   "rule": "lexical_equivalence_v1",
+   "basis": "brand",
+   "collection_scope": [
+    "baxter"
+   ],
+   "by_source": {
+    "openfda_510k": 1
+   }
+  },
+  {
+   "stratum": "S4_lexical_rule",
+   "applicant_name": "Alcon Research LLC",
+   "records": 58,
+   "organization_key": "alcon",
+   "status": "rule_verified",
+   "rule": "lexical_equivalence_v1",
+   "basis": "brand",
+   "collection_scope": [
+    "alcon"
+   ],
+   "by_source": {
+    "openfda_recall": 58
+   }
+  },
+  {
+   "stratum": "S4_lexical_rule",
+   "applicant_name": "Medline Industries, Inc.",
+   "records": 264,
+   "organization_key": "medline",
+   "status": "rule_verified",
+   "rule": "lexical_equivalence_v1",
+   "basis": "brand",
+   "collection_scope": [
+    "medline"
+   ],
+   "by_source": {
+    "openfda_510k": 238,
+    "openfda_recall": 26
+   }
+  },
+  {
+   "stratum": "S4_lexical_rule",
+   "applicant_name": "Tandem Diabetes Care, Inc.",
+   "records": 72,
+   "organization_key": "tandem_diabetes",
+   "status": "rule_verified",
+   "rule": "lexical_equivalence_v1",
+   "basis": "brand",
+   "collection_scope": [
+    "tandem_diabetes"
+   ],
+   "by_source": {
+    "openfda_510k": 25,
+    "openfda_pma": 37,
+    "openfda_recall": 10
+   }
+  },
+  {
+   "stratum": "S4_lexical_rule",
+   "applicant_name": "Abbott Diabetes Care, Inc.",
+   "records": 209,
+   "organization_key": "abbott",
+   "status": "rule_verified",
+   "rule": "lexical_equivalence_v1",
+   "basis": "brand",
+   "collection_scope": [
+    "abbott"
+   ],
+   "by_source": {
+    "openfda_510k": 37,
+    "openfda_pma": 115,
+    "openfda_recall": 57
+   }
+  },
+  {
+   "stratum": "S5_ownership_evidence",
+   "applicant_name": "Ge Medical Systems Information T",
+   "records": 1,
+   "organization_key": "ge_healthcare",
+   "status": "evidence_verified",
+   "rule": "ownership_evidence_v1",
+   "basis": "brand",
+   "collection_scope": [
+    "ge_healthcare"
+   ],
+   "by_source": {
+    "openfda_recall": 1
+   }
+  },
+  {
+   "stratum": "S5_ownership_evidence",
+   "applicant_name": "Ge Healthcare GmbH",
+   "records": 1,
+   "organization_key": "ge_healthcare",
+   "status": "evidence_verified",
+   "rule": "ownership_evidence_v1",
+   "basis": "brand",
+   "collection_scope": [
+    "ge_healthcare"
+   ],
+   "by_source": {
+    "openfda_510k": 1
+   }
+  },
+  {
+   "stratum": "S5_ownership_evidence",
+   "applicant_name": "GE Healthcare GmbH",
+   "records": 3,
+   "organization_key": "ge_healthcare",
+   "status": "evidence_verified",
+   "rule": "ownership_evidence_v1",
+   "basis": "brand",
+   "collection_scope": [
+    "ge_healthcare"
+   ],
+   "by_source": {
+    "openfda_recall": 3
+   }
+  },
+  {
+   "stratum": "S5_ownership_evidence",
+   "applicant_name": "GE Medical Systems SCS",
+   "records": 39,
+   "organization_key": "ge_healthcare",
+   "status": "evidence_verified",
+   "rule": "ownership_evidence_v1",
+   "basis": "brand",
+   "collection_scope": [
+    "ge_healthcare"
+   ],
+   "by_source": {
+    "openfda_510k": 38,
+    "openfda_recall": 1
+   }
+  },
+  {
+   "stratum": "S5_ownership_evidence",
+   "applicant_name": "Philips Medical Systems Technologies",
+   "records": 1,
+   "organization_key": "philips",
+   "status": "evidence_verified",
+   "rule": "ownership_evidence_v1",
+   "basis": "brand",
+   "collection_scope": [
+    "philips"
+   ],
+   "by_source": {
+    "openfda_510k": 1
+   }
+  },
+  {
+   "stratum": "S5_ownership_evidence",
+   "applicant_name": "Ge Medical Systems Ultrasound & Primary Care Diagnostic, LLC",
+   "records": 1,
+   "organization_key": "ge_healthcare",
+   "status": "evidence_verified",
+   "rule": "ownership_evidence_v1",
+   "basis": "brand",
+   "collection_scope": [
+    "ge_healthcare"
+   ],
+   "by_source": {
+    "openfda_510k": 1
+   }
+  },
+  {
+   "stratum": "S6_corporate_relation",
+   "applicant_name": "Draeger, Inc.",
+   "records": 22,
+   "organization_key": "draeger",
+   "status": "proposed",
+   "rule": "token_scope_proposal_v1",
+   "basis": "subsidiary",
+   "collection_scope": [
+    "draeger"
+   ],
+   "by_source": {
+    "openfda_recall": 22
+   }
+  },
+  {
+   "stratum": "S6_corporate_relation",
+   "applicant_name": "Philips Ultrasound",
+   "records": 5,
+   "organization_key": "philips",
+   "status": "proposed",
+   "rule": "registry_authoring_v1",
+   "basis": "subsidiary",
+   "collection_scope": [
+    "philips"
+   ],
+   "by_source": {
+    "openfda_510k": 5
+   }
+  },
+  {
+   "stratum": "S6_corporate_relation",
+   "applicant_name": "Mindray DS USA, Inc. dba Mindray North America",
+   "records": 39,
+   "organization_key": "mindray",
+   "status": "proposed",
+   "rule": "token_scope_proposal_v1",
+   "basis": "subsidiary",
+   "collection_scope": [
+    "mindray"
+   ],
+   "by_source": {
+    "openfda_recall": 39
+   }
+  },
+  {
+   "stratum": "S6_corporate_relation",
+   "applicant_name": "Shanghai Draeger Medical Instrument Co., Ltd.",
+   "records": 3,
+   "organization_key": "draeger",
+   "status": "proposed",
+   "rule": "token_scope_proposal_v1",
+   "basis": "subsidiary",
+   "collection_scope": [
+    "draeger"
+   ],
+   "by_source": {
+    "openfda_510k": 3
+   }
+  },
+  {
+   "stratum": "S6_corporate_relation",
+   "applicant_name": "Mindray DS USA, Inc., dba Datascope Patient Monitoring",
+   "records": 7,
+   "organization_key": "mindray",
+   "status": "proposed",
+   "rule": "token_scope_proposal_v1",
+   "basis": "subsidiary",
+   "collection_scope": [
+    "mindray"
+   ],
+   "by_source": {
+    "openfda_recall": 7
+   }
+  },
+  {
+   "stratum": "S6_corporate_relation",
+   "applicant_name": "Medtronic Neuromodulation",
+   "records": 1611,
+   "organization_key": "medtronic",
+   "status": "proposed",
+   "rule": "registry_authoring_v1",
+   "basis": "subsidiary",
+   "collection_scope": [
+    "medtronic"
+   ],
+   "by_source": {
+    "openfda_510k": 1,
+    "openfda_pma": 1432,
+    "openfda_recall": 178
+   }
+  },
+  {
+   "stratum": "S7_ambiguous_scope",
+   "applicant_name": "Abbott Vascular-Cardiac Therapies dba Guidant Corporation",
+   "records": 17,
+   "organization_key": null,
+   "status": "unattributed",
+   "rule": null,
+   "basis": null,
+   "collection_scope": [
+    "abbott",
+    "boston_scientific"
+   ],
+   "by_source": {
+    "openfda_recall": 17
+   }
+  },
+  {
+   "stratum": "S7_ambiguous_scope",
+   "applicant_name": "Olympus Terumo Biomaterials Corporation",
+   "records": 3,
+   "organization_key": null,
+   "status": "unattributed",
+   "rule": null,
+   "basis": null,
+   "collection_scope": [
+    "olympus",
+    "terumo"
+   ],
+   "by_source": {
+    "openfda_510k": 3
+   }
+  }
+ ]
+}

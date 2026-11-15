@@ -1,0 +1,76 @@
+{
+ "schema": "medradar.attribution_precision.v1",
+ "state": "estimated",
+ "generated_at": "2026-11-15T00:33:53.380796Z",
+ "estimate": 1.0,
+ "confidence_interval_95": [
+  0.7719,
+  1.0
+ ],
+ "sample_size": 38,
+ "decidable_sample_size": 13,
+ "undecidable": 25,
+ "undecidable_share": 0.6579,
+ "supported": 13,
+ "contradicted": 0,
+ "reviewer_kind": "agent",
+ "human_review_completed": false,
+ "method": "pre-registered documentary rule (tools/validation/validate_attribution.py::DECISION_RULE)",
+ "decision_rule": "SUPPORTED when the applicant spelling matches an entity name in the collected jurisdiction filing of the attributed organization (exact match after NFC+casefold+punctuation collapse, or the entity name contains the spelling's distinctive token sequence as whole words), or when a verified ownership relation in medradar/product/attribution/ownership.json covers the spelling for that organization. CONTRADICTED only when the collected filing shows a different organization owns that exact entity name. UNDECIDABLE when no collected documentary source names the spelling: the case is excluded from the precision numerator and denominator and reported separately. No case is scored correct on the basis of the registry's own claim.",
+ "by_stratum": {
+  "S1_high_volume": {
+   "total": 6,
+   "supported": 3,
+   "contradicted": 0,
+   "undecidable": 3
+  },
+  "S2_mid_volume": {
+   "total": 6,
+   "supported": 1,
+   "contradicted": 0,
+   "undecidable": 5
+  },
+  "S3_low_volume": {
+   "total": 6,
+   "supported": 1,
+   "contradicted": 0,
+   "undecidable": 5
+  },
+  "S4_lexical_rule": {
+   "total": 6,
+   "supported": 2,
+   "contradicted": 0,
+   "undecidable": 4
+  },
+  "S5_ownership_evidence": {
+   "total": 6,
+   "supported": 6,
+   "contradicted": 0,
+   "undecidable": 0
+  },
+  "S6_corporate_relation": {
+   "total": 6,
+   "supported": 0,
+   "contradicted": 0,
+   "undecidable": 6
+  },
+  "S7_ambiguous_scope": {
+   "total": 2,
+   "supported": 0,
+   "contradicted": 0,
+   "undecidable": 2
+  }
+ },
+ "record_weighted_sample_records": 16066,
+ "record_weighted_supported_records": 8018,
+ "sampling_note": "Stratified, deterministic sample drawn from the committed snapshot with a fixed seed. The estimate is over decidable cases only; the undecidable share is reported so the denominator cannot be silently inflated.",
+ "caveats": [
+  "The reviewer is an AI agent applying a documentary rule, not a human analyst. This is NOT independent human review.",
+  "Only organizations with a collected jurisdiction filing (Medtronic, GE HealthCare, Philips) can be decided; the other tracked organizations are infrastructure-limited, not verified.",
+  "The filing lists subsidiaries above a disclosure threshold, so a missing entity is undecidable, never contradicted.",
+  "No contradicted case was found in this sample; that is a statement about the sample, not a guarantee about the population."
+ ],
+ "protocol": "docs/product/product_002/IDENTITY_REVIEW_PROTOCOL.md",
+ "records_file": "docs/product/product_002/validation/review_records.json",
+ "human_review_required": true
+}

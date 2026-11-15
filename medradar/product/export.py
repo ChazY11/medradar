@@ -45,6 +45,14 @@ CSV_COLUMNS = [
     "attribution_status",
     "attribution_basis",
     "attribution_review",
+    "attribution_verification",
+    "attribution_verified",
+    "attribution_rule",
+    "attribution_evidence_count",
+    "attribution_reviewer",
+    "attribution_reviewer_kind",
+    "attribution_predecessor_entity",
+    "ownership_basis",
     "product_code",
     "category",
     "device_class",
@@ -65,14 +73,15 @@ def provenance_header(dataset: Dataset, filters: dict[str, Any]) -> str:
     payload = {
         "snapshot_id": dataset.snapshot_id,
         "collected_at": dataset.collected_at,
-        "product": "MedRadar PRODUCT-001",
+        "product": "MedRadar PRODUCT-002",
         "filters": filters,
-        "note": "Counts are regulatory records, not products or innovations. Applicable 510(k)/PMA records have no publication timestamp in openFDA.",
+        "metrics": dataset.metrics_summary(),
+        "note": "Counts are regulatory records, not products or innovations. Applicable 510(k)/PMA records have no publication timestamp in openFDA. attribution_verification states the strength of the claim behind each row; curated means evidence-verified or human-reviewed only.",
     }
     return base64.urlsafe_b64encode(json.dumps(payload, ensure_ascii=False).encode("utf-8")).decode("ascii")
 
 
-def events_csv(dataset: Dataset, events: Sequence[Event]) -> str:
+def events_csv(dataset: Dataset, events: Sequence[Event], basis: str | None = None) -> str:
     buffer = io.StringIO()
     buffer.write("﻿")  # UTF-8 BOM so spreadsheet tools detect the encoding
     writer = csv.writer(buffer, lineterminator="\r\n")
@@ -97,6 +106,14 @@ def events_csv(dataset: Dataset, events: Sequence[Event]) -> str:
             event.attribution_status,
             event.attribution_basis or "",
             event.attribution_review or "",
+            event.attribution_verification,
+            "true" if event.attribution_verified else "false",
+            event.attribution_rule or "",
+            str(event.attribution_evidence_count),
+            event.attribution_reviewer or "",
+            event.attribution_reviewer_kind or "",
+            "true" if event.attribution_is_predecessor else "false",
+            basis or "current_group",
             event.product_code or "",
             event.category.label if event.category else "",
             event.device_class or "",
@@ -127,8 +144,9 @@ def compare_markdown_filename(keys: Sequence[str], dataset: Dataset) -> str:
     return "medradar-comparison-" + "-".join(keys) + "-" + stamp + ".md"
 
 
-def compare_markdown(dataset: Dataset, keys: Sequence[str], date_from: str | None, date_to: str | None, event_types: Sequence[str] | None) -> str:
-    payload = build_compare(dataset, keys, date_from, date_to, event_types)
+def compare_markdown(dataset: Dataset, keys: Sequence[str], date_from: str | None, date_to: str | None,
+                     event_types: Sequence[str] | None, basis: str | None = None, review: str | None = None) -> str:
+    payload = build_compare(dataset, keys, date_from, date_to, event_types, basis=basis, review=review)
     window = payload["window"]
     sides = payload["organizations"]
     names = [side["display_name"] for side in sides]
@@ -142,8 +160,17 @@ def compare_markdown(dataset: Dataset, keys: Sequence[str], date_from: str | Non
     lines.append("- Effective window: " + str(window["effective"]["from"]) + " to " + str(window["effective"]["to"]))
     lines.append("- Complete calendar years used for rates: " + (", ".join(window["complete_years"]) if window["complete_years"] else "none"))
     lines.append("- Counting rule: " + payload["basis"]["rule"])
+    lines.append("- Ownership basis: " + payload["comparability"]["ownership_basis"])
+    lines.append("- Review filter: " + payload["comparability"]["review_filter"])
+    lines.append("- Comparability: " + payload["comparability"]["verdict"])
+    lines.append("- Product version: MedRadar PRODUCT-002 (metrics and status vocabulary are part of the output)")
     lines.append("")
     lines.append("> " + payload["disclaimer"])
+    lines.append("")
+    lines.append("## What this comparison does not show")
+    lines.append("")
+    for item in payload["not_evidence_of"]:
+        lines.append("- " + item)
     lines.append("")
     if payload["warnings"]:
         lines.append("## Warnings")
@@ -171,6 +198,26 @@ def compare_markdown(dataset: Dataset, keys: Sequence[str], date_from: str | Non
             str(side["coverage"]["unmapped_category"]),
         ])
     lines.append(_table(["Organization", "Legal name", "Ticker", "Country", "Records", "Records by source", "Pending-review records", "Unclassified records"], rows))
+    lines.append("")
+    lines.append("## Attribution verification of the compared counts")
+    lines.append("")
+    lines.append(_table(
+        ["Organization", "Attributed records", "Evidence/human verified", "Curated share", "Rule-verified", "Provisional", "Records from predecessor entities"],
+        [
+            [
+                side["display_name"],
+                str(side["counts"]["records"]),
+                str(side["counts"]["verified_records"]),
+                "UNKNOWN" if side["counts"]["curated_share"] is None else format(side["counts"]["curated_share"] * 100, ".1f") + "%",
+                str(side["counts"]["rule_verified_records"]),
+                str(side["counts"]["provisional"]),
+                str(side["historical_ownership"]["records_from_predecessor_entities"]),
+            ]
+            for side in sides
+        ],
+    ))
+    lines.append("")
+    lines.append("Curated share counts only evidence-verified or human-reviewed mappings. Rule-verified mappings are a deterministic name rule, not review, and are reported separately.")
     lines.append("")
     lines.append("## Records by event type")
     lines.append("")
@@ -252,7 +299,28 @@ def organization_markdown(dataset: Dataset, key: str) -> str:
     lines.append("")
     lines.append("- Snapshot: " + str(profile["snapshot"]["id"]) + " (collected " + str(profile["snapshot"]["collected_at"]) + ")")
     lines.append("- Registry review: " + profile["registry"]["review_status"])
-    lines.append("- Attribution: " + str(profile["attribution"]["accepted_spellings"]) + " curated spelling(s), " + str(profile["attribution"]["pending_review_spellings"]) + " pending review")
+    verification = profile.get("verification") or {}
+    lines.append(
+        "- Attribution verification: "
+        + str(verification.get("verified_records"))
+        + " of "
+        + str(verification.get("attributed_records"))
+        + " attributed records are evidence-verified or human-reviewed (curated share "
+        + ("UNKNOWN" if verification.get("curated_share") is None else format(verification["curated_share"] * 100, ".1f") + "%")
+        + "); "
+        + str(verification.get("rule_verified_records"))
+        + " rest on a deterministic rule; "
+        + str(verification.get("provisional_records"))
+        + " are provisional."
+    )
+    ownership = profile.get("ownership") or {}
+    lines.append(
+        "- Ownership: "
+        + str(ownership.get("verified_relation_count"))
+        + " verified relation(s), "
+        + str(ownership.get("unresolved_relation_count"))
+        + " unresolved. Counts use current-group attribution."
+    )
     lines.append("")
     lines.append(profile["description"])
     lines.append("")

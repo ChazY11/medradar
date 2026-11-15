@@ -85,6 +85,31 @@ entries:
     status: GREEN
     content: json
     synthetic: false
+  - path: docs/product/product_002/identity_review_decisions.json
+    source_id: medradar_derived_artifacts
+    status: GREEN
+    content: json
+    synthetic: false
+  - path: docs/product/product_002/validation/precision.json
+    source_id: medradar_derived_artifacts
+    status: GREEN
+    content: json
+    synthetic: false
+  - path: docs/product/product_002/validation/review_records.json
+    source_id: medradar_derived_artifacts
+    status: GREEN
+    content: json
+    synthetic: false
+  - path: docs/product/product_002/validation/sample.json
+    source_id: medradar_derived_artifacts
+    status: GREEN
+    content: json
+    synthetic: false
+  - path: docs/product/product_002/validation/sec_entity_lists.json
+    source_id: medradar_derived_artifacts
+    status: GREEN
+    content: json
+    synthetic: false
   - path: docs/refoundation/phase0/_evidence/governance/pytest_count.json
     source_id: medradar_derived_artifacts
     status: GREEN
@@ -585,6 +610,11 @@ entries:
     status: GREEN
     content: json
     synthetic: false
+  - path: medradar/product/attribution/ownership.json
+    source_id: medradar_derived_artifacts
+    status: GREEN
+    content: json
+    synthetic: false
   - path: medradar/product/identity/organizations.json
     source_id: medradar_derived_artifacts
     status: GREEN
@@ -868,6 +898,16 @@ entries:
     status: GREEN
     content: json
     synthetic: false
+  - path: tests/e2e/package-lock.json
+    source_id: synthetic_fixtures
+    status: GREEN
+    content: json
+    synthetic: true
+  - path: tests/e2e/package.json
+    source_id: synthetic_fixtures
+    status: GREEN
+    content: json
+    synthetic: true
   - path: tests/fixtures/calibration/heuristic/responses.json
     source_id: synthetic_fixtures
     status: GREEN

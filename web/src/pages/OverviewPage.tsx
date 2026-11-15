@@ -6,6 +6,7 @@ import { AsyncSection } from "../components/async";
 import { TypeLegend, YearSeries } from "../components/charts";
 import { EventTable } from "../components/EventTable";
 import { Badge, Banner, Callout, Card, EmptyState, EventTypeBadge, FreshnessBadge, Grid, LoadingBlock, MetricTile, PageHeader, SectionHead, formatDate } from "../components/ui";
+import { MetricsStrip } from "../components/transparency";
 import { useI18n } from "../i18n";
 
 export function OverviewPage() {
@@ -71,6 +72,17 @@ export function OverviewPage() {
                     sub={bi("source last updated " + (data.snapshot.openfda_last_updated ?? "unknown"), "来源最后更新 " + (data.snapshot.openfda_last_updated ?? "未知"))}
                   />
                 </Grid>
+              </section>
+
+              <section>
+                <SectionHead
+                  title={bi("How much of this data is verified", "这些数据有多少经过核验")}
+                  note={bi(
+                    "Four different questions, four different numbers. Attributed share is not accuracy, and 99% attributed does not mean 99% correct.",
+                    "四个不同的问题、四个不同的数字。已归属比例不是准确率；99% 已归属并不意味着 99% 正确。",
+                  )}
+                />
+                <MetricsStrip />
               </section>
 
               <section>

@@ -19,7 +19,7 @@ export function EventsFilterBar({
   showOrganization?: boolean;
   resultCount?: number;
 }) {
-  const { t } = useI18n();
+  const { t, bi } = useI18n();
   const update = (patch: Partial<EventsFilterState>) => onChange({ ...state, page: 1, ...patch });
   const toggleType = (type: string) => {
     const asType = EVENT_TYPES.find((item) => item === type);
@@ -100,8 +100,9 @@ export function EventsFilterBar({
         <span className="field-label">{t("common.review")}</span>
         <select className="select" value={state.review} onChange={(event) => update({ review: event.target.value })}>
           <option value="">{t("common.all")}</option>
-          <option value="curated">{t("review.curated")}</option>
-          <option value="pending_review">{t("review.pending_review")}</option>
+          <option value="curated">{bi("evidence-verified or human-reviewed", "经证据核验或人工复核")}</option>
+          <option value="rule_verified">{bi("deterministic rule only", "仅确定性规则")}</option>
+          <option value="provisional">{bi("provisional (not verified)", "暂定（未核验）")}</option>
         </select>
       </label>
 
