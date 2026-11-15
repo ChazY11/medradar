@@ -37,23 +37,25 @@ Statements about this release, not a backlog of promises.
 12. **The applicant is a record claim.** Manufacturer of record and current ownership are shown through
     the PRODUCT-002 attribution and PRODUCT-003 historical-owner model, never invented on the device
     page.
-13. **Device names are not unique.** 446 normalised names are shared by different applicants; the
+13. **Medical specialty is the source's field.** 31,432 records carry FDA's own `"Unknown"` specialty
+    and 1,257 have no classification row; the product shows it as recorded rather than guessing.
+14. **Device names are not unique.** 446 normalised names are shared by different applicants; the
     product reports the ambiguity and never merges.
 
 ## Product and engineering
 
-14. **First device request in a process builds the index (~4.7 s).** It is lazy and cached; the
+16. **First device request in a process builds the index (~4.7 s).** It is lazy and cached; the
     organization and event pages never pay it. The response exposes `index_build_ms`.
-15. **Chromium-only browser acceptance**, no visual-regression baseline, no dedicated accessibility audit.
-16. **Exports are CSV and Markdown** (device list CSV, device brief Markdown); no Excel-native or PDF.
-17. **The device explorer caps pages at 100 rows** and sorts by relevance/date/name only; there is no
+17. **Chromium-only browser acceptance**, no visual-regression baseline, no dedicated accessibility audit.
+18. **Exports are CSV and Markdown** (device list CSV, device brief Markdown); no Excel-native or PDF.
+19. **The device explorer caps pages at 100 rows** and sorts by relevance/date/name only; there is no
     full-text ranking beyond substring matching on names, applicants, models and official numbers.
-18. **Alpha is local.** No hosted deployment and no external user has tested PRODUCT-003; the
+20. **Alpha is local.** No hosted deployment and no external user has tested PRODUCT-003; the
     acceptance evidence is internal simulation plus browser automation.
 
 ## Governance
 
-19. No new data source or committed data artefact was added for PRODUCT-003, so the GOV-0005
+21. No new data source or committed data artefact was added for PRODUCT-003, so the GOV-0005
     compressed-binary exception is untouched. The licence gate and inventory still pass unchanged.
-20. The applicant-attribution and historical-ownership semantics remain those of PRODUCT-002 and its
+22. The applicant-attribution and historical-ownership semantics remain those of PRODUCT-002 and its
     P0 fixes; device pages display them rather than reinterpreting them.

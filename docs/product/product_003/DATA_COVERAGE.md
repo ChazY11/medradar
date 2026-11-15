@@ -50,6 +50,13 @@ The 8,576 unlinked recalls are visible in `/devices?view=unlinked` and served by
 Most 510(k) devices have no relation beyond their own application. That is a property of the source,
 not a backlog MedRadar can close by guessing, and the device page says so.
 
+### A note on medical specialty
+
+The specialty on a device is the FDA classification dictionary's own `specialty` field, not a
+MedRadar judgement. In the committed snapshot 31,432 of 91,457 records carry `"Unknown"` (for example
+product code `LWS`, an implantable defibrillator, is `"Unknown"` in openFDA's own dictionary) and 1,257
+have no classification row at all. The explorer shows it as recorded; it never guesses a specialty.
+
 ## Explicitly out of scope in this release
 
 | Not covered | Why it is not covered |
