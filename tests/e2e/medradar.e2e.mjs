@@ -258,6 +258,7 @@ async function main() {
     );
 
     /* ---------------------------------------------------------------- E2E-13 review queue */
+    try {
     await page.goto(ADMIN_BASE + "/review", { waitUntil: "networkidle" });
     await page.waitForTimeout(2200);
     const reviewText = await page.locator("body").innerText();
@@ -271,10 +272,15 @@ async function main() {
       "rows=" + queueRows + " unlocked=" + unlocked + " snippet=" + reviewText.slice(0, 120).replace(/\n/g, " "),
     );
     await shot("06-review-queue");
+    } catch (error) {
+      record("E2E-13", "the identity-review workspace unlocks with the token and lists the queue", false, String(error).slice(0, 160));
+    }
 
     /* ---------------------------------------------------------------- E2E-14 decision + impact */
-    const impactBefore = await apiAuth(ADMIN_BASE, "/api/review/impact", REVIEW_TOKEN);
     const applicant = "Abbott Vascular-Cardiac Therapies dba Guidant Corporation";
+    let decisionUid = null;
+    try {
+    const impactBefore = await apiAuth(ADMIN_BASE, "/api/review/impact", REVIEW_TOKEN);
     const decideResponse = await fetch(ADMIN_BASE + "/api/review/decisions", {
       method: "POST",
       headers: { "Content-Type": "application/json", "X-MedRadar-Review-Token": REVIEW_TOKEN },
@@ -302,12 +308,17 @@ async function main() {
     await page.reload({ waitUntil: "networkidle" });
     await page.waitForTimeout(1500);
     await shot("07-review-after-decision");
+    decisionUid = decideBody?.decision?.decision_uid || null;
+    } catch (error) {
+      record("E2E-14", "a review decision is appended, and unrelated organizations keep their exact counts", false, String(error).slice(0, 160));
+    }
 
     /* ---------------------------------------------------------------- E2E-15 append-only history */
+    try {
     const history = await fetch(ADMIN_BASE + "/api/review/history/" + encodeURIComponent(applicant), {
       headers: { "X-MedRadar-Review-Token": REVIEW_TOKEN },
     }).then((response) => response.json());
-    const uid = decideBody?.decision?.decision_uid;
+    const uid = decisionUid;
     const revoke = uid
       ? await fetch(ADMIN_BASE + "/api/review/decisions/" + uid + "/revoke", {
           method: "POST",
@@ -325,8 +336,12 @@ async function main() {
       entries.length >= 2 && Boolean(revoke && revoke.ok) && entries.some((entry) => entry.revoked) && Boolean(history.history),
       "entries=" + entries.length,
     );
+    } catch (error) {
+      record("E2E-15", "history is preserved after a withdrawal (append-only ledger)", false, String(error).slice(0, 160));
+    }
 
     /* ---------------------------------------------------------------- E2E-16 permission boundary */
+    try {
     const unauthorised = await fetch(ADMIN_BASE + "/api/review/queue");
     const badToken = await fetch(ADMIN_BASE + "/api/review/queue", { headers: { "X-MedRadar-Review-Token": "not-the-token" } });
     const writeWithoutToken = await fetch(ADMIN_BASE + "/api/review/decisions", {
@@ -352,6 +367,9 @@ async function main() {
       unauthorised.status === 401 && badToken.status === 401 && writeWithoutToken.status === 401 && publicBoundary,
       "noToken=" + unauthorised.status + " badToken=" + badToken.status + " write=" + writeWithoutToken.status + " public=" + publicDetail,
     );
+    } catch (error) {
+      record("E2E-16", "review writes require the token and do not exist on the public application", false, String(error).slice(0, 160));
+    }
 
     /* ---------------------------------------------------------------- E2E-09 mobile */
     const mobile = await browser.newContext({ viewport: { width: 390, height: 844 } });

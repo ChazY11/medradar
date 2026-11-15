@@ -12,12 +12,13 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import sys
 from pathlib import Path
 from typing import Any
 
 from ..dataset import PRODUCT_VERSION, load_dataset
-from .admin import create_admin_app, load_or_create_token, token_path
+from .admin import create_admin_app, load_or_create_token, required_token, token_path
 from .service import attribution_impact, build_case, build_queue, queue_summary
 from .store import ReviewError, ReviewStore
 
@@ -60,7 +61,7 @@ def cmd_serve(args: argparse.Namespace) -> int:
     except ImportError:
         print("uvicorn is required: pip install uvicorn", file=sys.stderr)
         return 2
-    token = load_or_create_token()
+    token = required_token()
     app = create_admin_app(
         data_dir=args.data_dir,
         web_dir=args.web_dir,
@@ -69,7 +70,7 @@ def cmd_serve(args: argparse.Namespace) -> int:
     )
     url = "http://" + args.host + ":" + str(args.port)
     print("MedRadar identity review: " + url + "/review")
-    print("Review token file: " + str(token_path()))
+    print("Review token: from MEDRADAR_REVIEW_TOKEN" if os.environ.get("MEDRADAR_REVIEW_TOKEN") else "Review token file: " + str(token_path()))
     print("Send the token as header X-MedRadar-Review-Token; the browser asks for it once.")
     if args.open:
         import threading
