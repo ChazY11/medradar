@@ -138,7 +138,7 @@ and latency.
 
 ## Approval text
 
-> I approve DATA-002 production change request for SHA `<sha>`: deploy the code, create the
+> I approve DATA-002 production change request for SHA `bb1ef34df3c15e2b1339432abce899eebea5e1f6`: deploy the code, create the
 > production pipeline root, bootstrap, reconcile the sources, switch the web data directory,
 > enable the update and backup timers, and perform the limited acceptance. I understand the
 > old package snapshot remains the rollback target and the new state is a same-host backup.
