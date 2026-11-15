@@ -14,7 +14,7 @@ request and the fixed SHA.
 | DATA-002 branch | `feat/data-002-production-readiness` |
 | Draft PR | https://github.com/ChazY11/medradar/pull/51 |
 | Base | `feat/data-001-continuous-pipeline` (stacked; PR #50 remains Draft) |
-| Fixed SHA to deploy | `<filled after the final commit>` |
+| Fixed SHA to deploy | `bb1ef34df3c15e2b1339432abce899eebea5e1f6` |
 | Current production SHA | `1bdb1c349c59713e1a11426f15a6c06e892f87e0` |
 | Current production snapshot | `2026-11-14T22:09:22Z-openfda` |
 | Target pipeline root | `/srv/medradar/data/fda` |
@@ -43,7 +43,7 @@ have been observed.
 
 ```bash
 sudo -u medradar git -C /srv/medradar/app fetch origin
-sudo -u medradar git -C /srv/medradar/app checkout <FIXED_SHA>
+sudo -u medradar git -C /srv/medradar/app checkout bb1ef34df3c15e2b1339432abce899eebea5e1f6
 sudo -u medradar /srv/medradar/.venv/bin/pip install -e /srv/medradar/app
 sudo systemctl restart medradar-web.service
 curl -fsS http://127.0.0.1:8787/api/livez
