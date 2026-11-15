@@ -30,6 +30,7 @@ import { useI18n } from "../i18n";
 import type { EventRecord } from "../api/types";
 import { defaultFilters, parseFilters, toQueryString, type EventsFilterState } from "./eventsFilters";
 import { OrgTransparency, VerificationBadge } from "../components/transparency";
+import { OrgDevices } from "../components/OrgDevices";
 
 export function OrganizationPage() {
   const { key = "" } = useParams<{ key: string }>();
@@ -129,8 +130,11 @@ export function OrganizationPage() {
                 { id: "overview", label: t("org.tab.overview") },
                 { id: "events", label: t("org.tab.events"), count: data.counts.records },
                 { id: "attribution", label: t("org.tab.attribution"), count: data.attribution.accepted_spellings + data.attribution.pending_review_spellings },
+                { id: "devices", label: bi("Devices", "器械") },
               ]}
             />
+
+            {tab === "devices" ? <OrgDevices organizationKey={data.key} /> : null}
 
             {tab === "overview" ? (
               <>

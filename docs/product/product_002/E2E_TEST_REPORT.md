@@ -14,6 +14,10 @@ Browser end-to-end acceptance is now part of GitHub CI and runs against a real b
 The E2E job fails the pull request when any check fails: there is no `continue-on-error` and no
 `|| true` on the test step. Artefacts are uploaded with `if: always()` so a red run is diagnosable.
 
+**PRODUCT-003 extends this suite** with E2E-18..22 (PMA family, 510(k) device, recall linkage,
+organization integration, unknown device) for **22/22 checks**; see
+`docs/product/product_003/PRODUCT_ACCEPTANCE.md`. The P0-fix run below is the 17-check baseline.
+
 **CI result on the delivered commit: PASS.** The `e2e` workflow completed in 2m30s as
 "product browser acceptance" together with `ci` and `governance` - 13/13 checks green on PR #47
 (`product browser acceptance`, `product workbench`, three Python offline suites, `windows
