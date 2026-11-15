@@ -14,6 +14,7 @@ No production data directory, service unit or timer was changed.
 | `restore.json`, `restore.time.txt` | Restore into an empty isolated directory with product/device validation |
 | `status-after-old.json`, `status-after-new.json` | Real rollback A→B→A; publication journal retained |
 | `data-status-isolated.png` | Real Data Status page served from the isolated state after the full run |
+| `server-production-after-tests.txt` | Production still `1bdb1c3`, old snapshot, no DATA-002 timer |
 
 Raw FDA responses and full snapshots are not committed. The commands and state root are in
 `../PRODUCTION_ACCEPTANCE.md`, `../RESOURCE_VALIDATION.md` and `../BACKUP_RECOVERY.md`.
