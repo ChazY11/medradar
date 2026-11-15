@@ -412,6 +412,113 @@ async function main() {
       record("E2E-17", "a client cannot choose its actor kind and cannot create human_reviewed", false, String(error).slice(0, 160));
     }
 
+
+    /* ---------------------------------------------------------------- E2E-18 device explorer + PMA family */
+    try {
+      const pmaList = await api(ADMIN_BASE, "/api/devices?q=P980016&page_size=5");
+      const pmaDevice = pmaList.items.find((item) => item.kind === "pma");
+      await page.goto(ADMIN_BASE + "/devices?q=P980016", { waitUntil: "networkidle" });
+      await page.waitForTimeout(2500);
+      await page.getByRole("link", { name: /VIRTUSO|P980016/i }).first().click();
+      await page.waitForTimeout(2500);
+      const pmaText = await page.locator("body").innerText();
+      const pmaDetail = pmaDevice ? await api(ADMIN_BASE, "/api/devices/" + encodeURIComponent(pmaDevice.device_id)) : null;
+      record(
+        "E2E-18",
+        "PMA scenario: the device page shows the official PMA hierarchy, its versions and a timeline",
+        Boolean(pmaDevice) &&
+          /Product family/i.test(pmaText) &&
+          /Versions of this device/i.test(pmaText) &&
+          /Regulatory timeline/i.test(pmaText) &&
+          new RegExp(pmaDevice.official_id).test(pmaText) &&
+          (pmaDetail?.versions?.length ?? 0) > 0,
+        "pma=" + (pmaDevice?.official_id ?? "none") + " versions=" + (pmaDetail?.versions?.length ?? 0),
+      );
+      await shot("09-device-pma");
+    } catch (error) {
+      record("E2E-18", "PMA scenario: the device page shows the official PMA hierarchy, its versions and a timeline", false, String(error).slice(0, 160));
+    }
+
+    /* ---------------------------------------------------------------- E2E-19 510(k) device page */
+    try {
+      const list510k = await api(ADMIN_BASE, "/api/devices?pathway=510k&relation=candidate&page_size=5");
+      const device510k = list510k.items[0];
+      await page.goto(ADMIN_BASE + "/devices/" + encodeURIComponent(device510k.device_id), { waitUntil: "networkidle" });
+      await page.waitForTimeout(2200);
+      const text510k = await page.locator("body").innerText();
+      record(
+        "E2E-19",
+        "510(k) scenario: official number, applicant, product code, evidence link and candidate labelling are shown",
+        text510k.includes(device510k.official_id) &&
+          text510k.includes(device510k.applicant_name) &&
+          /candidate only|Candidate relations/i.test(text510k) &&
+          /official record|Official evidence/i.test(text510k) &&
+          /not established|Candidate relations \(not established\)/i.test(text510k),
+        "device=" + device510k.official_id + " candidates=" + (device510k.counts?.candidate_relations ?? 0),
+      );
+      await shot("10-device-510k");
+    } catch (error) {
+      record("E2E-19", "510(k) scenario: official number, applicant, product code, evidence link and candidate labelling are shown", false, String(error).slice(0, 160));
+    }
+
+    /* ---------------------------------------------------------------- E2E-20 recall relation + unlinked browser */
+    try {
+      const samples = await api(ADMIN_BASE, "/api/devices?pathway=510k&page_size=100&sort=relevance");
+      const withRecall = samples.items.find((item) => (item.counts?.recalls ?? 0) > 0) || samples.items[0];
+      await page.goto(ADMIN_BASE + "/devices/" + encodeURIComponent(withRecall.device_id), { waitUntil: "networkidle" });
+      await page.waitForTimeout(2200);
+      const recallText = await page.locator("body").innerText();
+      const detail = await api(ADMIN_BASE, "/api/devices/" + encodeURIComponent(withRecall.device_id));
+      const linked = detail.related_recalls.confirmed.length;
+      await page.goto(ADMIN_BASE + "/devices?view=unlinked", { waitUntil: "networkidle" });
+      await page.waitForTimeout(2200);
+      const unlinkedText = await page.locator("body").innerText();
+      record(
+        "E2E-20",
+        "recall scenario: official K-number links are shown as confirmed and unlinked recalls stay visible with a reason",
+        /Related recalls/i.test(recallText) &&
+          /Linked by|k_numbers|K\d{6}/i.test(recallText) &&
+          /Why unlinked/i.test(unlinkedText) &&
+          /not deleted|未关联|no link/i.test(unlinkedText),
+        "confirmedRecalls=" + linked,
+      );
+      await shot("11-device-recalls");
+    } catch (error) {
+      record("E2E-20", "recall scenario: official K-number links are shown as confirmed and unlinked recalls stay visible with a reason", false, String(error).slice(0, 160));
+    }
+
+    /* ---------------------------------------------------------------- E2E-21 organization page integration */
+    try {
+      await page.goto(ADMIN_BASE + "/organizations/medtronic", { waitUntil: "networkidle" });
+      await page.waitForTimeout(1800);
+      await page.getByRole("tab", { name: /Devices/i }).click();
+      await page.waitForTimeout(2200);
+      const orgDevicesText = await page.locator("body").innerText();
+      record(
+        "E2E-21",
+        "the organization page exposes device identities in the same workspace",
+        /Devices and product families/i.test(orgDevicesText) && /Device identities/i.test(orgDevicesText),
+        orgDevicesText.slice(0, 80).replace(/\n/g, " "),
+      );
+    } catch (error) {
+      record("E2E-21", "the organization page exposes device identities in the same workspace", false, String(error).slice(0, 160));
+    }
+
+    /* ---------------------------------------------------------------- E2E-22 unknown device */
+    try {
+      await page.goto(ADMIN_BASE + "/devices/device:nope", { waitUntil: "networkidle" });
+      await page.waitForTimeout(1600);
+      const missingDeviceText = await page.locator("body").innerText();
+      record(
+        "E2E-22",
+        "an unknown device identifier shows an explicit error, not a blank page",
+        /unknown device|not found|Something went wrong/i.test(missingDeviceText),
+        missingDeviceText.slice(0, 80).replace(/\n/g, " "),
+      );
+    } catch (error) {
+      record("E2E-22", "an unknown device identifier shows an explicit error, not a blank page", false, String(error).slice(0, 160));
+    }
+
     /* ---------------------------------------------------------------- E2E-09 mobile */
     const mobile = await browser.newContext({ viewport: { width: 390, height: 844 } });
     const mobilePage = await mobile.newPage();

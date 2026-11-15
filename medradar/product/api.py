@@ -356,6 +356,74 @@ def create_app(
             "freshness": data.freshness(),
         }
 
+    # ---------------------------------------------------------------- device intelligence (PRODUCT-003)
+    def _device_payloads():
+        from .device import payloads
+
+        return payloads
+
+    @app.get("/api/devices")
+    def devices(q: str | None = None, org: str | None = None, product_code: str | None = None,
+                category: str | None = None, pathway: str | None = None, relation: str | None = None,
+                sort: str = "relevance", page: int = 1, page_size: int = 25) -> Any:
+        data = dataset()
+        if org and data.organization(org) is None:
+            raise HTTPExceptionCompat(400, "unknown_organization", "unknown organization key: " + org)
+        if pathway and pathway not in ("510k", "pma"):
+            raise HTTPExceptionCompat(400, "bad_pathway", "pathway must be 510k or pma")
+        if relation and relation not in ("confirmed", "candidate", "none", "any"):
+            raise HTTPExceptionCompat(400, "bad_relation", "relation must be confirmed, candidate, none or any")
+        return _device_payloads().explorer(
+            data,
+            q=q,
+            organization=org,
+            product_code=product_code,
+            category=category,
+            pathway=pathway,
+            relation=None if relation in (None, "", "any") else relation,
+            page=page,
+            page_size=page_size,
+            sort=sort,
+        )
+
+    @app.get("/api/devices/quality")
+    def devices_quality() -> Any:
+        data = dataset()
+        from .device import quality_report
+
+        payload = quality_report(data.device_index())
+        payload["index_build_ms"] = round(data.device_index_build_ms or 0.0, 1)
+        payload["snapshot"] = data.snapshot_ref()
+        return payload
+
+    @app.get("/api/devices/unlinked")
+    def devices_unlinked(page: int = 1, page_size: int = 25) -> Any:
+        return _device_payloads().unlinked_recalls(dataset(), page=page, page_size=page_size)
+
+    @app.get("/api/devices/{device_id:path}")
+    def device_detail(device_id: str) -> Any:
+        payload = _device_payloads().detail(dataset(), device_id)
+        if payload is None:
+            raise HTTPExceptionCompat(
+                404,
+                "device_not_found",
+                "unknown device identifier: " + device_id,
+                "device identifiers look like device:openfda_510k:K123456 or an FDA identifier such as K123456",
+            )
+        return payload
+
+    @app.get("/api/device-families/{family_id:path}")
+    def device_family(family_id: str) -> Any:
+        payload = _device_payloads().family_payload(dataset(), family_id)
+        if payload is None:
+            raise HTTPExceptionCompat(
+                404,
+                "family_not_found",
+                "unknown device family: " + family_id,
+                "family identifiers look like family:pma:P980016",
+            )
+        return payload
+
     # ---------------------------------------------------------------- compare
     @app.get("/api/compare")
     def compare(orgs: str = Query(default=""), date_from: str | None = Query(default=None, alias="from"),
@@ -458,6 +526,67 @@ def create_app(
             raise HTTPExceptionCompat(404, "organization_not_found", "unknown organization key: " + key)
         body = organization_markdown(data, key)
         headers = {"Content-Disposition": 'attachment; filename="' + organization_markdown_filename(key, data) + '"'}
+        return Response(content=body.encode("utf-8"), media_type="text/markdown; charset=utf-8", headers=headers)
+
+    @app.get("/api/export/devices.csv")
+    def export_devices_csv(q: str | None = None, org: str | None = None, product_code: str | None = None,
+                           category: str | None = None, pathway: str | None = None, relation: str | None = None,
+                           sort: str = "relevance") -> Any:
+        data = dataset()
+        payloads = _device_payloads()
+        if org and data.organization(org) is None:
+            raise HTTPExceptionCompat(400, "unknown_organization", "unknown organization key: " + org)
+        result = payloads.explorer(
+            data,
+            q=q,
+            organization=org,
+            product_code=product_code,
+            category=category,
+            pathway=pathway,
+            relation=None if relation in (None, "", "any") else relation,
+            page=1,
+            page_size=100,
+            sort=sort,
+        )
+        # CSV must contain every matching row, not the first page: rebuild without paging.
+        all_rows = payloads.explorer(
+            data,
+            q=q,
+            organization=org,
+            product_code=product_code,
+            category=category,
+            pathway=pathway,
+            relation=None if relation in (None, "", "any") else relation,
+            page=1,
+            page_size=result["total"] or 1,
+            sort=sort,
+        )
+        rows = []
+        index = data.device_index()
+        for item in all_rows["items"]:
+            device = index.devices.get(item["device_id"])
+            if device is None:
+                continue
+            rows.append({"device": device, "counts": item["counts"], "organization_display": item.get("organization_display")})
+        body = payloads.devices_csv(data, rows)
+        filters = {"q": q, "org": org, "product_code": product_code, "category": category, "pathway": pathway, "relation": relation}
+        headers = {
+            "Content-Disposition": 'attachment; filename="medradar-devices-' + str(data.collected_at)[:10] + '.csv"',
+            "X-MedRadar-Provenance": provenance_header(data, filters),
+            "X-MedRadar-Records": str(len(rows)),
+        }
+        return Response(content=body.encode("utf-8"), media_type="text/csv; charset=utf-8", headers=headers)
+
+    @app.get("/api/export/device.md")
+    def export_device_md(device: str = Query(default="")) -> Any:
+        payloads = _device_payloads()
+        data = dataset()
+        if not device:
+            raise HTTPExceptionCompat(400, "missing_device", "device is required (a device id or an FDA identifier)")
+        body = payloads.device_markdown(data, device)
+        if body is None:
+            raise HTTPExceptionCompat(404, "device_not_found", "unknown device identifier: " + device)
+        headers = {"Content-Disposition": 'attachment; filename="medradar-device-' + device.replace(":", "-") + '.md"'}
         return Response(content=body.encode("utf-8"), media_type="text/markdown; charset=utf-8", headers=headers)
 
     # ---------------------------------------------------------------- transparency

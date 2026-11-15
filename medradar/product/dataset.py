@@ -384,6 +384,8 @@ class Dataset:
     applicant_by_name: dict[str, dict[str, Any]] = field(default_factory=dict)
     review_overlay_applied: int = 0
     review_db: str | None = None
+    _device_index: Any = None
+    device_index_build_ms: float | None = None
     _org_events: dict[str, list[Event]] = field(default_factory=dict)
     _lock: threading.Lock = field(default_factory=threading.Lock)
 
@@ -701,6 +703,18 @@ class Dataset:
                 "retired_bases": RETIRED_OWNERSHIP_BASES,
                 "updated_at": ownership_module.ownership().updated_at,
             },
+            "device_intelligence": {
+                "available": True,
+                "definitions": {
+                    "regulatory_record": "one row in an FDA dataset: a 510(k) clearance, a PMA approval, a PMA supplement or a device recall",
+                    "regulatory_application": "an official FDA application identifier (K number, PMA number, supplement)",
+                    "device_identity": "the device an application cleared or approved; MedRadar identifiers are internal",
+                    "product_family": "an evidenced set of devices/versions; this release: the PMA application hierarchy",
+                    "candidate": "a deterministic similarity rule suggests a relation; it is not established",
+                },
+                "endpoints": ["/api/devices", "/api/devices/quality", "/api/devices/unlinked", "/api/devices/{id}", "/api/device-families/{id}"],
+                "not_modelled": ["predicate relationships (openFDA exposes no predicate identifier for 510(k) submissions)"],
+            },
             "review_ledger": {
                 "decisions_applied": self.review_overlay_applied,
                 "db": self.review_db,
@@ -949,6 +963,23 @@ class Dataset:
         metrics = attribution_metrics(self)
         self._metrics = metrics
         return summarise(metrics)
+
+    def device_index(self) -> Any:
+        """Lazily built, deterministic device index (PRODUCT-003).
+
+        Built on first use and cached on the dataset instance, so organization and event pages do not
+        pay for it. A local pickle cache under data/cache (gitignored) makes the second process start
+        fast; the cache key includes the snapshot id and the builder version, so a new snapshot always
+        rebuilds. Set MEDRADAR_DEVICE_CACHE=off to disable the cache.
+        """
+        if self._device_index is not None:
+            return self._device_index
+        from .device import build_index
+
+        started = datetime.now(timezone.utc)
+        self._device_index = build_index(self)
+        self.device_index_build_ms = (datetime.now(timezone.utc) - started).total_seconds() * 1000.0
+        return self._device_index
 
     def metrics(self) -> dict[str, Any]:
         from .metrics import attribution_metrics
