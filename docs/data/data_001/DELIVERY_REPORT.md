@@ -1,6 +1,7 @@
 # MedRadar DATA-001 — Continuous FDA Pipeline Delivery Report
 
-**Branch:** `feat/data-001-continuous-pipeline` (Draft PR, not merged)
+**Branch:** `feat/data-001-continuous-pipeline`
+**Draft PR:** https://github.com/ChazY11/medradar/pull/50
 **Base:** `feat/product-003-device-intelligence` at `1bdb1c349c59713e1a11426f15a6c06e892f87e0`
 **Environment:** local Windows development + isolated `/tmp` test on the 2 vCPU / 4 GB
 Tencent Cloud server. Production data and service units were not changed.
