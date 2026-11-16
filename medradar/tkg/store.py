@@ -299,16 +299,36 @@ class TKGStore:
         self,
         path: str | Path = ":memory:",
         clock: Callable[[], datetime] | None = None,
+        *,
+        read_only: bool = False,
     ) -> None:
         self.path = str(path)
         if clock is not None and self.path != ":memory:":
             raise TKGError("injected test clock is only allowed on the in-memory store (':memory:')")
+        self.read_only = bool(read_only)
         self._clock = clock
-        if self.path != ":memory:":
+        if self.path != ":memory:" and not self.read_only:
             Path(self.path).parent.mkdir(parents=True, exist_ok=True)
-        self.conn = sqlite3.connect(self.path, timeout=60)
+        if self.read_only:
+            # A read-only handle can never create, migrate or stamp anything. It exists so a
+            # serving process can query the graph without being able to damage it.
+            from pathlib import Path as _Path
+
+            resolved = _Path(self.path).resolve()
+            self.conn = sqlite3.connect(
+                f"file:{resolved.as_posix()}?mode=ro", uri=True, timeout=60
+            )
+        else:
+            self.conn = sqlite3.connect(self.path, timeout=60)
         self.conn.row_factory = sqlite3.Row
         self.conn.execute("PRAGMA foreign_keys=ON")
+        if self.read_only:
+            try:
+                self._verify_schema_only()
+            except Exception:
+                self.conn.close()
+                raise
+            return
         try:
             self._check_or_init_schema()
             self.conn.executescript(SCHEMA)
@@ -318,6 +338,26 @@ class TKGStore:
             # rejection) - the caller must be able to delete/retry the file.
             self.conn.close()
             raise
+
+    def _verify_schema_only(self) -> None:
+        """Read-only schema check: identical rejection rules, no writes."""
+        tables = {
+            row[0]
+            for row in self.conn.execute("SELECT name FROM sqlite_master WHERE type = 'table'")
+        }
+        if "meta" not in tables:
+            raise TKGError(
+                f"{self.path}: not a TKG store (no 'meta' table); refusing to open. "
+                f"This build requires {SCHEMA_VERSION}."
+            )
+        row = self.conn.execute("SELECT value FROM meta WHERE key = 'schema_version'").fetchone()
+        found = row[0] if row is not None else None
+        if found != SCHEMA_VERSION:
+            raise TKGError(
+                f"{self.path}: unsupported TKG schema_version {found!r}"
+                f" (this build requires {SCHEMA_VERSION!r}). There is no automatic migration "
+                "and no data was modified. Rebuild the store from source."
+            )
 
     def _check_or_init_schema(self) -> None:
         """Refuse to open a store whose stored schema stamp is missing or unknown.

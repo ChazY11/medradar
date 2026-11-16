@@ -11,6 +11,8 @@ import { DevicePage } from "./pages/DevicePage";
 import { SourcesPage } from "./pages/SourcesPage";
 import { DataStatusPage } from "./pages/DataStatusPage";
 import { BriefPage } from "./pages/BriefPage";
+import { LiveIntelligencePage } from "./pages/LiveIntelligencePage";
+import { TechnologyMapPage } from "./pages/TechnologyMapPage";
 import { EmptyState } from "./components/ui";
 
 export default function App() {
@@ -19,6 +21,8 @@ export default function App() {
       <Routes>
         <Route path="/" element={<OverviewPage />} />
         <Route path="/brief" element={<BriefPage />} />
+        <Route path="/radar" element={<LiveIntelligencePage />} />
+        <Route path="/radar/technology-map" element={<TechnologyMapPage />} />
         <Route path="/organizations" element={<OrganizationsPage />} />
         <Route path="/organizations/:key" element={<OrganizationPage />} />
         <Route path="/events" element={<EventsPage />} />

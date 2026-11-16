@@ -559,6 +559,7 @@ def create_app(
     web_dir: Path | str | None = None,
     setup=None,
     pipeline_db: Path | str | None = None,
+    radar_dir: Path | str | None = None,
 ) -> FastAPI:
     """Build the read-only public application.
 
@@ -1423,6 +1424,18 @@ def create_app(
 
     # ---------------------------------------------------------------- extension point
     # Anything registered here is matched before the SPA catch-all below.
+    # RADAR-001: the Live Intelligence Radar and the Company Technology Graph are mounted as a
+    # separate read-only router. Its absence (no radar data directory) is a visible 503 from
+    # the radar endpoints, never a broken workbench.
+    resolved_radar = radar_dir if radar_dir is not None else os.environ.get("MEDRADAR_RADAR_DIR")
+    if resolved_radar:
+        try:
+            from ..radar.api import RadarService, build_router
+
+            app.include_router(build_router(RadarService(resolved_radar)))
+            app.state.radar_dir = str(resolved_radar)
+        except Exception as error:  # pragma: no cover - the workbench must still start
+            app.state.radar_error = f"{type(error).__name__}: {error}"
     if setup is not None:
         setup(app)
 

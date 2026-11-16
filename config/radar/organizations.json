@@ -1,0 +1,86 @@
+{
+  "schema": "medradar.radar.organizations.v1",
+  "registry_version": "radar-orgs-2026.11.1",
+  "verified": {
+    "alias_source": "The applicant strings below were read from the official openFDA /device/510k.json endpoint on 2026-11-17, filtered to the ICU monitoring product codes in config/radar/topics.json (5,745 records, decision dates 1976-07-19..2026-10-26).",
+    "alias_note": "Each alias is a real string that the source published. Confidence expresses identity certainty of the alias mapping only. It never expresses technical capability.",
+    "cannot_do": [
+      "An applicant field is a record claim by the submitter, not proof of current manufacture or ownership.",
+      "A subsidiary listed under a parent is an organisational relation, not evidence about the parent's product portfolio.",
+      "A publication affiliation is never resolved into a product manufacturer."
+    ]
+  },
+  "confidence_thresholds": {
+    "confirmed_at_or_above": 0.9,
+    "candidate_at_or_above": 0.6,
+    "below": "UNKNOWN - the candidate is retained with its score but forms no edge"
+  },
+  "organizations": [
+    {
+      "id": "philips",
+      "canonical_name": "Royal Philips",
+      "display_name": "Philips",
+      "label_zh": "飞利浦",
+      "country": "NL",
+      "aliases": [
+        {"text": "Philips Medical Systems", "confidence": 0.98},
+        {"text": "Philips Medical Systems, Inc.", "confidence": 0.98},
+        {"text": "Philips Medizin Systeme Boeblingen GmbH", "confidence": 0.98},
+        {"text": "Philips Medizin Systeme Böblingen GmbH", "confidence": 0.98},
+        {"text": "Philips Medizinsysteme Boeblingen GmbH", "confidence": 0.98},
+        {"text": "Philips Medizin Systeme Boblingen GmbH", "confidence": 0.98},
+        {"text": "Philips Medizinsysteme Boeblingen GmbH, Cardiac AN", "confidence": 0.95},
+        {"text": "Philips Park", "confidence": 0.9},
+        {"text": "North American Philips Corp.", "confidence": 0.9},
+        {"text": "Philips Healthcare", "confidence": 0.95},
+        {"text": "Royal Philips", "confidence": 0.98},
+        {"text": "Philips", "confidence": 0.9}
+      ],
+      "notes": "Includes the Boeblingen (Germany) monitoring subsidiary, which is the applicant on most Philips patient-monitoring clearances."
+    },
+    {
+      "id": "ge_healthcare",
+      "canonical_name": "GE HealthCare Technologies Inc.",
+      "display_name": "GE HealthCare",
+      "label_zh": "GE 医疗",
+      "country": "US",
+      "aliases": [
+        {"text": "GE HealthCare", "confidence": 0.98},
+        {"text": "GE Healthcare", "confidence": 0.98},
+        {"text": "GE Healthcare Finland Oy", "confidence": 0.95},
+        {"text": "Ge Medical Systems Information Technologies", "confidence": 0.95},
+        {"text": "Ge Medical Systems Information Technologies, Inc.", "confidence": 0.95},
+        {"text": "General Electric Medical Systems Information Techn", "confidence": 0.9},
+        {"text": "Ge Medical Systems China Co., Ltd.", "confidence": 0.85},
+        {"text": "General Electric Co.", "confidence": 0.6},
+        {"text": "General Electric Company", "confidence": 0.6}
+      ],
+      "notes": "The Information Technologies entity is the historical monitoring applicant. The two 'General Electric Co.' aliases are deliberately below the confirmed threshold: that legal name also files non-medical devices, so those records stay CANDIDATE company attributions."
+    },
+    {
+      "id": "draeger",
+      "canonical_name": "Drägerwerk AG & Co. KGaA",
+      "display_name": "Dräger",
+      "label_zh": "德尔格",
+      "country": "DE",
+      "aliases": [
+        {"text": "Draeger Medical Systems, Inc.", "confidence": 0.98},
+        {"text": "Draeger Medical, Inc.", "confidence": 0.95},
+        {"text": "Dräger Medical", "confidence": 0.95},
+        {"text": "Draegerwerk AG & Co. KGaA", "confidence": 0.98},
+        {"text": "Drägerwerk", "confidence": 0.95},
+        {"text": "Draeger", "confidence": 0.85},
+        {"text": "Dräger", "confidence": 0.85}
+      ],
+      "notes": "Both the ASCII and the umlaut spellings appear in official records; both are real published strings."
+    }
+  ],
+  "out_of_scope_observed": [
+    {"text": "Nihon Kohden America, Inc.", "records": 88, "note": "Observed in the monitoring product-code sweep; not in the first-batch scope."},
+    {"text": "Masimo Corporation", "records": 73, "note": "Observed; SpO2 specialist outside the first-batch scope."},
+    {"text": "Siemens Medical Solutions USA, Inc.", "records": 56, "note": "Observed; not in the first-batch scope."},
+    {"text": "Shenzhen Mindray Bio-Medical Electronics Co., Ltd.", "records": 42, "note": "Observed; a Chinese monitoring vendor relevant to a later batch."},
+    {"text": "Spacelabs, Inc.", "records": 27, "note": "Observed; not in the first-batch scope."}
+  ],
+  "add_an_organization": "Append an entry to organizations[]. Aliases are configuration, not code: no schema migration and no adapter change is required."
+}

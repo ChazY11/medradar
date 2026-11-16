@@ -13,6 +13,8 @@ interface NavItem {
 
 const NAV_ITEMS: NavItem[] = [
   { to: "/brief", labelKey: "nav.brief" },
+  { to: "/radar", labelKey: "nav.radar" },
+  { to: "/radar/technology-map", labelKey: "nav.technologyMap" },
   { to: "/", labelKey: "nav.overview", end: true },
   { to: "/organizations", labelKey: "nav.organizations" },
   { to: "/events", labelKey: "nav.events" },
