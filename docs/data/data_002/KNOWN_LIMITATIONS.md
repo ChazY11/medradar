@@ -1,15 +1,17 @@
 # DATA-002 — Known Limitations
 
-1. **Production is not enabled.** G7 is BLOCKED. The timer, data-root switch, production
-   bootstrap and first production sync require the written approval in
-   `DEPLOYMENT_CHANGE_REQUEST.md`.
+1. **Production is enabled but not long-soaked.** Fixed SHA `bb1ef34` is live; the first
+   systemd-triggered `run` was `NO_CHANGE`. Days/weeks of production behavior are not yet
+   observed.
 2. **Same-host backup is not disaster recovery.** The host/volume is a single failure domain.
    The two existing cloud snapshots are unchanged and off-host storage was not purchased.
 3. **No production soak.** Resource and restart behaviour were measured in isolated runs, not
    over days/weeks under all FDA payload shapes.
 4. **Full-source peak is close to the cap.** A manual all-source run peaked at 2.16 GiB under a
-   2.4 GiB cgroup. The automatic scheduler avoids that shape by processing one product source
-   per run. Do not raise the default without re-measuring on this host.
+   2.4 GiB cgroup. The production one-source recall sync with the new web process peaked at
+   1.956 GiB; web RSS was 1.65–1.87 GiB and the host used ~557 MiB swap. One `/api/health`
+   request stalled for 8 s during reload, then recovered. The automatic scheduler still uses
+   one product source per run; do not raise the default without re-measuring.
 5. **Rolling full reconciliation is bounded by request budget.** It may be deferred if the
    remaining daily budget cannot cover the estimate. A deferred sweep is recorded, not
    reported as success.

@@ -45,9 +45,13 @@ Restore:
 A failed restore leaves an explicit error and a partial isolated directory; it never runs
 against production automatically.
 
-## Real isolated drill
+## Real production and isolated drills
 
-The actual drill is recorded in `docs/data/data_002/evidence/`:
+Latest production backup: `data-backup-20261116T032839Z-e5362d`, active snapshot
+`fda-snapshot-20261116T032632Z-18ce4d0cbbe4`, six snapshots, pipeline DB integrity `ok`.
+Restore into `/tmp/data002-prod-restore-final` validated the active snapshot and product/device
+index without modifying production. The earlier isolated drill is also in
+`docs/data/data_002/evidence/`:
 
 * backup of an isolated pipeline state containing at least two immutable snapshots and change
   ledger rows;

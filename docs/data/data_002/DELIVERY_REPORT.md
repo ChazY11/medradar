@@ -5,8 +5,9 @@
 **Draft PR:** https://github.com/ChazY11/medradar/pull/51
 **Base:** `feat/data-001-continuous-pipeline` (stacked; PR #50 remains Draft)
 **Fixed SHA:** `bb1ef34df3c15e2b1339432abce899eebea5e1f6`
-**Production deployment:** **NOT EXECUTED** — requires the approval in
-`DEPLOYMENT_CHANGE_REQUEST.md`.
+**Production deployment:** **EXECUTED 2026-11-16** under the user approval; active snapshot
+`fda-snapshot-20261116T032632Z-18ce4d0cbbe4`; timer active. Full details:
+`PRODUCTION_DEPLOYMENT_REPORT.md`.
 
 ## What changed in code
 
@@ -75,23 +76,30 @@ Evidence: `docs/data/data_002/evidence/`.
 | G1 Source independence | PASS (software/isolation) |
 | G2 Data integrity | PASS |
 | G3 Snapshot safety | PASS |
-| G4 Resource safety | PASS (measured) |
+| G4 Resource safety | PASS with residual risk (measured) |
 | G5 Backup & recovery | PASS (same-host); off-host limitation stated |
 | G6 Operational health | PASS (code + isolated endpoint) |
-| G7 Continuous operation | **BLOCKED** — timer not enabled, no production trigger |
-| G8 Product acceptance | **PARTIAL** — isolated real UI accepted; production URL not switched |
+| G7 Continuous operation | **PASS (first trigger)** — automatic `run` at 11:20:22, exit 0; next 12:24 |
+| G8 Product acceptance | **PASS (first run)** — production Web/API/Data Status accepted; residual sync latency risk |
 
-## What is not deployed
+## Production state
 
-Production still runs:
-`1bdb1c349c59713e1a11426f15a6c06e892f87e0`, `medradar-web.service` on 200,
-package snapshot `2026-11-14T22:09:22Z-openfda`, `/srv/medradar/data` with only `cache/` and
-`identity/`. No timer, no pipeline DB, no API key, no backup/health script replacement, no
-public port, no PR merge.
+Production now runs fixed SHA `bb1ef34df3c15e2b1339432abce899eebea5e1f6`, serves
+`/srv/medradar/data/fda`, active snapshot
+`fda-snapshot-20261116T032632Z-18ce4d0cbbe4`, all four source versions recorded, and the
+hourly update plus daily pipeline backup timers are enabled. The first systemd-triggered
+`run` completed with exit 0 and `NO_CHANGE`.
 
-## Approval needed
+The old code and package snapshot are retained under
+`/srv/medradar/var/backup/data002-pre/`; the old package snapshot remains available. No PR
+was merged. The CLOUD-003 health/backup scripts remain unchanged.
+
+One residual risk is recorded: during the concurrent production recall sync, one
+`/api/health` request stalled for 8 s while the web process swapped/reloaded; no OOM, no 5xx,
+no data loss, and the service recovered without restart.
+
+## Approval record
 
 The exact commands, fixed SHA and rollback steps are in
-`DEPLOYMENT_CHANGE_REQUEST.md`. Approval covers code deploy, production data root, bootstrap,
-source reconciliation, web data-dir switch, timer enablement and the new backup/health
-scripts. Until then G7 is **BLOCKED**, not PASS.
+`DEPLOYMENT_CHANGE_REQUEST.md`; the approval was granted and the controlled deployment was
+executed. No PR merge is included.

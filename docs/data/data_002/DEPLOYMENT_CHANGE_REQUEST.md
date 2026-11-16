@@ -1,6 +1,6 @@
 # DATA-002 — Production Change Request
 
-**Status: NOT APPROVED — DO NOT EXECUTE YET.**
+**Status: APPROVED 2026-11-16 and EXECUTED. See `PRODUCTION_DEPLOYMENT_REPORT.md`.**
 
 This is the concrete request. The engineering work, offline tests and isolated server tests are
 done first; the listed production mutations require an explicit approval naming this change
@@ -143,4 +143,4 @@ and latency.
 > enable the update and backup timers, and perform the limited acceptance. I understand the
 > old package snapshot remains the rollback target and the new state is a same-host backup.
 
-No production command in this document has been executed.
+This request was approved on 2026-11-16 and the deployment was executed. No PR was merged; rollback artifacts remain in `/srv/medradar/var/backup/data002-pre/`.

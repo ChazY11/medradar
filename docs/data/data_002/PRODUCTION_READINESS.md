@@ -112,15 +112,14 @@ the active pointer/DB agreement and runs the full snapshot validator before repo
 The same-host limitation is stated: this is operational recovery, not off-host disaster
 recovery.
 
-## 8. What remains blocked
+## 8. Production status
 
-* production deployment of a fixed SHA;
-* creation of the production pipeline root;
-* first production bootstrap/sync;
-* changing `medradar-web.service` to the pipeline data dir;
-* active production pointer switch;
-* timer installation/enablement;
-* replacing the existing CLOUD-003 health/backup scripts.
+The approved deployment of fixed SHA `bb1ef34df3c15e2b1339432abce899eebea5e1f6` executed on
+2026-11-16. Production serves `/srv/medradar/data/fda`, active snapshot
+`fda-snapshot-20261116T032632Z-18ce4d0cbbe4`; the update and pipeline-backup timers are
+enabled. The first systemd-triggered `run` completed with exit 0 and `NO_CHANGE`.
 
-Those need the written approval in `DEPLOYMENT_CHANGE_REQUEST.md`. No production mutation was
-performed by this work.
+Residual risk: web RSS (1.65–1.87 GiB) plus a one-source sync (1.956 GiB peak) is close to
+this 3.7 GiB host's RAM and uses swap. During the production recall sync one `/api/health`
+request stalled for 8 s; it recovered without restart and there was no OOM or data loss.
+Do not raise `MEDRADAR_PIPELINE_MAX_PRODUCT_SOURCES_PER_RUN` without a new memory test.

@@ -2,16 +2,18 @@
 
 ## Gate status
 
+Production executed 2026-11-16; final deployment report: `PRODUCTION_DEPLOYMENT_REPORT.md`.
+
 | Gate | Status | Evidence |
 |---|---|---|
 | G1 Source independence | **PASS (software/isolation)** | per-source failure tests; check + collection failures; healthy update publishes; failed source old version retained |
 | G2 Data integrity | **PASS** | added/updated/missing/duplicate/rebaseline tests; full reconcile 0 fabricated changes; 175-test suite |
 | G3 Snapshot safety | **PASS** | atomic publish, corrupt candidate rejection, runtime reload/fallback, real rollback A→B→A |
-| G4 Resource safety | **PASS (measured)** | 2C/4GB full-all sync 8:32, 2.16 GiB peak, live web stayed `ok`; auto cap 1 source/run |
+| G4 Resource safety | **PASS with residual risk** | 2C/4GB full-all sync 8:32, 2.16 GiB peak; production one-source sync 1.956 GiB, no OOM; one 8 s web stall during reload. Auto cap 1 source/run. |
 | G5 Backup & recovery | **PASS (same-host)** | consistent backup + isolated restore drill; off-host remains a stated limitation |
 | G6 Operational health | **PASS** | `/api/livez`, `/api/readyz`, layered `/api/health`; adapter exit codes; fallback visible |
-| G7 Continuous operation | **BLOCKED** | timer not installed/enabled; no production automatic trigger. Cannot claim PASS. |
-| G8 Product acceptance | **PARTIAL** | isolated real Web/API/Data Status accepted; production URL not switched; requires approval |
+| G7 Continuous operation | **PASS (first trigger)** | timer installed/enabled; automatic `run` at 11:20:22, exit 0, `NO_CHANGE`; next 12:24. No long soak yet. |
+| G8 Product acceptance | **PASS (first run)** | production Web/API/Data Status accepted; all pages/endpoints 200. Residual sync-time latency risk. |
 
 ## Scenario results
 
@@ -69,7 +71,9 @@ claimed.
 ### 9. Memory pressure
 
 Full all-source manual sync under `MemoryMax=2400M`: 8:32, peak 2.16 GiB, no OOM, live web
-`ok`. One-source full reconcile: 3:11, 1.76 GiB. Automatic cap is 1 product source/run.
+`ok`. One-source full reconcile: 3:11, 1.76 GiB. Production one-source recall sync with the
+new web process: 3:58, 1.956 GiB peak, no OOM; one `/api/health` request timed out for 8 s
+during swap/reload, then recovered. Automatic cap is 1 product source/run.
 
 ### 10. Backup restore
 
@@ -87,9 +91,9 @@ destination is refused (test). Evidence: `evidence/backup.json`, `backup.time.tx
 
 ## Not tested / not claimed
 
-* No production timer trigger.
-* No production data path switch.
-* No off-host disaster recovery.
 * No long-duration soak (days/weeks).
+* One transient 8 s health timeout occurred during the concurrent production recall sync;
+  the service recovered without restart. See the deployment report.
+* No off-host disaster recovery.
 * No guarantee that every FDA correction arrives before the official version; the rolling
   full sweep is a mitigation, not a proof of completeness.

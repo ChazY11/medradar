@@ -11,10 +11,15 @@ isolated under `/tmp/data002`; no production data or unit was changed.
 | Bootstrap from the live package snapshot | 0 | 0 | 47.2 s | 1,466,380 KiB (1.40 GiB) | success |
 | **All-source scoped reconciliation** (510(k) + PMA + recall) under `MemoryMax=2400M` | 241 | 1,236,019,586 | **8:32.57** | **2,261,840 KiB (2.16 GiB)** | success, 0 added/updated |
 | One-source full-content reconciliation (PMA) | 241 snapshot-audit total | 1,236,019,586 audit total | 3:11.29 | 1,843,172 KiB (1.76 GiB) | success, 38,232 records unchanged |
+| **Production recall sync with new web** | 79 | 860 MB | 3:58.06 | **1,956,632 KiB (1.87 GiB)** | success, 0 changes; web RSS 1.65–1.87 GiB; one 8 s health stall, recovered |
 
 The all-source run is the worst-case count in this release. It completed **inside the 2.4 GiB
 cgroup cap** with 0 swap during the run. The live web service remained `ok` on the old snapshot;
 after the run the host had ~2.28 GiB available and ~122 MiB swap used.
+
+The production recall sync ran while the new web process served the pipeline snapshot. Peak
+sync RSS 1.956 GiB plus web 1.65–1.87 GiB caused ~557 MiB swap and one 8 s `/api/health` stall;
+the service recovered without restart, with no OOM, 5xx, data loss or failed publication.
 
 ## Decision
 
