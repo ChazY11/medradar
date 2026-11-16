@@ -134,7 +134,7 @@ Raw evidence for every table is in `docs/data/data_003/evidence/`.
 ## 7. Repository state
 
 * Branch: `feat/data-003-runtime-reliability`, stacked on `edbde0a` (DATA-002 tip / PR #51).
-* Code commit: `b1b841bdc2381b910cdbd53efa75c8aa3a791ddd` (docs follow in the same branch head).
+* Code commit: `b1b841bdc2381b910cdbd53efa75c8aa3a791ddd`; Correction-1 code commit: `7415382df8d449194557a440cf9a869da3b25c59` (docs follow in the same branch head).
 * Draft PR: **#52** (created, not merged).
 * Production: unchanged (`bb1ef34`, snapshot `…032632Z-18ce4d0cbbe4`, timers untouched).
 * The branch is self-contained: code, tests, tools, docs and evidence.

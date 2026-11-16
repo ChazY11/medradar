@@ -11,7 +11,7 @@ hard-coded snapshot, the loopback assumption and the index/activation consistenc
 | Service | `medradar-web.service`, `WorkingDirectory=/srv/medradar`, `MEDRADAR_DATA_DIR=/srv/medradar/data/fda`, listens **127.0.0.1:8787 only** |
 | Public exposure | **none for MedRadar**: `ss -ltnp` shows 8787 on loopback; no reverse-proxy config references it. SSH is the only public listener changed by nobody here. Do **not** assume a proxy. |
 | Active snapshot | read at execution time into `$SNAPSHOT_ID` (see §2) — not hard-coded |
-| Proposed code | branch `feat/data-003-runtime-reliability`, Correction-1 commit recorded in PR #52 |
+| Proposed code | branch `feat/data-003-runtime-reliability`, Correction-1 commit `7415382df8d449194557a440cf9a869da3b25c59` (PR #52; later docs-only commits do not change code) |
 | Rollback target | **`bb1ef34df3c15e2b1339432abce899eebea5e1f6`** (the actual deployed SHA) |
 | Data | unchanged; no migration; snapshots and ledger untouched |
 
@@ -66,8 +66,8 @@ curl -s http://127.0.0.1:8787/api/data-status > /tmp/data003-pre-data-status.jso
 
 # 2. deploy the fixed SHA (editable install: no pip step; dependencies unchanged)
 sudo -u medradar git -C /srv/medradar/app fetch origin feat/data-003-runtime-reliability
-sudo -u medradar git -C /srv/medradar/app checkout <CORRECTION1_SHA>
-sudo -u medradar git -C /srv/medradar/app rev-parse HEAD            # equals <CORRECTION1_SHA>
+sudo -u medradar git -C /srv/medradar/app checkout 7415382df8d449194557a440cf9a869da3b25c59
+sudo -u medradar git -C /srv/medradar/app rev-parse HEAD            # equals 7415382df8d449194557a440cf9a869da3b25c59
 sudo -u medradar /srv/medradar/.venv/bin/python -c "import medradar.product.api as a; print(a.__file__)"
 # expect /srv/medradar/app/medradar/product/api.py
 
@@ -182,7 +182,7 @@ on its own. `/srv/medradar/data/fda` and the backups are not touched.
 
 ## 7. Approval
 
-* [ ] Deploy commit `<CORRECTION1_SHA>` on PR #52 and restart `medradar-web` (loopback only).
+* [ ] Deploy commit `7415382df8d449194557a440cf9a869da3b25c59` on PR #52 and restart `medradar-web` (loopback only).
 * [ ] Add the guard variables to `/etc/medradar/pipeline.env`.
 * [ ] Update `/srv/medradar/var/DEPLOYED_SHA`.
 * [ ] *(separate)* install the health adapter.
