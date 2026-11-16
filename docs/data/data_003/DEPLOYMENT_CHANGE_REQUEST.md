@@ -40,6 +40,8 @@ SNAPSHOT_ID=$(curl -s http://127.0.0.1:8787/api/readyz \
 PREVIOUS_ID=$(curl -s http://127.0.0.1:8787/api/readyz \
   | python3 -c 'import json,sys; print((json.load(sys.stdin).get("snapshot") or {}).get("previous_snapshot_id",""))')
 echo "active=$SNAPSHOT_ID previous=$PREVIOUS_ID"
+# Every pipeline CLI call uses the venv interpreter, an explicit --root and the service account.
+PIPELINE="sudo -u medradar /srv/medradar/.venv/bin/python -m medradar.data_pipeline --root /srv/medradar/data/fda"
 sudo ss -ltnp | grep -E '8787|8080|:22'                          # confirm 8787 is loopback-only
 systemctl status medradar-web --no-pager
 sudo -u medradar git -C /srv/medradar/app ls-remote origin feat/data-003-runtime-reliability
@@ -49,8 +51,11 @@ free -m; cat /proc/pressure/memory; df -h /
 
 # 1. a fresh backup and an isolated restore verification (never into production)
 sudo systemctl start medradar-data-backup.service
-# then: python -m medradar.data_pipeline restore --archive <newest> --destination /tmp/d3-restore-check
-# verify validation=true, then delete /tmp/d3-restore-check
+NEWEST=$(sudo ls -1dt /srv/medradar/var/backup/data/data-backup-* | head -1)
+echo "newest backup: $NEWEST"
+$PIPELINE restore --archive "$NEWEST" --destination /tmp/d3-restore-check --json
+# require validation=true / integrity ok, then remove the scratch restore:
+sudo rm -rf /tmp/d3-restore-check
 ```
 
 Proceed only if: git is clean at `bb1ef34…`, `$SNAPSHOT_ID` is non-empty, `/srv/medradar` has
@@ -103,24 +108,28 @@ curl -s http://127.0.0.1:8787/api/health | python3 -m json.tool | head -40
 # 2. activation is complete: data AND index published together (Correction-1)
 SNAPSHOT_NOW=$(curl -s http://127.0.0.1:8787/api/readyz \
   | python3 -c 'import json,sys; print((json.load(sys.stdin).get("snapshot") or {}).get("id",""))')
-curl -s http://127.0.0.1:8787/api/health | python3 - <<'PY'
-import json, sys
-h = json.load(sys.stdin)
+curl -s http://127.0.0.1:8787/api/health -o /tmp/d3-health.json
+# NOTE: parse a file, never `curl ... | python3 - <<PY` - the heredoc replaces stdin and the
+# JSON body would be silently discarded (Correction-1 acceptance fix).
+python3 - <<'PY'
+import json
+h = json.load(open("/tmp/d3-health.json", encoding="utf-8"))
 a = h.get("activation") or {}
 print("status", h["status"], "snapshot", (h.get("snapshot") or {}).get("id"))
-print("activation", a.get("state"), "index_ready", a.get("index_ready"),
-      "build_ms", a.get("last_activated_snapshot"))
+print("activation", a.get("state"), "index_ready", a.get("index_ready"), "phase", a.get("phase"))
 print("checks", {k: v.get("state") for k, v in h["checks"].items()})
 PY
-curl -s http://127.0.0.1:8787/api/devices/quality \
-  | python3 -c 'import json,sys; q=json.load(sys.stdin); print("quality snapshot", (q.get("snapshot") or {}).get("id"), "index_build_ms", q.get("index_build_ms"))'
+curl -s http://127.0.0.1:8787/api/devices/quality -o /tmp/d3-quality.json
+python3 - <<'PY'
+import json
+q = json.load(open("/tmp/d3-quality.json", encoding="utf-8"))
+print("quality snapshot", (q.get("snapshot") or {}).get("id"), "index_build_ms", q.get("index_build_ms"))
+PY
 # the two snapshot ids must be identical; index_build_ms must be non-null
 
-# 3. memory after restart and after one forced activation of the previous real snapshot
-#    (only if $PREVIOUS_ID is non-empty and the file exists)
-python3 -m medradar.data_pipeline rollback "$PREVIOUS_ID" --json
-# wait for /api/health activation.state == idle, then switch back to "$SNAPSHOT_ID":
-python3 -m medradar.data_pipeline rollback "$SNAPSHOT_NOW" --json
+# 3. snapshot-activation acceptance runs in ISOLATION on a copy of the data root under /tmp;
+#    the production active pointer is NOT changed by the deployment.
+#    Exact command and result: docs/data/data_003/PRODUCTION_ACCEPTANCE.md
 
 # 4. latency with the service idle
 for p in /api/health /api/data-status /api/organizations "/api/events?page_size=25"; do
