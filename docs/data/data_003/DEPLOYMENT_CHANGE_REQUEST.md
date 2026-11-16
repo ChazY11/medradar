@@ -5,7 +5,7 @@
 | Item | Value |
 |---|---|
 | Current production code | `bb1ef34df3c15e2b1339432abce899eebea5e1f6` (deployed under DATA-002; git tip of that branch `edbde0a`) |
-| Proposed code | branch `feat/data-003-runtime-reliability`, commit recorded in Draft PR #52 |
+| Proposed code | branch `feat/data-003-runtime-reliability`, code commit `b1b841bdc2381b910cdbd53efa75c8aa3a791ddd` (Draft PR #52) |
 | Active snapshot at request time | `fda-snapshot-20261116T032632Z-18ce4d0cbbe4` |
 | Host | Tencent Lighthouse, Ubuntu 24.04, 2 vCPU, 3.72 GiB RAM, 1.99 GiB swap |
 | Rollback code | `edbde0a` / the archived `app-1bdb1c3.tar.gz` already on the host |
@@ -52,7 +52,7 @@ curl -s http://127.0.0.1:8787/api/data-status > /tmp/data003-pre-data-status.jso
 
 # 2. deploy the fixed SHA (same mechanics as DATA-002; no PR merge)
 sudo -u medradar git -C /srv/medradar fetch origin feat/data-003-runtime-reliability
-sudo -u medradar git -C /srv/medradar checkout <DATA-003_SHA>
+sudo -u medradar git -C /srv/medradar checkout b1b841bdc2381b910cdbd53efa75c8aa3a791ddd   # record the exact SHA in the deployment log
 sudo -u medradar /srv/medradar/.venv/bin/pip install -e /srv/medradar --no-deps   # if packaging changed
 
 # 3. add guard settings (defaults shown; no behaviour change vs code defaults)
@@ -147,7 +147,7 @@ The snapshot schema and the pipeline DB schema are unchanged, so no data rollbac
 
 ## 8. Approval
 
-* [ ] User approves deploying commit `<DATA-003_SHA>` and restarting `medradar-web`.
+* [ ] User approves deploying commit `b1b841bdc2381b910cdbd53efa75c8aa3a791ddd` (PR #52 head) and restarting `medradar-web`.
 * [ ] User approves adding the guard variables to `/etc/medradar/pipeline.env`.
 * [ ] User approves (separately) installing the health adapter.
 * [ ] User approves (separately) enabling backup pruning after a verified restore.
