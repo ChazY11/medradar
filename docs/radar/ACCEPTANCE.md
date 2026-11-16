@@ -84,8 +84,8 @@ Qwen3-0.6B, CPU, float32, 4 threads, in its own interpreter:
 | Topic precision / recall / F1 | **0.18 / 0.18 / 0.18** |
 | Organisation accuracy | **0.73** |
 | Evidence fidelity (accepted claims with a verbatim quote) | **1.0** |
-| Throughput | **≈8.5 tokens/s**, ≈18 s per record |
-| Peak RSS | **3,177 MB** |
+| Throughput | **9.6 tokens/s**, ≈18 s per record |
+| Peak RSS | **3,169 MB** |
 | Model load | ≈7 s, once per batch |
 
 **This is a negative result, reported as such**: the 0.6B model is not usable as a topic
@@ -113,10 +113,10 @@ own process, with a probe polling the read-only API throughout:
 
 | Measurement | Value |
 | --- | --- |
-| Discovery, no AI | 0.17 s |
-| Discovery, during the model batch | 0.19 s (1.1×) |
-| API requests served during the batch | 3, median **29.5 ms**, max 52.1 ms |
-| Worker peak RSS | measured by the worker (≈3.2 GB, see test E) |
+| Discovery, no AI | 0.23 s |
+| Discovery, during the model batch | 0.20 s (0.87×, i.e. no slowdown) |
+| API requests served during the batch | 3, median **23.3 ms** |
+| Worker peak RSS | 3,095 MB, measured by the worker process itself |
 | Host memory available during the batch | 11.5 GB (floor 900 MB) |
 
 The worker is a one-shot low-priority process: it exits when the batch ends, so its memory goes

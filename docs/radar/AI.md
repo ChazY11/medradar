@@ -48,8 +48,8 @@ From the acceptance run (`evidence/acceptance_report.md`, test E), 11 real label
 | Topic F1 | **0.18** | *not usable as a classifier* |
 | Organisation accuracy | **0.73** | better, but the alias table alone does better |
 | Evidence fidelity | **1.0** | every accepted claim's quote was verbatim; the gate holds |
-| Throughput | ~10 tokens/s | ≈15 s per record on 4 threads |
-| Peak RSS | ~3.2 GB | float32 weights + PyTorch |
+| Throughput | ~9.6 tokens/s | ≈18 s per record on 4 threads |
+| Peak RSS | ~3.17 GB | float32 weights + PyTorch |
 | Model load | ~7 s | paid once per batch, returned to the OS on exit |
 
 **The honest conclusion is negative.** For *this* taxonomy and *this* corpus, the rule layer
