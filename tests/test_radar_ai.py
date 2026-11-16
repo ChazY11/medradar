@@ -11,7 +11,12 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
-import pytest
+import unittest
+
+try:  # the repository's `medradar selftest` runs under unittest without pytest installed
+    import pytest
+except ModuleNotFoundError:  # pragma: no cover
+    raise unittest.SkipTest("pytest is not installed; run these tests with pytest")
 
 from medradar.radar.ai.evaluate import run_evaluation
 from medradar.radar.ai.prompts import PROMPT_VERSION, build_prompt, extract_json

@@ -11,7 +11,13 @@ import urllib.error
 from datetime import date, datetime, timezone
 from pathlib import Path
 
-import pytest
+
+import unittest
+
+try:  # the repository's `medradar selftest` runs under unittest without pytest installed
+    import pytest
+except ModuleNotFoundError:  # pragma: no cover
+    raise unittest.SkipTest("pytest is not installed; run these tests with pytest")
 
 from medradar.radar.http import (
     BudgetExceeded,

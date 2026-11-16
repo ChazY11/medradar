@@ -11,7 +11,13 @@ from __future__ import annotations
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
-import pytest
+
+import unittest
+
+try:  # the repository's `medradar selftest` runs under unittest without pytest installed
+    import pytest
+except ModuleNotFoundError:  # pragma: no cover
+    raise unittest.SkipTest("pytest is not installed; run these tests with pytest")
 
 from medradar.radar.graph import (
     EDGE_CANDIDATE_PRODUCT,

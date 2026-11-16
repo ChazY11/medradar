@@ -2,10 +2,18 @@
 
 from __future__ import annotations
 
+import unittest
 from pathlib import Path
 
-import pytest
-from fastapi.testclient import TestClient
+try:  # the repository's `medradar selftest` runs under unittest without pytest installed
+    import pytest
+except ModuleNotFoundError:  # pragma: no cover
+    raise unittest.SkipTest("pytest is not installed; run these tests with pytest")
+
+try:  # an optional extra: the offline selftest environment has no fastapi
+    from fastapi.testclient import TestClient
+except ModuleNotFoundError:  # pragma: no cover
+    raise unittest.SkipTest("fastapi is not installed (optional 'product' extra)")
 
 from medradar.product.api import create_app
 from medradar.radar.graph import TechnologyGraph

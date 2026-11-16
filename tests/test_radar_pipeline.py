@@ -9,7 +9,13 @@ from __future__ import annotations
 
 from pathlib import Path
 
-import pytest
+
+import unittest
+
+try:  # the repository's `medradar selftest` runs under unittest without pytest installed
+    import pytest
+except ModuleNotFoundError:  # pragma: no cover
+    raise unittest.SkipTest("pytest is not installed; run these tests with pytest")
 
 from medradar.radar.adapter import CollectContext, run_source
 from medradar.radar.classify import ROLE_AFFILIATION, RuleMapper

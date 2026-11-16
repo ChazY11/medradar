@@ -9,7 +9,12 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
-import pytest
+import unittest
+
+try:  # the repository's `medradar selftest` runs under unittest without pytest installed
+    import pytest
+except ModuleNotFoundError:  # pragma: no cover
+    raise unittest.SkipTest("pytest is not installed; run these tests with pytest")
 
 from medradar.radar import adapters as adapters_module
 from medradar.radar.adapters.fixture import FixtureAdapter, write_pages
