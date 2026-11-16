@@ -20,7 +20,7 @@ from collections import OrderedDict
 from dataclasses import dataclass, field
 from datetime import date, datetime, timezone
 from pathlib import Path
-from typing import Any, Iterable, Iterator, Sequence
+from typing import Any, Callable, Iterable, Iterator, Sequence
 
 from .data_dir import resolve_snapshot_dir
 from .attribution import ownership as ownership_module
@@ -161,7 +161,7 @@ class Category:
         return {"id": self.id, "label": self.label}
 
 
-@dataclass
+@dataclass(slots=True)
 class Event:
     event_id: str
     official_id: str
@@ -393,7 +393,9 @@ class Dataset:
     review_db: str | None = None
     _device_index: Any = None
     device_index_build_ms: float | None = None
+    _device_lock: threading.Lock = field(default_factory=threading.Lock)
     _org_events: dict[str, list[Event]] = field(default_factory=dict)
+    _attributed_events: list[Event] = field(default_factory=list)
     _lock: threading.Lock = field(default_factory=threading.Lock)
 
     # ------------------------------------------------------------------ meta
@@ -558,6 +560,10 @@ class Dataset:
             for key in keys:
                 merged.extend(self._org_events.get(key, []))
             pools = merged
+        elif self._attributed_events:
+            # Precomputed once at load (DATA-003): rebuilding this list on every request was a
+            # measurable share of /api/events latency and of the GIL pressure during activation.
+            pools = self._attributed_events
         else:
             pools = [event for event in self.events if event.organization_key]
         type_set = {item for item in event_types or [] if item}
@@ -986,15 +992,25 @@ class Dataset:
         immutable snapshot and the validation step proves that the rebuild works. A future
         cache must be a versioned, safe format keyed by snapshot id, builder version and
         schema version; see docs/data/data_001/KNOWN_LIMITATIONS.md.
-        """
-        if self._device_index is not None:
-            return self._device_index
-        from .device import build_index
 
-        started = datetime.now(timezone.utc)
-        self._device_index = build_index(self)
-        self.device_index_build_ms = (datetime.now(timezone.utc) - started).total_seconds() * 1000.0
-        return self._device_index
+        DATA-003: the build is guarded by a per-dataset lock. Activation warms the index in a
+        background thread at the same time that the first Device Explorer request may arrive;
+        without the lock both would build the whole index and hold two copies at once.
+        """
+        current = self._device_index
+        if current is not None:
+            return current
+        with self._device_lock:
+            current = self._device_index
+            if current is not None:
+                return current
+            from .device import build_index
+
+            started = datetime.now(timezone.utc)
+            built = build_index(self)
+            self.device_index_build_ms = (datetime.now(timezone.utc) - started).total_seconds() * 1000.0
+            self._device_index = built
+            return built
 
     def metrics(self) -> dict[str, Any]:
         from .metrics import attribution_metrics
@@ -1043,18 +1059,74 @@ def _empty_org_stats(key: str) -> OrgStats:
 
 # --------------------------------------------------------------------------- loading
 def _read_jsonl_gz(path: Path) -> list[dict[str, Any]]:
+    return list(_iter_jsonl_gz(path))
+
+
+def _iter_jsonl_gz(path: Path) -> Iterator[dict[str, Any]]:
+    """Stream JSONL records instead of materialising the whole file.
+
+    DATA-003: the event file is ~181 MB of JSON on the production snapshot. Returning a list
+    kept every intermediate row dict alive while the Event objects were built, which added
+    roughly 230 MB to the load-time peak. The caller now consumes one row at a time, so a row
+    (and its duplicate strings) becomes garbage as soon as its Event exists.
+    """
     if not path.exists():
-        return []
-    rows: list[dict[str, Any]] = []
+        return
     with gzip.open(path, "rt", encoding="utf-8") as handle:
         for line in handle:
             line = line.strip()
             if line:
-                rows.append(json.loads(line))
-    return rows
+                yield json.loads(line)
 
 
-def load_dataset(data_dir: Path | str | None = None, review_db: Path | str | None = None) -> Dataset:
+class _StringPool:
+    """Canonicalise repeated strings while a snapshot is loaded.
+
+    The openFDA snapshot repeats the same applicant, device name, product code, status flags and
+    raw-payload keys tens of thousands of times. ``json`` creates a new ``str`` object for every
+    occurrence, so a 91k-record snapshot holds millions of identical strings. Sharing one object
+    per distinct value is value-preserving (``==`` and JSON output are unchanged) and removed
+    ~100 MB of duplicate allocations on the production snapshot.
+    """
+
+    __slots__ = ("_pool", "shared_hits")
+
+    def __init__(self) -> None:
+        self._pool: dict[str, str] = {}
+        self.shared_hits = 0
+
+    def __call__(self, value: Any) -> Any:
+        if type(value) is str:
+            existing = self._pool.get(value)
+            if existing is not None:
+                self.shared_hits += 1
+                return existing
+            self._pool[value] = value
+            return value
+        if type(value) is list:
+            return [self(value) for value in value]
+        return value
+
+
+def load_dataset(
+    data_dir: Path | str | None = None,
+    review_db: Path | str | None = None,
+    progress: Callable[[str, int, int], None] | None = None,
+) -> Dataset:
+    """Load one immutable snapshot.
+
+    ``progress(phase, done, total)`` is an optional, side-effect-free observation hook used by
+    the web's activation status (and by the DATA-003 benchmark). It is called at coarse
+    milestones only; it never changes what is loaded.
+    """
+
+    def report(phase: str, done: int = 0, total: int = 0) -> None:
+        if progress is not None:
+            try:
+                progress(phase, done, total)
+            except Exception:
+                pass
+
     base = resolve_snapshot_dir(Path(data_dir) if data_dir else DEFAULT_DATA_DIR)
     manifest_path = base / "snapshot.json"
     if not manifest_path.exists():
@@ -1062,7 +1134,6 @@ def load_dataset(data_dir: Path | str | None = None, review_db: Path | str | Non
             "no product snapshot at " + str(base) + "; run: python scripts/product_collect.py"
         )
     manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
-    raw_events = _read_jsonl_gz(base / "events.jsonl.gz")
     applicants = _read_jsonl_gz(base / "applicants.jsonl.gz")
     classifications = _read_jsonl_gz(base / "classifications.jsonl.gz")
 
@@ -1093,7 +1164,9 @@ def load_dataset(data_dir: Path | str | None = None, review_db: Path | str | Non
     category_list = [Category(id=cat_id, label=label) for cat_id, label in categories]
 
     events: list[Event] = []
-    for row in raw_events:
+    share = _StringPool()
+    report("events")
+    for row in _iter_jsonl_gz(base / "events.jsonl.gz"):
         applicant = str(row.get("applicant_name") or "")
         decision, rejection = registry.decide(applicant)
         verification: str | None = UNATTRIBUTED
@@ -1138,51 +1211,64 @@ def load_dataset(data_dir: Path | str | None = None, review_db: Path | str | Non
         category = category_by_code.get(code) if code else None
         published = row.get("published_at")
         first_observed = str(row.get("first_observed_at") or collected_at)
+        # Rebuild the evidence payload with canonical strings. Keys repeat on every record and
+        # the JSON decoder does not share them, so this alone returns ~97 MB on the production
+        # snapshot. Values keep their exact text; only object identity changes.
+        raw_row = row.get("raw")
+        if type(raw_row) is dict:
+            raw = {share(key): share(value) for key, value in raw_row.items()}
+        else:
+            raw = {}
         events.append(
             Event(
                 event_id=row["event_id"],
                 official_id=str(row.get("official_id") or ""),
-                source_id=row["source_id"],
-                event_type=row["event_type"],
-                event_date=row.get("event_date"),
-                published_at=published,
-                published_at_status=row.get("published_at_status") or ("from_source" if published else "not_published_by_source"),
-                first_observed_at=first_observed,
-                available_at=published or first_observed,
-                record_updated_at=row.get("source_updated_at") or openfda_updated,
-                time_quality=row.get("time_quality") or "unknown",
-                organization_key=org_key,
-                organization_name=org_name,
-                applicant_name=applicant,
-                attribution_status=status,
-                attribution_basis=basis,
-                attribution_review=review,
-                product_code=code,
+                source_id=share(row["source_id"]),
+                event_type=share(row["event_type"]),
+                event_date=share(row.get("event_date")),
+                published_at=share(published),
+                published_at_status=share(row.get("published_at_status") or ("from_source" if published else "not_published_by_source")),
+                first_observed_at=share(first_observed),
+                available_at=share(published or first_observed),
+                record_updated_at=share(row.get("source_updated_at") or openfda_updated),
+                time_quality=share(row.get("time_quality") or "unknown"),
+                organization_key=share(org_key),
+                organization_name=share(org_name),
+                applicant_name=share(applicant),
+                attribution_status=share(status),
+                attribution_basis=share(basis),
+                attribution_review=share(review),
+                product_code=share(code),
                 category=category,
-                device_class=(row.get("raw") or {}).get("device_class"),
-                device_name=row.get("device_name"),
+                device_class=share(raw.get("device_class")),
+                device_name=share(row.get("device_name")),
                 title=row.get("title") or row.get("official_id") or row["event_id"],
-                summary=row.get("summary"),
-                official_url=row.get("official_url") or "",
-                raw=row.get("raw") or {},
-                attribution_verification=verification or UNATTRIBUTED,
+                summary=share(row.get("summary")),
+                official_url=share(row.get("official_url") or ""),
+                raw=raw,
+                attribution_verification=share(verification or UNATTRIBUTED),
                 attribution_verified=verified,
-                attribution_rule=rule,
+                attribution_rule=share(rule),
                 attribution_evidence_count=evidence_count,
-                attribution_reviewer=reviewer,
-                attribution_reviewer_kind=reviewer_kind,
-                attribution_provenance=provenance,
+                attribution_reviewer=share(reviewer),
+                attribution_reviewer_kind=share(reviewer_kind),
+                attribution_provenance=share(provenance),
                 attribution_is_predecessor=predecessor,
-                historical_owner_state=owner.state if owner else "unknown",
-                historical_owner_reason=owner.reason if owner else "no_relation",
-                historical_owner_display=owner.display if owner else None,
-                historical_owner_organization_key=owner.organization_key if owner else None,
-                historical_owner_relation_id=owner.relation_id if owner else None,
-                historical_owner_effective_from=owner.effective_from if owner else None,
-                record_state=str(row.get("record_state") or "ACTIVE"),
+                historical_owner_state=share(owner.state if owner else "unknown"),
+                historical_owner_reason=share(owner.reason if owner else "no_relation"),
+                historical_owner_display=share(owner.display if owner else None),
+                historical_owner_organization_key=share(owner.organization_key if owner else None),
+                historical_owner_relation_id=share(owner.relation_id if owner else None),
+                historical_owner_effective_from=share(owner.effective_from if owner else None),
+                record_state=share(str(row.get("record_state") or "ACTIVE")),
                 missing_count=int(row.get("missing_count") or 0),
             )
         )
+        if len(events) % 10000 == 0:
+            report("events", len(events), 0)
+
+    request_count = len(events)
+    report("events_done", request_count, request_count)
 
     # device class comes from the FDA classification dictionary (joined on product code)
     class_by_code = {str(row.get("product_code") or "").upper(): row.get("device_class") for row in classifications}
@@ -1194,6 +1280,7 @@ def load_dataset(data_dir: Path | str | None = None, review_db: Path | str | Non
 
     events.sort(key=lambda event: event.event_id)
     events_by_id = {event.event_id: event for event in events}
+    report("events_sorted", request_count, request_count)
 
     org_events: dict[str, list[Event]] = {}
     for event in events:
@@ -1216,6 +1303,7 @@ def load_dataset(data_dir: Path | str | None = None, review_db: Path | str | Non
     )
     dataset._org_events = org_events
     dataset.applicant_by_name = applicant_by_name
+    report("organization_stats")
 
     attributed = [event for event in events if event.organization_key]
     dataset.global_counts = dataset.counts(attributed)
@@ -1292,4 +1380,8 @@ def load_dataset(data_dir: Path | str | None = None, review_db: Path | str | Non
     dataset.warnings = registry.warnings[:]
     dataset.review_overlay_applied = int(getattr(registry, "overlay_applied", 0))
     dataset.review_db = str(resolved_review_db) if resolved_review_db is not None else None
+    # DATA-003: the attributed list was already materialised for the global counts. Keep it so a
+    # request does not rebuild the same 91k-element list on every /api/events call.
+    dataset._attributed_events = attributed
+    report("done", request_count, request_count)
     return dataset

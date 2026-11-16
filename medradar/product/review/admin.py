@@ -115,7 +115,10 @@ def _register_review_routes(app: FastAPI, store: ReviewStore, expected_token: st
             raise HTTPExceptionCompat(503, "dataset_unavailable", str(error))
 
     def _invalidate() -> None:
-        holder.invalidate()
+        # The review service runs on loopback for one operator; the next read must reflect the
+        # decision, so this is the one caller that waits for the dataset swap. The public app
+        # never calls this path and keeps serving the previous dataset during activation.
+        holder.invalidate(wait=True)
 
     # ---------------------------------------------------------------- read routes
     @app.get("/api/review/ping")

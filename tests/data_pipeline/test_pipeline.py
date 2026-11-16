@@ -310,8 +310,9 @@ def test_api_reports_configuration_and_change_feed(pipeline_env) -> None:
     assert health.status_code == 200
     checks = health.json()["checks"]
     assert health.json()["status"] in ("ok", "unknown")
-    assert set(health.json()["checks"]) == {"liveness", "readiness", "data", "sync", "freshness"}
+    assert set(health.json()["checks"]) == {"liveness", "readiness", "data", "activation", "sync", "freshness"}
     assert health.json()["checks"]["data"]["state"] == "available"
+    assert health.json()["checks"]["activation"]["state"] == "ok"
 
 
 def test_api_is_explicit_when_pipeline_is_not_configured(tmp_path: Path) -> None:
@@ -399,14 +400,24 @@ def test_runtime_holder_reloads_on_active_pointer_switch(pipeline_env) -> None:
     env = pipeline_env
     baseline = _active_id(env)
     holder = DatasetHolder(env.settings.root)
+    holder.guard_enabled = False
     first = holder.get().snapshot_id
     assert first == baseline
     env.pipeline.sync(sources=["openfda_510k"])
     newer = _active_id(env)
     assert newer != baseline
+    # DATA-003: the request that notices the change keeps serving the validated old dataset and
+    # starts a background activation. It does not block on the load.
+    holder.poll_once()
+    assert holder.get().snapshot_id == baseline
+    assert holder.wait_for_reload(60)
     assert holder.get().snapshot_id == newer
     env.pipeline.rollback(baseline)
+    holder.poll_once()
+    assert holder.get().snapshot_id == newer
+    assert holder.wait_for_reload(60)
     assert holder.get().snapshot_id == baseline
+    assert holder.reload_status()["state"] == "idle"
 
 def test_runtime_falls_back_to_previous_dataset_when_new_pointer_is_unusable(pipeline_env) -> None:
     from medradar.product.api import DatasetHolder
@@ -414,6 +425,7 @@ def test_runtime_falls_back_to_previous_dataset_when_new_pointer_is_unusable(pip
     env = pipeline_env
     baseline = _active_id(env)
     holder = DatasetHolder(env.settings.root)
+    holder.guard_enabled = False
     assert holder.get().snapshot_id == baseline
     env.pipeline.sync(sources=["openfda_510k"])
     active = active_snapshot(env.settings)
@@ -422,8 +434,15 @@ def test_runtime_falls_back_to_previous_dataset_when_new_pointer_is_unusable(pip
     # Break the new active snapshot after it was published, then force the holder to
     # notice the new pointer. It must keep serving the validated previous dataset.
     (active[0] / "snapshot.json").unlink()
+    holder.poll_once()
     loaded = holder.get()
     assert loaded.snapshot_id == baseline
+    assert holder.wait_for_reload(60)
+    # The failed activation is visible; the old dataset is still the one being served.
+    status = holder.reload_status()
+    assert status["state"] == "failed"
+    assert status["last_error"]
+    assert holder.get().snapshot_id == baseline
     assert holder.degraded_error
     state, message = holder.status()
     assert state == "degraded"
@@ -563,7 +582,9 @@ def test_collection_failure_in_one_source_does_not_block_another(multi_source_en
 def test_health_distinguishes_liveness_readiness_and_fallback(pipeline_env) -> None:
     from medradar.data_pipeline.publisher import active_snapshot as current_active
     env = pipeline_env
-    client = TestClient(create_app(data_dir=env.settings.root, pipeline_db=env.settings.state_db))
+    app = create_app(data_dir=env.settings.root, pipeline_db=env.settings.state_db)
+    app.state.holder.guard_enabled = False
+    client = TestClient(app)
     before = client.get("/api/health")
     assert before.status_code == 200
     old_snapshot = before.json()["snapshot"]["id"]
@@ -571,12 +592,18 @@ def test_health_distinguishes_liveness_readiness_and_fallback(pipeline_env) -> N
     active = current_active(env.settings)
     assert active is not None
     (active[0] / "snapshot.json").unlink()
+    app.state.holder.poll_once()
+    health = client.get("/api/health")
+    assert health.status_code == 200
+    # The failed activation runs in the background (DATA-003); wait for it before asserting.
+    assert app.state.holder.wait_for_reload(60)
     health = client.get("/api/health")
     assert health.status_code == 200
     body = health.json()
     assert body["status"] == "degraded"
     assert body["checks"]["readiness"]["state"] == "ok"
     assert body["checks"]["data"]["using_fallback"] is True
+    assert body["checks"]["activation"]["state"] == "degraded"
     assert body["snapshot"]["id"] == old_snapshot
     # Liveness never depends on the data file; readiness still serves the old dataset.
     assert client.get("/api/livez").status_code == 200

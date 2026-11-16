@@ -162,6 +162,24 @@ def _sync_health(
     last_check = max((row.get("last_checked_at") or "" for row in sources), default="")
     last_success = max((row.get("last_success_sync_at") or "" for row in sources), default="")
     latest_status = str((latest_run or {}).get("status") or "UNKNOWN")
+    consecutive_deferred = 0
+    for row in runs:
+        if str(row.get("status") or "") == "DEFERRED":
+            consecutive_deferred += 1
+        else:
+            break
+    deferral = None
+    if latest_status == "DEFERRED" and latest_run:
+        metrics = latest_run.get("metrics") or {}
+        deferral = {
+            "reason": str(metrics.get("reason") or "DEFERRED_RESOURCE_PRESSURE"),
+            "reasons": list(metrics.get("reasons") or []),
+            "phase": metrics.get("phase"),
+            "consecutive": consecutive_deferred,
+            "escalated": consecutive_deferred >= 3,
+            "guard": metrics.get("guard"),
+            "retry": metrics.get("retry"),
+        }
     if failed or latest_status in ("FAILED", "BLOCKED", "PARTIAL"):
         state = "degraded"
     elif latest_status == "RUNNING" and latest_run:
@@ -171,6 +189,10 @@ def _sync_health(
             state = "stale" if (now - started_at).total_seconds() > 7200 else "running"
         except (TypeError, ValueError):
             state = "running"
+    elif latest_status == "DEFERRED":
+        # The host guard refused to start a reconciliation. Nothing was collected and no source
+        # state advanced, so this is a visible wait, not a failure and not a success.
+        state = "deferred"
     elif pending:
         # An available official update is not "stale" until the scheduled attempt is overdue.
         state = "update_pending"
@@ -188,6 +210,7 @@ def _sync_health(
         "pending_sources": pending,
         "unknown_sources": unknown,
         "latest_incident": incidents[0] if incidents else None,
+        "deferral": deferral,
         "note": "A web process being alive is not a successful synchronization; this is the sync-specific state.",
     }
 
@@ -303,12 +326,15 @@ def data_status(
     update_available = [row for row in sources if row["update_available"]]
     unverified = [row for row in sources if row["status"] == "UNKNOWN"]
     latest_run_status = str((runs[0] if runs else {}).get("status") or "")
+    sync_health = _sync_health(sources, runs, incidents)
     if not latest:
         state = "configured_no_publication"
     elif degraded or latest_run_status in ("FAILED", "BLOCKED"):
         state = "degraded"
     elif latest_run_status == "PARTIAL":
         state = "partial"
+    elif latest_run_status == "DEFERRED":
+        state = "deferred"
     elif update_available:
         state = "update_available"
     elif unverified:
@@ -341,6 +367,10 @@ def data_status(
             "partial": "A partial publication succeeded: healthy sources were updated while at least one source retained its previous version.",
             "unverified": "One or more sources have no recorded check yet. The snapshot is being served, but source freshness is unknown.",
             "configured_no_publication": "The pipeline is configured but no publication has been recorded.",
+            "deferred": (
+                "Synchronization was deferred to protect host memory (DEFERRED_RESOURCE_PRESSURE). "
+                "Nothing was collected, the active snapshot is unchanged and the next scheduled run retries."
+            ),
         }.get(state, state),
         "terminology": {
             "continuously_monitored": True,
@@ -358,6 +388,7 @@ def data_status(
             "action": (latest or {}).get("action"),
             "actor": (latest or {}).get("actor"),
             "updated_sources": [row["source_id"] for row in update_available],
+            "deferral": sync_health.get("deferral"),
         },
         "sources": sources,
         "health": {
@@ -366,7 +397,7 @@ def data_status(
                 "using_fallback": False,
                 "snapshot_id": (manifest or {}).get("id"),
             },
-            "sync": _sync_health(sources, runs, incidents),
+            "sync": sync_health,
             "freshness": _pipeline_freshness(sources, manifest),
         },
         "change_counts": change_counts,

@@ -1,0 +1,115 @@
+{
+  "activation_s": [],
+  "concurrency": 2,
+  "data_root": "D:\\DEPPSKK\\data003-work\\pipeline-root",
+  "duration_s": 80.0,
+  "index_build_ms": 4115.1,
+  "label": "web-during-510k-real",
+  "module_file": "D:\\DEPPSKK\\worktrees\\data003\\medradar\\product\\dataset.py",
+  "prewarm_ms": 12257.013700000243,
+  "prewarm_status": 200,
+  "repo_root": "D:\\DEPPSKK\\worktrees\\data003",
+  "requests": {
+    "by_endpoint": {
+      "compare": {
+        "max_ms": 359.7,
+        "n": 30,
+        "p50_ms": 131.21,
+        "p95_ms": 328.26
+      },
+      "data_status": {
+        "max_ms": 416.37,
+        "n": 30,
+        "p50_ms": 48.87,
+        "p95_ms": 315.19
+      },
+      "device_family": {
+        "max_ms": 479.11,
+        "n": 31,
+        "p50_ms": 31.62,
+        "p95_ms": 139.66
+      },
+      "device_quality": {
+        "max_ms": 795.6,
+        "n": 31,
+        "p50_ms": 355.85,
+        "p95_ms": 760.94
+      },
+      "devices": {
+        "max_ms": 936.04,
+        "n": 64,
+        "p50_ms": 264.21,
+        "p95_ms": 706.29
+      },
+      "events": {
+        "max_ms": 1055.84,
+        "n": 64,
+        "p50_ms": 500.33,
+        "p95_ms": 890.89
+      },
+      "health": {
+        "max_ms": 259.1,
+        "n": 30,
+        "p50_ms": 123.62,
+        "p95_ms": 182.75
+      },
+      "home": {
+        "max_ms": 97.56,
+        "n": 31,
+        "p50_ms": 8.71,
+        "p95_ms": 85.13
+      },
+      "meta": {
+        "max_ms": 231.95,
+        "n": 30,
+        "p50_ms": 151.91,
+        "p95_ms": 221.71
+      },
+      "organization": {
+        "max_ms": 464.97,
+        "n": 64,
+        "p50_ms": 121.06,
+        "p95_ms": 404.76
+      },
+      "organizations": {
+        "max_ms": 251.96,
+        "n": 64,
+        "p50_ms": 47.5,
+        "p95_ms": 235.7
+      },
+      "search": {
+        "max_ms": 95.22,
+        "n": 30,
+        "p50_ms": 9.71,
+        "p95_ms": 79.85
+      }
+    },
+    "errors": 0,
+    "http_5xx": 0,
+    "max_ms": 1055.84,
+    "p50_ms": 142.42,
+    "p95_ms": 645.0,
+    "p99_ms": 839.24,
+    "requests": 499,
+    "slow_over_1s": 1,
+    "timeouts": 0
+  },
+  "schema": "data003.web_bench.v1",
+  "server": {
+    "memory": {
+      "largest_process_max": 375828480,
+      "peak_rss": 396218368,
+      "rss_end": 383533056,
+      "rss_max": 387735552,
+      "rss_start": 65798144,
+      "samples": 341,
+      "swap_max": 0
+    },
+    "version": "2.2.0-data-002"
+  },
+  "snapshot_active": "fda-snapshot-20261116T032632Z-18ce4d0cbbe4",
+  "switch_target": null,
+  "switches": [],
+  "think_ms": 100.0,
+  "warm_quality_ms": 520.01
+}

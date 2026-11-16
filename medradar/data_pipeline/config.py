@@ -42,6 +42,13 @@ def _env_float(name: str, default: float, minimum: float = 0.0) -> float:
     return value
 
 
+def _env_bool(name: str, default: bool) -> bool:
+    raw = os.environ.get(name)
+    if raw in (None, ""):
+        return default
+    return raw.strip().lower() not in ("0", "false", "no", "off", "disabled")
+
+
 def load_api_key() -> str | None:
     """Read the key from the environment or a local mode-checked file.
 
@@ -95,6 +102,13 @@ class Settings:
     # One product source per automatic run keeps the 4 GB host safe while still allowing
     # manual/combined runs and two-source acceptance tests to set a higher value.
     max_product_sources_per_run: int = 1
+    # DATA-003 resource guard. Calibrated in docs/data/data_003/RESOURCE_GUARDS.md from the
+    # measured host: start a reconciliation only when the host still has this much headroom.
+    resource_guard_enabled: bool = True
+    guard_min_available_mb: int = 1200
+    guard_min_swap_free_mb: int = 384
+    guard_max_psi_some_avg10: float = 8.0
+    guard_min_disk_free_mb: int = 2048
 
     def __post_init__(self) -> None:
         self.root = Path(self.root)
@@ -162,4 +176,9 @@ class Settings:
             max_product_sources_per_run=_env_int(
                 "MEDRADAR_PIPELINE_MAX_PRODUCT_SOURCES_PER_RUN", 1
             ),
+            resource_guard_enabled=_env_bool("MEDRADAR_PIPELINE_RESOURCE_GUARD", True),
+            guard_min_available_mb=_env_int("MEDRADAR_PIPELINE_MIN_AVAILABLE_MB", 1200, minimum=0),
+            guard_min_swap_free_mb=_env_int("MEDRADAR_PIPELINE_MIN_SWAP_FREE_MB", 384, minimum=0),
+            guard_max_psi_some_avg10=_env_float("MEDRADAR_PIPELINE_MAX_PSI_SOME", 8.0, minimum=0.0),
+            guard_min_disk_free_mb=_env_int("MEDRADAR_PIPELINE_MIN_DISK_FREE_MB", 2048, minimum=0),
         )

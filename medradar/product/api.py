@@ -10,6 +10,7 @@ Run:
 """
 from __future__ import annotations
 
+import json
 import os
 import sys
 import threading
@@ -21,6 +22,7 @@ from fastapi import FastAPI, Query, Request
 from fastapi.responses import FileResponse, JSONResponse, PlainTextResponse, Response
 
 from . import dataset as dataset_module
+from . import resources
 from .compare import build_compare
 from .dataset import (
     EVENT_TYPE_ORDER,
@@ -50,24 +52,74 @@ MAX_PAGE_SIZE = 100
 DEFAULT_PAGE_SIZE = 25
 
 
-class DatasetHolder:
-    """Caches the dataset and reloads it when the identity-review ledger changes.
+def _utc_now() -> str:
+    return time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
 
-    The cache is the reason a review decision would otherwise appear to do nothing: the public app
-    computes every count from one Dataset instance. fingerprint_fn() is provided by the admin
-    service; when the ledger changes, the next request rebuilds the dataset, so a decision is
-    visible on the very next page load without restarting the process.
+
+class DatasetHolder:
+    """Serves one validated dataset and activates new snapshots without blocking requests.
+
+    DATA-002 loaded the new snapshot inside whichever request noticed that the active pointer
+    changed, holding one global lock for the whole load. Every other request - including
+    ``/api/health`` - queued behind it, and with the 1.6 GB dataset partly in swap that is the
+    8 s health timeout observed during the recall sync.
+
+    DATA-003 changes the activation contract:
+
+    * a request never waits for a snapshot load; it always receives the currently validated
+      dataset (the old one stays valid until the new one is completely loaded);
+    * exactly one background thread loads and validates the new snapshot, then swaps a single
+      reference; the old dataset is released by the garbage collector;
+    * a failed load keeps the previous dataset and is reported as degraded, as before;
+    * activation asks the resource guard first. On a host that cannot hold a second copy the
+      activation is *deferred*, the old snapshot keeps serving, and the state is visible.
+
+    ``invalidate(wait=True)`` and :meth:`reload_now` remain synchronous for the loopback review
+    service, which needs the new ledger to be visible on the very next read.
     """
+
+    #: How often a request may stat the active pointer and ask the review ledger for its
+    #: fingerprint. Two stat calls per request are cheap; a SQLite fingerprint per request is not.
+    FINGERPRINT_INTERVAL = 2.0
+    #: Backoff after a failed activation, so a broken pointer cannot spin the loader.
+    RETRY_DELAYS = (30.0, 60.0, 120.0, 300.0)
 
     def __init__(self, data_dir: Path | None = None) -> None:
         self.data_dir = data_dir
         self._dataset: Dataset | None = None
         self._error: str | None = None
-        self._lock = threading.Lock()
+        self._state_lock = threading.Lock()
+        self._load_lock = threading.Lock()
         self.fingerprint_fn: Any = None
         self._fingerprint: Any = None
         self._snapshot_fingerprint: Any = None
         self.review_db: Path | None = None
+
+        self._next_check = 0.0
+        self._next_attempt_at = 0.0
+        self._attempts = 0
+        self._retry_state: Any = None
+        self._reload_thread: threading.Thread | None = None
+        self._reload_state = "idle"
+        self._reload_error: str | None = None
+        self._reload_started_at: str | None = None
+        self._reload_finished_at: str | None = None
+        self._reload_snapshot: str | None = None
+        self._pending_snapshot: str | None = None
+        self._reload_phase: str | None = None
+        self._reload_progress: tuple[int, int] = (0, 0)
+        self._reload_started_mono = 0.0
+        self._last_guard: dict[str, Any] | None = None
+        self._deferral_count = 0
+        self.guard_enabled = True
+        self.guard_policy = resources.ACTIVATION_GUARD
+
+    # ------------------------------------------------------------------ paths and state
+    def _data_root(self) -> Path:
+        root = Path(self.data_dir) if self.data_dir else default_data_dir()
+        if (root / "snapshot.json").is_file():
+            return root.parent
+        return root
 
     def _data_state(self) -> tuple[Any, Any]:
         review = None
@@ -87,53 +139,312 @@ class DatasetHolder:
                 parts.append((name, None, None))
         return tuple(parts), review
 
+    def _pointer_snapshot_id(self) -> str | None:
+        """The snapshot id the active pointer names, without loading the dataset."""
+        root = Path(self.data_dir) if self.data_dir else default_data_dir()
+        pointer = root / "active.json"
+        try:
+            payload = json.loads(pointer.read_text(encoding="utf-8"))
+        except (OSError, ValueError):
+            return None
+        if not isinstance(payload, dict):
+            return None
+        return str(payload.get("snapshot_id") or "") or None
+
+    def _changed(self, snapshot_fingerprint: Any, fingerprint: Any) -> bool:
+        if self._dataset is None:
+            return True
+        if snapshot_fingerprint != self._snapshot_fingerprint:
+            return True
+        return self.fingerprint_fn is not None and fingerprint != self._fingerprint
+
+    # ------------------------------------------------------------------ public API
     def get(self) -> Dataset:
-        with self._lock:
+        current = self._dataset
+        if current is not None:
+            # Never loads here: only decides whether a background activation is due.
+            self._maybe_reload()
+            return current
+        return self._load_initial()
+
+    def _load_initial(self) -> Dataset:
+        """Cold start blocks once; there is no older dataset to keep serving."""
+        with self._load_lock:
+            current = self._dataset
+            if current is not None:
+                return current
             snapshot_fingerprint, fingerprint = self._data_state()
-            if (
-                self._dataset is not None
-                and (self.fingerprint_fn is None or fingerprint == self._fingerprint)
-                and snapshot_fingerprint == self._snapshot_fingerprint
-            ):
-                return self._dataset
-            changed = (
-                self._dataset is None
-                or snapshot_fingerprint != self._snapshot_fingerprint
-                or (self.fingerprint_fn is not None and fingerprint != self._fingerprint)
-            )
-            previous_dataset = self._dataset
-            if changed:
-                # Keep the validated old dataset referenced until the new one has loaded
-                # successfully. A bad pointer must degrade the service, not blank it.
-                self._dataset = None
-                self._error = None
             try:
                 loaded = load_dataset(self.data_dir, review_db=self.review_db)
+                # DATA-003 Correction-1: a dataset is only published once its device index is
+                # built. Otherwise the first Device Explorer request after the swap could block
+                # on a multi-second index build, and /api/devices could serve a dataset whose
+                # index was still being constructed.
+                loaded.device_index()
+            except Exception as error:
+                self._error = str(error)
+                raise FileNotFoundError(str(error)) from error
+            with self._state_lock:
                 self._dataset = loaded
                 self._error = None
                 self._fingerprint = fingerprint
                 self._snapshot_fingerprint = snapshot_fingerprint
-                return loaded
-            except Exception as error:
+            return loaded
+
+    def _maybe_reload(self) -> None:
+        now = time.monotonic()
+        if now < self._next_check:
+            return
+        self._next_check = now + self.FINGERPRINT_INTERVAL
+        thread = self._reload_thread
+        if thread is not None and thread.is_alive():
+            return
+        snapshot_fingerprint, fingerprint = self._data_state()
+        if not self._changed(snapshot_fingerprint, fingerprint):
+            return
+        if self._retry_state is not None and snapshot_fingerprint != self._retry_state:
+            # The active pointer moved since the last failed (or deferred) attempt. This is a
+            # different snapshot, so the old backoff must not delay it: retry immediately.
+            self._attempts = 0
+            self._next_attempt_at = 0.0
+            self._retry_state = None
+        if now < self._next_attempt_at:
+            return
+        if not self._start_activation(snapshot_fingerprint, fingerprint):
+            # A guard deferral is remembered against this pointer state so a *new* snapshot can
+            # still be attempted without waiting out the 15 s deferral cadence.
+            if self._reload_state == "deferred":
+                self._retry_state = snapshot_fingerprint
+
+    def _start_activation(self, snapshot_fingerprint: Any, fingerprint: Any) -> bool:
+        with self._state_lock:
+            thread = self._reload_thread
+            if thread is not None and thread.is_alive():
+                return False
+            pending = self._pointer_snapshot_id()
+            if not self._guard_allows_activation(pending):
+                self._retry_state = snapshot_fingerprint
+                return False
+            self._reload_state = "loading"
+            self._reload_error = None
+            self._reload_started_at = _utc_now()
+            self._reload_started_mono = time.monotonic()
+            self._reload_phase = "starting"
+            self._reload_progress = (0, 0)
+            self._reload_finished_at = None
+            self._reload_snapshot = None
+            self._pending_snapshot = pending
+            thread = threading.Thread(
+                target=self._activation_worker,
+                args=(snapshot_fingerprint, fingerprint, pending),
+                name="medradar-dataset-activation",
+                daemon=True,
+            )
+            self._reload_thread = thread
+        thread.start()
+        return True
+
+    def _guard_allows_activation(self, pending: str | None) -> bool:
+        """Decide, before allocating a second dataset, that the host can hold it."""
+        if not self.guard_enabled:
+            return True
+        root = self._data_root()
+        lock_path = root / "pipeline.lock"
+        if resources.pipeline_operation_active(lock_path):
+            self._mark_deferred(
+                ["pipeline_operation_active"],
+                guard={"allowed": False, "reasons": ["pipeline_operation_active"]},
+            )
+            return False
+        rss = resources.process_rss_mb()
+        # The new copy is the dataset *plus* its device index (Correction-1 builds the index
+        # before the swap), so budget one full anonymous RSS, not 95 % of it.
+        required = int(rss * 1.0) + 128 if rss else 512
+        decision = resources.evaluate_guard(
+            self.guard_policy.with_required(required),
+            disk_root=root,
+        )
+        self._last_guard = decision.to_public()
+        if not decision.allowed:
+            self._mark_deferred(list(decision.reasons), guard=decision.to_public())
+            return False
+        return True
+
+    def _mark_deferred(self, reasons: list[str], *, guard: dict[str, Any] | None = None) -> None:
+        self._reload_state = "deferred"
+        self._deferral_count += 1
+        self._reload_error = "deferred: " + ", ".join(reasons)
+        if guard is not None:
+            self._last_guard = guard
+        # Retry on the next fingerprint tick (a few seconds); deferral is not a failure, but it
+        # must not be silent either: reload_status() exposes every reason.
+        self._next_attempt_at = time.monotonic() + 15.0
+
+    def _activation_worker(self, snapshot_fingerprint: Any, fingerprint: Any, pending: str | None) -> None:
+        root = self._data_root()
+        resources.write_activation(
+            root,
+            state="loading",
+            snapshot_id=pending,
+            started_at=self._reload_started_at,
+        )
+
+        def progress(phase: str, done: int, total: int) -> None:
+            self._reload_phase = phase
+            self._reload_progress = (done, total)
+
+        try:
+            loaded = load_dataset(self.data_dir, review_db=self.review_db, progress=progress)
+            # Publish only a complete dataset: build the device index before the swap. If this
+            # fails, the previous dataset keeps serving and the attempt is retried, so
+            # /api/devices can never observe a half-ready index.
+            self._reload_phase = "indexing"
+            self._reload_progress = (0, 0)
+            loaded.device_index()
+        except Exception as error:
+            with self._state_lock:
                 self._error = str(error)
-                if previous_dataset is not None:
-                    # The new pointer/review state is unusable. Keep serving the validated
-                    # previous dataset and expose a degraded health state.
-                    self._dataset = previous_dataset
-                    self._fingerprint = fingerprint
-                    self._snapshot_fingerprint = snapshot_fingerprint
-                    return previous_dataset
-                raise FileNotFoundError(str(error)) from error
+                self._reload_state = "failed"
+                self._reload_error = str(error)
+                self._reload_phase = "failed"
+                self._reload_finished_at = _utc_now()
+                self._retry_state = snapshot_fingerprint
+                self._attempts += 1
+                delay = self.RETRY_DELAYS[min(self._attempts - 1, len(self.RETRY_DELAYS) - 1)]
+                self._next_attempt_at = time.monotonic() + delay
+            resources.write_activation(
+                root,
+                state="failed",
+                snapshot_id=pending,
+                started_at=self._reload_started_at,
+                finished_at=self._reload_finished_at,
+                error=str(error),
+            )
+            return
+        with self._state_lock:
+            # The swap is one reference assignment: a request either sees the old dataset or
+            # the new one, never a half-loaded object.
+            self._dataset = loaded
+            self._error = None
+            self._fingerprint = fingerprint
+            self._snapshot_fingerprint = snapshot_fingerprint
+            self._reload_state = "idle"
+            self._reload_error = None
+            self._reload_finished_at = _utc_now()
+            self._reload_snapshot = loaded.snapshot_id
+            self._reload_phase = None
+            self._pending_snapshot = None
+            self._attempts = 0
+            self._retry_state = None
+            self._deferral_count = 0
+        resources.write_activation(
+            root,
+            state="loaded",
+            snapshot_id=loaded.snapshot_id,
+            started_at=self._reload_started_at,
+            finished_at=self._reload_finished_at,
+        )
+        self._reload_progress = (0, 0)
+
+    def reload_now(self, *, timeout: float = 300.0) -> bool:
+        """Force a synchronous activation. Used by the loopback review service only."""
+        thread = self._reload_thread
+        if thread is not None and thread.is_alive():
+            thread.join(timeout)
+            return False if thread.is_alive() else True
+        snapshot_fingerprint, fingerprint = self._data_state()
+        with self._load_lock:
+            loaded = load_dataset(self.data_dir, review_db=self.review_db)
+            # Same completeness rule as the background path.
+            loaded.device_index()
+            with self._state_lock:
+                self._dataset = loaded
+                self._error = None
+                self._fingerprint = fingerprint
+                self._snapshot_fingerprint = snapshot_fingerprint
+                self._reload_state = "idle"
+                self._reload_error = None
+                self._reload_finished_at = _utc_now()
+                self._reload_snapshot = loaded.snapshot_id
+                self._pending_snapshot = None
+                self._retry_state = None
+                self._attempts = 0
+        return True
+
+    def wait_for_reload(self, timeout: float = 60.0) -> bool:
+        """Wait for an in-flight activation; returns True when nothing is loading."""
+        deadline = time.monotonic() + timeout
+        while True:
+            thread = self._reload_thread
+            if thread is None or not thread.is_alive():
+                return True
+            remaining = deadline - time.monotonic()
+            if remaining <= 0:
+                return False
+            thread.join(min(remaining, 0.5))
+
+    def poll_once(self, *, force: bool = True) -> dict[str, Any]:
+        """Check the active pointer immediately instead of waiting for the next request tick.
+
+        Public so an operator tool (or the review CLI) can ask "is there a newer snapshot?"
+        without sleeping through the per-request throttle. Activation itself stays asynchronous.
+        """
+        if force:
+            self._next_check = 0.0
+        self._maybe_reload()
+        return self.reload_status()
+
+    def reload_status(self) -> dict[str, Any]:
+        with self._state_lock:
+            current = self._dataset
+            now = time.monotonic()
+            next_attempt = max(0.0, self._next_attempt_at - now) if self._next_attempt_at else 0.0
+            elapsed = (
+                round(now - self._reload_started_mono, 1)
+                if self._reload_state == "loading" and self._reload_started_mono
+                else None
+            )
+            return {
+                "state": self._reload_state,
+                "phase": self._reload_phase,
+                "progress": {"done": self._reload_progress[0], "total": self._reload_progress[1]},
+                "elapsed_s": elapsed,
+                "active_snapshot": current.snapshot_id if current is not None else None,
+                # Correction-1: a published dataset always has its device index built, so this
+                # is True whenever a dataset is active. It exists so an operator can prove the
+                # data and the index were published together.
+                "index_ready": bool(
+                    current is not None and getattr(current, "_device_index", None) is not None
+                ),
+                "pending_snapshot": self._pending_snapshot,
+                "started_at": self._reload_started_at,
+                "finished_at": self._reload_finished_at,
+                "last_activated_snapshot": self._reload_snapshot,
+                "attempts": self._attempts,
+                "deferrals": self._deferral_count,
+                "next_attempt_in_s": round(next_attempt, 1) if next_attempt else 0.0,
+                "last_error": self._reload_error,
+                "guard": self._last_guard,
+                "using_fallback": bool(self._error),
+            }
 
     @property
     def degraded_error(self) -> str | None:
         return self._error
 
-    def invalidate(self) -> None:
-        with self._lock:
-            self._dataset = None
-            self._error = None
+    def invalidate(self, *, wait: bool = False) -> None:
+        """Mark the current dataset stale. The old dataset keeps serving until the swap."""
+        with self._state_lock:
             self._snapshot_fingerprint = None
+            self._fingerprint = None
+        self._next_check = 0.0
+        self._next_attempt_at = 0.0
+        self._retry_state = None
+        self._attempts = 0
+        if wait:
+            self.reload_now()
+        else:
+            self._maybe_reload()
 
     def status(self) -> tuple[str, str | None]:
         try:
@@ -305,6 +616,14 @@ def create_app(
         pipeline_health = status_payload.get("health") or {}
         if pipeline_health.get("data") is not None:
             pipeline_health["data"]["using_fallback"] = bool(holder.degraded_error)
+        activation = holder.reload_status()
+        activation_state = str(activation.get("state") or "idle")
+        if activation_state in ("deferred", "failed"):
+            activation_health = "degraded"
+        elif activation_state == "loading":
+            activation_health = "loading"
+        else:
+            activation_health = "ok"
         data_state = "available" if data is not None else "unavailable"
         if holder.degraded_error:
             data_state = "degraded"
@@ -319,6 +638,15 @@ def create_app(
                 "snapshot_id": (data.snapshot_ref().get("id") if data is not None else None),
                 "using_fallback": bool(holder.degraded_error),
                 "error": dataset_error,
+            },
+            "activation": {
+                "state": activation_health,
+                "detail": activation_state,
+                "pending_snapshot": activation.get("pending_snapshot"),
+                "next_attempt_in_s": activation.get("next_attempt_in_s"),
+                "deferrals": activation.get("deferrals"),
+                "last_error": activation.get("last_error") if activation_state != "idle" else None,
+                "guard_reasons": (activation.get("guard") or {}).get("reasons") if activation.get("guard") else None,
             },
             "sync": pipeline_health.get("sync") or {"state": "unknown"},
             "freshness": pipeline_health.get("freshness") or {"state": "unknown"},
@@ -338,6 +666,7 @@ def create_app(
             "version": PRODUCT_VERSION,
             "store": str(data.data_dir) if data is not None else str(holder.data_dir or dataset_module.default_data_dir()),
             "checks": checks,
+            "activation": activation,
             "generated_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
         }
         return (200 if data is not None else 503), payload
@@ -404,6 +733,9 @@ def create_app(
             status["data_snapshot"] = None
             status["freshness"] = None
             status["dataset_error"] = str(error)
+        # DATA-003: a published snapshot can be waiting for activation (loading, or deferred by
+        # the resource guard). The page must show that difference instead of a stale "ok".
+        status["dataset_activation"] = holder.reload_status()
         return status
 
     @app.get("/api/changes")

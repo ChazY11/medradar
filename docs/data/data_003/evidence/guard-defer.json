@@ -1,0 +1,90 @@
+{
+  "command": [
+    "D:\\DEPPSKK\\worktrees\\data003\\.venv\\Scripts\\python.exe",
+    "-m",
+    "medradar.data_pipeline",
+    "run",
+    "--json"
+  ],
+  "elapsed_s": 0.6,
+  "env_overrides": [
+    "MEDRADAR_PIPELINE_MIN_AVAILABLE_MB=999999"
+  ],
+  "exit_code": 0,
+  "label": "guard-defer",
+  "memory": {
+    "largest_max_mb": 26.7,
+    "rss_end_mb": 30.9,
+    "rss_max_mb": 30.9,
+    "samples": 2,
+    "series_mb": [
+      {
+        "rss": 2.5,
+        "t": 0.01
+      },
+      {
+        "rss": 30.9,
+        "t": 0.53
+      }
+    ],
+    "swap_max_mb": 0.0
+  },
+  "message": "DEFERRED_RESOURCE_PRESSURE: synchronization was not started because the host lacks headroom (mem_available_below_floor); the active snapshot is unchanged and the next scheduled run retries.",
+  "pointer_after": "fda-snapshot-20261116T032632Z-18ce4d0cbbe4",
+  "pointer_before": "fda-snapshot-20261116T032632Z-18ce4d0cbbe4",
+  "result": {
+    "checks": [],
+    "deferral": {
+      "activation": null,
+      "guard": {
+        "allowed": false,
+        "disk_free_mb": 561302,
+        "memory": {
+          "anon_pages_mb": 0,
+          "captured_at": "2026-11-16T18:33:31Z",
+          "mem_available_mb": 15641,
+          "mem_free_mb": 15641,
+          "mem_total_mb": 32189,
+          "oom_kills": null,
+          "psi_full_avg10": null,
+          "psi_some_avg10": null,
+          "supported": true,
+          "swap_cached_mb": 0,
+          "swap_free_mb": 24690,
+          "swap_total_mb": 45501,
+          "swap_used_mb": 20811
+        },
+        "policy": {
+          "max_psi_some_avg10": 8.0,
+          "min_available_mb": 999999,
+          "min_disk_free_mb": 2048,
+          "min_swap_free_mb": 384,
+          "name": "pipeline_sync",
+          "required_mb": 0
+        },
+        "reasons": [
+          "mem_available_below_floor"
+        ]
+      },
+      "phase": "before_check",
+      "reason": "DEFERRED_RESOURCE_PRESSURE",
+      "reasons": [
+        "mem_available_below_floor"
+      ],
+      "retry": "the next scheduled run retries; no source state was advanced"
+    },
+    "deferred_update_sources": [],
+    "failed_sources": [],
+    "full_reconciliation_deferred": null,
+    "message": "DEFERRED_RESOURCE_PRESSURE: synchronization was not started because the host lacks headroom (mem_available_below_floor); the active snapshot is unchanged and the next scheduled run retries.",
+    "problems": [],
+    "status": "DEFERRED",
+    "sync": null
+  },
+  "root": "D:\\DEPPSKK\\data003-work\\pipeline-sync-root",
+  "schema": "data003.pipeline_bench.v1",
+  "status": "DEFERRED",
+  "stderr_tail": "",
+  "stdout_tail": null,
+  "timed_out": false
+}

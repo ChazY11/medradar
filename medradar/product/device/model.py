@@ -42,7 +42,7 @@ EVENT_KINDS = {
 }
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, slots=True)
 class EvidenceRef:
     """One concrete piece of evidence: which field, which value, which official page."""
 
@@ -64,7 +64,7 @@ class EvidenceRef:
         }
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, slots=True)
 class Application:
     application_id: str
     source_id: str
@@ -119,7 +119,7 @@ class Application:
         }
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, slots=True)
 class DeviceIdentity:
     """A device MedRadar can identify from an official application.
 
@@ -172,7 +172,7 @@ class DeviceIdentity:
         }
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, slots=True)
 class ProductFamily:
     family_id: str
     kind: str                     # "pma_application"
@@ -208,7 +208,7 @@ class ProductFamily:
         }
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, slots=True)
 class DeviceRelation:
     relation_id: str
     relation_type: str
@@ -244,7 +244,7 @@ class DeviceRelation:
         }
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True, slots=True)
 class RecallRecord:
     event_id: str
     official_id: str

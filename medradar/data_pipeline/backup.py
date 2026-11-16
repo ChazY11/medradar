@@ -166,6 +166,70 @@ def _verify_file(root: Path, row: dict[str, Any]) -> None:
         raise BackupError("backup file hash mismatch: " + row["path"])
 
 
+def _directory_bytes(path: Path) -> int:
+    total = 0
+    for item in path.rglob("*"):
+        try:
+            if item.is_file():
+                total += item.stat().st_size
+        except OSError:
+            continue
+    return total
+
+
+def prune_backups(
+    destination: Path | str,
+    *,
+    keep: int = 7,
+    apply: bool = False,
+) -> dict[str, Any]:
+    """Report (and optionally remove) all but the newest ``keep`` pipeline backups.
+
+    DATA-002's backup timer writes one ``data-backup-<UTC stamp>-<hash>`` directory per day
+    (~146 MB with six snapshots) and nothing ever removed them. On the 60 GB production disk
+    that is months, not years, of headroom. This is an explicit operator command: it is a
+    dry run unless ``apply=True``, it never touches the newest ``keep`` backups, and it only
+    removes directories that carry the pipeline backup name prefix and a valid manifest.
+    """
+    root = Path(destination)
+    candidates: list[Path] = []
+    malformed: list[str] = []
+    if root.is_dir():
+        for item in root.iterdir():
+            if not item.is_dir() or not item.name.startswith("data-backup-"):
+                continue
+            if (item / MANIFEST).is_file():
+                candidates.append(item)
+            else:
+                malformed.append(item.name)
+    # The directory name starts with a UTC YYYYMMDDTHHMMSSZ stamp, so lexical order is chronology.
+    candidates.sort(key=lambda path: path.name, reverse=True)
+    kept = candidates[: max(0, keep)]
+    removable = candidates[max(0, keep):]
+    freed = sum(_directory_bytes(path) for path in removable)
+    removed: list[str] = []
+    if apply:
+        for path in removable:
+            shutil.rmtree(path, ignore_errors=True)
+            if not path.exists():
+                removed.append(path.name)
+    return {
+        "destination": str(root),
+        "keep": keep,
+        "total": len(candidates),
+        "kept": [path.name for path in kept],
+        "removable": [path.name for path in removable],
+        "removed": removed,
+        "malformed_skipped": malformed,
+        "reclaimable_bytes": freed,
+        "applied": bool(apply),
+        "note": (
+            "Dry run unless apply=true. Backups are the only copy on this host; verify a restore "
+            "from the newest backup before removing older ones. This is not disaster recovery."
+        ),
+    }
+
+
 def restore(
     archive: Path | str,
     destination: Path | str,

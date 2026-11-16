@@ -1,0 +1,100 @@
+{
+  "data_dir": "D:\\DEPPSKK\\data003-work\\active",
+  "final": {
+    "heap": null,
+    "peak_rss": 353607680,
+    "rss": 335433728,
+    "swap": 0
+  },
+  "label": "full/rss",
+  "platform": "Windows-11-10.0.26200-SP0",
+  "probe": "data003.memory_probe.v1",
+  "python": "3.12.10",
+  "reloads": [],
+  "stages": [
+    {
+      "at_s": 0.0,
+      "memory": {
+        "pagefile_peak": 11345920,
+        "peak_rss": 19050496,
+        "private": 11345920,
+        "rss": 19050496
+      },
+      "stage": "process_start"
+    },
+    {
+      "at_s": 0.105,
+      "memory": {
+        "pagefile_peak": 17313792,
+        "peak_rss": 24387584,
+        "private": 16207872,
+        "rss": 22536192
+      },
+      "stage": "import"
+    },
+    {
+      "applicants": 1563,
+      "at_s": 7.869,
+      "events": 91457,
+      "load_ms": 7762.7,
+      "memory": {
+        "pagefile_peak": 221409280,
+        "peak_rss": 228274176,
+        "private": 206004224,
+        "rss": 212893696
+      },
+      "organizations": 59,
+      "snapshot_id": "fda-snapshot-20261116T032632Z-18ce4d0cbbe4",
+      "stage": "load",
+      "top_allocations": []
+    },
+    {
+      "at_s": 8.091,
+      "memory": {
+        "pagefile_peak": 221409280,
+        "peak_rss": 228274176,
+        "private": 206241792,
+        "rss": 213626880
+      },
+      "queries_ms": 222.5,
+      "stage": "queries",
+      "workload": {
+        "organizations": 59,
+        "sample_keys": [
+          "draeger",
+          "ge_healthcare",
+          "medtronic"
+        ],
+        "timings": {
+          "events_recall_ms": 11.2,
+          "events_sorted_ms": 23.0,
+          "metrics_ms": 108.3,
+          "organization_draeger_ms": 0.6,
+          "organization_ge_healthcare_ms": 16.4,
+          "organization_medtronic_ms": 57.1,
+          "organizations_ms": 0.2,
+          "search_ms": 5.2
+        }
+      }
+    },
+    {
+      "applications": 61632,
+      "at_s": 12.718,
+      "build_ms": 4607.055,
+      "devices": 23974,
+      "families": 630,
+      "index_ms": 4626.4,
+      "memory": {
+        "pagefile_peak": 347185152,
+        "peak_rss": 353607680,
+        "private": 328974336,
+        "rss": 335433728
+      },
+      "recalls": 29825,
+      "relations": 77823,
+      "stage": "device_index",
+      "top_allocations": []
+    }
+  ],
+  "tracemalloc": false
+}

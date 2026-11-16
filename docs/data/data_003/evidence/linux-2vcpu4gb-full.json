@@ -1,0 +1,95 @@
+{
+  "data_dir": "/tmp/d3/snap",
+  "final": {
+    "heap": null,
+    "peak_rss": 351657984,
+    "rss": 344588288,
+    "swap": 0
+  },
+  "label": "full/rss",
+  "platform": "Linux-6.8.0-138-generic-x86_64-with-glibc2.39",
+  "probe": "data003.memory_probe.v1",
+  "python": "3.12.3",
+  "reloads": [],
+  "stages": [
+    {
+      "at_s": 0.0,
+      "memory": {
+        "peak_rss": 16084992,
+        "rss": 16084992,
+        "swap": 0
+      },
+      "stage": "process_start"
+    },
+    {
+      "at_s": 0.061,
+      "memory": {
+        "peak_rss": 21389312,
+        "rss": 21389312,
+        "swap": 0
+      },
+      "stage": "import"
+    },
+    {
+      "applicants": 1563,
+      "at_s": 9.057,
+      "events": 91457,
+      "load_ms": 8995.8,
+      "memory": {
+        "peak_rss": 226668544,
+        "rss": 211603456,
+        "swap": 0
+      },
+      "organizations": 59,
+      "snapshot_id": "fda-snapshot-20261116T032632Z-18ce4d0cbbe4",
+      "stage": "load",
+      "top_allocations": []
+    },
+    {
+      "at_s": 9.342,
+      "memory": {
+        "peak_rss": 226668544,
+        "rss": 218542080,
+        "swap": 0
+      },
+      "queries_ms": 284.8,
+      "stage": "queries",
+      "workload": {
+        "organizations": 59,
+        "sample_keys": [
+          "draeger",
+          "ge_healthcare",
+          "medtronic"
+        ],
+        "timings": {
+          "events_recall_ms": 10.1,
+          "events_sorted_ms": 29.8,
+          "metrics_ms": 139.5,
+          "organization_draeger_ms": 0.3,
+          "organization_ge_healthcare_ms": 18.7,
+          "organization_medtronic_ms": 82.0,
+          "organizations_ms": 0.2,
+          "search_ms": 3.8
+        }
+      }
+    },
+    {
+      "applications": 61632,
+      "at_s": 14.507,
+      "build_ms": 5138.992,
+      "devices": 23974,
+      "families": 630,
+      "index_ms": 5164.2,
+      "memory": {
+        "peak_rss": 351657984,
+        "rss": 344588288,
+        "swap": 0
+      },
+      "recalls": 29825,
+      "relations": 77823,
+      "stage": "device_index",
+      "top_allocations": []
+    }
+  ],
+  "tracemalloc": false
+}

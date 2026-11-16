@@ -15,7 +15,7 @@ from __future__ import annotations
 
 import re
 from collections import defaultdict
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, replace
 from typing import Any, Iterable, Sequence
 
 from .identifiers import (
@@ -357,9 +357,11 @@ def build_index(dataset: Any) -> DeviceIndex:
             basis="FDA PMA number: the original approval and every supplement that carries the same PMA number",
         )
         if family_device and family_device in devices:
-            device = devices[family_device]
-            devices[family_device] = DeviceIdentity(
-                **{**device.__dict__, "family_id": family_identifier, "models": tuple(models[:60])}
+            # frozen+slots dataclass: copy through replace(), never through __dict__
+            devices[family_device] = replace(
+                devices[family_device],
+                family_id=family_identifier,
+                models=tuple(models[:60]),
             )
         # confirmed application_has_supplement relations, only between endpoints present in the snapshot
         if original is not None:

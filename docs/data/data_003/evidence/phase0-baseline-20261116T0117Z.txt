@@ -1,0 +1,560 @@
+ssh : bash: line 1: ﻿#!/usr/bin/env: No such file or directory
+At line:6 char:8
++ $txt | ssh -i $k -o BatchMode=yes -o ConnectTimeout=10 ubuntu@170.106 ...
++        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (bash: line 1: ﻿...le or directory:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+
+===== META =====
+2026-11-16T17:17:46Z
+Tue Nov 17 01:17:46 AM CST 2026
+VM-0-12-ubuntu
+ 01:17:46 up 22:13,  1 user,  load average: 0.08, 0.02, 0.01
+0.08 0.02 0.01 2/210 327176
+
+===== KERNEL =====
+Linux VM-0-12-ubuntu 6.8.0-138-generic #138-Ubuntu SMP PREEMPT_DYNAMIC Fri Jul 31 22:41:49 UTC 2026 x86_64 x86_64 x86_64 GNU/Linux
+PRETTY_NAME="Ubuntu 24.04.4 LTS"
+NAME="Ubuntu"
+VERSION_ID="24.04"
+VERSION="24.04.4 LTS (Noble Numbat)"
+
+===== CPU =====
+2
+model name	: Intel(R) Xeon(R) CPU E5-26xx v4
+procs -----------memory---------- ---swap-- -----io---- -system-- -------cpu-------
+ r  b   swpd   free   buff  cache   si   so    bi    bo   in   cs us sy id wa st gu
+ 0  0 551712 780204  76568 1044180    5   14    33   118  808    4  2  1 98  0  0  0
+ 0  0 551712 779460  76568 1044292    0    0     0     0  912 1091  1  1 98  0  0  0
+ 0  0 551712 779460  76568 1044292    0    0     0     0 1216 1738  2  1 97  0  0  0
+
+===== MEMORY_FREE =====
+               total        used        free      shared  buff/cache   available
+Mem:            3724        2126         761           1        1094        1597
+Swap:           1987         538        1449
+               total        used        free      shared  buff/cache   available
+Mem:           3.6Gi       2.1Gi       761Mi       1.9Mi       1.1Gi       1.6Gi
+Swap:          1.9Gi       538Mi       1.4Gi
+
+===== MEMINFO =====
+MemTotal:        3813388 kB
+MemFree:          779460 kB
+MemAvailable:    1635980 kB
+Buffers:           76568 kB
+Cached:           981112 kB
+SwapCached:       157052 kB
+Active:           660760 kB
+Inactive:        2153572 kB
+SwapTotal:       2035708 kB
+SwapFree:        1483996 kB
+Dirty:              1072 kB
+Writeback:             0 kB
+AnonPages:       1771324 kB
+Mapped:           113512 kB
+Shmem:              1912 kB
+Slab:             116904 kB
+SReclaimable:      63180 kB
+SUnreclaim:        53724 kB
+PageTables:        12060 kB
+CommitLimit:     3942400 kB
+Committed_AS:    3323548 kB
+
+===== MEMORY_PRESSURE =====
+some avg10=0.00 avg60=0.00 avg300=0.00 total=18637407
+full avg10=0.00 avg60=0.00 avg300=0.00 total=18009702
+
+===== VMSTAT_COUNTERS =====
+pswpin 109616
+pswpout 296672
+allocstall_dma 0
+allocstall_dma32 0
+allocstall_normal 20
+allocstall_movable 402
+allocstall_device 0
+pgfault 91317880
+pgmajfault 74565
+pgscan_kswapd 1566570
+pgscan_direct 48099
+pgscan_direct_throttle 0
+oom_kill 0
+
+===== PSI_CPU_IO =====
+some avg10=0.72 avg60=0.37 avg300=0.20 total=498755039
+full avg10=0.00 avg60=0.00 avg300=0.00 total=0
+some avg10=0.04 avg60=0.02 avg300=0.00 total=177245606
+full avg10=0.04 avg60=0.02 avg300=0.00 total=150819277
+
+===== DISK =====
+Filesystem      Size  Used Avail Use% Mounted on
+/dev/vda2        59G  8.4G   49G  15% /
+Filesystem      Inodes  IUsed   IFree IUse% Mounted on
+/dev/vda2      3932160 164518 3767642    5% /
+
+===== SYSTEMD_UNITS =====
+active
+MainPID=129585
+NRestarts=0
+ExecMainStartTimestamp=Mon 2026-11-16 11:17:49 CST
+ExecMainStartTimestampMonotonic=29634481065
+MemoryCurrent=1645375488
+MemoryPeak=1871839232
+MemorySwapCurrent=348069888
+CPUUsageNSec=208123178000
+TasksCurrent=2
+MemoryAccounting=yes
+MemoryHigh=infinity
+MemoryMax=infinity
+MemorySwapMax=infinity
+ActiveState=active
+SubState=running
+
+===== SYSTEMD_CAT =====
+# /etc/systemd/system/medradar-web.service
+[Unit]
+Description=MedRadar workbench (FastAPI + built UI, loopback only)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=medradar
+Group=medradar
+WorkingDirectory=/srv/medradar
+Environment=HOME=/srv/medradar
+Environment=PYTHONUNBUFFERED=1
+Environment=MEDRADAR_DEVICE_CACHE=on
+Environment=MEDRADAR_DATA_DIR=/srv/medradar/data/fda
+ExecStart=/srv/medradar/.venv/bin/python -m medradar.product.web --host 127.0.0.1 --port 8787 --no-reload
+ExecStartPost=-/bin/sh -c 'for i in 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20; do curl -sf -o /dev/null http://127.0.0.1:8787/api/devices && break; sleep 1; done'
+Restart=on-failure
+RestartSec=5
+NoNewPrivileges=yes
+PrivateTmp=yes
+ProtectSystem=strict
+ProtectHome=yes
+ProtectKernelTunables=yes
+ProtectControlGroups=yes
+RestrictSUIDSGID=yes
+ReadWritePaths=/srv/medradar/data
+LimitNOFILE=65535
+
+[Install]
+WantedBy=multi-user.target
+
+===== TIMERS =====
+NEXT                            LEFT LAST                              PASSED UNIT                           ACTIVATES
+Tue 2026-11-17 01:20:00 CST 2min 11s Tue 2026-11-17 01:10:01 CST     7min ago sysstat-collect.timer          sysstat-collect.service
+Tue 2026-11-17 01:21:01 CST 3min 12s Tue 2026-11-17 01:16:01 CST 1min 47s ago medradar-health.timer          medradar-health.service
+Tue 2026-11-17 01:32:49 CST    15min Tue 2026-11-17 00:03:40 CST 1h 14min ago fwupd-refresh.timer            fwupd-refresh.service
+Tue 2026-11-17 02:05:40 CST    47min Tue 2026-11-17 01:01:26 CST    16min ago medradar-data-update.timer     medradar-data-update.service
+Tue 2026-11-17 03:09:01 CST 1h 51min Mon 2026-11-16 03:09:01 CST      22h ago update-notifier-download.timer update-notifier-download.service
+Tue 2026-11-17 03:19:01 CST  2h 1min Mon 2026-11-16 03:19:01 CST      21h ago systemd-tmpfiles-clean.timer   systemd-tmpfiles-clean.service
+Tue 2026-11-17 03:23:16 CST  2h 5min -                                      - medradar-data-backup.timer     medradar-data-backup.service
+Tue 2026-11-17 04:30:00 CST 3h 12min Mon 2026-11-16 04:30:01 CST      20h ago medradar-backup.timer          medradar-backup.service
+Tue 2026-11-17 06:49:32 CST 5h 31min Mon 2026-11-16 06:15:40 CST      19h ago apt-daily-upgrade.timer        apt-daily-upgrade.service
+Tue 2026-11-17 08:04:05 CST       6h Mon 2026-11-16 17:29:26 CST       7h ago motd-news.timer                motd-news.service
+Tue 2026-11-17 09:43:34 CST       8h Mon 2026-11-16 21:03:26 CST 4h 14min ago apt-daily.timer                apt-daily.service
+Tue 2026-11-17 10:40:53 CST       9h Mon 2026-11-16 03:41:40 CST      21h ago man-db.timer                   man-db.service
+Tue 2026-11-17 13:57:03 CST      12h Fri 2026-02-27 15:31:11 CST            - update-notifier-motd.timer     update-notifier-motd.service
+Wed 2026-11-18 00:00:00 CST      22h Tue 2026-11-17 00:00:01 CST 1h 17min ago dpkg-db-backup.timer           dpkg-db-backup.service
+Wed 2026-11-18 00:00:00 CST      22h Tue 2026-11-17 00:00:01 CST 1h 17min ago logrotate.timer                logrotate.service
+Wed 2026-11-18 00:07:00 CST      22h Tue 2026-11-17 00:07:01 CST 1h 10min ago sysstat-summary.timer          sysstat-summary.service
+Sun 2026-11-22 03:10:44 CST   5 days Mon 2026-11-16 03:04:26 CST      22h ago e2scrub_all.timer              e2scrub_all.service
+Mon 2026-11-23 00:03:06 CST   5 days Mon 2026-11-16 03:46:01 CST      21h ago fstrim.timer                   fstrim.service
+-                                  - -                                      - apport-autoreport.timer        apport-autoreport.service
+-                                  - -                                      - snapd.snap-repair.timer        snapd.snap-repair.service
+-                                  - -                                      - ua-timer.timer                 ua-timer.service
+
+21 timers listed.
+--- medradar-data-update.timer
+enabled
+active
+NextElapseUSecRealtime=
+LastTriggerUSec=Tue 2026-11-17 01:01:26 CST
+Result=success
+--- medradar-data-backup.timer
+enabled
+active
+NextElapseUSecRealtime=Tue 2026-11-17 03:23:16 CST
+LastTriggerUSec=
+Result=success
+--- medradar-health.timer
+enabled
+active
+NextElapseUSecRealtime=
+LastTriggerUSec=Tue 2026-11-17 01:16:01 CST
+Result=success
+
+===== TIMER_SERVICES =====
+--- medradar-data-update.service
+Result=success
+ExecMainStartTimestamp=Tue 2026-11-17 01:01:26 CST
+ExecMainExitTimestamp=Tue 2026-11-17 01:01:26 CST
+ExecMainStatus=0
+ActiveState=inactive
+SubState=dead
+--- medradar-data-backup.service
+Result=success
+ExecMainStartTimestamp=Mon 2026-11-16 11:28:39 CST
+ExecMainExitTimestamp=Mon 2026-11-16 11:28:41 CST
+ExecMainStatus=0
+ActiveState=inactive
+SubState=dead
+--- medradar-health.service
+Result=success
+ExecMainStartTimestamp=Tue 2026-11-17 01:16:01 CST
+ExecMainExitTimestamp=Tue 2026-11-17 01:16:02 CST
+ExecMainStatus=0
+ActiveState=inactive
+SubState=dead
+
+===== PS_TOP_RSS =====
+    PID    PPID   RSS    VSZ     ELAPSED %CPU %MEM CMD
+ 129585       1 1609660 2100636 13:59:59  0.4 42.2 /srv/medradar/.venv/bin/python -m medradar.product.web --host 127.0.0.1 --port 8787 --no-reload
+   1886       1 101920 10225048 22:13:22  0.1  2.6 node /home/ubuntu/.local/share/pnpm/dsh --profile web
+   3408       1 48848 1018524   22:12:29  0.5  1.2 /usr/local/qcloud/YunJing/YDEyes/YDService
+    360       1 27292 288952    22:13:50  0.0  0.7 /sbin/multipathd -d -s
+  21026       1 27200  58620    21:10:26  0.0  0.7 /usr/lib/systemd/systemd-journald
+   1951       1 16440 1308024   22:13:21  0.0  0.4 /usr/lib/dsh-auth/caddy run --config /run/dsh-auth-caddy/Caddyfile --adapter caddyfile
+   3237    3229 15564 708372    22:12:43  1.0  0.4 barad_agent
+      1       0 13140  22636    22:13:53  0.0  0.3 /sbin/init showopts
+ 327109       1 11468  20252       00:02  3.4  0.3 /usr/lib/systemd/systemd --user
+   3236    3229 11348  47428    22:12:43  0.1  0.2 barad_agent
+    482       1 10700  21464    22:13:49  0.0  0.2 /usr/lib/systemd/systemd-resolved
+   3456       1 10476 1240912   22:12:25  0.0  0.2 /usr/local/qcloud/YunJing/YDLive/YDLive
+ 327105    1075 10464  14740       00:03  0.2  0.2 sshd: ubuntu [priv]
+   1053       1  8788 468928    22:13:38  0.0  0.2 /usr/libexec/udisks2/udisksd
+
+===== WEB_PROC_DETAIL =====
+MainPID=129585
+    PID    PPID   RSS    VSZ     ELAPSED NLWP CMD
+ 129585       1 1609660 2100636 13:59:59    2 /srv/medradar/.venv/bin/python -m medradar.product.web --host 127.0.0.1 --port 8787 --no-reload
+--- children
+    PID   RSS     ELAPSED CMD
+--- smaps_rollup
+--- status
+VmPeak:	 2102684 kB
+VmSize:	 2100636 kB
+VmHWM:	 1833412 kB
+VmRSS:	 1609660 kB
+RssAnon:	 1594228 kB
+RssFile:	   15432 kB
+RssShmem:	       0 kB
+VmSwap:	  277552 kB
+Threads:	2
+--- limits
+Max open files            65535                65535                files     
+Max locked memory         8388608              8388608              bytes     
+--- fd count
+0
+--- cpu affinity
+pid 129585's current affinity list: 0,1
+--- started
+Mon Nov 16 11:17:48 2026
+
+===== CGROUP_WEB =====
+ControlGroup=/system.slice/medradar-web.service
+--- memory.current
+1645375488
+--- memory.peak
+1871839232
+--- memory.max
+max
+--- memory.high
+max
+--- memory.swap.current
+348069888
+--- memory.swap.peak
+402341888
+--- memory.swap.max
+max
+--- memory.events
+low 0
+high 0
+max 0
+oom 0
+oom_kill 0
+oom_group_kill 0
+--- memory.pressure
+some avg10=0.00 avg60=0.00 avg300=0.00 total=3020205
+full avg10=0.00 avg60=0.00 avg300=0.00 total=3018535
+--- memory.stat (selected)
+
+===== CGROUP_ROOT =====
+--- /sys/fs/cgroup/memory.pressure
+some avg10=0.00 avg60=0.00 avg300=0.00 total=18637407
+full avg10=0.00 avg60=0.00 avg300=0.00 total=18009702
+
+===== APP_GIT =====
+fatal: cannot change to '/srv/medradar/app': Permission denied
+fatal: cannot change to '/srv/medradar/app': Permission denied
+fatal: cannot change to '/srv/medradar/app': Permission denied
+
+===== APP_VERSIONS =====
+
+===== HTTP_PROBE =====
+PORT=8787
+--- /api/livez
+http=200 dns=0.000026 conn=0.000163 start=0.002761 total=0.002851 size=45
+{"status":"alive","version":"2.2.0-data-002"}
+--- /api/readyz
+http=200 dns=0.000023 conn=0.000333 start=0.018575 total=0.018649 size=1042
+{"ready":true,"status":"ok","snapshot":{"id":"fda-snapshot-20261116T032632Z-18ce4d0cbbe4","collected_at":"2026-11-16T03:26:32.866158Z","openfda_last_updated":"2026-11-12","previous_snapshot_id":"fda-snapshot-20261116T031623Z-556883ca1bc7","content_hash":"18ce4d0cbbe41d450e40b1af134e60973272f4b2f6586a0a006a5591bfa3407f","source_versions":{"openfda_510k":"2026-11-02","openfda_classification":"2026-11-02","openfda_pma":"2026-11-02","openfda_recall":"2026-11-12"},"file_sha256":{"applicants.jsonl.gz":"d46ac7e1486408648c80a3da0543e4fc62c80607bd07f1f15f826d789fbec68f","classifications.jsonl.gz":"cddf
+--- /api/health
+http=200 dns=0.000024 conn=0.000142 start=0.018300 total=0.018472 size=1970
+{"status":"ok","snapshot":{"id":"fda-snapshot-20261116T032632Z-18ce4d0cbbe4","collected_at":"2026-11-16T03:26:32.866158Z","openfda_last_updated":"2026-11-12","previous_snapshot_id":"fda-snapshot-20261116T031623Z-556883ca1bc7","content_hash":"18ce4d0cbbe41d450e40b1af134e60973272f4b2f6586a0a006a5591bfa3407f","source_versions":{"openfda_510k":"2026-11-02","openfda_classification":"2026-11-02","openfda_pma":"2026-11-02","openfda_recall":"2026-11-12"},"file_sha256":{"applicants.jsonl.gz":"d46ac7e1486408648c80a3da0543e4fc62c80607bd07f1f15f826d789fbec68f","classifications.jsonl.gz":"cddf8e9b93cb9f5d9
+--- /api/data-status
+http=200 dns=0.000026 conn=0.000153 start=0.020612 total=0.020901 size=28106
+{"schema":"medradar.data_status.v1","configured":true,"state":"ok","message":"Sources are monitored and the active snapshot is the latest successful publication.","terminology":{"continuously_monitored":true,"automatically_synchronized":true,"real_time_claim":false,"labels":["Continuously Monitored","Automatically Synchronized","Last Successful Sync","Source Freshness","Data Snapshot"]},"snapshot":{"id":"fda-snapshot-20261116T032632Z-18ce4d0cbbe4","schema":"medradar.snapshot.v2","collected_at":"2026-11-16T03:26:32.866158Z","published_at":"2026-11-16T03:27:18.205229Z","previous_snapshot_id":"fd
+--- /api/meta
+http=200 dns=0.000050 conn=0.000182 start=0.432109 total=0.432466 size=18064
+{"product":{"name":"MedRadar","version":"2.2.0-data-002","positioning_en":"Medical technology intelligence: traceable FDA regulatory records for the companies you compete with, with the identity and time limits stated on every screen.","positioning_zh":"医疗技术情报平台：以可追溯的 FDA 监管记录为核心，比较目标企业的监管活动，并在每个页面上明确标注身份归属与时间语义的边界。"},"snapshot":{"id":"fda-snapshot-20261116T032632Z-18ce4d0cbbe4","collected_at":"2026-11-16T03:26:32.866158Z","openfda_last_updated":"2026-11-12","previous_snapshot_id
+--- /
+http=200 dns=0.000025 conn=0.000418 start=0.002505 total=0.003327 size=662
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="MedRadar is a medical technology intelligence workbench for tracked regulatory records, organizations, and source provenance."
+    />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>MedRadar - Medical Technology Intelligence</title>
+    <script type="module" crossorigin src="/index-ThSRlAdT.js"></script>
+    <link rel="stylesheet" crossorigin href="/index-BzX25XFR.css">
+ 
+--- /organizations
+http=200 dns=0.000024 conn=0.000112 start=0.006660 total=0.007191 size=662
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="MedRadar is a medical technology intelligence workbench for tracked regulatory records, organizations, and source provenance."
+    />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>MedRadar - Medical Technology Intelligence</title>
+    <script type="module" crossorigin src="/index-ThSRlAdT.js"></script>
+    <link rel="stylesheet" crossorigin href="/index-BzX25XFR.css">
+ 
+--- /events
+http=200 dns=0.000024 conn=0.000434 start=0.002883 total=0.003667 size=662
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="MedRadar is a medical technology intelligence workbench for tracked regulatory records, organizations, and source provenance."
+    />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>MedRadar - Medical Technology Intelligence</title>
+    <script type="module" crossorigin src="/index-ThSRlAdT.js"></script>
+    <link rel="stylesheet" crossorigin href="/index-BzX25XFR.css">
+ 
+--- /devices
+http=200 dns=0.000022 conn=0.000105 start=0.002672 total=0.003588 size=662
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="MedRadar is a medical technology intelligence workbench for tracked regulatory records, organizations, and source provenance."
+    />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>MedRadar - Medical Technology Intelligence</title>
+    <script type="module" crossorigin src="/index-ThSRlAdT.js"></script>
+    <link rel="stylesheet" crossorigin href="/index-BzX25XFR.css">
+ 
+--- /compare
+http=200 dns=0.000028 conn=0.000133 start=0.003610 total=0.004418 size=662
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="MedRadar is a medical technology intelligence workbench for tracked regulatory records, organizations, and source provenance."
+    />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>MedRadar - Medical Technology Intelligence</title>
+    <script type="module" crossorigin src="/index-ThSRlAdT.js"></script>
+    <link rel="stylesheet" crossorigin href="/index-BzX25XFR.css">
+ 
+--- /data-status
+http=200 dns=0.000022 conn=0.000117 start=0.002089 total=0.003228 size=662
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="MedRadar is a medical technology intelligence workbench for tracked regulatory records, organizations, and source provenance."
+    />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>MedRadar - Medical Technology Intelligence</title>
+    <script type="module" crossorigin src="/index-ThSRlAdT.js"></script>
+    <link rel="stylesheet" crossorigin href="/index-BzX25XFR.css">
+ 
+
+===== JOURNAL_WEB_RECENT =====
+Nov 17 00:30:02 VM-0-12-ubuntu python[129585]: INFO:     127.0.0.1:47322 - "GET /api/devices/quality HTTP/1.1" 200 OK
+Nov 17 00:30:02 VM-0-12-ubuntu python[129585]: INFO:     127.0.0.1:47334 - "GET /api/organizations HTTP/1.1" 200 OK
+Nov 17 00:35:26 VM-0-12-ubuntu python[129585]: INFO:     127.0.0.1:36884 - "GET /api/health HTTP/1.1" 200 OK
+Nov 17 00:35:26 VM-0-12-ubuntu python[129585]: INFO:     127.0.0.1:36892 - "GET /api/devices/quality HTTP/1.1" 200 OK
+Nov 17 00:35:26 VM-0-12-ubuntu python[129585]: INFO:     127.0.0.1:36902 - "GET /api/organizations HTTP/1.1" 200 OK
+Nov 17 00:40:40 VM-0-12-ubuntu python[129585]: INFO:     127.0.0.1:56182 - "GET /api/health HTTP/1.1" 200 OK
+Nov 17 00:40:40 VM-0-12-ubuntu python[129585]: INFO:     127.0.0.1:56194 - "GET /api/devices/quality HTTP/1.1" 200 OK
+Nov 17 00:40:40 VM-0-12-ubuntu python[129585]: INFO:     127.0.0.1:56204 - "GET /api/organizations HTTP/1.1" 200 OK
+Nov 17 00:46:01 VM-0-12-ubuntu python[129585]: INFO:     127.0.0.1:44478 - "GET /api/health HTTP/1.1" 200 OK
+Nov 17 00:46:01 VM-0-12-ubuntu python[129585]: INFO:     127.0.0.1:44486 - "GET /api/devices/quality HTTP/1.1" 200 OK
+Nov 17 00:46:01 VM-0-12-ubuntu python[129585]: INFO:     127.0.0.1:44498 - "GET /api/organizations HTTP/1.1" 200 OK
+Nov 17 00:51:01 VM-0-12-ubuntu python[129585]: INFO:     127.0.0.1:52226 - "GET /api/health HTTP/1.1" 200 OK
+Nov 17 00:51:01 VM-0-12-ubuntu python[129585]: INFO:     127.0.0.1:52230 - "GET /api/devices/quality HTTP/1.1" 200 OK
+Nov 17 00:51:01 VM-0-12-ubuntu python[129585]: INFO:     127.0.0.1:52242 - "GET /api/organizations HTTP/1.1" 200 OK
+Nov 17 00:56:01 VM-0-12-ubuntu python[129585]: INFO:     127.0.0.1:42024 - "GET /api/health HTTP/1.1" 200 OK
+Nov 17 00:56:02 VM-0-12-ubuntu python[129585]: INFO:     127.0.0.1:42038 - "GET /api/devices/quality HTTP/1.1" 200 OK
+Nov 17 00:56:02 VM-0-12-ubuntu python[129585]: INFO:     127.0.0.1:42054 - "GET /api/organizations HTTP/1.1" 200 OK
+Nov 17 01:01:01 VM-0-12-ubuntu python[129585]: INFO:     127.0.0.1:39652 - "GET /api/health HTTP/1.1" 200 OK
+Nov 17 01:01:01 VM-0-12-ubuntu python[129585]: INFO:     127.0.0.1:39664 - "GET /api/devices/quality HTTP/1.1" 200 OK
+Nov 17 01:01:01 VM-0-12-ubuntu python[129585]: INFO:     127.0.0.1:39670 - "GET /api/organizations HTTP/1.1" 200 OK
+Nov 17 01:06:01 VM-0-12-ubuntu python[129585]: INFO:     127.0.0.1:53206 - "GET /api/health HTTP/1.1" 200 OK
+Nov 17 01:06:02 VM-0-12-ubuntu python[129585]: INFO:     127.0.0.1:53208 - "GET /api/devices/quality HTTP/1.1" 200 OK
+Nov 17 01:06:02 VM-0-12-ubuntu python[129585]: INFO:     127.0.0.1:53214 - "GET /api/organizations HTTP/1.1" 200 OK
+Nov 17 01:11:01 VM-0-12-ubuntu python[129585]: INFO:     127.0.0.1:42164 - "GET /api/health HTTP/1.1" 200 OK
+Nov 17 01:11:02 VM-0-12-ubuntu python[129585]: INFO:     127.0.0.1:42166 - "GET /api/devices/quality HTTP/1.1" 200 OK
+Nov 17 01:11:02 VM-0-12-ubuntu python[129585]: INFO:     127.0.0.1:42174 - "GET /api/organizations HTTP/1.1" 200 OK
+Nov 17 01:16:01 VM-0-12-ubuntu python[129585]: INFO:     127.0.0.1:48218 - "GET /api/health HTTP/1.1" 200 OK
+Nov 17 01:16:02 VM-0-12-ubuntu python[129585]: INFO:     127.0.0.1:48234 - "GET /api/devices/quality HTTP/1.1" 200 OK
+Nov 17 01:16:02 VM-0-12-ubuntu python[129585]: INFO:     127.0.0.1:48248 - "GET /api/organizations HTTP/1.1" 200 OK
+Nov 17 01:17:48 VM-0-12-ubuntu python[129585]: INFO:     127.0.0.1:39994 - "GET /api/livez HTTP/1.1" 200 OK
+Nov 17 01:17:49 VM-0-12-ubuntu python[129585]: INFO:     127.0.0.1:40000 - "GET /api/readyz HTTP/1.1" 200 OK
+Nov 17 01:17:49 VM-0-12-ubuntu python[129585]: INFO:     127.0.0.1:40010 - "GET /api/health HTTP/1.1" 200 OK
+Nov 17 01:17:49 VM-0-12-ubuntu python[129585]: INFO:     127.0.0.1:40020 - "GET /api/data-status HTTP/1.1" 200 OK
+Nov 17 01:17:49 VM-0-12-ubuntu python[129585]: INFO:     127.0.0.1:40028 - "GET /api/meta HTTP/1.1" 200 OK
+Nov 17 01:17:49 VM-0-12-ubuntu python[129585]: INFO:     127.0.0.1:40038 - "GET / HTTP/1.1" 200 OK
+Nov 17 01:17:49 VM-0-12-ubuntu python[129585]: INFO:     127.0.0.1:40040 - "GET /organizations HTTP/1.1" 200 OK
+Nov 17 01:17:49 VM-0-12-ubuntu python[129585]: INFO:     127.0.0.1:40046 - "GET /events HTTP/1.1" 200 OK
+Nov 17 01:17:49 VM-0-12-ubuntu python[129585]: INFO:     127.0.0.1:40058 - "GET /devices HTTP/1.1" 200 OK
+Nov 17 01:17:49 VM-0-12-ubuntu python[129585]: INFO:     127.0.0.1:40062 - "GET /compare HTTP/1.1" 200 OK
+Nov 17 01:17:49 VM-0-12-ubuntu python[129585]: INFO:     127.0.0.1:40068 - "GET /data-status HTTP/1.1" 200 OK
+
+===== JOURNAL_OOM =====
+
+===== JOURNAL_TIMERS =====
+--- medradar-data-update.service
+Nov 17 01:01:26 VM-0-12-ubuntu python[323248]:     }
+Nov 17 01:01:26 VM-0-12-ubuntu python[323248]:   ],
+Nov 17 01:01:26 VM-0-12-ubuntu python[323248]:   "deferred_update_sources": [],
+Nov 17 01:01:26 VM-0-12-ubuntu python[323248]:   "failed_sources": [],
+Nov 17 01:01:26 VM-0-12-ubuntu python[323248]:   "full_reconciliation_deferred": null,
+Nov 17 01:01:26 VM-0-12-ubuntu python[323248]:   "message": "no healthy source has an available update",
+Nov 17 01:01:26 VM-0-12-ubuntu python[323248]:   "problems": [],
+Nov 17 01:01:26 VM-0-12-ubuntu python[323248]:   "status": "NO_CHANGE",
+Nov 17 01:01:26 VM-0-12-ubuntu python[323248]:   "sync": null
+Nov 17 01:01:26 VM-0-12-ubuntu python[323248]: }
+Nov 17 01:01:26 VM-0-12-ubuntu systemd[1]: medradar-data-update.service: Deactivated successfully.
+Nov 17 01:01:26 VM-0-12-ubuntu systemd[1]: Finished medradar-data-update.service - MedRadar continuous FDA update check and safe snapshot publication.
+--- medradar-data-backup.service
+Nov 16 11:28:41 VM-0-12-ubuntu python[133414]:       "fda-snapshot-20261116T030626Z-8841d0c85f29",
+Nov 16 11:28:41 VM-0-12-ubuntu python[133414]:       "fda-snapshot-20261116T030944Z-12c15b26c20e",
+Nov 16 11:28:41 VM-0-12-ubuntu python[133414]:       "fda-snapshot-20261116T031349Z-556883ca1bc7",
+Nov 16 11:28:41 VM-0-12-ubuntu python[133414]:       "fda-snapshot-20261116T031623Z-556883ca1bc7",
+Nov 16 11:28:41 VM-0-12-ubuntu python[133414]:       "fda-snapshot-20261116T032632Z-18ce4d0cbbe4"
+Nov 16 11:28:41 VM-0-12-ubuntu python[133414]:     ],
+Nov 16 11:28:41 VM-0-12-ubuntu python[133414]:     "source_root": "/srv/medradar/data/fda"
+Nov 16 11:28:41 VM-0-12-ubuntu python[133414]:   }
+Nov 16 11:28:41 VM-0-12-ubuntu python[133414]: }
+Nov 16 11:28:41 VM-0-12-ubuntu systemd[1]: medradar-data-backup.service: Deactivated successfully.
+Nov 16 11:28:41 VM-0-12-ubuntu systemd[1]: Finished medradar-data-backup.service - MedRadar FDA pipeline consistent state backup.
+Nov 16 11:28:41 VM-0-12-ubuntu systemd[1]: medradar-data-backup.service: Consumed 1.112s CPU time.
+--- medradar-health.service
+Nov 17 01:06:01 VM-0-12-ubuntu systemd[1]: Starting medradar-health.service - MedRadar health check (liveness + readiness + resources)...
+Nov 17 01:06:02 VM-0-12-ubuntu medradar-health[324315]: 2026-11-17T01:06:01+08:00 status=ok systemd=up index=yes org_query=yes mem_avail=1614MB swap=538MB disk_free=49242MB restarts=0 issues=none
+Nov 17 01:06:02 VM-0-12-ubuntu systemd[1]: medradar-health.service: Deactivated successfully.
+Nov 17 01:06:02 VM-0-12-ubuntu systemd[1]: Finished medradar-health.service - MedRadar health check (liveness + readiness + resources).
+Nov 17 01:11:01 VM-0-12-ubuntu systemd[1]: Starting medradar-health.service - MedRadar health check (liveness + readiness + resources)...
+Nov 17 01:11:02 VM-0-12-ubuntu medradar-health[325462]: 2026-11-17T01:11:01+08:00 status=ok systemd=up index=yes org_query=yes mem_avail=1619MB swap=538MB disk_free=49242MB restarts=0 issues=none
+Nov 17 01:11:02 VM-0-12-ubuntu systemd[1]: medradar-health.service: Deactivated successfully.
+Nov 17 01:11:02 VM-0-12-ubuntu systemd[1]: Finished medradar-health.service - MedRadar health check (liveness + readiness + resources).
+Nov 17 01:16:01 VM-0-12-ubuntu systemd[1]: Starting medradar-health.service - MedRadar health check (liveness + readiness + resources)...
+Nov 17 01:16:02 VM-0-12-ubuntu medradar-health[326609]: 2026-11-17T01:16:01+08:00 status=ok systemd=up index=yes org_query=yes mem_avail=1615MB swap=538MB disk_free=49241MB restarts=0 issues=none
+Nov 17 01:16:02 VM-0-12-ubuntu systemd[1]: medradar-health.service: Deactivated successfully.
+Nov 17 01:16:02 VM-0-12-ubuntu systemd[1]: Finished medradar-health.service - MedRadar health check (liveness + readiness + resources).
+
+===== BOOTS =====
+         system boot  2026-11-16 03:03
+
+wtmp begins Mon Nov 16 03:09:09 2026
+
+wtmp begins Mon Nov 16 03:09:09 2026
+
+===== BACKUP_DIRS =====
+
+===== SNAPSHOTS =====
+
+===== PIPELINE_STATUS =====
+
+===== HEALTH_SCRIPT =====
+-rwxr-xr-x 1 root root  910 Nov 16 04:07 /usr/local/bin/medradar-backup
+-rwxr-xr-x 1 root root 2318 Nov 16 04:07 /usr/local/bin/medradar-health
+#!/usr/bin/env bash
+# MedRadar health check (CLOUD-003). Liveness + readiness + resource checks.
+# Exit code is always 0 so the timer stays quiet; status is in stdout/journal/state file.
+set -u
+APP="http://127.0.0.1:8787"
+STATE="/var/lib/medradar-health"
+mkdir -p "$STATE"
+ts=$(date -Is)
+crit=0; warn=0; msgs=""
+
+add() { if [ -z "$msgs" ]; then msgs="$1"; else msgs="$msgs,$1"; fi; }
+
+if systemctl is-active --quiet medradar-web; then live=up; else live=down; crit=1; add "systemd:down"; fi
+
+code=$(curl -s -o /dev/null -m 5 -w '%{http_code}' "$APP/api/health" 2>/dev/null || echo 000)
+if [ "$code" != "200" ]; then crit=1; live="${live}/http${code}"; add "http_health:$code"; fi
+
+q=$(curl -s -m 10 "$APP/api/devices/quality" 2>/dev/null || true)
+case "$q" in *index_build_ms*) ready=yes ;; *) ready=no; crit=1; add "device_index:not_ready" ;; esac
+
+o=$(curl -s -m 10 "$APP/api/organizations" 2>/dev/null || true)
+case "$o" in *medtronic*) org=yes ;; *) org=no; warn=1; add "org_query:fail" ;; esac
+
+memavail=$(awk '/MemAvailable/{print int($2/1024)}' /proc/meminfo)
+swapused=$(free -m | awk '/^Swap:/{print $3}')
+diskavail=$(df -Pm / | awk 'NR==2{print $4}')
+restarts=$(systemctl show medradar-web -p NRestarts --value 2>/dev/null || echo 0)
+
+[ "${memavail:-0}" -lt 300 ] && { crit=1; add "mem_avail:${memavail}MB"; }
+[ "${diskavail:-0}" -lt 5000 ] && { crit=1; add "disk_free:${diskavail}MB"; }
+[ "${swapused:-0}" -gt 1024 ] && { warn=1; add "swap_used:${swapused}MB"; }
+[ "${restarts:-0}" -gt 3 ] && { warn=1; add "nrestarts:${restarts}"; }
+
+status=ok
+[ "$warn" -eq 1 ] && status=warn
+[ "$crit" -eq 1 ] && status=critical
+
+printf '%s status=%s systemd=%s index=%s org_query=%s mem_avail=%sMB swap=%sMB disk_free=%sMB restarts=%s issues=%s\n' \
+  "$ts" "$status" "$live" "$ready" "$org" "$memavail" "$swapused" "$diskavail" "$restarts" "${msgs:-none}"
+
+printf '{"ts":"%s","status":"%s","systemd":"%s","device_index":"%s","org_query":"%s","mem_available_mb":%s,"swap_used_mb":%s,"disk_available_mb":%s,"nrestarts":%s,"issues":"%s"}\n' \
+  "$ts" "$status" "$live" "$ready" "$org" "${memavail:-0}" "${swapused:-0}" "${diskavail:-0}" "${restarts:-0}" "${msgs:-none}" > "$STATE/last.json"
+
+if [ "$status" != "ok" ]; then
+  logger -t medradar-health -p user.warning "medradar health $status issues=${msgs:-none}"
+fi
+exit 0
+===== END =====
+2026-11-16T17:17:49Z
+bash: line 171: $'\r': command not found

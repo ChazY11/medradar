@@ -1,0 +1,181 @@
+{
+  "data_dir": "D:\\DEPPSKK\\worktrees\\data003\\.data\\active",
+  "final": {
+    "heap": null,
+    "peak_rss": 969359360,
+    "rss": 957452288,
+    "swap": 0
+  },
+  "label": "full/rss",
+  "objects_index": {
+    "Application": 61632,
+    "Category": 2435,
+    "Decision": 1590,
+    "DeviceIdentity": 23974,
+    "DeviceRelation": 77823,
+    "Event": 91458,
+    "EvidenceRef": 158629,
+    "Field": 296,
+    "ProductFamily": 630,
+    "RecallRecord": 29825,
+    "ReferenceType": 1127,
+    "builtin_function_or_method": 924,
+    "cell": 508,
+    "dict": 122147,
+    "frozenset": 154,
+    "function": 3677,
+    "getset_descriptor": 778,
+    "list": 97505,
+    "member_descriptor": 437,
+    "method_descriptor": 1105,
+    "module": 156,
+    "property": 220,
+    "tuple": 80142,
+    "type": 603,
+    "wrapper_descriptor": 1357
+  },
+  "objects_load": {
+    "Category": 2435,
+    "Decision": 1590,
+    "Event": 91458,
+    "Field": 196,
+    "ModuleSpec": 137,
+    "ReferenceType": 1066,
+    "SourceFileLoader": 79,
+    "_abc_data": 77,
+    "_tuplegetter": 81,
+    "builtin_function_or_method": 897,
+    "cell": 417,
+    "classmethod": 124,
+    "dict": 122038,
+    "frozenset": 134,
+    "function": 3364,
+    "getset_descriptor": 738,
+    "list": 25475,
+    "member_descriptor": 433,
+    "method_descriptor": 948,
+    "module": 139,
+    "property": 203,
+    "set": 131,
+    "tuple": 2181,
+    "type": 571,
+    "wrapper_descriptor": 1303
+  },
+  "objects_start": {
+    "ABCMeta": 62,
+    "CField": 53,
+    "ModuleSpec": 105,
+    "ReferenceType": 793,
+    "SourceFileLoader": 54,
+    "StgDict": 72,
+    "_NamedIntConstant": 76,
+    "_abc_data": 72,
+    "builtin_function_or_method": 843,
+    "cell": 198,
+    "classmethod": 106,
+    "dict": 1106,
+    "frozenset": 100,
+    "function": 2393,
+    "getset_descriptor": 603,
+    "list": 304,
+    "member_descriptor": 369,
+    "method_descriptor": 841,
+    "module": 107,
+    "property": 134,
+    "set": 89,
+    "staticmethod": 52,
+    "tuple": 1318,
+    "type": 346,
+    "wrapper_descriptor": 1200
+  },
+  "platform": "Windows-11-10.0.26200-SP0",
+  "probe": "data003.memory_probe.v1",
+  "python": "3.12.10",
+  "reloads": [],
+  "stages": [
+    {
+      "at_s": 0.0,
+      "memory": {
+        "pagefile_peak": 11239424,
+        "peak_rss": 18874368,
+        "private": 11239424,
+        "rss": 18874368
+      },
+      "stage": "process_start"
+    },
+    {
+      "at_s": 0.062,
+      "memory": {
+        "pagefile_peak": 14684160,
+        "peak_rss": 21798912,
+        "private": 14684160,
+        "rss": 21798912
+      },
+      "stage": "import"
+    },
+    {
+      "applicants": 1563,
+      "at_s": 6.592,
+      "events": 91457,
+      "load_ms": 6529.2,
+      "memory": {
+        "pagefile_peak": 888283136,
+        "peak_rss": 889049088,
+        "private": 864804864,
+        "rss": 866263040
+      },
+      "organizations": 59,
+      "snapshot_id": "fda-snapshot-20261116T032632Z-18ce4d0cbbe4",
+      "stage": "load",
+      "top_allocations": []
+    },
+    {
+      "at_s": 7.299,
+      "memory": {
+        "pagefile_peak": 888283136,
+        "peak_rss": 889049088,
+        "private": 866934784,
+        "rss": 867987456
+      },
+      "queries_ms": 622.8,
+      "stage": "queries",
+      "workload": {
+        "organizations": 59,
+        "sample_keys": [
+          "draeger",
+          "ge_healthcare",
+          "medtronic"
+        ],
+        "timings": {
+          "events_recall_ms": 58.2,
+          "events_sorted_ms": 47.6,
+          "metrics_ms": 426.2,
+          "organization_draeger_ms": 0.3,
+          "organization_ge_healthcare_ms": 11.0,
+          "organization_medtronic_ms": 76.1,
+          "organizations_ms": 0.1,
+          "search_ms": 2.7
+        }
+      }
+    },
+    {
+      "applications": 61632,
+      "at_s": 13.256,
+      "build_ms": 5865.629,
+      "devices": 23974,
+      "families": 630,
+      "index_ms": 5956.4,
+      "memory": {
+        "pagefile_peak": 960065536,
+        "peak_rss": 960561152,
+        "private": 956170240,
+        "rss": 956710912
+      },
+      "recalls": 29825,
+      "relations": 77823,
+      "stage": "device_index",
+      "top_allocations": []
+    }
+  ],
+  "tracemalloc": false
+}
