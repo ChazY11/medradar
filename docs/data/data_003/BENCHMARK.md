@@ -9,7 +9,7 @@ device index was warm. No number is compared across different conditions.
 |---|---|
 | Snapshot | `fda-snapshot-20261116T032632Z-18ce4d0cbbe4` (91,457 events, 25,007,667 B `events.jsonl.gz`) |
 | Baseline tree | `edbde0a` (DATA-002 tip, production code `bb1ef34` + docs), `D:\DEPPSKK\data003-baseline` |
-| Optimised tree | branch `feat/data-003-runtime-reliability`, commit recorded in the Draft PR |
+| Optimised tree | branch `feat/data-003-runtime-reliability`, code commit `b1b841bdc2381b910cdbd53efa75c8aa3a791ddd` (PR #52) |
 | Benchmark host | Windows 11, 16 logical CPUs, 32 GiB, Python 3.12.10 (busy: other agents were using CPUs; absolute timing is *not* production timing) |
 | Production host | Ubuntu 24.04, 2 vCPU, 3.72 GiB, Python from `/srv/medradar/.venv` (read-only baseline only) |
 | Data root for web runs | isolated copy of `/srv/medradar/data/fda` (pipeline.db + 6 real snapshots) |
