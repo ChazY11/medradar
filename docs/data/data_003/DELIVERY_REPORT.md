@@ -46,11 +46,11 @@ merge.
 | Goal | Verdict | Basis |
 |---|---|---|
 | **G1 Root cause** | **PASS** | Measured live dataset, switch delta, lock path; production readings agree with the isolated reproduction. |
-| **G2 Memory improvement** | **PASS** | −65 % steady, −60 % switch peak, same snapshot and host; fingerprint-identical semantics. |
+| **G2 Memory improvement** | **PASS** | −65 % steady, −60 % switch peak, same snapshot and host; on the real production host the optimised build needs 335 MB (index included) and peaks at 790 MB across two switches under a 1.1 GB cap with swap disabled; semantics fingerprint-identical. |
 | **G3 Request availability** | **PASS** | Same load + same switch: baseline 20 s stalls and 2 timeouts vs 0 timeouts, health ≤ 163 ms; real FDA sync under load: 0 timeouts, health max 259 ms. Residual: GIL slowdown under saturating CPU load (disclosed). |
 | **G4 Resource protection** | **PASS** | Deferral keeps the old data, records reasons, retries, escalates; a real CLI deferral touched nothing (peak 31 MB, pointer unchanged). |
 | **G5 No regression** | **PASS** | Byte-identical dataset/index/quality digests; full pytest suite; API additions only; no evidence field removed. |
-| **G6 Repeatability** | **PASS** | Three reload cycles bounded (781 MB peak, no growth), four independent measurement setups, same digests on re-run. |
+| **G6 Repeatability** | **PASS** | Three reload cycles bounded (781 MB Windows / 790 MB production, no growth), four independent measurement setups, same digests on re-run. |
 | **G7 Production safety** | **PASS (as delivered)** | Everything is on a branch; a fixed-SHA deploy + rollback plan is written and **not executed**. |
 
 ## 4. What is still limited (do not oversell)
@@ -63,10 +63,11 @@ merge.
    does not shrink it. That is a separate project (streaming change-set build/validation).
 3. **The web still has no `MemoryMax`.** A guard prevents the known doubling; it does not cap an
    unknown leak. A `MemoryHigh` on a 4 GB host would throttle rather than protect.
-4. **Production numbers are projections.** All optimised measurements ran on the 32 GB Windows
-   benchmark host against the identical snapshot. The deployment verification table is the place
-   where the real post-change `memory.current`/`memory.peak` must be recorded; if the win is not
-   there, the change request says to roll back.
+4. **The optimised build was measured on the production host**, in an isolated capped scope
+   (Step 9): 335 MB dataset+index, 790 MB two-switch peak, zero swap, no OOM, host state
+   unchanged (`MEMORY_PROFILE.md` §7). What is *not* measured yet is the running production
+   **service** after deployment; the change request requires recording `memory.current`/
+   `memory.peak` and rolling back if the win is not there.
 5. **Backups are still same-host.** Not disaster recovery; unchanged by this task.
 6. **The health adapter is a proposal.** CLOUD-003's script is untouched in production.
 
