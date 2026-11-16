@@ -105,6 +105,10 @@ desirable; it was not attempted as an unapproved architecture change.
   `/srv/medradar/var/backup/data002-pre/app-1bdb1c3.tar.gz`,
   `package-snapshot/`, `medradar-web.service.before`; old SHA
   `1bdb1c349c59713e1a11426f15a6c06e892f87e0`.
+* Old-code spot check: extracted the archive to `/tmp/medradar-old` and served the old
+  `2026-11-14T22:09:22Z-openfda` snapshot on port 8789; `/` and `/api/health` returned 200,
+  old status `ok`, version `2.0.0-product-002`. The process was stopped; production was not
+  touched. Evidence: `evidence/old-code-rollback-check.txt`.
 
 ## Remaining risks
 

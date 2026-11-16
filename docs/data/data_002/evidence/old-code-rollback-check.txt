@@ -1,0 +1,17 @@
+Old-code rollback spot check (isolated port 8789, production untouched)
+Date: 2026-11-16 11:41 CST
+
+Source archive: /srv/medradar/var/backup/data002-pre/app-1bdb1c3.tar.gz
+Old code SHA: 1bdb1c349c59713e1a11426f15a6c06e892f87e0
+Extracted: /tmp/medradar-old
+Command: PYTHONPATH=/tmp/medradar-old .venv/bin/python -m medradar.product.web --port 8789 --no-reload
+
+Results:
+- old_home_http=200
+- old_health_http=200
+- old_status=ok
+- old_version=2.0.0-product-002
+- old_snapshot=2026-11-14T22:09:22Z-openfda
+- /api/livez is 404 on the old code, as expected (endpoint added by DATA-002).
+
+The old code process was stopped after the check; it did not use the production data root or port 8787.

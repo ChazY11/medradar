@@ -18,6 +18,7 @@ No production data directory, service unit or timer was changed.
 | `production-final-data-status.png` | Production Data Status after final sync |
 | `prod-final-health.json`, `prod-final-data-status.json`, `prod-final-evidence.txt` | Final production health/status/resources/source versions |
 | `production-timer.txt` | Systemd timer installation/automatic trigger/backup/restore |
+| `old-code-rollback-check.txt` | Extracted old SHA serving old snapshot on isolated port 8789 |
 | `data002-sync-510k/pma/recall` | Real per-source production syncs and peaks |
 
 Raw FDA responses and full snapshots are not committed. The commands and state root are in
