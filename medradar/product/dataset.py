@@ -84,13 +84,14 @@ def default_data_dir() -> Path:
 DEFAULT_DATA_DIR = default_data_dir()
 
 PRODUCT_NAME = "MedRadar"
-PRODUCT_VERSION = "2.2.0-data-002"
+PRODUCT_VERSION = "2.3.0-product-004"
 PRODUCT_POSITIONING_EN = (
-    "Medical technology intelligence: traceable FDA regulatory records for the companies you "
-    "compete with, with the identity and time limits stated on every screen."
+    "Medical technology intelligence: turn traceable FDA regulatory records into a defensible "
+    "competitive brief, with identity, time and coverage limits stated on every screen."
 )
 PRODUCT_POSITIONING_ZH = (
-    "医疗技术情报平台：以可追溯的 FDA 监管记录为核心，比较目标企业的监管活动，并在每个页面上明确标注身份归属与时间语义的边界。"
+    "医疗技术情报平台：把可追溯的 FDA 监管记录转化为可接受事实核查的竞争情报简报，"
+    "并在每个页面上明确标注身份归属、时间语义与覆盖范围。"
 )
 
 SOURCE_NAMES = {
@@ -384,6 +385,12 @@ class Dataset:
     categories: list[Category]
     registry: Registry
     org_stats: dict[str, OrgStats]
+    #: PRODUCT-004: the official FDA classification row per product code. The dataset previously
+    #: kept only the specialty category and the device class, which forced every technology view to
+    #: group by a specialty the FDA itself marks "Unknown" for most class III codes. Keeping the
+    #: official device name (7,098 rows) lets the product show what the code actually is while
+    #: preserving the source string; it is bounded, read-only and small next to the events.
+    classification_by_code: dict[str, dict[str, str | None]]
     global_counts: dict[str, Any]
     global_aggregations: dict[str, Any]
     global_by_type: dict[str, int] = field(default_factory=dict)
@@ -552,6 +559,7 @@ class Dataset:
         query: str | None = None,
         review: str | None = None,
         basis: str | None = None,
+        product_code: str | None = None,
     ) -> list[Event]:
         pools: list[Event]
         if org_keys:
@@ -570,6 +578,7 @@ class Dataset:
         from_date = _parse_date(date_from)
         to_date = _parse_date(date_to)
         category_set = {item for item in categories or [] if item}
+        code_filter = (product_code or "").strip().upper() or None
         needle = (query or "").strip().casefold()
         review = (review or "").strip() or None
         if review == "any":
@@ -603,6 +612,8 @@ class Dataset:
                 category_id = event.category.id if event.category else "unclassified"
                 if category_id not in category_set:
                     continue
+            if code_filter and (event.product_code or "").upper() != code_filter:
+                continue
             if review is not None and not _matches_review(event, review):
                 continue
             if basis == "historical_owner_verified":
@@ -715,6 +726,9 @@ class Dataset:
             },
             "metric_definitions": status_module.metric_definitions(),
             "metrics": self.metrics_summary(),
+            # PRODUCT-004 fix: the homepage chart says "across the whole snapshot" and must not be
+            # derived from a page of 12 events. The aggregation is already computed at load time.
+            "global_aggregations": self.global_aggregations,
             "ownership": {
                 "verified_relations": sum(1 for relation in ownership_module.ownership().relations if relation.verified),
                 "unresolved_relations": sum(1 for relation in ownership_module.ownership().relations if not relation.verified),
@@ -950,6 +964,14 @@ class Dataset:
             },
             "counts": stats.counts,
             "aggregations": stats.aggregations,
+            "technology": {
+                "product_families": self.product_family_rows(self.org_events(key), limit=10),
+                "specialty_note": (
+                    "The FDA classification dictionary states 'Unknown' as the medical specialty for many "
+                    "class III product codes. The product-code table uses the official classification device "
+                    "name instead, so those records remain interpretable."
+                ),
+            },
             "recent_events": stats.recent_events,
             "data_quality_notes": self._org_quality_notes(org, stats),
             "basis": self.basis(self.org_events(key), rule="Count of records attributed to this organization by exact applicant spelling."),
@@ -1028,6 +1050,64 @@ class Dataset:
         return {
             event_type: (round(totals[event_type] / self.global_by_type.get(event_type, 1), 6) if totals[event_type] else 0.0)
             for event_type in EVENT_TYPE_ORDER
+        }
+
+
+    def product_family_rows(self, events: Sequence[Event], limit: int = 12) -> dict[str, Any]:
+        """Group records by official FDA product code and join the classification name.
+
+        PRODUCT-004. A product code is the only technology grouping the snapshot can support
+        without inventing one: the code and its official classification name both come from FDA.
+        The rows are counts of records, never "products" or "programmes". Codes that the
+        classification dictionary does not contain are returned separately instead of being
+        merged into a category.
+        """
+        buckets: dict[str, dict[str, Any]] = {}
+        missing = 0
+        total = 0
+        for event in events:
+            total += 1
+            code = (event.product_code or "").upper()
+            if not code:
+                missing += 1
+                continue
+            row = buckets.get(code)
+            if row is None:
+                meta = self.classification_by_code.get(code) or {}
+                row = {
+                    "product_code": code,
+                    "official_name": meta.get("device_name"),
+                    "specialty": meta.get("specialty") or "Unclassified",
+                    "device_class": meta.get("device_class"),
+                    "regulation_number": meta.get("regulation_number"),
+                    "in_classification_dictionary": bool(meta),
+                    "records": 0,
+                    "by_type": {event_type: 0 for event_type in EVENT_TYPE_ORDER},
+                    "first_event_date": None,
+                    "last_event_date": None,
+                }
+                buckets[code] = row
+            row["records"] += 1
+            row["by_type"][event.event_type] = row["by_type"].get(event.event_type, 0) + 1
+            if event.event_date:
+                if row["first_event_date"] is None or event.event_date < row["first_event_date"]:
+                    row["first_event_date"] = event.event_date
+                if row["last_event_date"] is None or event.event_date > row["last_event_date"]:
+                    row["last_event_date"] = event.event_date
+        rows = sorted(buckets.values(), key=lambda item: (-item["records"], item["product_code"]))
+        for row in rows:
+            row["share"] = round(row["records"] / total, 6) if total else None
+        return {
+            "rows": rows[:limit],
+            "row_count": len(rows),
+            "records": total,
+            "records_without_product_code": missing,
+            "not_in_classification_dictionary": sum(1 for row in rows if not row["in_classification_dictionary"]),
+            "note": (
+                "One row per official FDA product code. The name is the FDA classification device name, "
+                "not a commercial brand or a MedRadar-defined technology segment. Counts are regulatory "
+                "records, not products in development."
+            ),
         }
 
 
@@ -1289,6 +1369,22 @@ def load_dataset(
 
     applicant_by_name = {str(row.get("applicant_name")): row for row in applicants}
 
+    # PRODUCT-004: preserve the official classification name per product code. The category list
+    # keeps only id/label; this map keeps the source device name, class and regulation number so a
+    # technology view can show *what the code is* without inventing a grouping.
+    classification_by_code: dict[str, dict[str, str | None]] = {}
+    for row in classifications:
+        code = str(row.get("product_code") or "").upper()
+        if not code:
+            continue
+        classification_by_code[code] = {
+            "product_code": code,
+            "device_name": row.get("device_name"),
+            "specialty": row.get("specialty"),
+            "device_class": row.get("device_class"),
+            "regulation_number": row.get("regulation_number"),
+        }
+
     dataset = Dataset(
         data_dir=base,
         manifest=manifest,
@@ -1298,6 +1394,7 @@ def load_dataset(
         categories=category_list,
         registry=registry,
         org_stats={},
+        classification_by_code=classification_by_code,
         global_counts={},
         global_aggregations={},
     )

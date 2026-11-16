@@ -231,3 +231,19 @@ successful sync. See `docs/data/data_002/PRODUCTION_READINESS.md`.
   results recorded in `docs/product/ACCEPTANCE.md` and `acceptance-report.json`.
 
 The research test suite is unaffected and still runs (`python -m medradar selftest` / pytest).
+
+---
+
+## PRODUCT-004 module map (additive)
+
+* `medradar/product/brief.py` — scope resolution, company/comparison/device brief builders, the
+  `brief-findings-v1` rule set, `explain_metric`, Markdown and Evidence Appendix CSV rendering.
+* `medradar/product/api.py` — `/api/brief`, `/api/brief/explain`, `/api/export/brief.md`,
+  `/api/export/brief-evidence.csv`; `product_code` on the event routes.
+* `medradar/product/dataset.py` — `classification_by_code`, `product_family_rows`,
+  `technology` on the organization profile, `global_aggregations` on `/api/meta`.
+* `web/src/pages/BriefPage.tsx`, `web/src/components/ExplainDrawer.tsx` — the workspace and the
+  difference drawer; `web/src/lib/brief.ts` — language/format helpers.
+* `tests/product/test_brief.py` — reproducibility, finding contract, exports, explain, device
+  relation separation and API contract.
+* `scripts/product_004_acceptance.mjs` — real-browser acceptance for scenarios A–D and regressions.

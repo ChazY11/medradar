@@ -10,6 +10,7 @@ import { DevicesPage } from "./pages/DevicesPage";
 import { DevicePage } from "./pages/DevicePage";
 import { SourcesPage } from "./pages/SourcesPage";
 import { DataStatusPage } from "./pages/DataStatusPage";
+import { BriefPage } from "./pages/BriefPage";
 import { EmptyState } from "./components/ui";
 
 export default function App() {
@@ -17,6 +18,7 @@ export default function App() {
     <AppShell>
       <Routes>
         <Route path="/" element={<OverviewPage />} />
+        <Route path="/brief" element={<BriefPage />} />
         <Route path="/organizations" element={<OrganizationsPage />} />
         <Route path="/organizations/:key" element={<OrganizationPage />} />
         <Route path="/events" element={<EventsPage />} />

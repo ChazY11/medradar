@@ -231,6 +231,7 @@ export interface MetaResponse {
   event_types: EventTypeInfo[];
   categories: Category[];
   coverage: MetaCoverage;
+  global_aggregations?: Aggregations;
   time_semantics: TimeSemantic[];
   limitations: string[];
   methodology_url: string;
@@ -380,6 +381,7 @@ export interface OrganizationProfile {
   coverage: OrganizationCoverage;
   counts: Counts;
   aggregations: Aggregations;
+  technology?: OrganizationTechnology;
   recent_events: EventRecord[];
   data_quality_notes: string[];
   basis: Basis;
@@ -1023,4 +1025,355 @@ export interface ChangesResponse {
   filters: Record<string, string | null>;
   note?: string;
   message?: string;
+}
+
+/* ------------------------------------------------------------------ PRODUCT-004 intelligence brief */
+
+export interface Bilingual {
+  en: string;
+  zh: string;
+}
+
+export interface BriefScope {
+  from: string;
+  to: string;
+  requested_years: number | null;
+  complete_years: string[];
+  partial_years: string[];
+  label: string;
+  label_short: string;
+  note: string;
+  event_types: EventType[];
+  event_type_labels: string[];
+  ownership_basis: string;
+  review_filter: string;
+  counting_rule: Bilingual;
+  snapshot: SnapshotRef;
+  freshness: Freshness;
+  generated_at: string;
+}
+
+export interface BriefRecordRef {
+  event_id: string;
+  official_id: string;
+  event_type: EventType;
+  event_date: string | null;
+  published_at?: string | null;
+  first_observed_at?: string | null;
+  official_url: string;
+  device_name: string | null;
+  applicant_name: string | null;
+  organization_key: string | null;
+  product_code: string | null;
+  attribution_verification: string;
+  attribution_verified: boolean;
+  verification_label_en: string;
+  verification_label_zh: string;
+  record_state?: string;
+}
+
+export interface BriefFinding {
+  id: string;
+  category: "finding" | "caution";
+  title: Bilingual;
+  statement: Bilingual;
+  cannot_conclude: Bilingual;
+  basis: { rule: string; inputs: Record<string, unknown>; rules_version: string };
+  evidence: { record_count: number; records: BriefRecordRef[]; note: Bilingual | null };
+  drilldown: { url?: string; label?: Bilingual };
+}
+
+export interface BriefTypeRow {
+  event_type: EventType;
+  label: string;
+  label_zh: string;
+  count: number;
+  share: number | null;
+  definition: Bilingual;
+}
+
+export interface BriefYearRow {
+  year: string;
+  counts: Record<EventType, number>;
+  total: number;
+  partial: boolean;
+}
+
+export interface BriefProductFamily {
+  product_code: string;
+  official_name: string | null;
+  specialty: string;
+  device_class: string | null;
+  regulation_number: string | null;
+  in_classification_dictionary: boolean;
+  records: number;
+  by_type: Record<EventType, number>;
+  first_event_date: string | null;
+  last_event_date: string | null;
+  share: number | null;
+}
+
+export interface BriefPmaFamily {
+  pma_number: string;
+  family_id: string;
+  name: string;
+  device_id: string | null;
+  device_url: string;
+  original_in_snapshot: boolean;
+  supplement_count_total: number | null;
+  supplements_in_window: number;
+  records_in_window: number;
+  first_event_date: string | null;
+  last_event_date: string | null;
+  evidence_records: BriefRecordRef[];
+}
+
+export interface BriefTile {
+  id: string;
+  label: Bilingual;
+  value: string | number;
+  note: Bilingual;
+}
+
+export interface BriefChangeItem {
+  change_type?: string;
+  source_id?: string;
+  official_id?: string;
+  observed_at?: string;
+  created_at?: string;
+  [key: string]: unknown;
+}
+
+export interface BriefChanges {
+  state: string;
+  observed_at: string;
+  counts: Record<string, number>;
+  items: BriefChangeItem[];
+  note: Bilingual;
+}
+
+export interface BriefLimitations {
+  scope?: Bilingual[];
+  coverage?: Bilingual[];
+  identity?: Bilingual[];
+  time?: Bilingual[];
+  relationship?: Bilingual[];
+  cannot_answer?: Bilingual[];
+}
+
+export interface BriefLimitationsBlock extends BriefLimitations {
+  organization_key?: string;
+  display_name?: string;
+  state?: string;
+}
+
+export interface CompanyBrief {
+  schema: string;
+  kind: "company";
+  generated_at: string;
+  rules_version: string;
+  title: Bilingual;
+  question: Bilingual;
+  scope: BriefScope;
+  organization: {
+    key: string;
+    display_name: string;
+    display_name_zh: string | null;
+    legal_name: string | null;
+    ticker: string | null;
+    exchange: string | null;
+    country: string | null;
+    country_name: string | null;
+    description: string;
+    registry_review: string;
+    registry_updated_at: string;
+  };
+  summary: {
+    records: number;
+    dated: number;
+    undated: number;
+    by_type: BriefTypeRow[];
+    tiles: BriefTile[];
+    sources: CompareSourceCoverage[];
+    verification: {
+      attributed_records: number;
+      verified_records: number;
+      rule_verified_records: number;
+      provisional_records: number;
+      curated_share: number | null;
+      rule_verified_share: number | null;
+      provisional_share: number | null;
+      by_status: Record<string, number>;
+      note: Bilingual;
+    };
+    ownership: {
+      state_at_event_time: { verified_current_group: number; verified_predecessor: number; unknown: number };
+      note: Bilingual;
+    };
+  };
+  activity: {
+    by_type: BriefTypeRow[];
+    by_year: BriefYearRow[];
+    complete_years: string[];
+    partial_years: string[];
+    note: Bilingual;
+  };
+  technology: {
+    specialty: {
+      rows: { id: string; label: string; count: number; share: number | null; by_type: Record<EventType, number> }[];
+      unknown_count: number;
+      unknown_share: number | null;
+      unclassified_count: number;
+      note: Bilingual;
+    };
+    product_families: {
+      rows: BriefProductFamily[];
+      row_count: number;
+      records: number;
+      records_without_product_code: number;
+      not_in_classification_dictionary: number;
+      note: Bilingual;
+    };
+  };
+  devices: {
+    families: BriefPmaFamily[];
+    total_families_in_window: number;
+    note: Bilingual;
+  };
+  recent: { records: BriefRecordRef[]; note: Bilingual };
+  findings: BriefFinding[];
+  changes: BriefChanges;
+  evidence: {
+    sources: CompareSourceCoverage[];
+    snapshot: SnapshotRef;
+    official_links: { label: string; official_id: string; event_type?: string; event_date?: string; url: string }[];
+    appendix: { rows: number; note: Bilingual };
+  };
+  limitations: BriefLimitations;
+}
+
+export interface CompareMetric {
+  id: string;
+  label: Bilingual;
+  definition: Bilingual;
+  unit: string;
+  values: { key: string; name: string; value: number; share: number | null }[];
+  drilldown: Record<string, string>;
+}
+
+export interface BriefSide {
+  key: string;
+  display_name: string;
+  legal_name: string | null;
+  ticker: string | null;
+  country: string | null;
+  counts: Counts;
+  counts_by_type: Record<EventType, number>;
+  coverage: CompareCoverage;
+  verification: {
+    attributed_records: number;
+    verified_records: number;
+    rule_verified_records: number;
+    provisional_records: number;
+    curated_share: number | null;
+    rule_verified_share: number | null;
+    provisional_share: number | null;
+    by_status: Record<string, number>;
+  };
+  historical_ownership: CompareHistoricalOwnership;
+  per_year_totals: PerYearTotal[];
+}
+
+export interface CompareBrief {
+  schema: string;
+  kind: "compare";
+  generated_at: string;
+  rules_version: string;
+  title: Bilingual;
+  question: Bilingual;
+  scope: BriefScope;
+  sides: BriefSide[];
+  comparability: CompareComparability;
+  coverage_assessment: {
+    symmetric: boolean;
+    status: string;
+    per_side: { key: string; name: string; source_count: number; sources: CompareSourceCoverage[] }[];
+    note: Bilingual;
+  };
+  warnings: CompareWarning[];
+  metrics: CompareMetric[];
+  by_year: { key: string; name: string; rows: BriefYearRow[] }[];
+  specialty: { note: Bilingual };
+  findings: BriefFinding[];
+  changes: (BriefChanges & { organization_key: string; display_name: string })[];
+  disclaimer: string;
+  not_evidence_of: string[];
+  evidence: {
+    sources: { key: string; name: string; sources: CompareSourceCoverage[] }[];
+    snapshot: SnapshotRef;
+    official_links: { label: string; official_id: string; event_type?: string; event_date?: string; organization_key?: string; url: string }[];
+    appendix: { rows: number; note: Bilingual };
+  };
+  limitations: BriefLimitations;
+}
+
+export interface DeviceBrief {
+  schema: string;
+  kind: "device";
+  generated_at: string;
+  title: Bilingual;
+  question: Bilingual;
+  scope: BriefScope;
+  device: Record<string, unknown> & { name?: string; official_id?: string; applicant_name?: string; product_code?: string; device_class?: string; identity_basis?: string; identity_basis_text?: string };
+  family: Record<string, unknown> | null;
+  application: Record<string, unknown> | null;
+  versions: Record<string, unknown>[];
+  supplements_count: number;
+  tiles: BriefTile[];
+  timeline: Record<string, unknown>[];
+  relations: { confirmed_count: number; candidate_count: number; confirmed_rule: Bilingual; candidate_rule: Bilingual };
+  related_recalls: {
+    confirmed: Record<string, unknown>[];
+    candidate: Record<string, unknown>[];
+    note: Bilingual;
+    unlinked_url: string;
+  };
+  findings: BriefFinding[];
+  changes: BriefChanges;
+  evidence: {
+    snapshot: SnapshotRef;
+    official_links: { label: string; official_id: string; url: string; event_type?: string; event_date?: string }[];
+    appendix: { rows: number; note: Bilingual };
+  };
+  limitations: BriefLimitations;
+}
+
+export type Brief = CompanyBrief | CompareBrief | DeviceBrief;
+
+export interface ExplainRecord extends BriefRecordRef {}
+
+export interface ExplainResponse {
+  schema: string;
+  metric: string;
+  label: Bilingual;
+  definition: Bilingual;
+  unit: string;
+  scope: BriefScope;
+  event_types: EventType[];
+  filters: { category: string | null; product_code: string | null; ownership_basis: string; review_filter: string };
+  denominator: { label: Bilingual; value: number };
+  sides: { key: string; name: string; count: number; records: ExplainRecord[]; drilldown: string }[];
+  note: Bilingual;
+}
+
+export interface OrganizationTechnology {
+  product_families: {
+    rows: BriefProductFamily[];
+    row_count: number;
+    records: number;
+    records_without_product_code: number;
+    not_in_classification_dictionary: number;
+    note: string;
+  };
+  specialty_note: string;
 }

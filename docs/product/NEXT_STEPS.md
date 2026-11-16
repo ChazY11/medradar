@@ -81,3 +81,25 @@ The snapshot is manual today. The draft observatory branches (#13/#14) already s
   validated out-of-sample signal; shipping one would contradict the repository's own evidence.
 * A hosted SaaS with accounts and billing: no paying user, no infrastructure budget, and it would
   distract from the data-quality work above.
+
+---
+
+## PRODUCT-004 follow-ups (recommended next phase)
+
+1. **Saved briefs / workspace** — persist a brief (question, scope, snapshot, generated files) so a
+   team can return to it after the snapshot changes. This needs storage and accounts; deliberately
+   out of scope here.
+2. **Change-aware briefs** — when DATA-001 is configured, diff two snapshots inside the same brief
+   scope and add a "what changed since the last brief" section (records added, updated, retained),
+   with the same evidence and limitation treatment. The current changes section already reads the
+   ledger; this is a UI and diff-policy extension.
+3. **More finding rules only after user testing** — e.g. family-level supplement cadence, recall
+   clustering by product code, or window-normalised comparisons. Add a rule only when its threshold
+   can be defended and its "does not mean" clause is written.
+4. **A second data source with the same contract** — e.g. EU MDR or NMPA once a legal, stable access
+   path exists, so "regulatory activity" is not US-only. Do not fake coverage in the meantime.
+5. **Per-metric custom denominators** in Explain (e.g. share within a specialty rather than within
+   the side) after confirming analysts need it.
+6. **Translation completion** for the inherited Compare/Sources pages, replacing the explicit
+   "English source text" labels.
+7. **PDF generation** only if browser print proves insufficient in real distribution.

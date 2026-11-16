@@ -546,3 +546,111 @@ event occurred; it reports source-record changes detected by MedRadar.
 
 Every route requires `X-MedRadar-Review-Token` and a loopback client; the public application has no
 `/api/review` route at all (404).
+
+---
+
+## PRODUCT-004 additions (v3, additive)
+
+Product version `2.3.0-product-004`. No existing route or field was removed or renamed.
+
+### Common brief objects
+
+```ts
+interface Bilingual { en: string; zh: string }
+
+interface BriefScope {
+  from: string; to: string;
+  requested_years: number | null;      // null for an explicit from/to window
+  complete_years: string[];
+  partial_years: string[];
+  label: string; label_short: string; note: string;
+  event_types: EventType[];
+  event_type_labels: string[];
+  ownership_basis: string;             // current_group | historical_owner_verified
+  review_filter: string;               // any | curated | rule_verified | provisional | ...
+  counting_rule: Bilingual;
+  snapshot: SnapshotRef;
+  freshness: Freshness;
+  generated_at: string;
+}
+
+interface BriefFinding {
+  id: string;
+  category: "finding" | "caution";
+  title: Bilingual;
+  statement: Bilingual;
+  cannot_conclude: Bilingual;
+  basis: { rule: string; inputs: Record<string, unknown>; rules_version: string };
+  evidence: { record_count: number; records: BriefRecordRef[]; note: Bilingual | null };
+  drilldown: { url?: string; label?: Bilingual };
+}
+```
+
+`BriefRecordRef` is the record minimum used in findings and recent activity: `event_id,
+official_id, event_type, event_date, published_at, first_observed_at, official_url, device_name,
+applicant_name, organization_key, product_code, attribution_verification, attribution_verified,
+verification_label_en, verification_label_zh, record_state`.
+
+### `GET /api/brief`
+
+Query: `mode=company|compare|device` (default `company`), `org`, `orgs` (comma-separated),
+`device`, `years=3|5|10`, `from`, `to`, `types` (comma-separated), `basis`, `review`.
+
+* `mode=company` requires `org`; `mode=compare` requires 2–4 `orgs`; `mode=device` requires a PMA /
+  510(k) / device identifier.
+* `years` is ignored when both `from` and `to` are supplied. `years` other than 3/5/10 → 400.
+* Unknown organization or device → 404 (`organization_not_found` / `device_not_found`).
+* Response `schema` is `medradar.brief.v1`; `kind` is `company` | `compare` | `device`.
+
+Company brief top-level keys: `schema, kind, generated_at, rules_version, title, question, scope,
+organization, summary, activity, technology, devices, recent, findings, changes, evidence,
+limitations`.
+
+Comparison brief adds: `sides, comparability, coverage_assessment, warnings, metrics, by_year,
+specialty, disclaimer, not_evidence_of`; `changes` is an array per organization.
+
+Device brief: `device, family, application, versions, supplements_count, tiles, timeline, relations,
+related_recalls, findings, changes, evidence, limitations`.
+
+`changes.state` is one of `not_configured | no_changes | available | unavailable` (company) or
+`not_applicable` (device), or an array of per-organization states (comparison).
+
+### `GET /api/brief/explain`
+
+Query: `metric` (required), `orgs` (or `org`), `years`, `from`, `to`, `types`, `basis`, `review`.
+Metric ids: `records_total`, `type.<event_type>`, `specialty.<category-id>`,
+`product_code.<FDA-CODE>`.
+
+Response (`medradar.brief.explain.v1`): `metric, label, definition, unit, scope, event_types,
+filters {category, product_code, ownership_basis, review_filter}, denominator {label, value}, sides
+[{key, name, count, records[≤20], drilldown}], note`.
+
+The `drilldown` URL applies identical organization, event-type, date, category or product-code
+filters in the event browser.
+
+### `GET /api/export/brief.md`
+
+Same query parameters as `/api/brief`, plus `lang=en|zh`. Returns `text/markdown` with
+`Content-Disposition`; filename is `medradar-company-brief-<org>-<window>-<snapshot>.md`,
+`medradar-competitor-brief-<a>-vs-<b>-<window>-<snapshot>.md` or
+`medradar-device-brief-<id>-<snapshot>.md`.
+
+### `GET /api/export/brief-evidence.csv`
+
+Same query parameters as `/api/brief`. Returns `text/csv` with columns:
+`section, metric, organization, official_id, event_type, event_date, published_at,
+first_observed_at, available_at, official_url, product_code, fda_specialty, device_name,
+applicant_name, attribution_review, attribution_verification, record_state, snapshot_id`.
+`section` is `window_records`, `side:<key>`, `device_history` or `finding:<id>`. Headers include
+`X-MedRadar-Provenance` and `X-MedRadar-Records`.
+
+### Additive changes to existing endpoints
+
+* `GET /api/meta` adds `global_aggregations` (`by_year`, `by_type`, `by_category`, `by_class`,
+  `undated_records`) for the whole attributed snapshot.
+* `GET /api/organizations/{key}` adds `technology.product_families` (top official product-code
+  families with the FDA classification name, class, records, first/last event date) and
+  `technology.specialty_note`.
+* `GET /api/events`, `GET /api/organizations/{key}/events` and `GET /api/export/events.csv` accept
+  `product_code=<FDA code>` (exact, case-insensitive) and echo it in `applied_filters`.
+* `filter_events` gains the optional `product_code` keyword.

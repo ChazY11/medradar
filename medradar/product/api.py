@@ -23,6 +23,7 @@ from fastapi.responses import FileResponse, JSONResponse, PlainTextResponse, Res
 
 from . import dataset as dataset_module
 from . import resources
+from . import brief as brief_module
 from .compare import build_compare
 from .dataset import (
     EVENT_TYPE_ORDER,
@@ -507,7 +508,8 @@ def _parse_int(value: str | None, name: str, default: int, minimum: int, maximum
 
 def _events_payload(dataset: Dataset, applied: dict[str, str], org_keys: list[str], event_types: list[str],
                     date_from: str | None, date_to: str | None, categories: list[str], query: str | None,
-                    review: str | None, basis: str | None, sort: str, page: int, page_size: int) -> dict[str, Any]:
+                    review: str | None, basis: str | None, sort: str, page: int, page_size: int,
+                    product_code: str | None = None) -> dict[str, Any]:
     filtered = dataset.filter_events(
         org_keys=org_keys or None,
         event_types=event_types or None,
@@ -517,6 +519,7 @@ def _events_payload(dataset: Dataset, applied: dict[str, str], org_keys: list[st
         query=query,
         review=review,
         basis=basis,
+        product_code=product_code,
     )
     ordered = dataset.sort_events(filtered, sort)
     total = len(ordered)
@@ -792,18 +795,20 @@ def create_app(
     def organization_events(key: str, types: str | None = None, date_from: str | None = Query(default=None, alias="from"),
                             date_to: str | None = Query(default=None, alias="to"), category: str | None = None,
                             q: str | None = None, review: str | None = None, basis: str | None = None,
+                            product_code: str | None = None,
                             sort: str = "event_date_desc",
                             page: str | None = None, page_size: str | None = None) -> Any:
         data = dataset()
         if data.organization(key) is None:
             raise HTTPExceptionCompat(404, "organization_not_found", "unknown organization key: " + key)
-        return _event_response(data, [key], types, date_from, date_to, category, q, review, basis, sort, page, page_size)
+        return _event_response(data, [key], types, date_from, date_to, category, q, review, basis, sort, page, page_size, product_code)
 
     # ---------------------------------------------------------------- events
     @app.get("/api/events")
     def events(org: str | None = None, types: str | None = None, date_from: str | None = Query(default=None, alias="from"),
                date_to: str | None = Query(default=None, alias="to"), category: str | None = None,
                q: str | None = None, review: str | None = None, basis: str | None = None,
+               product_code: str | None = None,
                sort: str = "event_date_desc",
                page: str | None = None, page_size: str | None = None) -> Any:
         data = dataset()
@@ -811,11 +816,11 @@ def create_app(
         unknown = [key for key in org_keys if data.organization(key) is None]
         if unknown:
             raise HTTPExceptionCompat(400, "unknown_organization", "unknown organization key(s): " + ", ".join(unknown))
-        return _event_response(data, org_keys, types, date_from, date_to, category, q, review, basis, sort, page, page_size)
+        return _event_response(data, org_keys, types, date_from, date_to, category, q, review, basis, sort, page, page_size, product_code)
 
     def _event_response(data: Dataset, org_keys: list[str], types: str | None, date_from: str | None, date_to: str | None,
                         category: str | None, q: str | None, review: str | None, basis: str | None, sort: str,
-                        page: str | None, page_size: str | None) -> Any:
+                        page: str | None, page_size: str | None, product_code: str | None = None) -> Any:
         try:
             event_types = _parse_event_types(types)
             categories = _parse_csv(category)
@@ -834,6 +839,7 @@ def create_app(
             "from": date_from or "",
             "to": date_to or "",
             "category": ",".join(categories),
+            "product_code": product_code or "",
             "q": q or "",
             "review": review or "",
             "basis": basis or "current_group",
@@ -841,7 +847,8 @@ def create_app(
         }
         return _events_payload(data, applied, org_keys, event_types, date_from, date_to, categories, q,
                                None if review in (None, "", "any") else review,
-                               None if basis in (None, "", "current_group") else basis, sort, page_number, size)
+                               None if basis in (None, "", "current_group") else basis, sort, page_number, size,
+                               product_code)
 
     @app.get("/api/events/{event_id:path}")
     def event_detail(event_id: str) -> Any:
@@ -976,11 +983,123 @@ def create_app(
             raise HTTPExceptionCompat(400, "bad_request", str(error))
 
     # ---------------------------------------------------------------- exports
+    # ---------------------------------------------------------------- intelligence brief (PRODUCT-004)
+    def _brief_request(data: Dataset, mode: str, org: str | None, orgs: str | None, device: str | None,
+                       years: str | None, date_from: str | None, date_to: str | None, types: str | None,
+                       basis: str | None, review: str | None) -> dict[str, Any]:
+        """Parse and build one brief. Shared by the JSON endpoint and both exports."""
+        if mode not in ("company", "compare", "device"):
+            raise HTTPExceptionCompat(400, "bad_mode", "mode must be company, compare or device")
+        try:
+            event_types = _parse_event_types(types)
+            year_value = _parse_int(years, "years", 5, 1, 30) if years else None
+        except ValueError as error:
+            raise HTTPExceptionCompat(400, "bad_request", str(error))
+        if review and review not in REVIEW_FILTERS:
+            raise HTTPExceptionCompat(400, "bad_review", "review must be one of " + ", ".join(REVIEW_FILTERS))
+        raise_for_basis(basis)
+        if date_from or date_to:
+            # An explicit window is a complete statement; a years selector is not applied on top.
+            year_value = None
+        try:
+            return brief_module.build_brief(
+                data,
+                mode=mode,
+                org=org,
+                orgs=_parse_csv(orgs),
+                device=device,
+                years=year_value,
+                date_from=date_from,
+                date_to=date_to,
+                event_types=event_types or None,
+                basis=basis or "current_group",
+                review=None if review in (None, "", "any") else review,
+                pipeline_db=app.state.pipeline_db,
+            )
+        except KeyError as error:
+            key = str(error).strip("'")
+            code = "device_not_found" if mode == "device" else "organization_not_found"
+            raise HTTPExceptionCompat(404, code, "unknown identifier: " + key)
+        except ValueError as error:
+            raise HTTPExceptionCompat(400, "bad_request", str(error))
+
+    @app.get("/api/brief")
+    def brief(mode: str = "company", org: str | None = None, orgs: str | None = None, device: str | None = None,
+              years: str | None = None, date_from: str | None = Query(default=None, alias="from"),
+              date_to: str | None = Query(default=None, alias="to"), types: str | None = None,
+              basis: str | None = None, review: str | None = None) -> Any:
+        """The Intelligence Brief: a question, a scope, findings, evidence and limitations."""
+        payload = _brief_request(dataset(), mode, org, orgs, device, years, date_from, date_to, types, basis, review)
+        return payload
+
+    @app.get("/api/brief/explain")
+    def brief_explain(metric: str = Query(default=""), org: str | None = None, orgs: str | None = None,
+                      years: str | None = None, date_from: str | None = Query(default=None, alias="from"),
+                      date_to: str | None = Query(default=None, alias="to"), types: str | None = None,
+                      basis: str | None = None, review: str | None = None) -> Any:
+        """Definition, numerator, denominator and the records behind one comparison metric."""
+        data = dataset()
+        if not metric:
+            raise HTTPExceptionCompat(400, "missing_metric", "metric is required")
+        try:
+            event_types = _parse_event_types(types)
+            year_value = _parse_int(years, "years", 5, 1, 30) if years else None
+        except ValueError as error:
+            raise HTTPExceptionCompat(400, "bad_request", str(error))
+        if review and review not in REVIEW_FILTERS:
+            raise HTTPExceptionCompat(400, "bad_review", "review must be one of " + ", ".join(REVIEW_FILTERS))
+        raise_for_basis(basis)
+        if date_from or date_to:
+            year_value = None
+        keys = _parse_csv(orgs) or _parse_csv(org)
+        try:
+            return brief_module.explain_metric(
+                data, metric=metric, org_keys=keys, years=year_value, date_from=date_from, date_to=date_to,
+                event_types=event_types or None, basis=basis or "current_group",
+                review=None if review in (None, "", "any") else review,
+            )
+        except KeyError as error:
+            raise HTTPExceptionCompat(404, "organization_not_found", "unknown organization key: " + str(error).strip("'"))
+        except ValueError as error:
+            raise HTTPExceptionCompat(400, "bad_request", str(error))
+
+    @app.get("/api/export/brief.md")
+    def export_brief_md(mode: str = "company", org: str | None = None, orgs: str | None = None,
+                        device: str | None = None, years: str | None = None,
+                        date_from: str | None = Query(default=None, alias="from"),
+                        date_to: str | None = Query(default=None, alias="to"), types: str | None = None,
+                        basis: str | None = None, review: str | None = None, lang: str = "en") -> Any:
+        """The Intelligence Brief as a Markdown deliverable (English or Chinese)."""
+        payload = _brief_request(dataset(), mode, org, orgs, device, years, date_from, date_to, types, basis, review)
+        language = lang if lang in ("en", "zh") else "en"
+        body = brief_module.brief_markdown(payload, language)
+        headers = {"Content-Disposition": 'attachment; filename="' + brief_module.brief_filename(payload) + '"'}
+        return Response(content=body.encode("utf-8"), media_type="text/markdown; charset=utf-8", headers=headers)
+
+    @app.get("/api/export/brief-evidence.csv")
+    def export_brief_evidence(mode: str = "company", org: str | None = None, orgs: str | None = None,
+                              device: str | None = None, years: str | None = None,
+                              date_from: str | None = Query(default=None, alias="from"),
+                              date_to: str | None = Query(default=None, alias="to"), types: str | None = None,
+                              basis: str | None = None, review: str | None = None) -> Any:
+        """The Evidence Appendix: one row per supporting record, with official URLs."""
+        data = dataset()
+        payload = _brief_request(data, mode, org, orgs, device, years, date_from, date_to, types, basis, review)
+        body = brief_module.brief_evidence_csv(data, payload)
+        rows = body.count("\n") - 1
+        headers = {
+            "Content-Disposition": 'attachment; filename="' + brief_module.brief_filename(payload).replace(".md", "-evidence.csv") + '"',
+            "X-MedRadar-Provenance": provenance_header(data, {"brief": mode, "org": org or "", "orgs": orgs or "", "device": device or ""}),
+            "X-MedRadar-Records": str(max(rows, 0)),
+        }
+        return Response(content=body.encode("utf-8"), media_type="text/csv; charset=utf-8", headers=headers)
+
     @app.get("/api/export/events.csv")
     def export_events_csv(org: str | None = None, types: str | None = None,
                           date_from: str | None = Query(default=None, alias="from"),
                           date_to: str | None = Query(default=None, alias="to"), category: str | None = None,
                           q: str | None = None, review: str | None = None, basis: str | None = None,
+                          product_code: str | None = None,
                           sort: str = "event_date_desc") -> Any:
         data = dataset()
         try:
@@ -998,11 +1117,12 @@ def create_app(
         filtered = data.filter_events(org_keys=org_keys or None, event_types=event_types or None, date_from=date_from,
                                       date_to=date_to, categories=categories or None, query=q,
                                       review=None if review in (None, "", "any") else review,
-                                      basis=None if basis in (None, "", "current_group") else basis)
+                                      basis=None if basis in (None, "", "current_group") else basis,
+                                      product_code=product_code)
         ordered = data.sort_events(filtered, sort)
         body = events_csv(data, ordered, basis=basis or "current_group")
         filters = {"org": org_keys, "types": event_types, "from": date_from, "to": date_to, "category": categories,
-                   "q": q, "review": review, "basis": basis or "current_group"}
+                   "product_code": product_code, "q": q, "review": review, "basis": basis or "current_group"}
         headers = {
             "Content-Disposition": 'attachment; filename="' + csv_filename(data) + '"',
             "X-MedRadar-Provenance": provenance_header(data, filters),

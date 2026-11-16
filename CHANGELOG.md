@@ -19,6 +19,51 @@ _Snapshot of [`PROJECT_STATE.yaml`](PROJECT_STATE.yaml) at `2026-11-13T04:50:58+
 - **Data snapshot:** 2026-10-31, 375,378 events (local build; `data/` is gitignored)
 <!-- END GENERATED: unreleased -->
 
+## [Unreleased product] — 2026-11-17 (PRODUCT-004: intelligence brief workbench)
+
+### Added
+- **Intelligence Brief workspace** (/brief): define a company, comparison or device question and a
+  window (3/5/10 complete calendar years or explicit dates), then read a sourced brief. The full scope
+  is encoded in the URL, so a brief is reproducible and shareable.
+- **Company Intelligence Brief**: scope and counting rule, pathway table with definitions, per-year
+  chart, technology areas by FDA medical specialty **and** official product-code families, PMA
+  families from the PRODUCT-003 device model, recent activity with the four time fields, changes,
+  evidence and limitations.
+- **Competitor Comparison Brief**: the same computation as /api/compare, an explicit coverage
+  assessment, comparability verdict, 21 explainable measures, per-year charts, warnings and
+  shared/exclusive product-code findings.
+- **Explain this difference**: every comparison measure opens its definition, numerator, denominator,
+  filters, per-side records with official links and an identical event-browser filter.
+- **Device brief**: official PMA hierarchy, every supplement, recalls linked only by official K
+  number, confirmed vs candidate relations, findings and limitations.
+- **Evidence-backed findings** (six deterministic rules, rief-findings-v1): pathway concentration,
+  recall-dominant window, year-on-year record shift, PMA family scale, specialty-not-stated and
+  provisional-attribution caution. Each carries its rule, inputs, cited records, a 'what this does
+  not mean' statement and a reproduce link.
+- **Deliverables**: company/comparison/device Markdown briefs, an Evidence Appendix CSV (one row per
+  supporting record with official URL, verification state and snapshot id) and a print stylesheet for
+  browser PDF.
+- **API** (additive): /api/brief, /api/brief/explain, /api/export/brief.md,
+  /api/export/brief-evidence.csv; product_code filter on the event routes and CSV; global_aggregations
+  in /api/meta; 	echnology.product_families on the organization profile.
+- **Experience**: task-first home, Brief in primary navigation, organization-page brief action and
+  official product-code table, comparison-page brief action and explain link, mobile language switch,
+  bilingual brief workflow.
+
+### Fixed
+- The homepage 'records per year across the whole snapshot' chart was drawn from the 12-row latest
+  records request; it now uses the snapshot aggregation exposed by /api/meta.
+- Adding a ninth navigation item squeezed global search to ~40 px at 1440 px; labels, spacing and
+  search width were corrected.
+- At 390 px the header search and page actions overflowed the viewport; they now shrink/wrap, and the
+  language switch is reachable from the mobile navigation panel (it was hidden at <=768 px).
+- The device brief no longer double-counts a supplement as both an application relation and a derived
+  version relation.
+
+### Docs
+- docs/product/product_004/: audit, user problems, scope, journeys, design decisions, evidence
+  contract, acceptance record, known limitations and delivery report.
+
 ## [Unreleased product] — 2026-11-15 (PRODUCT-001: core intelligence workbench)
 
 ### Added

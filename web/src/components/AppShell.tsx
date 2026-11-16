@@ -12,6 +12,7 @@ interface NavItem {
 }
 
 const NAV_ITEMS: NavItem[] = [
+  { to: "/brief", labelKey: "nav.brief" },
   { to: "/", labelKey: "nav.overview", end: true },
   { to: "/organizations", labelKey: "nav.organizations" },
   { to: "/events", labelKey: "nav.events" },
@@ -101,6 +102,14 @@ export function AppShell({ children }: { children: ReactNode }) {
       {navOpen ? (
         <nav id="mobile-nav" className="nav-panel" aria-label={t("nav.primary")}>
           {navLinks}
+          <button
+            type="button"
+            className="nav-lang"
+            onClick={() => setLang(lang === "en" ? "zh" : "en")}
+            aria-label={t("lang.toggleLabel")}
+          >
+            {lang === "en" ? "中文" : "English"}
+          </button>
         </nav>
       ) : null}
 

@@ -14,14 +14,15 @@ const STORAGE_KEY = "medradar.lang";
 
 const en = {
   "app.subtitle": "Medical Technology Intelligence",
+  "nav.brief": "Brief",
   "nav.overview": "Overview",
   "nav.organizations": "Organizations",
-  "nav.events": "Regulatory events",
+  "nav.events": "Events",
   "nav.compare": "Compare",
-  "nav.sources": "Sources & coverage",
+  "nav.sources": "Sources",
   "nav.dataStatus": "Data status",
   "nav.devices": "Devices",
-  "nav.review": "Identity review",
+  "nav.review": "Review",
   "nav.primary": "Primary navigation",
   "nav.menu": "Menu",
   "search.placeholder": "Search organizations, tickers, applicant names",
@@ -126,11 +127,12 @@ const en = {
 
 const zh: Record<keyof typeof en, string> = {
   "app.subtitle": "医疗技术情报",
+  "nav.brief": "简报",
   "nav.overview": "总览",
   "nav.organizations": "企业",
   "nav.events": "监管事件",
   "nav.compare": "企业对比",
-  "nav.sources": "数据来源与覆盖",
+  "nav.sources": "数据来源",
   "nav.dataStatus": "数据同步",
   "nav.devices": "医疗器械",
   "nav.review": "身份复核",

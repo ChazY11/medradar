@@ -1,7 +1,9 @@
 import type {
   AttributionResponse,
+  Brief,
   ChangesResponse,
   DataStatusResponse,
+  ExplainResponse,
   MetricsResponse,
   OwnershipResponse,
   CompareResponse,
@@ -103,12 +105,26 @@ export interface EventsQuery {
   from?: string;
   to?: string;
   category?: string[];
+  product_code?: string;
   q?: string;
   review?: string;
   basis?: string;
   sort?: string;
   page?: number;
   page_size?: number;
+}
+
+export interface BriefQuery {
+  mode: "company" | "compare" | "device";
+  org?: string;
+  orgs?: string[];
+  device?: string;
+  years?: number;
+  from?: string;
+  to?: string;
+  types?: string[];
+  basis?: string;
+  review?: string;
 }
 
 export interface CompareQuery {
@@ -151,6 +167,7 @@ function eventsQueryParams(
     from: params.from,
     to: params.to,
     category: params.category,
+    product_code: params.product_code,
     q: params.q,
     review: params.review,
     basis: params.basis,
@@ -258,4 +275,63 @@ export async function getChanges(params: {
   offset?: number;
 }): Promise<ChangesResponse> {
   return request<ChangesResponse>(`/api/changes${buildQuery(params)}`);
+}
+
+/* ------------------------------------------------------------------ PRODUCT-004 intelligence brief */
+
+export function briefQueryParams(
+  params: BriefQuery,
+): Record<string, string | number | string[] | undefined> {
+  return {
+    mode: params.mode,
+    org: params.org,
+    orgs: params.orgs && params.orgs.length ? params.orgs : undefined,
+    device: params.device,
+    years: params.years,
+    from: params.from,
+    to: params.to,
+    types: params.types && params.types.length ? params.types : undefined,
+    basis: params.basis,
+    review: params.review,
+  };
+}
+
+export async function getBrief(params: BriefQuery): Promise<Brief> {
+  return request<Brief>(`/api/brief${buildQuery(briefQueryParams(params))}`);
+}
+
+export function briefMdUrl(params: BriefQuery, lang: "en" | "zh"): string {
+  return `/api/export/brief.md${buildQuery({ ...briefQueryParams(params), lang })}`;
+}
+
+export function briefEvidenceUrl(params: BriefQuery): string {
+  return `/api/export/brief-evidence.csv${buildQuery(briefQueryParams(params))}`;
+}
+
+export interface ExplainQuery {
+  metric: string;
+  orgs: string[];
+  years?: number;
+  from?: string;
+  to?: string;
+  types?: string[];
+  basis?: string;
+  review?: string;
+}
+
+export function explainUrl(params: ExplainQuery): string {
+  return `/api/brief/explain${buildQuery({
+    metric: params.metric,
+    orgs: params.orgs,
+    years: params.years,
+    from: params.from,
+    to: params.to,
+    types: params.types,
+    basis: params.basis,
+    review: params.review,
+  })}`;
+}
+
+export async function getExplain(params: ExplainQuery): Promise<ExplainResponse> {
+  return request<ExplainResponse>(explainUrl(params));
 }

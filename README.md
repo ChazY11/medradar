@@ -40,6 +40,32 @@ compare two companies on one explicit counting rule, and export a sourced report
 * **Stack**: FastAPI serving a React 19 + TypeScript + Vite build; one Python process, no database
   server and no paid infrastructure.
 
+### Intelligence brief workbench (PRODUCT-004)
+
+The product now answers a research question, not only a query. **Brief** (`/brief`) turns a company,
+a comparison set or a PMA/K number into a sourced brief over 3, 5 or 10 complete calendar years:
+
+* **Definition first** — the question, window, event types, counting rule, snapshot and ownership
+  basis are stated on the brief and encoded in the URL.
+* **Evidence-backed findings** — a small deterministic rule set (pathway concentration, year shift,
+  PMA-family scale, recall dominance, specialty coverage, provisional attribution). Every finding
+  lists its rule, inputs, cited official records, a "what this does not mean" clause and a link that
+  reproduces the records.
+* **Technology areas that work** — official FDA product-code families with the official classification
+  name, alongside the specialty table. The FDA itself states "Unknown" as the specialty for many
+  class III codes (2,520 of Medtronic's 3,426 window records), so the specialty table alone is not a
+  technology view.
+* **Explain this difference** — every comparison measure opens its definition, numerator,
+  denominator, filters and the records behind it.
+* **Deliverables** — company/comparison/device Markdown briefs, an Evidence Appendix CSV with one row
+  per supporting record and its official URL, and a print stylesheet for browser PDF.
+* **Honest change status** — a deployment without the DATA-001 ledger says so; it never presents an
+  old record as "new".
+
+Acceptance for this release (real Chromium, real snapshot, screenshots and downloads) is in
+[docs/product/product_004/ACCEPTANCE.md](docs/product/product_004/ACCEPTANCE.md); the audit that
+motivated it is in [PRODUCT_AUDIT.md](docs/product/product_004/PRODUCT_AUDIT.md).
+
 ### Workbench quick start
 
 ```bash

@@ -106,6 +106,17 @@ export function EventsFilterBar({
         </select>
       </label>
 
+      <label className="field" style={{ minWidth: 130, maxWidth: 180 }}>
+        <span className="field-label">{bi("Product code", "产品代码")}</span>
+        <input
+          className="input mono"
+          value={state.productCode}
+          placeholder="e.g. LWS"
+          maxLength={10}
+          onChange={(event) => update({ productCode: event.target.value.toUpperCase() })}
+        />
+      </label>
+
       <label className="field" style={{ minWidth: 220, flex: 1 }}>
         <span className="field-label">{t("common.applicant") + " / " + t("common.device")}</span>
         <input
