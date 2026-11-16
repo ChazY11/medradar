@@ -16,12 +16,12 @@ import sys
 from pathlib import Path
 from typing import Any, Sequence
 
-from .backup import BackupError, backup, restore
+from .backup import BackupError, backup, prune_backups, restore
 from .config import Settings
 from .pipeline import Pipeline, PipelineError
 from .status_service import changes_feed, data_status
 
-COMMANDS = ("bootstrap", "check", "run", "sync", "status", "changes", "rollback", "prune", "backup", "restore")
+COMMANDS = ("bootstrap", "check", "run", "sync", "status", "changes", "rollback", "prune", "backup", "restore", "prune-backups")
 
 
 def _split_sources(value: str | None) -> list[str] | None:
@@ -76,14 +76,19 @@ def _command_sync(args: argparse.Namespace) -> int:
         allow_degraded=args.allow_degraded,
         dry_run=args.dry_run,
         actor=args.actor,
+        allow_resource_pressure=args.allow_resource_pressure,
     )
     if args.json:
         _print_json(result)
     else:
         print(result.get("status"), "snapshot=" + str(result.get("active_snapshot_id") or result.get("candidate_snapshot_id")))
+        if result.get("status") == "DEFERRED":
+            print(result.get("message"), file=sys.stderr)
         if result.get("counts"):
             print(json.dumps(result["counts"], ensure_ascii=False, sort_keys=True))
-    return 0 if result.get("status") in ("SUCCEEDED", "PARTIAL", "NO_CHANGE", "DRY_RUN_VALIDATED") else 1
+    # DEFERRED is a deliberate, recorded refusal to start, not a job failure: exit 0 so systemd
+    # does not raise a false failure, while the run ledger and /api/data-status show DEFERRED.
+    return 0 if result.get("status") in ("SUCCEEDED", "PARTIAL", "NO_CHANGE", "DRY_RUN_VALIDATED", "DEFERRED") else 1
 
 
 def _command_run(args: argparse.Namespace) -> int:
@@ -92,11 +97,14 @@ def _command_run(args: argparse.Namespace) -> int:
         allow_record_drop=args.allow_record_drop,
         allow_degraded=args.allow_degraded,
         actor=args.actor,
+        allow_resource_pressure=args.allow_resource_pressure,
     )
     if args.json:
         _print_json(result)
     else:
         print(result.get("status"))
+        if result.get("status") == "DEFERRED":
+            print(result.get("message"), file=sys.stderr)
         sync = result.get("sync")
         if sync:
             print("snapshot=" + str(sync.get("active_snapshot_id") or sync.get("candidate_snapshot_id")))
@@ -105,7 +113,7 @@ def _command_run(args: argparse.Namespace) -> int:
         else:
             for row in result.get("checks") or []:
                 print(row.get("source_id"), row.get("status"))
-    return 0 if result.get("status") in ("SUCCEEDED", "PARTIAL", "NO_CHANGE") else 1
+    return 0 if result.get("status") in ("SUCCEEDED", "PARTIAL", "NO_CHANGE", "DEFERRED") else 1
 
 
 def _command_status(args: argparse.Namespace) -> int:
@@ -193,6 +201,28 @@ def _command_restore(args: argparse.Namespace) -> int:
     return 0
 
 
+def _command_prune_backups(args: argparse.Namespace) -> int:
+    result = prune_backups(args.destination, keep=args.keep, apply=args.apply)
+    if args.json:
+        _print_json(result)
+    else:
+        print(
+            "backups total=%d kept=%d removable=%d reclaimable=%.1fMB applied=%s"
+            % (
+                result["total"],
+                len(result["kept"]),
+                len(result["removable"]),
+                result["reclaimable_bytes"] / (1024 * 1024),
+                result["applied"],
+            )
+        )
+        if result["removable"]:
+            print("removable: " + ", ".join(result["removable"]))
+        if result["malformed_skipped"]:
+            print("skipped (no manifest): " + ", ".join(result["malformed_skipped"]), file=sys.stderr)
+    return 0
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(prog="medradar.data_pipeline", description="MedRadar continuous FDA data pipeline")
     parser.add_argument("--root", default=None, help="pipeline state root (default: MEDRADAR_PIPELINE_ROOT or data/data_pipeline)")
@@ -215,6 +245,11 @@ def build_parser() -> argparse.ArgumentParser:
     run.add_argument("--force", action="store_true", help="reconcile even if the detector says no change")
     run.add_argument("--allow-record-drop", action="store_true", help="explicitly allow a validated record-count drop")
     run.add_argument("--allow-degraded", action="store_true", help="manual override for degraded source checks")
+    run.add_argument(
+        "--allow-resource-pressure",
+        action="store_true",
+        help="start even when the DATA-003 host resource guard would defer (operator override)",
+    )
     run.add_argument("--actor", default="systemd")
     run.set_defaults(func=_command_run)
 
@@ -224,6 +259,11 @@ def build_parser() -> argparse.ArgumentParser:
     sync.add_argument("--allow-record-drop", action="store_true")
     sync.add_argument("--allow-degraded", action="store_true")
     sync.add_argument("--dry-run", action="store_true", help="build and validate a candidate without publishing")
+    sync.add_argument(
+        "--allow-resource-pressure",
+        action="store_true",
+        help="start even when the DATA-003 host resource guard would defer (operator override)",
+    )
     sync.add_argument("--actor", default="operator")
     sync.set_defaults(func=_command_sync)
 
@@ -253,13 +293,26 @@ def build_parser() -> argparse.ArgumentParser:
     backup_parser.add_argument("--active-only", action="store_true", help="copy only the active snapshot")
     backup_parser.set_defaults(func=_command_backup)
 
+    prune_backups_parser = sub.add_parser(
+        "prune-backups",
+        help="report (and with --apply remove) pipeline backups older than the newest --keep",
+    )
+    prune_backups_parser.add_argument("--destination", required=True, help="backup directory")
+    prune_backups_parser.add_argument("--keep", type=int, default=7)
+    prune_backups_parser.add_argument(
+        "--apply",
+        action="store_true",
+        help="actually delete; without it this is a dry run",
+    )
+    prune_backups_parser.set_defaults(func=_command_prune_backups)
+
     restore_parser = sub.add_parser("restore", help="restore a backup into an empty isolated directory")
     restore_parser.add_argument("--archive", required=True, help="backup directory")
     restore_parser.add_argument("--destination", required=True, help="empty directory to restore into")
     restore_parser.add_argument("--review-db-destination", default=None)
     restore_parser.set_defaults(func=_command_restore)
     # Accept --json on either side of the subcommand for systemd/operator ergonomics.
-    for command_parser in (bootstrap, check, run, sync, status, changes, rollback, prune, backup_parser, restore_parser):
+    for command_parser in (bootstrap, check, run, sync, status, changes, rollback, prune, backup_parser, restore_parser, prune_backups_parser):
         command_parser.add_argument("--json", action="store_true", default=argparse.SUPPRESS)
     return parser
 

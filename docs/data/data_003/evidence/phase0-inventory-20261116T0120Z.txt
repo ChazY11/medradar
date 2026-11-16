@@ -1,0 +1,321 @@
+﻿ssh : bash: line 1: ﻿#!/usr/bin/env: No such file or directory
+At line:6 char:8
++ $txt | ssh -i $k -o BatchMode=yes -o ConnectTimeout=10 ubuntu@170.106 ...
++        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (bash: line 1: ﻿...le or directory:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+
+===== SUDO =====
+sudo ok
+
+===== APP_ROOT =====
+ls: cannot open directory '/srv/medradar': Permission denied
+fatal: not a git repository (or any of the parent directories): .git
+fatal: not a git repository (or any of the parent directories): .git
+fatal: not a git repository (or any of the parent directories): .git
+
+===== DATA_ROOT =====
+total 20
+drwxr-xr-x 5 medradar medradar 4096 Nov 16 11:03 .
+drwxr-x--- 7 medradar medradar 4096 Nov 16 03:32 ..
+drwxr-xr-x 2 medradar medradar 4096 Nov 16 03:31 cache
+drwxr-x--- 5 medradar medradar 4096 Nov 17 01:18 fda
+drwxr-xr-x 2 medradar medradar 4096 Nov 16 03:31 identity
+total 30644
+drwxr-x--- 5 medradar medradar     4096 Nov 17 01:18 .
+drwxr-xr-x 5 medradar medradar     4096 Nov 16 11:03 ..
+-rw-r--r-- 1 medradar medradar      432 Nov 16 11:27 active.json
+drwxr-xr-x 2 medradar medradar     4096 Nov 16 11:03 logs
+-rw-r--r-- 1 medradar medradar 31346688 Nov 16 23:58 pipeline.db
+-rw-r--r-- 1 medradar medradar       11 Nov 17 01:01 pipeline.lock
+drwxr-xr-x 8 medradar medradar     4096 Nov 16 11:26 snapshots
+drwxr-xr-x 2 medradar medradar     4096 Nov 16 11:26 staging
+{
+  "action": "sync",
+  "content_hash": "18ce4d0cbbe41d450e40b1af134e60973272f4b2f6586a0a006a5591bfa3407f",
+  "path": "snapshots/fda-snapshot-20261116T032632Z-18ce4d0cbbe4",
+  "previous_snapshot_id": "fda-snapshot-20261116T031623Z-556883ca1bc7",
+  "published_at": "2026-11-16T03:27:18.205229Z",
+  "published_by": "operator",
+  "schema": "medradar.pipeline.active.v1",
+  "snapshot_id": "fda-snapshot-20261116T032632Z-18ce4d0cbbe4"
+}
+171M	/srv/medradar/data
+352M	/srv/medradar/var
+
+===== SNAPSHOT_DIRS =====
+total 32
+drwxr-xr-x 8 medradar medradar 4096 Nov 16 11:26 .
+drwxr-x--- 5 medradar medradar 4096 Nov 17 01:18 ..
+drwxr-xr-x 2 medradar medradar 4096 Nov 16 11:03 fda-snapshot-20261116T030319Z-744af6744386
+drwxr-xr-x 2 medradar medradar 4096 Nov 16 11:06 fda-snapshot-20261116T030626Z-8841d0c85f29
+drwxr-xr-x 2 medradar medradar 4096 Nov 16 11:10 fda-snapshot-20261116T030944Z-12c15b26c20e
+drwxr-xr-x 2 medradar medradar 4096 Nov 16 11:14 fda-snapshot-20261116T031349Z-556883ca1bc7
+drwxrwxr-x 2 medradar medradar 4096 Nov 16 11:16 fda-snapshot-20261116T031623Z-556883ca1bc7
+drwxr-xr-x 2 medradar medradar 4096 Nov 16 11:26 fda-snapshot-20261116T032632Z-18ce4d0cbbe4
+1794798218.1064474680 /srv/medradar/data/fda/snapshots/fda-snapshot-20261116T030319Z-744af6744386 9646
+1794798402.1369882110 /srv/medradar/data/fda/snapshots/fda-snapshot-20261116T030626Z-8841d0c85f29 145411
+1794798601.0051292360 /srv/medradar/data/fda/snapshots/fda-snapshot-20261116T030944Z-12c15b26c20e 265136
+1794798846.6919837590 /srv/medradar/data/fda/snapshots/fda-snapshot-20261116T031349Z-556883ca1bc7 399142
+1794799000.5739222920 /srv/medradar/data/fda/snapshots/fda-snapshot-20261116T031623Z-556883ca1bc7 399451
+1794799611.1728255320 /srv/medradar/data/fda/snapshots/fda-snapshot-20261116T032632Z-18ce4d0cbbe4 399547
+
+===== SNAPSHOT_FILES =====
+active relative path: snapshots/fda-snapshot-20261116T032632Z-18ce4d0cbbe4
+total 25004
+drwxr-xr-x 2 medradar medradar     4096 Nov 16 11:26 .
+drwxr-xr-x 8 medradar medradar     4096 Nov 16 11:26 ..
+-rw-r--r-- 1 medradar medradar    22159 Nov 16 11:26 applicants.jsonl.gz
+-rw-r--r-- 1 medradar medradar   157698 Nov 16 11:26 classifications.jsonl.gz
+-rw-r--r-- 1 medradar medradar 25007667 Nov 16 11:26 events.jsonl.gz
+-rw-r--r-- 1 medradar medradar   399547 Nov 16 11:26 snapshot.json
+25M	/srv/medradar/data/fda/snapshots/fda-snapshot-20261116T032632Z-18ce4d0cbbe4
+
+===== REVIEW_DB =====
+/srv/medradar/data/fda/pipeline.db
+
+===== WEB_SMAPS =====
+pid=129585
+Rss:             1609700 kB
+Pss:             1603476 kB
+Pss_Anon:        1594268 kB
+Pss_File:           9208 kB
+Pss_Shmem:             0 kB
+Shared_Clean:       7564 kB
+Shared_Dirty:          0 kB
+Private_Clean:     19192 kB
+Private_Dirty:   1582944 kB
+Referenced:      1609628 kB
+Anonymous:       1594268 kB
+LazyFree:              0 kB
+Swap:             277512 kB
+--- fd count
+7
+--- proc io
+rchar: 373962415
+wchar: 54070
+syscr: 14242
+syscw: 12757
+read_bytes: 131760128
+write_bytes: 49676288
+cancelled_write_bytes: 49676288
+--- wchan / sched
+ep_poll
+utime=19733 stime=1173 minflt=524581 majflt=13988 rss_pages=402419
+--- per-thread
+thread 129585: python state=S utime=6595
+thread 130043: python state=S utime=11022
+
+===== CGROUP_WEB_STAT =====
+--- memory.numa_stat
+anon N0=1632530432
+file N0=847872
+kernel_stack N0=16384
+pagetables N0=3919872
+--- memory.swap.events
+high 0
+max 0
+fail 0
+
+===== SYSTEM_UNIT_LIMITS =====
+# /etc/systemd/system/medradar-data-update.service
+[Unit]
+Description=MedRadar continuous FDA update check and safe snapshot publication
+Documentation=file:///srv/medradar/app/docs/data/data_002/PRODUCTION_READINESS.md
+After=network-online.target medradar-web.service
+Wants=network-online.target
+# This unit is a proposal. Do not enable it before the deployment plan is approved.
+
+[Service]
+Type=oneshot
+User=medradar
+Group=medradar
+WorkingDirectory=/srv/medradar
+Environment=HOME=/srv/medradar
+Environment=PYTHONUNBUFFERED=1
+Environment=MEDRADAR_PIPELINE_ROOT=/srv/medradar/data/fda
+Environment=MEDRADAR_REVIEW_DB=/srv/medradar/data/identity/review.db
+Environment=MEDRADAR_PIPELINE_MAX_PRODUCT_SOURCES_PER_RUN=1
+Environment=MEDRADAR_PIPELINE_FULL_RECONCILE_HOURS=168
+EnvironmentFile=-/etc/medradar/pipeline.env
+UMask=0027
+ExecStart=/srv/medradar/.venv/bin/python -m medradar.data_pipeline run --json
+TimeoutStartSec=1h
+Nice=10
+IOSchedulingClass=idle
+IOSchedulingPriority=7
+NoNewPrivileges=yes
+PrivateTmp=yes
+PrivateDevices=yes
+ProtectSystem=strict
+ProtectHome=yes
+ProtectKernelTunables=yes
+ProtectControlGroups=yes
+RestrictSUIDSGID=yes
+LockPersonality=yes
+ReadWritePaths=/srv/medradar/data
+# Measured isolated peak on the 2 vCPU/4 GB host: 2,077,936 KiB (~1.98 GiB) for a
+# recall reconciliation including product + device-index validation. 2.4 GiB leaves
+# headroom for the release save-memory change and normal Python allocator variance.
+MemoryHigh=2200M
+MemoryMax=2400M
+CPUQuota=150%
+TasksMax=64
+# /etc/systemd/system/medradar-data-backup.service
+[Unit]
+Description=MedRadar FDA pipeline consistent state backup
+After=network-online.target medradar-web.service
+Wants=network-online.target
+# Proposal only. Installation requires explicit approval of the DATA-002 change request.
+Documentation=file:///srv/medradar/app/docs/data/data_002/BACKUP_RECOVERY.md
+
+[Service]
+Type=oneshot
+User=medradar
+Group=medradar
+WorkingDirectory=/srv/medradar
+Environment=HOME=/srv/medradar
+Environment=PYTHONUNBUFFERED=1
+Environment=MEDRADAR_PIPELINE_ROOT=/srv/medradar/data/fda
+Environment=MEDRADAR_REVIEW_DB=/srv/medradar/data/identity/review.db
+EnvironmentFile=-/etc/medradar/pipeline.env
+UMask=0027
+ExecStart=/srv/medradar/.venv/bin/python -m medradar.data_pipeline backup --destination /srv/medradar/var/backup/data --json
+TimeoutStartSec=20min
+Nice=10
+IOSchedulingClass=idle
+IOSchedulingPriority=7
+NoNewPrivileges=yes
+PrivateTmp=yes
+PrivateDevices=yes
+ProtectSystem=strict
+ProtectHome=yes
+ProtectKernelTunables=yes
+ProtectControlGroups=yes
+RestrictSUIDSGID=yes
+LockPersonality=yes
+ReadWritePaths=/srv/medradar/data /srv/medradar/var/backup
+MemoryHigh=512M
+MemoryMax=768M
+CPUQuota=50%
+TasksMax=32
+# /etc/systemd/system/medradar-health.service
+[Unit]
+Description=MedRadar health check (liveness + readiness + resources)
+After=medradar-web.service
+Wants=medradar-web.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/medradar-health
+Nice=10
+IOSchedulingClass=idle
+# /etc/systemd/system/medradar-data-update.timer
+[Unit]
+Description=Run the MedRadar continuous FDA update check hourly (per-source intervals are enforced inside the job)
+Documentation=file:///srv/medradar/app/docs/data/data_001/OPERATIONS.md
+# Proposal only. Installation requires explicit approval of the deployment plan.
+
+[Timer]
+OnBootSec=10min
+OnUnitActiveSec=1h
+AccuracySec=1min
+RandomizedDelaySec=5min
+Persistent=true
+Unit=medradar-data-update.service
+# Hourly wake-up is cheap: run() checks per-source intervals and retries failures
+# after one hour. It does not collect a source that is not due.
+
+[Install]
+WantedBy=timers.target
+# /etc/systemd/system/medradar-data-backup.timer
+[Unit]
+Description=Daily MedRadar FDA pipeline state backup
+# Proposal only. Installation requires explicit approval of the DATA-002 change request.
+
+[Timer]
+OnCalendar=*-*-* 03:20:00
+Persistent=true
+AccuracySec=1min
+RandomizedDelaySec=10min
+Unit=medradar-data-backup.service
+
+[Install]
+WantedBy=timers.target
+# /etc/systemd/system/medradar-backup.service
+[Unit]
+Description=MedRadar local-state backup (identity DB, local deploy record)
+After=medradar-web.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/medradar-backup
+Nice=10
+IOSchedulingClass=idle
+# /etc/systemd/system/medradar-backup.timer
+[Unit]
+Description=Daily MedRadar local-state backup
+
+[Timer]
+OnCalendar=*-*-* 04:30:00
+Persistent=true
+Unit=medradar-backup.service
+
+[Install]
+WantedBy=timers.target
+
+===== PIPELINE_ENV =====
+
+===== BACKUPS =====
+total 48
+drwxr-xr-x 4 root     root     4096 Nov 16 11:03 .
+drwxr-xr-x 3 medradar medradar 4096 Nov 16 04:07 ..
+drwxr-x--- 4 medradar medradar 4096 Nov 16 11:28 data
+drwxr-x--- 3 root     root     4096 Nov 16 11:17 data002-pre
+-rw-r--r-- 1 root     root      159 Nov 16 04:07 manifest-20261116-040734.txt
+-rw-r--r-- 1 root     root      159 Nov 16 04:07 manifest-20261116-040742.txt
+-rw-r--r-- 1 root     root      159 Nov 16 04:30 manifest-20261116-043001.txt
+-rw-r--r-- 1 root     root      159 Nov 16 11:02 manifest-20261116-110207.txt
+-rw-r--r-- 1 root     root      283 Nov 16 04:07 medradar-state-20261116-040734.tar.gz
+-rw-r--r-- 1 root     root      372 Nov 16 04:07 medradar-state-20261116-040742.tar.gz
+-rw-r--r-- 1 root     root      372 Nov 16 04:30 medradar-state-20261116-043001.tar.gz
+-rw-r--r-- 1 root     root      372 Nov 16 11:02 medradar-state-20261116-110207.tar.gz
+
+===== LEGACY_BACKUP_SCRIPT =====
+#!/usr/bin/env bash
+# MedRadar local-state backup (CLOUD-003). Code is recoverable from Git; this covers local state.
+set -u
+ROOT=/srv/medradar
+DEST=$ROOT/var/backup
+RETENTION=7
+mkdir -p "$DEST"
+ts=$(date +%Y%m%d-%H%M%S)
+sha=$(sudo -u medradar git -C "$ROOT/app" rev-parse HEAD 2>/dev/null || echo unknown)
+
+tar -czf "$DEST/medradar-state-$ts.tar.gz" -C "$ROOT" data/identity data/cache var/DEPLOYED_SHA 2>/dev/null || true
+
+{
+  echo "backup_ts=$ts"
+  echo "deployed_sha=$sha"
+  echo "host=$(hostname)"
+  echo "entries:"
+  tar -tzf "$DEST/medradar-state-$ts.tar.gz" 2>/dev/null | sed 's/^/  /'
+} > "$DEST/manifest-$ts.txt"
+
+ls -1t "$DEST"/medradar-state-*.tar.gz 2>/dev/null | tail -n +$((RETENTION+1)) | while read -r f; do rm -f "$f"; done
+ls -1t "$DEST"/manifest-*.txt 2>/dev/null | tail -n +$((RETENTION+1)) | while read -r f; do rm -f "$f"; done
+
+echo "backup ok: $DEST/medradar-state-$ts.tar.gz sha=$sha"
+===== DATA_STATUS_SUMMARY =====
+state ok
+snapshot fda-snapshot-20261116T032632Z-18ce4d0cbbe4
+sources [('openfda_510k', None, None), ('openfda_pma', None, None), ('openfda_recall', None, None), ('openfda_classification', None, None)]
+keys ['change_counts', 'change_feed', 'configured', 'data_snapshot', 'dataset_error', 'freshness', 'health', 'incidents', 'latency', 'message', 'recent_runs', 'request_usage_today', 'schema', 'snapshot', 'sources', 'state', 'synchronization', 'terminology']
+
+===== DEVICE_QUALITY =====
+{"schema":"medradar.device_quality.v1","snapshot_id":"fda-snapshot-20261116T032632Z-18ce4d0cbbe4","builder_version":"product-003.device_index.v1","applications":61632,"applications_by_kind":{"510k":23400,"pma":574,"pma_supplement":37658},"devices":23974,"families":{"families":630,"with_original_in_snapshot":574,"without_original_in_snapshot":56,"with_supplements":612,"largest_families":[{"family_id":"family:pma:P980016","name":"VIRTUSO/ENTRUST/MAXIMO/INTRINSIC/MARQUIS/IMPLANTABLE CARDIVERTER DEFIBRILLATORS","supplements":934},{"family_id":"family:pma:P010031","name":"CONCERTO/INSYNC SENTRY/INSYNC MAXIMO IMPLANTABLE CARDIOVASCULAR DEFIBRILLATORS W","supplements":903},{"family_id":"family:pma:P980035","name":"MEDTRONIC KAPPA 700/600 SERIES PULSE GENERATORS AND MODEL 9953 SOFTWARE","supplements":823},{"family_id":"family:pma:P840001","name":"ITREL(R) TOTALLY IMPLANTABLE SPINAL CORD STIM. SYS","supplements":614},{"family_id":"family:pma:P010012","name":"CONTAK CD,EASYTRAK, LIVIAN, COGNIS AND ACUITY SPIRIAL AUTOMATIC IMPLANTABLE CARD","supplements":580}],"supplement_type_distribution":{"30-Day Notice":21465,"Normal 180 Day Track":5251,"Real-Time Process":4988,"Normal 180 Day Track No User Fee":1987,"135 Review Track For 30-Day Notice":1863,"Special (Immediate Track)":1145,"Panel Track":217,"THIRTY DAY TRACK":44,"Special":2},"basis":"FDA PMA number: the original approval and every supplement that carries the same PMA number"},"recalls":{"recalls":29825,"with_confirmed_application_reference_in_snapshot":15022,"only_referencing_applications_outside_snapshot":6227,"without_any_official_reference":8576,"confirmed_reference_share":0.503671,"external_reference_edges":8491,"note":"A recall without a K-number reference is not deleted or guessed: it is listed as unlinked and counted here."},"relations":{"total":77823,"by_status":{"confirmed":55942,"evidence_supported":0,"candidate":21881,"unlinked":0},"by_type":{"application_has_supplement":{"confirmed":37038,"evidence_supported":
+
+===== END =====
+2026-11-16T17:19:05Z
+bash: line 99: $'\r': command not found

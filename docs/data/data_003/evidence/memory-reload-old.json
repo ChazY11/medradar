@@ -1,0 +1,278 @@
+{
+  "data_dir": "D:\\DEPPSKK\\worktrees\\data003\\.data\\active",
+  "final": {
+    "heap": null,
+    "peak_rss": 1930252288,
+    "rss": 1630822400,
+    "swap": 0
+  },
+  "label": "reload/rss",
+  "platform": "Windows-11-10.0.26200-SP0",
+  "probe": "data003.memory_probe.v1",
+  "python": "3.12.10",
+  "reloads": [
+    {
+      "attempt": 1,
+      "index_ms": 8207.8,
+      "peak_rss": 1717813248,
+      "reload_ms": 8804.6,
+      "rss_after_release": 1490960384,
+      "rss_before": 1624088576,
+      "rss_coexist": 1713963008,
+      "trim": "unsupported-platform"
+    },
+    {
+      "attempt": 2,
+      "index_ms": 6445.8,
+      "peak_rss": 1927643136,
+      "reload_ms": 9514.6,
+      "rss_after_release": 1560846336,
+      "rss_before": 1834414080,
+      "rss_coexist": 1921695744,
+      "trim": "unsupported-platform"
+    },
+    {
+      "attempt": 3,
+      "index_ms": 6172.4,
+      "peak_rss": 1930252288,
+      "reload_ms": 8893.0,
+      "rss_after_release": 1630822400,
+      "rss_before": 1836331008,
+      "rss_coexist": 1925353472,
+      "trim": "unsupported-platform"
+    }
+  ],
+  "stages": [
+    {
+      "at_s": 0.0,
+      "memory": {
+        "pagefile_peak": 11370496,
+        "peak_rss": 19062784,
+        "private": 11370496,
+        "rss": 19062784
+      },
+      "stage": "process_start"
+    },
+    {
+      "at_s": 0.093,
+      "memory": {
+        "pagefile_peak": 15085568,
+        "peak_rss": 22065152,
+        "private": 15085568,
+        "rss": 22016000
+      },
+      "stage": "import"
+    },
+    {
+      "applicants": 1563,
+      "at_s": 8.691,
+      "events": 91457,
+      "load_ms": 8598.1,
+      "memory": {
+        "pagefile_peak": 889225216,
+        "peak_rss": 889999360,
+        "private": 861511680,
+        "rss": 863784960
+      },
+      "organizations": 59,
+      "snapshot_id": "fda-snapshot-20261116T032632Z-18ce4d0cbbe4",
+      "stage": "load",
+      "top_allocations": []
+    },
+    {
+      "at_s": 9.371,
+      "memory": {
+        "pagefile_peak": 889225216,
+        "peak_rss": 889999360,
+        "private": 864047104,
+        "rss": 866332672
+      },
+      "queries_ms": 679.4,
+      "stage": "queries",
+      "workload": {
+        "organizations": 59,
+        "sample_keys": [
+          "draeger",
+          "ge_healthcare",
+          "medtronic"
+        ],
+        "timings": {
+          "events_recall_ms": 57.7,
+          "events_sorted_ms": 60.7,
+          "metrics_ms": 449.6,
+          "organization_draeger_ms": 0.5,
+          "organization_ge_healthcare_ms": 19.0,
+          "organization_medtronic_ms": 87.4,
+          "organizations_ms": 0.2,
+          "search_ms": 3.6
+        }
+      }
+    },
+    {
+      "applications": 61632,
+      "at_s": 16.244,
+      "build_ms": 6839.54,
+      "devices": 23974,
+      "families": 630,
+      "index_ms": 6872.7,
+      "memory": {
+        "pagefile_peak": 960368640,
+        "peak_rss": 961318912,
+        "private": 955453440,
+        "rss": 956424192
+      },
+      "recalls": 29825,
+      "relations": 77823,
+      "stage": "device_index",
+      "top_allocations": []
+    },
+    {
+      "at_s": 25.049,
+      "events": 91457,
+      "memory": {
+        "pagefile_peak": 1628229632,
+        "peak_rss": 1624088576,
+        "private": 1628229632,
+        "rss": 1624088576
+      },
+      "new_snapshot": "fda-snapshot-20261116T032632Z-18ce4d0cbbe4",
+      "old_snapshot": "fda-snapshot-20261116T032632Z-18ce4d0cbbe4",
+      "reload_ms": 8804.6,
+      "stage": "reload_1_coexist"
+    },
+    {
+      "applications": 61632,
+      "at_s": 33.257,
+      "devices": 23974,
+      "index_ms": 8207.8,
+      "memory": {
+        "pagefile_peak": 1722421248,
+        "peak_rss": 1717813248,
+        "private": 1718505472,
+        "rss": 1713963008
+      },
+      "relations": 77823,
+      "stage": "reload_1_new_index"
+    },
+    {
+      "at_s": 34.645,
+      "memory": {
+        "pagefile_peak": 1722421248,
+        "peak_rss": 1717813248,
+        "private": 1491619840,
+        "rss": 1490960384
+      },
+      "stage": "reload_1_after_release"
+    },
+    {
+      "at_s": 34.645,
+      "memory": {
+        "pagefile_peak": 1722421248,
+        "peak_rss": 1717813248,
+        "private": 1491619840,
+        "rss": 1490960384
+      },
+      "stage": "reload_1_after_trim",
+      "trim": "unsupported-platform"
+    },
+    {
+      "at_s": 44.16,
+      "events": 91457,
+      "memory": {
+        "pagefile_peak": 1840603136,
+        "peak_rss": 1834414080,
+        "private": 1840603136,
+        "rss": 1834414080
+      },
+      "new_snapshot": "fda-snapshot-20261116T032632Z-18ce4d0cbbe4",
+      "old_snapshot": "fda-snapshot-20261116T032632Z-18ce4d0cbbe4",
+      "reload_ms": 9514.6,
+      "stage": "reload_2_coexist"
+    },
+    {
+      "applications": 61632,
+      "at_s": 50.607,
+      "devices": 23974,
+      "index_ms": 6445.8,
+      "memory": {
+        "pagefile_peak": 1934307328,
+        "peak_rss": 1927643136,
+        "private": 1928355840,
+        "rss": 1921695744
+      },
+      "relations": 77823,
+      "stage": "reload_2_new_index"
+    },
+    {
+      "at_s": 52.268,
+      "memory": {
+        "pagefile_peak": 1934307328,
+        "peak_rss": 1927643136,
+        "private": 1563082752,
+        "rss": 1560846336
+      },
+      "stage": "reload_2_after_release"
+    },
+    {
+      "at_s": 52.269,
+      "memory": {
+        "pagefile_peak": 1934307328,
+        "peak_rss": 1927643136,
+        "private": 1563082752,
+        "rss": 1560846336
+      },
+      "stage": "reload_2_after_trim",
+      "trim": "unsupported-platform"
+    },
+    {
+      "at_s": 61.162,
+      "events": 91457,
+      "memory": {
+        "pagefile_peak": 1934307328,
+        "peak_rss": 1927643136,
+        "private": 1842270208,
+        "rss": 1836331008
+      },
+      "new_snapshot": "fda-snapshot-20261116T032632Z-18ce4d0cbbe4",
+      "old_snapshot": "fda-snapshot-20261116T032632Z-18ce4d0cbbe4",
+      "reload_ms": 8893.0,
+      "stage": "reload_3_coexist"
+    },
+    {
+      "applications": 61632,
+      "at_s": 67.335,
+      "devices": 23974,
+      "index_ms": 6172.4,
+      "memory": {
+        "pagefile_peak": 1936371712,
+        "peak_rss": 1930252288,
+        "private": 1931444224,
+        "rss": 1925353472
+      },
+      "relations": 77823,
+      "stage": "reload_3_new_index"
+    },
+    {
+      "at_s": 69.032,
+      "memory": {
+        "pagefile_peak": 1936371712,
+        "peak_rss": 1930252288,
+        "private": 1631657984,
+        "rss": 1630822400
+      },
+      "stage": "reload_3_after_release"
+    },
+    {
+      "at_s": 69.032,
+      "memory": {
+        "pagefile_peak": 1936371712,
+        "peak_rss": 1930252288,
+        "private": 1631657984,
+        "rss": 1630822400
+      },
+      "stage": "reload_3_after_trim",
+      "trim": "unsupported-platform"
+    }
+  ],
+  "tracemalloc": false
+}

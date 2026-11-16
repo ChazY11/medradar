@@ -12,7 +12,12 @@ def test_health(client):
     # The packaged snapshot has no pipeline DB, so sync health is explicitly unknown.
     assert body["status"] in ("ok", "unknown")
     assert body["snapshot"]["id"]
-    assert set(body["checks"]) == {"liveness", "readiness", "data", "sync", "freshness"}
+    # DATA-003 adds the dataset-activation layer; a static packaged snapshot is always idle.
+    assert set(body["checks"]) == {"liveness", "readiness", "data", "activation", "sync", "freshness"}
+    assert body["checks"]["activation"]["state"] == "ok"
+    activation = body["activation"]
+    assert activation["state"] == "idle"
+    assert activation["active_snapshot"] == body["snapshot"]["id"]
 
 
 def test_meta_contract(client):

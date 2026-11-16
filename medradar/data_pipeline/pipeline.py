@@ -10,6 +10,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Sequence
 
+from medradar.product import resources
 from medradar.product.data_dir import read_active_pointer
 
 from .changes import build_change_set
@@ -459,6 +460,102 @@ class Pipeline:
         }
 
     # ------------------------------------------------------------------ sync
+    # ------------------------------------------------------------------ resource guard
+    def resource_decision(self) -> tuple[resources.GuardDecision, dict[str, Any] | None]:
+        """Read the host state that decides whether a reconciliation may start now.
+
+        Two processes share this host: the web service (one dataset, plus a second copy while it
+        activates a new snapshot) and this pipeline (~2 GB for a recall reconciliation). A
+        per-unit ``MemoryMax`` cannot express the shared budget, so the decision is made from
+        host headroom plus the other process's own markers.
+        """
+        policy = resources.GuardPolicy(
+            name="pipeline_sync",
+            min_available_mb=self.settings.guard_min_available_mb,
+            min_swap_free_mb=self.settings.guard_min_swap_free_mb,
+            max_psi_some_avg10=self.settings.guard_max_psi_some_avg10,
+            min_disk_free_mb=self.settings.guard_min_disk_free_mb,
+        )
+        decision = resources.evaluate_guard(policy, disk_root=self.settings.root)
+        marker = resources.activation_in_flight(self.settings.root)
+        return decision, marker
+
+    def _deferred_result(
+        self,
+        decision: resources.GuardDecision,
+        marker: dict[str, Any] | None,
+        *,
+        phase: str,
+        requested: Sequence[str],
+    ) -> dict[str, Any]:
+        """Record DEFERRED_RESOURCE_PRESSURE and return without touching source state.
+
+        The record is a real run row with status DEFERRED, not a success and not a failure: the
+        update markers are unchanged, so the next scheduled run will see the same pending source
+        and try again. The third consecutive deferral also records an incident, so a host that
+        never recovers cannot be silently starved of updates.
+        """
+        reasons = list(decision.reasons)
+        if marker is not None:
+            reasons.append("dataset_activation_in_flight")
+        active = self.store.get_active_snapshot()
+        run_id = self.store.begin_run(
+            list(requested), (active or {}).get("snapshot_id")
+        )
+        payload = {
+            "phase": phase,
+            "reason": "DEFERRED_RESOURCE_PRESSURE",
+            "reasons": reasons,
+            "guard": decision.to_public(),
+            "activation": marker,
+            "retry": "the next scheduled run retries; no source state was advanced",
+        }
+        self.store.finish_run(
+            run_id,
+            RunStatus.DEFERRED.value,
+            error="DEFERRED_RESOURCE_PRESSURE",
+            metrics=payload,
+        )
+        recent = self.store.recent_runs(3)
+        if len(recent) >= 3 and all(
+            str(row.get("status") or "") == RunStatus.DEFERRED.value for row in recent
+        ):
+            self.store.record_incident(
+                "sync_deferred_resource_pressure",
+                {
+                    "consecutive_deferrals": len(recent),
+                    "reasons": reasons,
+                    "mem_available_mb": decision.snapshot.available_mb,
+                    "swap_free_mb": decision.snapshot.swap_free_mb,
+                },
+            )
+        return {
+            "status": RunStatus.DEFERRED.value,
+            "checks": [],
+            "sync": None,
+            "problems": [],
+            "failed_sources": [],
+            "full_reconciliation_deferred": None,
+            "deferred_update_sources": [],
+            "deferral": payload,
+            "message": (
+                "DEFERRED_RESOURCE_PRESSURE: synchronization was not started because the host "
+                "lacks headroom (" + ", ".join(reasons) + "); the active snapshot is unchanged "
+                "and the next scheduled run retries."
+            ),
+        }
+
+    def _guard_allows_run(self) -> dict[str, Any] | None:
+        if not self.settings.resource_guard_enabled:
+            return None
+        decision, marker = self.resource_decision()
+        if decision.allowed and marker is None:
+            return None
+        return self._deferred_result(
+            decision, marker, phase="before_check", requested=ALL_SOURCE_IDS
+        )
+
+    # ------------------------------------------------------------------ entry points
     def sync(
         self,
         *,
@@ -469,6 +566,7 @@ class Pipeline:
         dry_run: bool = False,
         actor: str = "pipeline",
         assume_checked: bool = False,
+        allow_resource_pressure: bool = False,
     ) -> dict[str, Any]:
         requested = list(sources or ALL_SOURCE_IDS)
         unknown = [source for source in requested if source not in SOURCES]
@@ -476,6 +574,10 @@ class Pipeline:
             raise PipelineError("unknown source(s): " + ", ".join(unknown))
         with PipelineLock(self.settings.lock_path):
             recover_publication(self.store, self.settings)
+            if not allow_resource_pressure:
+                deferral = self._guard_allows_run()
+                if deferral is not None:
+                    return deferral
             if not assume_checked:
                 self._check_locked(requested, due_only=False)
             return self._sync_locked(
@@ -484,15 +586,24 @@ class Pipeline:
             )
 
     def run(self, *, force: bool = False, allow_record_drop: bool = False,
-            allow_degraded: bool = False, actor: str = "pipeline") -> dict[str, Any]:
+            allow_degraded: bool = False, actor: str = "pipeline",
+            allow_resource_pressure: bool = False) -> dict[str, Any]:
         """Run due checks, then reconcile each healthy source independently.
 
         A failed/degraded source is recorded and omitted from this attempt. It must not
         prevent another source with a real update from being published. The resulting
         snapshot is explicitly partial and still goes through the normal validation gate.
+
+        DATA-003: the resource guard runs *before* the checks. If the host lacks headroom the
+        whole attempt is deferred, so no check records an update that the same run then refuses
+        to synchronize (which would otherwise delay that update until the next check interval).
         """
         with PipelineLock(self.settings.lock_path):
             recover_publication(self.store, self.settings)
+            if not allow_resource_pressure:
+                deferral = self._guard_allows_run()
+                if deferral is not None:
+                    return deferral
             checks = self._check_locked(ALL_SOURCE_IDS, due_only=True)
             failed: dict[str, dict[str, Any]] = {}
             healthy_updates: list[str] = []

@@ -40,6 +40,10 @@ class RunStatus(str, Enum):
     FAILED = "FAILED"
     NO_CHANGE = "NO_CHANGE"
     BLOCKED = "BLOCKED"
+    #: DATA-003: the run refused to start a memory-heavy reconciliation because the host did not
+    #: have the headroom. Nothing was collected, no source state advanced, and the next scheduled
+    #: run retries. This is deliberately distinct from FAILED and from BLOCKED.
+    DEFERRED = "DEFERRED"
 
 
 def utc_now() -> datetime:

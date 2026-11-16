@@ -180,6 +180,9 @@ def multi_source_env(tmp_path: Path):
     settings.registry_path = registry
     settings.review_db = tmp_path / "no-review.db"
     settings.min_free_bytes = 0
+    # DATA-003: the host-memory guard is exercised by its own tests. Pipeline behaviour tests
+    # must not depend on the memory state of the machine running them.
+    settings.resource_guard_enabled = False
     settings.full_reconciliation_interval_hours = 168
     # The combined-snapshot acceptance test explicitly opts into two product sources;
     # the production default is one for the 4 GB host.
@@ -217,6 +220,7 @@ def pipeline_env(tmp_path: Path):
     settings.registry_path = registry
     settings.review_db = tmp_path / "no-review.db"
     settings.min_free_bytes = 0
+    settings.resource_guard_enabled = False
     fake = FakeOpenFDA(raw)
     pipeline = Pipeline(settings, client=fake)
     boot = pipeline.bootstrap(legacy)
