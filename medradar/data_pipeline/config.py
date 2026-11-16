@@ -10,7 +10,7 @@ import os
 from dataclasses import dataclass, field
 from pathlib import Path
 
-PIPELINE_VERSION = "medradar-data-pipeline/1.0.0"
+PIPELINE_VERSION = "medradar-data-pipeline/2.0.0"
 DEFAULT_API_BASE = "https://api.fda.gov"
 DEFAULT_USER_AGENT = "MedRadar/1.0 (medical technology intelligence; +https://github.com/ChazY11/medradar)"
 DEFAULT_ROOT = Path(os.environ.get("MEDRADAR_PIPELINE_ROOT", "data/data_pipeline"))
@@ -90,6 +90,11 @@ class Settings:
     missing_recheck_cap: int = 50
     source_degraded_after: int = 3
     validation_build_device_index: bool = True
+    full_reconciliation_interval_hours: int = 168
+    full_reconciliation_max_sources_per_run: int = 1
+    # One product source per automatic run keeps the 4 GB host safe while still allowing
+    # manual/combined runs and two-source acceptance tests to set a higher value.
+    max_product_sources_per_run: int = 1
 
     def __post_init__(self) -> None:
         self.root = Path(self.root)
@@ -148,4 +153,13 @@ class Settings:
             max_record_drop_ratio=_env_float("MEDRADAR_PIPELINE_MAX_DROP_RATIO", 0.02),
             removal_confirmations=_env_int("MEDRADAR_PIPELINE_REMOVAL_CONFIRMATIONS", 2),
             missing_recheck_cap=_env_int("MEDRADAR_PIPELINE_RECHECK_CAP", 50),
+            full_reconciliation_interval_hours=_env_int(
+                "MEDRADAR_PIPELINE_FULL_RECONCILE_HOURS", 168
+            ),
+            full_reconciliation_max_sources_per_run=_env_int(
+                "MEDRADAR_PIPELINE_FULL_RECONCILE_MAX_SOURCES", 1
+            ),
+            max_product_sources_per_run=_env_int(
+                "MEDRADAR_PIPELINE_MAX_PRODUCT_SOURCES_PER_RUN", 1
+            ),
         )

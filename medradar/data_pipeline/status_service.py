@@ -89,7 +89,11 @@ def _base_sources(manifest: dict[str, Any] | None) -> list[dict[str, Any]]:
             "last_checked_at": None,
             "last_success_check_at": None,
             "last_success_sync_at": None,
+            "last_success_official_last_updated": None,
+            "last_success_official_total": None,
             "last_failed_at": None,
+            "last_full_reconciliation_at": None,
+            "last_full_reconciliation_snapshot_id": None,
             "consecutive_failures": 0,
             "status": "UNKNOWN",
             "message": "No check has been recorded for this source.",
@@ -121,7 +125,13 @@ def _source_rows(store: StateStore, manifest: dict[str, Any] | None) -> list[dic
             "last_checked_at": row.get("last_checked_at"),
             "last_success_check_at": row.get("last_success_check_at"),
             "last_success_sync_at": row.get("last_success_sync_at"),
+            "last_success_official_last_updated": row.get("last_success_official_last_updated"),
+            "last_success_official_total": row.get("last_success_official_total"),
             "last_failed_at": row.get("last_failed_at"),
+            "last_full_reconciliation_at": row.get("last_full_reconciliation_at"),
+            "last_full_reconciliation_snapshot_id": row.get("last_full_reconciliation_snapshot_id"),
+            "sync_status": ((manifest or {}).get("sources") or {}).get(target["source_id"], {}).get("sync_status"),
+            "reconciliation_mode": ((manifest or {}).get("sources") or {}).get(target["source_id"], {}).get("reconciliation_mode"),
             "consecutive_failures": int(row.get("consecutive_failures") or 0),
             "status": row.get("last_check_status") or "UNKNOWN",
             "message": row.get("last_check_message"),
@@ -137,6 +147,78 @@ def _source_rows(store: StateStore, manifest: dict[str, Any] | None) -> list[dic
             "unresolved_since_previous": int(source_counts.get("UNRESOLVED", 0)),
         })
     return base
+
+
+def _sync_health(
+    sources: list[dict[str, Any]],
+    runs: list[dict[str, Any]],
+    incidents: list[dict[str, Any]],
+) -> dict[str, Any]:
+    now = datetime.now(timezone.utc)
+    latest_run = runs[0] if runs else None
+    failed = [row["source_id"] for row in sources if row["status"] in ("CHECK_FAILED", "SOURCE_DEGRADED")]
+    pending = [row["source_id"] for row in sources if row["update_available"]]
+    unknown = [row["source_id"] for row in sources if row["status"] == "UNKNOWN"]
+    last_check = max((row.get("last_checked_at") or "" for row in sources), default="")
+    last_success = max((row.get("last_success_sync_at") or "" for row in sources), default="")
+    latest_status = str((latest_run or {}).get("status") or "UNKNOWN")
+    if failed or latest_status in ("FAILED", "BLOCKED", "PARTIAL"):
+        state = "degraded"
+    elif latest_status == "RUNNING" and latest_run:
+        started = latest_run.get("started_at")
+        try:
+            started_at = datetime.fromisoformat(str(started).replace("Z", "+00:00"))
+            state = "stale" if (now - started_at).total_seconds() > 7200 else "running"
+        except (TypeError, ValueError):
+            state = "running"
+    elif pending:
+        # An available official update is not "stale" until the scheduled attempt is overdue.
+        state = "update_pending"
+    elif unknown:
+        state = "unknown"
+    else:
+        state = "ok"
+    return {
+        "state": state,
+        "latest_run_status": latest_status,
+        "latest_run_id": (latest_run or {}).get("run_id"),
+        "last_check_at": last_check or None,
+        "last_successful_sync_at": last_success or None,
+        "failed_sources": failed,
+        "pending_sources": pending,
+        "unknown_sources": unknown,
+        "latest_incident": incidents[0] if incidents else None,
+        "note": "A web process being alive is not a successful synchronization; this is the sync-specific state.",
+    }
+
+
+def _pipeline_freshness(sources: list[dict[str, Any]], manifest: dict[str, Any] | None) -> dict[str, Any]:
+    official_dates = [str(row.get("official_last_updated")) for row in sources if row.get("official_last_updated")]
+    latest_official = max(official_dates) if official_dates else None
+    official_age = _age_days(latest_official)
+    snapshot_age = _age_days((manifest or {}).get("collected_at"))
+    pending = [row["source_id"] for row in sources if row["update_available"]]
+    failed = [row["source_id"] for row in sources if row["status"] in ("CHECK_FAILED", "SOURCE_DEGRADED")]
+    if failed:
+        state = "degraded"
+    elif pending:
+        state = "update_pending"
+    elif any(row.get("status") == "UNKNOWN" for row in sources):
+        state = "unknown"
+    else:
+        state = "current"
+    return {
+        "state": state,
+        "latest_official_version": latest_official,
+        "official_version_age_days": official_age,
+        "snapshot_age_days": snapshot_age,
+        "pending_sources": pending,
+        "failed_sources": failed,
+        "note": (
+            "Official version age is not staleness by itself: FDA publishes monthly/weekly. "
+            "A pending update or a failed check is what can make synchronization stale."
+        ),
+    }
 
 
 def data_status(
@@ -190,6 +272,11 @@ def data_status(
                 "note": "No pipeline database is present. Dates below are the snapshot's own timestamps, not synchronization times.",
             },
             "sources": _base_sources(manifest),
+            "health": {
+                "data": {"state": "available" if manifest else "unavailable", "using_fallback": False},
+                "sync": {"state": "not_configured"},
+                "freshness": _pipeline_freshness(_base_sources(manifest), manifest),
+            },
             "change_counts": {},
             "recent_runs": [],
             "incidents": [],
@@ -204,7 +291,7 @@ def data_status(
             },
         }
 
-    store = StateStore(db_path)
+    store = StateStore(db_path, read_only=True)
     sources = _source_rows(store, manifest)
     runs = store.recent_runs(12)
     incidents = store.incidents(12)
@@ -215,10 +302,13 @@ def data_status(
     degraded = [row for row in sources if row["status"] in ("CHECK_FAILED", "SOURCE_DEGRADED")]
     update_available = [row for row in sources if row["update_available"]]
     unverified = [row for row in sources if row["status"] == "UNKNOWN"]
+    latest_run_status = str((runs[0] if runs else {}).get("status") or "")
     if not latest:
         state = "configured_no_publication"
-    elif degraded:
+    elif degraded or latest_run_status in ("FAILED", "BLOCKED"):
         state = "degraded"
+    elif latest_run_status == "PARTIAL":
+        state = "partial"
     elif update_available:
         state = "update_available"
     elif unverified:
@@ -247,7 +337,8 @@ def data_status(
         "message": {
             "ok": "Sources are monitored and the active snapshot is the latest successful publication.",
             "update_available": "An official update is available; the next synchronization has not completed.",
-            "degraded": "At least one source check failed. The previous snapshot remains active.",
+            "degraded": "At least one source check or synchronization failed. The previous snapshot remains active for the affected source.",
+            "partial": "A partial publication succeeded: healthy sources were updated while at least one source retained its previous version.",
             "unverified": "One or more sources have no recorded check yet. The snapshot is being served, but source freshness is unknown.",
             "configured_no_publication": "The pipeline is configured but no publication has been recorded.",
         }.get(state, state),
@@ -269,6 +360,15 @@ def data_status(
             "updated_sources": [row["source_id"] for row in update_available],
         },
         "sources": sources,
+        "health": {
+            "data": {
+                "state": "available" if snapshot_payload else "unavailable",
+                "using_fallback": False,
+                "snapshot_id": (manifest or {}).get("id"),
+            },
+            "sync": _sync_health(sources, runs, incidents),
+            "freshness": _pipeline_freshness(sources, manifest),
+        },
         "change_counts": change_counts,
         "recent_runs": runs,
         "incidents": incidents,
@@ -307,7 +407,7 @@ def changes_feed(
             "filters": {"source_id": source_id, "change_type": change_type, "organization_key": organization_key},
             "message": "No pipeline database is configured; no change feed exists.",
         }
-    store = StateStore(db_path)
+    store = StateStore(db_path, read_only=True)
     items, total = store.list_changes(
         source_id=source_id, change_type=change_type, organization_key=organization_key,
         limit=limit, offset=offset,

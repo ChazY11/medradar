@@ -302,6 +302,16 @@ def test_api_reports_configuration_and_change_feed(pipeline_env) -> None:
     assert changes.json()["total"] >= 1
     assert any(item["official_record_id"] == "K000020" for item in changes.json()["items"])
     assert client.get("/data-status").status_code == 200
+    assert client.get("/api/livez").json()["status"] == "alive"
+    ready = client.get("/api/readyz")
+    assert ready.status_code == 200
+    assert ready.json()["ready"] is True
+    health = client.get("/api/health")
+    assert health.status_code == 200
+    checks = health.json()["checks"]
+    assert health.json()["status"] in ("ok", "unknown")
+    assert set(health.json()["checks"]) == {"liveness", "readiness", "data", "sync", "freshness"}
+    assert health.json()["checks"]["data"]["state"] == "available"
 
 
 def test_api_is_explicit_when_pipeline_is_not_configured(tmp_path: Path) -> None:
@@ -418,3 +428,235 @@ def test_runtime_falls_back_to_previous_dataset_when_new_pointer_is_unusable(pip
     state, message = holder.status()
     assert state == "degraded"
     assert message
+
+def _set_checked_hours_ago(env, hours: int = 30) -> None:
+    from datetime import datetime, timedelta, timezone
+    stamp = (datetime.now(timezone.utc) - timedelta(hours=hours)).isoformat().replace("+00:00", "Z")
+    with env.pipeline.store._conn() as connection:
+        connection.execute("UPDATE sources SET last_checked_at = ?", (stamp,))
+
+
+def _active_manifest(env):
+    active = active_snapshot(env.settings)
+    assert active is not None
+    return active[1]
+
+
+def test_partial_source_failure_publishes_healthy_source_and_reports_failed(multi_source_env) -> None:
+    env = multi_source_env
+    first = env.pipeline.run()
+    assert first["status"] == "SUCCEEDED"
+    assert first["sync"]["status"] == "SUCCEEDED"
+    before = _active_id(env)
+    env.fake.fail_sources = {"openfda_510k"}
+    env.fake.versions = {"openfda_recall": "2026-11-09"}
+    _set_checked_hours_ago(env)
+    result = env.pipeline.run()
+    assert result["status"] == "PARTIAL"
+    assert "openfda_510k" in result["failed_sources"]
+    assert result["sync"]["status"] == "PARTIAL"
+    assert _active_id(env) != before
+    manifest = _active_manifest(env)
+    sources = manifest["sources"]
+    assert sources["openfda_510k"]["official_last_updated"] == "2026-11-02"
+    assert sources["openfda_510k"]["sync_status"] == "FAILED"
+    assert sources["openfda_recall"]["official_last_updated"] == "2026-11-09"
+    assert sources["openfda_recall"]["sync_status"] == "SYNCED"
+    assert sources["openfda_pma"]["official_last_updated"] == "2026-11-02"
+    assert manifest["source_outcomes"]["openfda_510k"]["sync_status"] == "FAILED"
+    assert manifest["change_summary"]["partial"] is True
+    active_after = _active_id(env)
+    # The failed source must remain failed and retrying must not duplicate a change row.
+    change_rows = env.pipeline.store.change_counts(active_after)
+    _set_checked_hours_ago(env)
+    retry = env.pipeline.run()
+    assert retry["status"] in ("PARTIAL", "BLOCKED")
+    assert _active_id(env) == active_after
+    assert env.pipeline.store.change_counts(active_after) == change_rows
+
+
+def test_multiple_sources_update_in_one_partial_snapshot(multi_source_env) -> None:
+    env = multi_source_env
+    env.pipeline.run()
+    env.fake.versions = {"openfda_pma": "2026-11-09", "openfda_recall": "2026-11-09"}
+    _set_checked_hours_ago(env)
+    result = env.pipeline.run()
+    assert result["status"] == "SUCCEEDED", result
+    manifest = _active_manifest(env)
+    assert manifest["sources"]["openfda_pma"]["official_last_updated"] == "2026-11-09"
+    assert manifest["sources"]["openfda_recall"]["official_last_updated"] == "2026-11-09"
+    assert manifest["sources"]["openfda_classification"]["official_last_updated"] == "2026-11-02"
+    assert manifest["sources"]["openfda_pma"]["sync_status"] == "SYNCED"
+    assert manifest["sources"]["openfda_recall"]["sync_status"] == "SYNCED"
+
+
+def test_all_sources_failed_keeps_active_snapshot_and_is_blocked(multi_source_env) -> None:
+    from medradar.data_pipeline.model import ALL_SOURCE_IDS
+    env = multi_source_env
+    env.pipeline.run()
+    before = _active_id(env)
+    env.fake.fail_sources = set(ALL_SOURCE_IDS)
+    _set_checked_hours_ago(env)
+    result = env.pipeline.run()
+    assert result["status"] == "BLOCKED"
+    assert result["sync"] is None
+    assert _active_id(env) == before
+
+
+def test_partial_source_recovers_without_duplicate_ledger_rows(multi_source_env) -> None:
+    env = multi_source_env
+    env.pipeline.run()
+    env.fake.fail_sources = {"openfda_510k"}
+    env.fake.versions = {"openfda_recall": "2026-11-09"}
+    _set_checked_hours_ago(env)
+    partial = env.pipeline.run()
+    assert partial["status"] == "PARTIAL"
+    # Recovery: 510(k) is healthy again and every source has a newer official version.
+    env.fake.fail_sources = set()
+    env.fake.versions = {
+        "openfda_510k": "2026-11-09",
+        "openfda_pma": "2026-11-09",
+        "openfda_recall": "2026-11-09",
+    }
+    _set_checked_hours_ago(env)
+    recovered = env.pipeline.run()
+    assert recovered["status"] == "SUCCEEDED"
+    manifest = _active_manifest(env)
+    assert manifest["sources"]["openfda_510k"]["sync_status"] == "SYNCED"
+    assert manifest["sources"]["openfda_pma"]["sync_status"] == "SYNCED"
+    # Recall was already synced to 2026-11-09 by the partial run; retrying it must not
+    # fabricate a second "SYNCED" attempt when there is no update.
+    assert manifest["sources"]["openfda_recall"]["sync_status"] == "UNCHANGED"
+    assert manifest["sources"]["openfda_510k"]["official_last_updated"] == "2026-11-09"
+
+
+def test_full_reconciliation_runs_when_version_is_unchanged(multi_source_env) -> None:
+    env = multi_source_env
+    env.pipeline.run()
+    _set_checked_hours_ago(env, hours=200)
+    with env.pipeline.store._conn() as connection:
+        connection.execute("UPDATE sources SET last_full_reconciliation_at = '2026-01-01T00:00:00Z' WHERE source_id = 'openfda_pma'")
+    result = env.pipeline.run()
+    assert result["full_reconciliation_sources"] == ["openfda_pma"]
+    manifest = _active_manifest(env)
+    assert manifest["sources"]["openfda_pma"]["reconciliation_mode"] == "FULL"
+    assert manifest["sources"]["openfda_pma"]["last_full_reconciliation_at"]
+
+def test_collection_failure_in_one_source_does_not_block_another(multi_source_env) -> None:
+    env = multi_source_env
+    env.pipeline.run()
+    before = _active_id(env)
+    env.fake.versions = {"openfda_510k": "2026-11-09", "openfda_recall": "2026-11-09"}
+    env.fake.fail_fetch_sources = {"openfda_510k"}
+    _set_checked_hours_ago(env)
+    result = env.pipeline.run()
+    assert result["status"] == "PARTIAL"
+    assert "openfda_510k" in result["failed_sources"]
+    assert result["sync"]["status"] == "PARTIAL"
+    assert _active_id(env) != before
+    manifest = _active_manifest(env)
+    assert manifest["sources"]["openfda_510k"]["official_last_updated"] == "2026-11-02"
+    assert manifest["sources"]["openfda_510k"]["sync_status"] == "FAILED"
+    assert manifest["sources"]["openfda_recall"]["official_last_updated"] == "2026-11-09"
+    assert manifest["sources"]["openfda_recall"]["sync_status"] == "SYNCED"
+
+def test_health_distinguishes_liveness_readiness_and_fallback(pipeline_env) -> None:
+    from medradar.data_pipeline.publisher import active_snapshot as current_active
+    env = pipeline_env
+    client = TestClient(create_app(data_dir=env.settings.root, pipeline_db=env.settings.state_db))
+    before = client.get("/api/health")
+    assert before.status_code == 200
+    old_snapshot = before.json()["snapshot"]["id"]
+    env.pipeline.sync(sources=["openfda_510k"], force=True)
+    active = current_active(env.settings)
+    assert active is not None
+    (active[0] / "snapshot.json").unlink()
+    health = client.get("/api/health")
+    assert health.status_code == 200
+    body = health.json()
+    assert body["status"] == "degraded"
+    assert body["checks"]["readiness"]["state"] == "ok"
+    assert body["checks"]["data"]["using_fallback"] is True
+    assert body["snapshot"]["id"] == old_snapshot
+    # Liveness never depends on the data file; readiness still serves the old dataset.
+    assert client.get("/api/livez").status_code == 200
+    assert client.get("/api/readyz").status_code == 200
+
+
+def test_health_is_503_when_no_dataset_can_be_loaded(tmp_path: Path) -> None:
+    client = TestClient(create_app(data_dir=tmp_path / "missing"))
+    response = client.get("/api/health")
+    assert response.status_code == 503
+    assert response.json()["status"] == "not_ready"
+    assert response.json()["checks"]["readiness"]["state"] == "not_ready"
+    assert client.get("/api/livez").status_code == 200
+    assert client.get("/api/readyz").status_code == 503
+
+def test_backup_and_isolated_restore_preserve_ledger_and_active_snapshot(pipeline_env) -> None:
+    from medradar.data_pipeline.backup import backup, restore
+    from medradar.data_pipeline.publisher import active_snapshot as current_active
+    from medradar.product.dataset import load_dataset
+
+    env = pipeline_env
+    env.pipeline.sync(sources=["openfda_510k"])
+    env.pipeline.sync(sources=["openfda_510k"], force=True)
+    active = current_active(env.settings)
+    assert active is not None
+    active_id = str(active[1]["id"])
+    expected_changes = env.pipeline.store.change_counts(active_id)
+    result = backup(env.settings, env.tmp_path / "backups")
+    archive = Path(result["backup"])
+    assert (archive / "backup.json").is_file()
+    assert (archive / "pipeline.db").is_file()
+    restored_root = env.tmp_path / "restored"
+    restored = restore(archive, restored_root)
+    assert restored["active_snapshot_id"] == active_id
+    restored_active = current_active(Settings(root=restored_root))
+    assert restored_active is not None
+    assert str(restored_active[1]["id"]) == active_id
+    restored_store = StateStore(restored_root / "pipeline.db")
+    assert restored_store.change_counts(active_id) == expected_changes
+    dataset = load_dataset(restored_root, review_db=None)
+    assert dataset.snapshot_ref()["id"] == active_id
+    assert len(dataset.events) > 0
+
+
+def test_restore_refuses_non_empty_destination(pipeline_env) -> None:
+    from medradar.data_pipeline.backup import BackupError, backup, restore
+
+    env = pipeline_env
+    result = backup(env.settings, env.tmp_path / "backups")
+    victim = env.tmp_path / "occupied"
+    victim.mkdir()
+    (victim / "do-not-overwrite").write_text("x", encoding="utf-8")
+    with pytest.raises(BackupError):
+        restore(result["backup"], victim)
+    assert (victim / "do-not-overwrite").read_text(encoding="utf-8") == "x"
+
+def test_health_reports_ok_only_when_all_layers_are_known_good(multi_source_env) -> None:
+    env = multi_source_env
+    env.pipeline.run()
+    client = TestClient(create_app(data_dir=env.settings.root, pipeline_db=env.settings.state_db))
+    body = client.get("/api/health").json()
+    assert body["status"] == "ok"
+    assert body["checks"]["data"]["state"] == "available"
+    assert body["checks"]["sync"]["state"] == "ok"
+    assert body["checks"]["freshness"]["state"] == "current"
+
+def test_default_one_product_source_per_run_leaves_other_updates_pending(multi_source_env) -> None:
+    env = multi_source_env
+    env.settings.max_product_sources_per_run = 1
+    env.pipeline.settings.max_product_sources_per_run = 1
+    result = env.pipeline.run()
+    assert result["status"] == "PARTIAL"
+    assert result["deferred_update_sources"]
+    manifest = _active_manifest(env)
+    assert manifest["change_summary"]["deferred_sources"]
+    assert manifest["change_summary"]["partial"] is True
+    assert manifest["sources"]["openfda_510k"]["sync_status"] == "SYNCED"
+    assert manifest["sources"]["openfda_pma"]["official_last_updated"] is None
+    assert manifest["sources"]["openfda_recall"]["official_last_updated"] is None
+    # The unselected sources are still pending, not falsely marked as unchanged/synced.
+    rows = {row["source_id"]: row for row in env.pipeline.store.list_sources()}
+    assert rows["openfda_pma"]["update_available"] == 1
+    assert rows["openfda_recall"]["update_available"] == 1

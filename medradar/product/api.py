@@ -282,22 +282,87 @@ def create_app(
             raise HTTPExceptionCompat(503, "dataset_error", str(error))
 
     # ---------------------------------------------------------------- health & meta
-    @app.get("/api/health")
-    def health() -> Any:
+    def _health_payload() -> tuple[int, dict[str, Any]]:
+        data = None
+        dataset_error = holder.degraded_error
         try:
             data = holder.get()
         except Exception as error:
-            return {"status": "degraded", "snapshot": None, "version": PRODUCT_VERSION, "store": str(error)}
-        if holder.degraded_error:
-            return {
-                "status": "degraded",
-                "snapshot": data.snapshot_ref(),
-                "version": PRODUCT_VERSION,
-                "store": str(data.data_dir),
-                "error": holder.degraded_error,
-                "serving": "previous_validated_snapshot",
+            dataset_error = str(error)
+        try:
+            status_payload = data_status(
+                data_dir=holder.data_dir or dataset_module.default_data_dir(),
+                pipeline_db=app.state.pipeline_db,
+            )
+        except Exception as error:
+            status_payload = {
+                "health": {
+                    "data": {"state": "unknown"},
+                    "sync": {"state": "unknown", "error": str(error)},
+                    "freshness": {"state": "unknown", "error": str(error)},
+                }
             }
-        return {"status": "ok", "snapshot": data.snapshot_ref(), "version": PRODUCT_VERSION, "store": str(data.data_dir)}
+        pipeline_health = status_payload.get("health") or {}
+        if pipeline_health.get("data") is not None:
+            pipeline_health["data"]["using_fallback"] = bool(holder.degraded_error)
+        data_state = "available" if data is not None else "unavailable"
+        if holder.degraded_error:
+            data_state = "degraded"
+        checks = {
+            "liveness": {"state": "ok", "detail": "the web process answered"},
+            "readiness": {
+                "state": "ok" if data is not None else "not_ready",
+                "detail": "a validated dataset is loadable" if data is not None else "no validated dataset is loadable",
+            },
+            "data": {
+                "state": data_state,
+                "snapshot_id": (data.snapshot_ref().get("id") if data is not None else None),
+                "using_fallback": bool(holder.degraded_error),
+                "error": dataset_error,
+            },
+            "sync": pipeline_health.get("sync") or {"state": "unknown"},
+            "freshness": pipeline_health.get("freshness") or {"state": "unknown"},
+        }
+        states = {str(check.get("state") or "unknown") for check in checks.values()}
+        if data is None:
+            overall = "not_ready"
+        elif states & {"degraded", "not_ready", "failed", "unavailable", "stale"}:
+            overall = "degraded"
+        elif "unknown" in states:
+            overall = "unknown"
+        else:
+            overall = "ok"
+        payload = {
+            "status": overall,
+            "snapshot": data.snapshot_ref() if data is not None else None,
+            "version": PRODUCT_VERSION,
+            "store": str(data.data_dir) if data is not None else str(holder.data_dir or dataset_module.default_data_dir()),
+            "checks": checks,
+            "generated_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+        }
+        return (200 if data is not None else 503), payload
+
+    @app.get("/api/livez")
+    def livez() -> Any:
+        return {"status": "alive", "version": PRODUCT_VERSION}
+
+    @app.get("/api/readyz")
+    def readyz() -> Any:
+        status_code, payload = _health_payload()
+        return JSONResponse(
+            status_code=status_code,
+            content={
+                "ready": payload["status"] != "not_ready",
+                "status": payload["status"],
+                "snapshot": payload["snapshot"],
+                "checks": {"readiness": payload["checks"]["readiness"], "data": payload["checks"]["data"]},
+            },
+        )
+
+    @app.get("/api/health")
+    def health() -> Any:
+        status_code, payload = _health_payload()
+        return JSONResponse(status_code=status_code, content=payload)
 
     @app.get("/api/meta")
     def meta() -> Any:
@@ -306,14 +371,32 @@ def create_app(
     # ---------------------------------------------------------------- data lifecycle
     @app.get("/api/data-status")
     def pipeline_status() -> Any:
-        status = data_status(
-            data_dir=holder.data_dir or dataset_module.default_data_dir(),
-            pipeline_db=app.state.pipeline_db,
-        )
+        try:
+            status = data_status(
+                data_dir=holder.data_dir or dataset_module.default_data_dir(),
+                pipeline_db=app.state.pipeline_db,
+            )
+        except Exception as error:
+            status = {
+                "schema": "medradar.data_status.v1",
+                "configured": True,
+                "state": "error",
+                "message": "The pipeline state database could not be read: " + str(error),
+                "terminology": {"continuously_monitored": True, "automatically_synchronized": True, "real_time_claim": False, "labels": []},
+                "snapshot": None,
+                "synchronization": {"state": "error", "last_successful_sync": None, "last_check_attempt": None},
+                "sources": [],
+                "health": {"data": {"state": "unknown"}, "sync": {"state": "unknown"}, "freshness": {"state": "unknown"}},
+                "change_counts": {}, "recent_runs": [], "incidents": [], "change_feed": [],
+                "latency": {"official_source_version": None, "last_checked_by_medradar": None,
+                            "last_successful_sync": None, "sync_lag_hours": None,
+                            "statement": "Pipeline state is unreadable; no synchronization claim is made."},
+            }
         try:
             data = dataset()
             status["data_snapshot"] = data.snapshot_ref()
             status["freshness"] = data.freshness()
+            status.setdefault("health", {}).setdefault("data", {})["using_fallback"] = bool(holder.degraded_error)
             status["dataset_error"] = holder.degraded_error
         except Exception as error:
             # The lifecycle page must remain usable when the active snapshot is the thing

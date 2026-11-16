@@ -84,7 +84,7 @@ def default_data_dir() -> Path:
 DEFAULT_DATA_DIR = default_data_dir()
 
 PRODUCT_NAME = "MedRadar"
-PRODUCT_VERSION = "2.1.0-data-001"
+PRODUCT_VERSION = "2.2.0-data-002"
 PRODUCT_POSITIONING_EN = (
     "Medical technology intelligence: traceable FDA regulatory records for the companies you "
     "compete with, with the identity and time limits stated on every screen."

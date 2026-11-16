@@ -1,0 +1,23 @@
+	Command being timed: "sudo -n systemd-run --scope --quiet -p MemoryHigh=2200M -p MemoryMax=2400M -- env PYTHONPATH=/tmp/data002/repo MEDRADAR_PIPELINE_ROOT=/tmp/data002/state MEDRADAR_REVIEW_DB=/tmp/data002/state/no.db python3 -m medradar.data_pipeline sync --force --sources openfda_510k,openfda_pma,openfda_recall --json"
+	User time (seconds): 89.72
+	System time (seconds): 6.98
+	Percent of CPU this job got: 18%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 8:32.57
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 2261840
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 42167
+	Minor (reclaiming a frame) page faults: 1292497
+	Voluntary context switches: 93988
+	Involuntary context switches: 26844
+	Swaps: 0
+	File system inputs: 457592
+	File system outputs: 201240
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0

@@ -1,0 +1,37 @@
+[Unit]
+Description=MedRadar FDA pipeline consistent state backup
+After=network-online.target medradar-web.service
+Wants=network-online.target
+# Proposal only. Installation requires explicit approval of the DATA-002 change request.
+Documentation=file:///srv/medradar/app/docs/data/data_002/BACKUP_RECOVERY.md
+
+[Service]
+Type=oneshot
+User=medradar
+Group=medradar
+WorkingDirectory=/srv/medradar
+Environment=HOME=/srv/medradar
+Environment=PYTHONUNBUFFERED=1
+Environment=MEDRADAR_PIPELINE_ROOT=/srv/medradar/data/fda
+Environment=MEDRADAR_REVIEW_DB=/srv/medradar/data/identity/review.db
+EnvironmentFile=-/etc/medradar/pipeline.env
+UMask=0027
+ExecStart=/srv/medradar/.venv/bin/python -m medradar.data_pipeline backup --destination /srv/medradar/var/backup/data --json
+TimeoutStartSec=20min
+Nice=10
+IOSchedulingClass=idle
+IOSchedulingPriority=7
+NoNewPrivileges=yes
+PrivateTmp=yes
+PrivateDevices=yes
+ProtectSystem=strict
+ProtectHome=yes
+ProtectKernelTunables=yes
+ProtectControlGroups=yes
+RestrictSUIDSGID=yes
+LockPersonality=yes
+ReadWritePaths=/srv/medradar/data /srv/medradar/var/backup
+MemoryHigh=512M
+MemoryMax=768M
+CPUQuota=50%
+TasksMax=32

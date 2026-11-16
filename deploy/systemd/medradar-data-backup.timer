@@ -1,0 +1,13 @@
+[Unit]
+Description=Daily MedRadar FDA pipeline state backup
+# Proposal only. Installation requires explicit approval of the DATA-002 change request.
+
+[Timer]
+OnCalendar=*-*-* 03:20:00
+Persistent=true
+AccuracySec=1min
+RandomizedDelaySec=10min
+Unit=medradar-data-backup.service
+
+[Install]
+WantedBy=timers.target

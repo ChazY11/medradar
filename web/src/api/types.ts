@@ -155,11 +155,30 @@ export interface Aggregations {
   undated_records: number;
 }
 
+export interface HealthCheck {
+  state: string;
+  detail?: string;
+  snapshot_id?: string | null;
+  using_fallback?: boolean;
+  error?: string | null;
+  latest_run_status?: string;
+  latest_run_id?: string | null;
+  last_check_at?: string | null;
+  last_successful_sync_at?: string | null;
+  failed_sources?: string[];
+  pending_sources?: string[];
+  latest_official_version?: string | null;
+  official_version_age_days?: number | null;
+  snapshot_age_days?: number | null;
+}
+
 export interface HealthResponse {
-  status: "ok" | "degraded";
+  status: "ok" | "degraded" | "unknown" | "not_ready";
   snapshot: SnapshotRef | null;
   version: string;
   store: string;
+  checks?: Record<string, HealthCheck>;
+  generated_at?: string;
 }
 
 export interface MetaProduct {
@@ -894,7 +913,13 @@ export interface DataStatusSource {
   last_checked_at: string | null;
   last_success_check_at: string | null;
   last_success_sync_at: string | null;
+  last_success_official_last_updated?: string | null;
+  last_success_official_total?: number | null;
   last_failed_at: string | null;
+  last_full_reconciliation_at?: string | null;
+  last_full_reconciliation_snapshot_id?: string | null;
+  sync_status?: string | null;
+  reconciliation_mode?: string | null;
   consecutive_failures: number;
   status: string;
   message: string | null;
@@ -967,6 +992,11 @@ export interface DataStatusResponse {
     note?: string;
   };
   sources: DataStatusSource[];
+  health?: {
+    data: { state: string; using_fallback?: boolean; snapshot_id?: string | null };
+    sync: Record<string, unknown> & { state: string };
+    freshness: Record<string, unknown> & { state: string };
+  };
   change_counts: Record<string, number>;
   recent_runs: Record<string, unknown>[];
   incidents: Record<string, unknown>[];

@@ -96,11 +96,34 @@ interface Aggregations {
 
 ---
 
-## 1. `GET /api/health`
+## 1. Health endpoints (DATA-002)
 
 ```ts
-{ status: "ok" | "degraded"; snapshot: SnapshotRef | null; version: string; store: string }
+GET /api/livez
+{ status: "alive"; version: string }
+
+GET /api/readyz
+{ ready: boolean; status: "ok" | "degraded" | "unknown" | "not_ready";
+  snapshot: SnapshotRef | null;
+  checks: { readiness: HealthCheck; data: HealthCheck } }
+
+GET /api/health
+{ status: "ok" | "degraded" | "unknown" | "not_ready";
+  snapshot: SnapshotRef | null; version: string; store: string;
+  generated_at: string;
+  checks: {
+    liveness: HealthCheck;
+    readiness: HealthCheck;
+    data: HealthCheck & { snapshot_id: string | null; using_fallback: boolean; error: string | null };
+    sync: HealthCheck & { latest_run_status: string; failed_sources: string[]; pending_sources: string[] };
+    freshness: HealthCheck & { latest_official_version: string | null; official_version_age_days: number | null };
+  } }
 ```
+
+`/api/health` returns **503 only when no validated dataset can be loaded** (`not_ready`). A
+readable fallback is `degraded` with HTTP 200 and `checks.data.using_fallback=true`.
+`sync` and `freshness` are separate; a live process is not a successful sync. Consumers must
+read the JSON state, not only the HTTP status code. `/api/livez` never depends on data files.
 
 ## 2. `GET /api/meta`
 

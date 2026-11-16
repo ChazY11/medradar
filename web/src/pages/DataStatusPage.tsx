@@ -39,7 +39,7 @@ function statusTone(status: string): "ok" | "warn" | "danger" | "neutral" | "inf
 
 function stateTone(state: string): "info" | "warning" | "danger" | "neutral" {
   if (state === "ok") return "info";
-  if (state === "update_available" || state === "unverified") return "warning";
+  if (state === "update_available" || state === "unverified" || state === "partial") return "warning";
   if (state === "degraded") return "danger";
   return "neutral";
 }
@@ -165,6 +165,12 @@ function SourceTable({ sources }: { sources: DataStatusSource[] }) {
                   <div className="cell-sub danger-text">{source.consecutive_failures} {bi("consecutive failures", "次连续失败")}</div>
                 ) : null}
                 {source.message ? <div className="cell-sub">{source.message}</div> : null}
+                {source.last_full_reconciliation_at ? (
+                  <div className="cell-sub">
+                    {bi("Full reconcile", "完整核对")}: {formatDateTime(source.last_full_reconciliation_at)}
+                    {source.reconciliation_mode ? " · " + source.reconciliation_mode : ""}
+                  </div>
+                ) : null}
               </td>
               <td>
                 <div className="mono small">{source.official_last_updated ?? "-"}</div>
@@ -174,6 +180,12 @@ function SourceTable({ sources }: { sources: DataStatusSource[] }) {
                     : bi("unknown", "未知")}
                 </div>
                 <div className="cell-sub">{source.official_total !== null ? formatNumber(source.official_total) + " " + bi("official records", "官方记录") : ""}</div>
+                {source.last_success_official_last_updated &&
+                source.last_success_official_last_updated !== source.official_last_updated ? (
+                  <div className="cell-sub">
+                    {bi("last synced", "最近同步版本")}: {source.last_success_official_last_updated}
+                  </div>
+                ) : null}
               </td>
               <td className="small">{source.last_checked_at ? formatDateTime(source.last_checked_at) : "-"}</td>
               <td className="small">{source.last_success_sync_at ? formatDateTime(source.last_success_sync_at) : "-"}</td>
@@ -269,6 +281,42 @@ export function DataStatusPage() {
                   sub={Object.entries(data.change_counts).map(([key, value]) => key + ": " + value).join(" · ") || bi("none recorded", "无记录")}
                 />
               </Grid>
+
+              {data.health ? (
+                <Card
+                  title={bi("Operational health, separated by question", "分层的运行健康状态")}
+                  note={bi(
+                    "Web liveness, data readability, synchronization health and source freshness are different facts. A live process is not a successful sync.",
+                    "Web 进程存活、数据可读、同步健康和来源新鲜度是不同事实；进程存活不代表同步成功。",
+                  )}
+                >
+                  <div className="grid cols-3">
+                    <div>
+                      <div className="cell-sub">{bi("Data health", "数据健康")}</div>
+                      <Badge tone={data.health.data.state === "available" ? "ok" : "warn"}>{data.health.data.state}</Badge>
+                      {data.health.data.using_fallback ? (
+                        <div className="cell-sub danger-text">{bi("serving the previous validated snapshot", "正在使用上一个已验证快照")}</div>
+                      ) : null}
+                    </div>
+                    <div>
+                      <div className="cell-sub">{bi("Sync health", "同步健康")}</div>
+                      <Badge tone={data.health.sync.state === "ok" ? "ok" : data.health.sync.state === "unknown" ? "neutral" : "warn"}>
+                        {data.health.sync.state}
+                      </Badge>
+                      <div className="cell-sub">
+                        {bi("latest run", "最近运行")}: {String(data.health.sync.latest_run_status ?? "-")}
+                      </div>
+                    </div>
+                    <div>
+                      <div className="cell-sub">{bi("Source freshness", "来源新鲜度")}</div>
+                      <Badge tone={data.health.freshness.state === "current" ? "ok" : "warn"}>{data.health.freshness.state}</Badge>
+                      <div className="cell-sub">
+                        {bi("official version", "官方版本")}: {String(data.health.freshness.latest_official_version ?? "-")}
+                      </div>
+                    </div>
+                  </div>
+                </Card>
+              ) : null}
 
               <Card
                 title={bi("Source monitoring state", "数据源监控状态")}

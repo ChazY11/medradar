@@ -1,0 +1,27 @@
+DATA-002 production timer evidence
+Captured: 2026-11-16 11:30 CST (03:30 UTC)
+
+medradar-data-update.timer
+- Installed and enabled 2026-11-16 11:20:22 CST.
+- Automatic trigger: 2026-11-16 11:20:22 -> medradar-data-update.service.
+- Result=success, ExecMainStatus=0, status=NO_CHANGE, failed_sources=[].
+- Every source SKIPPED_NOT_DUE (last checks 03:04/03:07/03:10/03:16 UTC).
+- Next scheduled after restart: 2026-11-16 12:24:32 CST.
+- Journal shows: Finished medradar-data-update.service.
+- This is a real systemd-triggered execution, not a manual service start.
+
+medradar-data-backup.timer
+- Installed and enabled; next 2026-11-17 03:23:16 CST.
+- Initial production backups run at 11:20:49 and 11:28:41 CST:
+  data-backup-20261116T032047Z-13571b and data-backup-20261116T032839Z-e5362d.
+- Latest backup contains six snapshots, pipeline DB integrity ok, active snapshot 032632.
+
+Existing CLOUD-003 timers unchanged:
+- medradar-health.timer runs every 5 min; status=ok at 11:19 and 11:29.
+- medradar-backup.timer remains daily 04:30.
+
+Final restore drill:
+- archive data-backup-20261116T032839Z-e5362d
+- destination /tmp/data002-prod-restore-final
+- active snapshot fda-snapshot-20261116T032632Z-18ce4d0cbbe4
+- validation true.

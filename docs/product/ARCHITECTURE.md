@@ -191,8 +191,22 @@ a candidate (files, identities, coverage, product loader and device index) and s
 the dataset without restarting.
 
 See `docs/data/data_001/ARCHITECTURE.md`, `SOURCE_UPDATE_POLICY.md` and
-`SNAPSHOT_PUBLICATION.md`. The product version is `2.1.0-data-001`; the committed snapshot is
+`SNAPSHOT_PUBLICATION.md`. The product version is `2.2.0-data-002`; the committed snapshot is
 still the legacy `2026-11-14` baseline until a deployment is approved.
+
+## 8b. DATA-002 production hardening
+
+A failed source no longer blocks healthy sources. The scheduler classifies source checks
+independently, catches collection failures per source, publishes an explicitly partial
+snapshot with per-source old/new versions, and never marks a failed source `SYNCED`.
+Automatic runs process at most one product source at a time on the 4 GB host; two-source
+snapshots remain supported and tested. A weekly rolling full-content sweep closes the
+version/total blind spot without a second full sweep.
+
+Health is layered: `/api/livez`, `/api/readyz`, and `/api/health` expose liveness, readiness,
+data availability/fallback, sync state and source freshness separately. A readable fallback is
+HTTP 200 with `degraded`; no dataset is HTTP 503 `not_ready`. A live process is not a
+successful sync. See `docs/data/data_002/PRODUCTION_READINESS.md`.
 
 ## 9. Failure modes (designed behaviour)
 

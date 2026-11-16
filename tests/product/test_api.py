@@ -9,8 +9,10 @@ def test_health(client):
     response = client.get("/api/health")
     assert response.status_code == 200
     body = response.json()
-    assert body["status"] == "ok"
+    # The packaged snapshot has no pipeline DB, so sync health is explicitly unknown.
+    assert body["status"] in ("ok", "unknown")
     assert body["snapshot"]["id"]
+    assert set(body["checks"]) == {"liveness", "readiness", "data", "sync", "freshness"}
 
 
 def test_meta_contract(client):

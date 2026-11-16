@@ -36,6 +36,7 @@ class RecordState(str, Enum):
 class RunStatus(str, Enum):
     RUNNING = "RUNNING"
     SUCCEEDED = "SUCCEEDED"
+    PARTIAL = "PARTIAL"
     FAILED = "FAILED"
     NO_CHANGE = "NO_CHANGE"
     BLOCKED = "BLOCKED"

@@ -149,7 +149,9 @@ def test_missing_snapshot_api_returns_503(tmp_path: Path) -> None:
     from medradar.product.api import create_app
 
     client = TestClient(create_app(data_dir=tmp_path))
-    assert client.get("/api/health").json()["status"] == "degraded"
+    response = client.get("/api/health")
+    assert response.status_code == 503
+    assert response.json()["status"] == "not_ready"
     assert client.get("/api/events").status_code == 503
     assert client.get("/api/metrics").status_code == 503
 

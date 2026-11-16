@@ -1,0 +1,12 @@
+Read-only production check after all DATA-002 isolated tests
+Date: 2026-11-16T07:32:14+08:00
+Host: VM-0-12-ubuntu
+
+medradar-web.service: active
+Production code SHA: 1bdb1c349c59713e1a11426f15a6c06e892f87e0
+Production health:
+{"status":"ok","snapshot":{"id":"2026-11-14T22:09:22Z-openfda","collected_at":"2026-11-14T22:09:22.451315Z","openfda_last_updated":"2026-11-02","file_sha256":{"applicants.jsonl.gz":"309a7cf4199fbb2f043b31e05b0de46a6260588b0a2cdb2e16ee3a4e2581f5fa","classifications.jsonl.gz":"bbee2d1109abbbe5c70f97f08e7dbbd64462dec755b2b495de8e6a74e011e5db","events.jsonl.gz":"f2676ef7494467ae8256694c13c9da4a39b0da2c814c5d557c6dfb276c142971"},"note":"Immutable openFDA snapshot. Attribution and time limits are stated per record."},"version":"2.0.0-product-002","store":"/srv/medradar/app/medradar/product/snapshot"}
+
+Existing timers: medradar-health.timer (5 min), medradar-backup.timer (daily).
+No DATA-002 update/backup timer installed.
+Memory: 3.6 GiB total, ~1.4 GiB used, ~2.3 GiB available.

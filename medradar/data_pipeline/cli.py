@@ -16,11 +16,12 @@ import sys
 from pathlib import Path
 from typing import Any, Sequence
 
+from .backup import BackupError, backup, restore
 from .config import Settings
 from .pipeline import Pipeline, PipelineError
 from .status_service import changes_feed, data_status
 
-COMMANDS = ("bootstrap", "check", "run", "sync", "status", "changes", "rollback", "prune")
+COMMANDS = ("bootstrap", "check", "run", "sync", "status", "changes", "rollback", "prune", "backup", "restore")
 
 
 def _split_sources(value: str | None) -> list[str] | None:
@@ -82,7 +83,7 @@ def _command_sync(args: argparse.Namespace) -> int:
         print(result.get("status"), "snapshot=" + str(result.get("active_snapshot_id") or result.get("candidate_snapshot_id")))
         if result.get("counts"):
             print(json.dumps(result["counts"], ensure_ascii=False, sort_keys=True))
-    return 0 if result.get("status") in ("SUCCEEDED", "NO_CHANGE", "DRY_RUN_VALIDATED") else 1
+    return 0 if result.get("status") in ("SUCCEEDED", "PARTIAL", "NO_CHANGE", "DRY_RUN_VALIDATED") else 1
 
 
 def _command_run(args: argparse.Namespace) -> int:
@@ -104,7 +105,7 @@ def _command_run(args: argparse.Namespace) -> int:
         else:
             for row in result.get("checks") or []:
                 print(row.get("source_id"), row.get("status"))
-    return 0 if result.get("status") in ("SUCCEEDED", "NO_CHANGE") else 1
+    return 0 if result.get("status") in ("SUCCEEDED", "PARTIAL", "NO_CHANGE") else 1
 
 
 def _command_status(args: argparse.Namespace) -> int:
@@ -166,6 +167,32 @@ def _command_prune(args: argparse.Namespace) -> int:
     return 0
 
 
+def _command_backup(args: argparse.Namespace) -> int:
+    pipeline = _pipeline(args)
+    result = backup(
+        pipeline.settings, args.destination,
+        review_db=args.review_db or pipeline.settings.review_db,
+        include_all_snapshots=not args.active_only,
+    )
+    if args.json:
+        _print_json(result)
+    else:
+        print("backup: " + result["backup"])
+    return 0
+
+
+def _command_restore(args: argparse.Namespace) -> int:
+    result = restore(
+        args.archive, args.destination,
+        review_db_destination=args.review_db_destination,
+    )
+    if args.json:
+        _print_json(result)
+    else:
+        print("restored: " + result["active_snapshot_id"] + " -> " + result["restored_to"])
+    return 0
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(prog="medradar.data_pipeline", description="MedRadar continuous FDA data pipeline")
     parser.add_argument("--root", default=None, help="pipeline state root (default: MEDRADAR_PIPELINE_ROOT or data/data_pipeline)")
@@ -219,8 +246,20 @@ def build_parser() -> argparse.ArgumentParser:
     prune = sub.add_parser("prune", help="remove old full snapshots while retaining the change ledger")
     prune.add_argument("--keep", type=int, default=None)
     prune.set_defaults(func=_command_prune)
+
+    backup_parser = sub.add_parser("backup", help="create a consistent same-host state backup")
+    backup_parser.add_argument("--destination", required=True, help="backup directory")
+    backup_parser.add_argument("--review-db", default=None)
+    backup_parser.add_argument("--active-only", action="store_true", help="copy only the active snapshot")
+    backup_parser.set_defaults(func=_command_backup)
+
+    restore_parser = sub.add_parser("restore", help="restore a backup into an empty isolated directory")
+    restore_parser.add_argument("--archive", required=True, help="backup directory")
+    restore_parser.add_argument("--destination", required=True, help="empty directory to restore into")
+    restore_parser.add_argument("--review-db-destination", default=None)
+    restore_parser.set_defaults(func=_command_restore)
     # Accept --json on either side of the subcommand for systemd/operator ergonomics.
-    for command_parser in (bootstrap, check, run, sync, status, changes, rollback, prune):
+    for command_parser in (bootstrap, check, run, sync, status, changes, rollback, prune, backup_parser, restore_parser):
         command_parser.add_argument("--json", action="store_true", default=argparse.SUPPRESS)
     return parser
 
@@ -230,7 +269,7 @@ def main(argv: Sequence[str] | None = None) -> int:
     args = parser.parse_args(argv)
     try:
         return int(args.func(args))
-    except (PipelineError, ValueError, FileNotFoundError) as error:
+    except (PipelineError, BackupError, ValueError, FileNotFoundError) as error:
         if args.json:
             _print_json({"status": "ERROR", "error": str(error)})
         else:

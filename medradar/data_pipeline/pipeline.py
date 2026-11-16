@@ -13,13 +13,13 @@ from typing import Any, Sequence
 from medradar.product.data_dir import read_active_pointer
 
 from .changes import build_change_set
-from .collector import Collector
+from .collector import AllCollection, CollectionError, Collector
 from .config import PIPELINE_VERSION, Settings
 from .db import StateStore
 from .detector import check_sources
 from .lock import PipelineLock
 from .model import ALL_SOURCE_IDS, PRODUCT_SOURCE_IDS, SOURCES, CheckStatus, RunStatus
-from .openfda import OpenFDAClient
+from .openfda import OpenFDAClient, OpenFDAError
 from .publisher import active_snapshot, commit_publication, recover_publication, rollback as publisher_rollback
 from .snapshot import build_snapshot
 from .validator import validate_snapshot
@@ -122,60 +122,166 @@ class Pipeline:
         )
 
     def _targets(
-        self, requested: Sequence[str], *, force: bool, allow_degraded: bool
+        self, requested: Sequence[str], *, force: bool, allow_degraded: bool,
+        ignore_failures: bool = False, include_sources: Sequence[str] = (),
     ) -> tuple[list[str], list[dict[str, Any]]]:
         targets: list[str] = []
+        include = set(include_sources)
         problems: list[dict[str, Any]] = []
         for source_id in requested:
             row = self.store.get_source(source_id) or {}
             status = str(row.get("last_check_status") or "")
             if status in (CheckStatus.CHECK_FAILED.value, CheckStatus.SOURCE_DEGRADED.value):
                 problems.append({"source_id": source_id, "status": status, "message": row.get("last_check_message")})
+                if ignore_failures:
+                    continue
                 if allow_degraded and force:
                     targets.append(source_id)
                 continue
-            if force or bool(row.get("update_available")):
+            if force or bool(row.get("update_available")) or source_id in include:
                 targets.append(source_id)
-        if problems and not allow_degraded:
+        if problems and not (allow_degraded or ignore_failures):
             raise PipelineError(
                 "source checks failed or degraded; automatic sync blocked: "
                 + json.dumps(problems, ensure_ascii=False)
             )
         return targets, problems
 
+    def _full_reconciliation_due(self, *, exclude: set[str] | None = None) -> list[str]:
+        """Return the oldest product sources due for a content reconciliation.
+
+        This is deliberately capped. A version check can miss a corrected record when the
+        endpoint version and total do not change. A rolling low-frequency full sweep closes
+        that gap without collecting every source in one 4 GB process.
+        """
+        exclude = exclude or set()
+        now = datetime.now(timezone.utc)
+        due: list[tuple[str, str]] = []
+        for source_id in PRODUCT_SOURCE_IDS:
+            if source_id in exclude:
+                continue
+            row = self.store.get_source(source_id) or {}
+            if str(row.get("last_check_status") or "") in (
+                CheckStatus.CHECK_FAILED.value, CheckStatus.SOURCE_DEGRADED.value
+            ):
+                continue
+            last = row.get("last_full_reconciliation_at")
+            if not last:
+                due.append((source_id, ""))
+                continue
+            try:
+                moment = datetime.fromisoformat(str(last).replace("Z", "+00:00"))
+            except ValueError:
+                due.append((source_id, ""))
+                continue
+            if (now - moment).total_seconds() >= self.settings.full_reconciliation_interval_hours * 3600:
+                due.append((source_id, str(last)))
+        due.sort(key=lambda item: (item[1] or "", item[0]))
+        return [source_id for source_id, _ in due[: self.settings.full_reconciliation_max_sources_per_run]]
+
+    def _full_reconciliation_budget_ok(self, sources: Sequence[str]) -> tuple[bool, str | None]:
+        usage = self.store.request_usage(datetime.now(timezone.utc).strftime("%Y-%m-%d"))
+        used = int(usage.get("total_requests") or 0)
+        limit = int(self.settings.daily_request_limit or 900)
+        # Keep reserve for normal checks and retries; a full sweep must not consume the
+        # whole daily budget and leave the scheduler unable to check other sources.
+        reserve = max(20, int(limit * 0.05))
+        remaining = limit - used - reserve
+        active = active_snapshot(self.settings)
+        audit = ((active[1] if active else {}) or {}).get("collection_audit") or {}
+        estimates = audit.get("by_source_requests") or {}
+        estimate = sum(max(1, int(estimates.get(source_id) or 120)) for source_id in sources)
+        if remaining < estimate:
+            return False, (
+                "full reconciliation deferred: need about " + str(estimate)
+                + " requests, only " + str(max(0, remaining)) + " remain after reserve"
+            )
+        return True, None
+
     def _source_versions(
         self,
         active_manifest: dict[str, Any],
-        targets: Sequence[str],
         *,
+        successful_sources: Sequence[str],
+        failed_sources: dict[str, dict[str, Any]],
         checked_at: str,
+        not_attempted: Sequence[str] = (),
+        full_sources: Sequence[str] = (),
     ) -> dict[str, Any]:
+        """Build the per-source manifest even when only some sources were reconciled.
+
+        A failed source keeps the official version represented by its old events. The
+        manifest records the check/sync outcome separately so a partial snapshot is never
+        presented as if every source had been refreshed.
+        """
         versions = dict(active_manifest.get("sources") or {})
+        successful = set(successful_sources)
+        skipped = set(not_attempted) - successful - set(failed_sources)
+        full_set = set(full_sources)
         for source_id in ALL_SOURCE_IDS:
-            versions.setdefault(source_id, {
+            previous = dict(versions.get(source_id) or {})
+            base = {
                 "source_id": source_id,
                 "endpoint": SOURCES[source_id].endpoint,
                 "display_name": SOURCES[source_id].display_name,
                 "official_last_updated": None,
                 "official_total": None,
                 "declared_frequency": SOURCES[source_id].official_frequency,
-            })
-        for source_id in targets:
+            }
+            base.update(previous)
             row = self.store.get_source(source_id) or {}
-            current = dict(versions.get(source_id) or {})
-            current.update({
-                "source_id": source_id,
-                "endpoint": SOURCES[source_id].endpoint,
-                "display_name": SOURCES[source_id].display_name,
-                "official_last_updated": row.get("official_last_updated"),
-                "official_total": row.get("official_total"),
-                "last_checked_at": row.get("last_checked_at") or checked_at,
-                "last_check_status": row.get("last_check_status"),
+            if row:
+                base.update({
+                    "official_last_updated": row.get("official_last_updated"),
+                    "official_total": row.get("official_total"),
+                    "last_checked_at": row.get("last_checked_at") or checked_at,
+                    "last_check_status": row.get("last_check_status"),
+                    "last_check_message": row.get("last_check_message"),
+                    "last_success_sync_at": row.get("last_success_sync_at"),
+                    "last_full_reconciliation_at": row.get("last_full_reconciliation_at"),
+                    "last_full_reconciliation_snapshot_id": row.get("last_full_reconciliation_snapshot_id"),
+                    "consecutive_failures": int(row.get("consecutive_failures") or 0),
+                })
+            base.update({
                 "declared_frequency": SOURCES[source_id].official_frequency,
                 "check_interval_hours": SOURCES[source_id].check_interval_hours,
                 "note": SOURCES[source_id].note,
             })
-            versions[source_id] = current
+            if source_id not in successful:
+                # The advertised version is not represented by the active events unless
+                # this source actually reconciled. Preserve the old event version for failed,
+                # deferred and intentionally unchanged sources.
+                base.update({
+                    "official_last_updated": previous.get("official_last_updated"),
+                    "official_total": previous.get("official_total"),
+                    "reconciliation_mode": "UNCHANGED",
+                })
+            if source_id in failed_sources:
+                failure = failed_sources[source_id]
+                base.update({
+                    "sync_status": "FAILED",
+                    "reconciliation_mode": "FAILED",
+                    "last_sync_error": str(failure.get("message") or failure.get("error") or ""),
+                    "last_sync_attempt_at": checked_at,
+                })
+            elif source_id in successful:
+                mode = "FULL" if source_id in full_set else "VERSION_TRIGGERED"
+                if source_id == "openfda_classification":
+                    mode = "SUPPORT_REFRESH"
+                base.update({
+                    "sync_status": "SYNCED",
+                    "reconciliation_mode": mode,
+                    "last_sync_error": None,
+                    "last_sync_attempt_at": checked_at,
+                })
+            elif source_id in skipped:
+                base.update({
+                    "sync_status": "UNCHANGED",
+                    "last_sync_error": None,
+                })
+            else:
+                base["sync_status"] = "UNCHANGED"
+            versions[source_id] = base
         return versions
 
     def _stamp_changes(self, changes: list[dict[str, Any]], snapshot_id: str) -> None:
@@ -379,26 +485,126 @@ class Pipeline:
 
     def run(self, *, force: bool = False, allow_record_drop: bool = False,
             allow_degraded: bool = False, actor: str = "pipeline") -> dict[str, Any]:
-        """Run due checks, then reconcile any source with an available update."""
+        """Run due checks, then reconcile each healthy source independently.
+
+        A failed/degraded source is recorded and omitted from this attempt. It must not
+        prevent another source with a real update from being published. The resulting
+        snapshot is explicitly partial and still goes through the normal validation gate.
+        """
         with PipelineLock(self.settings.lock_path):
             recover_publication(self.store, self.settings)
             checks = self._check_locked(ALL_SOURCE_IDS, due_only=True)
-            if not any(row.get("update_available") for row in checks):
-                failed = [
-                    row for row in checks
-                    if row.get("status") in (CheckStatus.CHECK_FAILED.value, CheckStatus.SOURCE_DEGRADED.value)
+            failed: dict[str, dict[str, Any]] = {}
+            healthy_updates: list[str] = []
+            healthy_other: list[str] = []
+            for row in checks:
+                source_id = str(row.get("source_id") or "")
+                status = str(row.get("status") or "")
+                if status in (CheckStatus.CHECK_FAILED.value, CheckStatus.SOURCE_DEGRADED.value):
+                    failed[source_id] = row
+                elif bool(row.get("update_available")):
+                    healthy_updates.append(source_id)
+                else:
+                    healthy_other.append(source_id)
+
+            if force:
+                # Explicit --force reconciles healthy sources even when the detector says
+                # no change; failed/degraded sources are still excluded.
+                forced_healthy = [
+                    str(row.get("source_id") or "") for row in checks
+                    if str(row.get("status") or "") not in (
+                        CheckStatus.CHECK_FAILED.value, CheckStatus.SOURCE_DEGRADED.value
+                    )
                 ]
+                product_updates = [sid for sid in forced_healthy if sid in PRODUCT_SOURCE_IDS]
+                support_updates = [sid for sid in forced_healthy if sid not in PRODUCT_SOURCE_IDS]
+            else:
+                product_updates = [
+                    source_id for source_id in healthy_updates if source_id in PRODUCT_SOURCE_IDS
+                ]
+                support_updates = [
+                    source_id for source_id in healthy_updates if source_id not in PRODUCT_SOURCE_IDS
+                ]
+            room = max(0, self.settings.max_product_sources_per_run)
+            selected_product = product_updates[:room]
+            # Keep the rest pending for the next hourly run; they are not failures.
+            deferred_updates = product_updates[room:]
+            full_due = []
+            if len(selected_product) < room:
+                full_due = self._full_reconciliation_due(
+                    exclude=set(failed) | set(healthy_updates)
+                )
+                full_due = full_due[: room - len(selected_product)]
+            full_deferred: str | None = None
+            if full_due:
+                budget_ok, full_deferred = self._full_reconciliation_budget_ok(full_due)
+                if not budget_ok:
+                    self.store.record_incident("full_reconciliation_deferred", {
+                        "sources": full_due, "reason": full_deferred,
+                    })
+                    full_due = []
+            attempt = selected_product + support_updates + full_due
+            if not attempt:
+                if failed and healthy_other:
+                    status = RunStatus.PARTIAL.value
+                elif failed:
+                    status = RunStatus.BLOCKED.value
+                elif full_deferred or deferred_updates:
+                    status = RunStatus.PARTIAL.value
+                else:
+                    status = RunStatus.NO_CHANGE.value
                 return {
-                    "status": RunStatus.BLOCKED.value if failed else RunStatus.NO_CHANGE.value,
+                    "status": status,
                     "checks": checks,
                     "sync": None,
-                    "problems": failed,
+                    "problems": list(failed.values()),
+                    "failed_sources": sorted(failed),
+                    "full_reconciliation_deferred": full_deferred,
+                    "deferred_update_sources": sorted(deferred_updates),
+                    "message": (
+                        full_deferred or
+                        "no healthy source has an available update"
+                    ),
                 }
+
+            healthy_other = [source_id for source_id in healthy_other if source_id not in full_due]
             sync = self._sync_locked(
-                list(ALL_SOURCE_IDS), force=force, allow_record_drop=allow_record_drop,
-                allow_degraded=allow_degraded, dry_run=False, actor=actor,
+                attempt,
+                force=force,
+                allow_record_drop=allow_record_drop,
+                allow_degraded=True,
+                dry_run=False,
+                actor=actor,
+                isolate_sources=True,
+                failed_sources=failed,
+                not_attempted=healthy_other,
+                include_sources=full_due,
+                full_sources=full_due,
+                deferred_sources=deferred_updates,
             )
-            return {"status": sync.get("status"), "checks": checks, "sync": sync}
+            sync_status = str(sync.get("status") or "")
+            all_failed = dict(failed)
+            for source_id in sync.get("failed_sources") or []:
+                all_failed.setdefault(source_id, {
+                    "source_id": source_id, "status": "CHECK_FAILED",
+                    "message": "collection or source state failed during the sync attempt",
+                })
+            if (all_failed or deferred_updates) and sync_status == RunStatus.SUCCEEDED.value:
+                overall = RunStatus.PARTIAL.value
+            elif all_failed and sync_status in (RunStatus.BLOCKED.value, RunStatus.FAILED.value):
+                overall = RunStatus.BLOCKED.value
+            else:
+                overall = sync_status
+            return {
+                "status": overall,
+                "checks": checks,
+                "sync": sync,
+                "problems": list(all_failed.values()),
+                "failed_sources": sorted(all_failed),
+                "full_reconciliation_sources": sorted(full_due),
+                "full_reconciliation_deferred": full_deferred,
+                "deferred_update_sources": sorted(deferred_updates),
+            }
 
     def _sync_locked(
         self,
@@ -409,6 +615,12 @@ class Pipeline:
         allow_degraded: bool,
         dry_run: bool,
         actor: str,
+        isolate_sources: bool = False,
+        failed_sources: dict[str, dict[str, Any]] | None = None,
+        not_attempted: Sequence[str] = (),
+        include_sources: Sequence[str] = (),
+        full_sources: Sequence[str] = (),
+        deferred_sources: Sequence[str] = (),
     ) -> dict[str, Any]:
         active = active_snapshot(self.settings)
         if active is None:
@@ -416,7 +628,11 @@ class Pipeline:
         active_path, active_manifest, _pointer = active
         if active_manifest.get("schema") != "medradar.snapshot.v2":
             raise PipelineError("active snapshot is a legacy snapshot; run bootstrap before syncing")
-        targets, problems = self._targets(requested, force=force, allow_degraded=allow_degraded)
+        failed_sources = dict(failed_sources or {})
+        targets, problems = self._targets(
+            requested, force=force, allow_degraded=allow_degraded,
+            ignore_failures=isolate_sources, include_sources=include_sources,
+        )
         if not targets:
             return {
                 "status": RunStatus.NO_CHANGE.value,
@@ -434,50 +650,125 @@ class Pipeline:
         candidate_path: Path | None = None
         try:
             organizations = self.registry.get("organizations") or []
-            product_targets = [source_id for source_id in targets if not SOURCES[source_id].is_support_source]
+            attempted_product = [source_id for source_id in targets if not SOURCES[source_id].is_support_source]
             collector = Collector(self.client)
-            collection = collector.collect_all(product_targets, organizations) if product_targets else None
+            collection = AllCollection()
+            successful_product: list[str] = []
+            for source_id in attempted_product:
+                try:
+                    source_collection = collector.collect_source(source_id, organizations)
+                except (CollectionError, OpenFDAError) as error:
+                    if not isolate_sources:
+                        raise
+                    record = {
+                        "source_id": source_id,
+                        "status": "CHECK_FAILED",
+                        "message": str(error),
+                        "error": str(error),
+                    }
+                    failed_sources[source_id] = record
+                    collection.errors.append({"source_id": source_id, "message": str(error)})
+                    try:
+                        self.store.mark_source_attempt_failed(source_id, str(error), _now())
+                    except Exception as state_error:
+                        collection.errors.append({
+                            "source_id": source_id,
+                            "message": "could not persist source failure: " + str(state_error),
+                        })
+                    self.store.record_incident("source_collection_failed", {
+                        "run_id": run_id, "source_id": source_id, "error": str(error),
+                    })
+                    continue
+                successful_product.append(source_id)
+                collection.source_audits[source_id] = source_collection.audits
+                collection.requests += source_collection.requests
+                collection.response_bytes += source_collection.response_bytes
+                collection.requests_by_source[source_id] = source_collection.requests
+                collection.bytes_by_source[source_id] = source_collection.response_bytes
+                collection.errors.extend(source_collection.errors)
+                collection.events.update(source_collection.events)
+
             classification_target = "openfda_classification" in targets
-            if classification_target or any(
-                source_id in PRODUCT_SOURCE_IDS for source_id in targets
-            ):
+            classification_audit: dict[str, Any] | None = None
+            classification_success = False
+            if classification_target or successful_product:
                 # The classification dictionary is small (7k rows); refresh it whenever a
                 # product source is reconciled. Its official version is recorded separately.
-                classifications, classification_audit = collector.collect_classifications()
+                try:
+                    classifications, classification_audit = collector.collect_classifications()
+                    classification_success = True
+                except (CollectionError, OpenFDAError) as error:
+                    if not isolate_sources:
+                        raise
+                    failed_sources["openfda_classification"] = {
+                        "source_id": "openfda_classification",
+                        "status": "CHECK_FAILED",
+                        "message": str(error),
+                        "error": str(error),
+                    }
+                    collection.errors.append({"source_id": "openfda_classification", "message": str(error)})
+                    try:
+                        self.store.mark_source_attempt_failed("openfda_classification", str(error), _now())
+                    except Exception as state_error:
+                        collection.errors.append({
+                            "source_id": "openfda_classification",
+                            "message": "could not persist source failure: " + str(state_error),
+                        })
+                    classifications = self._previous_classifications(active_path)
             else:
                 classifications = self._previous_classifications(active_path)
-                classification_audit = None
+
+            if not successful_product and not classification_success:
+                message = "all requested source collections failed; active snapshot was left unchanged"
+                self.store.finish_run(
+                    run_id, RunStatus.BLOCKED.value,
+                    error=message,
+                    metrics={"failed_sources": sorted(failed_sources)},
+                )
+                return {
+                    "status": RunStatus.BLOCKED.value,
+                    "run_id": run_id,
+                    "active_snapshot_id": active_manifest.get("id"),
+                    "failed_sources": sorted(failed_sources),
+                    "message": message,
+                }
 
             previous_events = self._previous_events(active_path)
             candidate_events = dict(previous_events)
-            if collection is not None:
-                for source_id in product_targets:
-                    for event_id in [key for key, event in candidate_events.items() if event.get("source_id") == source_id]:
-                        candidate_events.pop(event_id, None)
-                candidate_events.update(collection.events)
+            for source_id in successful_product:
+                for event_id in [key for key, event in candidate_events.items() if event.get("source_id") == source_id]:
+                    candidate_events.pop(event_id, None)
+            candidate_events.update(collection.events)
 
             checked_at = _now()
-            source_versions = self._source_versions(active_manifest, targets, checked_at=checked_at)
-            if classification_audit is not None:
-                classification_row = self.store.get_source("openfda_classification") or {}
-                source_versions["openfda_classification"] = {
-                    "source_id": "openfda_classification",
-                    "endpoint": SOURCES["openfda_classification"].endpoint,
-                    "display_name": SOURCES["openfda_classification"].display_name,
-                    "official_last_updated": classification_row.get("official_last_updated"),
-                    "official_total": classification_row.get("official_total"),
-                    "last_checked_at": classification_row.get("last_checked_at") or checked_at,
-                    "last_check_status": classification_row.get("last_check_status"),
-                    "declared_frequency": SOURCES["openfda_classification"].official_frequency,
-                    "check_interval_hours": SOURCES["openfda_classification"].check_interval_hours,
-                    "note": SOURCES["openfda_classification"].note,
-                }
-            observations = self.store.observations_for_sources(product_targets)
+            successful_sources = successful_product + (
+                ["openfda_classification"] if classification_success else []
+            )
+            sources_for_change = list(successful_product)
+            source_versions = self._source_versions(
+                active_manifest,
+                successful_sources=successful_sources,
+                failed_sources=failed_sources,
+                checked_at=checked_at,
+                not_attempted=not_attempted,
+                full_sources=full_sources,
+            )
+            if classification_success and classification_audit:
+                classification_version = source_versions.get("openfda_classification") or {}
+                classification_version.update({
+                    "official_last_updated": classification_audit.get("official_last_updated")
+                    or classification_version.get("official_last_updated"),
+                    "official_total": classification_audit.get("official_total")
+                    if classification_audit.get("official_total") is not None
+                    else classification_version.get("official_total"),
+                })
+                source_versions["openfda_classification"] = classification_version
+            observations = self.store.observations_for_sources(sources_for_change)
             previous_scope_hash = str((active_manifest.get("scope") or {}).get("scope_hash") or "")
             scope_changed = bool(previous_scope_hash and previous_scope_hash != self.scope["scope_hash"])
 
             missing: list[dict[str, Any]] = []
-            for source_id in product_targets:
+            for source_id in sources_for_change:
                 previous_ids = {key for key, event in previous_events.items() if event.get("source_id") == source_id}
                 candidate_ids = {key for key, event in candidate_events.items() if event.get("source_id") == source_id}
                 missing.extend(previous_events[key] for key in sorted(previous_ids - candidate_ids))
@@ -505,13 +796,13 @@ class Pipeline:
 
             first_reconciliation = any(
                 not ((active_manifest.get("sources") or {}).get(source_id) or {}).get("official_last_updated")
-                for source_id in product_targets
+                for source_id in sources_for_change
             )
             provisional_id = "fda-snapshot-pending"
             change_set = build_change_set(
                 previous_events=previous_events,
                 candidate_events=candidate_events,
-                changed_sources=product_targets,
+                changed_sources=sources_for_change,
                 previous_snapshot_id=str(active_manifest.get("id") or "") or None,
                 candidate_snapshot_id=provisional_id,
                 detected_at=checked_at,
@@ -525,17 +816,33 @@ class Pipeline:
                 rebaseline=first_reconciliation,
             )
             summary = dict(change_set.summary)
+            source_outcomes = {
+                source_id: {
+                    "sync_status": (value or {}).get("sync_status"),
+                    "reconciliation_mode": (value or {}).get("reconciliation_mode"),
+                    "last_check_status": (value or {}).get("last_check_status"),
+                    "last_check_message": (value or {}).get("last_check_message"),
+                    "last_sync_error": (value or {}).get("last_sync_error"),
+                    "official_last_updated": (value or {}).get("official_last_updated"),
+                }
+                for source_id, value in source_versions.items()
+            }
             summary.update({
                 "first_reconciliation": first_reconciliation,
                 "scope_changed": scope_changed,
                 "missing_retained": summary.get("missing_on_recheck", 0) + summary.get("unresolved", 0),
-                "changed_sources": sorted(set(product_targets)),
+                "changed_sources": sorted(set(sources_for_change)),
+                "successful_sources": sorted(set(successful_sources)),
+                "failed_sources": sorted(failed_sources),
+                "deferred_sources": sorted(set(deferred_sources)),
+                "full_reconciliation_sources": sorted(set(full_sources)),
+                "partial": bool(failed_sources or deferred_sources),
             })
 
             collection_audit = self._audit_for_snapshot(
                 active_manifest,
-                product_targets,
-                collection if collection is not None else AllCollectionEmpty(),
+                sources_for_change,
+                collection,
                 classification_audit=classification_audit,
                 requests=collection.requests if collection is not None else 0,
                 response_bytes=collection.response_bytes if collection is not None else 0,
@@ -549,6 +856,7 @@ class Pipeline:
                 collection_audit=collection_audit,
                 change_summary=summary,
                 scope=self.scope,
+                source_outcomes=source_outcomes,
                 previous_snapshot_id=str(active_manifest.get("id") or "") or None,
                 collection_started_at=collection_started,
                 now=_now(),
@@ -592,6 +900,8 @@ class Pipeline:
                     "candidate_path": str(candidate_path),
                     "validation": validation,
                     "active_snapshot_id": active_manifest.get("id"),
+                    "failed_sources": sorted(failed_sources),
+                    "partial": bool(failed_sources),
                 }
             if dry_run:
                 self.store.finish_run(run_id, RunStatus.SUCCEEDED.value, candidate_after=str(candidate_manifest["id"]),
@@ -603,6 +913,8 @@ class Pipeline:
                     "candidate_path": str(candidate_path),
                     "validation": validation,
                     "active_snapshot_id": active_manifest.get("id"),
+                    "failed_sources": sorted(failed_sources),
+                    "partial": bool(failed_sources),
                 }
 
             manifest_sha = hashlib.sha256((candidate_path / "snapshot.json").read_bytes()).hexdigest()
@@ -621,7 +933,11 @@ class Pipeline:
                     self.store, self.settings, snapshot_dir=candidate_path, manifest=candidate_manifest,
                     run_id=run_id, previous_snapshot_id=str(active_manifest.get("id") or "") or None,
                     action="sync", actor=actor,
-                    note="sources=" + ",".join(sorted(targets)) + "; inserted_changes=" + str(inserted),
+                    note=(
+                        "sources=" + ",".join(sorted(successful_sources))
+                        + "; failed=" + ",".join(sorted(failed_sources))
+                        + "; inserted_changes=" + str(inserted)
+                    ),
                 )
             except Exception as commit_error:
                 # If the pointer was written but the DB commit failed, recovery will finish
@@ -639,27 +955,35 @@ class Pipeline:
                 self.store.record_incident("post_publication_observation_failure", {
                     "snapshot_id": candidate_manifest["id"], "error": str(error),
                 })
-            for source_id in targets:
+            for source_id in successful_sources:
                 try:
-                    row = self.store.get_source(source_id) or {}
+                    version = source_versions.get(source_id) or {}
                     self.store.mark_source_synced(
                         source_id, str(candidate_manifest["id"]), _now(),
-                        row.get("official_last_updated"), row.get("official_total"),
+                        version.get("official_last_updated"), version.get("official_total"),
                     )
+                    if source_id in PRODUCT_SOURCE_IDS:
+                        # A successful scoped reconciliation is a full content sweep, whether
+                        # it was version-triggered or due on the rolling schedule.
+                        self.store.mark_source_full_reconciled(
+                            source_id, str(candidate_manifest["id"]), _now()
+                        )
                 except Exception as error:
                     post_publication_warning = (post_publication_warning or "") + " source state write failed: " + str(error)
+            final_status = RunStatus.PARTIAL.value if failed_sources else RunStatus.SUCCEEDED.value
             try:
                 self.store.finish_run(
-                    run_id, RunStatus.SUCCEEDED.value, candidate_after=str(candidate_manifest["id"]),
+                    run_id, final_status, candidate_after=str(candidate_manifest["id"]),
                     counts=counts, metrics={
                         "validation": validation, "inserted_changes": inserted,
                         "post_publication_warning": post_publication_warning,
+                        "failed_sources": sorted(failed_sources),
                     },
                 )
             except Exception:
                 pass
             return {
-                "status": RunStatus.SUCCEEDED.value,
+                "status": final_status,
                 "run_id": run_id,
                 "previous_snapshot_id": active_manifest.get("id"),
                 "active_snapshot_id": candidate_manifest["id"],
@@ -671,6 +995,10 @@ class Pipeline:
                 "removed_confirmed": summary.get("removed_confirmed", 0),
                 "missing_on_recheck": summary.get("missing_on_recheck", 0),
                 "unresolved": summary.get("unresolved", 0),
+                "failed_sources": sorted(failed_sources),
+                "successful_sources": sorted(successful_sources),
+                "full_reconciliation_sources": sorted(set(full_sources)),
+                "partial": bool(failed_sources),
                 "post_publication_warning": post_publication_warning,
             }
         except Exception as error:
@@ -737,10 +1065,3 @@ class Pipeline:
             shutil.rmtree(path, ignore_errors=True)
             removed.append(path.name)
         return {"kept": [path.name for path in snapshots[:keep]], "removed": removed}
-
-
-class AllCollectionEmpty:
-    source_audits: dict[str, Any] = {}
-    errors: list[Any] = []
-    requests = 0
-    response_bytes = 0
