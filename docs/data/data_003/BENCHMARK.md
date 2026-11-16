@@ -180,3 +180,22 @@ what makes a 4 GB host safe.
    data.
 4. No OOM or cgroup-limit test was run on this host (Windows has no cgroups); the production
    change request includes a capped canary.
+
+## 11. Step 9 — isolated test on the real 2 vCPU / 4 GB production host
+
+Read-only Phase 0 was not enough to trust a projection, so the optimised tree was run **on the
+production host** against a copy of the active snapshot in `/tmp`, inside transient scopes with
+`MemoryMax` and `MemorySwapMax=0` (a hard cap that can only kill the probe itself):
+
+| Run | Cap | Result |
+|---|---|---|
+| full load + device index | 900 MB, no swap | **completed**, 335 MB peak, load 9.0 s, index 5.4 s |
+| two snapshot switches | 1100 MB, no swap | **completed**, 790 MB peak, no OOM, swap 0 |
+
+Host state: `MemAvailable` 1,588 MB before → 1,615 MB after; swap free 1,483,996 kB unchanged;
+PSI memory 0.00. No production process was touched. Evidence:
+`evidence/linux-2vcpu4gb-full.json`, `evidence/linux-2vcpu4gb-reload.json`.
+
+This is the direct answer to "does the 4 GB host still work?": the optimised service needs
+~0.35 GB for dataset + index and ~0.79 GB for the worst observed switch, so web + activation fits
+with a wide margin, and the guard prevents a 1.8 GB sync from overlapping it.

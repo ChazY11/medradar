@@ -108,3 +108,32 @@ cold-load RSS. That is expected for `pymalloc` and is bounded by the largest sin
 * The device index size depends on the snapshot (previous snapshots have fewer relations); the
   table above always uses the same active snapshot.
 * The benchmark host has 32 GB and 16 vCPUs. Memory numbers transfer; timing does not.
+
+## 7. Production-host confirmation (Linux, 2 vCPU, 3.72 GiB)
+
+Step 9 of the task: the same probe was run **on the real production host**, against a
+throw-away copy of the active snapshot in `/tmp`, inside a transient cgroup with a hard memory
+cap and **swap disabled for the scope**. No production file, unit or process was touched; the
+host was at `MemAvailable=1588 MB` before and `1615 MB` after, swap free unchanged, PSI 0.00.
+
+| Stage | RSS | Peak RSS |
+|---|---|---|
+| process start | 15.3 MB | 15.3 MB |
+| imports | 20.4 MB | 20.4 MB |
+| dataset loaded (9.0 s) | 201.8 MB | 216.2 MB |
+| warm queries | 208.4 MB | 216.2 MB |
+| device index (5.4 s) | 328.6 MB | 335.4 MB |
+| reload 1: old + new dataset | 513.6 MB | — |
+| reload 1: + new index | 632.1 MB | 637.1 MB |
+| reload 2: + new index | 785.3 MB | **790.3 MB** |
+| after releasing the second old dataset | 629.4 MB | — |
+
+Caps: `MemoryMax=900M` for the load/index run and `MemoryMax=1100M` for the two-switch run,
+both with `MemorySwapMax=0`. Both runs completed with **zero swap and no OOM** — i.e. the new
+activation path cannot push this host into a swap storm even if it tried.
+
+This replaces the "Linux is a projection" caveat for the *optimised* build: the Linux numbers
+are the same as the Windows probe within noise (201/336 MB vs 213/336 MB). The old build was
+not run on production (its 1.9 GB switch peak with the web resident would have been unsafe);
+the old-vs-new comparison therefore remains the same-host Windows measurement plus the
+production `memory.peak` observation.

@@ -1,0 +1,186 @@
+{
+  "data_dir": "/tmp/d3/snap",
+  "final": {
+    "heap": null,
+    "peak_rss": 790286336,
+    "rss": 629391360,
+    "swap": 0
+  },
+  "label": "reload/rss",
+  "platform": "Linux-6.8.0-138-generic-x86_64-with-glibc2.39",
+  "probe": "data003.memory_probe.v1",
+  "python": "3.12.3",
+  "reloads": [
+    {
+      "attempt": 1,
+      "index_ms": 5440.9,
+      "peak_rss": 637140992,
+      "reload_ms": 8878.8,
+      "rss_after_release": 632098816,
+      "rss_before": 513576960,
+      "rss_coexist": 632098816,
+      "trim": null
+    },
+    {
+      "attempt": 2,
+      "index_ms": 5104.9,
+      "peak_rss": 790286336,
+      "reload_ms": 8568.9,
+      "rss_after_release": 629391360,
+      "rss_before": 675905536,
+      "rss_coexist": 785252352,
+      "trim": null
+    }
+  ],
+  "stages": [
+    {
+      "at_s": 0.0,
+      "memory": {
+        "peak_rss": 16097280,
+        "rss": 16097280,
+        "swap": 0
+      },
+      "stage": "process_start"
+    },
+    {
+      "at_s": 0.033,
+      "memory": {
+        "peak_rss": 18468864,
+        "rss": 18468864,
+        "swap": 0
+      },
+      "stage": "import"
+    },
+    {
+      "applicants": 1563,
+      "at_s": 8.853,
+      "events": 91457,
+      "load_ms": 8820.0,
+      "memory": {
+        "peak_rss": 226869248,
+        "rss": 211529728,
+        "swap": 0
+      },
+      "organizations": 59,
+      "snapshot_id": "fda-snapshot-20261116T032632Z-18ce4d0cbbe4",
+      "stage": "load",
+      "top_allocations": []
+    },
+    {
+      "at_s": 9.128,
+      "memory": {
+        "peak_rss": 226869248,
+        "rss": 218185728,
+        "swap": 0
+      },
+      "queries_ms": 274.8,
+      "stage": "queries",
+      "workload": {
+        "organizations": 59,
+        "sample_keys": [
+          "draeger",
+          "ge_healthcare",
+          "medtronic"
+        ],
+        "timings": {
+          "events_recall_ms": 10.2,
+          "events_sorted_ms": 28.0,
+          "metrics_ms": 135.2,
+          "organization_draeger_ms": 0.4,
+          "organization_ge_healthcare_ms": 18.3,
+          "organization_medtronic_ms": 78.1,
+          "organizations_ms": 0.2,
+          "search_ms": 3.9
+        }
+      }
+    },
+    {
+      "applications": 61632,
+      "at_s": 14.264,
+      "build_ms": 5122.776,
+      "devices": 23974,
+      "families": 630,
+      "index_ms": 5135.4,
+      "memory": {
+        "peak_rss": 351608832,
+        "rss": 348585984,
+        "swap": 0
+      },
+      "recalls": 29825,
+      "relations": 77823,
+      "stage": "device_index",
+      "top_allocations": []
+    },
+    {
+      "at_s": 23.143,
+      "events": 91457,
+      "memory": {
+        "peak_rss": 513576960,
+        "rss": 513576960,
+        "swap": 0
+      },
+      "new_snapshot": "fda-snapshot-20261116T032632Z-18ce4d0cbbe4",
+      "old_snapshot": "fda-snapshot-20261116T032632Z-18ce4d0cbbe4",
+      "reload_ms": 8878.8,
+      "stage": "reload_1_coexist"
+    },
+    {
+      "applications": 61632,
+      "at_s": 28.584,
+      "devices": 23974,
+      "index_ms": 5440.9,
+      "memory": {
+        "peak_rss": 637140992,
+        "rss": 632098816,
+        "swap": 0
+      },
+      "relations": 77823,
+      "stage": "reload_1_new_index"
+    },
+    {
+      "at_s": 29.142,
+      "memory": {
+        "peak_rss": 637140992,
+        "rss": 632098816,
+        "swap": 0
+      },
+      "stage": "reload_1_after_release"
+    },
+    {
+      "at_s": 37.712,
+      "events": 91457,
+      "memory": {
+        "peak_rss": 675905536,
+        "rss": 675905536,
+        "swap": 0
+      },
+      "new_snapshot": "fda-snapshot-20261116T032632Z-18ce4d0cbbe4",
+      "old_snapshot": "fda-snapshot-20261116T032632Z-18ce4d0cbbe4",
+      "reload_ms": 8568.9,
+      "stage": "reload_2_coexist"
+    },
+    {
+      "applications": 61632,
+      "at_s": 42.818,
+      "devices": 23974,
+      "index_ms": 5104.9,
+      "memory": {
+        "peak_rss": 790286336,
+        "rss": 785252352,
+        "swap": 0
+      },
+      "relations": 77823,
+      "stage": "reload_2_new_index"
+    },
+    {
+      "at_s": 43.507,
+      "memory": {
+        "peak_rss": 790286336,
+        "rss": 629391360,
+        "swap": 0
+      },
+      "stage": "reload_2_after_release"
+    }
+  ],
+  "tracemalloc": false
+}
