@@ -69,9 +69,9 @@ global lock. DATA-003 replaces that with a small state machine:
   backoff (30/60/120/300 s). The degraded state is visible in `/api/health` and
   `/api/data-status`, exactly like DATA-002's fallback semantics.
 * A cold start still blocks on the first load: there is no older dataset to serve.
-* After the swap the same thread warms the device index, so the first Device Explorer request
-  after a switch does not pay a 5.7 s index build (the index build itself is now guarded by a
-  per-dataset lock so a concurrent request cannot build it twice).
+* The same thread builds the device index **before** the swap (Correction-1), so the swap
+  publishes a complete dataset and `/api/devices` never sees an index that is not ready. The
+  index build is guarded by a per-dataset lock so a concurrent request cannot build it twice.
 * `reload_status()` exposes state, phase, progress, elapsed time, attempts, deferrals, the last
   guard decision, and the pending snapshot. `/api/health` adds an `activation` check and
   `/api/data-status` adds `dataset_activation`.
@@ -90,7 +90,8 @@ doing it.
 Before allocating a second dataset, the holder asks `medradar/product/resources.py`:
 
 * is a pipeline operation running? (it probes the existing `pipeline.lock` with `flock`)
-* does the host have `MemAvailable >= 384 MB + 0.95 × our anonymous RSS`?
+* does the host have `MemAvailable >= 384 MB + 1.0 × our anonymous RSS` (the new copy is the
+  dataset *and* its index)?
 * `SwapFree >= 192 MB`, PSI memory `some avg10 <= 6.0`?
 * does the data filesystem have room?
 

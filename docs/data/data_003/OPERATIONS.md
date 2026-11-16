@@ -16,7 +16,8 @@ Read the **layers**, not just the HTTP code:
 | `checks.data.state` | `available` / `degraded` (serving the previous dataset) | `degraded` → warn |
 | `checks.data.using_fallback` | a new snapshot failed to load; old data is served | `true` → warn |
 | `checks.activation.state` | `ok` / `loading` / `degraded` (deferred or failed) | `degraded` → warn |
-| `activation.phase`, `activation.progress` | where the activation is (`events 20000/…`) | no progress for > 15 min → investigate |
+| `activation.phase`, `activation.progress` | where the activation is (`events 20000/…`, `indexing`) | no progress for > 15 min → investigate |
+| `activation.index_ready` | the active dataset also has its device index built (always true once active) | `false` while loading is normal; `false` while `state=idle` is a bug |
 | `checks.sync.state` / `sync.deferral` | pipeline state; `deferred` includes the guard reasons | `deferred` > 3 consecutive runs → warn |
 | `checks.freshness.state` | source version age | `degraded`/`stale` → warn |
 | `checks.liveness.state` | the process answers | never; use `livez` |

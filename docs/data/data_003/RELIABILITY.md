@@ -20,9 +20,13 @@ Invariants:
 
 1. `holder.get()` always returns a fully validated `Dataset`; there is no partially loaded
    object.
-2. The new dataset is swapped by one reference assignment after `load_dataset` returns.
+2. The new dataset is swapped by one reference assignment only after `load_dataset` **and**
+   its device index have completed (Correction-1). A snapshot whose index cannot be built is
+   not published: the old dataset keeps serving and the attempt is retried.
 3. On failure the old dataset stays active, `degraded_error` is set, and `/api/health` reports
-   `checks.data.state=degraded` with `using_fallback=true`.
+   `checks.data.state=degraded` with `using_fallback=true`. A failure is **retried** after the
+   backoff (Correction-1); the same snapshot is attempted again, and a *new* pointer state is
+   attempted immediately without waiting out the old backoff.
 4. A failed activation is retried with 30/60/120/300 s backoff; a *new* pointer state resets
    the backoff immediately.
 5. A deferred activation keeps the old dataset, records the guard reasons, and retries after
@@ -36,6 +40,10 @@ Invariants:
 | **New pointer points to a corrupt snapshot** (`snapshot.json` removed after publish) | `test_runtime_falls_back_to_previous_dataset_when_new_pointer_is_unusable` | old snapshot keeps serving; `activation.state=failed`; `status=degraded`; message preserved; retries bounded; no 5xx |
 | **Pointer switches A → B → A (rollback)** | `test_runtime_holder_reloads_on_active_pointer_switch` + benchmark `switch_back` | each switch activates the target snapshot; health follows; no stuck state |
 | **Review-ledger change while serving** | `invalidate(wait=True)` (loopback review service) | synchronous for that one caller only; public requests unaffected |
+| **Transient load failure, same snapshot** | `test_transient_failure_is_retried_after_backoff_and_succeeds` | retried after the backoff and activated, no pointer change; the test fails on `b1b841b` (pre-correction) |
+| **Persistent load failure** | `test_persistent_failure_does_not_retry_tightly` | 1–4 attempts in 1.6 s with a 0.5 s backoff, not one per request |
+| **Pointer changes while a failure backoff is pending** | `test_pointer_change_is_attempted_immediately_despite_long_backoff` | the new snapshot is attempted immediately, not after the one-hour backoff |
+| **Index build fails for a new snapshot** | `test_index_failure_does_not_publish_a_partial_dataset` | not published; old dataset (with its own index) keeps serving; failed + retried |
 | **Host cannot afford a second dataset** | `test_activation_is_deferred_under_memory_pressure_and_retried`, real CLI deferral | old dataset serves; `deferred` visible; retry succeeds when headroom returns |
 | **Pipeline operation running while a snapshot change arrives** | guard probes `pipeline.lock` with `flock` | activation deferred with `pipeline_operation_active`, not attempted |
 | **Dataset activation in flight while the timer fires** | activation marker file (`activation.json`) | pipeline run returns `DEFERRED_RESOURCE_PRESSURE` with `dataset_activation_in_flight` |

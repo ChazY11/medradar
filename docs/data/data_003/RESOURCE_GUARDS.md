@@ -44,7 +44,7 @@ headroom**, not at a unit's own cap.
 | Knob | Default | Why |
 |---|---|---|
 | `min_available_mb` | 384 | floor for the kernel to keep working |
-| `required_mb` | `0.95 × RssAnon + 128` | the second dataset is roughly the live dataset minus the index; measured +163 MB dataset / +283 MB with index against a 336 MB process. Using 95 % of our own anonymous RSS is deliberately conservative. |
+| `required_mb` | `1.0 × RssAnon + 128` | Correction-1 builds the new index before the swap, so the second copy is the dataset *and* its index: measured +163 MB dataset / +283 MB with index against a 336 MB process. One full anonymous RSS is the safe budget. |
 | `min_swap_free_mb` | 192 | activation must not be the reason swap is exhausted |
 | `max_psi_some_avg10` | 6.0 | tighter than the pipeline: activation is optional and can wait |
 | pipeline lock | checked | never activate while a sync is writing/publishing |

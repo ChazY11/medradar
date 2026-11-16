@@ -7,6 +7,34 @@ stacked Draft PR.
 **Scope not executed:** any production mutation. No deploy, no restart, no timer change, no PR
 merge.
 
+
+## 0. Correction-1 (2026-11-17) — pre-deployment blockers fixed
+
+**P0 — failed activations never retried (fixed).** `_maybe_reload()` returned early whenever the
+failed pointer fingerprint was unchanged, so the 30/60/120/300 s backoff was written but the
+retry could never start. The check is replaced by a retry state that (a) allows the automatic
+retry once the backoff elapses, (b) resets the backoff immediately when the active pointer
+changes, and (c) applies to guard deferrals as well. Proven by
+`tests/data_pipeline/test_data003_correction1.py`: the transient-failure and pointer-change tests
+**fail on the pre-correction commit `b1b841b`** and pass on the corrected code; the other tests
+prove bounded retries, readable old data and no foreground waiting.
+
+**Consistency — a dataset is published only with its device index (fixed).** The index is now
+built *before* the swap (activation phase `indexing`), so `/api/devices` can never observe a
+dataset whose index is still being built, and a failed index build does not publish.
+`activation.index_ready` exposes the invariant.
+
+**P1 — deployment change request corrected against the real host.** The repository is
+`/srv/medradar/app` (verified clean at `bb1ef34…`), installed editable into
+`/srv/medradar/.venv`; the deploy is a `git checkout` in that path with **no pip step**. The
+rollback target is the actual deployed SHA `bb1ef34…`. The active snapshot is read at execution
+time into `$SNAPSHOT_ID` instead of a historical constant. `ss -ltnp` confirms MedRadar listens
+on **127.0.0.1:8787 only** (no public reverse proxy), so the document no longer assumes one.
+`/srv/medradar/var/DEPLOYED_SHA` is stale (`1bdb1c3…`) and is corrected as a deployment step.
+
+Corrected switch benchmark: 0 errors/timeouts; `/api/health` max **154 ms** at a production-like
+rate, **2.3 s** under two saturating synthetic clients (GIL, disclosed), versus 20 s stalls and
+2 timeouts on DATA-002.
 ## 1. What was asked, and what was found
 
 | Question | Answer | Evidence |
@@ -47,7 +75,7 @@ merge.
 |---|---|---|
 | **G1 Root cause** | **PASS** | Measured live dataset, switch delta, lock path; production readings agree with the isolated reproduction. |
 | **G2 Memory improvement** | **PASS** | −65 % steady, −60 % switch peak, same snapshot and host; on the real production host the optimised build needs 335 MB (index included) and peaks at 790 MB across two switches under a 1.1 GB cap with swap disabled; semantics fingerprint-identical. |
-| **G3 Request availability** | **PASS** | Same load + same switch: baseline 20 s stalls and 2 timeouts vs 0 timeouts, health ≤ 163 ms; real FDA sync under load: 0 timeouts, health max 259 ms. Residual: GIL slowdown under saturating CPU load (disclosed). |
+| **G3 Request availability** | **PASS** | Same load + same switch: baseline 20 s stalls and 2 timeouts vs 0 timeouts; `/api/health` max 154 ms at a production-like request rate and 2.3 s under two saturating clients; real FDA sync under load: 0 timeouts, health max 259 ms. Residual: GIL slowdown under saturating CPU load (disclosed). |
 | **G4 Resource protection** | **PASS** | Deferral keeps the old data, records reasons, retries, escalates; a real CLI deferral touched nothing (peak 31 MB, pointer unchanged). |
 | **G5 No regression** | **PASS** | Byte-identical dataset/index/quality digests; full pytest suite; API additions only; no evidence field removed. |
 | **G6 Repeatability** | **PASS** | Three reload cycles bounded (781 MB Windows / 790 MB production, no growth), four independent measurement setups, same digests on re-run. |

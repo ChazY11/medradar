@@ -1,0 +1,191 @@
+{
+  "activation_s": [
+    63.75
+  ],
+  "concurrency": 2,
+  "data_root": "D:\\DEPPSKK\\data003-work\\pipeline-root",
+  "duration_s": 30.0,
+  "index_build_ms": 5510.0,
+  "label": "new-paced-c1",
+  "module_file": "D:\\DEPPSKK\\worktrees\\data003\\medradar\\product\\dataset.py",
+  "prewarm_ms": 16177.557199998773,
+  "prewarm_status": 200,
+  "repo_root": "D:\\DEPPSKK\\worktrees\\data003",
+  "requests": {
+    "by_endpoint": {
+      "compare": {
+        "max_ms": 666.54,
+        "n": 20,
+        "p50_ms": 239.71,
+        "p95_ms": 651.41
+      },
+      "data_status": {
+        "max_ms": 2168.3,
+        "n": 20,
+        "p50_ms": 189.8,
+        "p95_ms": 940.55
+      },
+      "device_family": {
+        "max_ms": 1202.2,
+        "n": 20,
+        "p50_ms": 47.39,
+        "p95_ms": 220.82
+      },
+      "device_quality": {
+        "max_ms": 1382.44,
+        "n": 20,
+        "p50_ms": 453.42,
+        "p95_ms": 1132.35
+      },
+      "devices": {
+        "max_ms": 1296.3,
+        "n": 40,
+        "p50_ms": 250.12,
+        "p95_ms": 857.12
+      },
+      "events": {
+        "max_ms": 2300.79,
+        "n": 40,
+        "p50_ms": 825.74,
+        "p95_ms": 1559.63
+      },
+      "health": {
+        "max_ms": 2337.44,
+        "n": 20,
+        "p50_ms": 112.79,
+        "p95_ms": 1171.01
+      },
+      "home": {
+        "max_ms": 404.47,
+        "n": 19,
+        "p50_ms": 12.35,
+        "p95_ms": 382.14
+      },
+      "meta": {
+        "max_ms": 910.2,
+        "n": 19,
+        "p50_ms": 294.88,
+        "p95_ms": 466.9
+      },
+      "organization": {
+        "max_ms": 479.32,
+        "n": 40,
+        "p50_ms": 201.98,
+        "p95_ms": 404.61
+      },
+      "organizations": {
+        "max_ms": 421.8,
+        "n": 40,
+        "p50_ms": 20.92,
+        "p95_ms": 248.68
+      },
+      "search": {
+        "max_ms": 374.26,
+        "n": 19,
+        "p50_ms": 23.76,
+        "p95_ms": 191.89
+      }
+    },
+    "errors": 0,
+    "http_5xx": 0,
+    "max_ms": 2337.44,
+    "p50_ms": 214.68,
+    "p95_ms": 1040.38,
+    "p99_ms": 2152.84,
+    "requests": 317,
+    "slow_over_1s": 21,
+    "timeouts": 0
+  },
+  "schema": "data003.web_bench.v1",
+  "server": {
+    "memory": {
+      "largest_process_max": 671969280,
+      "peak_rss": 684150784,
+      "rss_end": 578359296,
+      "rss_max": 683896832,
+      "rss_start": 65585152,
+      "samples": 315,
+      "swap_max": 0
+    },
+    "version": "2.2.0-data-002"
+  },
+  "snapshot_active": "fda-snapshot-20261116T032632Z-18ce4d0cbbe4",
+  "switch_target": "fda-snapshot-20261116T031623Z-556883ca1bc7",
+  "switches": [
+    {
+      "activation_s": 63.75,
+      "activation_states": [
+        "idle",
+        "loading",
+        "idle"
+      ],
+      "at_s": 6.795,
+      "from": "fda-snapshot-20261116T032632Z-18ce4d0cbbe4",
+      "http_status": 200,
+      "last_activation": {
+        "active_snapshot": "fda-snapshot-20261116T031623Z-556883ca1bc7",
+        "attempts": 0,
+        "deferrals": 0,
+        "elapsed_s": null,
+        "finished_at": "2026-11-16T19:35:05Z",
+        "guard": {
+          "allowed": true,
+          "disk_free_mb": 535460,
+          "memory": {
+            "anon_pages_mb": 0,
+            "captured_at": "2026-11-16T19:34:03Z",
+            "mem_available_mb": 13526,
+            "mem_free_mb": 13526,
+            "mem_total_mb": 32189,
+            "oom_kills": null,
+            "psi_full_avg10": null,
+            "psi_some_avg10": null,
+            "supported": true,
+            "swap_cached_mb": 0,
+            "swap_free_mb": 22825,
+            "swap_total_mb": 45501,
+            "swap_used_mb": 22676
+          },
+          "policy": {
+            "max_psi_some_avg10": 6.0,
+            "min_available_mb": 384,
+            "min_disk_free_mb": 0,
+            "min_swap_free_mb": 192,
+            "name": "web_activation",
+            "required_mb": 512
+          },
+          "reasons": []
+        },
+        "index_ready": true,
+        "last_activated_snapshot": "fda-snapshot-20261116T031623Z-556883ca1bc7",
+        "last_error": null,
+        "next_attempt_in_s": 0.0,
+        "pending_snapshot": null,
+        "phase": null,
+        "progress": {
+          "done": 0,
+          "total": 0
+        },
+        "started_at": "2026-11-16T19:34:03Z",
+        "state": "idle",
+        "using_fallback": false
+      },
+      "last_snapshot": "fda-snapshot-20261116T031623Z-556883ca1bc7",
+      "observed_at_s": 70.545,
+      "pointer": {
+        "action": "switch",
+        "content_hash": "556883ca1bc7bd0d050e2d296c7b862ee976384a6e660af4e6bbcafde087916b",
+        "path": "snapshots/fda-snapshot-20261116T031623Z-556883ca1bc7",
+        "previous_snapshot_id": "fda-snapshot-20261116T031349Z-556883ca1bc7",
+        "published_at": "2026-11-16T19:34:03Z",
+        "published_by": "data003-benchmark",
+        "schema": "medradar.pipeline.active.v1",
+        "snapshot_id": "fda-snapshot-20261116T031623Z-556883ca1bc7"
+      },
+      "reason": "switch",
+      "to": "fda-snapshot-20261116T031623Z-556883ca1bc7"
+    }
+  ],
+  "think_ms": 100.0,
+  "warm_quality_ms": 821.96
+}

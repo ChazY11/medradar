@@ -98,7 +98,7 @@ class DatasetHolder:
         self._next_check = 0.0
         self._next_attempt_at = 0.0
         self._attempts = 0
-        self._failed_state: Any = None
+        self._retry_state: Any = None
         self._reload_thread: threading.Thread | None = None
         self._reload_state = "idle"
         self._reload_error: str | None = None
@@ -176,6 +176,11 @@ class DatasetHolder:
             snapshot_fingerprint, fingerprint = self._data_state()
             try:
                 loaded = load_dataset(self.data_dir, review_db=self.review_db)
+                # DATA-003 Correction-1: a dataset is only published once its device index is
+                # built. Otherwise the first Device Explorer request after the swap could block
+                # on a multi-second index build, and /api/devices could serve a dataset whose
+                # index was still being constructed.
+                loaded.device_index()
             except Exception as error:
                 self._error = str(error)
                 raise FileNotFoundError(str(error)) from error
@@ -184,7 +189,6 @@ class DatasetHolder:
                 self._error = None
                 self._fingerprint = fingerprint
                 self._snapshot_fingerprint = snapshot_fingerprint
-            self._warm_device_index(loaded)
             return loaded
 
     def _maybe_reload(self) -> None:
@@ -195,16 +199,22 @@ class DatasetHolder:
         thread = self._reload_thread
         if thread is not None and thread.is_alive():
             return
-        if now < self._next_attempt_at:
-            return
         snapshot_fingerprint, fingerprint = self._data_state()
         if not self._changed(snapshot_fingerprint, fingerprint):
             return
-        if self._failed_state is not None and snapshot_fingerprint == self._failed_state:
-            # Same broken input as the last attempt; the backoff above already decided when to
-            # try again. A *new* pointer state retries immediately.
+        if self._retry_state is not None and snapshot_fingerprint != self._retry_state:
+            # The active pointer moved since the last failed (or deferred) attempt. This is a
+            # different snapshot, so the old backoff must not delay it: retry immediately.
+            self._attempts = 0
+            self._next_attempt_at = 0.0
+            self._retry_state = None
+        if now < self._next_attempt_at:
             return
-        self._start_activation(snapshot_fingerprint, fingerprint)
+        if not self._start_activation(snapshot_fingerprint, fingerprint):
+            # A guard deferral is remembered against this pointer state so a *new* snapshot can
+            # still be attempted without waiting out the 15 s deferral cadence.
+            if self._reload_state == "deferred":
+                self._retry_state = snapshot_fingerprint
 
     def _start_activation(self, snapshot_fingerprint: Any, fingerprint: Any) -> bool:
         with self._state_lock:
@@ -213,6 +223,7 @@ class DatasetHolder:
                 return False
             pending = self._pointer_snapshot_id()
             if not self._guard_allows_activation(pending):
+                self._retry_state = snapshot_fingerprint
                 return False
             self._reload_state = "loading"
             self._reload_error = None
@@ -246,7 +257,9 @@ class DatasetHolder:
             )
             return False
         rss = resources.process_rss_mb()
-        required = int(rss * 0.95) + 128 if rss else 512
+        # The new copy is the dataset *plus* its device index (Correction-1 builds the index
+        # before the swap), so budget one full anonymous RSS, not 95 % of it.
+        required = int(rss * 1.0) + 128 if rss else 512
         decision = resources.evaluate_guard(
             self.guard_policy.with_required(required),
             disk_root=root,
@@ -282,6 +295,12 @@ class DatasetHolder:
 
         try:
             loaded = load_dataset(self.data_dir, review_db=self.review_db, progress=progress)
+            # Publish only a complete dataset: build the device index before the swap. If this
+            # fails, the previous dataset keeps serving and the attempt is retried, so
+            # /api/devices can never observe a half-ready index.
+            self._reload_phase = "indexing"
+            self._reload_progress = (0, 0)
+            loaded.device_index()
         except Exception as error:
             with self._state_lock:
                 self._error = str(error)
@@ -289,7 +308,7 @@ class DatasetHolder:
                 self._reload_error = str(error)
                 self._reload_phase = "failed"
                 self._reload_finished_at = _utc_now()
-                self._failed_state = snapshot_fingerprint
+                self._retry_state = snapshot_fingerprint
                 self._attempts += 1
                 delay = self.RETRY_DELAYS[min(self._attempts - 1, len(self.RETRY_DELAYS) - 1)]
                 self._next_attempt_at = time.monotonic() + delay
@@ -313,10 +332,10 @@ class DatasetHolder:
             self._reload_error = None
             self._reload_finished_at = _utc_now()
             self._reload_snapshot = loaded.snapshot_id
-            self._reload_phase = "warming_index"
+            self._reload_phase = None
             self._pending_snapshot = None
             self._attempts = 0
-            self._failed_state = None
+            self._retry_state = None
             self._deferral_count = 0
         resources.write_activation(
             root,
@@ -325,19 +344,7 @@ class DatasetHolder:
             started_at=self._reload_started_at,
             finished_at=self._reload_finished_at,
         )
-        # Warm the device index after the swap, so the first Device Explorer request after a
-        # snapshot switch does not pay (and hold the GIL for) a full index build.
-        self._warm_device_index(loaded)
-        self._reload_phase = None
         self._reload_progress = (0, 0)
-
-    def _warm_device_index(self, dataset: Dataset) -> None:
-        try:
-            dataset.device_index()
-        except Exception:
-            # An index that cannot be built is surfaced by /api/devices and /api/devices/quality;
-            # it must not fail the activation or the cold start.
-            pass
 
     def reload_now(self, *, timeout: float = 300.0) -> bool:
         """Force a synchronous activation. Used by the loopback review service only."""
@@ -348,6 +355,8 @@ class DatasetHolder:
         snapshot_fingerprint, fingerprint = self._data_state()
         with self._load_lock:
             loaded = load_dataset(self.data_dir, review_db=self.review_db)
+            # Same completeness rule as the background path.
+            loaded.device_index()
             with self._state_lock:
                 self._dataset = loaded
                 self._error = None
@@ -358,9 +367,8 @@ class DatasetHolder:
                 self._reload_finished_at = _utc_now()
                 self._reload_snapshot = loaded.snapshot_id
                 self._pending_snapshot = None
-                self._failed_state = None
+                self._retry_state = None
                 self._attempts = 0
-        self._warm_device_index(loaded)
         return True
 
     def wait_for_reload(self, timeout: float = 60.0) -> bool:
@@ -402,6 +410,12 @@ class DatasetHolder:
                 "progress": {"done": self._reload_progress[0], "total": self._reload_progress[1]},
                 "elapsed_s": elapsed,
                 "active_snapshot": current.snapshot_id if current is not None else None,
+                # Correction-1: a published dataset always has its device index built, so this
+                # is True whenever a dataset is active. It exists so an operator can prove the
+                # data and the index were published together.
+                "index_ready": bool(
+                    current is not None and getattr(current, "_device_index", None) is not None
+                ),
                 "pending_snapshot": self._pending_snapshot,
                 "started_at": self._reload_started_at,
                 "finished_at": self._reload_finished_at,
@@ -425,7 +439,7 @@ class DatasetHolder:
             self._fingerprint = None
         self._next_check = 0.0
         self._next_attempt_at = 0.0
-        self._failed_state = None
+        self._retry_state = None
         self._attempts = 0
         if wait:
             self.reload_now()

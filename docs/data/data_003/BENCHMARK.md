@@ -66,17 +66,25 @@ warm device index +122.7 MB / 5.7 s; reload coexistence +163 MB, +283 MB with a 
 Paced load: 2 clients, one request every 100 ms per client, 12-endpoint mix, 30 s, switch at 6 s,
 device index warm, no pipeline running. Same load, same snapshot, same switch, both trees.
 
-| Metric | DATA-002 baseline (`edbde0a`) | DATA-003 | Change |
+| Metric | DATA-002 baseline (`edbde0a`) | DATA-003 Correction-1 | Change |
 |---|---|---|---|
-| completed requests in 30 s | **29** | **239** | 8.2× |
+| completed requests in 30 s | **29** | **317** | 10.9× |
 | errors (harness 20 s timeout) | **2** | 0 | eliminated |
-| p50 | 203 ms | 164 ms | −19 % |
-| p95 | **20,009 ms** | 950 ms | −95 % |
-| p99 | 20,010 ms | 2,079 ms | −90 % |
-| max | **20,009 ms** | 3,333 ms | −83 % |
-| requests > 1 s | 8 | 6 | — |
-| `/api/health` p50 / max | 51 / 67 ms (only 2 completed) | 117 / **163 ms** | no stall |
-| snapshot observed after switch | 22.8 s | 43.1 s (background) | data older for longer, service alive |
+| p50 | 203 ms | 215 ms | — |
+| p95 | **20,009 ms** | 1,040 ms | −95 % |
+| p99 | 20,010 ms | 2,153 ms | −89 % |
+| max | **20,009 ms** | 2,337 ms | −88 % |
+| requests > 1 s | 8 | 21 | more slow requests, none blocked for seconds |
+| `/api/health` p50 / max | 51 / 67 ms (only 2 completed) | 113 / **2,337 ms** | no multi-second lock stall |
+| snapshot observed after switch | 22.8 s | 63.8 s (background, index included) | data older for longer, service alive |
+
+The corrected activation also builds the device index **before** publishing. That makes the
+activation window longer (63.8 s under these two saturating clients) and raises the worst
+health latency to 2.3 s, because the index build shares the GIL with the clients. At a
+production-like request rate (one client, one request every 300 ms ≈ 3 req/s) the same switch
+showed: 62 requests, 0 errors/timeouts, `/api/health` p50 76 ms / **max 154 ms**, activation
+29.8 s, server RSS max 645 MB. Both runs are below the 8 s incident and neither has a
+request blocked by the holder.
 
 Interpretation: in DATA-002 every request that arrived during the load queued behind the
 holder's global lock, so clients sat for the entire load (the harness gave up at 20 s). In
@@ -84,9 +92,9 @@ DATA-003 the activation is a background thread: the same clients completed 239 r
 never exceeded 163 ms, and the new snapshot became active 43 s later without any request
 failure.
 
-The activation took longer under load (43 s vs ~8 s idle) because it shares the GIL with the
-CPU-bound clients. This is disclosed as the central residual limitation (`RELIABILITY.md` §4);
-it is not a lock stall, and no request waits for it.
+The activation takes longer under load (63.8 s vs ~15 s idle with the index) because it
+shares the GIL with the CPU-bound clients. This is disclosed as the central residual limitation
+(`RELIABILITY.md` §4); it is not a lock stall, and no request waits for it.
 
 ## 5. D. Background FDA synchronization with the web serving queries
 
