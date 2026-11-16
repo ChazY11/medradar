@@ -179,3 +179,60 @@ never clickable as a company).
 - All 6 routes render against the real API with empty, loading and error states implemented.
 - Lighthouse-ish sanity: no console errors, no failed requests, keyboard navigable.
 - Screenshots at 1440x900 and 390x844 of every route are captured for the acceptance record.
+
+---
+
+## PRODUCT-004: Intelligence Brief (`/brief`)
+
+The brief is the product's research object. It is not a new dashboard: the same data and comparison
+engines are presented in the order an analyst works — question, evidence, comparison, verification,
+deliverable.
+
+### Layout
+
+1. **Page header** — brief title (from the server, bilingual), the research question, and three
+   actions: download brief (MD), evidence appendix (CSV), print/PDF.
+2. **Define the research question** — mode tabs (Company / Compare / Device), target input with the
+   organization datalist or a device identifier, window chips (3/5/10 complete years or custom dates),
+   event-type chips, primary "Build intelligence brief" action. The URL is the record of the scope.
+3. **Scope strip** — window, event types, snapshot id and collection date, counting rule.
+4. **Executive tiles / comparison sides / device tiles** — one glance at the window.
+5. **Evidence-backed findings** — two-column cards. Each card: category badge, rule id, title,
+   statement, "what this does not mean" block, reproduce link, expandable rule and cited records.
+6. **Analysis sections** — pathway table with definitions and a per-year chart; technology areas
+   (specialty bars + official product-code family table); PMA families; recent activity table with an
+   evidence button per row; comparison metrics with an "Explain" button per row.
+7. **Changes** — ledger state (`not_configured`, `no_changes`, `available`, `unavailable`), never a
+   fabricated update.
+8. **Evidence, coverage and limitations** — sources, verification, ownership-at-event-time, scope,
+   coverage, identity, time, relationship and "questions this cannot answer".
+9. **Take the work away** — the two downloads and the appendix row count.
+
+### States
+
+* No scope in the URL → empty state plus three one-click examples.
+* Loading → skeleton; the previous brief stays visible while a new scope loads.
+* Unknown organization/device → API 404 shown as an error state with the invalid identifier.
+* Empty window → zero-record state with the coverage explanation; the brief still shows the scope.
+* Invalid window (`years=7`, one-sided custom dates) → 400 shown as an error state.
+
+### Interactions
+
+* Every finding and every product-code row links to `/events` with exact filters; the event browser
+  keeps URL state.
+* Every evidence/explain drawer closes back to the same brief with no loss of scope.
+* `Explain` opens a drawer whose record list and event-browser link use the same computation.
+* Print CSS hides the app bar, form, drawers and tooltips; findings and cards avoid page breaks.
+
+### Internationalisation
+
+All new strings use `bi(en, zh)` or server-provided `{en, zh}`; the language switch is in the app bar
+(desktop) and inside the mobile navigation panel. Server warning messages from the inherited Compare
+engine are labelled as English source text in Chinese mode.
+
+### Accessibility and responsiveness
+
+* Sidebar-free single column below 900 px; grids collapse to one column; tables remain readable with
+  the existing mobile table treatment.
+* The mobile header search shrinks instead of overflowing; page actions wrap.
+* Findings are `<article>` with a heading; details use native `<details>/<summary>`.

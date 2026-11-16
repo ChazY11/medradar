@@ -16,6 +16,6 @@ from __future__ import annotations
 __all__ = ["PRODUCT_NAME", "PRODUCT_VERSION", "POSITIONING_EN", "POSITIONING_ZH"]
 
 PRODUCT_NAME = "MedRadar"
-PRODUCT_VERSION = "2.2.0-data-002"
-POSITIONING_EN = "Medical technology intelligence platform"
+PRODUCT_VERSION = "2.3.0-product-004"
+POSITIONING_EN = "Medical technology intelligence workbench"
 POSITIONING_ZH = "医疗技术情报与竞争分析平台"

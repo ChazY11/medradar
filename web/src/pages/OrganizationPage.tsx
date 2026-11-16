@@ -75,11 +75,14 @@ export function OrganizationPage() {
             description={data.description}
             actions={
               <>
+                <Link className="btn primary" to={"/brief?mode=company&org=" + data.key + "&years=5"}>
+                  {bi("Open intelligence brief", "打开情报简报")}
+                </Link>
                 <Link className="btn" to={"/compare?orgs=" + data.key}>
                   {bi("Add to comparison", "加入对比")}
                 </Link>
-                <ExportLink href={exportOrganizationMdUrl(data.key)} title="Markdown intelligence brief with counts, coverage and official record links.">
-                  {bi("Export brief", "导出简报")}
+                <ExportLink href={exportOrganizationMdUrl(data.key)} title="Full-snapshot Markdown export with counts, coverage and official record links. The intelligence brief is the windowed, findings-first deliverable.">
+                  {bi("Full-snapshot export", "全量快照导出")}
                 </ExportLink>
               </>
             }
@@ -121,7 +124,39 @@ export function OrganizationPage() {
               <MetricTile label={bi("Recalls", "召回")} value={(data.counts.by_type.find((row) => row.event_type === "recall")?.count ?? 0).toLocaleString()} sub={bi("safety actions, not launches", "安全行动，非产品发布")} />
             </div>
 
-            <OrgTransparency verification={data.verification} ownership={data.ownership} />
+            {/* PRODUCT-004: the provenance block is necessary but must not be the first two screens
+                of the company page. It stays one click away with its headline numbers visible. */}
+            <details className="card org-basis">
+              <summary className="card-header" style={{ cursor: "pointer" }}>
+                <div>
+                  <div className="card-title">{bi("Data basis: attribution and ownership", "数据口径：归属与所有权")}</div>
+                  <div className="card-note">
+                    {bi(
+                      (data.verification?.verified_records ?? 0).toLocaleString() +
+                        " evidence-verified · " +
+                        (data.verification?.rule_verified_records ?? 0).toLocaleString() +
+                        " rule-verified · " +
+                        (data.verification?.provisional_records ?? 0).toLocaleString() +
+                        " provisional; owner at event time unknown for " +
+                        (data.ownership.record_level?.unknown ?? 0).toLocaleString() +
+                        " records. Expand for the full basis.",
+                      "已核验 " +
+                        (data.verification?.verified_records ?? 0).toLocaleString() +
+                        " 条 · 规则校验 " +
+                        (data.verification?.rule_verified_records ?? 0).toLocaleString() +
+                        " 条 · 暂定 " +
+                        (data.verification?.provisional_records ?? 0).toLocaleString() +
+                        " 条；事件发生时所有者未知 " +
+                        (data.ownership.record_level?.unknown ?? 0).toLocaleString() +
+                        " 条。展开查看完整口径。",
+                    )}
+                  </div>
+                </div>
+              </summary>
+              <div className="card-body">
+                <OrgTransparency verification={data.verification} ownership={data.ownership} />
+              </div>
+            </details>
 
             <Tabs
               active={tab}
@@ -221,11 +256,63 @@ export function OrganizationPage() {
                   </Card>
                 ) : null}
 
+                {data.technology ? (
+                  <Card
+                    title={bi("Technology areas · official FDA product-code families", "技术领域 · FDA 官方产品代码家族")}
+                    note={data.technology.product_families.note}
+                    actions={
+                      <Link className="link small" to={"/devices?org=" + data.key}>
+                        {bi("Device explorer", "器械浏览器")} {"\u2192"}
+                      </Link>
+                    }
+                  >
+                    <div className="table-wrap">
+                      <table className="data">
+                        <thead>
+                          <tr>
+                            <th scope="col">{bi("Code", "代码")}</th>
+                            <th scope="col">{bi("Official FDA classification name", "FDA 官方分类名称")}</th>
+                            <th scope="col">{bi("Specialty", "专科")}</th>
+                            <th scope="col" className="num">{bi("Records", "记录数")}</th>
+                            <th scope="col">{bi("First / last event", "首次 / 最近事件")}</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {data.technology.product_families.rows.map((row) => (
+                            <tr key={row.product_code}>
+                              <td className="mono">
+                                <Link className="link" to={"/events?org=" + data.key + "&product_code=" + row.product_code}>
+                                  {row.product_code}
+                                </Link>
+                              </td>
+                              <td>
+                                <div className="cell-primary">{row.official_name ?? bi("— (not in the FDA dictionary)", "—（不在 FDA 分类字典中）")}</div>
+                                {row.device_class ? <div className="cell-sub">Class {row.device_class}</div> : null}
+                              </td>
+                              <td className="small">{row.specialty}</td>
+                              <td className="num">{row.records.toLocaleString()}</td>
+                              <td className="small nowrap">{formatDate(row.first_event_date)} {"\u2192"} {formatDate(row.last_event_date)}</td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  </Card>
+                ) : null}
+
                 <div className="grid cols-2">
                   <Card title={bi("Records per year by event type", "逐年记录数（按类型）")} note={bi("Years without attributed records are simply absent; they are not zero-activity claims.", "没有已归属记录的年份直接缺省，不代表该年没有活动。")}>
                     <YearSeries data={data.aggregations.by_year} />
                   </Card>
-                  <Card title={bi("Records by FDA medical specialty", "按 FDA 医学专科分类")} note={bi("Category comes from the FDA classification dictionary by product code.", "类别由产品代码经 FDA 分类字典映射得到。")}>
+                  <Card
+                    title={bi("Records by FDA medical specialty", "按 FDA 医学专科分类")}
+                    note={
+                      bi(
+                        "Category comes from the FDA classification dictionary by product code. The dictionary states 'Unknown' for many class III codes, so this table is incomplete by source; the product-code table above remains interpretable.",
+                        "类别由产品代码经 FDA 分类字典映射得到。该字典对许多第三类代码标注为“Unknown”，因此本表受来源限制并不完整；上方的产品代码表仍可解读。",
+                      )
+                    }
+                  >
                     <BarBreakdown rows={data.aggregations.by_category} limit={10} />
                   </Card>
                 </div>

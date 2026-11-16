@@ -31,6 +31,7 @@ export function EventsPage() {
         from: state.from || undefined,
         to: state.to || undefined,
         category: state.category ? [state.category] : undefined,
+        product_code: state.productCode || undefined,
         q: state.q || undefined,
         review: state.review || undefined,
         sort: state.sort,
@@ -65,6 +66,7 @@ export function EventsPage() {
     from: state.from || undefined,
     to: state.to || undefined,
     category: state.category ? [state.category] : undefined,
+    product_code: state.productCode || undefined,
     q: state.q || undefined,
     review: state.review || undefined,
     sort: state.sort,
@@ -115,6 +117,14 @@ export function EventsPage() {
             {state.from ? <span className="filter-token">from {state.from}</span> : null}
             {state.to ? <span className="filter-token">to {state.to}</span> : null}
             {state.category ? <span className="filter-token">{state.category}</span> : null}
+            {state.productCode ? (
+              <span className="filter-token">
+                product code {state.productCode}
+                <button type="button" aria-label="Remove product code filter" onClick={() => apply({ ...state, productCode: "" })}>
+                  x
+                </button>
+              </span>
+            ) : null}
             {state.q ? <span className="filter-token">"{state.q}"</span> : null}
             {state.review ? <span className="filter-token">{state.review}</span> : null}
           </div>

@@ -1,6 +1,5 @@
 import { Link, useNavigate } from "react-router-dom";
 import { getMeta, listEvents, listOrganizations } from "../api/client";
-import type { EventRecord } from "../api/types";
 import { useAsync } from "../api/hooks";
 import { AsyncSection } from "../components/async";
 import { TypeLegend, YearSeries } from "../components/charts";
@@ -19,22 +18,72 @@ export function OverviewPage() {
   return (
     <>
       <PageHeader
-        eyebrow="MedRadar - Product 001"
-        title={t("overview.title")}
-        description={t("overview.desc")}
+        eyebrow={bi("MedRadar · Medical technology intelligence", "MedRadar · 医疗技术情报")}
+        title={bi("Start a research task", "开始一项研究任务")}
+        description={bi(
+          "Turn traceable FDA device records into a defensible competitive brief: define a question, read the evidence, compare on one rule, verify the official record, and export the brief.",
+          "把可追溯的 FDA 器械记录转化为可接受事实核查的竞争情报简报：定义问题、阅读证据、按同一口径比较、核验官方记录，并导出简报。",
+        )}
         actions={
           <>
-            <Link className="btn primary" to="/events">
-              {bi("Open event browser", "打开事件浏览器")}
+            <Link className="btn primary" to="/brief">
+              {bi("Build an intelligence brief", "生成情报简报")}
             </Link>
             <Link className="btn" to="/compare">
               {bi("Compare organizations", "企业对比")}
+            </Link>
+            <Link className="btn ghost" to="/events">
+              {bi("Event browser", "事件浏览器")}
             </Link>
           </>
         }
       />
 
       <div className="stack">
+        <section className="grid cols-3">
+          <Card>
+            <div className="strong">{bi("Research a company", "研究一家企业")}</div>
+            <p className="small muted mt-8" style={{ lineHeight: 1.55 }}>
+              {bi(
+                "Pick a company and a window. The brief shows pathway mix, official product-code families, PMA families, recent records and evidence-backed findings.",
+                "选择企业与时间窗口。简报展示监管路径构成、官方产品代码家族、PMA 家族、近期记录与有证据支持的发现。",
+              )}
+            </p>
+            <div className="mt-12">
+              <Link className="link" to="/brief?mode=company&org=medtronic&years=5">
+                {bi("Brief Medtronic for 2021–2025", "生成美敦力 2021–2025 简报")} {"\u2192"}
+              </Link>
+            </div>
+          </Card>
+          <Card>
+            <div className="strong">{bi("Compare competitors", "比较竞争对手")}</div>
+            <p className="small muted mt-8" style={{ lineHeight: 1.55 }}>
+              {bi(
+                "One window, one counting rule. Every difference is explainable down to the records, and the brief states where coverage or verification differs.",
+                "同一窗口、同一统计口径。每项差异都可解释到具体记录，并明确说明覆盖或核验程度的差异。",
+              )}
+            </p>
+            <div className="mt-12">
+              <Link className="link" to="/brief?mode=compare&orgs=ge_healthcare,philips&years=5">
+                {bi("GE HealthCare vs Philips", "GE HealthCare 对比 Philips")} {"\u2192"}
+              </Link>
+            </div>
+          </Card>
+          <Card>
+            <div className="strong">{bi("Investigate a device family", "调查器械家族")}</div>
+            <p className="small muted mt-8" style={{ lineHeight: 1.55 }}>
+              {bi(
+                "Follow one official PMA number: original approval, every supplement, official recalls linked by K number, and candidate relations kept separate.",
+                "沿一个官方 PMA 编号追查：原始批准、全部补充申请、通过 K 号码关联的官方召回，并与候选关系严格区分。",
+              )}
+            </p>
+            <div className="mt-12">
+              <Link className="link" to="/brief?mode=device&device=P980016">
+                {bi("Investigate PMA P980016", "调查 PMA P980016")} {"\u2192"}
+              </Link>
+            </div>
+          </Card>
+        </section>
         <AsyncSection status={meta.status} data={meta.data} error={meta.error} reload={meta.reload} loadingLines={2}>
           {(data) => (
             <>
@@ -75,62 +124,22 @@ export function OverviewPage() {
               </section>
 
               <section>
-                <SectionHead
-                  title={bi("How much of this data is verified", "这些数据有多少经过核验")}
-                  note={bi(
-                    "Four different questions, four different numbers. Attributed share is not accuracy, and 99% attributed does not mean 99% correct.",
-                    "四个不同的问题、四个不同的数字。已归属比例不是准确率；99% 已归属并不意味着 99% 正确。",
-                  )}
-                />
-                <MetricsStrip />
-              </section>
-
-              <section>
-                <SectionHead title={t("overview.startHere")} />
-                <Grid cols={3}>
-                  <Card>
-                    <div className="strong">{bi("1. Search an organization", "1. 搜索一家企业")}</div>
-                    <p className="small muted mt-8" style={{ lineHeight: 1.55 }}>
-                      {bi(
-                        "Search by English name, known brand, ticker or verified applicant spelling. Results are organizations, not raw FDA applicant strings.",
-                        "按英文名称、已知品牌、股票代码或已验证的申请人名称搜索。搜索结果是收录企业，而非原始 FDA 申请人字符串。",
-                      )}
-                    </p>
-                    <div className="mt-12">
-                      <Link className="link" to="/organizations">
-                        {bi("Browse all tracked organizations", "浏览全部收录企业")} {"\u2192"}
-                      </Link>
+                <details className="card">
+                  <summary className="card-header" style={{ cursor: "pointer" }}>
+                    <div>
+                      <div className="card-title">{bi("How much of this data is verified?", "这些数据有多少经过核验？")}</div>
+                      <div className="card-note">
+                        {bi(
+                          "Four different questions, four different numbers. Attributed share is not accuracy, and 99% attributed does not mean 99% correct.",
+                          "四个不同的问题、四个不同的数字。已归属比例不是准确率；99% 已归属并不意味着 99% 正确。",
+                        )}
+                      </div>
                     </div>
-                  </Card>
-                  <Card>
-                    <div className="strong">{bi("2. Read the regulatory record", "2. 查看监管记录")}</div>
-                    <p className="small muted mt-8" style={{ lineHeight: 1.55 }}>
-                      {bi(
-                        "Event browser across 510(k), PMA and recalls with date, category and attribution filters. Every row opens its official FDA record.",
-                        "在 510(k)、PMA 与召回记录中按日期、类别与归属状态筛选；每一行都可打开对应的 FDA 官方记录。",
-                      )}
-                    </p>
-                    <div className="mt-12">
-                      <Link className="link" to="/events">
-                        {bi("Open the event browser", "打开事件浏览器")} {"\u2192"}
-                      </Link>
-                    </div>
-                  </Card>
-                  <Card>
-                    <div className="strong">{bi("3. Compare two organizations", "3. 对比两家企业")}</div>
-                    <p className="small muted mt-8" style={{ lineHeight: 1.55 }}>
-                      {bi(
-                        "One window, one counting rule, explicit coverage warnings, and a Markdown report you can attach to an internal note.",
-                        "同一时间窗口、同一统计口径、明确的覆盖差异提示，并可导出可直接引用的 Markdown 报告。",
-                      )}
-                    </p>
-                    <div className="mt-12">
-                      <Link className="link" to="/compare?orgs=medtronic,ge_healthcare">
-                        {bi("Compare Medtronic and GE HealthCare", "对比美敦力与 GE 医疗")} {"\u2192"}
-                      </Link>
-                    </div>
-                  </Card>
-                </Grid>
+                  </summary>
+                  <div className="card-body">
+                    <MetricsStrip />
+                  </div>
+                </details>
               </section>
 
               <div className="grid cols-2">
@@ -222,8 +231,8 @@ export function OverviewPage() {
                 </div>
                 <div className="divider" />
                 <SectionHead title={bi("Records per year across the whole snapshot", "全快照逐年记录数")} note={bi("Attributed records only.", "仅统计已归属记录。")} />
-                {latest.data ? <TypeLegend /> : <LoadingBlock lines={2} />}
-                {latest.data ? <YearSeries data={aggregationsFromEvents(latest.data.items)} /> : null}
+                <TypeLegend />
+                {data.global_aggregations ? <YearSeries data={data.global_aggregations.by_year} /> : <LoadingBlock lines={2} />}
               </Card>
 
               <Callout>
@@ -238,17 +247,4 @@ export function OverviewPage() {
       </div>
     </>
   );
-}
-
-function aggregationsFromEvents(items: EventRecord[]) {
-  const byYear = new Map<string, { year: string; counts: Record<string, number>; total: number }>();
-  for (const item of items) {
-    if (!item.event_date) continue;
-    const year = item.event_date.slice(0, 4);
-    const row = byYear.get(year) ?? { year, counts: { "510k": 0, pma: 0, pma_supplement: 0, recall: 0 }, total: 0 };
-    row.counts[item.event_type] = (row.counts[item.event_type] ?? 0) + 1;
-    row.total += 1;
-    byYear.set(year, row);
-  }
-  return [...byYear.values()].sort((a, b) => a.year.localeCompare(b.year));
 }

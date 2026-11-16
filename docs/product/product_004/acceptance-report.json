@@ -1,0 +1,396 @@
+{
+  "product": "PRODUCT-004",
+  "started_at": "2026-11-16T21:45:58.338Z",
+  "base_url": "http://127.0.0.1:8790",
+  "scenarios": [
+    {
+      "id": "A-company",
+      "title": "Company research: Medtronic, last five complete years",
+      "checks": [
+        {
+          "check": "URL records the full research scope",
+          "ok": true,
+          "detail": "http://127.0.0.1:8790/brief?mode=company&org=medtronic&years=5"
+        },
+        {
+          "check": "Brief states the research question",
+          "ok": true,
+          "detail": "Skip to content\nMedRadar\nMEDICAL TECHNOLOGY INTELLIGENCE\nBrief\nOverview\nOrganizations\nEvents\nCompare\nSources\nData status\nDevices\nReview\n/\nSnapshot: 2026-11-14\n中"
+        },
+        {
+          "check": "Window is 2021-01-01 to 2025-12-31",
+          "ok": true,
+          "detail": null
+        },
+        {
+          "check": "Window record count is 3,426",
+          "ok": true,
+          "detail": null
+        },
+        {
+          "check": "Findings are rendered",
+          "ok": true,
+          "detail": "5 findings"
+        },
+        {
+          "check": "Pathway concentration finding is present",
+          "ok": true,
+          "detail": null
+        },
+        {
+          "check": "Technology table uses official classification names",
+          "ok": true,
+          "detail": null
+        },
+        {
+          "check": "PMA family section is present",
+          "ok": true,
+          "detail": null
+        },
+        {
+          "check": "Attribution caution is present",
+          "ok": true,
+          "detail": null
+        },
+        {
+          "check": "Finding drill-down opens the event browser on the same pathway",
+          "ok": true,
+          "detail": "http://127.0.0.1:8790/events?org=medtronic&types=pma_supplement&from=2021-01-01&to=2025-12-31"
+        },
+        {
+          "check": "Drill-down shows PMA supplement records",
+          "ok": true,
+          "detail": null
+        },
+        {
+          "check": "Evidence drawer shows the official identifier",
+          "ok": true,
+          "detail": null
+        },
+        {
+          "check": "Evidence drawer keeps the four time fields separate",
+          "ok": true,
+          "detail": null
+        },
+        {
+          "check": "Evidence drawer links the official FDA record",
+          "ok": true,
+          "detail": null
+        },
+        {
+          "check": "Company brief Markdown downloads",
+          "ok": true,
+          "detail": "20275 chars"
+        },
+        {
+          "check": "Brief Markdown contains the findings section",
+          "ok": true,
+          "detail": null
+        },
+        {
+          "check": "Brief Markdown contains the counting rule and limitations",
+          "ok": true,
+          "detail": null
+        },
+        {
+          "check": "Brief Markdown numbers match the page",
+          "ok": true,
+          "detail": null
+        },
+        {
+          "check": "Evidence appendix downloads with a header and window rows",
+          "ok": true,
+          "detail": "3447 lines"
+        },
+        {
+          "check": "Evidence appendix carries official URLs",
+          "ok": true,
+          "detail": null
+        },
+        {
+          "check": "Print stylesheet hides the app chrome",
+          "ok": true,
+          "detail": null
+        },
+        {
+          "check": "Print stylesheet hides the question form",
+          "ok": true,
+          "detail": null
+        },
+        {
+          "check": "Change ledger absence is stated, not masked",
+          "ok": true,
+          "detail": null
+        },
+        {
+          "check": "No fabricated change count is shown",
+          "ok": true,
+          "detail": null
+        }
+      ],
+      "operations": 9,
+      "screenshots": [
+        "docs/product/product_004/screenshots/01-company-brief.png",
+        "docs/product/product_004/screenshots/02-company-finding-records.png",
+        "docs/product/product_004/screenshots/03-company-evidence-drawer.png",
+        "docs/product/product_004/screenshots/15-print-layout.png"
+      ],
+      "downloads": [
+        "docs/product/product_004/exports/medtronic-company-brief-en.md",
+        "docs/product/product_004/exports/medtronic-evidence-appendix.csv"
+      ]
+    },
+    {
+      "id": "B-compare",
+      "title": "Competitor comparison: GE HealthCare vs Philips",
+      "checks": [
+        {
+          "check": "Comparison brief states the shared window",
+          "ok": true,
+          "detail": null
+        },
+        {
+          "check": "GE HealthCare records are 493",
+          "ok": true,
+          "detail": null
+        },
+        {
+          "check": "Philips records are 963",
+          "ok": true,
+          "detail": null
+        },
+        {
+          "check": "Source coverage is assessed explicitly",
+          "ok": true,
+          "detail": "coverage is the question of whether both sides have the same FDA sources with comparable"
+        },
+        {
+          "check": "Verification asymmetry is stated",
+          "ok": true,
+          "detail": null
+        },
+        {
+          "check": "Product-code overlap finding is present",
+          "ok": true,
+          "detail": null
+        },
+        {
+          "check": "Explain drawer gives the definition",
+          "ok": true,
+          "detail": null
+        },
+        {
+          "check": "Explain drawer gives the denominator",
+          "ok": true,
+          "detail": null
+        },
+        {
+          "check": "Explain drawer lists records for both sides",
+          "ok": true,
+          "detail": null
+        },
+        {
+          "check": "Explain drawer links the identical event-browser filter",
+          "ok": true,
+          "detail": null
+        },
+        {
+          "check": "Competitor brief Markdown downloads",
+          "ok": true,
+          "detail": "12345 chars"
+        },
+        {
+          "check": "Competitor brief contains comparability and limitations",
+          "ok": true,
+          "detail": null
+        },
+        {
+          "check": "Competitor brief contains the explainable measures",
+          "ok": true,
+          "detail": null
+        },
+        {
+          "check": "Comparison evidence appendix has both sides",
+          "ok": true,
+          "detail": null
+        }
+      ],
+      "operations": 4,
+      "screenshots": [
+        "docs/product/product_004/screenshots/04-compare-brief.png",
+        "docs/product/product_004/screenshots/05-compare-explain-difference.png"
+      ],
+      "downloads": [
+        "docs/product/product_004/exports/ge-healthcare-vs-philips-brief-en.md",
+        "docs/product/product_004/exports/compare-evidence-appendix.csv"
+      ]
+    },
+    {
+      "id": "C-device",
+      "title": "Device investigation: PMA P980016",
+      "checks": [
+        {
+          "check": "Device brief identifies the official PMA number",
+          "ok": true,
+          "detail": null
+        },
+        {
+          "check": "Supplement history is 934",
+          "ok": true,
+          "detail": null
+        },
+        {
+          "check": "Original approval and supplements are separated",
+          "ok": true,
+          "detail": null
+        },
+        {
+          "check": "No confirmed recall link is stated honestly",
+          "ok": true,
+          "detail": null
+        },
+        {
+          "check": "Candidate relations are not presented as established",
+          "ok": true,
+          "detail": null
+        },
+        {
+          "check": "Official FDA application link is present",
+          "ok": true,
+          "detail": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpma/pma.cfm?id=P980016"
+        },
+        {
+          "check": "Device brief Markdown downloads",
+          "ok": true,
+          "detail": "14477 chars"
+        },
+        {
+          "check": "Device brief states what it cannot conclude",
+          "ok": true,
+          "detail": null
+        },
+        {
+          "check": "Device evidence appendix lists the application and supplements",
+          "ok": true,
+          "detail": "937 lines"
+        }
+      ],
+      "operations": 4,
+      "screenshots": [
+        "docs/product/product_004/screenshots/06-device-brief.png"
+      ],
+      "downloads": [
+        "docs/product/product_004/exports/device-p980016-brief-en.md",
+        "docs/product/product_004/exports/device-evidence-appendix.csv"
+      ]
+    },
+    {
+      "id": "D-no-changes",
+      "title": "No new changes: the brief must not invent an update",
+      "checks": [
+        {
+          "check": "Changes section states that no ledger is configured",
+          "ok": true,
+          "detail": null
+        },
+        {
+          "check": "No event is described as happening today",
+          "ok": true,
+          "detail": null
+        },
+        {
+          "check": "Change feed has no fabricated items",
+          "ok": true,
+          "detail": "0"
+        },
+        {
+          "check": "Data status reports the pipeline as not configured",
+          "ok": true,
+          "detail": "not_configured"
+        }
+      ],
+      "operations": 1,
+      "screenshots": [
+        "docs/product/product_004/screenshots/07-no-new-changes.png"
+      ]
+    }
+  ],
+  "regression": [
+    {
+      "id": "R-regression",
+      "title": "Existing pages, mobile, Chinese and new product-code filter",
+      "checks": [
+        {
+          "check": "Home starts from a research task, not the QA strip",
+          "ok": true,
+          "detail": null
+        },
+        {
+          "check": "Home no longer claims Product 001",
+          "ok": true,
+          "detail": null
+        },
+        {
+          "check": "Whole-snapshot year chart is fed by the snapshot aggregation",
+          "ok": true,
+          "detail": "234 bars"
+        },
+        {
+          "check": "Organization page links to the intelligence brief",
+          "ok": true,
+          "detail": null
+        },
+        {
+          "check": "Organization page shows official product-code families",
+          "ok": true,
+          "detail": null
+        },
+        {
+          "check": "Compare page links to the comparison brief",
+          "ok": true,
+          "detail": null
+        },
+        {
+          "check": "Product-code filter is applied and reproducible",
+          "ok": true,
+          "detail": "257 records"
+        },
+        {
+          "check": "Chinese brief renders the analysis in Chinese",
+          "ok": true,
+          "detail": null
+        },
+        {
+          "check": "Mobile navigation exposes the language control",
+          "ok": true,
+          "detail": null
+        },
+        {
+          "check": "Mobile page has no horizontal overflow",
+          "ok": true,
+          "detail": null
+        },
+        {
+          "check": "Mobile brief has no horizontal overflow",
+          "ok": true,
+          "detail": null
+        }
+      ],
+      "operations": 7,
+      "screenshots": [
+        "docs/product/product_004/screenshots/10-home.png",
+        "docs/product/product_004/screenshots/11-organization-product-families.png",
+        "docs/product/product_004/screenshots/12-compare-page.png",
+        "docs/product/product_004/screenshots/13-events-product-code.png",
+        "docs/product/product_004/screenshots/08-company-brief-zh.png",
+        "docs/product/product_004/screenshots/09-mobile-nav-zh.png",
+        "docs/product/product_004/screenshots/14-mobile-company-brief-zh.png"
+      ]
+    }
+  ],
+  "failures": [],
+  "console_errors": [],
+  "request_failures": [],
+  "finished_at": "2026-11-16T21:46:14.523Z",
+  "ok": true
+}

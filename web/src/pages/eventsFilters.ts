@@ -8,6 +8,7 @@ export interface EventsFilterState {
   from: string;
   to: string;
   category: string;
+  productCode: string;
   q: string;
   review: string;
   sort: EventSort;
@@ -19,7 +20,7 @@ export const EVENT_TYPES: EventType[] = ["510k", "pma", "pma_supplement", "recal
 export const PAGE_SIZE = 25;
 
 export function defaultFilters(): EventsFilterState {
-  return { org: "", types: [], from: "", to: "", category: "", q: "", review: "", sort: "event_date_desc", page: 1, pageSize: PAGE_SIZE };
+  return { org: "", types: [], from: "", to: "", category: "", productCode: "", q: "", review: "", sort: "event_date_desc", page: 1, pageSize: PAGE_SIZE };
 }
 
 function isEventType(value: string): value is EventType {
@@ -39,6 +40,8 @@ export function parseFilters(search: string): EventsFilterState {
   if (to) state.to = to;
   const category = params.get("category");
   if (category) state.category = category;
+  const productCode = params.get("product_code");
+  if (productCode) state.productCode = productCode.toUpperCase();
   const q = params.get("q");
   if (q) state.q = q;
   const review = params.get("review");
@@ -57,6 +60,7 @@ export function toQueryString(state: EventsFilterState): string {
   if (state.from) params.set("from", state.from);
   if (state.to) params.set("to", state.to);
   if (state.category) params.set("category", state.category);
+  if (state.productCode) params.set("product_code", state.productCode.toUpperCase());
   if (state.q) params.set("q", state.q);
   if (state.review) params.set("review", state.review);
   if (state.sort !== "event_date_desc") params.set("sort", state.sort);
@@ -72,6 +76,7 @@ export function activeFilterCount(state: EventsFilterState): number {
   if (state.from) count += 1;
   if (state.to) count += 1;
   if (state.category) count += 1;
+  if (state.productCode) count += 1;
   if (state.q) count += 1;
   if (state.review) count += 1;
   return count;

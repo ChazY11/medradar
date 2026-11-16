@@ -54,6 +54,16 @@ export function ComparePage() {
 
   const bounds = useMemo(() => windowBounds(meta.data?.coverage.latest_event_date ?? null, windowYears), [meta.data, windowYears]);
 
+  // PRODUCT-004: the comparison continues in the Intelligence Brief, where every measure can be
+  // explained down to the records and exported as a competitor brief.
+  const briefHref = useMemo(() => {
+    const params = new URLSearchParams({ mode: "compare", orgs: orgs.join(","), years: String(windowYears) });
+    if (types.length) params.set("types", types.join(","));
+    if (basis && basis !== "current_group") params.set("basis", basis);
+    if (reviewFilter) params.set("review", reviewFilter);
+    return "/brief?" + params.toString();
+  }, [orgs.join(","), windowYears, types.join(","), basis, reviewFilter]);
+
   const compare = useAsync(
     () =>
       getCompare(orgs, {
@@ -93,18 +103,23 @@ export function ComparePage() {
         description={t("compare.desc")}
         actions={
           orgs.length >= 2 ? (
-            <ExportLink
-              href={exportCompareMdUrl(orgs, {
-                from: bounds?.from,
-                to: bounds?.to,
-                types: types.length ? (types as EventType[]) : undefined,
-                basis: basis === "current_group" ? undefined : basis,
-                review: reviewFilter || undefined,
-              })}
-              title="Markdown report with the same window, basis, warnings and counting rule as this screen."
-            >
-              {bi("Export report", "导出报告")} (MD)
-            </ExportLink>
+            <>
+              <Link className="btn primary" to={briefHref}>
+                {bi("Open comparison brief", "打开对比简报")}
+              </Link>
+              <ExportLink
+                href={exportCompareMdUrl(orgs, {
+                  from: bounds?.from,
+                  to: bounds?.to,
+                  types: types.length ? (types as EventType[]) : undefined,
+                  basis: basis === "current_group" ? undefined : basis,
+                  review: reviewFilter || undefined,
+                })}
+                title="Markdown report with the same window, basis, warnings and counting rule as this screen."
+              >
+                {bi("Export table report", "导出表格报告")} (MD)
+              </ExportLink>
+            </>
           ) : null
         }
       />
@@ -224,7 +239,7 @@ export function ComparePage() {
             <LoadingBlock lines={10} />
           </Card>
         ) : (
-          <CompareBody data={compare.data} />
+          <CompareBody data={compare.data} briefHref={briefHref} />
         )}
 
         <Callout>
@@ -256,7 +271,7 @@ function valueOf(values: OrgValue[], key: string): number {
   return values.find((item) => item.org_key === key)?.count ?? 0;
 }
 
-function CompareBody({ data }: { data: CompareResponse }) {
+function CompareBody({ data, briefHref }: { data: CompareResponse; briefHref: string }) {
   const { t, bi } = useI18n();
   const sides = data.organizations;
   const names = sides.map((side) => side.display_name);
@@ -343,7 +358,16 @@ function CompareBody({ data }: { data: CompareResponse }) {
 
       <Card
         title={bi("Records by event type", "按事件类型的记录数")}
-        note={bi("Same window, same filters. Each count is a count of records, not products.", "同一窗口、同一筛选条件。计数单位为记录，而非产品。")}
+        note={
+          <>
+            {bi("Same window, same filters. Each count is a count of records, not products.", "同一窗口、同一筛选条件。计数单位为记录，而非产品。")}{" "}
+            {briefHref ? (
+              <Link className="link" to={briefHref}>
+                {bi("Explain any difference", "解释任意差异")} {"\u2192"}
+              </Link>
+            ) : null}
+          </>
+        }
       >
         <div className="table-wrap">
           <table className="data">

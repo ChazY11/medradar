@@ -129,9 +129,15 @@ async function main() {
     const orgUrl = page.url();
     const orgHeading = (await page.locator("h1").first().innerText().catch(() => "")).trim();
     record("E2E-01", "search for Medtronic reaches the organization page", /\/organizations\/medtronic/.test(orgUrl) && /Medtronic/i.test(orgHeading), orgHeading);
-    await shot("01-organization");
 
     /* ---------------------------------------------------------------- E2E-02 transparency block */
+    // PRODUCT-004 collapses the provenance block to a summary line; expand it to read the basis,
+    // then collapse it again for the screenshot of the new information hierarchy.
+    const basis = page.locator("details.org-basis").first();
+    if (await basis.count()) {
+      await basis.locator("summary").click();
+      await page.waitForTimeout(250);
+    }
     const bodyText = await page.locator("body").innerText();
     const hasConfidence = /Attribution confidence for these counts/i.test(bodyText);
     const hasCurated = /Curated share/i.test(bodyText);
@@ -143,6 +149,11 @@ async function main() {
       hasConfidence && hasCurated && bodyText.includes(apiRecords.toLocaleString("en-US")),
       "records=" + apiRecords + " confidenceBlock=" + hasConfidence,
     );
+    if (await basis.count()) {
+      await basis.locator("summary").click();
+      await page.waitForTimeout(250);
+    }
+    await shot("01-organization");
 
     /* ---------------------------------------------------------------- E2E-03 event filters */
     try {
@@ -226,6 +237,11 @@ async function main() {
     await page.evaluate(() => window.localStorage.setItem("medradar.lang", "zh"));
     await page.reload({ waitUntil: "networkidle" });
     await page.waitForTimeout(1400);
+    const zhBasis = page.locator("details.org-basis").first();
+    if (await zhBasis.count()) {
+      await zhBasis.locator("summary").click();
+      await page.waitForTimeout(250);
+    }
     const zhText = await page.locator("body").innerText();
     record(
       "E2E-08",
@@ -233,6 +249,10 @@ async function main() {
       /企业对比/.test(zhText) && /这些计数的归属可信程度/.test(zhText) && /已核验比例/.test(zhText),
       zhText.slice(0, 60).replace(/\n/g, " "),
     );
+    if (await zhBasis.count()) {
+      await zhBasis.locator("summary").click();
+      await page.waitForTimeout(250);
+    }
     await shot("05-organization-zh");
     await page.evaluate(() => window.localStorage.setItem("medradar.lang", "en"));
 
