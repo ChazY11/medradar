@@ -51,10 +51,18 @@ free -m; cat /proc/pressure/memory; df -h /
 
 # 1. a fresh backup and an isolated restore verification (never into production)
 sudo systemctl start medradar-data-backup.service
-NEWEST=$(sudo ls -1dt /srv/medradar/var/backup/data/data-backup-* | head -1)
+# The glob must be expanded by a root shell: the ubuntu user cannot list the backup directory.
+NEWEST=$(sudo sh -c 'ls -1dt /srv/medradar/var/backup/data/data-backup-* | head -1')
 echo "newest backup: $NEWEST"
-$PIPELINE restore --archive "$NEWEST" --destination /tmp/d3-restore-check --json
-# require validation=true / integrity ok, then remove the scratch restore:
+sudo rm -rf /tmp/d3-restore-check
+# Run from the service working directory with the service's review-DB path: a foreign cwd makes
+# the relative default resolve to an unreadable location and the post-restore validation fails.
+sudo -u medradar env HOME=/srv/medradar MEDRADAR_PIPELINE_ROOT=/srv/medradar/data/fda \
+  MEDRADAR_REVIEW_DB=/srv/medradar/data/identity/review.db \
+  sh -c "cd /srv/medradar && /srv/medradar/.venv/bin/python -m medradar.data_pipeline \
+    --root /srv/medradar/data/fda restore --archive '$NEWEST' \
+    --destination /tmp/d3-restore-check --json"
+# require validation.ok=true, then remove the scratch restore:
 sudo rm -rf /tmp/d3-restore-check
 ```
 
