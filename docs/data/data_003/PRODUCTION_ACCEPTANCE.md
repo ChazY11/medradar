@@ -27,6 +27,8 @@ changing data, the snapshot pointer or the API contract:
 | cold start | not measured under DATA-002 | **15.0 s** (load 9 s + index 5.05 s) | measured |
 
 Service: `active`, `NRestarts=0`, `memory.events oom=0`, no journal errors since the restart.
+A second sample at 10.5 min uptime was byte-identical (`memory.current` 390,156,288 B, peak
+398,688,256 B, swap 0), i.e. the post-restart figure is a stable steady state, not a transient.
 Data unchanged: 91,457 events, 61,632 applications, 23,974 devices, 630 families, 77,823
 relations — all identical to the pre-deployment counts.
 
