@@ -43,7 +43,7 @@ verified as NOT VERIFIED instead of implying success.
   schema (triggers), not just discouraged in code.
 - Work identity has one definition (work_key) instead of an inline title expression inside one query.
 - The quality report cannot drift from the metrics: the prose is generated and a --check mode fails.
-- Sixteen named regression tests encode the QA-002 defect classes; they fail by name if a later
+- Fourteen named regression tests encode the QA-002 defect classes; they fail by name if a later
   change reintroduces one.
 
 ## 4. Which capabilities were completed?
@@ -71,7 +71,7 @@ No, not by raw measures: +2 modules, +1% lines, +5 functions with CC > 10, CC > 
 (80). That is reported in COMPLEXITY_REPORT.md without spin. What fell is the complexity that made
 this area risky: one relevance implementation instead of three places that decided scope; a
 provable admission history instead of an overwritten row; one definition of a work; a generated
-quality report instead of hand-written numbers; and 16 tests that make the old failure modes
+quality report instead of hand-written numbers; and 14 tests that make the old failure modes
 visible. The remaining hotspots (product/api.py 949 lines / CC 240, `_sync_locked`,
 `load_dataset`, `technology_map`) were intentionally not split without browser-level coverage.
 
@@ -133,17 +133,16 @@ Partially, and the honest answer depends on the use.
 
 ## 11. Do the tests pass?
 
-Baseline before the round: full pytest suite green (the only failing job encountered was a
-Windows-specific cleanup race in the harness, not a test). After the changes: the radar,
-product, data-pipeline, governance and integrity suites were run green; the fresh full-suite run
-that covers the legacy lane was still executing when this report was written, so the final
-statement is: all suites touched by this round pass; the complete historical suite is expected to
-pass and its result is recorded separately in the branch's CI run. Detailed per-file baseline
-timings are in D:/DEPPSKK/data004-baseline/tests-per-file.txt.
+Baseline before the round: full pytest suite **green**. After the changes: full suite **green**
+(1,632 tests collected across 86 files, 5 skipped, 0 failed). The radar suites were run repeatedly
+during the work (all green), the new integrity suite is 14 tests green, the governance suite is 73
+tests green, and the FastAPI app answers the product and radar endpoints end-to-end against the
+real ledger copy (12/12 checks). Details in TEST_RESULTS.md; per-file baseline timings are in
+D:/DEPPSKK/data004-baseline/tests-per-file.txt.
 
 Counts observed in this round: 162 modules; radar suite (relevance, integrity, core, ledger, api,
 pipeline, graph, scheduler, ai, backup, parsers, alpha gate) 143+ tests green; governance 73 tests
-green; new integrity tests 16.
+green; new integrity tests 14.
 
 ## 12. Should this be merged and deployed?
 
@@ -166,7 +165,7 @@ bundle rebuild. None of this was done here, and none of it should be skipped.
 | medradar/radar/adapters/{pubmed,crossref}.py | removed the pre-storage relevance gate |
 | scripts/evaluate_relevance.py | rewritten evaluator + generated report + --check |
 | web/src (ui, feed page, api types) | precision-aware dates, precision label, dimension chips; bundle rebuilt |
-| tests/test_radar_integrity.py (new) | 16 named regression tests for every defect class |
+| tests/test_radar_integrity.py (new) | 14 named regression tests for every defect class |
 | docs/refoundation/004/* | audit, decisions, traceability, repair plan, complexity, performance, quality artefacts, this report |
 | docs/engineering/ENGINEERING_START_HERE.md | the single entry point for a new engineer or agent |
 

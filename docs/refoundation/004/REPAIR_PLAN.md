@@ -7,7 +7,7 @@ Every "done" item has a test or a measured artefact; every "open" item states wh
 
 | ID | Task | Depends on | Risk | Validation | Complexity impact | Status |
 | --- | --- | --- | --- | --- | --- | --- |
-| R1 | Replace the single relevance tier with dimension-separated assessment + decision policy | taxonomy families (exists) | medium: every admission changes | 16 integrity tests; 120-item development sample; 80-item held-out sample | +~890 lines in one module; -321 lines of old scoring; removes a second rule path in adapters | DONE |
+| R1 | Replace the single relevance tier with dimension-separated assessment + decision policy | taxonomy families (exists) | medium: every admission changes | 14 integrity tests; 120-item development sample; 80-item held-out sample | +~890 lines in one module; -321 lines of old scoring; removes a second rule path in adapters | DONE |
 | R2 | Make admission decisions append-only (v3) with evidence_key, rules_digest, judged_version_id, triggers | R1 (new columns) | medium: schema migration | immutability test, history test, idempotency test, v2-migration test, real 8,593-row migration | +1 table, +1 view; one derived projection keeps reads fast | DONE |
 | R3 | Re-judge on content change and on rule change; queue work instead of overwriting | R2 | low | unit test + real ledger re-judgement (8,593 rows appended, history preserved) | +1 work-queue table | DONE |
 | R4 | Remove the pre-storage relevance gate from PubMed/Crossref adapters | R1 (assessment must be good enough) | medium: ingestion volume grows | radar pipeline tests; documented in ADR-004 | -2 overrides, -1 rule path | DONE (code) / re-collection NOT DONE |

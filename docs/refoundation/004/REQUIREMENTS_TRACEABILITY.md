@@ -116,7 +116,7 @@ needs access this environment does not have.
 | --- | --- | --- |
 | Complexity baseline measured | IMPLEMENTED+VERIFIED | complexity-before.json / complexity-after.json |
 | Module responsibility documented | IMPLEMENTED | docs/engineering/ENGINEERING_START_HERE.md |
-| Anti-regression tests for this round's defects | IMPLEMENTED+VERIFIED | tests/test_radar_integrity.py (16 tests) |
+| Anti-regression tests for this round's defects | IMPLEMENTED+VERIFIED | tests/test_radar_integrity.py (14 tests) |
 | Reviewable, separable commits | IMPLEMENTED | commit series described in FINAL_ENGINEERING_REPORT.md |
 | Performance measured, not asserted | IMPLEMENTED+PARTIAL | feed/summary benchmark before/after; the browser-level cold-start measurement was not repeated |
 | Deployment / rollback path | NOT VERIFIED | runbook exists (docs/radar/LAUNCH_001_RUNBOOK.md); this round did not deploy |

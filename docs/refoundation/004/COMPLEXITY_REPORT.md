@@ -29,7 +29,7 @@ entirely.
 | Work identity | ad-hoc title string inside a window function | one materialised work_key (DOI -> PMID -> title) used by every query |
 | Time display | one formatter that widened month precision to a midnight instant | one precision-aware formatter + precision label |
 | Quality reporting | hand-written numbers beside a JSON | Markdown generated from the JSON; --check fails on drift |
-| Regression protection | 1 relevance test file (189 lines, 9 tests) | +16 named integrity tests including all QA-002 classes |
+| Regression protection | 1 relevance test file (189 lines, 9 tests) | +14 named integrity tests including all QA-002 classes |
 
 ## What got more complex, and why it is justified
 

@@ -136,7 +136,7 @@ went up by 1.5%. What did fall is *conceptual* duplication and state ambiguity:
   one explicit derived projection", so there is now exactly one reader path for the current
   decision;
 - an evaluation harness whose report is generated from its own JSON replaces hand-written numbers;
-- 16 named regression tests encode the defects, so the cheap way to reintroduce one is blocked.
+- 14 named regression tests encode the defects, so the cheap way to reintroduce one is blocked.
 
 The remaining hotspots are unchanged and are the honest next targets: `product/api.py create_app`
 (949 lines, 48 routes), `product/dataset.py load_dataset`, `data_pipeline/pipeline._sync_locked`,
