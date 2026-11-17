@@ -105,7 +105,8 @@ def cmd_run(args) -> int:
         if args.dry_run:
             print("(dry run: nothing was written)")
             return 0
-        advanced = advance(ledger, graph, taxonomy, log=print)
+        advanced = advance(ledger, graph, taxonomy, log=print,
+                           enqueue_ai=not getattr(args, "no_ai", False))
         print()
         print("pipeline: " + json.dumps(advanced, ensure_ascii=False))
         if args.json:
@@ -613,6 +614,8 @@ def build_parser() -> argparse.ArgumentParser:
     run.add_argument("--limit", type=int, default=0)
     run.add_argument("--max-requests", type=int, default=400)
     run.add_argument("--dry-run", action="store_true")
+    run.add_argument("--no-ai", action="store_true",
+                     help="do not queue enrichment work (AI is disabled on this host)")
     run.add_argument("--json", action="store_true")
     run.set_defaults(func=cmd_run)
 
