@@ -269,7 +269,7 @@ def build_router(service: RadarService | None = None) -> APIRouter:
         order: str | None = Query(None, pattern="^(observed|published|event)$"),
         since: str | None = None,
         scope: str = Query("latest", pattern="^(latest|observed|archive|review)$"),
-        admission_days: int = Query(14, ge=1, le=3650),
+        admission_days: int = Query(30, ge=1, le=3650),
         tier: str | None = None,
     ) -> dict[str, Any]:
         states = _csv(change_state)
@@ -351,7 +351,7 @@ def build_router(service: RadarService | None = None) -> APIRouter:
         }
 
     @router.get("/feed/admission-summary")
-    def admission_summary(days: int = Query(14, ge=1, le=3650)) -> dict[str, Any]:
+    def admission_summary(days: int = Query(30, ge=1, le=3650)) -> dict[str, Any]:
         with svc.ledger() as ledger:
             return {
                 "schema": SCHEMA,

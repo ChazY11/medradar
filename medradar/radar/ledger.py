@@ -1420,24 +1420,25 @@ class ObservationLedger:
             return int(row[0]) if row else 0
 
         version = str(admission_version)
-        latest = scalar(
-            "SELECT COUNT(*) FROM observation o JOIN observation_admission a"
-            " ON a.observation_id=o.observation_id AND a.admission_version=?"
-            " WHERE a.tier='HIGH_RELEVANCE'"
-            " AND COALESCE(o.published_at, o.event_at, '') >= ?", version, cutoff)
-        observed = scalar(
-            "SELECT COUNT(*) FROM observation o JOIN observation_admission a"
-            " ON a.observation_id=o.observation_id AND a.admission_version=?"
-            " WHERE a.tier IN ('HIGH_RELEVANCE','NEEDS_REVIEW') AND o.first_observed_at >= ?",
-            version, cutoff)
-        archive = scalar(
-            "SELECT COUNT(*) FROM observation o JOIN observation_admission a"
-            " ON a.observation_id=o.observation_id AND a.admission_version=?"
-            " WHERE a.tier='HIGH_RELEVANCE'", version)
-        review = scalar(
-            "SELECT COUNT(*) FROM observation o JOIN observation_admission a"
-            " ON a.observation_id=o.observation_id AND a.admission_version=?"
-            " WHERE a.tier='NEEDS_REVIEW'", version)
+        # Count distinct works (the feed shows one row per work), so a tab count matches the list.
+        title_key = "lower(trim(o.title, ' .;'))"
+
+        def distinct_count(where: str, *extra: Any) -> int:
+            row = self.con.execute(
+                "SELECT COUNT(*) FROM (SELECT 1 FROM observation o"
+                " JOIN observation_admission a ON a.observation_id=o.observation_id"
+                " AND a.admission_version=?"
+                f" WHERE {where} GROUP BY {title_key})",
+                (version, *extra),
+            ).fetchone()
+            return int(row[0]) if row else 0
+
+        latest = distinct_count(
+            "a.tier='HIGH_RELEVANCE' AND COALESCE(o.published_at, o.event_at, '') >= ?", cutoff)
+        observed = distinct_count(
+            "a.tier IN ('HIGH_RELEVANCE','NEEDS_REVIEW') AND o.first_observed_at >= ?", cutoff)
+        archive = distinct_count("a.tier='HIGH_RELEVANCE'")
+        review = distinct_count("a.tier='NEEDS_REVIEW'")
         tiers = {
             row["tier"]: int(row["n"]) for row in self.raw(
                 "SELECT tier, COUNT(*) AS n FROM observation_admission"

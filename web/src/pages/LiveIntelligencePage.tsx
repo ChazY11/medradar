@@ -431,9 +431,9 @@ export function LiveIntelligencePage() {
         />
         <div className="small muted" style={{ marginTop: 8 }}>
           {scope === "latest"
-            ? bi("Published by the source in the last two weeks.", "来源在最近两周内公开的记录。")
+            ? bi("Published by the source in the last 30 days.", "来源在最近 30 天内公开的记录。")
             : scope === "observed"
-              ? bi("First seen by MedRadar in the last two weeks; the document itself may be older.", "MedRadar 最近两周首次看到；文档本身可能较早。")
+              ? bi("First seen by MedRadar in the last 30 days; the document itself may be older.", "MedRadar 最近 30 天首次看到；文档本身可能较早。")
               : scope === "archive"
                 ? bi("Every qualified record, including history imported at first load.", "所有通过准入的记录，包括首次导入的历史资料。")
                 : bi("Records the rules are unsure about. They are not in the default feed.", "规则无法确定、暂不进入默认情报流的记录。")}
@@ -461,8 +461,8 @@ export function LiveIntelligencePage() {
                 description={
                   scope === "latest"
                     ? bi(
-                        "No qualified monitoring-technology record was published by a monitored source in the last two weeks. This is a real result about the sources, not a broken page. Older qualified evidence is still in the archive.",
-                        "最近两周内，受监测来源没有公开新的合格监护技术记录。这是关于来源的真实结果，不是页面故障。更早的合格证据仍在历史资料库中。",
+                        "No qualified monitoring-technology record was published by a monitored source in the last 30 days. This is a real result about the sources, not a broken page. Older qualified evidence is still in the archive.",
+                        "最近 30 天内，受监测来源没有公开新的合格监护技术记录。这是关于来源的真实结果，不是页面故障。更早的合格证据仍在历史资料库中。",
                       )
                     : bi(
                         "This is an evidence statement about the filters and the monitored sources, not a claim that nothing exists. Clear the filters or wait for a scheduled check.",
