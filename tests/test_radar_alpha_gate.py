@@ -4,9 +4,14 @@ from __future__ import annotations
 
 import base64
 
-import pytest
-from fastapi import FastAPI
-from fastapi.testclient import TestClient
+import unittest
+
+try:  # the repository's offline `unittest` suite has no pytest and no httpx
+    import pytest  # noqa: F401
+    from fastapi import FastAPI
+    from fastapi.testclient import TestClient
+except ModuleNotFoundError:  # pragma: no cover
+    raise unittest.SkipTest("the gate tests need pytest and httpx (TestClient)")
 
 from medradar.radar.alpha_gate import (
     AlphaGate,
@@ -116,6 +121,10 @@ def test_password_hashing_round_trips_and_rejects_malformed_hashes():
     assert verify_password(PASSWORD, HASH)
     assert not verify_password("nope", HASH)
     assert not verify_password(PASSWORD, "not-a-hash")
-    assert "$" not in HASH.split("$", 1)[0] == "pbkdf2_sha256" or HASH.startswith("pbkdf2_sha256$")
-    with pytest.raises(ValueError):
+    assert HASH.startswith("pbkdf2_sha256$")
+    try:
         hash_password("short")
+    except ValueError:
+        pass
+    else:  # pragma: no cover
+        raise AssertionError("a short password must be rejected")
