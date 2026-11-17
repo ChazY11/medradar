@@ -78,7 +78,13 @@ export function TechnologyMapPage() {
     [mode, at, companyQuery],
   );
   const [earlier, setEarlier] = useState(defaultEarlier);
-  const changes = useAsync(() => getGraphChanges(`${earlier}T00:00:00Z`), [earlier]);
+  // The diff view can answer with every assertion in the graph (megabytes on a busy ledger).
+  // It is fetched only when its tab is opened, so a phone does not download it to look at the
+  // technology tree.
+  const changes = useAsync<GraphChanges | null>(
+    () => (tab === "changes" ? getGraphChanges(`${earlier}T00:00:00Z`) : Promise.resolve(null)),
+    [tab, earlier],
+  );
 
   const branches: TechnologyBranch[] = map.data?.topics ?? [];
 
