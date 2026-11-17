@@ -20,7 +20,7 @@ Environment=MEDRADAR_DATA_DIR=/srv/medradar/data/fda
 Environment=MEDRADAR_PUBLIC_ALPHA=1
 EnvironmentFile=-/etc/medradar/radar-alpha.env
 ExecStart=/srv/medradar/radar-venv/bin/python -m medradar.product.web --host 127.0.0.1 --port 8791 --no-reload --data-dir /srv/medradar/data/fda --radar-dir /srv/medradar/data/radar --web-dir /srv/medradar/radar/app/web/dist
-ExecStartPost=-/bin/sh -c 'for i in $(seq 1 30); do curl -sf -o /dev/null http://127.0.0.1:8791/api/radar/health && exit 0; sleep 1; done'
+ExecStartPost=-/bin/sh -c 'for i in $(seq 1 30); do curl -sf -o /dev/null http://127.0.0.1:8791/healthz && exit 0; sleep 1; done'
 Restart=always
 RestartSec=5
 

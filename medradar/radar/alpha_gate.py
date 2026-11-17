@@ -43,6 +43,9 @@ DEFAULT_ITERATIONS = 240_000
 PUBLIC_PAGES = frozenset({"/", "/radar", "/radar/", "/radar/technology-map", "/radar/technology-map/"})
 #: Exact non-page paths that the app itself needs.
 PUBLIC_EXACT = frozenset({"/favicon.svg", "/api/meta"})
+#: Liveness probe: no data, no database access. Unauthenticated so a proxy or an operator's
+#: monitoring check does not have to hold the alpha credentials.
+OPEN_PATHS = frozenset({"/healthz"})
 #: Read-only API namespaces. Everything not listed here is invisible.
 PUBLIC_PREFIXES = ("/api/radar/",)
 #: Vite emits a flat build: index-<hash>.js / index-<hash>.css next to index.html.
@@ -83,7 +86,7 @@ def verify_password(password: str, encoded: str) -> bool:
 
 def path_allowed(path: str) -> bool:
     """The allowlist, as one pure function so it can be tested directly."""
-    if path in PUBLIC_PAGES or path in PUBLIC_EXACT:
+    if path in PUBLIC_PAGES or path in PUBLIC_EXACT or path in OPEN_PATHS:
         return True
     if path.startswith(PUBLIC_PREFIXES):
         # The API namespace itself, not a path-traversal trick through it.
@@ -193,6 +196,14 @@ class AlphaGate:
         path = str(scope.get("path") or "/")
         method = str(scope.get("method") or "GET").upper()
         address = _client_address(scope, trust_proxy=self.trust_proxy)
+
+        if path in OPEN_PATHS:
+            if method not in SAFE_METHODS:
+                await self._plain(send, 405, b"Method Not Allowed\n", scope,
+                                  extra_headers=((b"allow", b"GET, HEAD"),))
+                return
+            await self.app(scope, receive, self._secured(send, scope))
+            return
 
         if not path_allowed(path):
             await self._plain(send, 404, b"Not Found\n", scope)

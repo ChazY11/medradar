@@ -45,7 +45,7 @@ fi
 "$VENV/bin/python" -m pip install --quiet --upgrade pip wheel >/dev/null
 # Editable install: the release directory is the code, so a directory swap is a deploy and a
 # rollback is the same operation in reverse. The module path is verified below.
-"$VENV/bin/python" -m pip install --quiet -e "$RELEASE" >/dev/null
+"$VENV/bin/python" -m pip install --quiet -e "$RELEASE[product]" >/dev/null
 INSTALLED=$("$VENV/bin/python" -c 'import medradar, pathlib; print(pathlib.Path(medradar.__file__).resolve().parent)')
 log "installed medradar from $INSTALLED"
 case "$INSTALLED" in
@@ -78,7 +78,7 @@ systemctl enable --now medradar-radar-backup.timer
 
 log "waiting for the web service"
 for _ in $(seq 1 60); do
-  if curl -sf -o /dev/null http://127.0.0.1:8791/api/radar/health; then
+  if curl -sf -o /dev/null http://127.0.0.1:8791/healthz; then
     log "web is up on 127.0.0.1:8791"
     break
   fi

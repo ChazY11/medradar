@@ -1444,6 +1444,15 @@ def create_app(
         setup(app)
 
     # ---------------------------------------------------------------- static UI
+    @app.get("/healthz")
+    def healthz() -> Any:
+        """Liveness only: no data, no database access, no filesystem path.
+
+        The public alpha gate leaves this path unauthenticated on purpose, so a proxy or a
+        systemd check can ask "is the process serving?" without being able to read anything.
+        """
+        return {"status": "ok", "service": "medradar-radar-alpha"}
+
     @app.get("/")
     def index() -> Any:
         return _serve_index(resolved_web)

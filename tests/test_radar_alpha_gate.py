@@ -35,6 +35,10 @@ def _client(**kwargs) -> TestClient:
     def meta():
         return {"ok": True}
 
+    @app.get("/healthz")
+    def healthz():
+        return {"status": "ok"}
+
     @app.get("/api/review/ledger")
     def review():
         return {"secret": True}
@@ -97,6 +101,15 @@ def test_asset_allowlist_covers_the_vite_build_and_nothing_else():
     assert not path_allowed("/api/radar/../../api/review")
     assert not path_allowed("/api/identity/rows")
     assert not path_allowed("/api/brief")
+
+
+def test_liveness_probe_is_open_but_carries_no_data():
+    client = _client()
+    response = client.get("/healthz")
+    assert response.status_code == 200
+    assert response.json() == {"status": "ok"}
+    # Open does not mean writable.
+    assert client.post("/healthz").status_code == 405
 
 
 def test_password_hashing_round_trips_and_rejects_malformed_hashes():
