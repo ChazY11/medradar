@@ -396,17 +396,33 @@ export function KeyValue({ rows }: { rows: { label: ReactNode; value: ReactNode 
   );
 }
 
-/** Formats an ISO date/datetime for display; returns a dash for missing values. */
-export function formatDate(value: string | null | undefined): string {
+/**
+ * Formats a source-stated date at the precision the source actually published.
+ *
+ * A month-precision value ("2026-11") is rendered as "2026-11", never as a midnight instant:
+ * QA-002 found the UI showing "2026-11-01 00:00 UTC" for a record whose source only said
+ * "November 2026". Fabricating a time is a truth claim the data does not support.
+ * A missing value is a dash, never a guess.
+ */
+export function formatDate(value: string | null | undefined, precision?: string | null): string {
   if (!value) return "-";
-  const short = value.slice(0, 10);
-  return short;
+  const text = String(value);
+  if (precision === "year") return text.slice(0, 4);
+  if (precision === "month") return text.slice(0, 7);
+  return text.slice(0, 10);
 }
 
-export function formatDateTime(value: string | null | undefined): string {
+export function formatDateTime(
+  value: string | null | undefined,
+  precision?: string | null,
+): string {
   if (!value) return "-";
-  const date = new Date(value);
-  if (Number.isNaN(date.getTime())) return value;
+  const text = String(value);
+  if (precision === "year") return text.slice(0, 4);
+  if (precision === "month") return text.slice(0, 7);
+  if (precision === "date" || /^\d{4}-\d{2}-\d{2}$/.test(text)) return text.slice(0, 10);
+  const date = new Date(text);
+  if (Number.isNaN(date.getTime())) return text;
   const pad = (n: number) => String(n).padStart(2, "0");
   return (
     date.getUTCFullYear() +
@@ -420,6 +436,19 @@ export function formatDateTime(value: string | null | undefined): string {
     pad(date.getUTCMinutes()) +
     " UTC"
   );
+}
+
+/** Human label for a date precision, used next to a date so the reader knows what it means. */
+export function precisionLabel(precision: string | null | undefined, lang: "en" | "zh"): string {
+  const map: Record<string, { en: string; zh: string }> = {
+    datetime: { en: "exact time", zh: "精确时间" },
+    date: { en: "day precision", zh: "日精度" },
+    month: { en: "month precision", zh: "月精度" },
+    year: { en: "year precision", zh: "年精度" },
+    unknown: { en: "no date from source", zh: "来源未提供时间" },
+  };
+  const row = map[String(precision || "unknown")] || map.unknown;
+  return lang === "zh" ? row.zh : row.en;
 }
 
 export function formatNumber(value: number | null | undefined): string {

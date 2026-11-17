@@ -28,6 +28,7 @@ import {
   formatDate,
   formatDateTime,
   formatNumber,
+  precisionLabel,
 } from "../components/ui";
 
 const LAST_VISIT_KEY = "medradar.radar.lastVisit";
@@ -57,6 +58,20 @@ const ADMISSION_CATEGORY_ZH: Record<string, string> = {
   regulatory_record: "监管记录（FDA）",
   vendor_statement: "厂商官方声明",
   primary_record_unmapped: "官方记录，未归入受监测主题",
+  monitoring_technology_review: "监护技术综述",
+  vendor_statement_monitoring: "厂商官方监护产品声明",
+  regulatory_monitoring_device: "监管记录：受监测的监护设备",
+  regulatory_other_device: "监管记录：非监护设备",
+  official_statement_not_monitoring: "官方声明：不属于监护技术",
+  clinical_application_of_monitoring: "临床使用监护技术，未研究技术本身",
+  behaviour_or_workflow_monitoring: "行为/流程监测，非患者生理监测",
+  measurement_without_technology_focus: "提及测量指标，未研究监护技术",
+  security_architecture: "安全架构，非监护测量技术",
+  methods_benchmark_on_monitoring_data: "基于监护数据的算法方法学研究",
+  medical_not_monitoring: "医学内容，不涉及监护技术",
+  bibliographic_notice: "书目通知（更正/撤稿）",
+  no_monitoring_signal: "未发现监护技术信号",
+  unclassified_record_type: "未分类记录类型",
 };
 
 function confirmationTone(value: Confirmation): "ok" | "warn" | "info" | "neutral" {
@@ -503,7 +518,7 @@ export function LiveIntelligencePage() {
 }
 
 function FeedCard({ item, onOpen }: { item: IntelEvent; onOpen: () => void }) {
-  const { bi } = useI18n();
+  const { bi, lang } = useI18n();
   return (
     <article className="card" style={{ padding: 16 }}>
       <div className="row between wrap" style={{ gap: 8 }}>
@@ -552,18 +567,33 @@ function FeedCard({ item, onOpen }: { item: IntelEvent; onOpen: () => void }) {
 
       <div className="feed-meta">
         <span>
-          {bi("Published", "来源公开")}: {item.source_published_at ? formatDateTime(item.source_published_at) : bi("not published by source", "来源未公布")}
+          {bi("Published", "来源公开")}: {item.source_published_at ? formatDateTime(item.source_published_at, item.source_published_at_precision) : bi("not published by source", "来源未公布")}
         </span>
         <span>
           {bi("First observed", "MedRadar 首次发现")}: {formatDateTime(item.first_observed_at)}
         </span>
         {item.event_date ? (
           <span>
-            {bi("Event date", "事件日期")}: {formatDate(item.event_date)}
+            {bi("Event date", "事件日期")}: {formatDate(item.event_date, item.event_date_precision)}
           </span>
         ) : null}
         {item.official_identifier ? <span className="mono small">{item.official_identifier}</span> : null}
       </div>
+
+      {item.admission?.dimensions ? (
+        <div className="row wrap small" style={{ gap: 6, marginTop: 8 }} title={bi(
+          "The judgement is split into independent dimensions; the tier alone never carries all of them.",
+          "判断被拆分为独立维度；单一等级不再承载全部含义。",
+        )}>
+          <span className="badge">{bi("source", "来源")} · {item.admission.dimensions.source_authenticity}</span>
+          <span className="badge">{bi("domain", "领域")} · {item.admission.dimensions.medical_domain}</span>
+          <span className="badge">{bi("relevance", "相关性")} · {item.admission.dimensions.monitoring_relevance}</span>
+          <span className="badge">{bi("confidence", "置信度")} · {item.admission.dimensions.confidence}</span>
+          {item.admission.dimensions.freshness ? (
+            <span className="badge">{bi("date", "日期")} · {precisionLabel(item.admission.dimensions.freshness === "UNKNOWN" ? "unknown" : "date", lang)}</span>
+          ) : null}
+        </div>
+      ) : null}
 
       {item.organization_candidates.length || item.technology_topics.length ? (
         <div className="row wrap" style={{ gap: 6, marginTop: 10 }}>

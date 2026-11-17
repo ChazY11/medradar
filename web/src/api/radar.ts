@@ -113,6 +113,18 @@ export interface IntelEvent {
     score: number;
     reasons: string[];
     decided_at: string;
+    /** REFOUNDATION-004: the judgement is a dimension set, not one tier. */
+    decision?: "FEED" | "REVIEW" | "EXCLUDED";
+    dimensions?: {
+      source_authenticity?: string;
+      medical_domain?: string;
+      monitoring_relevance?: string;
+      entity_link?: string;
+      freshness?: string;
+      importance?: string;
+      confidence?: number;
+      decision?: string;
+    };
   } | null;
   last_checked_at: string | null;
   source_updated_at: string | null;
