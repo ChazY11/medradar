@@ -71,6 +71,40 @@ def test_rotation_keeps_the_newest_copies(tmp_path: Path):
     assert len(remaining) == 2
 
 
+def test_rebuild_graph_rebuilds_everything_not_only_what_the_old_graph_lacked(tmp_path: Path):
+    """The graph is a projection: a rebuild must reproduce it from the ledger alone.
+
+    The first attempt returned 0 nodes because the ledger still recorded every observation as
+    materialised in the *old* graph. A rebuild has to ignore that work state.
+    """
+    from medradar.radar import cli
+    from medradar.radar.graph import open_graph
+    from medradar.radar.taxonomy import load_taxonomy
+
+    root = _seed(tmp_path)
+    taxonomy = load_taxonomy(str(CONFIG_DIR))
+    graph = open_graph(root / "graph.db", taxonomy)
+    ledger = ObservationLedger(root / "radar.db", create=False)
+    try:
+        graph.materialize(ledger, limit=50, log=lambda _m: None)
+        before = graph.summary()["nodes"]
+    finally:
+        graph.store.close()
+        ledger.close()
+    assert before > 0
+
+    exit_code = cli.main(["--data-dir", str(root), "rebuild-graph", "--limit", "50"])
+    assert exit_code == 0
+
+    rebuilt = open_graph(root / "graph.db", taxonomy)
+    try:
+        after = rebuilt.summary()
+    finally:
+        rebuilt.store.close()
+    assert after["nodes"] == before
+    assert after["edges"] > 0
+
+
 def test_a_restore_drill_proves_the_graph_can_be_rebuilt_from_the_backup(tmp_path: Path):
     root = _seed(tmp_path)
     result = backup(radar_paths(root), destination=tmp_path / "backups", keep=2,

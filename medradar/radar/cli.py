@@ -328,6 +328,11 @@ def cmd_rebuild_graph(args) -> int:
     total_materialized = 0
     errors: list[dict[str, Any]] = []
     try:
+        # A rebuild must ignore the existing materialisation ledger: those rows describe what the
+        # *old* graph contains. Clearing this work state makes every observation pending again;
+        # it is safe because materialising is idempotent and a failed rebuild simply leaves the
+        # old graph in place while the next normal advance repopulates it.
+        ledger.con.execute("DELETE FROM graph_materialization")
         # Drain in batches until nothing is pending: one batch would silently stop at ``limit``
         # and leave a partial graph that looks rebuilt.
         for _ in range(200):
