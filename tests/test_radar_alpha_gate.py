@@ -117,6 +117,24 @@ def test_liveness_probe_is_open_but_carries_no_data():
     assert client.post("/healthz").status_code == 405
 
 
+def test_a_basic_auth_success_issues_a_session_cookie_that_avoids_rehashing():
+    """The browser must not pay PBKDF2 for every script, image and API call.
+
+    The first authenticated request returns an HMAC session cookie; later requests are served
+    from that cookie alone, and a forged cookie is still rejected.
+    """
+    client = _client()
+    first = client.get("/radar", headers=_auth())
+    assert first.status_code == 200
+    raw = first.headers.get("set-cookie", "")
+    assert "medradar_alpha_session=" in raw
+    assert "HttpOnly" in raw
+    cookie = raw.split(";", 1)[0]
+    assert client.get("/api/radar/feed", headers={"Cookie": cookie}).status_code == 200
+    forged = cookie[:-4] + "0000"
+    assert client.get("/radar", headers={"Cookie": forged}).status_code == 401
+
+
 def test_password_hashing_round_trips_and_rejects_malformed_hashes():
     assert verify_password(PASSWORD, HASH)
     assert not verify_password("nope", HASH)

@@ -21,6 +21,7 @@ address; ``trust_proxy`` is only enabled when the listener is bound to loopback 
 
 from __future__ import annotations
 
+import asyncio
 import base64
 import binascii
 import hashlib
@@ -173,12 +174,68 @@ def _basic_credentials(scope: dict[str, Any]) -> tuple[str, str] | None:
     return None
 
 
+def _cookies(scope: dict[str, Any]) -> dict[str, str]:
+    out: dict[str, str] = {}
+    for key, value in scope.get("headers") or []:
+        if key.lower() != b"cookie":
+            continue
+        for part in value.decode("latin-1").split(";"):
+            name, separator, item = part.strip().partition("=")
+            if separator and name:
+                out[name] = item
+    return out
+
+
+"""Session cookie: proof that this browser already passed the PBKDF2 check.
+
+Basic auth makes the client send the password on *every* request, including every script and
+API call. Verifying a 240k-iteration PBKDF2 hash per request is ~0.1 s of CPU on a single event
+loop; a phone page load with twenty requests spent seconds hashing and blocked everything else.
+The cookie is an HMAC over (user, expiry) with a server-side secret, so it is cheap to verify and
+cannot be forged; it never contains the password.
+"""
+_SESSION_COOKIE = "medradar_alpha_session"
+_SESSION_TTL_SECONDS = 12 * 3600
+_SESSION_MAX_AGE = _SESSION_TTL_SECONDS
+
+
+def _session_signature(secret: bytes, payload: str) -> str:
+    return hmac.new(secret, payload.encode("utf-8"), hashlib.sha256).hexdigest()
+
+
+def issue_session(secret: bytes, username: str, *, now: float | None = None) -> str:
+    moment = time.time() if now is None else now
+    expires = int(moment) + _SESSION_TTL_SECONDS
+    payload = f"{username}|{expires}"
+    return f"{payload}|{_session_signature(secret, payload)}"
+
+
+def session_valid(secret: bytes, token: str | None, username: str,
+                  *, now: float | None = None) -> bool:
+    if not token:
+        return False
+    parts = token.split("|")
+    if len(parts) != 3:
+        return False
+    user, expires_raw, signature = parts
+    if not hmac.compare_digest(user, username):
+        return False
+    try:
+        expires = int(expires_raw)
+    except ValueError:
+        return False
+    moment = time.time() if now is None else now
+    if expires < moment:
+        return False
+    return hmac.compare_digest(signature, _session_signature(secret, f"{user}|{expires_raw}"))
+
+
 class AlphaGate:
     """ASGI middleware implementing the public-alpha access policy."""
 
     def __init__(self, app: Callable, *, username: str, password_hash: str,
                  trust_proxy: bool = False, limiter: FailureLimiter | None = None,
-                 secure_transport: bool = True) -> None:
+                 secure_transport: bool = True, session_secret: bytes | None = None) -> None:
         if not username or not password_hash:
             raise ValueError("the alpha gate requires a username and a password hash")
         self.app = app
@@ -187,6 +244,9 @@ class AlphaGate:
         self.trust_proxy = bool(trust_proxy)
         self.limiter = limiter or FailureLimiter()
         self.secure_transport = bool(secure_transport)
+        # An explicit secret survives restarts (deployments) so browsers are not logged out;
+        # without one the credential hash is still a secret, but sessions end at every restart.
+        self.session_secret = session_secret or password_hash.encode("utf-8")
 
     async def __call__(self, scope: dict[str, Any], receive: Callable, send: Callable) -> None:
         if scope.get("type") != "http":
@@ -223,12 +283,20 @@ class AlphaGate:
             )
             return
 
+        cookies = _cookies(scope)
+        if session_valid(self.session_secret, cookies.get(_SESSION_COOKIE), self.username):
+            await self.app(scope, receive, self._secured(send, scope))
+            return
+
         credentials = _basic_credentials(scope)
-        valid = bool(
-            credentials
-            and hmac.compare_digest(str(credentials[0]), self.username)
-            and verify_password(credentials[1], self.password_hash)
-        )
+        valid = False
+        if credentials and hmac.compare_digest(str(credentials[0]), self.username):
+            # PBKDF2 is CPU-bound: keep it off the event loop. Blocking here stalled every
+            # concurrent request (including /healthz) behind ~100 ms of hashing per call.
+            loop = asyncio.get_running_loop()
+            valid = await loop.run_in_executor(
+                None, verify_password, credentials[1], self.password_hash
+            )
         if not valid:
             triggered = self.limiter.record_failure(address)
             LOGGER.warning("alpha auth failure address=%s path=%s method=%s lockout=%s",
@@ -237,10 +305,12 @@ class AlphaGate:
             return
 
         self.limiter.record_success(address)
-        await self.app(scope, receive, self._secured(send, scope))
+        token = issue_session(self.session_secret, self.username)
+        await self.app(scope, receive, self._secured(send, scope, session_token=token))
 
     # ------------------------------------------------------------------ responses
-    def _secured(self, send: Callable, scope: dict[str, Any]) -> Callable:
+    def _secured(self, send: Callable, scope: dict[str, Any],
+                 *, session_token: str | None = None) -> Callable:
         async def wrapped(message: dict[str, Any]) -> None:
             if message.get("type") == "http.response.start":
                 headers = list(message.get("headers") or [])
@@ -248,6 +318,14 @@ class AlphaGate:
                 if self._is_https(scope):
                     headers.append((b"strict-transport-security", b"max-age=31536000"))
                 headers.append((b"x-robots-tag", b"noindex, nofollow"))
+                if session_token:
+                    cookie = (
+                        f"{_SESSION_COOKIE}={session_token}; Path=/; HttpOnly; SameSite=Lax; "
+                        f"Max-Age={_SESSION_MAX_AGE}"
+                    )
+                    if self._is_https(scope):
+                        cookie += "; Secure"
+                    headers.append((b"set-cookie", cookie.encode("latin-1")))
                 message = {**message, "headers": headers}
             await send(message)
 
@@ -299,9 +377,19 @@ def install_alpha_gate(app: Callable) -> Callable:
             "MEDRADAR_ALPHA_GATE=1 requires MEDRADAR_ALPHA_USER and MEDRADAR_ALPHA_HASH"
         )
     trust_proxy = os.environ.get("MEDRADAR_ALPHA_TRUST_PROXY") == "1"
-    LOGGER.info("public alpha gate enabled user=%s trust_proxy=%s", username, trust_proxy)
+    secret_raw = str(os.environ.get("MEDRADAR_ALPHA_SESSION_SECRET") or "").strip()
+    secret: bytes | None = None
+    if secret_raw:
+        try:
+            secret = bytes.fromhex(secret_raw)
+        except ValueError:
+            secret = secret_raw.encode("utf-8")
+        if len(secret) < 16:
+            raise RuntimeError("MEDRADAR_ALPHA_SESSION_SECRET must be at least 16 bytes")
+    LOGGER.info("public alpha gate enabled user=%s trust_proxy=%s session_secret=%s",
+                username, trust_proxy, "configured" if secret else "derived")
     return AlphaGate(app, username=username, password_hash=password_hash,
-                     trust_proxy=trust_proxy)
+                     trust_proxy=trust_proxy, session_secret=secret)
 
 
 def main(argv: list[str] | None = None) -> int:

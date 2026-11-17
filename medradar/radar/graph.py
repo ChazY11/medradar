@@ -560,7 +560,7 @@ class TechnologyGraph:
         """
         reconstructed = valid_at is not None
         if reconstructed or known_at is None:
-            return self.query.snapshot(known_at=known_at, valid_at=valid_at), reconstructed
+            return self.query.snapshot_cached(known_at=known_at, valid_at=valid_at), reconstructed
         known, _ = normalize_moment(known_at)
         nodes = self.query.latest_node_revisions(known, None)
         node_keys = {(node["node_type"], node["node_id"]) for node in nodes}
@@ -1110,8 +1110,14 @@ def _cell_statement(state: str, caps: list, regulatory: int, publications: int, 
     )
 
 
-def open_graph(path: str | Any, taxonomy: Taxonomy) -> TechnologyGraph:
-    store = TKGStore(str(path))
+def open_graph(path: str | Any, taxonomy: Taxonomy, *, read_only: bool = False) -> TechnologyGraph:
+    """Open the graph. A serving process must pass ``read_only=True``.
+
+    Read-write opening executes the schema script and commits: with one browser opening several
+    views at once, every request took a write transaction on the same file, which serialised
+    (and under load stalled) the whole worker.
+    """
+    store = TKGStore(str(path), read_only=read_only)
     return TechnologyGraph(store, taxonomy)
 
 

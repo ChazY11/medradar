@@ -31,6 +31,7 @@ from medradar.radar.graph import (
     NODE_COMPANY,
     TechnologyGraph,
     company_node_id,
+    open_graph,
     topic_node_id,
 )
 from medradar.radar.ledger import ObservationLedger
@@ -265,6 +266,29 @@ def test_company_comparison_distinguishes_no_evidence_from_no_technology(tmp_pat
     assert states[("smart_alarms", "draeger")] == "NO_EVIDENCE_FOUND"
     ledger.close()
     graph.store.close()
+
+
+def test_a_read_only_graph_serves_views_and_cannot_write(tmp_path: Path):
+    """The web process opens the graph read-only; read-write opening was the stall.
+
+    Every request used to execute the schema script and commit on the same database file.
+    """
+    ledger = _ledger(tmp_path)
+    _publication(ledger)
+    graph = _graph(tmp_path)
+    graph.materialize(ledger, limit=50, log=lambda _m: None)
+    graph.store.close()
+
+    serving = open_graph(tmp_path / "graph.db", _taxonomy(), read_only=True)
+    try:
+        payload = serving.technology_map()
+        assert payload["topics"], "a read-only handle must still answer the views"
+        with pytest.raises(Exception):
+            serving.store.conn.execute("DELETE FROM nodes")
+            serving.store.conn.commit()
+    finally:
+        serving.store.close()
+        ledger.close()
 
 
 def test_a_shared_normalised_doi_joins_two_sources_even_with_different_titles(tmp_path: Path):

@@ -4,6 +4,7 @@ import { getMeta } from "../api/client";
 import { useAsync } from "../api/hooks";
 import { useI18n, type TranslationKey } from "../i18n";
 import { GlobalSearch } from "./GlobalSearch";
+import { IS_PUBLIC_ALPHA } from "../lib/alpha";
 
 interface NavItem {
   to: string;
@@ -25,16 +26,23 @@ const NAV_ITEMS: NavItem[] = [
   { to: "/review", labelKey: "nav.review" },
 ];
 
+//: The public alpha serves only these pages; every other destination would be a dead button.
+const ALPHA_NAV_ITEMS: NavItem[] = [
+  { to: "/radar", labelKey: "nav.radar" },
+  { to: "/radar/technology-map", labelKey: "nav.technologyMap" },
+];
+
 export function AppShell({ children }: { children: ReactNode }) {
   const { lang, setLang, t } = useI18n();
   const [navOpen, setNavOpen] = useState(false);
-  const meta = useAsync(() => getMeta(), []);
+  const meta = useAsync(() => (IS_PUBLIC_ALPHA ? Promise.resolve(null) : getMeta()), []);
 
   useEffect(() => {
     setNavOpen(false);
   }, [children]);
 
-  const navLinks = NAV_ITEMS.map((item) => (
+  const items = IS_PUBLIC_ALPHA ? ALPHA_NAV_ITEMS : NAV_ITEMS;
+  const navLinks = items.map((item) => (
     <NavLink
       key={item.to}
       to={item.to}
@@ -57,7 +65,7 @@ export function AppShell({ children }: { children: ReactNode }) {
         Skip to content
       </a>
       <header className="app-bar">
-        <Link to="/" className="brand" aria-label="MedRadar home">
+        <Link to={IS_PUBLIC_ALPHA ? "/radar" : "/"} className="brand" aria-label="MedRadar home">
           <span className="brand-name">MedRadar</span>
           <span className="brand-subtitle">{t("app.subtitle")}</span>
         </Link>
@@ -76,8 +84,9 @@ export function AppShell({ children }: { children: ReactNode }) {
           {navOpen ? "x" : t("nav.menu")}
         </button>
 
-        <GlobalSearch />
+        {IS_PUBLIC_ALPHA ? null : <GlobalSearch />}
 
+        {IS_PUBLIC_ALPHA ? null : (
         <span
           className="snapshot-chip"
           title={
@@ -90,6 +99,7 @@ export function AppShell({ children }: { children: ReactNode }) {
           {t("snapshot.label")}: {collected}
           {freshness?.state === "stale" ? " (" + t("snapshot.stale") + ")" : ""}
         </span>
+        )}
 
         <button
           type="button"

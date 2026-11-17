@@ -1513,6 +1513,15 @@ def _serve_index(web_dir: Path) -> Any:
     if not index.is_file():
         return _error(503, "ui_not_built", "the web workbench has not been built",
                       "run: cd web && npm install && npm run build")
+    if os.environ.get("MEDRADAR_PUBLIC_ALPHA") == "1":
+        # The public deployment and the internal workbench share one build. The flag lets the
+        # SPA drop navigation that the public route allowlist does not serve, instead of showing
+        # buttons whose API calls are (correctly) 404.
+        html = index.read_text(encoding="utf-8")
+        marker = "<script>window.__MEDRADAR_ALPHA__=true;</script>"
+        if marker not in html:
+            html = html.replace("</head>", marker + "</head>", 1)
+        return Response(content=html, media_type="text/html; charset=utf-8")
     return FileResponse(index)
 
 

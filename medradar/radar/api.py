@@ -15,6 +15,7 @@ Design rules:
 from __future__ import annotations
 
 import os
+import threading
 from contextlib import contextmanager
 from pathlib import Path
 from typing import Any, Iterator
@@ -46,21 +47,30 @@ SCHEMA = "medradar.radar.api.v1"
 _VIEW_CACHE: dict[tuple, tuple[float, dict[str, Any]]] = {}
 _VIEW_CACHE_TTL_SECONDS = 60.0
 _VIEW_CACHE_MAX_ENTRIES = 16
+#: One heavy view build at a time. Concurrent first requests for the same (or different) views
+#: otherwise stampede the two CPU cores; the waiters then read the cache this lock populates.
+_VIEW_BUILD_LOCK = threading.Lock()
 
 
-def _cached_view(key: tuple, compute) -> dict[str, Any]:
+def _cached_view(key: tuple, compute, *, ttl: float | None = None) -> dict[str, Any]:
     import time as _time
 
+    window = _VIEW_CACHE_TTL_SECONDS if ttl is None else float(ttl)
     now = _time.monotonic()
     hit = _VIEW_CACHE.get(key)
-    if hit is not None and now - hit[0] < _VIEW_CACHE_TTL_SECONDS:
+    if hit is not None and now - hit[0] < window:
         return hit[1]
-    value = compute()
-    if len(_VIEW_CACHE) >= _VIEW_CACHE_MAX_ENTRIES:
-        oldest = min(_VIEW_CACHE, key=lambda item: _VIEW_CACHE[item][0])
-        _VIEW_CACHE.pop(oldest, None)
-    _VIEW_CACHE[key] = (now, value)
-    return value
+    with _VIEW_BUILD_LOCK:
+        now = _time.monotonic()
+        hit = _VIEW_CACHE.get(key)
+        if hit is not None and now - hit[0] < window:
+            return hit[1]
+        value = compute()
+        if len(_VIEW_CACHE) >= _VIEW_CACHE_MAX_ENTRIES:
+            oldest = min(_VIEW_CACHE, key=lambda item: _VIEW_CACHE[item][0])
+            _VIEW_CACHE.pop(oldest, None)
+        _VIEW_CACHE[key] = (now, value)
+        return value
 
 
 def _csv(value: str | None) -> list[str] | None:
@@ -123,7 +133,7 @@ class RadarService:
                     "path": str(path),
                 },
             )
-        graph = open_graph(path, taxonomy)
+        graph = open_graph(path, taxonomy, read_only=True)
         try:
             yield graph
         finally:
@@ -199,7 +209,7 @@ def build_router(service: RadarService | None = None) -> APIRouter:
         with svc.ledger() as ledger:
             graph = None
             if svc.paths.graph.is_file():
-                graph = open_graph(svc.paths.graph, taxonomy)
+                graph = open_graph(svc.paths.graph, taxonomy, read_only=True)
             try:
                 payload = system_status(ledger, graph, taxonomy, data_dir=str(svc.paths.root))
             finally:
@@ -406,12 +416,20 @@ def build_router(service: RadarService | None = None) -> APIRouter:
         at: str | None = None,
     ) -> dict[str, Any]:
         known_at, valid_at, label = _cut(mode, at)
-        with svc.graph() as graph:
-            payload = graph.company_compare(companies=_csv(companies), topics=_csv(topics),
-                                            known_at=known_at, valid_at=valid_at)
+        company_key = tuple(sorted(_csv(companies) or []))
+        topic_key = tuple(sorted(_csv(topics) or []))
+
+        def compute() -> dict[str, Any]:
+            with svc.graph() as graph:
+                return graph.company_compare(companies=_csv(companies), topics=_csv(topics),
+                                             known_at=known_at, valid_at=valid_at)
+
+        payload = dict(_cached_view(("compare", company_key, topic_key, known_at, valid_at),
+                                    compute))
         payload["requested_mode"] = label
         payload["organizations"] = [org.public() for org in svc.taxonomy().organizations]
         payload["schema"] = SCHEMA
+        payload["cache_ttl_seconds"] = _VIEW_CACHE_TTL_SECONDS
         return payload
 
     @router.get("/graph/summary")
@@ -423,11 +441,26 @@ def build_router(service: RadarService | None = None) -> APIRouter:
         return summary
 
     @router.get("/graph/changes")
-    def graph_changes(earlier: str, later: str | None = None) -> dict[str, Any]:
+    def graph_changes(earlier: str, later: str | None = None,
+                      limit: int = Query(300, ge=1, le=2000)) -> dict[str, Any]:
         if not earlier:
             raise HTTPException(400, detail={"code": "earlier_required"})
-        with svc.graph() as graph:
-            payload = graph.changes_between(earlier=earlier, later=later)
+
+        def compute() -> dict[str, Any]:
+            with svc.graph() as graph:
+                return graph.changes_between(earlier=earlier, later=later)
+
+        # The diff can answer with every assertion in the graph. Serving the whole list is a
+        # multi-megabyte response and a CPU-heavy serialisation for a screen that shows counts
+        # and a short list; the totals below keep the truncation explicit.
+        payload = dict(_cached_view(("changes", earlier, later), compute, ttl=30.0))
+        totals = {key: len(payload.get(key) or []) for key in ("added", "removed", "changed")}
+        for key in ("added", "removed", "changed"):
+            payload[key] = (payload.get(key) or [])[:limit]
+        payload["counts"] = {**(payload.get("counts") or {}), **totals}
+        payload["listed"] = {key: len(payload[key]) for key in ("added", "removed", "changed")}
+        payload["truncated"] = any(totals[key] > limit for key in totals)
+        payload["list_limit"] = limit
         payload["schema"] = SCHEMA
         return payload
 
@@ -471,7 +504,7 @@ def build_router(service: RadarService | None = None) -> APIRouter:
             return {"available": False, "message": "the radar ledger does not exist yet"}
         taxonomy = svc.taxonomy()
         with svc.ledger() as ledger:
-            graph = open_graph(svc.paths.graph, taxonomy) if svc.paths.graph.is_file() else None
+            graph = open_graph(svc.paths.graph, taxonomy, read_only=True) if svc.paths.graph.is_file() else None
             try:
                 from .engine import pipeline_report
 

@@ -18,10 +18,30 @@ back to life).
 
 from __future__ import annotations
 
+import threading
+import time
 from datetime import datetime, timezone
+from pathlib import Path
 from typing import Any, Iterable, Mapping
 
 from .store import TKGStore, normalize_moment
+
+#: Serving process snapshot cache. A view request used to re-read and JSON-decode all 22k nodes
+#: and 17k edges; a phone opens several views, so the same snapshot was rebuilt concurrently.
+#: Keyed by file identity (path + mtime + size) and the two cutoffs, so a scheduler write
+#: invalidates it without any explicit signalling.
+_SNAPSHOT_CACHE: dict[tuple[Any, ...], tuple[float, dict[str, Any]]] = {}
+_SNAPSHOT_CACHE_LOCK = threading.Lock()
+SNAPSHOT_CACHE_TTL_SECONDS = 30.0
+_SNAPSHOT_CACHE_MAX = 6
+
+
+def _file_identity(path: str) -> tuple[int, int] | None:
+    try:
+        stat = Path(path).stat()
+    except OSError:
+        return None
+    return (stat.st_mtime_ns, stat.st_size)
 
 
 def _latest_by_identity(rows: Iterable[Mapping[str, Any]], key_fields: tuple[str, ...]) -> dict[tuple, dict[str, Any]]:
@@ -133,6 +153,35 @@ class TKGQuery:
         return edges
 
     # --------------------------------------------------------------- snapshot
+    def snapshot_cached(self, known_at: Any = None, valid_at: Any = None) -> dict[str, Any]:
+        """``snapshot`` with a short-lived, file-identity-keyed cache for read-only serving.
+
+        Writes, in-memory stores and any store that is not read-only always go straight to
+        ``snapshot()``: the cache exists to stop the *serving* process from rebuilding the same
+        immutable projection for every request, never to hide a writer's changes.
+        """
+        path = str(getattr(self.store, "path", "") or "")
+        if path in ("", ":memory:") or not getattr(self.store, "read_only", False):
+            return self.snapshot(known_at=known_at, valid_at=valid_at)
+        identity = _file_identity(path)
+        if identity is None:
+            return self.snapshot(known_at=known_at, valid_at=valid_at)
+        known, _ = normalize_moment(known_at) if known_at is not None else (None, None)
+        valid, _ = normalize_moment(valid_at) if valid_at is not None else (None, None)
+        key = (path, identity, known, valid)
+        now = time.monotonic()
+        with _SNAPSHOT_CACHE_LOCK:
+            hit = _SNAPSHOT_CACHE.get(key)
+            if hit is not None and now - hit[0] < SNAPSHOT_CACHE_TTL_SECONDS:
+                return hit[1]
+        value = self.snapshot(known_at=known_at, valid_at=valid_at)
+        with _SNAPSHOT_CACHE_LOCK:
+            if len(_SNAPSHOT_CACHE) >= _SNAPSHOT_CACHE_MAX:
+                oldest = min(_SNAPSHOT_CACHE, key=lambda item: _SNAPSHOT_CACHE[item][0])
+                _SNAPSHOT_CACHE.pop(oldest, None)
+            _SNAPSHOT_CACHE[key] = (now, value)
+        return value
+
     def snapshot(self, known_at: Any = None, valid_at: Any = None) -> dict[str, Any]:
         """Full as-of snapshot: one selected revision per node and per edge.
 

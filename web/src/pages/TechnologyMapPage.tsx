@@ -70,13 +70,15 @@ export function TechnologyMapPage() {
     [mode, at],
   );
 
-  const map = useAsync(
-    () => getTechnologyMap({ ...timeQuery, companies: companyQuery }),
-    [mode, at, companyQuery],
+  // Only the open tab fetches. Loading all three views on mount made a phone request three
+  // heavy graph projections to show one, which is how a 3 s first paint became 10 s timeouts.
+  const map = useAsync<TechnologyMap | null>(
+    () => (tab === "map" ? getTechnologyMap({ ...timeQuery, companies: companyQuery }) : Promise.resolve(null)),
+    [tab, mode, at, companyQuery],
   );
-  const compare = useAsync(
-    () => getCompare({ ...timeQuery, companies: companyQuery }),
-    [mode, at, companyQuery],
+  const compare = useAsync<CompareResponse | null>(
+    () => (tab === "compare" ? getCompare({ ...timeQuery, companies: companyQuery }) : Promise.resolve(null)),
+    [tab, mode, at, companyQuery],
   );
   const [earlier, setEarlier] = useState(defaultEarlier);
   // The diff view can answer with every assertion in the graph (megabytes on a busy ledger).
