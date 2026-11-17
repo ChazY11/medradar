@@ -236,7 +236,9 @@ export interface TimeSemantics {
   valid_from: string;
   mode: string;
   statement: string;
+  statement_zh?: string;
   cannot_do: string;
+  cannot_do_zh?: string;
 }
 
 export interface GraphCapability {

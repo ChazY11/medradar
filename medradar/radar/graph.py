@@ -1142,6 +1142,17 @@ def _time_semantics(reconstructed: bool) -> dict[str, Any]:
             "A record is never backdated into a past knowledge state. If MedRadar discovered a "
             "2016 clearance in 2026, the 2026 knowledge view is the only one where it appears."
         ),
+        "statement_zh": (
+            "本视图基于今天的知识，在过去的『公开时间』处回溯重建：它显示当时公开为真的事实，"
+            "而不是 MedRadar 当时已经知道的内容。"
+            if reconstructed else
+            "本视图只包含 MedRadar 在该时间点已实际记录的断言；之后发现的证据不会出现，"
+            "即使它描述的是更早的事件。"
+        ),
+        "cannot_do_zh": (
+            "记录不会被倒填进过去的知识状态。若 MedRadar 在 2026 年才发现一份 2016 年的批件，"
+            "它只会出现在 2026 年及之后的知识视图中。"
+        ),
     }
 
 

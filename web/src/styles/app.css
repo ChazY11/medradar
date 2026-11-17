@@ -1433,3 +1433,16 @@ a.badge { text-decoration: none; }
   .chip { white-space: normal; overflow-wrap: anywhere; max-width: 100%; height: auto; min-height: 26px; padding: 4px 9px; text-align: left; }
   .chip .badge { white-space: nowrap; }
 }
+/* QUALITY-001 P2-02: phone touch targets. The measured menu/language/chip heights were 26-40 px;
+   44 px is the usual minimum for a finger. Dense chips stay dense visually but keep a 44 px hit
+   area through min-height and padding. */
+@media (max-width: 900px) {
+  .menu-toggle, .lang-toggle button, .btn, .btn.sm, .chip, .tabs button,
+  #mobile-nav a, .drawer-head .btn, .company-switcher .chip {
+    min-height: 44px;
+  }
+  .chip { padding-top: 10px; padding-bottom: 10px; }
+  .tabs button { padding-left: 14px; padding-right: 14px; }
+  .btn.sm { padding-top: 10px; padding-bottom: 10px; }
+  #mobile-nav a { display: flex; align-items: center; }
+}

@@ -155,7 +155,7 @@ export function TechnologyMapPage() {
         {map.data ? (
           <Banner tone={map.data.reconstructed ? "warning" : "info"} title={map.data.reconstructed ? bi("Reconstruction, not history", "这是回溯重建，不是当时已知") : bi("Knowledge-time view", "知识时间视图")}>
             {bi(
-              map.data.time_semantics.statement,
+              map.data.time_semantics.statement_zh ?? map.data.time_semantics.statement,
               "本视图仅包含截至所选时间点 MedRadar 已实际记录的断言；之后发现的证据不会出现在更早的视图里。",
             )}
           </Banner>
@@ -179,8 +179,8 @@ export function TechnologyMapPage() {
               <div className="row between wrap" style={{ gap: 8 }}>
                 <span className="small muted">
                   {bi(
-                    `${payload.counts.topics_with_evidence} topic branch(es) with evidence; ${payload.counts.nodes} nodes / ${payload.counts.edges} edges in this view.`,
-                    `本视图中有 ${payload.counts.topics_with_evidence} 个技术分支含证据；共 ${payload.counts.nodes} 个节点 / ${payload.counts.edges} 条边。`,
+                    `${payload.counts.topics_with_evidence} topic branch(es) with evidence; ${payload.topics.reduce((sum, branch) => sum + branch.companies.reduce((inner, company) => inner + company.evidence_total, 0), 0)} company evidence rows in this view.`,
+                    `本视图中有 ${payload.counts.topics_with_evidence} 个技术分支含证据；当前企业视图共 ${payload.topics.reduce((sum, branch) => sum + branch.companies.reduce((inner, company) => inner + company.evidence_total, 0), 0)} 条企业证据记录。`,
                   )}
                 </span>
               </div>
@@ -346,7 +346,7 @@ export function TechnologyMapPage() {
                           </div>
                           <div className="small muted mt-8">
                             {bi(
-                              payload.time_semantics.cannot_do,
+                              payload.time_semantics.cannot_do_zh ?? payload.time_semantics.cannot_do,
                               "已经记录的断言不会被回填到更早的知识时间：如果 MedRadar 在 2026 年才发现 2016 年的批文，它只会出现在 2026 年的知识视图中。",
                             )}
                           </div>
@@ -506,7 +506,10 @@ function NodeDrawer({
                       { label: bi("View mode", "视图模式"), value: payload.mode },
                     ]}
                   />
-                  <div className="small muted mt-8">{payload.time_semantics.statement}</div>
+                  <div className="small muted mt-8">
+                {bi(payload.time_semantics.statement,
+                    payload.time_semantics.statement_zh ?? payload.time_semantics.statement)}
+              </div>
                 </div>
                 {([["incoming", payload.incoming], ["outgoing", payload.outgoing]] as const).map(([kind, edges]) => (
                   <div className="drawer-section" key={kind}>
