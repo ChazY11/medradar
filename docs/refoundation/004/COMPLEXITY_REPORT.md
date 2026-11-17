@@ -7,7 +7,7 @@ Two numbers tell different stories and both are reported.
 | Metric | Before (14eaf61) | After (refoundation/004) | Direction |
 | --- | --- | --- | --- |
 | Modules | 510 | 512 | +2 |
-| Python lines | 152,602 | 154,096 | +1.0% |
+| Python lines | 152,602 | 154,090 | +1.0% |
 | Functions | 5,613 | 5,665 | +1% |
 | CC > 10 | 698 | 703 | +5 |
 | CC > 15 | 80 | 80 | 0 |
@@ -15,7 +15,7 @@ Two numbers tell different stories and both are reported.
 | Unreachable-from-entry-point modules | 75 / 20,558 lines | 75 / 20,558 lines | 0 |
 
 Raw size and cyclomatic complexity did **not** fall. Claiming otherwise would be false. The
-increase is one new responsibility (assessment, 889 lines) plus tests and the evaluator; the old
+increase is one new responsibility (assessment, 876 lines) plus tests and the evaluator; the old
 scoring module it replaces was 421 lines, and a second rule path in the adapters was deleted
 entirely.
 

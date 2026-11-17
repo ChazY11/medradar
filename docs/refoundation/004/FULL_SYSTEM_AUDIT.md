@@ -117,7 +117,7 @@ Before this round (HEAD 14eaf61) and after (this branch), same AST script
 | Metric | Before | After |
 | --- | --- | --- |
 | Python modules (repo) | 510 | 512 |
-| Python lines | 152,602 | 154,096 |
+| Python lines | 152,602 | 154,090 |
 | Functions | 5,613 | 5,665 |
 | Functions with CC > 10 | 698 | 703 |
 | Functions with CC > 15 | 80 | 80 |
@@ -129,9 +129,9 @@ Interpretation, stated plainly: **raw size and cyclomatic complexity did not fal
 replaced one overloaded rule module with a larger, better-structured one and added tests, so lines
 went up by 1.5%. What did fall is *conceptual* duplication and state ambiguity:
 
-- the judgement now has one implementation (889-line assessment module) instead of a scoring engine
+- the judgement now has one implementation (876-line assessment module) instead of a scoring engine
   in relevance.py plus a second pre-storage gate in the adapters (`classify.publication_relevance`);
-- relevance.py shrank from 421 to ~100 lines and is a facade with no logic;
+- relevance.py shrank from 421 to 96 lines and is a facade with no logic;
 - the admission table went from "one row per (obs, version), overwritten" to "append-only history +
   one explicit derived projection", so there is now exactly one reader path for the current
   decision;

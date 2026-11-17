@@ -158,7 +158,7 @@ bundle rebuild. None of this was done here, and none of it should be skipped.
 
 | Area | Change |
 | --- | --- |
-| medradar/radar/assessment.py (new, 889 lines) | eight-dimension assessment and the feed decision policy |
+| medradar/radar/assessment.py (new, 876 lines) | eight-dimension assessment and the feed decision policy |
 | medradar/radar/relevance.py | 421 -> ~100 lines, a facade with no logic |
 | medradar/radar/ledger.py | schema v3: append-only admission + derived projection + work_key + work queue, v2->v3 migration, feed dedupe by work, future-date exclusion |
 | medradar/radar/engine.py | re-judgement on rule change, evidence keys, dimensions persisted |
