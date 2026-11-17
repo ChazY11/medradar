@@ -32,8 +32,11 @@ from .store import TKGStore, normalize_moment
 #: invalidates it without any explicit signalling.
 _SNAPSHOT_CACHE: dict[tuple[Any, ...], tuple[float, dict[str, Any]]] = {}
 _SNAPSHOT_CACHE_LOCK = threading.Lock()
-SNAPSHOT_CACHE_TTL_SECONDS = 30.0
-_SNAPSHOT_CACHE_MAX = 6
+SNAPSHOT_CACHE_TTL_SECONDS = 20.0
+#: Two entries is deliberate: the live cutoff plus one historical cutoff (the changes diff).
+#: Each entry is the whole graph in Python objects (~100 MB here); an unbounded cache would put
+#: the 4 GB host at risk for a caching win that only matters on repeat views.
+_SNAPSHOT_CACHE_MAX = 2
 
 
 def _file_identity(path: str) -> tuple[int, int] | None:
