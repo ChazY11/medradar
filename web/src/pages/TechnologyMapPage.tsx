@@ -15,6 +15,7 @@ import {
   type TimeQuery,
 } from "../api/radar";
 import { AsyncSection } from "../components/async";
+import { cleanTitle } from "../lib/text";
 import {
   Badge,
   Banner,
@@ -272,7 +273,7 @@ export function TechnologyMapPage() {
                                   <span className={`badge ${toneFor(row.confirmation)}`} style={{ marginRight: 6 }}>
                                     {row.confirmation}
                                   </span>
-                                  {(row.title ?? row.record_node).slice(0, 46)}
+                                  {cleanTitle(row.title ?? row.record_node).slice(0, 46)}
                                 </button>
                               ))}
                             </div>
@@ -313,7 +314,7 @@ export function TechnologyMapPage() {
                                   company.evidence.map((row) => (
                                     <tr key={`${company.organization_id}-${row.record_node}-${row.evidence_id}`}>
                                       <td data-label={bi("Evidence", "证据")}>
-                                        {company.display_name} · {(row.title ?? row.record_node).slice(0, 70)}
+                                        {company.display_name} · {cleanTitle(row.title ?? row.record_node).slice(0, 70)}
                                       </td>
                                       <td data-label={bi("Confirmation", "确认等级")}>
                                         <Badge tone={toneFor(row.confirmation)}>{row.confirmation}</Badge>

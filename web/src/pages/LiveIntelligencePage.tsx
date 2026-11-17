@@ -14,6 +14,7 @@ import {
   type IntelEvent,
 } from "../api/radar";
 import { AsyncSection } from "../components/async";
+import { cleanTitle } from "../lib/text";
 import {
   Badge,
   Banner,
@@ -447,10 +448,10 @@ function FeedCard({ item, onOpen }: { item: IntelEvent; onOpen: () => void }) {
       <h3 className="feed-title">
         {item.source_url ? (
           <a href={item.source_url} target="_blank" rel="noreferrer noopener">
-            {item.title}
+            {cleanTitle(item.title)}
           </a>
         ) : (
-          item.title
+          cleanTitle(item.title)
         )}
       </h3>
 
@@ -556,7 +557,7 @@ function IntelligenceDrawer({ observationId, onClose }: { observationId: string;
                     <Badge tone="outline">{payload.source}</Badge>
                     <Badge tone="neutral">v{payload.version}</Badge>
                   </div>
-                  <div className="mt-8" style={{ fontWeight: 620, lineHeight: 1.45 }}>{payload.title}</div>
+                  <div className="mt-8" style={{ fontWeight: 620, lineHeight: 1.45 }}>{cleanTitle(payload.title)}</div>
                   {payload.source_url ? (
                     <a className="small" href={payload.source_url} target="_blank" rel="noreferrer noopener">
                       {bi("Open the original record", "打开原始记录")}
