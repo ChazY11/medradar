@@ -40,6 +40,28 @@ from .taxonomy import Taxonomy, TaxonomyError, load_taxonomy
 
 SCHEMA = "medradar.radar.api.v1"
 
+#: A tiny TTL cache for the two expensive graph views. They are read-only projections of a graph
+#: that changes when the scheduler materialises a cycle, so serving a 60-second-old copy is
+#: honest and keeps a phone from waiting on a 17k-edge snapshot for every navigation.
+_VIEW_CACHE: dict[tuple, tuple[float, dict[str, Any]]] = {}
+_VIEW_CACHE_TTL_SECONDS = 60.0
+_VIEW_CACHE_MAX_ENTRIES = 16
+
+
+def _cached_view(key: tuple, compute) -> dict[str, Any]:
+    import time as _time
+
+    now = _time.monotonic()
+    hit = _VIEW_CACHE.get(key)
+    if hit is not None and now - hit[0] < _VIEW_CACHE_TTL_SECONDS:
+        return hit[1]
+    value = compute()
+    if len(_VIEW_CACHE) >= _VIEW_CACHE_MAX_ENTRIES:
+        oldest = min(_VIEW_CACHE, key=lambda item: _VIEW_CACHE[item][0])
+        _VIEW_CACHE.pop(oldest, None)
+    _VIEW_CACHE[key] = (now, value)
+    return value
+
 
 def _csv(value: str | None) -> list[str] | None:
     if not value:
@@ -351,12 +373,23 @@ def build_router(service: RadarService | None = None) -> APIRouter:
         max_evidence: int = Query(10, ge=1, le=100),
     ) -> dict[str, Any]:
         known_at, valid_at, label = _cut(mode, at)
-        with svc.graph() as graph:
-            payload = graph.technology_map(companies=_csv(companies), known_at=known_at,
-                                           valid_at=valid_at, max_products=max_products,
-                                           max_evidence=max_evidence)
+        company_key = tuple(sorted(_csv(companies) or []))
+        topic_key = tuple(sorted(_csv(topics) or []))
+
+        def compute() -> dict[str, Any]:
+            with svc.graph() as graph:
+                return graph.technology_map(companies=_csv(companies), known_at=known_at,
+                                            valid_at=valid_at, max_products=max_products,
+                                            max_evidence=max_evidence)
+
+        # Shallow copy: the handler annotates the payload per request, and a cached dict must
+        # never carry one caller's annotations into another caller's response.
+        payload = dict(_cached_view(
+            ("technology-map", company_key, topic_key, known_at, valid_at, max_products,
+             max_evidence), compute))
         payload["requested_mode"] = label
         payload["page_limits"] = {"max_products": max_products, "max_evidence": max_evidence}
+        payload["cache_ttl_seconds"] = _VIEW_CACHE_TTL_SECONDS
         payload["available_topics"] = [topic.public() for topic in svc.taxonomy().topics]
         if topics:
             wanted = set(_csv(topics) or [])
