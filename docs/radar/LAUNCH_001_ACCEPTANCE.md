@@ -8,7 +8,7 @@ the deployed databases; nothing is projected.
 
 | Item | Value |
 | --- | --- |
-| Release commit deployed | `da6668161920599089129d772f3e05a4c02be844` |
+| Release commit deployed | `bfcee0508451b93c6ecd70061568e71d20e69218` |
 | Release tree | `/srv/medradar/radar/releases/<sha>` (symlinked as `/srv/medradar/radar/app`) |
 | Virtualenv | `/srv/medradar/radar-venv` (editable install of the release) |
 | Data directory | `/srv/medradar/data/radar` |
@@ -24,8 +24,9 @@ the deployed databases; nothing is projected.
 - Authentication: HTTP Basic, PBKDF2-SHA256 (240k iterations), single user `alpha`.
 - The tunnel hostname is **temporary**: it changes when `medradar-radar-tunnel.service` restarts.
 - TLS: `ssl_verify_result=0` (a valid chain) from a client outside the server.
-- iPhone-shaped verification: WebKit/Chromium at 390 × 844 CSS px. Feed, evidence drawer and
-  technology map render in Chinese with no page-level horizontal overflow (`scrollWidth` 389/390).
+- iPhone-shaped verification: Chromium at a 390 × 844 CSS px viewport. Feed, evidence drawer and
+  technology map render in Chinese with no horizontal overflow (`document.scrollWidth` 390/390 on
+  the feed, 375/390 on the map).
 
 Public probe from outside the server (not localhost):
 
@@ -132,6 +133,9 @@ The FDA update timer ran at 08:38 CST while the Radar services were live and fin
 6. The map page downloaded every graph assertion on load; the map response also returned
    hundreds of products per company (megabyte-scale). Both are now bounded/cached.
 7. `--no-ai` cycles still queued enrichment work that nothing could claim.
+8. On a 390 px viewport a chip kept `white-space: nowrap` around a long evidence title and grew
+   the card to 625 px, scrolling the page sideways; and the technology-tree tab read `(0)` while
+   the 2.5 s map snapshot loaded, which looks like a real empty result.
 
 ## 9. Limitations
 
