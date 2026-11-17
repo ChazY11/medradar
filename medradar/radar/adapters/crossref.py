@@ -113,17 +113,13 @@ class CrossrefAdapter:
             note=f"query {query_id}: {len(records)} of {total} (created since {since}, relevance cut)",
         )
 
-    def accept_record(self, record: RawRecord, mapping) -> tuple[bool, str]:
-        """A search result only enters the radar if it studies monitoring technology or a vendor.
-
-        Crossref answers a query with *something* even when nothing matches, so without this
-        gate the ledger fills with unrelated papers and every count downstream becomes a
-        count of noise. A decision-support-only paper (predicting deterioration from ICU data)
-        is a clinical study, not device research, and is rejected with that reason.
-        """
-        from ..classify import publication_relevance
-
-        return publication_relevance(mapping)
+    # REFOUNDATION-004 removed the pre-storage relevance gate from this adapter.
+    #
+    # ``publication_relevance`` was a second, inconsistent rule set applied before the ledger
+    # stored the record. A paper it rejected could never be re-judged by a later rule version and
+    # never appeared in an evaluation sample. Crossref answers with something even when nothing
+    # matches, so the assessment layer now does the filtering on the stored observation and the
+    # default feed stays precise without deleting discovery evidence.
 
     # ------------------------------------------------------------------ mapping
     def map_record(self, record: RawRecord, ctx: CollectContext) -> MappingResult:

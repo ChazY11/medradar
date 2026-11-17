@@ -53,6 +53,7 @@ def test_clinical_risk_scores_are_not_monitoring_intelligence():
         assert admission.tier == LOW_RELEVANCE, (title, admission)
         assert admission.category in {
             "clinical_prediction_model", "clinical_study_without_device_focus",
+            "clinical_application_of_monitoring",
         }, (title, admission)
 
 

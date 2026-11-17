@@ -185,17 +185,15 @@ class PubMedAdapter:
 
         return RuleMapper(self.taxonomy).map(record)
 
-    def accept_record(self, record: RawRecord, mapping) -> tuple[bool, str]:
-        """Keep a paper only if it studies monitoring technology or names a monitored vendor.
-
-        The PubMed queries are topical, but a query is a search, not a filter. A study that
-        predicts deterioration from ICU data matches the decision-support topic while being a
-        clinical study, not device research; :func:`medradar.radar.classify.publication_relevance`
-        is the gate that separates the two, and its rejection reason is recorded.
-        """
-        from ..classify import publication_relevance
-
-        return publication_relevance(mapping)
+    # REFOUNDATION-004 removed the pre-storage relevance gate from this adapter.
+    #
+    # RADAR-001 filtered publications here, before the ledger saw them, using a second rule set
+    # (topic family plus vendor affiliation). That contradicted the documented architecture
+    # ("discovery is broad; nothing can un-store it"): a record rejected here was never stored,
+    # so a later rule change could not re-judge it, and the quality sample could not see it.
+    # Qualification is a property of the *decision*, not of storage, so the adapter now stores
+    # every record the source returned. The assessment layer decides what is monitoring
+    # intelligence, and the observation stays available for a future rule version.
 
 
 def _articles(xml_text: str) -> list[ET.Element]:
