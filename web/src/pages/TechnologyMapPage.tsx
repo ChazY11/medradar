@@ -175,7 +175,7 @@ export function TechnologyMapPage() {
 
       <Tabs
         items={[
-          { id: "map", label: bi("Technology tree", "科技树"), count: branches.length },
+          { id: "map", label: bi("Technology tree", "科技树"), count: map.status === "ready" ? branches.length : undefined },
           { id: "compare", label: bi("Company comparison", "企业对比") },
           { id: "changes", label: bi("What changed", "变化") },
         ]}
