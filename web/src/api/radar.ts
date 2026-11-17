@@ -262,7 +262,10 @@ export interface TechnologyBranch {
     display_name: string;
     label_zh: string | null;
     products: GraphProduct[];
+    products_total: number;
     evidence: GraphEvidenceRow[];
+    evidence_total: number;
+    truncated: boolean;
     earliest_evidence: string | null;
     latest_change: string | null;
   }[];

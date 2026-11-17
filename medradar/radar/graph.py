@@ -572,7 +572,8 @@ class TechnologyGraph:
         return {"known_at": known, "valid_at": None, "nodes": nodes, "edges": edges}, reconstructed
 
     def technology_map(self, *, companies: Sequence[str] | None = None,
-                       known_at: Any = None, valid_at: Any = None) -> dict[str, Any]:
+                       known_at: Any = None, valid_at: Any = None,
+                       max_products: int = 25, max_evidence: int = 10) -> dict[str, Any]:
         """The company technology tree, computed from assertions - never from a static list."""
         snapshot, reconstructed = self._cut(known_at, valid_at)
         nodes = snapshot["nodes"]
@@ -724,15 +725,25 @@ class TechnologyGraph:
                         })
                 if not products and not evidence_rows:
                     continue
+                sorted_products = sorted(products, key=lambda item: (item["name"] or ""))
+                sorted_evidence = sorted(
+                    evidence_rows,
+                    key=lambda item: (item.get("valid_from") or "", item.get("evidence_id") or ""),
+                    reverse=True,
+                )
+                # A first-load topic branch can carry hundreds of regulatory products. Return a
+                # bounded page plus the totals, so a phone does not download megabytes to render
+                # a tree, and so a truncated list can never be mistaken for the complete set.
                 company_branches.append({
                     "organization_id": org_id,
                     "display_name": (company.get("attrs") or {}).get("display_name", org_id),
                     "label_zh": (company.get("attrs") or {}).get("label_zh"),
-                    "products": sorted(products, key=lambda item: (item["name"] or "")),
-                    "evidence": sorted(
-                        evidence_rows,
-                        key=lambda item: (item.get("valid_from") or "", item.get("evidence_id") or ""),
-                        reverse=True,
+                    "products": sorted_products[:max_products],
+                    "products_total": len(sorted_products),
+                    "evidence": sorted_evidence[:max_evidence],
+                    "evidence_total": len(sorted_evidence),
+                    "truncated": (
+                        len(sorted_products) > max_products or len(sorted_evidence) > max_evidence
                     ),
                     "earliest_evidence": min(
                         (row.get("valid_from") or "" for row in evidence_rows + [

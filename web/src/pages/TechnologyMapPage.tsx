@@ -250,6 +250,12 @@ export function TechnologyMapPage() {
                                   ) : null}
                                 </button>
                               ))}
+                              {company.products_total > company.products.length ? (
+                                <span className="small muted">
+                                  +{company.products_total - company.products.length}{" "}
+                                  {bi("more products", "个更多产品")}
+                                </span>
+                              ) : null}
                               {company.evidence.slice(0, 4).map((row) => (
                                 <button
                                   key={`${row.record_node}-${row.evidence_id}`}
@@ -267,9 +273,18 @@ export function TechnologyMapPage() {
                                 </button>
                               ))}
                             </div>
-                            {company.evidence.length > 4 ? (
+                            {company.evidence.length > 0 ? (
                               <div className="small muted mt-8">
-                                +{company.evidence.length - 4} {bi("more evidence rows", "条更多证据")}
+                                {bi(
+                                  `showing ${company.evidence.length} of ${company.evidence_total} evidence rows`,
+                                  `显示 ${company.evidence.length} / ${company.evidence_total} 条证据`,
+                                )}
+                                {company.truncated
+                                  ? bi(
+                                      ". Open the evidence table below for the cited records.",
+                                      "。展开下方证据表查看可追溯记录。",
+                                    )
+                                  : null}
                               </div>
                             ) : null}
                           </div>

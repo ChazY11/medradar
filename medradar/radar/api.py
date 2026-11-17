@@ -347,12 +347,16 @@ def build_router(service: RadarService | None = None) -> APIRouter:
         topics: str | None = None,
         mode: str = Query("public", pattern="^(public|knowledge)$"),
         at: str | None = None,
+        max_products: int = Query(25, ge=1, le=200),
+        max_evidence: int = Query(10, ge=1, le=100),
     ) -> dict[str, Any]:
         known_at, valid_at, label = _cut(mode, at)
         with svc.graph() as graph:
             payload = graph.technology_map(companies=_csv(companies), known_at=known_at,
-                                           valid_at=valid_at)
+                                           valid_at=valid_at, max_products=max_products,
+                                           max_evidence=max_evidence)
         payload["requested_mode"] = label
+        payload["page_limits"] = {"max_products": max_products, "max_evidence": max_evidence}
         payload["available_topics"] = [topic.public() for topic in svc.taxonomy().topics]
         if topics:
             wanted = set(_csv(topics) or [])
