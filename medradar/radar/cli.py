@@ -325,8 +325,18 @@ def cmd_rebuild_graph(args) -> int:
         staged.unlink()
     graph = open_graph(staged, taxonomy)
     ledger = ObservationLedger(paths.ledger, create=False)
+    total_materialized = 0
+    errors: list[dict[str, Any]] = []
     try:
-        step = graph.materialize(ledger, limit=args.limit, log=print)
+        # Drain in batches until nothing is pending: one batch would silently stop at ``limit``
+        # and leave a partial graph that looks rebuilt.
+        for _ in range(200):
+            step = graph.materialize(ledger, limit=args.limit, log=print)
+            total_materialized += int(step["materialized"])
+            errors.extend(step["errors"])
+            del errors[20:]
+            if int(step["materialized"]) == 0:
+                break
         summary = graph.summary()
     finally:
         ledger.close()
@@ -334,8 +344,8 @@ def cmd_rebuild_graph(args) -> int:
     if paths.graph.exists():
         os.replace(paths.graph, paths.root / "graph.db.previous")
     os.replace(staged, paths.graph)
-    payload = {"materialized": step, "nodes": summary["nodes"], "edges": summary["edges"],
-               "graph": str(paths.graph)}
+    payload = {"materialized": total_materialized, "errors": errors,
+               "nodes": summary["nodes"], "edges": summary["edges"], "graph": str(paths.graph)}
     if args.json:
         _print_json(payload)
     else:
