@@ -196,14 +196,23 @@ def restore_check(*, backup_path: str | Path, work_dir: str | Path,
         graph = open_graph(graph_path, taxonomy)
         try:
             rebuild = ObservationLedger(ledger_copy, create=False)
-            step = graph.materialize(rebuild, limit=5000, log=lambda _m: None)
+            # The restored copy carries the live graph's materialisation ledger, which says every
+            # observation is already in a graph that is not part of this directory. Clearing that
+            # work state in the isolated copy is what makes the drill actually rebuild the graph.
+            rebuild.con.execute("DELETE FROM graph_materialization")
+            total_materialized = 0
+            for _ in range(200):
+                step = graph.materialize(rebuild, limit=5000, log=lambda _m: None)
+                total_materialized += int(step["materialized"])
+                if int(step["materialized"]) == 0:
+                    break
             summary = graph.summary()
             rebuild.close()
         finally:
             graph.store.close()
         graph_report = {
             "rebuilt": True,
-            "materialized": step["materialized"],
+            "materialized": total_materialized,
             "errors": step["errors"][:5],
             "nodes": summary["nodes"],
             "edges": summary["edges"],
@@ -219,7 +228,13 @@ def restore_check(*, backup_path: str | Path, work_dir: str | Path,
         "consistency": consistency,
         "counts": counts,
         "graph": graph_report,
-        "ok": bool(integrity == "ok" and consistency.get("ok")),
+        # A restore is only proven when the graph was actually rebuilt as well; an empty graph
+        # next to 8,000 observations is a silent failure, not a successful drill.
+        "ok": bool(
+            integrity == "ok"
+            and consistency.get("ok")
+            and (not rebuild_graph or graph_report.get("nodes", 0) > 0)
+        ),
     }
     log(f"[restore-check] ok={report['ok']} integrity={integrity} "
         f"observations={counts['observations']} graph={graph_report.get('nodes')}")

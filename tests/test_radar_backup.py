@@ -105,6 +105,35 @@ def test_rebuild_graph_rebuilds_everything_not_only_what_the_old_graph_lacked(tm
     assert after["edges"] > 0
 
 
+def test_a_restore_drill_rebuilds_a_graph_even_when_the_backup_thinks_it_is_current(tmp_path: Path):
+    """Production drill: the backup carries graph_materialization rows from the live graph.
+
+    The first version materialised nothing (0 nodes) yet reported ok, because those rows said
+    every observation was already materialised. The drill must clear that work state in the
+    isolated copy and require a non-empty graph before calling itself successful.
+    """
+    from medradar.radar.graph import open_graph
+    from medradar.radar.taxonomy import load_taxonomy
+
+    root = _seed(tmp_path)
+    taxonomy = load_taxonomy(str(CONFIG_DIR))
+    graph = open_graph(root / "graph.db", taxonomy)
+    ledger = ObservationLedger(root / "radar.db", create=False)
+    try:
+        graph.materialize(ledger, limit=50, log=lambda _m: None)
+    finally:
+        graph.store.close()
+        ledger.close()
+
+    result = backup(radar_paths(root), destination=tmp_path / "backups", keep=2,
+                    log=lambda _m: None)
+    report = restore_check(backup_path=result.destination, work_dir=tmp_path / "restored",
+                           log=lambda _m: None)
+    assert report["ok"] is True
+    assert report["graph"]["nodes"] > 0
+    assert report["graph"]["edges"] > 0
+
+
 def test_a_restore_drill_proves_the_graph_can_be_rebuilt_from_the_backup(tmp_path: Path):
     root = _seed(tmp_path)
     result = backup(radar_paths(root), destination=tmp_path / "backups", keep=2,
