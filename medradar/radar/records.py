@@ -42,8 +42,8 @@ SCHEMA_VERSION = "radar-ledger-v1"
 COLLECTOR_VERSION = "radar-001/1.0.0"
 #: Version of the *rule layer*. A change here makes the next ``advance`` re-classify every
 #: observation, so a rule edit is a visible version change rather than a silent behaviour change.
-MAPPING_VERSION = "radar-rules-2026.11.2"
-GRAPH_VERSION = "radar-graph-1"
+MAPPING_VERSION = "radar-rules-2026.11.3"
+GRAPH_VERSION = "radar-graph-2"
 
 # --------------------------------------------------------------------- vocabulary
 CHANGE_NEW = "NEW"
@@ -173,6 +173,94 @@ ACCESS_UNVERIFIED = "UNVERIFIED"
 _DATE_ONLY = re.compile(r"^\d{4}-\d{2}-\d{2}$")
 _YEAR_ONLY = re.compile(r"^\d{4}$")
 _YEAR_MONTH = re.compile(r"^\d{4}-\d{2}$")
+
+#: A DOI is ``10.<registrant>/<suffix>``. Validation here is deliberately structural: MedRadar
+#: does not resolve the DOI, because resolution proves the registrar knows the string, not that
+#: the two records describe the same work. Equality of a *normalised* DOI does.
+_DOI = re.compile(r"^10\.\d{4,9}/\S+$")
+_PMID = re.compile(r"^\d{1,9}$")
+_DOI_PREFIXES = ("https://doi.org/", "http://doi.org/", "https://dx.doi.org/",
+                 "http://dx.doi.org/", "doi:", "doi ")
+
+
+def normalize_doi(value: Any) -> str | None:
+    """Canonical DOI, or ``None`` when the input is not one.
+
+    Strips resolver prefixes and whitespace, lowercases (DOIs are case-insensitive by
+    specification), and validates the ``10.<registrant>/<suffix>`` shape. It never guesses:
+    ``"doi: 10.1/x."`` becomes ``None`` if the suffix is empty, and a bare number is not a DOI.
+    """
+    if value is None:
+        return None
+    text = str(value).strip()
+    if not text:
+        return None
+    lowered = text.lower()
+    for prefix in _DOI_PREFIXES:
+        if lowered.startswith(prefix):
+            text = text[len(prefix):].strip()
+            break
+    text = "".join(text.split())
+    text = text.rstrip(".,;")
+    text = text.lower()
+    return text if _DOI.match(text) else None
+
+
+def normalize_pmid(value: Any) -> str | None:
+    """Canonical PMID digits, or ``None``. A PMID is an integer, not a string with a prefix."""
+    if value is None:
+        return None
+    text = str(value).strip()
+    if text.upper().startswith("PMID:"):
+        text = text[5:]
+    text = text.strip()
+    return text if _PMID.match(text) else None
+
+
+def standard_identifiers(record: "RawRecord") -> tuple[tuple[str, str], ...]:
+    """The official identifiers a record carries, normalised and de-duplicated.
+
+    This is what makes a cross-source join *verifiable* rather than plausible: PubMed states a
+    PMID **and** (usually) a DOI, Crossref states the same DOI, and equality of the normalised
+    DOI is an exact-match relation. Title similarity is never consulted here.
+    """
+    found: list[tuple[str, str]] = []
+    official = str(record.official_identifier or "")
+    prefix, _, tail = official.partition(":")
+    kind = prefix.strip().upper()
+    if kind == "PMID":
+        pmid = normalize_pmid(tail or official)
+        if pmid:
+            found.append(("PMID", pmid))
+    elif kind == "DOI":
+        doi = normalize_doi(tail)
+        if doi:
+            found.append(("DOI", doi))
+    for candidate in (
+        record.extra.get("doi"),
+        (record.payload or {}).get("doi"),
+        (record.payload or {}).get("DOI"),
+    ):
+        doi = normalize_doi(candidate)
+        if doi:
+            found.append(("DOI", doi))
+    for candidate in (
+        record.extra.get("pmid"),
+        (record.payload or {}).get("pmid"),
+        (record.payload or {}).get("PMID"),
+    ):
+        pmid = normalize_pmid(candidate)
+        if pmid:
+            found.append(("PMID", pmid))
+    if kind == "DOI":
+        doi = normalize_doi(official[4:])
+        if doi:
+            found.append(("DOI", doi))
+    ordered: list[tuple[str, str]] = []
+    for item in found:
+        if item not in ordered:
+            ordered.append(item)
+    return tuple(ordered)
 
 
 # ------------------------------------------------------------------ time handling

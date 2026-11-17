@@ -75,6 +75,7 @@ from .records import (
     changed_fields,
     content_hash,
     observation_id as make_observation_id,
+    standard_identifiers,
     utc_now_iso,
     version_id as make_version_id,
 )
@@ -333,6 +334,20 @@ CREATE TABLE IF NOT EXISTS runtime_state (
     value TEXT NOT NULL,
     updated_at TEXT NOT NULL
 );
+
+-- Normalised official identifiers (PMID, DOI) attached to an observation.
+-- A row here is a statement the *source* made, not an inference: the DOI parser only accepts
+-- the 10.<registrant>/<suffix> shape and lowercases it. Two rows with the same (kind, value)
+-- from different sources are the verifiable basis of a cross-source work match.
+CREATE TABLE IF NOT EXISTS observation_identifier (
+    observation_id TEXT NOT NULL,
+    kind TEXT NOT NULL,
+    value TEXT NOT NULL,
+    source TEXT,
+    first_seen_at TEXT NOT NULL,
+    PRIMARY KEY (observation_id, kind, value)
+);
+CREATE INDEX IF NOT EXISTS ix_ident_lookup ON observation_identifier(kind, value);
 
 -- --------------------------------------------------------------- append-only guards
 CREATE TRIGGER IF NOT EXISTS trg_version_no_update BEFORE UPDATE ON observation_version
@@ -834,6 +849,7 @@ class ObservationLedger:
                 self._insert_change(obs_id, record.source, CHANGE_NEW, seen, version, None, None,
                                     seen, record, run_id, discovered_phase)
                 self._write_mapping(obs_id, mapping, mapping_version, seen, run_id)
+                self._write_identifiers(obs_id, record, seen)
             return RecordOutcome(obs_id, CHANGE_NEW, version, None, (), seen, discovered_phase)
 
         previous_payload = self._latest_payload(obs_id)
@@ -847,6 +863,7 @@ class ObservationLedger:
                     (seen, run_id, obs_id),
                 )
                 self._write_mapping(obs_id, mapping, mapping_version, seen, run_id)
+                self._write_identifiers(obs_id, record, seen)
             return RecordOutcome(obs_id, CHANGE_UNCHANGED, previous_version, previous_version, (),
                                  existing["first_observed_at"], existing["discovery_phase"])
 
@@ -869,6 +886,7 @@ class ObservationLedger:
                                     previous_version, ["status"], existing["first_observed_at"],
                                     record, run_id, existing["discovery_phase"])
                 self._write_mapping(obs_id, mapping, mapping_version, seen, run_id)
+                self._write_identifiers(obs_id, record, seen)
             return RecordOutcome(obs_id, CHANGE_UPDATED, previous_version, previous_version,
                                  ("status",), existing["first_observed_at"], existing["discovery_phase"])
 
@@ -906,6 +924,7 @@ class ObservationLedger:
                                 previous_version, fields, existing["first_observed_at"], record,
                                 run_id, existing["discovery_phase"])
             self._write_mapping(obs_id, mapping, mapping_version, seen, run_id)
+            self._write_identifiers(obs_id, record, seen)
         return RecordOutcome(obs_id, CHANGE_UPDATED, version, previous_version, tuple(fields),
                              existing["first_observed_at"], existing["discovery_phase"])
 
@@ -1002,6 +1021,21 @@ class ObservationLedger:
         ).fetchone()
         return _parse_json(row[0]) if row else None
 
+    def _write_identifiers(self, obs_id: str, record: RawRecord, seen: str) -> None:
+        """Record the official identifiers this observation states.
+
+        Append-only on purpose: a DOI that appeared in a later version stays attached, because
+        the earlier version did not become wrong. ``INSERT OR IGNORE`` keeps ``first_seen_at``
+        honest - it is the moment MedRadar first read that identifier, not the moment of the
+        last check.
+        """
+        for kind, value in standard_identifiers(record):
+            self.con.execute(
+                "INSERT OR IGNORE INTO observation_identifier(observation_id, kind, value, source,"
+                " first_seen_at) VALUES(?,?,?,?,?)",
+                (obs_id, kind, value, record.source, seen),
+            )
+
     def _write_mapping(self, obs_id: str, mapping: MappingResult, mapping_version: str,
                        mapped_at: str, run_id: str | None) -> None:
         # A re-classification that produces byte-identical output is not history worth
@@ -1072,6 +1106,29 @@ class ObservationLedger:
                 "confidence": row["confidence"],
             })
         return out
+
+    def identifiers(self, obs_id: str) -> list[dict[str, Any]]:
+        """The normalised official identifiers this observation states (PMID, DOI)."""
+        return self.raw(
+            "SELECT kind, value, source, first_seen_at FROM observation_identifier"
+            " WHERE observation_id=? ORDER BY kind, value",
+            (obs_id,),
+        )
+
+    def identifier_peers(self, kind: str, value: str, *, exclude: str,
+                         limit: int = 8) -> list[dict[str, Any]]:
+        """Other observations stating the same official identifier.
+
+        This is exact string equality on a *normalised* identifier. It is not a fuzzy match
+        and it never consults the title, so title similarity can never create the relation.
+        """
+        return self.raw(
+            "SELECT i.observation_id, i.source, i.first_seen_at FROM observation_identifier i"
+            " JOIN observation o ON o.observation_id = i.observation_id"
+            " WHERE i.kind=? AND i.value=? AND i.observation_id<>?"
+            " ORDER BY i.observation_id LIMIT ?",
+            (kind, value, exclude, int(limit)),
+        )
 
     def versions(self, obs_id: str) -> list[dict[str, Any]]:
         rows = self.raw(

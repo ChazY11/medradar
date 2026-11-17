@@ -1,0 +1,56 @@
+[Unit]
+Description=MedRadar Radar continuous source scheduler (LAUNCH-001)
+Documentation=file:///srv/medradar/radar/app/docs/radar/LAUNCH_001_RUNBOOK.md
+After=network-online.target
+Wants=network-online.target
+# Deliberately independent of medradar-web.service and of the FDA data pipeline: a fault in
+# either must not stop source monitoring, and monitoring must not restart the workbench.
+Conflicts=medradar-radar-scheduler@.service
+
+[Service]
+Type=simple
+User=medradar
+Group=medradar
+WorkingDirectory=/srv/medradar/radar/app
+Environment=HOME=/srv/medradar
+Environment=PYTHONUNBUFFERED=1
+Environment=PYTHONDONTWRITEBYTECODE=1
+Environment=MEDRADAR_RADAR_DIR=/srv/medradar/data/radar
+Environment=MEDRADAR_PUBLIC_ALPHA=1
+# No MEDRADAR_AI_PYTHON: the 3.3 GB local model is not run on this 4 GB host. Discovery must
+# never wait for inference.
+EnvironmentFile=-/etc/medradar/radar-alpha.env
+ExecStart=/srv/medradar/radar-venv/bin/python -m medradar radar watch --interval 300 --no-ai
+Restart=always
+RestartSec=20
+# A cycle can legitimately take minutes (PubMed + Crossref + openFDA + two vendor sites).
+TimeoutStopSec=120
+KillSignal=SIGTERM
+
+# ---------------------------------------------------------------- resource protection
+# Measured on this 2 vCPU / 3.6 GiB host with `systemd-cgtop`; see LAUNCH_001_RUNBOOK.md.
+# The scheduler is I/O-bound and small; the caps exist so a runaway adapter cannot take the
+# host away from the FDA pipeline.
+Nice=10
+IOSchedulingClass=best-effort
+IOSchedulingPriority=7
+MemoryHigh=384M
+MemoryMax=640M
+CPUQuota=70%
+TasksMax=64
+OOMPolicy=stop
+
+NoNewPrivileges=yes
+PrivateTmp=yes
+PrivateDevices=yes
+ProtectSystem=strict
+ProtectHome=yes
+ProtectKernelTunables=yes
+ProtectControlGroups=yes
+RestrictSUIDSGID=yes
+LockPersonality=yes
+RestrictAddressFamilies=AF_INET AF_INET6 AF_UNIX
+ReadWritePaths=/srv/medradar/data/radar
+
+[Install]
+WantedBy=multi-user.target

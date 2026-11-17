@@ -58,7 +58,7 @@ from .records import (
 )
 from .taxonomy import Taxonomy
 
-GRAPH_VERSION = "radar-graph-1"
+GRAPH_VERSION = "radar-graph-2"
 
 # ---------------------------------------------------------------- node/edge types
 NODE_COMPANY = "company"
@@ -356,10 +356,25 @@ class TechnologyGraph:
 
         # --------------------------------------------- cross-source identifier match
         official = row.get("official_identifier")
+        matched_siblings: set[str] = set()
         if official:
-            pending_duplicates = self._identifier_edges(ledger, observation_id, official, valid_from,
-                                                       base, evidence, node_type, rec_id)
+            pending_duplicates, matched_siblings = self._identifier_edges(
+                ledger, observation_id, official, valid_from, base, evidence, node_type, rec_id)
             specs.extend(pending_duplicates)
+
+        # ------------------------------------------- cross-source same-work DOI match
+        # A PMID record and a Crossref record never share ``official_identifier`` (one is a
+        # PMID, the other a DOI), so the identifier above cannot join them. The DOI that PubMed
+        # states in its own metadata can: normalised DOI equality across two independent APIs is
+        # a verifiable same-work relation, and it is deliberately the *only* basis used here -
+        # title similarity is never consulted.
+        for identifier in ledger.identifiers(observation_id):
+            if identifier["kind"] != "DOI":
+                continue
+            specs.extend(self._doi_match_edges(
+                ledger, observation_id, identifier["value"], valid_from, base, evidence, node_type,
+                rec_id, exclude=matched_siblings,
+            ))
 
         # -------------------------------------------------- related technology topics
         # Sorted so the edge direction is a property of the topic pair, not of the order the
@@ -452,7 +467,7 @@ class TechnologyGraph:
 
     def _identifier_edges(self, ledger, observation_id: str, official: str, valid_from: str,
                           base: Mapping[str, Any], evidence: Mapping[str, Any],
-                          node_type: str, rec_id: str) -> list[dict[str, Any]]:
+                          node_type: str, rec_id: str) -> tuple[list[dict[str, Any]], set[str]]:
         siblings = ledger.raw(
             "SELECT observation_id, source, record_type, title, source_url, first_observed_at,"
             " event_at, published_at FROM observation"
@@ -460,6 +475,7 @@ class TechnologyGraph:
             (official, observation_id),
         )
         specs: list[dict[str, Any]] = []
+        sibling_ids: set[str] = set()
         for sibling in siblings:
             sibling_type = {
                 "regulatory_record": NODE_REGULATORY,
@@ -468,6 +484,7 @@ class TechnologyGraph:
                 "product_document": NODE_DOCUMENT,
             }.get(sibling["record_type"], NODE_DOCUMENT)
             sibling_id = record_node_id(sibling["observation_id"])
+            sibling_ids.add(sibling["observation_id"])
             specs.append(self._record_node_spec(sibling, sibling_type))
             # One deterministic direction so the assertion is stable across runs.
             if rec_id < sibling_id:
@@ -475,6 +492,52 @@ class TechnologyGraph:
                     EDGE_IDENTIFIER_MATCH, node_type, rec_id, sibling_type, sibling_id,
                     valid_from, base, evidence, confirmation=CONFIRMED, method="official_identifier",
                     extra={"official_identifier": official, "other_source": sibling["source"]},
+                ))
+        return specs, sibling_ids
+
+    def _doi_match_edges(self, ledger, observation_id: str, doi: str, valid_from: str,
+                         base: Mapping[str, Any], evidence: Mapping[str, Any],
+                         node_type: str, rec_id: str, *, exclude: set[str]) -> list[dict[str, Any]]:
+        """Join two observations of the *same work* through an exact, normalised DOI.
+
+        The relation is recorded as ``OFFICIAL_IDENTIFIER_MATCH`` with an explicit
+        ``identifier_kind=DOI`` and its own method, so a reader can tell a PMID/DOI bridge from
+        an identical-identifier match. Only observations from a different source qualify: two
+        rows from one API sharing a DOI are one observation recorded twice, not corroboration.
+        """
+        specs: list[dict[str, Any]] = []
+        peers = ledger.identifier_peers("DOI", doi, exclude=observation_id, limit=8)
+        own_source = None
+        for peer in peers:
+            if peer["observation_id"] in exclude or peer["observation_id"] == observation_id:
+                continue
+            row = ledger.observation_row(peer["observation_id"])
+            if row is None:
+                continue
+            if own_source is None:
+                own = ledger.observation_row(observation_id) or {}
+                own_source = own.get("source")
+            if row.get("source") == own_source:
+                continue
+            sibling_type = {
+                "regulatory_record": NODE_REGULATORY,
+                "publication": NODE_PUBLICATION,
+                "press_release": NODE_DOCUMENT,
+                "product_document": NODE_DOCUMENT,
+            }.get(row["record_type"], NODE_DOCUMENT)
+            sibling_id = record_node_id(row["observation_id"])
+            specs.append(self._record_node_spec(row, sibling_type))
+            if rec_id < sibling_id:
+                specs.append(self._edge(
+                    EDGE_IDENTIFIER_MATCH, node_type, rec_id, sibling_type, sibling_id,
+                    valid_from, base, evidence, confirmation=CONFIRMED, method="doi_exact_match",
+                    extra={
+                        "official_identifier": f"DOI:{doi}",
+                        "identifier_kind": "DOI",
+                        "identifier_value": doi,
+                        "other_source": row.get("source"),
+                        "basis": "normalised DOI equality across two independent sources",
+                    },
                 ))
         return specs
 
@@ -785,6 +848,8 @@ class TechnologyGraph:
                     "organization_id": org_id,
                     "display_name": (company_nodes.get(company_id, {}).get("attrs") or {}).get(
                         "display_name", org_id),
+                    "label_zh": (company_nodes.get(company_id, {}).get("attrs") or {}).get(
+                        "label_zh"),
                     "state": state,
                     "reported_capability_evidence": len(caps),
                     "regulatory_topic_evidence": reg,

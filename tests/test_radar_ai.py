@@ -165,6 +165,56 @@ def test_a_missing_model_defers_the_backlog_without_losing_it(tmp_path: Path):
     ledger.close()
 
 
+class SequenceClassifier(StubClassifier):
+    """Returns one output per call, in order, to reproduce a mixed batch."""
+
+    def __init__(self, outputs):
+        super().__init__("")
+        self.outputs = list(outputs)
+        self.index = 0
+
+    def generate(self, messages):
+        text = self.outputs[min(self.index, len(self.outputs) - 1)]
+        self.index += 1
+        return {"text": text, "prompt_tokens": 10, "generated_tokens": 20,
+                "seconds": 0.5, "tokens_per_second": 40.0}
+
+
+def test_json_validity_is_divided_by_every_attempt_not_by_the_parsed_ones(tmp_path: Path):
+    """Regression for the RADAR-001 evaluation defect.
+
+    The acceptance batch had 14 model attempts, 11 parsed outputs and 3 ``json_invalid`` ones,
+    but reported a 100% validity rate because the denominator was the parsed-only count. The
+    true rate is 11/14 = 0.7857. The three failures are still part of the sample.
+    """
+    attempts = 14
+    ledger = _ledger_with_records(tmp_path, count=attempts)
+    good = json.dumps({"topics": [], "organizations": [], "summary": "s"})
+    outputs = [good] * 11 + ["I could not answer in the requested format."] * 3
+    eval_set = {
+        "name": "denominator regression",
+        "version": "1",
+        "labelled_by": "test",
+        "items": [
+            {"official_identifier": f"PMID:{index}", "expected_topics": [],
+             "expected_organization": None}
+            for index in range(attempts)
+        ],
+    }
+    report = run_evaluation(ledger, load_taxonomy(str(CONFIG_DIR)), eval_set,
+                            classifier=SequenceClassifier(outputs), log=lambda _m: None)
+    metrics = report["metrics"]
+    assert metrics["model_attempts"] == attempts
+    assert metrics["json_valid_outputs"] == 11
+    assert metrics["json_invalid_outputs"] == 3
+    assert metrics["json_validity_rate"] == round(11 / 14, 4)
+    assert report["eval_set"]["evaluated"] == 11
+    assert report["eval_set"]["not_in_ledger"] == 0
+    # The three unparseable answers are wrong organisation answers, not absent samples.
+    assert metrics["organization_samples"] == attempts
+    ledger.close()
+
+
 def test_evaluation_reports_measured_metrics_against_labels(tmp_path: Path):
     ledger = _ledger_with_records(tmp_path, count=2)
     eval_set = {

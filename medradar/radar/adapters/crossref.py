@@ -114,15 +114,16 @@ class CrossrefAdapter:
         )
 
     def accept_record(self, record: RawRecord, mapping) -> tuple[bool, str]:
-        """A search result only enters the radar if it is about a monitored topic or vendor.
+        """A search result only enters the radar if it studies monitoring technology or a vendor.
 
         Crossref answers a query with *something* even when nothing matches, so without this
         gate the ledger fills with unrelated papers and every count downstream becomes a
-        count of noise.
+        count of noise. A decision-support-only paper (predicting deterioration from ICU data)
+        is a clinical study, not device research, and is rejected with that reason.
         """
-        if mapping.technology_topics or mapping.organization_candidates:
-            return True, ""
-        return False, "out of scope: no monitored technology topic and no monitored vendor affiliation"
+        from ..classify import publication_relevance
+
+        return publication_relevance(mapping)
 
     # ------------------------------------------------------------------ mapping
     def map_record(self, record: RawRecord, ctx: CollectContext) -> MappingResult:

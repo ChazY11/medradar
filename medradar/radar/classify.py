@@ -91,6 +91,53 @@ def extract_vendor_product(title: str | None) -> str | None:
     return None
 
 
+#: Technology families whose evidence is about a *measuring device or its platform* rather than
+#: about a clinical decision made from measurements. Used only by the publication admission gate.
+DEVICE_FAMILIES = frozenset({
+    "electrocardiography", "oxygenation", "haemodynamics", "ventilation", "alarms", "platform",
+})
+#: A topic inside an otherwise clinical family that is still explicitly about the device chain.
+DEVICE_TOPICS = frozenset({"data_interoperability"})
+
+
+def publication_relevance(mapping: MappingResult) -> tuple[bool, str]:
+    """Decide whether a paper is about monitoring *technology* or merely uses monitoring data.
+
+    The distinction the first batch got wrong: a study that predicts sepsis from ICU vital signs
+    is a clinical study that *consumes* monitoring data. It is not evidence that a monitor vendor
+    developed a technique, and admitting it inflates every downstream topic count.
+
+    Admission requires one of:
+
+    * a monitored vendor affiliation (the paper is authored inside the industry);
+    * a technology topic in a device family - ECG, oximetry, blood pressure, ventilation,
+      alarms/signal quality, or a monitor platform;
+    * the device-connectivity topic (``data_interoperability``), which is about the device chain.
+
+    A decision-support-only paper is rejected with a reason that says so, and the reason is
+    recorded in the run's out-of-scope samples. Nothing is silently dropped.
+    """
+    if mapping.organization_candidates:
+        return True, ""
+    topics = list(mapping.technology_topics or ())
+    device_topics = [
+        topic for topic in topics
+        if topic.get("family") in DEVICE_FAMILIES or topic.get("topic_id") in DEVICE_TOPICS
+    ]
+    if device_topics:
+        return True, ""
+    if topics:
+        names = ", ".join(sorted(str(topic.get("topic_id")) for topic in topics))
+        return False, (
+            "out of scope: a clinical study that uses monitoring data but does not study "
+            f"monitoring technology (only decision-support/topic signals: {names})"
+        )
+    return False, (
+        "out of scope: the record matches no monitored technology topic and no monitored vendor "
+        "affiliation"
+    )
+
+
 class RuleMapper:
     """Turn one :class:`RawRecord` into a :class:`MappingResult` using config only."""
 

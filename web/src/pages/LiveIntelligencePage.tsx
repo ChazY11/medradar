@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+import { Link } from "react-router-dom";
 import { useAsync } from "../api/hooks";
 import { useI18n } from "../i18n";
 import {
@@ -109,6 +110,7 @@ export function LiveIntelligencePage() {
         )}
       />
 
+      <div className="radar-page">
       {health.data?.available === false ? (
         <Banner tone="warning" title={bi("Monitoring has not started", "监测尚未启动")}>
           {bi(
@@ -134,6 +136,7 @@ export function LiveIntelligencePage() {
         </Banner>
       ) : null}
 
+      <div className="radar-status">
       <Card
         title={bi("Source status", "来源状态")}
         note={bi(
@@ -193,7 +196,9 @@ export function LiveIntelligencePage() {
           )}
         </AsyncSection>
       </Card>
+      </div>
 
+      <div className="radar-filters">
       <Card
         title={bi("Filters", "筛选")}
         note={bi("Filter by company, technology topic, source, dates and relation confidence.", "按企业、技术主题、来源、日期与关联置信度筛选。")}
@@ -205,6 +210,8 @@ export function LiveIntelligencePage() {
           ) : null
         }
       >
+        <details className="filter-details" open>
+          <summary>{bi("Show filters", "展开筛选条件")}</summary>
         <AsyncSection status={facets.status} data={facets.data} error={facets.error} reload={facets.reload} loadingLines={3}>
           {(payload) => (
             <div className="filter-bar" style={{ flexDirection: "column", alignItems: "stretch", gap: 10 }}>
@@ -358,8 +365,11 @@ export function LiveIntelligencePage() {
             </div>
           )}
         </AsyncSection>
+        </details>
       </Card>
+      </div>
 
+      <div className="radar-feed">
       <AsyncSection status={feed.status} data={feed.data} error={feed.error} reload={feed.reload} loadingLines={6}>
         {(payload) => (
           <>
@@ -395,8 +405,10 @@ export function LiveIntelligencePage() {
           </>
         )}
       </AsyncSection>
+      </div>
 
       {selected ? <IntelligenceDrawer observationId={selected} onClose={() => setSelected(null)} /> : null}
+      </div>
     </>
   );
 }
@@ -425,12 +437,12 @@ function FeedCard({ item, onOpen }: { item: IntelEvent; onOpen: () => void }) {
             <Badge tone="warn">{bi("historical backfill", "历史回填")}</Badge>
           ) : null}
         </div>
-        <button type="button" className="btn sm" onClick={onOpen}>
+        <button type="button" className="btn sm touch" onClick={onOpen}>
           {bi("Evidence", "证据")}
         </button>
       </div>
 
-      <h3 style={{ margin: "10px 0 6px", fontSize: 15, lineHeight: 1.45 }}>
+      <h3 className="feed-title">
         {item.source_url ? (
           <a href={item.source_url} target="_blank" rel="noreferrer noopener">
             {item.title}
@@ -440,30 +452,42 @@ function FeedCard({ item, onOpen }: { item: IntelEvent; onOpen: () => void }) {
         )}
       </h3>
 
-      <div className="row wrap small muted" style={{ gap: 14 }}>
+      <div className="feed-meta">
         <span>
-          {bi("Published", "公开")}: {item.source_published_at ? formatDateTime(item.source_published_at) : bi("not published by source", "来源未公布")}
+          {bi("Published", "来源公开")}: {item.source_published_at ? formatDateTime(item.source_published_at) : bi("not published by source", "来源未公布")}
         </span>
         <span>
-          {bi("Event date", "事件日期")}: {item.event_date ? formatDate(item.event_date) : "—"}
+          {bi("First observed", "MedRadar 首次发现")}: {formatDateTime(item.first_observed_at)}
         </span>
-        <span>
-          {bi("First observed", "首次发现")}: {formatDateTime(item.first_observed_at)}
-        </span>
+        {item.event_date ? (
+          <span>
+            {bi("Event date", "事件日期")}: {formatDate(item.event_date)}
+          </span>
+        ) : null}
         {item.official_identifier ? <span className="mono small">{item.official_identifier}</span> : null}
       </div>
 
       {item.organization_candidates.length || item.technology_topics.length ? (
         <div className="row wrap" style={{ gap: 6, marginTop: 10 }}>
           {item.organization_candidates.map((org) => (
-            <Badge key={org.organization_id + org.confirmation} tone={confirmationTone(org.confirmation)} title={org.method}>
-              {org.display_name} · {org.confirmation}
-            </Badge>
+            <Link
+              key={org.organization_id + org.confirmation}
+              to={`/organizations/${encodeURIComponent(org.organization_id)}`}
+              className={`badge ${confirmationTone(org.confirmation)}`}
+              title={org.method}
+            >
+              {org.label_zh ?? org.display_name} · {org.confirmation}
+            </Link>
           ))}
           {item.technology_topics.map((topic) => (
-            <Badge key={topic.topic_id + topic.confirmation} tone={confirmationTone(topic.confirmation)} title={topic.method}>
-              {topic.label_en} · {topic.confirmation}
-            </Badge>
+            <Link
+              key={topic.topic_id + topic.confirmation}
+              to={`/radar/technology-map`}
+              className={`badge ${confirmationTone(topic.confirmation)}`}
+              title={topic.method}
+            >
+              {bi(topic.label_en, topic.label_zh ?? topic.label_en)} · {topic.confirmation}
+            </Link>
           ))}
           {item.product_candidates.map((product) => (
             <Badge key={product.product_key} tone={confirmationTone(product.confirmation)}>
@@ -479,6 +503,14 @@ function FeedCard({ item, onOpen }: { item: IntelEvent; onOpen: () => void }) {
           )}
         </div>
       )}
+
+      <div className="feed-actions">
+        {item.source_url ? (
+          <a className="btn sm touch" href={item.source_url} target="_blank" rel="noreferrer noopener">
+            {bi("Open official source", "打开官方来源")}
+          </a>
+        ) : null}
+      </div>
 
       {item.latest_version_changed_fields.length ? (
         <div className="small muted mt-8">

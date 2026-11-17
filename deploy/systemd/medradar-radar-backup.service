@@ -1,0 +1,30 @@
+[Unit]
+Description=MedRadar Radar consistent ledger backup (online SQLite backup + verification)
+Documentation=file:///srv/medradar/radar/app/docs/radar/LAUNCH_001_RUNBOOK.md
+After=network-online.target medradar-radar-scheduler.service
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+User=medradar
+Group=medradar
+WorkingDirectory=/srv/medradar/radar/app
+Environment=HOME=/srv/medradar
+Environment=PYTHONUNBUFFERED=1
+Environment=MEDRADAR_RADAR_DIR=/srv/medradar/data/radar
+ExecStart=/srv/medradar/radar-venv/bin/python -m medradar radar backup --destination /srv/medradar/data/radar/backups --keep 14 --json
+TimeoutStartSec=15min
+Nice=10
+IOSchedulingClass=idle
+IOSchedulingPriority=7
+MemoryHigh=256M
+MemoryMax=384M
+NoNewPrivileges=yes
+PrivateTmp=yes
+ProtectSystem=strict
+ProtectHome=yes
+ProtectKernelTunables=yes
+ProtectControlGroups=yes
+RestrictSUIDSGID=yes
+LockPersonality=yes
+ReadWritePaths=/srv/medradar/data/radar

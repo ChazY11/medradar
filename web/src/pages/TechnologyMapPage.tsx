@@ -55,6 +55,14 @@ export function TechnologyMapPage() {
   const [at, setAt] = useState<string>("");
   const [selectedTopic, setSelectedTopic] = useState<string | null>(null);
   const [node, setNode] = useState<{ nodeType: string; nodeId: string } | null>(null);
+  // The company switcher is the primary navigation on a phone: one company at a time, instead
+  // of scrolling a three-company comparison built for a desktop column.
+  const [activeCompanies, setActiveCompanies] = useState<string[]>([...COMPANIES]);
+
+  const companyQuery = useMemo(
+    () => (activeCompanies.length ? activeCompanies.join(",") : COMPANIES.join(",")),
+    [activeCompanies],
+  );
 
   const timeQuery: TimeQuery = useMemo(
     () => (at ? { mode, at } : { mode }),
@@ -62,12 +70,12 @@ export function TechnologyMapPage() {
   );
 
   const map = useAsync(
-    () => getTechnologyMap({ ...timeQuery, companies: COMPANIES.join(",") }),
-    [mode, at],
+    () => getTechnologyMap({ ...timeQuery, companies: companyQuery }),
+    [mode, at, companyQuery],
   );
   const compare = useAsync(
-    () => getCompare({ ...timeQuery, companies: COMPANIES.join(",") }),
-    [mode, at],
+    () => getCompare({ ...timeQuery, companies: companyQuery }),
+    [mode, at, companyQuery],
   );
   const [earlier, setEarlier] = useState(defaultEarlier);
   const changes = useAsync(() => getGraphChanges(`${earlier}T00:00:00Z`), [earlier]);
@@ -84,6 +92,38 @@ export function TechnologyMapPage() {
           "Philips、GE HealthCare、Dräger 有哪些技术拥有公开证据？以下每个分支都由观察数据库动态生成，并可追溯到证据记录。本页面没有任何静态能力清单。",
         )}
       />
+
+      <div className="company-switcher" role="group" aria-label={bi("Company switcher", "企业切换")}>
+        <span className="small muted">{bi("Companies", "企业")}</span>
+        <button
+          type="button"
+          className="chip"
+          aria-pressed={activeCompanies.length === COMPANIES.length}
+          onClick={() => setActiveCompanies([...COMPANIES])}
+        >
+          {bi("All", "全部")}
+        </button>
+        {COMPANIES.map((company) => {
+          const on = activeCompanies.includes(company);
+          return (
+            <button
+              key={company}
+              type="button"
+              className="chip"
+              aria-pressed={on && activeCompanies.length !== COMPANIES.length}
+              onClick={() => {
+                const next = on
+                  ? activeCompanies.filter((item) => item !== company)
+                  : [...activeCompanies, company];
+                // Never leave the view empty: the last remaining company stays selected.
+                setActiveCompanies(next.length ? next : [company]);
+              }}
+            >
+              {COMPANY_LABELS[company]}
+            </button>
+          );
+        })}
+      </div>
 
       <Card
         title={bi("Observation time", "观察时间")}
@@ -233,7 +273,7 @@ export function TechnologyMapPage() {
                       {selectedTopic === branch.topic_id ? (
                         <div className="mt-8">
                           <div className="table-wrap">
-                            <table>
+                            <table className="data">
                               <thead>
                                 <tr>
                                   <th>{bi("Evidence", "证据")}</th>
@@ -248,16 +288,16 @@ export function TechnologyMapPage() {
                                 {branch.companies.flatMap((company) =>
                                   company.evidence.map((row) => (
                                     <tr key={`${company.organization_id}-${row.record_node}-${row.evidence_id}`}>
-                                      <td>
+                                      <td data-label={bi("Evidence", "证据")}>
                                         {company.display_name} · {(row.title ?? row.record_node).slice(0, 70)}
                                       </td>
-                                      <td>
+                                      <td data-label={bi("Confirmation", "确认等级")}>
                                         <Badge tone={toneFor(row.confirmation)}>{row.confirmation}</Badge>
                                       </td>
-                                      <td className="small">{row.method ?? "—"}</td>
-                                      <td className="small">{row.valid_from ? formatDate(row.valid_from) : "—"}</td>
-                                      <td className="small">{formatDateTime(row.recorded_at)}</td>
-                                      <td className="small">
+                                      <td className="small" data-label={bi("Method", "方法")}>{row.method ?? "—"}</td>
+                                      <td className="small" data-label={bi("Valid from", "适用起")}>{row.valid_from ? formatDate(row.valid_from) : "—"}</td>
+                                      <td className="small" data-label={bi("Recorded at", "记录时间")}>{formatDateTime(row.recorded_at)}</td>
+                                      <td className="small" data-label={bi("Official source", "官方来源")}>
                                         {row.source_url ? (
                                           <a href={row.source_url} target="_blank" rel="noreferrer noopener">
                                             {bi("open", "打开")}
@@ -291,24 +331,26 @@ export function TechnologyMapPage() {
               <Callout>{payload.no_evidence_means}</Callout>
               <Callout>{payload.not_comparable_warning}</Callout>
               <div className="table-wrap">
-                <table>
+                <table className="data">
                   <thead>
                     <tr>
                       <th>{bi("Technology topic", "技术主题")}</th>
-                      {COMPANIES.map((company) => (
-                        <th key={company}>{COMPANY_LABELS[company]}</th>
+                      {(payload.rows[0]?.cells ?? []).map((cell) => (
+                        <th key={cell.organization_id}>
+                          {cell.label_zh ?? cell.display_name}
+                        </th>
                       ))}
                     </tr>
                   </thead>
                   <tbody>
                     {payload.rows.map((row) => (
                       <tr key={row.topic_id}>
-                        <td>
-                          <div>{row.label_en}</div>
+                        <td data-label={bi("Technology topic", "技术主题")}>
+                          <div>{bi(row.label_en, row.label_zh ?? row.label_en)}</div>
                           <div className="small muted">{row.topic_id}</div>
                         </td>
                         {row.cells.map((cell) => (
-                          <td key={cell.organization_id}>
+                          <td key={cell.organization_id} data-label={cell.label_zh ?? cell.display_name}>
                             {cell.state === "EVIDENCE_PRESENT" ? (
                               <div>
                                 <Badge tone="ok">{bi("evidence present", "有证据")}</Badge>

@@ -1370,3 +1370,51 @@ code.mono {
   padding-left: 0;
   padding-right: 0;
 }
+
+/* ------------------------------------------- LAUNCH-001 live radar and mobile alpha */
+.radar-page { display: flex; flex-direction: column; }
+.feed-title {
+  margin: 10px 0 6px;
+  font-size: 15.5px;
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+}
+.feed-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 14px;
+  font-size: 12px;
+  color: var(--text-3);
+}
+.feed-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+a.badge { text-decoration: none; }
+.btn.touch { min-height: 40px; min-width: 40px; }
+.filter-details > summary { display: none; cursor: pointer; }
+.company-switcher {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin: 4px 0 14px;
+}
+
+@media (max-width: 768px) {
+  /* On a phone the newest intelligence comes first; status and filters move below it.
+     Order is done in CSS so the desktop layout is unchanged and the DOM stays keyboard-ordered. */
+  .radar-page > .radar-feed { order: 1; }
+  .radar-page > .radar-filters { order: 2; }
+  .radar-page > .radar-status { order: 3; }
+  .filter-details > summary {
+    display: block;
+    padding: 2px 0 10px;
+    font-size: 12px;
+    color: var(--text-3);
+  }
+  .feed-title { font-size: 16px; }
+  .btn { min-height: 40px; }
+  .chip { min-height: 34px; }
+  /* The language toggle is the one control a Chinese-first mobile user must always reach. */
+  .lang-toggle { display: inline-flex; }
+  .table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .drawer-section table.data tbody td { padding-left: 0; }
+}

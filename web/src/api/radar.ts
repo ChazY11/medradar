@@ -285,6 +285,7 @@ export interface TechnologyMap {
 export interface CompareCell {
   organization_id: string;
   display_name: string;
+  label_zh: string | null;
   state: "EVIDENCE_PRESENT" | "NO_EVIDENCE_FOUND" | "NOT_MONITORED" | "SOURCE_UNAVAILABLE";
   reported_capability_evidence: number;
   regulatory_topic_evidence: number;

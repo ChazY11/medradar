@@ -267,6 +267,82 @@ def test_company_comparison_distinguishes_no_evidence_from_no_technology(tmp_pat
     graph.store.close()
 
 
+def test_a_shared_normalised_doi_joins_two_sources_even_with_different_titles(tmp_path: Path):
+    """PMID and DOI are different official identifiers, so identifier equality cannot join them.
+
+    The DOI that PubMed itself states is the bridge. The titles below are deliberately
+    different: the relation must come from the normalised DOI, never from title similarity.
+    """
+    from medradar.radar.classify import RuleMapper
+
+    ledger = _ledger(tmp_path)
+    ledger.ensure_source("crossref", label="Crossref", adapter_version="a1", cadence_hours=12)
+    shared_doi = "10.1097/CCM.0000000000005001"
+    pubmed = RawRecord(
+        source="pubmed", source_record_id="pmid:40000077", official_identifier="PMID:40000077",
+        record_type="publication", title="Alarm fatigue in a modular intensive care monitor",
+        url="https://pubmed.ncbi.nlm.nih.gov/40000077/",
+        published_at="2026-02-01", published_at_precision="date",
+        payload={"pmid": "40000077", "title": "Alarm fatigue in a modular intensive care monitor",
+                 "abstract": "Alarm fatigue and signal quality in intensive care monitoring.",
+                 "doi": shared_doi.upper()},
+        text="Alarm fatigue and signal quality in intensive care monitoring.",
+        extra={"affiliations": [], "doi": shared_doi.upper()},
+    )
+    crossref = RawRecord(
+        source="crossref", source_record_id=f"doi:{shared_doi.lower()}",
+        official_identifier=f"DOI:{shared_doi.lower()}",
+        record_type="publication", title="A completely different running head",
+        url=f"https://doi.org/{shared_doi}",
+        published_at="2026-02-01", published_at_precision="date",
+        payload={"doi": shared_doi.lower(), "title": "A completely different running head",
+                 "abstract": "SpO2 and ECG monitoring in the ICU."},
+        text="SpO2 and ECG monitoring in the ICU.",
+        extra={"affiliations": [], "doi": shared_doi.lower()},
+    )
+    for record in (pubmed, crossref):
+        ledger.record_observation(record, RuleMapper(_taxonomy()).map(record), run_id="r",
+                                  adapter_version="a1", mapping_version=MAPPING_VERSION)
+    graph = _graph(tmp_path)
+    graph.materialize(ledger, limit=50, log=lambda _m: None)
+    doi_edges = [edge for edge in _edges(graph, EDGE_IDENTIFIER_MATCH)
+                 if edge["attrs"].get("method") == "doi_exact_match"]
+    assert len(doi_edges) == 1
+    edge = doi_edges[0]
+    assert edge["attrs"]["confirmation"] == "CONFIRMED"
+    assert edge["attrs"]["identifier_kind"] == "DOI"
+    assert edge["attrs"]["identifier_value"] == shared_doi.lower()
+    assert edge["attrs"]["other_source"] in ("pubmed", "crossref")
+    ledger.close()
+    graph.store.close()
+
+
+def test_a_different_doi_never_joins_two_publications(tmp_path: Path):
+    from medradar.radar.classify import RuleMapper
+
+    ledger = _ledger(tmp_path)
+    ledger.ensure_source("crossref", label="Crossref", adapter_version="a1", cadence_hours=12)
+    for source, identifier, doi in (
+        ("pubmed", "PMID:40000078", "10.1097/ccm.0000000000005002"),
+        ("crossref", "DOI:10.1097/ccm.0000000000005003", "10.1097/ccm.0000000000005003"),
+    ):
+        record = RawRecord(
+            source=source, source_record_id=identifier.lower(), official_identifier=identifier,
+            record_type="publication", title="SpO2 oximetry in intensive care monitoring",
+            url="https://example.test/x", published_at="2026-02-01", published_at_precision="date",
+            payload={"doi": doi, "title": "SpO2 oximetry in intensive care monitoring",
+                     "abstract": "pulse oximetry oxygen saturation"},
+            text="pulse oximetry oxygen saturation", extra={"affiliations": [], "doi": doi},
+        )
+        ledger.record_observation(record, RuleMapper(_taxonomy()).map(record), run_id="r",
+                                  adapter_version="a1", mapping_version=MAPPING_VERSION)
+    graph = _graph(tmp_path)
+    graph.materialize(ledger, limit=50, log=lambda _m: None)
+    assert _edges(graph, EDGE_IDENTIFIER_MATCH) == []
+    ledger.close()
+    graph.store.close()
+
+
 def test_changes_between_two_knowledge_times_reports_the_added_assertions(tmp_path: Path):
     ledger = _ledger(tmp_path)
     clock = {"now": datetime(2026, 5, 1, tzinfo=timezone.utc)}

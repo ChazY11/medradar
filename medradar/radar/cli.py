@@ -287,6 +287,62 @@ def cmd_compare(args) -> int:
     return 0
 
 
+def cmd_backup(args) -> int:
+    from .backup import backup
+
+    paths = radar_paths(args.data_dir)
+    result = backup(paths, destination=args.destination, keep=args.keep, log=print)
+    if args.json:
+        _print_json(result.as_dict())
+    return 0 if result.manifest.get("verified") else 2
+
+
+def cmd_restore_check(args) -> int:
+    from .backup import restore_check
+
+    report = restore_check(backup_path=args.backup, work_dir=args.work_dir,
+                           rebuild_graph=not args.no_graph, log=print)
+    if args.json:
+        _print_json(report)
+    return 0 if report["ok"] else 2
+
+
+def cmd_rebuild_graph(args) -> int:
+    """Rebuild graph.db from radar.db into a new file, then swap it in atomically.
+
+    Deleting the derived graph is never deleting intelligence: the observation ledger is the
+    record, and this command proves the graph is a projection of it.
+    """
+    import os
+
+    taxonomy = load_taxonomy()
+    paths = radar_paths(args.data_dir)
+    if not paths.ledger.is_file():
+        print(f"No radar ledger at {paths.ledger}")
+        return 1
+    staged = paths.root / "graph.db.rebuild"
+    if staged.exists():
+        staged.unlink()
+    graph = open_graph(staged, taxonomy)
+    ledger = ObservationLedger(paths.ledger, create=False)
+    try:
+        step = graph.materialize(ledger, limit=args.limit, log=print)
+        summary = graph.summary()
+    finally:
+        ledger.close()
+        graph.store.close()
+    if paths.graph.exists():
+        os.replace(paths.graph, paths.root / "graph.db.previous")
+    os.replace(staged, paths.graph)
+    payload = {"materialized": step, "nodes": summary["nodes"], "edges": summary["edges"],
+               "graph": str(paths.graph)}
+    if args.json:
+        _print_json(payload)
+    else:
+        print(f"rebuilt {paths.graph}: {summary['nodes']} nodes / {summary['edges']} edges")
+    return 0
+
+
 def cmd_watch(args) -> int:
     taxonomy = load_taxonomy()
     paths, ledger, graph = _open(args)
@@ -485,6 +541,25 @@ def build_parser() -> argparse.ArgumentParser:
     watch.add_argument("--source", default=None)
     watch.add_argument("--no-ai", action="store_true")
     watch.set_defaults(func=cmd_watch)
+
+    backup_cmd = sub.add_parser("backup", help="consistent online backup of radar.db, verified")
+    backup_cmd.add_argument("--destination", default=None)
+    backup_cmd.add_argument("--keep", type=int, default=14)
+    backup_cmd.add_argument("--json", action="store_true")
+    backup_cmd.set_defaults(func=cmd_backup)
+
+    restore = sub.add_parser("restore-check",
+                             help="restore a backup into an isolated directory and rebuild the graph")
+    restore.add_argument("--backup", required=True)
+    restore.add_argument("--work-dir", required=True)
+    restore.add_argument("--no-graph", action="store_true")
+    restore.add_argument("--json", action="store_true")
+    restore.set_defaults(func=cmd_restore_check)
+
+    rebuild = sub.add_parser("rebuild-graph", help="rebuild graph.db from radar.db atomically")
+    rebuild.add_argument("--limit", type=int, default=5000)
+    rebuild.add_argument("--json", action="store_true")
+    rebuild.set_defaults(func=cmd_rebuild_graph)
 
     verify = sub.add_parser("verify", help="integrity, latency and graph audit")
     verify.add_argument("--json", action="store_true")

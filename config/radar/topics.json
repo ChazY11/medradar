@@ -1,6 +1,6 @@
 {
   "schema": "medradar.radar.topics.v1",
-  "taxonomy_version": "radar-icu-2026.11.1",
+  "taxonomy_version": "radar-icu-2026.11.2",
   "scope": {
     "domain": "ICU patient monitoring",
     "statement": "First-batch monitoring scope, not a permanent product boundary. Topics are versioned data, not code: adding a topic does not require a schema change.",
@@ -32,11 +32,31 @@
       "label_zh": "ECG 与心电分析",
       "description": "Acquisition and automated analysis of surface ECG: rhythm, rate, ST segment and interval measurement.",
       "product_codes": [
-        {"code": "DPS", "device_name": "Electrocardiograph", "regulation": "870.2340"},
-        {"code": "DRT", "device_name": "Monitor, Cardiac (Incl. Cardiotachometer & Rate Alarm)", "regulation": "870.2300"},
-        {"code": "DRW", "device_name": "Adaptor, Lead Switching, Electrocardiograph", "regulation": "870.2350"},
-        {"code": "DRX", "device_name": "Electrode, Electrocardiograph", "regulation": "870.2360"},
-        {"code": "DXH", "device_name": "Transmitters And Receivers, Electrocardiograph, Telephone", "regulation": "870.2920"}
+        {
+          "code": "DPS",
+          "device_name": "Electrocardiograph",
+          "regulation": "870.2340"
+        },
+        {
+          "code": "DRT",
+          "device_name": "Monitor, Cardiac (Incl. Cardiotachometer & Rate Alarm)",
+          "regulation": "870.2300"
+        },
+        {
+          "code": "DRW",
+          "device_name": "Adaptor, Lead Switching, Electrocardiograph",
+          "regulation": "870.2350"
+        },
+        {
+          "code": "DRX",
+          "device_name": "Electrode, Electrocardiograph",
+          "regulation": "870.2360"
+        },
+        {
+          "code": "DXH",
+          "device_name": "Transmitters And Receivers, Electrocardiograph, Telephone",
+          "regulation": "870.2920"
+        }
       ],
       "terms": [
         "\\belectrocardiogra\\w*",
@@ -56,8 +76,16 @@
       "label_zh": "心律失常检测",
       "description": "Automated detection of arrhythmia and the alarm logic that reports it.",
       "product_codes": [
-        {"code": "DSI", "device_name": "Detector And Alarm, Arrhythmia", "regulation": "870.1025"},
-        {"code": "MHX", "device_name": "Monitor, Physiological, Patient(With Arrhythmia Detection Or Alarms)", "regulation": "870.1025"}
+        {
+          "code": "DSI",
+          "device_name": "Detector And Alarm, Arrhythmia",
+          "regulation": "870.1025"
+        },
+        {
+          "code": "MHX",
+          "device_name": "Monitor, Physiological, Patient(With Arrhythmia Detection Or Alarms)",
+          "regulation": "870.1025"
+        }
       ],
       "terms": [
         "\\barrhythmia\\w*",
@@ -76,9 +104,21 @@
       "label_zh": "SpO₂ 与脉搏血氧",
       "description": "Non-invasive arterial oxygen saturation measurement and its signal quality.",
       "product_codes": [
-        {"code": "DQA", "device_name": "Oximeter", "regulation": "870.2700"},
-        {"code": "DPZ", "device_name": "Oximeter, Ear", "regulation": "870.2710"},
-        {"code": "GLY", "device_name": "Oximeter To Measure Hemoglobin", "regulation": "864.7500"}
+        {
+          "code": "DQA",
+          "device_name": "Oximeter",
+          "regulation": "870.2700"
+        },
+        {
+          "code": "DPZ",
+          "device_name": "Oximeter, Ear",
+          "regulation": "870.2710"
+        },
+        {
+          "code": "GLY",
+          "device_name": "Oximeter To Measure Hemoglobin",
+          "regulation": "864.7500"
+        }
       ],
       "terms": [
         "\\bSpO2\\b",
@@ -97,9 +137,21 @@
       "label_zh": "无创血压 NIBP",
       "description": "Cuff-based blood pressure measurement, including oscillometric method and interval protocols.",
       "product_codes": [
-        {"code": "DXN", "device_name": "System, Measurement, Blood-Pressure, Non-Invasive", "regulation": "870.1130"},
-        {"code": "DXQ", "device_name": "Blood Pressure Cuff", "regulation": "870.1120"},
-        {"code": "DSK", "device_name": "Computer, Blood-Pressure", "regulation": "870.1110"}
+        {
+          "code": "DXN",
+          "device_name": "System, Measurement, Blood-Pressure, Non-Invasive",
+          "regulation": "870.1130"
+        },
+        {
+          "code": "DXQ",
+          "device_name": "Blood Pressure Cuff",
+          "regulation": "870.1120"
+        },
+        {
+          "code": "DSK",
+          "device_name": "Computer, Blood-Pressure",
+          "regulation": "870.1110"
+        }
       ],
       "terms": [
         "\\bNIBP\\b",
@@ -116,9 +168,21 @@
       "label_zh": "有创血压 IBP",
       "description": "Pressure transducer channels and arterial/venous pressure monitoring.",
       "product_codes": [
-        {"code": "DRS", "device_name": "Transducer, Blood-Pressure, Extravascular", "regulation": "870.2850"},
-        {"code": "DSJ", "device_name": "Alarm, Blood-Pressure", "regulation": "870.1100"},
-        {"code": "KRK", "device_name": "Manometer, Blood-Pressure, Venous", "regulation": "870.1140"}
+        {
+          "code": "DRS",
+          "device_name": "Transducer, Blood-Pressure, Extravascular",
+          "regulation": "870.2850"
+        },
+        {
+          "code": "DSJ",
+          "device_name": "Alarm, Blood-Pressure",
+          "regulation": "870.1100"
+        },
+        {
+          "code": "KRK",
+          "device_name": "Manometer, Blood-Pressure, Venous",
+          "regulation": "870.1140"
+        }
       ],
       "terms": [
         "\\bIBP\\b",
@@ -136,12 +200,36 @@
       "label_zh": "呼吸率、二氧化碳与气道监测",
       "description": "Respiratory rate, capnography (EtCO2) and airway pressure monitoring.",
       "product_codes": [
-        {"code": "BZQ", "device_name": "Monitor, Breathing Frequency", "regulation": "868.2375"},
-        {"code": "CAP", "device_name": "Monitor, Airway Pressure (Includes Gauge And/Or Alarm)", "regulation": "868.2600"},
-        {"code": "BZK", "device_name": "Spirometer, Monitoring (W/Wo Alarm)", "regulation": "868.1850"},
-        {"code": "FLS", "device_name": "Monitor, Apnea, Facility Use", "regulation": "868.2377"},
-        {"code": "CCK", "device_name": "Analyzer, Gas, Carbon-Dioxide, Gaseous-Phase", "regulation": "868.1400"},
-        {"code": "LKD", "device_name": "Monitor, Carbon-Dioxide, Cutaneous", "regulation": "868.2480"}
+        {
+          "code": "BZQ",
+          "device_name": "Monitor, Breathing Frequency",
+          "regulation": "868.2375"
+        },
+        {
+          "code": "CAP",
+          "device_name": "Monitor, Airway Pressure (Includes Gauge And/Or Alarm)",
+          "regulation": "868.2600"
+        },
+        {
+          "code": "BZK",
+          "device_name": "Spirometer, Monitoring (W/Wo Alarm)",
+          "regulation": "868.1850"
+        },
+        {
+          "code": "FLS",
+          "device_name": "Monitor, Apnea, Facility Use",
+          "regulation": "868.2377"
+        },
+        {
+          "code": "CCK",
+          "device_name": "Analyzer, Gas, Carbon-Dioxide, Gaseous-Phase",
+          "regulation": "868.1400"
+        },
+        {
+          "code": "LKD",
+          "device_name": "Monitor, Carbon-Dioxide, Cutaneous",
+          "regulation": "868.2480"
+        }
       ],
       "terms": [
         "\\bcapnograph\\w*",
@@ -160,8 +248,16 @@
       "label_zh": "连续体温监测",
       "description": "Continuous patient temperature measurement channels.",
       "product_codes": [
-        {"code": "FLL", "device_name": "Continuous Measurement Thermometer", "regulation": "880.2910"},
-        {"code": "FLA", "device_name": "Monitor, Temperature, Dialysis", "regulation": "876.5820"}
+        {
+          "code": "FLL",
+          "device_name": "Continuous Measurement Thermometer",
+          "regulation": "880.2910"
+        },
+        {
+          "code": "FLA",
+          "device_name": "Monitor, Temperature, Dialysis",
+          "regulation": "876.5820"
+        }
       ],
       "terms": [
         "\\bcore temperature\\b",
@@ -193,7 +289,11 @@
       "label_zh": "智能报警与报警管理",
       "description": "Alarm thresholds, prioritisation, alarm fatigue and alarm-reduction strategies.",
       "product_codes": [
-        {"code": "MHX", "device_name": "Monitor, Physiological, Patient(With Arrhythmia Detection Or Alarms)", "regulation": "870.1025"}
+        {
+          "code": "MHX",
+          "device_name": "Monitor, Physiological, Patient(With Arrhythmia Detection Or Alarms)",
+          "regulation": "870.1025"
+        }
       ],
       "terms": [
         "\\balarm fatigue\\b",
@@ -213,8 +313,6 @@
       "product_codes": [],
       "terms": [
         "\\bsignal quality\\b",
-        "\\bartifact\\w*",
-        "\\bartefact\\w*",
         "\\bmotion artifact\\w*",
         "\\bnoise rejection\\b",
         "\\blead (?:off|disconnection)\\b"
@@ -232,10 +330,7 @@
         "\\bdeterioration\\w*",
         "\\bpredictive analytics\\b",
         "\\bsepsis (?:alert|prediction)\\b",
-        "\\bmortality prediction\\b",
-        "\\bmachine learning\\b",
-        "\\bdeep learning\\b",
-        "\\bneural network\\w*"
+        "\\bmortality prediction\\b"
       ]
     },
     {
@@ -245,7 +340,11 @@
       "label_zh": "模块化监护平台",
       "description": "Modular physiological monitor platforms with plug-in parameter modules.",
       "product_codes": [
-        {"code": "MWI", "device_name": "Monitor, Physiological, Patient (Without Arrhythmia Detection Or Alarms)", "regulation": "870.2300"}
+        {
+          "code": "MWI",
+          "device_name": "Monitor, Physiological, Patient (Without Arrhythmia Detection Or Alarms)",
+          "regulation": "870.2300"
+        }
       ],
       "terms": [
         "\\bmodular (?:patient )?monitor\\w*",
@@ -262,10 +361,26 @@
       "label_zh": "中央监护与遥测",
       "description": "Central monitoring stations, remote viewing and wireless/telemetry transport.",
       "product_codes": [
-        {"code": "MSX", "device_name": "System, Network And Communication, Physiological Monitors", "regulation": "870.2300"},
-        {"code": "DRG", "device_name": "Transmitters And Receivers, Physiological Signal, Radiofrequency", "regulation": "870.2910"},
-        {"code": "QYW", "device_name": "Hospital Cardiac Telemetry", "regulation": "870.1025"},
-        {"code": "QYX", "device_name": "Outpatient Cardiac Telemetry", "regulation": "870.1025"}
+        {
+          "code": "MSX",
+          "device_name": "System, Network And Communication, Physiological Monitors",
+          "regulation": "870.2300"
+        },
+        {
+          "code": "DRG",
+          "device_name": "Transmitters And Receivers, Physiological Signal, Radiofrequency",
+          "regulation": "870.2910"
+        },
+        {
+          "code": "QYW",
+          "device_name": "Hospital Cardiac Telemetry",
+          "regulation": "870.1025"
+        },
+        {
+          "code": "QYX",
+          "device_name": "Outpatient Cardiac Telemetry",
+          "regulation": "870.1025"
+        }
       ],
       "terms": [
         "\\bcentral station\\b",
@@ -283,7 +398,11 @@
       "label_zh": "数据互联与电子病历集成",
       "description": "Standards-based device connectivity: HL7, FHIR, gateways and EMR integration.",
       "product_codes": [
-        {"code": "MSX", "device_name": "System, Network And Communication, Physiological Monitors", "regulation": "870.2300"}
+        {
+          "code": "MSX",
+          "device_name": "System, Network And Communication, Physiological Monitors",
+          "regulation": "870.2300"
+        }
       ],
       "terms": [
         "\\bHL7\\b",
@@ -312,10 +431,7 @@
         "\\bsoftware update\\w*",
         "\\bfirmware\\b",
         "\\bcloud platform\\b",
-        "\\bAPI\\b",
-        "\\bSDK\\b",
-        "\\bservice[- ]oriented\\b",
-        "\\bmicroservice\\w*"
+        "\\bservice[- ]oriented\\b"
       ]
     },
     {
@@ -328,7 +444,6 @@
       "terms": [
         "\\bartificial intelligence\\b",
         "\\bclinical decision support\\b",
-        "\\balgorithm\\w*",
         "\\bAI[- ]enabled\\b",
         "\\bAI[- ]powered\\b",
         "\\bfoundation model\\w*"

@@ -570,12 +570,16 @@ def create_app(
     holder = DatasetHolder(Path(data_dir) if data_dir else None)
     resolved_web = Path(web_dir) if web_dir else _default_web_dir()
 
+    # LAUNCH-001: a published deployment does not serve the interactive API schema. The public
+    # alpha gate would 404 those paths anyway; not generating them removes the surface entirely.
+    _public_alpha = os.environ.get("MEDRADAR_PUBLIC_ALPHA") == "1"
     app = FastAPI(
         title="MedRadar workbench API",
         version=PRODUCT_VERSION,
         description="Medical technology intelligence over an immutable openFDA snapshot.",
-        docs_url="/api/docs",
+        docs_url=None if _public_alpha else "/api/docs",
         redoc_url=None,
+        openapi_url=None if _public_alpha else "/openapi.json",
     )
     app.state.holder = holder
     app.state.web_dir = resolved_web
@@ -1468,7 +1472,13 @@ def create_app(
     async def handle_unexpected(request: Request, exc: Exception) -> JSONResponse:
         return _error(500, "internal_error", "unexpected server error: " + str(exc))
 
-    return app
+    # ---------------------------------------------------------------- public alpha
+    # LAUNCH-001: when the deployment is published, every request passes the alpha gate
+    # (Authentication + read-only method + route allowlist + failure rate limit). It is applied
+    # last so it wraps the fully-assembled application, and it is opt-in per deployment.
+    from ..radar.alpha_gate import install_alpha_gate
+
+    return install_alpha_gate(app)
 
 
 def _default_web_dir() -> Path:

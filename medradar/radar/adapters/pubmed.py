@@ -186,15 +186,16 @@ class PubMedAdapter:
         return RuleMapper(self.taxonomy).map(record)
 
     def accept_record(self, record: RawRecord, mapping) -> tuple[bool, str]:
-        """Keep a paper only if it is about a monitored topic or names a monitored vendor.
+        """Keep a paper only if it studies monitoring technology or names a monitored vendor.
 
-        The PubMed queries are topical, but a query is a search, not a filter: a record that
-        matches no taxonomy topic and no vendor affiliation is out of the radar's scope and
-        is not written to the ledger.
+        The PubMed queries are topical, but a query is a search, not a filter. A study that
+        predicts deterioration from ICU data matches the decision-support topic while being a
+        clinical study, not device research; :func:`medradar.radar.classify.publication_relevance`
+        is the gate that separates the two, and its rejection reason is recorded.
         """
-        if mapping.technology_topics or mapping.organization_candidates:
-            return True, ""
-        return False, "out of scope: the record matches no monitored technology topic and no monitored vendor"
+        from ..classify import publication_relevance
+
+        return publication_relevance(mapping)
 
 
 def _articles(xml_text: str) -> list[ET.Element]:
@@ -224,6 +225,13 @@ def _record_from_article(article: ET.Element) -> RawRecord:
         if (node.get("IdType") or "").lower() == "doi":
             doi = _text(node)
             break
+    if not doi:
+        # Older/leaner records carry the DOI only as an ELocationID. Both are the publisher's
+        # own statement of the identifier, so either is acceptable; a derived DOI never is.
+        for node in article.findall(".//Article/ELocationID"):
+            if (node.get("EIdType") or "").lower() == "doi":
+                doi = _text(node)
+                break
     authors: list[str] = []
     affiliations: list[str] = []
     for author in article.findall(".//AuthorList/Author"):
@@ -272,6 +280,7 @@ def _record_from_article(article: ET.Element) -> RawRecord:
             "product_hint": None,
             "product_codes": [],
             "official_identifier": f"PMID:{pmid}",
+            "pmid": pmid or None,
             "doi": doi or None,
         },
     )

@@ -1,0 +1,12 @@
+[Unit]
+Description=Daily MedRadar Radar ledger backup (03:40 local, catch up after downtime)
+Documentation=file:///srv/medradar/radar/app/docs/radar/LAUNCH_001_RUNBOOK.md
+
+[Timer]
+OnCalendar=*-*-* 03:40:00
+RandomizedDelaySec=300
+Persistent=true
+Unit=medradar-radar-backup.service
+
+[Install]
+WantedBy=timers.target

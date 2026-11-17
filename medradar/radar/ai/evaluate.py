@@ -86,7 +86,13 @@ def run_evaluation(
     classifier.load()
 
     rows: list[dict[str, Any]] = []
+    #: Every item the model was actually asked about. This - not ``evaluated`` - is the
+    #: denominator for JSON validity: an output that failed to parse is still an attempt, and
+    #: excluding it is exactly the selective accounting this metric exists to prevent.
+    attempts = 0
     json_valid = 0
+    json_invalid = 0
+    ledger_misses = 0
     tp = fp = fn = 0
     org_correct = org_total = 0
     accepted_claims = 0
@@ -98,6 +104,7 @@ def run_evaluation(
         identifier = str(item["official_identifier"])
         row = _resolve(ledger, identifier)
         if row is None:
+            ledger_misses += 1
             rows.append({"official_identifier": identifier, "state": "not_in_ledger"})
             continue
         head, title, body = _source_text(ledger, row["observation_id"])
@@ -106,6 +113,7 @@ def run_evaluation(
                              source=str(head.get("source") or ""),
                              allowed_topics=allowed_topics, allowed_organizations=allowed_orgs)
         generation = classifier.generate(build_messages(prompt))
+        attempts += 1
         generation_seconds.append(generation["seconds"])
         generated_tokens += generation["generated_tokens"]
         if index == 0 and discovery_probe:
@@ -114,10 +122,15 @@ def run_evaluation(
         expected_topics = set(item.get("expected_topics") or [])
         expected_org = item.get("expected_organization")
         if error is not None or not isinstance(parsed, dict):
+            json_invalid += 1
             rows.append({"official_identifier": identifier, "state": "json_invalid", "error": error,
                          "raw_output": generation["text"][:400],
                          "expected_topics": sorted(expected_topics)})
             fn += len(expected_topics)
+            # An unparseable output is also a wrong organisation answer: it named no vendor.
+            # Counting it in the denominator keeps organisation accuracy from flattering itself
+            # by dropping exactly the records the model failed on.
+            org_total += 1
             continue
         json_valid += 1
         predicted: set[str] = set()
@@ -183,7 +196,10 @@ def run_evaluation(
             "version": eval_set.get("version"),
             "labelled_by": eval_set.get("labelled_by"),
             "items": len(eval_set["items"]),
+            "in_ledger": attempts,
+            "attempted": attempts,
             "evaluated": len(evaluated),
+            "not_in_ledger": ledger_misses,
         },
         "model": {
             "id": classifier.model_id,
@@ -193,11 +209,21 @@ def run_evaluation(
             "threads": classifier.threads,
         },
         "metrics": {
-            "json_validity_rate": round(json_valid / len(evaluated), 4) if evaluated else None,
+            # Denominator = every item the model produced an output for. A previous revision
+            # divided by ``evaluated`` (parsed-only) and reported 100% on a batch that had three
+            # ``json_invalid`` outputs in fourteen attempts. That was a metric bug, not a model
+            # result, and it is the reason these counts are reported next to the rate.
+            "json_validity_rate": round(json_valid / attempts, 4) if attempts else None,
+            "model_attempts": attempts,
+            "json_valid_outputs": json_valid,
+            "json_invalid_outputs": json_invalid,
             "topic_precision": round(precision, 4) if precision is not None else None,
             "topic_recall": round(recall, 4) if recall is not None else None,
             "topic_f1": round(f1, 4) if f1 is not None else None,
+            # Same rule: organisation accuracy is measured over every attempt, and an output that
+            # did not parse counts as a wrong answer rather than disappearing from the sample.
             "organization_accuracy": round(org_correct / org_total, 4) if org_total else None,
+            "organization_samples": org_total,
             "evidence_fidelity_rate": round(fidelity_ok / accepted_claims, 4) if accepted_claims else None,
             "accepted_claims": accepted_claims,
             "tokens_per_second": (round(generated_tokens / sum(generation_seconds), 2)
@@ -221,7 +247,9 @@ def run_evaluation(
         "interpretation": (
             "Topic precision is measured against hand-assigned labels, not against a rule's own "
             "output. A rejected model claim is a correct behaviour, not a miss: the vetting gate "
-            "requires a verbatim quote in the source text."
+            "requires a verbatim quote in the source text. JSON validity is divided by every model "
+            "attempt, including outputs that failed to parse; organisation accuracy counts an "
+            "unparseable output as a wrong answer."
         ),
     }
     try:

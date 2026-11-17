@@ -129,11 +129,14 @@ def build_router(service: RadarService | None = None) -> APIRouter:
     def meta() -> dict[str, Any]:
         taxonomy = svc.taxonomy()
         paths = svc.paths
+        public_alpha = os.environ.get("MEDRADAR_PUBLIC_ALPHA") == "1"
         return {
             "schema": SCHEMA,
             "available": paths.ledger.is_file(),
             "graph_available": paths.graph.is_file(),
-            "paths": paths.describe(),
+            # Absolute server paths are an internal detail; a public deployment does not need
+            # to tell an anonymous reader where its databases live.
+            "paths": {"redacted": "public alpha"} if public_alpha else paths.describe(),
             "taxonomy": {
                 "version": taxonomy.version,
                 "fingerprint": taxonomy.fingerprint,
