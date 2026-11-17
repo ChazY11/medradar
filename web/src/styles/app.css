@@ -1418,3 +1418,11 @@ a.badge { text-decoration: none; }
   .table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
   .drawer-section table.data tbody td { padding-left: 0; }
 }
+/* LAUNCH-001 mobile polish found on a real 390 px viewport */
+.feed-meta .mono { word-break: break-all; overflow-wrap: anywhere; }
+.feed-title a { overflow-wrap: anywhere; }
+@media (max-width: 768px) {
+  /* The count + long English note row was compressing the count into a narrow column. */
+  .radar-feed .row.between { flex-direction: column; align-items: flex-start; gap: 4px; }
+  .radar-feed .row.between > .small.muted:last-child { display: none; }
+}

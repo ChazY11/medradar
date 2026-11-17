@@ -127,7 +127,8 @@ class RadarScheduler:
             # Nothing was due at the sources, but the pipeline may still hold pending work from
             # an interrupted or previous cycle. Draining it on an idle cycle is what makes a
             # kill-during-materialise recoverable without waiting for the next source window.
-            advanced = advance(self.ledger, self.graph, self.taxonomy, log=self._log)
+            advanced = advance(self.ledger, self.graph, self.taxonomy, log=self._log,
+                               enqueue_ai=self.ai_enabled)
             result = CycleResult(
                 started_at=started, finished_at=finished, status="IDLE",
                 ingested={"sources": [], "note": "no source was due in this cycle",
@@ -146,7 +147,10 @@ class RadarScheduler:
         fetcher = build_fetcher(self.taxonomy, max_requests=self.max_requests)
         report = ingest(due, self.ledger, self.taxonomy, fetcher=fetcher,
                         trigger=self.trigger, limit=limit, log=self._log)
-        advanced = advance(self.ledger, self.graph, self.taxonomy, log=self._log)
+        # With the AI stage disabled, do not enqueue enrichment work either: a queue that can
+        # never drain would grow on every cycle and misreport itself as "pending" forever.
+        advanced = advance(self.ledger, self.graph, self.taxonomy, log=self._log,
+                           enqueue_ai=self.ai_enabled)
 
         ai_result = self._run_ai(limit=limit)
 
