@@ -206,17 +206,25 @@ def build_router(service: RadarService | None = None) -> APIRouter:
                 "sources": [], "paths": svc.paths.describe(),
             })
         taxonomy = svc.taxonomy()
-        with svc.ledger() as ledger:
-            graph = None
-            if svc.paths.graph.is_file():
-                graph = open_graph(svc.paths.graph, taxonomy, read_only=True)
-            try:
-                payload = system_status(ledger, graph, taxonomy, data_dir=str(svc.paths.root))
-            finally:
-                if graph is not None:
-                    graph.store.close()
+
+        def compute() -> dict[str, Any]:
+            with svc.ledger() as ledger:
+                graph = None
+                if svc.paths.graph.is_file():
+                    graph = open_graph(svc.paths.graph, taxonomy, read_only=True)
+                try:
+                    return system_status(ledger, graph, taxonomy, data_dir=str(svc.paths.root))
+                finally:
+                    if graph is not None:
+                        graph.store.close()
+
+        # The status view is the most expensive read on the feed page (source state, latency
+        # distribution, graph summary, resources). It only changes when a cycle or a source check
+        # finishes, so a short TTL keeps the first paint off a two-second query.
+        payload = dict(_cached_view(("health",), compute, ttl=15.0))
         payload["schema"] = SCHEMA
         payload["available"] = True
+        payload["cache_ttl_seconds"] = 15
         return payload
 
     @router.get("/sources")
