@@ -85,6 +85,24 @@ def verify_password(password: str, encoded: str) -> bool:
     return hmac.compare_digest(actual, expected)
 
 
+#: Old workbench addresses. A bookmark to one of these should not show a bare 404: the public
+#: alpha only serves the Radar pages, so GET redirects to the live feed. These paths are public
+#: product routes, not secrets, so naming them here reveals nothing.
+LEGACY_PAGES = frozenset({
+    "/brief", "/organizations", "/events", "/compare", "/sources", "/data-status",
+    "/devices", "/review",
+})
+
+
+def legacy_redirect_target(path: str) -> str | None:
+    """A path that should 302 to the live feed, or ``None``."""
+    if path in LEGACY_PAGES:
+        return "/radar"
+    if path.startswith(("/organizations/", "/events/", "/devices/")):
+        return "/radar"
+    return None
+
+
 def path_allowed(path: str) -> bool:
     """The allowlist, as one pure function so it can be tested directly."""
     if path in PUBLIC_PAGES or path in PUBLIC_EXACT or path in OPEN_PATHS:
@@ -266,6 +284,11 @@ class AlphaGate:
             return
 
         if not path_allowed(path):
+            redirect = legacy_redirect_target(path)
+            if redirect and method in SAFE_METHODS:
+                await self._plain(send, 302, b"", scope,
+                                  extra_headers=((b"location", redirect.encode("latin-1")),))
+                return
             await self._plain(send, 404, b"Not Found\n", scope)
             return
         if method not in SAFE_METHODS:

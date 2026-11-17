@@ -135,6 +135,16 @@ def test_a_basic_auth_success_issues_a_session_cookie_that_avoids_rehashing():
     assert client.get("/radar", headers={"Cookie": forged}).status_code == 401
 
 
+def test_an_old_workbench_address_redirects_instead_of_showing_a_bare_404():
+    client = _client()
+    response = client.get("/organizations", follow_redirects=False)
+    assert response.status_code == 302
+    assert response.headers["location"] == "/radar"
+    assert client.get("/events/123", follow_redirects=False).status_code == 302
+    # Everything that is not a known page still 404s.
+    assert client.get("/etc/passwd", follow_redirects=False).status_code == 404
+
+
 def test_password_hashing_round_trips_and_rejects_malformed_hashes():
     assert verify_password(PASSWORD, HASH)
     assert not verify_password("nope", HASH)
