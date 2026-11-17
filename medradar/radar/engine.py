@@ -37,6 +37,7 @@ like; it picks up whatever is not yet processed, and running it twice changes no
 
 from __future__ import annotations
 
+import json
 import time
 from dataclasses import dataclass, field
 from typing import Any, Iterable, Mapping, Sequence
@@ -46,6 +47,7 @@ from .classify import RuleMapper
 from .graph import GRAPH_VERSION, TechnologyGraph
 from .http import PoliteFetcher
 from .ledger import ObservationLedger
+from .relevance import ADMISSION_VERSION, classify_observation, now_iso
 from .records import (
     MAPPING_VERSION,
     PROC_AI_PENDING,
@@ -186,6 +188,7 @@ def advance(
     reclassified = 0
     published = 0
     queued = 0
+    admitted = 0
     materialized = {"pending": 0, "materialized": 0, "assertions_created": 0,
                     "assertions_duplicate": 0, "errors": []}
     mapper = RuleMapper(taxonomy)
@@ -246,6 +249,9 @@ def advance(
                 queued += 1
                 batch_work += 1
 
+        admitted += apply_admissions(ledger, limit=limit)
+        batch_work += 1 if admitted else 0
+
         if batch_work == 0:
             converged = True
             break
@@ -255,9 +261,44 @@ def advance(
         "graph": materialized,
         "published": published,
         "ai_queued": queued,
+        "admitted": admitted,
         "batches": batches,
         "converged": converged,
     }
+
+
+def apply_admissions(ledger: ObservationLedger, *, limit: int = 500) -> int:
+    """Qualify observations that have no decision for the current admission version.
+
+    The decision is a separate append-only projection: the observation, its versions and its
+    first-observed time are untouched, and a rejected record stays in the ledger with a reason.
+    """
+    pending = ledger.admission_pending(ADMISSION_VERSION, limit=limit)
+    if not pending:
+        return 0
+    decided_at = now_iso()
+    rows: list[dict[str, Any]] = []
+    for row in pending:
+        decision = classify_observation(
+            {
+                "record_type": row.get("record_type"),
+                "title": row.get("title"),
+                "payload": row.get("payload"),
+            },
+            mapped_topics=row.get("mapped_topics"),
+            mapped_products=row.get("mapped_products"),
+        )
+        rows.append({
+            "observation_id": row["observation_id"],
+            "admission_version": ADMISSION_VERSION,
+            "tier": decision.tier,
+            "category": decision.category,
+            "score": decision.score,
+            "reasons": json.dumps(decision.reasons, ensure_ascii=False),
+            "features": json.dumps(decision.features, ensure_ascii=False),
+            "decided_at": decided_at,
+        })
+    return ledger.record_admissions(rows)
 
 
 def _rebuild_record(ledger: ObservationLedger, observation_id: str,

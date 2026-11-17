@@ -572,14 +572,26 @@ class TechnologyGraph:
         return {"known_at": known, "valid_at": None, "nodes": nodes, "edges": edges}, reconstructed
 
     def technology_map(self, *, companies: Sequence[str] | None = None,
+                       topics: Sequence[str] | None = None,
                        known_at: Any = None, valid_at: Any = None,
-                       max_products: int = 25, max_evidence: int = 10) -> dict[str, Any]:
-        """The company technology tree, computed from assertions - never from a static list."""
+                       max_products: int = 25, max_evidence: int = 10,
+                       product_offset: int = 0, evidence_offset: int = 0) -> dict[str, Any]:
+        """The company technology tree, computed from assertions - never from a static list.
+
+        ``products``/``evidence`` are pages. The totals and offsets are returned so a client can
+        walk a large branch to its end instead of seeing a truncated list with no next page.
+        """
         snapshot, reconstructed = self._cut(known_at, valid_at)
         nodes = snapshot["nodes"]
         edges = snapshot["edges"]
         company_nodes = {n["node_id"]: n for n in nodes if n["node_type"] == NODE_COMPANY}
         topic_nodes = {n["node_id"]: n for n in nodes if n["node_type"] == NODE_TOPIC}
+        if topics:
+            wanted = {str(topic) for topic in topics}
+            topic_nodes = {
+                key: value for key, value in topic_nodes.items()
+                if key.split(":", 1)[1] in wanted
+            }
         product_nodes = {n["node_id"]: n for n in nodes if n["node_type"] == NODE_PRODUCT}
         record_nodes = {n["node_id"]: n for n in nodes if n["node_type"] in RECORD_NODE_TYPES}
 
@@ -655,6 +667,10 @@ class TechnologyGraph:
                     continue
                 topic_evidence.setdefault(f"{company_id}|{topic_id}", []).append({
                     "record_node": src_id,
+                    # The frontend must not parse node ids: the exact id and type the node
+                    # endpoint expects are sent explicitly.
+                    "record_node_id": src_id,
+                    "record_node_type": edge["src"]["node_type"],
                     "record_type": edge["src"]["node_type"],
                     "confirmation": edge["attrs"].get("confirmation", UNKNOWN_RELATION),
                     "method": edge["attrs"].get("method"),
@@ -689,7 +705,9 @@ class TechnologyGraph:
                     if capabilities:
                         products.append({
                             **product,
-                            "capabilities": [
+                            # Only a vendor statement that names the product and the topic is a
+                            # reported capability. Regulatory or publication evidence never is.
+                            "reported_capabilities": [
                                 {key: value for key, value in capability.items() if key != "topic_id"}
                                 for capability in capabilities
                             ],
@@ -698,7 +716,7 @@ class TechnologyGraph:
                 evidence_rows = topic_evidence.get(f"{company_id}|{topic_id}", [])
                 # A product may also sit under a topic because a regulatory record for that
                 # product was filed under the topic. That is evidence of a filed device, not of a
-                # capability, so it is added at TOPIC_RELATED and labelled by its basis.
+                # capability: it is attached as `regulatory_evidence`, never as a capability.
                 for row in evidence_rows:
                     for product_id in record_products.get(row["record_node"], set()):
                         if product_id in seen_products:
@@ -714,11 +732,13 @@ class TechnologyGraph:
                             "source_url": row["source_url"],
                             "valid_from": row["valid_from"],
                             "first_recorded_at": row["recorded_at"],
-                            "capabilities": [{
-                                "confirmation": TOPIC_RELATED,
+                            "reported_capabilities": [],
+                            "regulatory_evidence": [{
+                                "confirmation": row["confirmation"],
                                 "basis": "regulatory_record_topic",
                                 "evidence_id": row["evidence_id"],
                                 "source": row["source"],
+                                "source_url": row["source_url"],
                                 "valid_from": row["valid_from"],
                                 "recorded_at": row["recorded_at"],
                             }],
@@ -731,20 +751,53 @@ class TechnologyGraph:
                     key=lambda item: (item.get("valid_from") or "", item.get("evidence_id") or ""),
                     reverse=True,
                 )
+                # Explicit, non-overlapping evidence classes. The UI must never add these up into
+                # a single "capabilities" number: a filed device or a publication about a topic is
+                # not evidence that a company sells that capability.
+                reported_capability_total = sum(
+                    len(product.get("reported_capabilities") or []) for product in products
+                )
+                regulatory_evidence_total = sum(
+                    1 for row in evidence_rows if row.get("record_type") == NODE_REGULATORY
+                )
+                publication_evidence_total = sum(
+                    1 for row in evidence_rows if row.get("record_type") == NODE_PUBLICATION
+                )
+                document_evidence_total = sum(
+                    1 for row in evidence_rows if row.get("record_type") == NODE_DOCUMENT
+                )
+                candidate_product_total = sum(
+                    1 for product in products if product.get("confirmation") == CANDIDATE
+                )
                 # A first-load topic branch can carry hundreds of regulatory products. Return a
                 # bounded page plus the totals, so a phone does not download megabytes to render
                 # a tree, and so a truncated list can never be mistaken for the complete set.
+                product_start = max(0, int(product_offset))
+                evidence_start = max(0, int(evidence_offset))
                 company_branches.append({
                     "organization_id": org_id,
                     "display_name": (company.get("attrs") or {}).get("display_name", org_id),
                     "label_zh": (company.get("attrs") or {}).get("label_zh"),
-                    "products": sorted_products[:max_products],
+                    "products": sorted_products[product_start:product_start + max_products],
                     "products_total": len(sorted_products),
-                    "evidence": sorted_evidence[:max_evidence],
+                    "product_offset": product_start,
+                    "evidence": sorted_evidence[evidence_start:evidence_start + max_evidence],
                     "evidence_total": len(sorted_evidence),
-                    "truncated": (
-                        len(sorted_products) > max_products or len(sorted_evidence) > max_evidence
+                    "evidence_offset": evidence_start,
+                    "reported_capabilities_total": reported_capability_total,
+                    "products_with_reported_capability": sum(
+                        1 for product in products if product.get("reported_capabilities")
                     ),
+                    "regulatory_evidence_total": regulatory_evidence_total,
+                    "publication_evidence_total": publication_evidence_total,
+                    "document_evidence_total": document_evidence_total,
+                    "candidate_products_total": candidate_product_total,
+                    "truncated": (
+                        product_start + max_products < len(sorted_products)
+                        or evidence_start + max_evidence < len(sorted_evidence)
+                    ),
+                    "has_more_products": product_start + max_products < len(sorted_products),
+                    "has_more_evidence": evidence_start + max_evidence < len(sorted_evidence),
                     "earliest_evidence": min(
                         (row.get("valid_from") or "" for row in evidence_rows + [
                             {key: value for key, value in product.items() if key == "valid_from"}

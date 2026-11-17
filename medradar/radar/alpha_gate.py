@@ -58,8 +58,20 @@ SECURITY_HEADERS = (
     (b"x-frame-options", b"DENY"),
     (b"referrer-policy", b"same-origin"),
     (b"permissions-policy", b"camera=(), microphone=(), geolocation=()"),
-    (b"cache-control", b"no-store"),
 )
+
+#: A hashed build asset never changes under its own name; re-downloading 557 KB of JS on every
+#: navigation was a large part of the measured mobile cold start.
+_ASSET_PATH = re.compile(r"^/assets/.+-[A-Za-z0-9_-]{6,}\.(?:js|css|woff2?|png|jpe?g|svg|webp)$")
+_STATIC_EXT = re.compile(r"^/[^/]+\.(?:svg|png|ico|webmanifest|txt|map)$")
+
+
+def cache_policy(path: str) -> bytes:
+    if _ASSET_PATH.match(path):
+        return b"private, max-age=31536000, immutable"
+    if _STATIC_EXT.match(path):
+        return b"private, max-age=86400"
+    return b"no-store"
 
 
 def hash_password(password: str, *, iterations: int = DEFAULT_ITERATIONS) -> str:
@@ -336,8 +348,10 @@ class AlphaGate:
                  *, session_token: str | None = None) -> Callable:
         async def wrapped(message: dict[str, Any]) -> None:
             if message.get("type") == "http.response.start":
+                path = str(scope.get("path") or "/")
                 headers = list(message.get("headers") or [])
                 headers.extend(SECURITY_HEADERS)
+                headers.append((b"cache-control", cache_policy(path)))
                 if self._is_https(scope):
                     headers.append((b"strict-transport-security", b"max-age=31536000"))
                 headers.append((b"x-robots-tag", b"noindex, nofollow"))

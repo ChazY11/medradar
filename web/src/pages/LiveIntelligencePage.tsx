@@ -10,6 +10,7 @@ import {
   getRadarHealth,
   type Confirmation,
   type FeedQuery,
+  type FeedScope,
   type IntelDetail,
   type IntelEvent,
 } from "../api/radar";
@@ -23,6 +24,7 @@ import {
   KeyValue,
   PageHeader,
   Pagination,
+  Tabs,
   formatDate,
   formatDateTime,
   formatNumber,
@@ -33,6 +35,29 @@ const PAGE_SIZE = 20;
 const CHANGE_STATES = ["NEW", "UPDATED", "REMOVED_OR_UNAVAILABLE", "FETCH_FAILED"] as const;
 const CONFIRMATIONS: Confirmation[] = ["CONFIRMED", "CANDIDATE", "TOPIC_RELATED"];
 const PHASES = ["INITIAL_DISCOVERY", "INCREMENTAL_DISCOVERY", "HISTORICAL_BACKFILL"] as const;
+
+const ADMISSION_LABELS: Record<string, { en: string; zh: string; tone: "ok" | "warn" | "info" | "neutral" }> = {
+  HIGH_RELEVANCE: { en: "Relevant", zh: "相关情报", tone: "ok" },
+  NEEDS_REVIEW: { en: "Needs review", zh: "有待核实", tone: "warn" },
+  LOW_RELEVANCE: { en: "Low relevance", zh: "低相关", tone: "neutral" },
+  IRRELEVANT: { en: "Out of scope", zh: "不属于本范围", tone: "neutral" },
+};
+
+const ADMISSION_CATEGORY_ZH: Record<string, string> = {
+  monitoring_technology_evaluation: "监护设备/算法性能研究",
+  device_or_algorithm_needs_confirmation: "设备或算法线索，待确认",
+  plausible_monitoring_technology: "可能相关，待确认",
+  clinical_study_without_device_focus: "临床研究，未研究监护技术",
+  clinical_prediction_model: "临床预测/风险模型",
+  health_it_interoperability: "医疗信息化互操作",
+  no_monitoring_technology: "未涉及监护技术",
+  non_human_subject: "研究对象非人类患者",
+  non_medical_domain: "非医疗监护领域",
+  editorial_or_letter: "评论/通讯，非研究",
+  regulatory_record: "监管记录（FDA）",
+  vendor_statement: "厂商官方声明",
+  primary_record_unmapped: "官方记录，未归入受监测主题",
+};
 
 function confirmationTone(value: Confirmation): "ok" | "warn" | "info" | "neutral" {
   if (value === "CONFIRMED") return "ok";
@@ -51,7 +76,8 @@ function changeTone(state: string): "ok" | "warn" | "danger" | "neutral" | "info
 
 export function LiveIntelligencePage() {
   const { bi } = useI18n();
-  const [filters, setFilters] = useState<FeedQuery>({ order: "observed" });
+  const [scope, setScope] = useState<FeedScope>("latest");
+  const [filters, setFilters] = useState<FeedQuery>({});
   const [page, setPage] = useState(0);
   const [selected, setSelected] = useState<string | null>(null);
   const [lastVisit] = useState<string | null>(() => {
@@ -63,13 +89,23 @@ export function LiveIntelligencePage() {
   });
   const [noticeOpen, setNoticeOpen] = useState(true);
 
-  const health = useAsync(() => getRadarHealth(), []);
+  // The feed must paint before the status card. Health is expensive on a cold cache and used to
+  // sit in the same request burst; it now starts only after the first page of intelligence is in.
+  const [healthEnabled, setHealthEnabled] = useState(false);
+  const health = useAsync(
+    () => (healthEnabled ? getRadarHealth() : new Promise<never>(() => {})),
+    [healthEnabled],
+  );
   const facets = useAsync(() => getFeedFacets(), []);
   const feed = useAsync(
-    () => getFeed({ ...filters, limit: PAGE_SIZE, offset: page * PAGE_SIZE }),
-    [JSON.stringify(filters), page],
+    () => getFeed({ ...filters, scope, limit: PAGE_SIZE, offset: page * PAGE_SIZE }),
+    [JSON.stringify(filters), page, scope],
   );
   const notices = useAsync(() => getNotices(lastVisit), [lastVisit]);
+
+  useEffect(() => {
+    if (feed.status === "ready") setHealthEnabled(true);
+  }, [feed.status]);
 
   useEffect(() => {
     // Record the visit *after* the notice fetch has been requested, so the next visit
@@ -207,7 +243,7 @@ export function LiveIntelligencePage() {
         note={bi("Filter by company, technology topic, source, dates and relation confidence.", "按企业、技术主题、来源、日期与关联置信度筛选。")}
         actions={
           activeFilterCount ? (
-            <button type="button" className="btn sm" onClick={() => { setFilters({ order: "observed" }); setPage(0); }}>
+            <button type="button" className="btn sm" onClick={() => { setScope("latest"); setFilters({}); setPage(0); }}>
               {bi("Clear", "清除")} ({activeFilterCount})
             </button>
           ) : null
@@ -347,7 +383,7 @@ export function LiveIntelligencePage() {
                   {bi("Sort", "排序")}
                   <select
                     className="input"
-                    value={filters.order ?? "observed"}
+                    value={filters.order ?? (scope === "latest" ? "published" : "observed")}
                     onChange={(event) => patch({ order: event.target.value as FeedQuery["order"] })}
                   >
                     <option value="observed">{bi("First observed", "首次发现")}</option>
@@ -373,6 +409,36 @@ export function LiveIntelligencePage() {
       </div>
 
       <div className="radar-feed">
+      <Card
+        title={bi("What counts as new", "什么算「新」")}
+        note={bi(
+          "Newly published means the source states a public date inside the window. Newly observed means MedRadar first saw it inside the window, even if the document is old. Only qualified monitoring-technology records reach these views.",
+          "「最新发现」指来源声明的公开时间落在窗口内；「最新观察」指 MedRadar 在窗口内首次看到，即使文档本身很旧。只有通过准入的监护技术记录会进入这些视图。",
+        )}
+      >
+        <Tabs
+          items={[
+            { id: "latest", label: bi("Newly published", "最新发现"), count: feed.data?.views?.latest },
+            { id: "observed", label: bi("Newly observed", "最新观察"), count: feed.data?.views?.observed },
+            { id: "archive", label: bi("Archive", "历史资料库"), count: feed.data?.views?.archive },
+            { id: "review", label: bi("Needs review", "待核实"), count: feed.data?.views?.review },
+          ]}
+          active={scope}
+          onChange={(next) => {
+            setScope(next as FeedScope);
+            setPage(0);
+          }}
+        />
+        <div className="small muted" style={{ marginTop: 8 }}>
+          {scope === "latest"
+            ? bi("Published by the source in the last two weeks.", "来源在最近两周内公开的记录。")
+            : scope === "observed"
+              ? bi("First seen by MedRadar in the last two weeks; the document itself may be older.", "MedRadar 最近两周首次看到；文档本身可能较早。")
+              : scope === "archive"
+                ? bi("Every qualified record, including history imported at first load.", "所有通过准入的记录，包括首次导入的历史资料。")
+                : bi("Records the rules are unsure about. They are not in the default feed.", "规则无法确定、暂不进入默认情报流的记录。")}
+        </div>
+      </Card>
       <AsyncSection status={feed.status} data={feed.data} error={feed.error} reload={feed.reload} loadingLines={6}>
         {(payload) => (
           <>
@@ -385,11 +451,31 @@ export function LiveIntelligencePage() {
 
             {payload.items.length === 0 ? (
               <EmptyState
-                title={bi("No observation matches", "没有匹配的观察")}
-                description={bi(
-                  "This is an evidence statement about the filters and the monitored sources, not a claim that nothing exists. Clear the filters or wait for a scheduled check.",
-                  "这是关于筛选条件与已监测来源的证据陈述，并不代表现实中不存在。请清除筛选，或等待下一次计划检查。",
-                )}
+                title={
+                  scope === "latest"
+                    ? bi("No new technology movement yet", "暂未发现新的技术动向")
+                    : scope === "review"
+                      ? bi("Nothing is waiting for review", "暂无待核实记录")
+                      : bi("No observation matches", "没有匹配的观察")
+                }
+                description={
+                  scope === "latest"
+                    ? bi(
+                        "No qualified monitoring-technology record was published by a monitored source in the last two weeks. This is a real result about the sources, not a broken page. Older qualified evidence is still in the archive.",
+                        "最近两周内，受监测来源没有公开新的合格监护技术记录。这是关于来源的真实结果，不是页面故障。更早的合格证据仍在历史资料库中。",
+                      )
+                    : bi(
+                        "This is an evidence statement about the filters and the monitored sources, not a claim that nothing exists. Clear the filters or wait for a scheduled check.",
+                        "这是关于筛选条件与已监测来源的证据陈述，并不代表现实中不存在。请清除筛选，或等待下一次计划检查。",
+                      )
+                }
+                actions={
+                  scope === "latest" && (payload.views?.archive ?? 0) > 0 ? (
+                    <button type="button" className="btn sm touch" onClick={() => setScope("archive")}>
+                      {bi(`Browse the archive (${payload.views?.archive})`, `查看历史资料库（${payload.views?.archive}）`)}
+                    </button>
+                  ) : undefined
+                }
               />
             ) : (
               <div className="grid" style={{ gridTemplateColumns: "1fr", gap: 12 }}>
@@ -425,6 +511,15 @@ function FeedCard({ item, onOpen }: { item: IntelEvent; onOpen: () => void }) {
           <Badge tone={changeTone(item.change_state)}>{item.change_state}</Badge>
           <Badge tone="outline">{item.source}</Badge>
           <Badge tone="neutral">{item.record_type}</Badge>
+          {item.admission ? (
+            <Badge
+              tone={ADMISSION_LABELS[item.admission.tier]?.tone ?? "neutral"}
+              title={(item.admission.reasons ?? []).join(" · ")}
+            >
+              {bi(ADMISSION_LABELS[item.admission.tier]?.en ?? item.admission.tier,
+                  ADMISSION_LABELS[item.admission.tier]?.zh ?? item.admission.tier)}
+            </Badge>
+          ) : null}
           {item.discovery_phase === "INITIAL_DISCOVERY" ? (
             <Badge
               tone="warn"
@@ -563,6 +658,40 @@ function IntelligenceDrawer({ observationId, onClose }: { observationId: string;
                       {bi("Open the original record", "打开原始记录")}
                     </a>
                   ) : null}
+                </div>
+
+                <div className="drawer-section">
+                  <h3>{bi("Why this record is here", "为什么这条记录会出现")}</h3>
+                  {payload.admission ? (
+                    <>
+                      <div className="row wrap" style={{ gap: 6 }}>
+                        <Badge tone={ADMISSION_LABELS[payload.admission.tier]?.tone ?? "neutral"}>
+                          {bi(ADMISSION_LABELS[payload.admission.tier]?.en ?? payload.admission.tier,
+                              ADMISSION_LABELS[payload.admission.tier]?.zh ?? payload.admission.tier)}
+                        </Badge>
+                        <Badge tone="outline">
+                          {bi(ADMISSION_CATEGORY_ZH[payload.admission.category] ?? payload.admission.category,
+                              ADMISSION_CATEGORY_ZH[payload.admission.category] ?? payload.admission.category)}
+                        </Badge>
+                      </div>
+                      <ul className="small" style={{ marginTop: 8 }}>
+                        {payload.admission.reasons.map((reason, index) => (
+                          <li key={index}>{bi(reason, reason)}</li>
+                        ))}
+                      </ul>
+                      <div className="small muted">
+                        {bi(
+                          `Qualification score ${payload.admission.score}. A record is only in the default feed when the title itself is about a monitoring device or monitoring algorithm and evaluates it.`,
+                          `准入评分 ${payload.admission.score}。只有标题本身研究监护设备或监护算法、并对其做出评估的记录，才进入默认情报流。`,
+                        )}
+                      </div>
+                    </>
+                  ) : (
+                    <div className="small muted">
+                      {bi("No qualification decision is recorded for this observation yet.",
+                          "该观察尚无准入判断记录。")}
+                    </div>
+                  )}
                 </div>
 
                 <div className="drawer-section">

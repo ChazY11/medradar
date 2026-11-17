@@ -16,6 +16,7 @@ from __future__ import annotations
 
 import os
 import threading
+import time
 from contextlib import contextmanager
 from pathlib import Path
 from typing import Any, Iterator
@@ -37,9 +38,21 @@ from .health import change_stream, detection_latency, source_status, system_stat
 from .ledger import ObservationLedger
 from .paths import radar_paths
 from .records import CHANGE_STATES, PHASE_LABELS_EN, PHASES
+from .relevance import ADMISSION_VERSION, HIGH_RELEVANCE, NEEDS_REVIEW, TIER_ORDER
 from .taxonomy import Taxonomy, TaxonomyError, load_taxonomy
 
 SCHEMA = "medradar.radar.api.v1"
+
+#: Whether the ledger carries admission decisions for this version. Before the projection is
+#: applied the feed keeps its historic behaviour instead of silently going empty.
+def _admissions_present(ledger: ObservationLedger) -> bool:
+    # One indexed EXISTS per request, not a cached flag: a projection applied by the operator
+    # must take effect on the next request, not up to 30 seconds later.
+    row = ledger.con.execute(
+        "SELECT 1 FROM observation_admission WHERE admission_version=? LIMIT 1",
+        (ADMISSION_VERSION,),
+    ).fetchone()
+    return row is not None
 
 #: A tiny TTL cache for the two expensive graph views. They are read-only projections of a graph
 #: that changes when the scheduler materialises a cycle, so serving a 60-second-old copy is
@@ -253,8 +266,11 @@ def build_router(service: RadarService | None = None) -> APIRouter:
         observed_from: str | None = None,
         observed_to: str | None = None,
         q: str | None = None,
-        order: str = Query("observed", pattern="^(observed|published|event)$"),
+        order: str | None = Query(None, pattern="^(observed|published|event)$"),
         since: str | None = None,
+        scope: str = Query("latest", pattern="^(latest|observed|archive|review)$"),
+        admission_days: int = Query(14, ge=1, le=3650),
+        tier: str | None = None,
     ) -> dict[str, Any]:
         states = _csv(change_state)
         invalid = [state for state in (states or []) if state not in (
@@ -266,7 +282,20 @@ def build_router(service: RadarService | None = None) -> APIRouter:
         if bad_phases:
             raise HTTPException(400, detail={"code": "bad_phase", "values": bad_phases,
                                             "allowed": list(PHASES)})
+        default_tiers = {
+            "latest": [HIGH_RELEVANCE],
+            "observed": [HIGH_RELEVANCE, NEEDS_REVIEW],
+            "archive": [HIGH_RELEVANCE],
+            "review": [NEEDS_REVIEW],
+        }[scope]
+        tiers = _csv(tier) or default_tiers
+        bad_tiers = [value for value in tiers if value not in TIER_ORDER]
+        if bad_tiers:
+            raise HTTPException(400, detail={"code": "bad_tier", "values": bad_tiers,
+                                            "allowed": list(TIER_ORDER)})
+        resolved_order = order or ("observed" if scope == "observed" else "published")
         with svc.ledger() as ledger:
+            admission_live = _admissions_present(ledger)
             rows, total = ledger.feed(
                 limit=limit, offset=offset, sources=_csv(source),
                 organizations=_csv(organization), topics=_csv(topic),
@@ -274,8 +303,14 @@ def build_router(service: RadarService | None = None) -> APIRouter:
                 record_types=_csv(record_type), phases=phases,
                 published_from=published_from, published_to=published_to,
                 observed_from=observed_from, observed_to=observed_to,
-                search=q, order=order,
+                search=q, order=resolved_order,
+                tiers=tiers if admission_live else None,
+                admission_version=ADMISSION_VERSION if admission_live else None,
+                scope=scope if admission_live else None,
+                scope_days=admission_days,
             )
+            views = ledger.admission_summary(ADMISSION_VERSION, days=admission_days) \
+                if admission_live else None
             new_since = 0
             if since:
                 new_since = int(ledger.con.execute(
@@ -288,12 +323,17 @@ def build_router(service: RadarService | None = None) -> APIRouter:
             "count": len(items),
             "page": (offset // limit) + 1,
             "page_size": limit,
+            "scope": scope,
+            "admission_days": admission_days,
+            "tiers": tiers,
+            "views": views,
             "filters": {
                 "source": _csv(source), "organization": _csv(organization), "topic": _csv(topic),
                 "change_state": states, "confirmation": _csv(confirmation),
                 "record_type": _csv(record_type), "phase": phases,
                 "published_from": published_from, "published_to": published_to,
-                "observed_from": observed_from, "observed_to": observed_to, "q": q, "order": order,
+                "observed_from": observed_from, "observed_to": observed_to, "q": q,
+                "order": resolved_order,
             },
             "new_since": new_since,
             "since": since,
@@ -304,10 +344,21 @@ def build_router(service: RadarService | None = None) -> APIRouter:
             },
             "note": (
                 "first_observed_at is when MedRadar saw the record; published_at/event_at are what "
-                "the source states. A NEW record in the INITIAL_DISCOVERY phase was already public "
-                "when the source was enabled."
+                "the source states. 'latest' means published inside the window; 'observed' means "
+                "first seen inside the window and may be an old document. Only qualified records "
+                "appear here; each item carries its admission tier and reasons."
             ),
         }
+
+    @router.get("/feed/admission-summary")
+    def admission_summary(days: int = Query(14, ge=1, le=3650)) -> dict[str, Any]:
+        with svc.ledger() as ledger:
+            return {
+                "schema": SCHEMA,
+                "admission_version": ADMISSION_VERSION,
+                "views": ledger.admission_summary(ADMISSION_VERSION, days=days),
+                "tiers": list(TIER_ORDER),
+            }
 
     @router.get("/feed/facets")
     def feed_facets(limit: int = Query(40, ge=1, le=200)) -> dict[str, Any]:
@@ -385,28 +436,37 @@ def build_router(service: RadarService | None = None) -> APIRouter:
     def technology_map(
         companies: str | None = None,
         topics: str | None = None,
+        topic_id: str | None = None,
         mode: str = Query("public", pattern="^(public|knowledge)$"),
         at: str | None = None,
         max_products: int = Query(25, ge=1, le=200),
         max_evidence: int = Query(10, ge=1, le=100),
+        product_offset: int = Query(0, ge=0),
+        evidence_offset: int = Query(0, ge=0),
     ) -> dict[str, Any]:
         known_at, valid_at, label = _cut(mode, at)
         company_key = tuple(sorted(_csv(companies) or []))
         topic_key = tuple(sorted(_csv(topics) or []))
+        branch_topic_key = tuple(sorted(_csv(topic_id) or []))
 
         def compute() -> dict[str, Any]:
             with svc.graph() as graph:
-                return graph.technology_map(companies=_csv(companies), known_at=known_at,
-                                            valid_at=valid_at, max_products=max_products,
-                                            max_evidence=max_evidence)
+                return graph.technology_map(
+                    companies=_csv(companies), topics=_csv(topic_id) or None,
+                    known_at=known_at, valid_at=valid_at, max_products=max_products,
+                    max_evidence=max_evidence, product_offset=product_offset,
+                    evidence_offset=evidence_offset)
 
         # Shallow copy: the handler annotates the payload per request, and a cached dict must
         # never carry one caller's annotations into another caller's response.
         payload = dict(_cached_view(
-            ("technology-map", company_key, topic_key, known_at, valid_at, max_products,
-             max_evidence), compute))
+            ("technology-map", company_key, topic_key, branch_topic_key, known_at, valid_at,
+             max_products, max_evidence, product_offset, evidence_offset), compute))
         payload["requested_mode"] = label
-        payload["page_limits"] = {"max_products": max_products, "max_evidence": max_evidence}
+        payload["page_limits"] = {
+            "max_products": max_products, "max_evidence": max_evidence,
+            "product_offset": product_offset, "evidence_offset": evidence_offset,
+        }
         payload["cache_ttl_seconds"] = _VIEW_CACHE_TTL_SECONDS
         payload["available_topics"] = [topic.public() for topic in svc.taxonomy().topics]
         if topics:
@@ -450,7 +510,8 @@ def build_router(service: RadarService | None = None) -> APIRouter:
 
     @router.get("/graph/changes")
     def graph_changes(earlier: str, later: str | None = None,
-                      limit: int = Query(300, ge=1, le=2000)) -> dict[str, Any]:
+                      limit: int = Query(300, ge=1, le=2000),
+                      offset: int = Query(0, ge=0)) -> dict[str, Any]:
         if not earlier:
             raise HTTPException(400, detail={"code": "earlier_required"})
 
@@ -464,11 +525,13 @@ def build_router(service: RadarService | None = None) -> APIRouter:
         payload = dict(_cached_view(("changes", earlier, later), compute, ttl=30.0))
         totals = {key: len(payload.get(key) or []) for key in ("added", "removed", "changed")}
         for key in ("added", "removed", "changed"):
-            payload[key] = (payload.get(key) or [])[:limit]
+            payload[key] = (payload.get(key) or [])[offset:offset + limit]
         payload["counts"] = {**(payload.get("counts") or {}), **totals}
         payload["listed"] = {key: len(payload[key]) for key in ("added", "removed", "changed")}
-        payload["truncated"] = any(totals[key] > limit for key in totals)
+        payload["truncated"] = any(totals[key] > offset + limit for key in totals)
         payload["list_limit"] = limit
+        payload["list_offset"] = offset
+        payload["has_more"] = any(totals[key] > offset + limit for key in totals)
         payload["schema"] = SCHEMA
         return payload
 
@@ -576,6 +639,7 @@ def _event(row: dict[str, Any], taxonomy: Taxonomy) -> dict[str, Any]:
         "source_published_at": row.get("published_at"),
         "source_published_at_precision": row.get("published_at_precision"),
         "first_observed_at": row.get("first_observed_at"),
+        "admission": row.get("admission"),
         "last_checked_at": row.get("last_checked_at"),
         "source_updated_at": row.get("source_updated_at"),
         "content_hash": row.get("content_hash"),

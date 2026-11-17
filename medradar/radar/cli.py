@@ -308,6 +308,44 @@ def cmd_restore_check(args) -> int:
     return 0 if report["ok"] else 2
 
 
+def cmd_reproject(args) -> int:
+    """Apply the current qualification rules to observations that have no decision yet.
+
+    Append-only: it adds ``observation_admission`` rows for the current version. It never edits or
+    deletes an observation and never rewrites ``first_observed_at``.
+    """
+    from .engine import apply_admissions
+    from .relevance import ADMISSION_VERSION, TIER_ORDER
+
+    paths = radar_paths(args.data_dir)
+    if not paths.ledger.is_file():
+        print(f"No radar ledger at {paths.ledger}")
+        return 1
+    ledger = ObservationLedger(paths.ledger, create=False)
+    total = 0
+    try:
+        for _ in range(400):
+            applied = apply_admissions(ledger, limit=args.batch)
+            if not applied:
+                break
+            total += applied
+            if args.verbose:
+                print(f"  decided {total} observations")
+            if args.limit and total >= args.limit:
+                print(f"stopped at --limit {args.limit}")
+                break
+        summary = ledger.admission_summary(ADMISSION_VERSION, days=args.days)
+    finally:
+        ledger.close()
+    print(f"admission version : {ADMISSION_VERSION}")
+    print(f"decided now       : {total}")
+    print(f"views             : latest={summary['latest']} observed={summary['observed']} "
+          f"archive={summary['archive']} review={summary['review']}")
+    print(f"tiers             : " + ", ".join(
+        f"{tier}={summary['tiers'].get(tier, 0)}" for tier in TIER_ORDER))
+    return 0
+
+
 def cmd_rebuild_graph(args) -> int:
     """Rebuild graph.db from radar.db into a new file, then swap it in atomically.
 
@@ -678,6 +716,15 @@ def build_parser() -> argparse.ArgumentParser:
     restore.add_argument("--no-graph", action="store_true")
     restore.add_argument("--json", action="store_true")
     restore.set_defaults(func=cmd_restore_check)
+
+    reproject = sub.add_parser(
+        "reproject",
+        help="apply the current qualification rules as an append-only admission projection")
+    reproject.add_argument("--limit", type=int, default=0)
+    reproject.add_argument("--batch", type=int, default=500)
+    reproject.add_argument("--days", type=int, default=14)
+    reproject.add_argument("--verbose", action="store_true")
+    reproject.set_defaults(func=cmd_reproject)
 
     rebuild = sub.add_parser("rebuild-graph", help="rebuild graph.db from radar.db atomically")
     rebuild.add_argument("--limit", type=int, default=5000)

@@ -107,6 +107,13 @@ export interface IntelEvent {
   source_published_at: string | null;
   source_published_at_precision: string;
   first_observed_at: string;
+  admission: {
+    tier: "HIGH_RELEVANCE" | "NEEDS_REVIEW" | "LOW_RELEVANCE" | "IRRELEVANT";
+    category: string;
+    score: number;
+    reasons: string[];
+    decided_at: string;
+  } | null;
   last_checked_at: string | null;
   source_updated_at: string | null;
   content_hash: string;
@@ -153,11 +160,27 @@ export interface FeedResponse {
   count: number;
   page: number;
   page_size: number;
+  scope: FeedScope;
+  admission_days: number;
+  tiers: string[];
+  views: FeedViews | null;
   new_since: number;
   since: string | null;
   items: IntelEvent[];
   labels: { change_states: string[]; phases: Record<string, string> };
   note: string;
+}
+
+export type FeedScope = "latest" | "observed" | "archive" | "review";
+
+export interface FeedViews {
+  latest: number;
+  observed: number;
+  archive: number;
+  review: number;
+  days: number;
+  tiers: Record<string, number>;
+  admission_version: string;
 }
 
 export interface FeedFacets {
@@ -167,6 +190,7 @@ export interface FeedFacets {
     label_zh: string | null;
     confirmation: Confirmation;
     n: number;
+    by_confirmation?: Record<string, number>;
   }[];
   topics: {
     topic_id: string;
@@ -174,6 +198,7 @@ export interface FeedFacets {
     label_zh: string | null;
     confirmation: Confirmation;
     n: number;
+    by_confirmation?: Record<string, number>;
   }[];
   sources: { source: string; n: number; newest: string | null }[];
 }
@@ -233,11 +258,16 @@ export interface GraphProduct {
   source_url: string | null;
   valid_from: string;
   first_recorded_at: string;
-  capabilities: GraphCapability[];
+  /** Only a vendor statement that names this product and this topic. Never regulatory evidence. */
+  reported_capabilities: GraphCapability[];
+  /** Filed device records that place the product in this topic (TOPIC_RELATED, not a capability). */
+  regulatory_evidence?: GraphCapability[];
 }
 
 export interface GraphEvidenceRow {
   record_node: string;
+  record_node_id: string;
+  record_node_type: string;
   record_type: string;
   confirmation: Confirmation;
   method: string | null;
@@ -263,8 +293,18 @@ export interface TechnologyBranch {
     label_zh: string | null;
     products: GraphProduct[];
     products_total: number;
+    product_offset: number;
     evidence: GraphEvidenceRow[];
     evidence_total: number;
+    evidence_offset: number;
+    has_more_products: boolean;
+    has_more_evidence: boolean;
+    reported_capabilities_total: number;
+    products_with_reported_capability: number;
+    regulatory_evidence_total: number;
+    publication_evidence_total: number;
+    document_evidence_total: number;
+    candidate_products_total: number;
     truncated: boolean;
     earliest_evidence: string | null;
     latest_change: string | null;
@@ -280,6 +320,8 @@ export interface TechnologyMap {
   requested_mode: string;
   companies: string[];
   topics: TechnologyBranch[];
+  page_limits?: { max_products: number; max_evidence: number; product_offset?: number; evidence_offset?: number };
+  filtered_topics?: string[];
   counts: { topics_with_evidence: number; nodes: number; edges: number };
   time_semantics: TimeSemantics;
   available_topics: { id: string; family: string; label_en: string; label_zh: string }[];
@@ -344,6 +386,11 @@ export interface GraphChanges {
   removed: EdgeView[];
   changed: EdgeView[];
   counts: { added: number; removed: number; changed: number };
+  listed?: { added: number; removed: number; changed: number };
+  truncated?: boolean;
+  list_limit?: number;
+  list_offset?: number;
+  has_more?: boolean;
   note: string;
 }
 
@@ -444,6 +491,8 @@ export interface FeedQuery {
   q?: string;
   order?: "observed" | "published" | "event";
   since?: string;
+  scope?: FeedScope;
+  admission_days?: number;
 }
 
 export const getRadarMeta = () => fetchJson<RadarMeta>("/api/radar/meta");
@@ -460,12 +509,22 @@ export interface TimeQuery {
   mode: "public" | "knowledge";
   at?: string;
 }
-export const getTechnologyMap = (params: TimeQuery & { companies?: string; topics?: string }) =>
+export interface TechnologyMapQuery extends TimeQuery {
+  companies?: string;
+  topics?: string;
+  topic_id?: string;
+  max_products?: number;
+  max_evidence?: number;
+  product_offset?: number;
+  evidence_offset?: number;
+}
+
+export const getTechnologyMap = (params: TechnologyMapQuery) =>
   fetchJson<TechnologyMap>(`/api/radar/technology-map${query({ ...params })}`);
 export const getCompare = (params: TimeQuery & { companies?: string }) =>
   fetchJson<CompareResponse>(`/api/radar/compare${query({ ...params })}`);
-export const getGraphChanges = (earlier: string, later?: string) =>
-  fetchJson<GraphChanges>(`/api/radar/graph/changes${query({ earlier, later })}`);
+export const getGraphChanges = (earlier: string, later?: string, offset = 0, limit = 300) =>
+  fetchJson<GraphChanges>(`/api/radar/graph/changes${query({ earlier, later, offset, limit })}`);
 export const getGraphNode = (
   nodeType: string,
   nodeId: string,

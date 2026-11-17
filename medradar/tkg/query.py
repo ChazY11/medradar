@@ -169,8 +169,12 @@ class TKGQuery:
         identity = _file_identity(path)
         if identity is None:
             return self.snapshot(known_at=known_at, valid_at=valid_at)
-        known, _ = normalize_moment(known_at) if known_at is not None else (None, None)
-        valid, _ = normalize_moment(valid_at) if valid_at is not None else (None, None)
+        known: str | None = None
+        valid: str | None = None
+        if known_at is not None:
+            known, _ = normalize_moment(known_at, "known_at")
+        if valid_at is not None:
+            valid, _ = normalize_moment(valid_at, "valid_at")
         key = (path, identity, known, valid)
         now = time.monotonic()
         with _SNAPSHOT_CACHE_LOCK:

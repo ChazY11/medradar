@@ -9,7 +9,9 @@ import {
   type CompareResponse,
   type Confirmation,
   type GraphChanges,
+  type GraphEvidenceRow,
   type GraphNodeDetail,
+  type GraphProduct,
   type TechnologyBranch,
   type TechnologyMap,
   type TimeQuery,
@@ -81,13 +83,7 @@ export function TechnologyMapPage() {
     [tab, mode, at, companyQuery],
   );
   const [earlier, setEarlier] = useState(defaultEarlier);
-  // The diff view can answer with every assertion in the graph (megabytes on a busy ledger).
-  // It is fetched only when its tab is opened, so a phone does not download it to look at the
-  // technology tree.
-  const changes = useAsync<GraphChanges | null>(
-    () => (tab === "changes" ? getGraphChanges(`${earlier}T00:00:00Z`) : Promise.resolve(null)),
-    [tab, earlier],
-  );
+  const [pager, setPager] = useState<{ topicId: string; orgId: string; kind: "evidence" | "products" } | null>(null);
 
   const branches: TechnologyBranch[] = map.data?.topics ?? [];
 
@@ -230,28 +226,43 @@ export function TechnologyMapPage() {
                                 {bi("earliest", "最早")} {company.earliest_evidence ? formatDate(company.earliest_evidence) : "—"}
                               </span>
                             </div>
+                            <div className="small muted" style={{ marginTop: 4 }}>
+                              {bi("Official capability", "官方能力")} {company.reported_capabilities_total} ·{" "}
+                              {bi("Regulatory topic evidence", "监管主题证据")} {company.regulatory_evidence_total} ·{" "}
+                              {bi("Research evidence", "科研证据")} {company.publication_evidence_total}
+                            </div>
                             <div className="row wrap" style={{ gap: 6, marginTop: 8 }}>
-                              {company.products.map((product) => (
-                                <button
-                                  key={product.product_id}
-                                  type="button"
-                                  className="chip"
-                                  onClick={() => setNode({ nodeType: "product", nodeId: product.product_id })}
-                                  title={product.evidence_id ?? product.product_id}
-                                >
-                                  {product.name ?? product.product_id}
-                                  {product.capabilities.length ? (
-                                    <span className="small muted" style={{ marginLeft: 6 }}>
-                                      {product.capabilities.length} {bi("capability", "能力")}
-                                    </span>
-                                  ) : null}
-                                </button>
-                              ))}
+                              {company.products.map((product) => {
+                                const caps = product.reported_capabilities.length;
+                                return (
+                                  <button
+                                    key={product.product_id}
+                                    type="button"
+                                    className="chip"
+                                    onClick={() => setNode({ nodeType: "product", nodeId: product.product_id })}
+                                    title={product.evidence_id ?? product.product_id}
+                                  >
+                                    {product.name ?? product.product_id}
+                                    {caps ? (
+                                      <span className="badge confirmed" style={{ marginLeft: 6 }}>
+                                        {caps} {bi("official capability", "官方能力")}
+                                      </span>
+                                    ) : (
+                                      <span className="badge topic" style={{ marginLeft: 6 }}>
+                                        {bi("filed device", "注册设备")}
+                                      </span>
+                                    )}
+                                  </button>
+                                );
+                              })}
                               {company.products_total > company.products.length ? (
-                                <span className="small muted">
-                                  +{company.products_total - company.products.length}{" "}
-                                  {bi("more products", "个更多产品")}
-                                </span>
+                                <button
+                                  type="button"
+                                  className="btn sm touch"
+                                  onClick={() => setPager({ topicId: branch.topic_id, orgId: company.organization_id, kind: "products" })}
+                                >
+                                  {bi(`All ${company.products_total} products`, `全部 ${company.products_total} 个产品`)}
+                                </button>
                               ) : null}
                               {company.evidence.slice(0, 4).map((row) => (
                                 <button
@@ -259,7 +270,7 @@ export function TechnologyMapPage() {
                                   type="button"
                                   className="chip"
                                   onClick={() =>
-                                    setNode({ nodeType: row.record_type, nodeId: row.record_node.split(":").slice(1).join(":") })
+                                    setNode({ nodeType: row.record_node_type, nodeId: row.record_node_id })
                                   }
                                   title={row.title ?? row.record_node}
                                 >
@@ -270,18 +281,21 @@ export function TechnologyMapPage() {
                                 </button>
                               ))}
                             </div>
-                            {company.evidence.length > 0 ? (
-                              <div className="small muted mt-8">
-                                {bi(
-                                  `showing ${company.evidence.length} of ${company.evidence_total} evidence rows`,
-                                  `显示 ${company.evidence.length} / ${company.evidence_total} 条证据`,
-                                )}
-                                {company.truncated
-                                  ? bi(
-                                      ". Open the evidence table below for the cited records.",
-                                      "。展开下方证据表查看可追溯记录。",
-                                    )
-                                  : null}
+                            {company.evidence_total > 0 ? (
+                              <div className="row wrap mt-8" style={{ gap: 8 }}>
+                                <span className="small muted">
+                                  {bi(
+                                    `loaded ${company.evidence.length} of ${company.evidence_total} evidence rows`,
+                                    `已加载 ${company.evidence.length} / ${company.evidence_total} 条证据`,
+                                  )}
+                                </span>
+                                <button
+                                  type="button"
+                                  className="btn sm touch"
+                                  onClick={() => setPager({ topicId: branch.topic_id, orgId: company.organization_id, kind: "evidence" })}
+                                >
+                                  {bi("Browse all evidence", "查看全部证据")}
+                                </button>
                               </div>
                             ) : null}
                           </div>
@@ -423,76 +437,22 @@ export function TechnologyMapPage() {
             </label>
           }
         >
-          <AsyncSection status={changes.status} data={changes.data} error={changes.error} reload={changes.reload} loadingLines={6}>
-            {(payload: GraphChanges) => (
-              <>
-                <div className="row wrap" style={{ gap: 8 }}>
-                  <Badge tone="ok">{bi("added", "新增")}: {payload.counts.added}</Badge>
-                  <Badge tone="info">{bi("changed", "变更")}: {payload.counts.changed}</Badge>
-                  <Badge tone="warn">{bi("removed", "移除")}: {payload.counts.removed}</Badge>
-                </div>
-                {payload.added.length + payload.changed.length + payload.removed.length === 0 ? (
-                  <EmptyState
-                    title={bi("No assertion was added or changed in this window", "此时段没有新增或变更的断言")}
-                    description={bi(
-                      "That is a real result: the monitored sources produced no new linked evidence. It is not an error.",
-                      "这是一个真实结果：已监测来源没有产生新的关联证据。这不是错误。",
-                    )}
-                  />
-                ) : (
-                  <div className="table-wrap">
-                    <table>
-                      <thead>
-                        <tr>
-                          <th>{bi("Change", "变化")}</th>
-                          <th>{bi("Relation", "关系")}</th>
-                          <th>{bi("Recorded at", "记录时间")}</th>
-                          <th>{bi("Valid from", "适用起")}</th>
-                          <th>{bi("Source", "来源")}</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {([
-                          ["added", payload.added],
-                          ["changed", payload.changed],
-                          ["removed", payload.removed],
-                        ] as const).flatMap(([kind, edges]) =>
-                          edges.map((edge, index) => (
-                            <tr key={`${kind}-${index}-${edge.edge_type}-${edge.src.node_id}-${edge.dst.node_id}`}>
-                              <td>
-                                <Badge tone={kind === "added" ? "ok" : kind === "changed" ? "info" : "warn"}>
-                                  {kind}
-                                </Badge>
-                              </td>
-                              <td className="small">
-                                {edge.edge_type}
-                                <div className="muted">
-                                  {edge.src.node_id} → {edge.dst.node_id}
-                                </div>
-                              </td>
-                              <td className="small">{formatDateTime(edge.recorded_at)}</td>
-                              <td className="small">{edge.valid_from ? formatDate(edge.valid_from) : "—"}</td>
-                              <td className="small">
-                                {edge.source_url ? (
-                                  <a href={edge.source_url} target="_blank" rel="noreferrer noopener">
-                                    {edge.source ?? "source"}
-                                  </a>
-                                ) : (
-                                  edge.source ?? "—"
-                                )}
-                              </td>
-                            </tr>
-                          )),
-                        )}
-                      </tbody>
-                    </table>
-                  </div>
-                )}
-                <div className="small muted mt-8">{payload.note}</div>
-              </>
-            )}
-          </AsyncSection>
+          <PagedChanges earlier={`${earlier}T00:00:00Z`} />
         </Card>
+      ) : null}
+
+      {pager ? (
+        <BranchPager
+          topicId={pager.topicId}
+          orgId={pager.orgId}
+          kind={pager.kind}
+          timeQuery={timeQuery}
+          onClose={() => setPager(null)}
+          onOpenNode={(nodeType, nodeId) => {
+            setPager(null);
+            setNode({ nodeType, nodeId });
+          }}
+        />
       ) : null}
 
       {node ? <NodeDrawer nodeType={node.nodeType} nodeId={node.nodeId} timeQuery={timeQuery} onClose={() => setNode(null)} /> : null}
@@ -583,6 +543,273 @@ function NodeDrawer({
           </AsyncSection>
         </div>
       </aside>
+    </>
+  );
+}
+
+/** Walk one branch's evidence or product list to its end. */
+function BranchPager({
+  topicId,
+  orgId,
+  kind,
+  timeQuery,
+  onClose,
+  onOpenNode,
+}: {
+  topicId: string;
+  orgId: string;
+  kind: "evidence" | "products";
+  timeQuery: TimeQuery;
+  onClose: () => void;
+  onOpenNode: (nodeType: string, nodeId: string) => void;
+}) {
+  const { bi } = useI18n();
+  const PAGE = 25;
+  const [items, setItems] = useState<(GraphEvidenceRow | GraphProduct)[]>([]);
+  const [total, setTotal] = useState(0);
+  const [offset, setOffset] = useState(0);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  const load = async (nextOffset: number) => {
+    setLoading(true);
+    setError(null);
+    try {
+      const payload = await getTechnologyMap({
+        ...timeQuery,
+        companies: orgId,
+        topic_id: topicId,
+        max_evidence: kind === "evidence" ? PAGE : 1,
+        max_products: kind === "products" ? PAGE : 1,
+        evidence_offset: kind === "evidence" ? nextOffset : 0,
+        product_offset: kind === "products" ? nextOffset : 0,
+      });
+      const branch = payload.topics?.[0]?.companies.find((company) => company.organization_id === orgId);
+      const page: (GraphEvidenceRow | GraphProduct)[] = kind === "evidence"
+        ? branch?.evidence ?? []
+        : branch?.products ?? [];
+      const pageTotal = kind === "evidence" ? branch?.evidence_total ?? 0 : branch?.products_total ?? 0;
+      setTotal(pageTotal);
+      setItems((previous) => (nextOffset === 0 ? page : [...previous, ...page]));
+      setOffset(nextOffset + page.length);
+    } catch (caught) {
+      setError(caught instanceof Error ? caught.message : String(caught));
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    void load(0);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [topicId, orgId, kind, timeQuery.mode, timeQuery.at]);
+
+  useEffect(() => {
+    const handler = (event: KeyboardEvent) => {
+      if (event.key === "Escape") onClose();
+    };
+    window.addEventListener("keydown", handler);
+    return () => window.removeEventListener("keydown", handler);
+  }, [onClose]);
+
+  return (
+    <>
+      <div className="drawer-scrim" onClick={onClose} aria-hidden="true" />
+      <aside className="drawer" role="dialog" aria-modal="true" aria-label={bi("Branch evidence", "分支证据")}>
+        <div className="drawer-head">
+          <div>
+            <div className="eyebrow">{kind === "evidence" ? bi("Evidence", "证据") : bi("Products", "产品")}</div>
+            <div className="small" style={{ marginTop: 4 }}>{topicId} · {COMPANY_LABELS[orgId] ?? orgId}</div>
+          </div>
+          <button type="button" className="btn sm touch" onClick={onClose}>Esc</button>
+        </div>
+        <div className="drawer-body">
+          <div className="small muted" style={{ marginBottom: 8 }}>
+            {bi(`loaded ${items.length} of ${total}`, `已加载 ${items.length} / ${total}`)}
+          </div>
+          {error ? (
+            <div className="row wrap" style={{ gap: 8 }}>
+              <Badge tone="danger">{error}</Badge>
+              <button type="button" className="btn sm touch" onClick={() => void load(offset)}>
+                {bi("Retry", "重试")}
+              </button>
+            </div>
+          ) : null}
+          <div className="grid" style={{ gridTemplateColumns: "1fr", gap: 8 }}>
+            {kind === "evidence"
+              ? (items as GraphEvidenceRow[]).map((row) => (
+                  <div key={`${row.evidence_id}-${row.record_node_id}`} className="state-block" style={{ margin: 0 }}>
+                    <div className="row wrap" style={{ gap: 6 }}>
+                      <Badge tone={toneFor(row.confirmation)}>{row.confirmation}</Badge>
+                      <Badge tone="neutral">{row.record_type}</Badge>
+                      <span className="small muted">{row.valid_from ? formatDate(row.valid_from) : "—"}</span>
+                    </div>
+                    <div style={{ marginTop: 6 }}>{cleanTitle(row.title ?? row.record_node_id)}</div>
+                    <div className="row wrap" style={{ gap: 8, marginTop: 6 }}>
+                      <button
+                        type="button"
+                        className="btn sm touch"
+                        onClick={() => onOpenNode(row.record_node_type, row.record_node_id)}
+                      >
+                        {bi("Open evidence", "查看证据")}
+                      </button>
+                      {row.source_url ? (
+                        <a href={row.source_url} target="_blank" rel="noreferrer noopener" className="small">
+                          {bi("Official source", "官方来源")}
+                        </a>
+                      ) : null}
+                    </div>
+                  </div>
+                ))
+              : (items as GraphProduct[]).map((product) => (
+                  <div key={product.product_id} className="row between wrap" style={{ gap: 8 }}>
+                    <span>{product.name ?? product.product_id}</span>
+                    <span className="row wrap" style={{ gap: 6 }}>
+                      {product.reported_capabilities.length ? (
+                        <Badge tone="ok">
+                          {product.reported_capabilities.length} {bi("official capability", "官方能力")}
+                        </Badge>
+                      ) : (
+                        <Badge tone="info">{bi("filed device", "注册设备")}</Badge>
+                      )}
+                      <button
+                        type="button"
+                        className="btn sm touch"
+                        onClick={() => onOpenNode("product", product.product_id)}
+                      >
+                        {bi("Open", "打开")}
+                      </button>
+                    </span>
+                  </div>
+                ))}
+          </div>
+          {loading ? <div className="small muted">{bi("Loading…", "加载中…")}</div> : null}
+          {!loading && items.length < total ? (
+            <button type="button" className="btn sm touch" onClick={() => void load(offset)}>
+              {bi(`Load next ${PAGE}`, `继续加载 ${PAGE} 条`)}
+            </button>
+          ) : null}
+          {!loading && items.length >= total ? (
+            <div className="small muted">{bi("End of this branch.", "已到该分支末尾。")}</div>
+          ) : null}
+        </div>
+      </aside>
+    </>
+  );
+}
+
+/** The assertion diff, paged to the end instead of a silent 300-row cap. */
+function PagedChanges({ earlier }: { earlier: string }) {
+  const { bi } = useI18n();
+  const PAGE = 300;
+  const [payload, setPayload] = useState<GraphChanges | null>(null);
+  const [offset, setOffset] = useState(0);
+  const [rows, setRows] = useState<{ kind: "added" | "changed" | "removed"; edge: GraphChanges["added"][number] }[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  const load = async (nextOffset: number) => {
+    setLoading(true);
+    setError(null);
+    try {
+      const page = await getGraphChanges(earlier, undefined, nextOffset, PAGE);
+      setPayload(page);
+      const appended = [
+        ...page.added.map((edge) => ({ kind: "added" as const, edge })),
+        ...page.changed.map((edge) => ({ kind: "changed" as const, edge })),
+        ...page.removed.map((edge) => ({ kind: "removed" as const, edge })),
+      ];
+      setRows((previous) => (nextOffset === 0 ? appended : [...previous, ...appended]));
+      setOffset(nextOffset + PAGE);
+    } catch (caught) {
+      setError(caught instanceof Error ? caught.message : String(caught));
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    void load(0);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [earlier]);
+
+  const maxRows = payload
+    ? Math.max(payload.counts.added, payload.counts.changed, payload.counts.removed)
+    : 0;
+  return (
+    <>
+      {payload ? (
+        <div className="row wrap" style={{ gap: 8 }}>
+          <Badge tone="ok">{bi("added", "新增")}: {payload.counts.added}</Badge>
+          <Badge tone="info">{bi("changed", "变更")}: {payload.counts.changed}</Badge>
+          <Badge tone="warn">{bi("removed", "移除")}: {payload.counts.removed}</Badge>
+          <span className="small muted">
+            {bi(`listed ${rows.length} of up to ${maxRows} per kind`, `已列出 ${rows.length} 条（每类最多 ${maxRows} 条）`)}
+          </span>
+        </div>
+      ) : null}
+      {error ? (
+        <div className="row wrap" style={{ gap: 8 }}>
+          <Badge tone="danger">{error}</Badge>
+          <button type="button" className="btn sm touch" onClick={() => void load(offset)}>
+            {bi("Retry", "重试")}
+          </button>
+        </div>
+      ) : null}
+      {rows.length === 0 && !loading ? (
+        <EmptyState
+          title={bi("No assertion was added or changed in this window", "此时段没有新增或变更的断言")}
+          description={bi(
+            "That is a real result: the monitored sources produced no new linked evidence. It is not an error.",
+            "这是一个真实结果：已监测来源没有产生新的关联证据。这不是错误。",
+          )}
+        />
+      ) : (
+        <div className="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>{bi("Change", "变化")}</th>
+                <th>{bi("Relation", "关系")}</th>
+                <th>{bi("Recorded at", "记录时间")}</th>
+                <th>{bi("Valid from", "适用起")}</th>
+                <th>{bi("Source", "来源")}</th>
+              </tr>
+            </thead>
+            <tbody>
+              {rows.map(({ kind, edge }, index) => (
+                <tr key={`${kind}-${index}-${edge.edge_type}-${edge.src.node_id}-${edge.dst.node_id}`}>
+                  <td>
+                    <Badge tone={kind === "added" ? "ok" : kind === "changed" ? "info" : "warn"}>{kind}</Badge>
+                  </td>
+                  <td className="small">
+                    {edge.edge_type}
+                    <div className="muted">{edge.src.node_id} → {edge.dst.node_id}</div>
+                  </td>
+                  <td className="small">{formatDateTime(edge.recorded_at)}</td>
+                  <td className="small">{edge.valid_from ? formatDate(edge.valid_from) : "—"}</td>
+                  <td className="small">
+                    {edge.source_url ? (
+                      <a href={edge.source_url} target="_blank" rel="noreferrer noopener">
+                        {edge.source ?? "source"}
+                      </a>
+                    ) : (
+                      edge.source ?? "—"
+                    )}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+      {loading ? <div className="small muted">{bi("Loading…", "加载中…")}</div> : null}
+      {!loading && payload?.has_more ? (
+        <button type="button" className="btn sm touch" onClick={() => void load(offset)}>
+          {bi(`Load more (${rows.length} listed)`, `继续加载（已列出 ${rows.length} 条）`)}
+        </button>
+      ) : null}
+      {payload ? <div className="small muted mt-8">{payload.note}</div> : null}
     </>
   );
 }

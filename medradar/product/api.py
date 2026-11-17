@@ -1483,7 +1483,18 @@ def create_app(
 
     @app.exception_handler(Exception)
     async def handle_unexpected(request: Request, exc: Exception) -> JSONResponse:
-        return _error(500, "internal_error", "unexpected server error: " + str(exc))
+        # Never return an internal exception message to a client. On the public alpha that was
+        # literally leaking Python signatures; the reference is for the operator's journal.
+        import logging
+        import uuid
+
+        reference = uuid.uuid4().hex[:12]
+        logging.getLogger("medradar.web").exception(
+            "unhandled error reference=%s path=%s", reference, request.url.path
+        )
+        return _error(500, "internal_error",
+                      "The server could not complete this request.",
+                      f"reference {reference}; retry, and if it persists report this reference")
 
     # ---------------------------------------------------------------- public alpha
     # LAUNCH-001: when the deployment is published, every request passes the alpha gate

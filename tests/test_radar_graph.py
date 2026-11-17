@@ -291,6 +291,110 @@ def test_a_read_only_graph_serves_views_and_cannot_write(tmp_path: Path):
         ledger.close()
 
 
+def test_a_historical_public_time_cut_does_not_raise_and_an_empty_cut_is_a_real_result(tmp_path: Path):
+    """QUALITY-001 Bug A: every dated public-time view returned 500.
+
+    ``snapshot_cached`` called ``normalize_moment`` with one argument, so any ``at`` cut raised
+    TypeError inside the graph query and the API leaked the Python message.
+    """
+    ledger = _ledger(tmp_path)
+    _publication(ledger)
+    _fda(ledger)
+    graph = _graph(tmp_path)
+    graph.materialize(ledger, limit=50, log=lambda _m: None)
+
+    as_of = "2026-11-17T00:00:00Z"
+    reconstructed = graph.technology_map(valid_at="2020-01-01T00:00:00Z", known_at=as_of)
+    assert reconstructed["reconstructed"] is True
+    assert reconstructed["topics"] == [], "nothing was valid in 2020: an empty view, not an error"
+
+    knowledge = graph.technology_map(known_at="2020-01-01T00:00:00Z")
+    assert knowledge["topics"] == []
+    assert knowledge["mode"] == "knowledge_time"
+
+    current = graph.technology_map()
+    assert current["topics"], "the undated view still answers"
+
+    # A read-only serving handle must be able to reconstruct a historical view too.
+    graph.store.close()
+    serving = open_graph(tmp_path / "graph.db", _taxonomy(), read_only=True)
+    try:
+        again = serving.technology_map(valid_at="2020-01-01T00:00:00Z", known_at=as_of)
+        assert again["topics"] == []
+    finally:
+        serving.store.close()
+
+
+def test_a_dated_view_that_matches_the_present_is_reproducible(tmp_path: Path):
+    ledger = _ledger(tmp_path)
+    _publication(ledger)
+    graph = _graph(tmp_path)
+    graph.materialize(ledger, limit=50, log=lambda m: None)
+    try:
+        present = graph.technology_map()
+        dated = graph.technology_map(
+            known_at="2026-12-31T00:00:00Z", valid_at="2026-12-31T00:00:00Z"
+        )
+        assert len(dated["topics"]) == len(present["topics"])
+        assert dated["reconstructed"] is True
+    finally:
+        graph.store.close()
+        ledger.close()
+
+
+def test_evidence_rows_carry_the_exact_node_id_and_capabilities_never_include_regulatory_evidence(
+    tmp_path: Path,
+):
+    """QUALITY-001 Bugs B and C, both rooted in one contract.
+
+    The UI used to split ``record_node`` on ``:`` and drop the ``obs:`` prefix (404), and it
+    counted a regulatory-topic product as a capability. The evidence rows now carry the exact
+    node identity, and product capability lists contain only vendor capability edges.
+    """
+    ledger = _ledger(tmp_path)
+    _fda(ledger)
+    _publication(ledger)
+    graph = _graph(tmp_path)
+    graph.materialize(ledger, limit=50, log=lambda _m: None)
+    payload = graph.technology_map()
+    try:
+        rows = [
+            row
+            for branch in payload["topics"]
+            for company in branch["companies"]
+            for row in company["evidence"]
+        ]
+        assert rows, "the fixture must produce evidence rows"
+        for row in rows:
+            assert row["record_node_id"] == row["record_node"]
+            assert row["record_node_id"].startswith("obs:")
+            assert row["record_node_type"] == row["record_type"]
+            detail = graph.node_detail(node_type=row["record_node_type"], node_id=row["record_node_id"])
+            assert detail["node_id"] == row["record_node_id"]
+
+        products = [
+            product
+            for branch in payload["topics"]
+            for company in branch["companies"]
+            for product in company["products"]
+        ]
+        for product in products:
+            for capability in product["reported_capabilities"]:
+                assert capability["basis"] != "regulatory_record_topic"
+            if product.get("regulatory_evidence"):
+                assert product["reported_capabilities"] == []
+
+        branches = [company for branch in payload["topics"] for company in branch["companies"]]
+        for company in branches:
+            assert company["reported_capabilities_total"] == sum(
+                len(product["reported_capabilities"]) for product in company["products"]
+            )
+            assert company["regulatory_evidence_total"] >= 0
+    finally:
+        graph.store.close()
+        ledger.close()
+
+
 def test_a_shared_normalised_doi_joins_two_sources_even_with_different_titles(tmp_path: Path):
     """PMID and DOI are different official identifiers, so identifier equality cannot join them.
 

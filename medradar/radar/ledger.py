@@ -46,7 +46,7 @@ import sqlite3
 import threading
 from contextlib import contextmanager
 from dataclasses import dataclass
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Any, Iterable, Iterator, Mapping, Sequence
 
@@ -250,6 +250,21 @@ CREATE TABLE IF NOT EXISTS observation_facet (
     PRIMARY KEY (observation_id, kind, value)
 );
 CREATE INDEX IF NOT EXISTS ix_facet_lookup ON observation_facet(kind, value, confirmation);
+
+-- QUALITY-001: append-only admission decisions. The observation and its history are never
+-- modified; a new admission_version is a new projection over the same records.
+CREATE TABLE IF NOT EXISTS observation_admission (
+    observation_id   TEXT NOT NULL,
+    admission_version TEXT NOT NULL,
+    tier             TEXT NOT NULL,
+    category         TEXT NOT NULL,
+    score            REAL NOT NULL,
+    reasons          TEXT NOT NULL,
+    features         TEXT NOT NULL,
+    decided_at       TEXT NOT NULL,
+    PRIMARY KEY (observation_id, admission_version)
+);
+CREATE INDEX IF NOT EXISTS ix_admission_tier ON observation_admission(admission_version, tier);
 
 CREATE TABLE IF NOT EXISTS source_state (
     source_id      TEXT PRIMARY KEY,
@@ -1196,6 +1211,11 @@ class ObservationLedger:
         phases: Sequence[str] | None = None,
         search: str | None = None,
         order: str = "observed",
+        tiers: Sequence[str] | None = None,
+        admission_version: str | None = None,
+        scope: str | None = None,
+        scope_days: int = 14,
+        now: str | None = None,
     ) -> tuple[list[dict[str, Any]], int]:
         where: list[str] = []
         params: list[Any] = []
@@ -1253,6 +1273,32 @@ class ObservationLedger:
             if organizations and topics:
                 params.extend(confirmations)
         where.extend(facet_conditions)
+        join_params: list[Any] = []
+        if admission_version:
+            joins.append(
+                "JOIN observation_admission adm ON adm.observation_id = o.observation_id"
+                " AND adm.admission_version = ?"
+            )
+            join_params.append(str(admission_version))
+            # Without an admission row a record is not in the published view; the join enforces it.
+        if tiers:
+            where.append(f"adm.tier IN ({','.join('?' * len(tiers))})")
+            params.extend(tiers)
+        scope_key = (scope or "").strip().lower()
+        if scope_key in ("latest", "observed"):
+            days = max(1, min(int(scope_days or 14), 3650))
+            now_moment = datetime.fromisoformat((now or "now").replace("Z", "+00:00")) \
+                if now and now != "now" else datetime.now(timezone.utc)
+            cutoff = (now_moment - timedelta(days=days)).isoformat(timespec="microseconds").replace(
+                "+00:00", "Z")
+            if scope_key == "latest":
+                # Newly *published* by the source: a credible public date inside the window.
+                where.append("COALESCE(o.published_at, o.event_at, '') >= ?")
+                params.append(cutoff)
+            else:
+                # Newly *observed* by MedRadar: may be an old document discovered today.
+                where.append("o.first_observed_at >= ?")
+                params.append(cutoff)
         clause = (" WHERE " + " AND ".join(where)) if where else ""
         join_sql = " ".join(joins)
         order_sql = {
@@ -1261,15 +1307,144 @@ class ObservationLedger:
             "event": "COALESCE(o.event_at, o.published_at) DESC, o.observation_id",
         }.get(order, "o.first_observed_at DESC, o.observation_id")
         base = f"FROM observation o {join_sql}{clause}"
-        total = int(self.con.execute(f"SELECT COUNT(DISTINCT o.observation_id) {base}", tuple(params)).fetchone()[0])
-        rows = self.raw(
-            f"SELECT DISTINCT o.* {base} ORDER BY {order_sql} LIMIT ? OFFSET ?",
-            (*params, int(limit), int(offset)),
+        all_params = [*join_params, *params]
+        # One row per work. The same paper arrives from Crossref and PubMed (and sometimes twice
+        # from one source); showing it twice made a short feed look fuller than it is.
+        inner = (
+            "SELECT o.*, ROW_NUMBER() OVER ("
+            "PARTITION BY lower(trim(o.title, ' .;')) "
+            "ORDER BY CASE o.source WHEN 'openfda_device' THEN 0 WHEN 'pubmed' THEN 1 ELSE 2 END,"
+            " o.first_observed_at, o.observation_id) AS _rn "
+            f"{base}"
         )
+        deduped = f"SELECT * FROM ({inner}) WHERE _rn = 1"
+        total = int(self.con.execute(
+            f"SELECT COUNT(*) FROM ({deduped})", tuple(all_params)).fetchone()[0])
+        outer_order = order_sql.replace("o.", "")
+        rows = self.raw(
+            f"SELECT * FROM ({deduped}) ORDER BY {outer_order} LIMIT ? OFFSET ?",
+            (*all_params, int(limit), int(offset)),
+        )
+        admissions = self._admissions_for([row["observation_id"] for row in rows], admission_version)
         for row in rows:
             row["facets"] = self.facets_for(row["observation_id"])
             row["latest_version_changed_fields"] = self._latest_changed_fields(row["observation_id"])
+            row["admission"] = admissions.get(row["observation_id"])
         return rows, total
+
+    # ---------------------------------------------------------------- admission (QUALITY-001)
+    def record_admissions(self, rows: Iterable[Mapping[str, Any]]) -> int:
+        """Append admission decisions for one version. Idempotent per (observation, version)."""
+        payload = [
+            (
+                row["observation_id"], row["admission_version"], row["tier"], row["category"],
+                float(row["score"]), row["reasons"], row["features"], row["decided_at"],
+            )
+            for row in rows
+        ]
+        if not payload:
+            return 0
+        with self._transaction():
+            self.con.executemany(
+                "INSERT OR REPLACE INTO observation_admission"
+                " (observation_id, admission_version, tier, category, score, reasons, features,"
+                " decided_at) VALUES (?,?,?,?,?,?,?,?)",
+                payload,
+            )
+        return len(payload)
+
+    def admission_pending(self, admission_version: str, *, limit: int = 500) -> list[dict[str, Any]]:
+        """Observations that still lack a decision for ``admission_version``."""
+        rows = self.raw(
+            "SELECT o.observation_id, o.source, o.record_type, o.title, o.published_at,"
+            " o.first_observed_at, v.payload"
+            " FROM observation o"
+            " JOIN observation_version v ON v.version_id = o.latest_version_id"
+            " LEFT JOIN observation_admission a ON a.observation_id = o.observation_id"
+            "   AND a.admission_version = ?"
+            " WHERE a.observation_id IS NULL"
+            " ORDER BY o.first_observed_at DESC LIMIT ?",
+            (str(admission_version), int(limit)),
+        )
+        if rows:
+            ids = [row["observation_id"] for row in rows]
+            facets: dict[str, dict[str, list[str]]] = {}
+            for start in range(0, len(ids), 400):
+                batch = ids[start:start + 400]
+                for facet in self.raw(
+                    "SELECT observation_id, kind, value FROM observation_facet"
+                    f" WHERE observation_id IN ({','.join('?' * len(batch))})",
+                    tuple(batch),
+                ):
+                    entry = facets.setdefault(facet["observation_id"], {})
+                    entry.setdefault(facet["kind"], []).append(facet["value"])
+            for row in rows:
+                entry = facets.get(row["observation_id"], {})
+                row["mapped_topics"] = entry.get("topic", [])
+                row["mapped_products"] = entry.get("product", [])
+        return rows
+
+    def _admissions_for(self, observation_ids: Sequence[str], admission_version: str | None
+                        ) -> dict[str, dict[str, Any]]:
+        if not observation_ids or not admission_version:
+            return {}
+        found: dict[str, dict[str, Any]] = {}
+        ids = list(observation_ids)
+        for start in range(0, len(ids), 400):
+            batch = ids[start:start + 400]
+            for row in self.raw(
+                "SELECT observation_id, tier, category, score, reasons, decided_at"
+                " FROM observation_admission WHERE admission_version = ?"
+                f" AND observation_id IN ({','.join('?' * len(batch))})",
+                (str(admission_version), *batch),
+            ):
+                found[row["observation_id"]] = {
+                    "tier": row["tier"],
+                    "category": row["category"],
+                    "score": row["score"],
+                    "reasons": _parse_json(row["reasons"], []),
+                    "decided_at": row["decided_at"],
+                }
+        return found
+
+    def admission_summary(self, admission_version: str, *, days: int = 14,
+                          now: str | None = None) -> dict[str, Any]:
+        """Counts for the four user-facing views. One source of truth for the tab labels."""
+        now_moment = datetime.fromisoformat((now or "now").replace("Z", "+00:00")) \
+            if now and now != "now" else datetime.now(timezone.utc)
+        cutoff = (now_moment - timedelta(days=max(1, int(days)))).isoformat(
+            timespec="microseconds").replace("+00:00", "Z")
+
+        def scalar(sql: str, *params: Any) -> int:
+            row = self.con.execute(sql, params).fetchone()
+            return int(row[0]) if row else 0
+
+        version = str(admission_version)
+        latest = scalar(
+            "SELECT COUNT(*) FROM observation o JOIN observation_admission a"
+            " ON a.observation_id=o.observation_id AND a.admission_version=?"
+            " WHERE a.tier='HIGH_RELEVANCE'"
+            " AND COALESCE(o.published_at, o.event_at, '') >= ?", version, cutoff)
+        observed = scalar(
+            "SELECT COUNT(*) FROM observation o JOIN observation_admission a"
+            " ON a.observation_id=o.observation_id AND a.admission_version=?"
+            " WHERE a.tier IN ('HIGH_RELEVANCE','NEEDS_REVIEW') AND o.first_observed_at >= ?",
+            version, cutoff)
+        archive = scalar(
+            "SELECT COUNT(*) FROM observation o JOIN observation_admission a"
+            " ON a.observation_id=o.observation_id AND a.admission_version=?"
+            " WHERE a.tier='HIGH_RELEVANCE'", version)
+        review = scalar(
+            "SELECT COUNT(*) FROM observation o JOIN observation_admission a"
+            " ON a.observation_id=o.observation_id AND a.admission_version=?"
+            " WHERE a.tier='NEEDS_REVIEW'", version)
+        tiers = {
+            row["tier"]: int(row["n"]) for row in self.raw(
+                "SELECT tier, COUNT(*) AS n FROM observation_admission"
+                " WHERE admission_version=? GROUP BY tier", (version,))
+        }
+        return {"latest": latest, "observed": observed, "archive": archive, "review": review,
+                "days": int(days), "tiers": tiers, "admission_version": version}
 
     def _latest_changed_fields(self, obs_id: str) -> list[str]:
         row = self.con.execute(
@@ -1311,18 +1486,40 @@ class ObservationLedger:
         return {row["source_record_id"]: row for row in rows}
 
     def feed_facets(self, *, limit: int = 40) -> dict[str, Any]:
-        orgs = self.raw(
-            "SELECT f.value AS organization_id, f.confirmation, COUNT(*) AS n"
+        """Filter facets merged per company/topic.
+
+        The raw projection stores one row per (value, confirmation); rendering those rows made
+        the same company appear twice ("GE HealthCare 159" and "GE HealthCare 14"). A facet is one
+        filter, with its confirmation breakdown shown inside it.
+        """
+        rank = {"CONFIRMED": 3, "CANDIDATE": 2, "TOPIC_RELATED": 1}
+
+        def merged(rows: Sequence[Mapping[str, Any]], id_field: str) -> list[dict[str, Any]]:
+            bucket: dict[str, dict[str, Any]] = {}
+            for row in rows:
+                entry = bucket.setdefault(row["value"], {
+                    id_field: row["value"], "n": 0, "confirmation": "UNKNOWN_RELATION",
+                    "by_confirmation": {},
+                })
+                entry["n"] += int(row["n"])
+                entry["by_confirmation"][row["confirmation"]] = (
+                    entry["by_confirmation"].get(row["confirmation"], 0) + int(row["n"])
+                )
+                if rank.get(row["confirmation"], 0) > rank.get(entry["confirmation"], 0):
+                    entry["confirmation"] = row["confirmation"]
+            ordered = sorted(bucket.values(), key=lambda item: item["n"], reverse=True)
+            return ordered[: int(limit)]
+
+        orgs = merged(self.raw(
+            "SELECT f.value, f.confirmation, COUNT(*) AS n"
             " FROM observation_facet f WHERE f.kind='organization'"
-            " GROUP BY f.value, f.confirmation ORDER BY n DESC LIMIT ?",
-            (int(limit),),
-        )
-        topics = self.raw(
-            "SELECT f.value AS topic_id, f.confirmation, COUNT(*) AS n"
+            " GROUP BY f.value, f.confirmation",
+        ), "organization_id")
+        topics = merged(self.raw(
+            "SELECT f.value, f.confirmation, COUNT(*) AS n"
             " FROM observation_facet f WHERE f.kind='topic'"
-            " GROUP BY f.value, f.confirmation ORDER BY n DESC LIMIT ?",
-            (int(limit),),
-        )
+            " GROUP BY f.value, f.confirmation",
+        ), "topic_id")
         sources = self.raw(
             "SELECT source, COUNT(*) AS n, MAX(first_observed_at) AS newest"
             " FROM observation GROUP BY source ORDER BY n DESC",
