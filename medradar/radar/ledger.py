@@ -81,7 +81,7 @@ from .records import (
 )
 from .records import MappingResult, RawRecord, RecordOutcome
 
-SCHEMA_VERSION = "radar-ledger-v2"
+SCHEMA_VERSION = "radar-ledger-v3"
 RadarLocked = PipelineLocked
 
 #: v1 keyed status history by ``(observation_id, changed_at)`` at second precision, so two
@@ -226,6 +226,7 @@ CREATE TABLE IF NOT EXISTS observation (
     processing_state TEXT NOT NULL,
     processing_updated_at TEXT,
     site_domain    TEXT,
+    work_key       TEXT,
     UNIQUE (source, source_record_id)
 );
 CREATE INDEX IF NOT EXISTS ix_obs_source ON observation(source);
@@ -251,9 +252,18 @@ CREATE TABLE IF NOT EXISTS observation_facet (
 );
 CREATE INDEX IF NOT EXISTS ix_facet_lookup ON observation_facet(kind, value, confirmation);
 
--- QUALITY-001: append-only admission decisions. The observation and its history are never
--- modified; a new admission_version is a new projection over the same records.
+-- REFOUNDATION-004: append-only admission decisions.
+--
+-- QUALITY-001 keyed this table by (observation_id, admission_version) and wrote it with
+-- INSERT OR REPLACE, so re-running the same rule version silently overwrote an earlier
+-- judgement (QA-002). v3 gives every decision its own row: a re-judgement is a new row, the
+-- earlier one stays, and UPDATE/DELETE are rejected by triggers below. The "current" decision
+-- is read through the observation_admission_latest view.
+--
+-- evidence_key is a digest of (judged version, mapped facets, rule digest). It makes a re-run
+-- idempotent: the same evidence judged by the same rules inserts nothing.
 CREATE TABLE IF NOT EXISTS observation_admission (
+    admission_seq    INTEGER PRIMARY KEY AUTOINCREMENT,
     observation_id   TEXT NOT NULL,
     admission_version TEXT NOT NULL,
     tier             TEXT NOT NULL,
@@ -261,10 +271,55 @@ CREATE TABLE IF NOT EXISTS observation_admission (
     score            REAL NOT NULL,
     reasons          TEXT NOT NULL,
     features         TEXT NOT NULL,
+    decision         TEXT NOT NULL DEFAULT 'EXCLUDED',
+    dimensions       TEXT NOT NULL DEFAULT '{}',
+    rules_digest     TEXT NOT NULL DEFAULT 'legacy',
+    evidence_key     TEXT NOT NULL DEFAULT '',
+    judged_version_id TEXT,
+    decided_at       TEXT NOT NULL,
+    UNIQUE (observation_id, admission_version, evidence_key)
+);
+CREATE INDEX IF NOT EXISTS ix_admission_tier ON observation_admission(admission_version, tier);
+CREATE INDEX IF NOT EXISTS ix_admission_obs ON observation_admission(observation_id, admission_version, admission_seq);
+
+CREATE VIEW IF NOT EXISTS observation_admission_latest AS
+SELECT a.* FROM observation_admission a
+WHERE a.admission_seq = (
+    SELECT MAX(b.admission_seq) FROM observation_admission b
+    WHERE b.observation_id = a.observation_id
+      AND b.admission_version = a.admission_version
+);
+
+-- Derived projection of the current decision per (observation, rule version). It is rebuilt
+-- from the append-only history and is never the source of truth; it exists because a feed query
+-- must not pay for a correlated MAX() over the whole decision history on every request.
+CREATE TABLE IF NOT EXISTS admission_current (
+    observation_id   TEXT NOT NULL,
+    admission_version TEXT NOT NULL,
+    tier             TEXT NOT NULL,
+    category         TEXT NOT NULL,
+    score            REAL NOT NULL,
+    reasons          TEXT NOT NULL,
+    features         TEXT NOT NULL,
+    decision         TEXT NOT NULL,
+    dimensions       TEXT NOT NULL,
+    rules_digest     TEXT NOT NULL,
+    evidence_key     TEXT NOT NULL,
+    judged_version_id TEXT,
     decided_at       TEXT NOT NULL,
     PRIMARY KEY (observation_id, admission_version)
 );
-CREATE INDEX IF NOT EXISTS ix_admission_tier ON observation_admission(admission_version, tier);
+CREATE INDEX IF NOT EXISTS ix_admission_current_tier ON admission_current(admission_version, tier);
+CREATE INDEX IF NOT EXISTS ix_admission_current_decision
+    ON admission_current(admission_version, decision);
+
+-- Mutable work state: which observations need a (re-)decision and why. It is a queue, not
+-- evidence, so it may be written and cleared; the decisions it produces are append-only.
+CREATE TABLE IF NOT EXISTS admission_workqueue (
+    observation_id TEXT PRIMARY KEY,
+    reason         TEXT NOT NULL,
+    queued_at      TEXT NOT NULL
+);
 
 CREATE TABLE IF NOT EXISTS source_state (
     source_id      TEXT PRIMARY KEY,
@@ -390,6 +445,12 @@ BEGIN SELECT RAISE(ABORT, 'source_failure is append-only: UPDATE rejected'); END
 CREATE TRIGGER IF NOT EXISTS trg_failure_no_delete BEFORE DELETE ON source_failure
 BEGIN SELECT RAISE(ABORT, 'source_failure is append-only: DELETE rejected'); END;
 
+-- A recorded admission decision is evidence: it can be superseded by a later row, never edited.
+CREATE TRIGGER IF NOT EXISTS trg_admission_no_update BEFORE UPDATE ON observation_admission
+BEGIN SELECT RAISE(ABORT, 'observation_admission is append-only: UPDATE rejected'); END;
+CREATE TRIGGER IF NOT EXISTS trg_admission_no_delete BEFORE DELETE ON observation_admission
+BEGIN SELECT RAISE(ABORT, 'observation_admission is append-only: DELETE rejected'); END;
+
 -- first_observed_at and the identity of an observation are immutable.
 CREATE TRIGGER IF NOT EXISTS trg_obs_identity_immutable
 BEFORE UPDATE OF observation_id, source, source_record_id, first_observed_at, ingested_at,
@@ -423,6 +484,16 @@ def _parse_json(text: str | None, default: Any = None) -> Any:
         return json.loads(text)
     except (TypeError, ValueError):
         return default
+
+
+def _work_key(doi: str | None, pmid: str | None, title: str | None) -> str:
+    """One work, one key: the official identifier if the record states one, else the title."""
+    if doi:
+        return "doi:" + str(doi).lower()
+    if pmid:
+        return "pmid:" + str(pmid)
+    normalized = " ".join(str(title or "").lower().strip(" .;").split())
+    return "title:" + normalized
 
 
 def _counters() -> dict[str, int]:
@@ -488,15 +559,18 @@ class ObservationLedger:
             self._set_meta("created_at", utc_now_iso())
             return
         found = self._get_meta("schema_version")
-        if found == "radar-ledger-v1":
+        legacy_admissions = False
+        if found in ("radar-ledger-v1", "radar-ledger-v2"):
             if self.read_only:
                 self.con.close()
                 raise RuntimeError(
-                    f"{self.path}: this ledger is {found!r} and needs the one-way v1->v2 status-history "
-                    "migration, which a read-only handle cannot perform. Run any radar command once "
-                    "with write access."
+                    f"{self.path}: this ledger is {found!r} and needs a one-way schema migration, "
+                    "which a read-only handle cannot perform. Run any radar command once with write "
+                    "access."
                 )
-            self._migrate_status_history_key()
+            if found == "radar-ledger-v1":
+                self._migrate_status_history_key()
+            legacy_admissions = self._prepare_admission_migration()
             self._set_meta("schema_version", SCHEMA_VERSION)
             found = SCHEMA_VERSION
         if found != SCHEMA_VERSION:
@@ -510,6 +584,10 @@ class ObservationLedger:
         if self.read_only:
             return
         self.con.executescript(SCHEMA)  # idempotent: adds any table missing from an older build
+        if legacy_admissions:
+            self._finish_admission_migration()
+        self._ensure_work_key_column()
+        self._refresh_admission_current()
 
     def _migrate_status_history_key(self) -> None:
         """v1 -> v2: replace the second-precision composite key with a surrogate key.
@@ -537,6 +615,88 @@ class ObservationLedger:
             DROP TABLE observation_status_history_v1;
             """
         )
+
+    def _prepare_admission_migration(self) -> bool:
+        """v2 -> v3: move the composite-key admission table aside before the v3 schema is created.
+
+        The v3 table has a surrogate key and new columns, so the old table cannot be altered in
+        place. It is renamed, every row is copied forward by _finish_admission_migration, and
+        only then is the old copy dropped. Nothing is deleted if the copy fails.
+        """
+        tables = {row[0] for row in self.con.execute(
+            "SELECT name FROM sqlite_master WHERE type='table'")}
+        if "observation_admission" not in tables:
+            return False
+        columns = {row[1] for row in self.con.execute(
+            "PRAGMA table_info(observation_admission)")}
+        if "admission_seq" in columns:
+            return False
+        self.con.executescript(
+            "ALTER TABLE observation_admission RENAME TO observation_admission_v2;"
+        )
+        return True
+
+    def _finish_admission_migration(self) -> None:
+        """Copy every v2 decision forward into the append-only v3 table, then drop the old copy."""
+        tables = {row[0] for row in self.con.execute(
+            "SELECT name FROM sqlite_master WHERE type='table'")}
+        if "observation_admission_v2" not in tables:
+            return
+        self.con.execute(
+            "INSERT OR IGNORE INTO observation_admission("
+            " observation_id, admission_version, tier, category, score, reasons, features,"
+            " decision, dimensions, rules_digest, evidence_key, judged_version_id, decided_at)"
+            " SELECT observation_id, admission_version, tier, category, score, reasons, features,"
+            "   CASE tier WHEN 'HIGH_RELEVANCE' THEN 'FEED'"
+            "             WHEN 'NEEDS_REVIEW' THEN 'REVIEW' ELSE 'EXCLUDED' END,"
+            "   :marker, 'legacy-v2',"
+            "   'legacy:' || admission_version, NULL, decided_at"
+            " FROM observation_admission_v2 ORDER BY decided_at, rowid",
+            {"marker": _json({"migrated_from": "radar-ledger-v2"})},
+        )
+        self.con.executescript("DROP TABLE observation_admission_v2;")
+
+    def _ensure_work_key_column(self) -> None:
+        """Add the materialised work-identity column to a pre-v3 observation table.
+
+        work_key is a derived projection (identifier first, title fallback); it exists so the
+        feed one-row-per-work rule does not re-aggregate the identifier table on every query.
+        """
+        columns = [row[1] for row in self.con.execute("PRAGMA table_info(observation)")]
+        if "work_key" not in columns:
+            self.con.execute("ALTER TABLE observation ADD COLUMN work_key TEXT")
+            rows = self.con.execute(
+                "SELECT o.observation_id, o.title,"
+                " (SELECT MIN(i.value) FROM observation_identifier i"
+                "   WHERE i.observation_id=o.observation_id AND i.kind='DOI') AS doi,"
+                " (SELECT MIN(i.value) FROM observation_identifier i"
+                "   WHERE i.observation_id=o.observation_id AND i.kind='PMID') AS pmid"
+                " FROM observation o"
+            ).fetchall()
+            self.con.executemany(
+                "UPDATE observation SET work_key=? WHERE observation_id=?",
+                [(_work_key(row["doi"], row["pmid"], row["title"]), row["observation_id"])
+                 for row in rows],
+            )
+        self.con.execute("CREATE INDEX IF NOT EXISTS ix_obs_work_key ON observation(work_key)")
+
+    def _refresh_admission_current(self) -> None:
+        """Rebuild the derived current-decision table if it is behind the append-only history.
+
+        Cheap in the steady state (two scalar reads). A rebuild happens once after a migration or
+        if the table was dropped; the history is the source of truth and is never modified.
+        """
+        history = self.con.execute("SELECT COUNT(*) FROM observation_admission").fetchone()[0]
+        current = self.con.execute("SELECT COUNT(*) FROM admission_current").fetchone()[0]
+        if history and current < history:
+            self.con.execute(
+                "INSERT OR REPLACE INTO admission_current("
+                " observation_id, admission_version, tier, category, score, reasons, features,"
+                " decision, dimensions, rules_digest, evidence_key, judged_version_id, decided_at)"
+                " SELECT observation_id, admission_version, tier, category, score, reasons, features,"
+                " decision, dimensions, rules_digest, evidence_key, judged_version_id, decided_at"
+                " FROM observation_admission_latest"
+            )
 
     def close(self) -> None:
         if self._closed:
@@ -580,6 +740,13 @@ class ObservationLedger:
     def set_meta(self, key: str, value: Any) -> None:
         with self._transaction():
             self._set_meta(key, value if isinstance(value, str) else canonical_json(value))
+
+    def artifact_digest(self) -> str:
+        """A cheap fingerprint of the decision evidence, used to keep evaluation output honest."""
+        row = self.con.execute(
+            "SELECT COUNT(*) AS n, MAX(admission_seq) AS seq FROM observation_admission"
+        ).fetchone()
+        return f"admissions={int(row['n'] if row else 0)}:seq={int(row['seq'] or 0) if row else 0}"
 
     def get_runtime(self, key: str, default: Any = None) -> Any:
         row = self.con.execute("SELECT value FROM runtime_state WHERE key=?", (key,)).fetchone()
@@ -826,6 +993,8 @@ class ObservationLedger:
             raise ValueError(f"bad discovery phase: {discovered_phase!r}")
         existing = self.one("SELECT * FROM observation WHERE observation_id=?", (obs_id,))
         site_domain = _domain_of(record.url)
+        identifier_map = {kind: value for kind, value in standard_identifiers(record)}
+        work_key = _work_key(identifier_map.get("DOI"), identifier_map.get("PMID"), record.title)
 
         if existing is None:
             version = make_version_id(obs_id, digest)
@@ -838,15 +1007,16 @@ class ObservationLedger:
                     " source_updated_at_precision, last_checked_at, last_checked_run_id, content_hash,"
                     " latest_version_id, version_count, observation_status, current_change_state,"
                     " last_change_at, first_seen_run_id, processing_state, processing_updated_at,"
-                    " site_domain)"
-                    " VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+                    " site_domain, work_key)"
+                    " VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
                     (obs_id, record.source, record.source_record_id, record.record_type,
                      record.official_identifier or record.source_record_id, record.title,
                      record.url, seen, seen, origin,
                      backfill_reason, discovered_phase, record.event_at, record.event_at_precision,
                      record.published_at, record.published_at_precision, record.source_updated_at,
                      record.source_updated_at_precision, seen, run_id, digest, version, 1,
-                     STATUS_ACTIVE, CHANGE_NEW, seen, run_id, PROC_RAW, seen, site_domain),
+                     STATUS_ACTIVE, CHANGE_NEW, seen, run_id, PROC_RAW, seen, site_domain,
+                     work_key),
                 )
                 self.con.execute(
                     "INSERT INTO observation_version(version_id, observation_id, version_seq,"
@@ -922,12 +1092,13 @@ class ObservationLedger:
                 " observation_status=?, current_change_state=?, last_change_at=?, last_checked_at=?,"
                 " last_checked_run_id=?, event_at=?, event_at_precision=?, published_at=?,"
                 " published_at_precision=?, source_updated_at=?, source_updated_at_precision=?,"
-                " title=?, source_url=?, processing_state=?, site_domain=? WHERE observation_id=?",
+                " title=?, source_url=?, processing_state=?, site_domain=?, work_key=?"
+                " WHERE observation_id=?",
                 (digest, version, seq, STATUS_ACTIVE, CHANGE_UPDATED, seen, seen, run_id,
                  record.event_at, record.event_at_precision, record.published_at,
                  record.published_at_precision, record.source_updated_at,
                  record.source_updated_at_precision, record.title, record.url, PROC_RAW,
-                 site_domain, obs_id),
+                 site_domain, work_key, obs_id),
             )
             if was_removed:
                 self.con.execute(
@@ -940,6 +1111,8 @@ class ObservationLedger:
                                 run_id, existing["discovery_phase"])
             self._write_mapping(obs_id, mapping, mapping_version, seen, run_id)
             self._write_identifiers(obs_id, record, seen)
+            # The payload changed; the judgement must be reconsidered on the new version.
+            self.queue_admission(obs_id, "new_version")
         return RecordOutcome(obs_id, CHANGE_UPDATED, version, previous_version, tuple(fields),
                              existing["first_observed_at"], existing["discovery_phase"])
 
@@ -1115,6 +1288,9 @@ class ObservationLedger:
                 " method, confidence) VALUES(?,?,?,?,?,?)",
                 rows,
             )
+        # The mapping changed, so the previous relevance decision was made on different
+        # evidence. Queue a re-judgement; the old decision row stays as history.
+        self.queue_admission(obs_id, "mapping_changed")
 
     # -------------------------------------------------------------------- reads
     def observation_row(self, obs_id: str) -> dict[str, Any] | None:
@@ -1276,7 +1452,7 @@ class ObservationLedger:
         join_params: list[Any] = []
         if admission_version:
             joins.append(
-                "JOIN observation_admission adm ON adm.observation_id = o.observation_id"
+                "JOIN admission_current adm ON adm.observation_id = o.observation_id"
                 " AND adm.admission_version = ?"
             )
             join_params.append(str(admission_version))
@@ -1293,8 +1469,13 @@ class ObservationLedger:
                 "+00:00", "Z")
             if scope_key == "latest":
                 # Newly *published* by the source: a credible public date inside the window.
+                # A source-stated date in the future (an ahead-of-print issue) is not "published
+                # in the last N days"; it is a known date whose meaning is different, and mixing
+                # it into the feed misstates freshness.
                 where.append("COALESCE(o.published_at, o.event_at, '') >= ?")
                 params.append(cutoff)
+                where.append("COALESCE(o.published_at, o.event_at, '') <= ?")
+                params.append((now_moment.isoformat(timespec="microseconds").replace("+00:00", "Z")))
             else:
                 # Newly *observed* by MedRadar: may be an old document discovered today.
                 where.append("o.first_observed_at >= ?")
@@ -1306,13 +1487,17 @@ class ObservationLedger:
             "published": "COALESCE(o.published_at, o.event_at) DESC, o.observation_id",
             "event": "COALESCE(o.event_at, o.published_at) DESC, o.observation_id",
         }.get(order, "o.first_observed_at DESC, o.observation_id")
+        # One row per work. The same paper arrives from Crossref and PubMed (and sometimes twice
+        # from one source), so the feed groups records that state the same official identifier
+        # first: DOI, then PMID. A title string is only the fallback for records that carry no
+        # identifier, because two different works can share a title and one work can change its
+        # title (QA-002: relying on the title alone both merged and split works incorrectly).
+        work_key = "COALESCE(o.work_key, 'title:' || lower(trim(o.title, ' .;')))"
         base = f"FROM observation o {join_sql}{clause}"
         all_params = [*join_params, *params]
-        # One row per work. The same paper arrives from Crossref and PubMed (and sometimes twice
-        # from one source); showing it twice made a short feed look fuller than it is.
         inner = (
             "SELECT o.*, ROW_NUMBER() OVER ("
-            "PARTITION BY lower(trim(o.title, ' .;')) "
+            f"PARTITION BY {work_key} "
             "ORDER BY CASE o.source WHEN 'openfda_device' THEN 0 WHEN 'pubmed' THEN 1 ELSE 2 END,"
             " o.first_observed_at, o.observation_id) AS _rn "
             f"{base}"
@@ -1332,39 +1517,98 @@ class ObservationLedger:
             row["admission"] = admissions.get(row["observation_id"])
         return rows, total
 
-    # ---------------------------------------------------------------- admission (QUALITY-001)
+    # ------------------------------------------------- admission (QUALITY-001, v3 in RF-004)
+    def queue_admission(self, observation_id: str, reason: str) -> None:
+        """Mark one observation as needing a (re-)decision. Queue state, not evidence."""
+        self.con.execute(
+            "INSERT INTO admission_workqueue(observation_id, reason, queued_at) VALUES(?,?,?)"
+            " ON CONFLICT(observation_id) DO UPDATE SET"
+            "   reason=excluded.reason, queued_at=excluded.queued_at",
+            (observation_id, str(reason)[:120], utc_now_iso()),
+        )
+
     def record_admissions(self, rows: Iterable[Mapping[str, Any]]) -> int:
-        """Append admission decisions for one version. Idempotent per (observation, version)."""
-        payload = [
-            (
-                row["observation_id"], row["admission_version"], row["tier"], row["category"],
-                float(row["score"]), row["reasons"], row["features"], row["decided_at"],
-            )
-            for row in rows
-        ]
-        if not payload:
+        """Append admission decisions for one rule version.
+
+        Append-only: a re-judgement under the same version with different evidence is a new row.
+        Idempotent: the same evidence judged by the same rules has the same evidence_key and
+        inserts nothing. Processed observations leave the work queue.
+        """
+        prepared = []
+        cleared: list[str] = []
+        for row in rows:
+            payload = dict(row)
+            evidence_key = str(payload.get("evidence_key") or "")
+            prepared.append((
+                payload["observation_id"], payload["admission_version"], payload["tier"],
+                payload["category"], float(payload["score"]),
+                payload["reasons"] if isinstance(payload["reasons"], str)
+                else _json(payload["reasons"]),
+                payload["features"] if isinstance(payload["features"], str)
+                else _json(payload["features"]),
+                str(payload.get("decision") or "EXCLUDED"),
+                payload.get("dimensions") if isinstance(payload.get("dimensions"), str)
+                else _json(payload.get("dimensions") or {}),
+                str(payload.get("rules_digest") or "unknown"),
+                evidence_key,
+                payload.get("judged_version_id"),
+                payload["decided_at"],
+            ))
+            cleared.append(payload["observation_id"])
+        if not prepared:
             return 0
         with self._transaction():
             self.con.executemany(
-                "INSERT OR REPLACE INTO observation_admission"
+                "INSERT OR IGNORE INTO observation_admission"
                 " (observation_id, admission_version, tier, category, score, reasons, features,"
-                " decided_at) VALUES (?,?,?,?,?,?,?,?)",
-                payload,
+                " decision, dimensions, rules_digest, evidence_key, judged_version_id, decided_at)"
+                " VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)",
+                prepared,
             )
-        return len(payload)
+            # The history row above is the evidence; this is the rebuildable current view of it.
+            self.con.executemany(
+                "INSERT INTO admission_current"
+                " (observation_id, admission_version, tier, category, score, reasons, features,"
+                " decision, dimensions, rules_digest, evidence_key, judged_version_id, decided_at)"
+                " VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)"
+                " ON CONFLICT(observation_id, admission_version) DO UPDATE SET"
+                " tier=excluded.tier, category=excluded.category, score=excluded.score,"
+                " reasons=excluded.reasons, features=excluded.features, decision=excluded.decision,"
+                " dimensions=excluded.dimensions, rules_digest=excluded.rules_digest,"
+                " evidence_key=excluded.evidence_key, judged_version_id=excluded.judged_version_id,"
+                " decided_at=excluded.decided_at",
+                prepared,
+            )
+            self.con.executemany(
+                "DELETE FROM admission_workqueue WHERE observation_id=?",
+                [(obs_id,) for obs_id in cleared],
+            )
+        return len(prepared)
 
-    def admission_pending(self, admission_version: str, *, limit: int = 500) -> list[dict[str, Any]]:
-        """Observations that still lack a decision for ``admission_version``."""
+    def admission_pending(self, admission_version: str, *, limit: int = 500,
+                          rules_digest: str | None = None) -> list[dict[str, Any]]:
+        """Observations that need a decision for this version.
+
+        Three reasons: no decision exists at all, a new version/mapping was recorded (the
+        observation is queued), or the decision was made by a different set of rules. The third
+        case is what makes a rule change take effect: the old row stays as history and a new
+        decision is appended next to it.
+        """
         rows = self.raw(
             "SELECT o.observation_id, o.source, o.record_type, o.title, o.published_at,"
-            " o.first_observed_at, v.payload"
+            " o.published_at_precision, o.event_at, o.event_at_precision, o.first_observed_at,"
+            " o.latest_version_id, v.payload,"
+            " (SELECT q.reason FROM admission_workqueue q WHERE q.observation_id=o.observation_id)"
+            "   AS queue_reason"
             " FROM observation o"
             " JOIN observation_version v ON v.version_id = o.latest_version_id"
-            " LEFT JOIN observation_admission a ON a.observation_id = o.observation_id"
+            " LEFT JOIN admission_current a ON a.observation_id = o.observation_id"
             "   AND a.admission_version = ?"
             " WHERE a.observation_id IS NULL"
+            "    OR o.observation_id IN (SELECT observation_id FROM admission_workqueue)"
+            "    OR (a.rules_digest IS NOT NULL AND a.rules_digest <> ?)"
             " ORDER BY o.first_observed_at DESC LIMIT ?",
-            (str(admission_version), int(limit)),
+            (str(admission_version), str(rules_digest or ""), int(limit)),
         )
         if rows:
             ids = [row["observation_id"] for row in rows]
@@ -1393,8 +1637,9 @@ class ObservationLedger:
         for start in range(0, len(ids), 400):
             batch = ids[start:start + 400]
             for row in self.raw(
-                "SELECT observation_id, tier, category, score, reasons, decided_at"
-                " FROM observation_admission WHERE admission_version = ?"
+                "SELECT observation_id, tier, category, score, reasons, features, decision,"
+                " dimensions, rules_digest, evidence_key, judged_version_id, decided_at"
+                " FROM admission_current WHERE admission_version = ?"
                 f" AND observation_id IN ({','.join('?' * len(batch))})",
                 (str(admission_version), *batch),
             ):
@@ -1403,9 +1648,37 @@ class ObservationLedger:
                     "category": row["category"],
                     "score": row["score"],
                     "reasons": _parse_json(row["reasons"], []),
+                    # features deliberately not projected into the feed: they are diagnostic
+                    # detail (hundreds of bytes per row) available in the decision history.
+                    "decision": row["decision"],
+                    "dimensions": _parse_json(row["dimensions"], {}),
+                    "rules_digest": row["rules_digest"],
+                    "evidence_key": row["evidence_key"],
+                    "judged_version_id": row["judged_version_id"],
                     "decided_at": row["decided_at"],
                 }
         return found
+
+    def admission_history(self, observation_id: str,
+                          admission_version: str | None = None) -> list[dict[str, Any]]:
+        """Every decision ever recorded for one observation, oldest first.
+
+        This is the answer to "was this record reconsidered, by which rules, and what did the
+        earlier judgement say?" - a question the v2 INSERT OR REPLACE table could not answer.
+        """
+        sql = ("SELECT admission_seq, admission_version, tier, category, score, decision,"
+               " rules_digest, evidence_key, judged_version_id, decided_at, reasons, dimensions"
+               " FROM observation_admission WHERE observation_id=?")
+        params: list[Any] = [observation_id]
+        if admission_version:
+            sql += " AND admission_version=?"
+            params.append(str(admission_version))
+        sql += " ORDER BY admission_seq"
+        rows = self.raw(sql, params)
+        for row in rows:
+            row["reasons"] = _parse_json(row["reasons"], [])
+            row["dimensions"] = _parse_json(row["dimensions"], {})
+        return rows
 
     def admission_summary(self, admission_version: str, *, days: int = 14,
                           now: str | None = None) -> dict[str, Any]:
@@ -1426,7 +1699,7 @@ class ObservationLedger:
         def distinct_count(where: str, *extra: Any) -> int:
             row = self.con.execute(
                 "SELECT COUNT(*) FROM (SELECT 1 FROM observation o"
-                " JOIN observation_admission a ON a.observation_id=o.observation_id"
+                " JOIN admission_current a ON a.observation_id=o.observation_id"
                 " AND a.admission_version=?"
                 f" WHERE {where} GROUP BY {title_key})",
                 (version, *extra),
@@ -1441,11 +1714,17 @@ class ObservationLedger:
         review = distinct_count("a.tier='NEEDS_REVIEW'")
         tiers = {
             row["tier"]: int(row["n"]) for row in self.raw(
-                "SELECT tier, COUNT(*) AS n FROM observation_admission"
+                "SELECT tier, COUNT(*) AS n FROM admission_current"
                 " WHERE admission_version=? GROUP BY tier", (version,))
         }
+        decisions = {
+            row["decision"]: int(row["n"]) for row in self.raw(
+                "SELECT decision, COUNT(*) AS n FROM admission_current"
+                " WHERE admission_version=? GROUP BY decision", (version,))
+        }
         return {"latest": latest, "observed": observed, "archive": archive, "review": review,
-                "days": int(days), "tiers": tiers, "admission_version": version}
+                "days": int(days), "tiers": tiers, "decisions": decisions,
+                "admission_version": version}
 
     def _latest_changed_fields(self, obs_id: str) -> list[str]:
         row = self.con.execute(

@@ -37,6 +37,7 @@ like; it picks up whatever is not yet processed, and running it twice changes no
 
 from __future__ import annotations
 
+import hashlib
 import json
 import time
 from dataclasses import dataclass, field
@@ -47,7 +48,7 @@ from .classify import RuleMapper
 from .graph import GRAPH_VERSION, TechnologyGraph
 from .http import PoliteFetcher
 from .ledger import ObservationLedger
-from .relevance import ADMISSION_VERSION, classify_observation, now_iso
+from .relevance import ADMISSION_VERSION, classify_observation, now_iso, rules_digest
 from .records import (
     MAPPING_VERSION,
     PROC_AI_PENDING,
@@ -273,7 +274,8 @@ def apply_admissions(ledger: ObservationLedger, *, limit: int = 500) -> int:
     The decision is a separate append-only projection: the observation, its versions and its
     first-observed time are untouched, and a rejected record stays in the ledger with a reason.
     """
-    pending = ledger.admission_pending(ADMISSION_VERSION, limit=limit)
+    rules = rules_digest()
+    pending = ledger.admission_pending(ADMISSION_VERSION, limit=limit, rules_digest=rules)
     if not pending:
         return 0
     decided_at = now_iso()
@@ -284,6 +286,10 @@ def apply_admissions(ledger: ObservationLedger, *, limit: int = 500) -> int:
                 "record_type": row.get("record_type"),
                 "title": row.get("title"),
                 "payload": row.get("payload"),
+                "published_at": row.get("published_at"),
+                "published_at_precision": row.get("published_at_precision"),
+                "event_at": row.get("event_at"),
+                "event_at_precision": row.get("event_at_precision"),
             },
             mapped_topics=row.get("mapped_topics"),
             mapped_products=row.get("mapped_products"),
@@ -296,9 +302,30 @@ def apply_admissions(ledger: ObservationLedger, *, limit: int = 500) -> int:
             "score": decision.score,
             "reasons": json.dumps(decision.reasons, ensure_ascii=False),
             "features": json.dumps(decision.features, ensure_ascii=False),
+            "decision": decision.decision,
+            "dimensions": json.dumps(decision.dimensions, ensure_ascii=False, sort_keys=True),
+            "rules_digest": rules,
+            "evidence_key": _evidence_key(row, rules),
+            "judged_version_id": row.get("latest_version_id"),
             "decided_at": decided_at,
         })
     return ledger.record_admissions(rows)
+
+
+def _evidence_key(row: Mapping[str, Any], rules: str) -> str:
+    """Digest of what was judged (the version) and the rules that judged it.
+
+    A re-run with the same evidence and the same rules is a no-op. A different version of the
+    record, a different mapping or a different rule digest is a new judgement, appended next to
+    the previous one instead of replacing it.
+    """
+    material = "|".join((
+        str(row.get("latest_version_id") or ""),
+        ",".join(sorted(str(value) for value in (row.get("mapped_topics") or []))),
+        ",".join(sorted(str(value) for value in (row.get("mapped_products") or []))),
+        rules,
+    ))
+    return hashlib.sha256(material.encode("utf-8")).hexdigest()[:32]
 
 
 def _rebuild_record(ledger: ObservationLedger, observation_id: str,
