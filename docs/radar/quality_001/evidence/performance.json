@@ -1,0 +1,36 @@
+{
+  "measured_at": "2026-11-18T00:30+08:00",
+  "url": "https://silly-facing-deferred-radar.trycloudflare.com/radar",
+  "device": "Chromium, viewport 390x844, CDP cache disabled for cold rounds",
+  "method": "each round: clear browser cache, hard navigation, poll until the first real intelligence card is in the DOM; stable = first card + 1.5 s settle",
+  "cold_start_first_card_ms": [1137, 1749, 1100, 1224, 1504, 1228, 2019, 1192, 1044, 1555],
+  "cold_start_median_ms": 1226,
+  "cold_start_p90_ms": 1749,
+  "cold_start_max_ms": 2019,
+  "cold_start_stable_ms": [2649, 3261, 2609, 2731, 3011, 2741, 3535, 2703, 2554, 3061],
+  "cold_start_stable_max_ms": 3535,
+  "refresh_first_card_ms": [1060, 2383, 1075, 1044, 1517, 1129, 950, 1074, 1149, 2594],
+  "refresh_median_ms": 1129,
+  "refresh_p90_ms": 2383,
+  "refresh_max_ms": 2594,
+  "refresh_stable_max_ms": 3410,
+  "rounds_over_10s": 0,
+  "legacy_redirects_ms": {
+    "/brief": 1418,
+    "/organizations": 1272,
+    "/events": 1253,
+    "/compare": 1267,
+    "/review": 1297,
+    "/sources": 3280,
+    "/data-status": 1585,
+    "/devices": 1303
+  },
+  "legacy_redirects_over_10s": 0,
+  "independent_qa_baseline": {
+    "mobile_first_cold_first_card_ms": 8875,
+    "mobile_first_cold_stable_ms": 11092,
+    "desktop_refresh_outlier_ms": 16649,
+    "legacy_redirect_range_ms": [6362, 12941]
+  },
+  "note": "The tunnel and the test network are part of every number; no result over 10 s was discarded."
+}
