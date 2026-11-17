@@ -513,6 +513,14 @@ def cmd_ai(args) -> int:
         finally:
             ledger.close()
         return 0
+    if args.action == "cancel":
+        ledger = ObservationLedger(paths.ledger)
+        try:
+            result = ledger.cancel_ai_backlog(args.reason or "AI stage disabled by policy")
+        finally:
+            ledger.close()
+        _print_json(result)
+        return 0
     if args.action == "run":
         ledger = ObservationLedger(paths.ledger)
         try:
@@ -663,11 +671,12 @@ def build_parser() -> argparse.ArgumentParser:
     verify.set_defaults(func=cmd_verify)
 
     ai = sub.add_parser("ai", help="local enrichment worker")
-    ai.add_argument("action", choices=["run", "status", "eval", "candidates"])
+    ai.add_argument("action", choices=["run", "status", "eval", "candidates", "cancel"])
     ai.add_argument("--limit", type=int, default=8)
     ai.add_argument("--model", default=None)
     ai.add_argument("--eval-set", default=None)
     ai.add_argument("--out", default=None)
+    ai.add_argument("--reason", default=None, help="why the backlog is being retired")
     ai.set_defaults(func=cmd_ai)
 
     export = sub.add_parser("export", help="export a JSON snapshot for review")

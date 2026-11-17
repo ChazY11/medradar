@@ -1030,11 +1030,27 @@ class ObservationLedger:
         last check.
         """
         for kind, value in standard_identifiers(record):
-            self.con.execute(
+            cursor = self.con.execute(
                 "INSERT OR IGNORE INTO observation_identifier(observation_id, kind, value, source,"
                 " first_seen_at) VALUES(?,?,?,?,?)",
                 (obs_id, kind, value, record.source, seen),
             )
+            if int(cursor.rowcount or 0) == 0:
+                continue
+            # A new identifier can create a cross-source relation whose other side was already
+            # materialised. That side will not be revisited on its own, so invalidate its graph
+            # projection; the next advance re-materialises it and writes the joining edge.
+            for peer in self.raw(
+                "SELECT observation_id FROM observation_identifier"
+                " WHERE kind=? AND value=? AND observation_id<>?",
+                (kind, value, obs_id),
+            ):
+                # Direct statement, not invalidate_graph(): this helper runs inside the caller's
+                # transaction, and a nested BEGIN would abort the whole observation write.
+                self.con.execute(
+                    "DELETE FROM graph_materialization WHERE observation_id=?",
+                    (peer["observation_id"],),
+                )
 
     def _write_mapping(self, obs_id: str, mapping: MappingResult, mapping_version: str,
                        mapped_at: str, run_id: str | None) -> None:
@@ -1422,6 +1438,29 @@ class ObservationLedger:
                     (now, now, row["task_id"]),
                 )
         return rows
+
+    def cancel_ai_backlog(self, reason: str) -> dict[str, int]:
+        """Close pending enrichment work when the AI stage is disabled by policy.
+
+        The observations are not touched: only the work item is retired, and the observation
+        returns to ``PUBLISHED`` (published without enrichment). Keeping thousands of PENDING
+        tasks that no process will ever claim would misreport itself as waiting work.
+        """
+        now = utc_now_iso()
+        with self._transaction():
+            cursor = self.con.execute(
+                "UPDATE processing_queue SET state='SKIPPED', updated_at=?,"
+                " last_error=COALESCE(last_error, ?)"
+                " WHERE state IN ('PENDING','DEFERRED')",
+                (now, str(reason)[:300]),
+            )
+            tasks = int(cursor.rowcount or 0)
+            restored = self.con.execute(
+                "UPDATE observation SET processing_state='PUBLISHED', processing_updated_at=?"
+                " WHERE processing_state='AI_PENDING'",
+                (now,),
+            ).rowcount
+        return {"tasks_skipped": tasks, "observations_restored": int(restored or 0)}
 
     def release_stale_claims(self, *, older_than_seconds: int = 1800) -> int:
         from datetime import timedelta

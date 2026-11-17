@@ -317,6 +317,52 @@ def test_a_shared_normalised_doi_joins_two_sources_even_with_different_titles(tm
     graph.store.close()
 
 
+def test_a_late_arriving_doi_peer_joins_without_waiting_for_its_own_revisit(tmp_path: Path):
+    """The corroboration case: Crossref states a DOI long after the PubMed row was materialised.
+
+    The already-materialised side must be invalidated when the new identifier arrives, otherwise
+    the joining edge is only written if the *new* record happens to sort first.
+    """
+    from medradar.radar.classify import RuleMapper
+
+    ledger = _ledger(tmp_path)
+    ledger.ensure_source("crossref", label="Crossref", adapter_version="a1", cadence_hours=12)
+    doi = "10.1093/ajhp/zxag364"
+    pubmed = RawRecord(
+        source="pubmed", source_record_id="pmid:40000099", official_identifier="PMID:40000099",
+        record_type="publication", title="Alarm fatigue and signal quality in ICU monitoring",
+        url="https://pubmed.ncbi.nlm.nih.gov/40000099/",
+        published_at="2026-02-01", published_at_precision="date",
+        payload={"pmid": "40000099", "title": "Alarm fatigue and signal quality in ICU monitoring",
+                 "abstract": "Alarm fatigue and signal quality in intensive care monitoring.",
+                 "doi": doi},
+        text="Alarm fatigue and signal quality in intensive care monitoring.",
+        extra={"affiliations": [], "doi": doi},
+    )
+    ledger.record_observation(pubmed, RuleMapper(_taxonomy()).map(pubmed), run_id="r",
+                              adapter_version="a1", mapping_version=MAPPING_VERSION)
+    graph = _graph(tmp_path)
+    graph.materialize(ledger, limit=50, log=lambda _m: None)
+    assert _edges(graph, EDGE_IDENTIFIER_MATCH) == []
+
+    crossref = RawRecord(
+        source="crossref", source_record_id=f"doi:{doi}", official_identifier=f"DOI:{doi}",
+        record_type="publication", title="Alarm fatigue and signal quality in ICU monitoring",
+        url=f"https://doi.org/{doi}", published_at="2026-02-01", published_at_precision="date",
+        payload={"doi": doi, "title": "Alarm fatigue and signal quality in ICU monitoring",
+                 "abstract": "SpO2 and ECG monitoring in the ICU."},
+        text="SpO2 and ECG monitoring in the ICU.", extra={"affiliations": [], "doi": doi},
+    )
+    ledger.record_observation(crossref, RuleMapper(_taxonomy()).map(crossref), run_id="r",
+                              adapter_version="a1", mapping_version=MAPPING_VERSION)
+    graph.materialize(ledger, limit=50, log=lambda _m: None)
+    matches = [edge for edge in _edges(graph, EDGE_IDENTIFIER_MATCH)
+               if edge["attrs"].get("method") == "doi_exact_match"]
+    assert len(matches) == 1
+    ledger.close()
+    graph.store.close()
+
+
 def test_a_different_doi_never_joins_two_publications(tmp_path: Path):
     from medradar.radar.classify import RuleMapper
 

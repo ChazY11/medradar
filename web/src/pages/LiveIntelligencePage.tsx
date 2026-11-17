@@ -175,7 +175,9 @@ export function LiveIntelligencePage() {
                 ))}
                 {payload.backlog ? (
                   <span className="chip" aria-pressed={false}>
-                    {bi("AI backlog", "AI 积压")}: {formatNumber(payload.backlog.backlog)}
+                    {payload.ai?.state === "disabled"
+                      ? bi("AI enrichment: not enabled", "AI 增强：本轮未启用")
+                      : `${bi("AI backlog", "AI 队列")}: ${formatNumber(payload.backlog.backlog)}`}
                   </span>
                 ) : null}
                 {payload.resources ? (
