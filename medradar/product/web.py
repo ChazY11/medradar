@@ -22,6 +22,7 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--port", type=int, default=8787)
     parser.add_argument("--data-dir", default=None, help="snapshot directory or pipeline data root (default: medradar/product/snapshot)")
     parser.add_argument("--pipeline-db", default=None, help="read-only DATA-001 pipeline state database (default: <data-dir>/pipeline.db if present)")
+    parser.add_argument("--radar-dir", default=None, help="RADAR-001 data directory (default: $MEDRADAR_RADAR_DIR, else data/radar)")
     parser.add_argument("--web-dir", default=None, help="built UI directory (default: web/dist)")
     parser.add_argument("--open", action="store_true", help="open the browser after start")
     parser.add_argument("--no-reload", action="store_true", help="disable the reload watcher")
@@ -35,7 +36,8 @@ def main(argv: list[str] | None = None) -> int:
 
     from .api import create_app
 
-    app = create_app(data_dir=args.data_dir, web_dir=args.web_dir, pipeline_db=args.pipeline_db)
+    app = create_app(data_dir=args.data_dir, web_dir=args.web_dir, pipeline_db=args.pipeline_db,
+                     radar_dir=args.radar_dir)
     url = "http://" + args.host + ":" + str(args.port)
     print("MedRadar workbench: " + url)
     print("API docs: " + url + "/api/docs")

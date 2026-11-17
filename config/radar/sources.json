@@ -1,0 +1,154 @@
+{
+  "schema": "medradar.radar.sources.v1",
+  "registry_version": "radar-sources-2026.11.1",
+  "policy": {
+    "user_agent": "MedRadarBot/0.1 (+https://github.com/ChazY11/medradar; research; contact: repository owner) Python-urllib",
+    "statement": "Every enabled source below has a verified read path recorded in docs/radar/evidence/source_probe.json. A source whose operator refuses automated access stays disabled and is surfaced as an access restriction - it is never fetched with a spoofed identity, never retried past a refusal, and never modelled as 'nothing found'.",
+    "cannot_do": [
+      "MedRadar can only read what a source publishes to anonymous readers.",
+      "No pre-publication access, no paywall, no login, no rate-limit circumvention.",
+      "Storing a title, URL and short excerpt for research citation is not a redistribution of the source's content."
+    ]
+  },
+  "sources": [
+    {
+      "id": "openfda_device",
+      "display_name": "FDA device clearances (openFDA)",
+      "kind": "api",
+      "record_types": ["regulatory_record"],
+      "adapter": "openfda",
+      "enabled": true,
+      "access": {
+        "verification": "ENABLED",
+        "read_path": "https://api.fda.gov/device/510k.json and /device/pma.json and /device/recall.json",
+        "robots": "not applicable: documented public API host route",
+        "evidence": "docs/radar/evidence/source_probe.json"
+      },
+      "licence": {
+        "name": "openFDA terms of service; U.S. Government work, public domain",
+        "url": "https://open.fda.gov/terms/",
+        "redistribution": "Bulk records are public domain; MedRadar stores identifiers, titles and official URLs with attribution."
+      },
+      "cadence_hours": 24,
+      "cadence_basis": "openFDA declares monthly 510(k)/PMA refreshes and weekly recall refreshes; a 24h check is enough to notice a version change without polling an unchanged dataset.",
+      "incremental": "official endpoint version (meta.last_updated) plus a decision_date window with overlap",
+      "reuses": "medradar.data_pipeline.openfda (HTTP client contract), medradar.data_pipeline.model.SOURCES (endpoint + official_url catalogue)",
+      "queries": {
+        "product_codes": ["MHX", "MWI", "MSX", "DPS", "DSI", "DQA", "DXN", "DRS", "BZQ", "CAP", "BZK", "FLS", "CCL", "FLL", "KMI", "GLY", "QYW", "QYX", "DRT", "DRG", "CCK"],
+        "note": "Querying by product code is narrower than the DATA-001 applicant sweep and returns the ~5.7k monitoring records instead of 176k 510(k) rows."
+      }
+    },
+    {
+      "id": "pubmed",
+      "display_name": "PubMed / NCBI E-utilities",
+      "kind": "api",
+      "record_types": ["publication"],
+      "adapter": "pubmed",
+      "enabled": true,
+      "access": {
+        "verification": "ENABLED",
+        "read_path": "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/{esearch,efetch}.fcgi",
+        "robots": "E-utilities is NCBI's documented programmatic interface; without an API key the documented limit is 3 requests/second",
+        "evidence": "docs/radar/evidence/source_probe.json"
+      },
+      "licence": {
+        "name": "NCBI E-utilities usage guidelines; PubMed abstracts are public",
+        "url": "https://www.ncbi.nlm.nih.gov/pmc/tools/oai/",
+        "redistribution": "MedRadar stores PMID, title, journal, dates, authors and the official abstract URL; full text is never stored."
+      },
+      "cadence_hours": 6,
+      "cadence_basis": "Indexing is continuous. PubMed was the only source where a 6h check can realistically surface something new the same day.",
+      "incremental": "Entrez date (edat) window with 3-day overlap; the watermark is the newest edat observed, never the wall clock",
+      "rate_limit": {"requests_per_second": 3.0, "burst": 3, "note": "NCBI documented limit without an API key"}
+    },
+    {
+      "id": "crossref",
+      "display_name": "Crossref metadata",
+      "kind": "api",
+      "record_types": ["publication"],
+      "adapter": "crossref",
+      "enabled": true,
+      "access": {
+        "verification": "ENABLED",
+        "read_path": "https://api.crossref.org/works",
+        "robots": "documented public REST API; api.crossref.org serves no robots.txt",
+        "evidence": "docs/radar/evidence/source_probe.json"
+      },
+      "licence": {
+        "name": "Crossref REST API terms; metadata is openly available",
+        "url": "https://www.crossref.org/documentation/retrieve-metadata/rest-api/",
+        "redistribution": "MedRadar stores DOI, title, container title, dates and the DOI resolver URL. Crossref asks clients to identify themselves; the registry's mailto is sent on every request."
+      },
+      "cadence_hours": 12,
+      "cadence_basis": "Crossref deposits arrive continuously from publishers; 12h keeps the check cheap.",
+      "incremental": "filter=from-created-date with a 2-day overlap on the newest created timestamp",
+      "rate_limit": {"requests_per_second": 2.0, "burst": 2, "note": "polite pool; requests identify the project"}
+    },
+    {
+      "id": "philips_official",
+      "display_name": "Philips official news",
+      "kind": "html",
+      "record_types": ["press_release"],
+      "adapter": "philips",
+      "enabled": true,
+      "access": {
+        "verification": "ENABLED",
+        "read_path": "https://www.philips.com/a-w/about/news.html then each press-release page",
+        "robots": "robots.txt read: the news index and the press-release paths are not disallowed (/content/ and /crsc/ are disallowed and are never fetched)",
+        "evidence": "docs/radar/evidence/source_probe.json"
+      },
+      "licence": {
+        "name": "Philips website terms; press releases are published for media use",
+        "url": "https://www.philips.com/a-w/about/news.html",
+        "redistribution": "MedRadar stores the headline, publication timestamp, canonical URL and a bounded excerpt for citation. Full articles are never mirrored."
+      },
+      "cadence_hours": 12,
+      "cadence_basis": "The news index changes only when a release is published; 12h is a politeness ceiling, not a technical limit.",
+      "incremental": "set difference of press-release URLs on the permitted index; content changes detected by page hash",
+      "rate_limit": {"requests_per_second": 0.25, "burst": 1, "note": "one request every four seconds; a vendor site is not an API"}
+    },
+    {
+      "id": "draeger_official",
+      "display_name": "Dräger official newsroom",
+      "kind": "xml",
+      "record_types": ["press_release"],
+      "adapter": "draeger",
+      "enabled": true,
+      "access": {
+        "verification": "ENABLED",
+        "read_path": "https://www.draeger.com/en_uk/sitemap/NewsroomArticle.xml then each article page",
+        "robots": "robots.txt read: the newsroom sitemap and article paths are not disallowed",
+        "evidence": "docs/radar/evidence/source_probe.json"
+      },
+      "licence": {
+        "name": "Dräger website terms; newsroom articles are published for media use",
+        "url": "https://www.draeger.com/en_uk/sitemap/NewsroomArticle.xml",
+        "redistribution": "MedRadar stores the article headline, the sitemap lastmod timestamp, the canonical URL and a bounded excerpt for citation."
+      },
+      "cadence_hours": 12,
+      "cadence_basis": "The sitemap carries a per-article lastmod, so a 12h check is sufficient and cheap.",
+      "incremental": "sitemap <lastmod> watermark with a 1-day overlap; new loc = NEW, newer lastmod on a known loc = UPDATED",
+      "rate_limit": {"requests_per_second": 0.25, "burst": 1, "note": "one request every four seconds"}
+    },
+    {
+      "id": "gehealthcare_official",
+      "display_name": "GE HealthCare official newsroom",
+      "kind": "html",
+      "record_types": ["press_release"],
+      "adapter": "gehealthcare",
+      "enabled": false,
+      "access": {
+        "verification": "BLOCKED",
+        "read_path": "https://www.gehealthcare.com/about/newsroom",
+        "robots": "robots.txt itself returns HTTP 403 from the edge (Akamai 'Access Denied')",
+        "evidence": "docs/radar/evidence/source_probe.json",
+        "reason": "The operator refuses anonymous automated access. This adapter ships, stays disabled, and the restriction is shown in the product as an access-policy state - never as 'no news found'. No spoofing, cookie replay or proxy was attempted."
+      },
+      "licence": {"name": "not determined: the operator does not serve the robots policy to this client", "url": null},
+      "cadence_hours": 24,
+      "cadence_basis": "Would be 12h if access were permitted; no request is ever sent while BLOCKED.",
+      "incremental": "not applicable while disabled"
+    }
+  ],
+  "adding_a_source": "A new source is one adapter module implementing medradar.radar.adapter.SourceAdapter plus one entry here. Disabled sources are still listed so the UI can distinguish 'not monitored' from 'nothing found'."
+}

@@ -1,0 +1,50 @@
+[Unit]
+Description=MedRadar Radar web (read-only Live Intelligence + Technology Map, loopback only)
+Documentation=file:///srv/medradar/radar/app/docs/radar/LAUNCH_001_RUNBOOK.md
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=medradar
+Group=medradar
+WorkingDirectory=/srv/medradar/radar/app
+Environment=HOME=/srv/medradar
+Environment=PYTHONUNBUFFERED=1
+Environment=PYTHONDONTWRITEBYTECODE=1
+Environment=MEDRADAR_RADAR_DIR=/srv/medradar/data/radar
+Environment=MEDRADAR_WEB_DIR=/srv/medradar/radar/app/web/dist
+# The workbench dataset is mounted read-only for the local operator; the public gateway
+# allowlist does not expose those routes.
+Environment=MEDRADAR_DATA_DIR=/srv/medradar/data/fda
+Environment=MEDRADAR_PUBLIC_ALPHA=1
+EnvironmentFile=-/etc/medradar/radar-alpha.env
+ExecStart=/srv/medradar/radar-venv/bin/python -m medradar.product.web --host 127.0.0.1 --port 8791 --no-reload --data-dir /srv/medradar/data/fda --radar-dir /srv/medradar/data/radar --web-dir /srv/medradar/radar/app/web/dist
+ExecStartPost=-/bin/sh -c 'for i in $(seq 1 30); do curl -sf -o /dev/null http://127.0.0.1:8791/healthz && exit 0; sleep 1; done'
+Restart=always
+RestartSec=5
+
+# ---------------------------------------------------------------- resource protection
+# Measured RSS after the first production cycle; see LAUNCH_001_RUNBOOK.md. The cap leaves
+# ~1.5 GiB for the FDA pipeline (measured ~2.0 GiB peak) and the rest of the host.
+Nice=5
+MemoryHigh=448M
+MemoryMax=768M
+CPUQuota=60%
+TasksMax=48
+OOMPolicy=stop
+
+NoNewPrivileges=yes
+PrivateTmp=yes
+PrivateDevices=yes
+ProtectSystem=strict
+ProtectHome=yes
+ProtectKernelTunables=yes
+ProtectControlGroups=yes
+RestrictSUIDSGID=yes
+LockPersonality=yes
+RestrictAddressFamilies=AF_INET AF_INET6 AF_UNIX
+ReadWritePaths=/srv/medradar/data/radar
+
+[Install]
+WantedBy=multi-user.target

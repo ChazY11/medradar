@@ -559,6 +559,7 @@ def create_app(
     web_dir: Path | str | None = None,
     setup=None,
     pipeline_db: Path | str | None = None,
+    radar_dir: Path | str | None = None,
 ) -> FastAPI:
     """Build the read-only public application.
 
@@ -567,14 +568,22 @@ def create_app(
     application is this function without setup, so it contains no write route at all.
     """
     holder = DatasetHolder(Path(data_dir) if data_dir else None)
-    resolved_web = Path(web_dir) if web_dir else _default_web_dir()
+    # Resolve once: a release tree is deployed behind a symlink, and the SPA handler compares
+    # the served file's real parents against this directory. An unresolved symlink path made the
+    # containment check fail, so every asset request fell through to index.html and the app
+    # rendered nothing (production symptom: text/html for a .js URL).
+    resolved_web = (Path(web_dir) if web_dir else _default_web_dir()).resolve()
 
+    # LAUNCH-001: a published deployment does not serve the interactive API schema. The public
+    # alpha gate would 404 those paths anyway; not generating them removes the surface entirely.
+    _public_alpha = os.environ.get("MEDRADAR_PUBLIC_ALPHA") == "1"
     app = FastAPI(
         title="MedRadar workbench API",
         version=PRODUCT_VERSION,
         description="Medical technology intelligence over an immutable openFDA snapshot.",
-        docs_url="/api/docs",
+        docs_url=None if _public_alpha else "/api/docs",
         redoc_url=None,
+        openapi_url=None if _public_alpha else "/openapi.json",
     )
     app.state.holder = holder
     app.state.web_dir = resolved_web
@@ -1423,10 +1432,31 @@ def create_app(
 
     # ---------------------------------------------------------------- extension point
     # Anything registered here is matched before the SPA catch-all below.
+    # RADAR-001: the Live Intelligence Radar and the Company Technology Graph are mounted as a
+    # separate read-only router. Its absence (no radar data directory) is a visible 503 from
+    # the radar endpoints, never a broken workbench.
+    resolved_radar = radar_dir if radar_dir is not None else os.environ.get("MEDRADAR_RADAR_DIR")
+    if resolved_radar:
+        try:
+            from ..radar.api import RadarService, build_router
+
+            app.include_router(build_router(RadarService(resolved_radar)))
+            app.state.radar_dir = str(resolved_radar)
+        except Exception as error:  # pragma: no cover - the workbench must still start
+            app.state.radar_error = f"{type(error).__name__}: {error}"
     if setup is not None:
         setup(app)
 
     # ---------------------------------------------------------------- static UI
+    @app.get("/healthz")
+    def healthz() -> Any:
+        """Liveness only: no data, no database access, no filesystem path.
+
+        The public alpha gate leaves this path unauthenticated on purpose, so a proxy or a
+        systemd check can ask "is the process serving?" without being able to read anything.
+        """
+        return {"status": "ok", "service": "medradar-radar-alpha"}
+
     @app.get("/")
     def index() -> Any:
         return _serve_index(resolved_web)
@@ -1453,9 +1483,26 @@ def create_app(
 
     @app.exception_handler(Exception)
     async def handle_unexpected(request: Request, exc: Exception) -> JSONResponse:
-        return _error(500, "internal_error", "unexpected server error: " + str(exc))
+        # Never return an internal exception message to a client. On the public alpha that was
+        # literally leaking Python signatures; the reference is for the operator's journal.
+        import logging
+        import uuid
 
-    return app
+        reference = uuid.uuid4().hex[:12]
+        logging.getLogger("medradar.web").exception(
+            "unhandled error reference=%s path=%s", reference, request.url.path
+        )
+        return _error(500, "internal_error",
+                      "The server could not complete this request.",
+                      f"reference {reference}; retry, and if it persists report this reference")
+
+    # ---------------------------------------------------------------- public alpha
+    # LAUNCH-001: when the deployment is published, every request passes the alpha gate
+    # (Authentication + read-only method + route allowlist + failure rate limit). It is applied
+    # last so it wraps the fully-assembled application, and it is opt-in per deployment.
+    from ..radar.alpha_gate import install_alpha_gate
+
+    return install_alpha_gate(app)
 
 
 def _default_web_dir() -> Path:
@@ -1477,6 +1524,15 @@ def _serve_index(web_dir: Path) -> Any:
     if not index.is_file():
         return _error(503, "ui_not_built", "the web workbench has not been built",
                       "run: cd web && npm install && npm run build")
+    if os.environ.get("MEDRADAR_PUBLIC_ALPHA") == "1":
+        # The public deployment and the internal workbench share one build. The flag lets the
+        # SPA drop navigation that the public route allowlist does not serve, instead of showing
+        # buttons whose API calls are (correctly) 404.
+        html = index.read_text(encoding="utf-8")
+        marker = "<script>window.__MEDRADAR_ALPHA__=true;</script>"
+        if marker not in html:
+            html = html.replace("</head>", marker + "</head>", 1)
+        return Response(content=html, media_type="text/html; charset=utf-8")
     return FileResponse(index)
 
 

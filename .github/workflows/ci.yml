@@ -101,6 +101,8 @@ jobs:
           python -m pip install -e '.[dev,product]'
       - name: Product test suite (snapshot-backed, no network)
         run: python -m pytest tests/product -q
+      - name: RADAR-001 live-intelligence suite (offline, no network, no model)
+        run: python -m pytest tests -k radar -q
       - name: Committed UI build is present
         run: python -c "from pathlib import Path; assert Path('web/dist/index.html').is_file(); assert (Path('medradar/product/snapshot/snapshot.json')).is_file(); print('committed snapshot and UI build present')"
       - name: Serve smoke test (in-process API)

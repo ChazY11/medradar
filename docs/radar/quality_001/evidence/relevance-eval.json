@@ -1,0 +1,101 @@
+{
+  "admission_version": "radar-admission-2026.11.3",
+  "eval_version": "quality-eval-2026.11.18",
+  "population": 8281,
+  "sample_size": 38,
+  "labelled": 34,
+  "boundary_excluded": 4,
+  "missing_from_ledger": [],
+  "confusion": {
+    "relevant_high": 16,
+    "relevant_not_high": 1,
+    "irrelevant_high": 0,
+    "irrelevant_not_high": 17
+  },
+  "precision_high": 1.0,
+  "recall_high": 0.9411764705882353,
+  "by_source": {
+    "pubmed": {
+      "relevant": 4,
+      "high_hits": 4,
+      "irrelevant": 6,
+      "wrong_high": 0
+    },
+    "crossref": {
+      "relevant": 8,
+      "high_hits": 7,
+      "irrelevant": 7,
+      "wrong_high": 0
+    },
+    "openfda_device": {
+      "relevant": 5,
+      "high_hits": 5,
+      "irrelevant": 0,
+      "wrong_high": 0
+    },
+    "draeger_official": {
+      "relevant": 0,
+      "high_hits": 0,
+      "irrelevant": 4,
+      "wrong_high": 0
+    }
+  },
+  "by_stratum": {
+    "unstratified": {
+      "n": 38,
+      "relevant": 17,
+      "high": 16
+    }
+  },
+  "label_by_engine_tier": {
+    "relevant:HIGH_RELEVANCE": 16,
+    "irrelevant:LOW_RELEVANCE": 13,
+    "irrelevant:NEEDS_REVIEW": 3,
+    "relevant:IRRELEVANT": 1,
+    "irrelevant:IRRELEVANT": 1
+  },
+  "false_negatives": [
+    {
+      "observation_id": "27d01831c2a150601e09def58591a87b",
+      "title": "Explainable Feature-based Machine Learning for Patient-independent ECG Arrhythmia Classification",
+      "engine_tier": "IRRELEVANT",
+      "engine_category": "non_medical_domain",
+      "rationale": "explainable ML classifier for ECG arrhythmia detection"
+    }
+  ],
+  "false_positives": [],
+  "default_feed": {
+    "window_days": 14,
+    "count": 4,
+    "top": [
+      {
+        "observation_id": "ab88838fc101f338d608affdc40d2ba3",
+        "title": "Feasibility Assessment of Smartphone Camera–Based Atrial Fibrillation Detection Compared With Portable Electrocardiogram: Single-Patient Case Study",
+        "source": "crossref",
+        "published_at": "2026-11-13",
+        "category": "monitoring_technology_evaluation"
+      },
+      {
+        "observation_id": "9e2b6810c750707baea88c525e9aa379",
+        "title": "Multi-Modal FHIR Sensor Fusion for Real-Time Clinical Decision Support: An Architecture for the Hospital Bedside and Its Extension Toward Remote Patient Monitoring.",
+        "source": "pubmed",
+        "published_at": "2026-11-06",
+        "category": "monitoring_technology_evaluation"
+      },
+      {
+        "observation_id": "7f8bf9e24c706627d25e713d2c63255b",
+        "title": "Towards Contact-Free Cardiac Magnetic Resonance: Feasibility of Remote Photoplethysmography for Cardiac Triggering and Gating.",
+        "source": "pubmed",
+        "published_at": "2026-11-06",
+        "category": "monitoring_technology_evaluation"
+      },
+      {
+        "observation_id": "484b125dd0ed44b18798ec7faa68906d",
+        "title": "Multi-Modal FHIR Sensor Fusion for Real-Time Clinical Decision Support: An Architecture for the Hospital Bedside and Its Extension Toward Remote Patient Monitoring",
+        "source": "crossref",
+        "published_at": "2026-11-06",
+        "category": "monitoring_technology_evaluation"
+      }
+    ]
+  }
+}

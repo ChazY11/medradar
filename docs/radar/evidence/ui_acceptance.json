@@ -1,0 +1,94 @@
+{
+  "schema": "medradar.radar.ui_acceptance.v1",
+  "captured_at": "2026-11-16T23:00:00Z",
+  "url": "http://127.0.0.1:8791",
+  "browser": "Chromium via Playwright (MCP browser backend), 1280x860 viewport",
+  "how": [
+    "The workbench was started with: python -m medradar.product.web --radar-dir data/radar --port 8791",
+    "The pages were driven in a real browser: navigation, tab selection, and card-level disclosure were performed in the page.",
+    "Content was read back from the live DOM after each interaction (document.querySelectorAll + innerText), which is what a user sees; nothing was injected or mocked.",
+    "Pixel screenshots could not be captured: the Playwright backend's screenshot call timed out on this DOM even at a 30s budget and a clipped region. Verification therefore used the accessibility tree and DOM text, which is stronger evidence for content assertions and weaker for visual layout. This is recorded as a limitation, not hidden."
+  ],
+  "checks": [
+    {
+      "id": "nav",
+      "title": "Both radar pages are reachable from the primary navigation",
+      "observed": ["Live radar -> /radar", "Technology map -> /radar/technology-map"],
+      "status": "PASS"
+    },
+    {
+      "id": "feed-list",
+      "title": "The Live Intelligence Feed renders real observations with both dates",
+      "observed": {
+        "total_observations": 8592,
+        "cards_on_page": 20,
+        "pagination": "8,592 records - Page 1 of 430",
+        "example_card": "THE NATIONAL EARLY WARNING SCORE (NEWS) IN PREDICTING INTENSIVE CARE IN THE RAPID RESPONSE SYSTEM",
+        "example_topic_badge": "Deterioration prediction and early warning � TOPIC_RELATED",
+        "note": "Every card shows the change state, the source, the record type, the discovery-phase badge, and a link to the original record."
+      },
+      "status": "PASS"
+    },
+    {
+      "id": "blocked-source",
+      "title": "A blocked source is shown as an access restriction, not as no results",
+      "observed": "GE HealthCare official newsroom: gehealthcare.com refuses anonymous automated access (HTTP 403 on robots.txt and on the newsroom). The adapter is disabled by policy; see docs/radar/evidence/source_probe.json.",
+      "status": "PASS"
+    },
+    {
+      "id": "evidence-drawer",
+      "title": "Opening a card shows the full evidence trail",
+      "observed": {
+        "header": "NEW / pubmed / v1 / title / Open the original record",
+        "key_values": [
+          "Official identifier PMID:43038286",
+          "Record type publication",
+          "Published at 2026-11-16 00:00 UTC",
+          "Event date 2026-11-16 (date)",
+          "First observed 2026-11-16 22:49 UTC",
+          "Last checked 2026-11-16 22:49 UTC"
+        ],
+        "version_history": "v1 - 2026-11-16 22:49 UTC - NEW - (no changed fields)",
+        "change_events": "2026-11-16 22:49 UTC - NEW",
+        "model_proposals": "No model proposal exists for this record. The rule layer alone produced every relation shown."
+      },
+      "status": "PASS"
+    },
+    {
+      "id": "company-comparison",
+      "title": "The comparison matrix renders per-company evidence for all three vendors",
+      "observed": {
+        "columns": ["Technology topic", "Philips", "GE HealthCare", "Dr�ger"],
+        "rows_sampled": [
+          ["ECG and electrocardiographic analysis", "no evidence found / not a claim that the technology is absent", "evidence present reported capability 0 - regulatory 32 - publications 0", "evidence present reported capability 0 - regulatory 17 - publications 0"],
+          ["Arrhythmia detection", "evidence present reported capability 0 - regulatory 29 - publications 0", "evidence present reported capability 0 - regulatory 83 - publications 0", "evidence present reported capability 0 - regulatory 99 - publications 0"],
+          ["SpO2 and pulse oximetry", "evidence present reported capability 0 - regulatory 4 - publications 0", "evidence present reported capability 0 - regulatory 13 - publications 0", "evidence present reported capability 0 - regulatory 18 - publications 0"]
+        ],
+        "callouts_shown": [
+          "NO_EVIDENCE_FOUND means MedRadar holds no evidence of that kind in the sources it monitors. It does not mean the company lacks the technology, the product, or the research. Absence of evidence is not evidence of absence.",
+          "These are counts of evidence of a stated kind, reported separately on purpose. A publication count is research activity by an affiliated author, not product capability. A regulatory record shows that a device was cleared, not which algorithm it runs. MedRadar does not rank companies by these numbers."
+        ]
+      },
+      "status": "PASS"
+    },
+    {
+      "id": "time-mode-banner",
+      "title": "The time view announces which clock it is using",
+      "observed": "Banner: 'Knowledge-time view - This view is limited to assertions MedRadar had actually recorded at the cutoff. Evidence discovered later is excluded, even if it describes an earlier event.'",
+      "status": "PASS"
+    },
+    {
+      "id": "technology-tree",
+      "title": "The technology tree is generated from the database",
+      "observed": {
+        "tabs": ["Technology tree (14)", "Company comparison", "What changed"],
+        "summary": "14 topic branch(es) with evidence; 23619 nodes / 18184 edges in this view."
+      },
+      "status": "PASS"
+    }
+  ],
+  "limitations": [
+    "No pixel screenshot was captured (see 'how'); visual styling is verified by the shared design system, not by image comparison.",
+    "The DOM snapshots above were read back and pasted into this file; they are not produced by an automated regression script. Converting these checks into a committed Playwright test is the obvious follow-up and needs playwright added to web/ devDependencies."
+  ]
+}

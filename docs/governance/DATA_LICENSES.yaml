@@ -65,6 +65,14 @@ inventory:
   # binary format under an exempt path still fails. See RC-0002 / GOV-0002.
   exempt_patterns:
     - "docs/refoundation/*/_evidence/*"
+    # RADAR-001: the acceptance and source-probe artefacts under docs/radar/evidence/
+    # are produced by our own reproducible scripts (scripts/radar_acceptance.py,
+    # scripts/radar_source_probe.py) from the GREEN sources declared below, and are
+    # reviewed in the PR diff. They contain derived counts, official identifiers,
+    # titles and URLs - no third-party full text. RC-0002 / GOV-0002 apply unchanged:
+    # the content is still classified, so a restricted binary format under this path
+    # would still fail. The radar's raw runtime store lives in gitignored data/radar/.
+    - "docs/radar/evidence/*"
   data_extensions:
     - .csv
     - .tsv

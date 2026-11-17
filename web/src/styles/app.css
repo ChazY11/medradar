@@ -1370,3 +1370,79 @@ code.mono {
   padding-left: 0;
   padding-right: 0;
 }
+
+/* ------------------------------------------- LAUNCH-001 live radar and mobile alpha */
+.radar-page { display: flex; flex-direction: column; }
+.feed-title {
+  margin: 10px 0 6px;
+  font-size: 15.5px;
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+}
+.feed-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 14px;
+  font-size: 12px;
+  color: var(--text-3);
+}
+.feed-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+a.badge { text-decoration: none; }
+.btn.touch { min-height: 40px; min-width: 40px; }
+.filter-details > summary { display: none; cursor: pointer; }
+.company-switcher {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin: 4px 0 14px;
+}
+
+@media (max-width: 768px) {
+  /* On a phone the newest intelligence comes first; status and filters move below it.
+     Order is done in CSS so the desktop layout is unchanged and the DOM stays keyboard-ordered. */
+  .radar-page > .radar-feed { order: 1; }
+  .radar-page > .radar-filters { order: 2; }
+  .radar-page > .radar-status { order: 3; }
+  .filter-details > summary {
+    display: block;
+    padding: 2px 0 10px;
+    font-size: 12px;
+    color: var(--text-3);
+  }
+  .feed-title { font-size: 16px; }
+  .btn { min-height: 40px; }
+  .chip { min-height: 34px; }
+  /* The language toggle is the one control a Chinese-first mobile user must always reach. */
+  .lang-toggle { display: inline-flex; }
+  .table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .drawer-section table.data tbody td { padding-left: 0; }
+}
+/* LAUNCH-001 mobile polish found on a real 390 px viewport */
+.feed-meta .mono { word-break: break-all; overflow-wrap: anywhere; }
+.feed-title a { overflow-wrap: anywhere; }
+@media (max-width: 768px) {
+  /* The count + long English note row was compressing the count into a narrow column. */
+  .radar-feed .row.between { flex-direction: column; align-items: flex-start; gap: 4px; }
+  .radar-feed .row.between > .small.muted:last-child { display: none; }
+}
+/* LAUNCH-001 mobile: long evidence titles inside chips must wrap, not widen the page.
+   A badge stays unbroken (its label is a short enum); a chip may wrap its text. */
+@media (max-width: 768px) {
+  .grid, .state-block, .card, .card-body { min-width: 0; }
+  .chip { white-space: normal; overflow-wrap: anywhere; max-width: 100%; height: auto; min-height: 26px; padding: 4px 9px; text-align: left; }
+  .chip .badge { white-space: nowrap; }
+}
+/* QUALITY-001 P2-02: phone touch targets. The measured menu/language/chip heights were 26-40 px;
+   44 px is the usual minimum for a finger. Dense chips stay dense visually but keep a 44 px hit
+   area through min-height and padding. */
+@media (max-width: 900px) {
+  .menu-toggle, .lang-toggle button, .btn, .btn.sm, .chip, .tabs button,
+  #mobile-nav a, .drawer-head .btn, .company-switcher .chip {
+    min-height: 44px;
+  }
+  .chip { padding-top: 10px; padding-bottom: 10px; }
+  .tabs button { padding-left: 14px; padding-right: 14px; }
+  .btn.sm { padding-top: 10px; padding-bottom: 10px; }
+  #mobile-nav a { display: flex; align-items: center; }
+}

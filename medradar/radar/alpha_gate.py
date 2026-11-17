@@ -1,0 +1,444 @@
+"""Access gate for the public Radar alpha.
+
+This is the only thing standing between the internet and a read-only intelligence database, so
+it is deliberately small, explicit and testable:
+
+* **authentication.** HTTP Basic over TLS, verified against a PBKDF2-SHA256 hash. No plaintext
+  password is stored in a unit file, in the repository or in a log line.
+* **route allowlist.** Only the Radar SPA routes and the read-only Radar API are reachable.
+  Everything else - the workbench API, exports, review actions, the OpenAPI schema - returns
+  404, not 403: an unauthenticated scanner learns nothing about what exists.
+* **read-only methods.** GET/HEAD only. The Radar API is read-only by construction; the gate
+  enforces it as well so a future write route cannot become public by accident.
+* **failure rate limit.** Repeated wrong credentials from one address are locked out for a
+  window, which is what makes a short password guessable-in-principle but not in practice.
+* **response headers.** Sent on every response, including 401/404.
+
+It is WSGI/ASGI middleware rather than a reverse-proxy rule so that the allowlist is covered by
+the repository's tests. The proxy in front of it terminates TLS and forwards the real client
+address; ``trust_proxy`` is only enabled when the listener is bound to loopback behind it.
+"""
+
+from __future__ import annotations
+
+import asyncio
+import base64
+import binascii
+import hashlib
+import hmac
+import logging
+import os
+import re
+import threading
+import time
+from collections import defaultdict, deque
+from typing import Any, Callable
+
+LOGGER = logging.getLogger("medradar.radar.alpha")
+
+REALM = "MedRadar Radar Alpha"
+HASH_SCHEME = "pbkdf2_sha256"
+DEFAULT_ITERATIONS = 240_000
+
+#: Pages the alpha exposes. React Router renders these; the document is the SPA index.
+PUBLIC_PAGES = frozenset({"/", "/radar", "/radar/", "/radar/technology-map", "/radar/technology-map/"})
+#: Exact non-page paths that the app itself needs.
+PUBLIC_EXACT = frozenset({"/favicon.svg", "/api/meta"})
+#: Liveness probe: no data, no database access. Unauthenticated so a proxy or an operator's
+#: monitoring check does not have to hold the alpha credentials.
+OPEN_PATHS = frozenset({"/healthz"})
+#: Read-only API namespaces. Everything not listed here is invisible.
+PUBLIC_PREFIXES = ("/api/radar/",)
+#: Vite emits a flat build: index-<hash>.js / index-<hash>.css next to index.html.
+PUBLIC_ASSET = re.compile(r"^/index-[A-Za-z0-9_-]+\.(?:js|css)$")
+SAFE_METHODS = frozenset({"GET", "HEAD"})
+
+SECURITY_HEADERS = (
+    (b"x-content-type-options", b"nosniff"),
+    (b"x-frame-options", b"DENY"),
+    (b"referrer-policy", b"same-origin"),
+    (b"permissions-policy", b"camera=(), microphone=(), geolocation=()"),
+)
+
+#: A hashed build asset never changes under its own name; re-downloading 557 KB of JS on every
+#: navigation was a large part of the measured mobile cold start.
+_ASSET_PATH = re.compile(r"^/assets/.+-[A-Za-z0-9_-]{6,}\.(?:js|css|woff2?|png|jpe?g|svg|webp)$")
+_STATIC_EXT = re.compile(r"^/[^/]+\.(?:svg|png|ico|webmanifest|txt|map)$")
+
+
+def cache_policy(path: str) -> bytes:
+    if _ASSET_PATH.match(path):
+        return b"private, max-age=31536000, immutable"
+    if _STATIC_EXT.match(path):
+        return b"private, max-age=86400"
+    return b"no-store"
+
+
+def hash_password(password: str, *, iterations: int = DEFAULT_ITERATIONS) -> str:
+    """Encode a password as ``pbkdf2_sha256$iterations$salt$digest`` (hex)."""
+    if not password or len(password) < 12:
+        raise ValueError("the alpha password must be at least 12 characters")
+    salt = os.urandom(16)
+    digest = hashlib.pbkdf2_hmac("sha256", password.encode("utf-8"), salt, int(iterations))
+    return f"{HASH_SCHEME}${int(iterations)}${salt.hex()}${digest.hex()}"
+
+
+def verify_password(password: str, encoded: str) -> bool:
+    """Constant-time verification of an encoded password. A malformed hash never authenticates."""
+    try:
+        scheme, iterations, salt_hex, digest_hex = str(encoded).split("$", 3)
+        if scheme != HASH_SCHEME:
+            return False
+        salt = bytes.fromhex(salt_hex)
+        expected = bytes.fromhex(digest_hex)
+        actual = hashlib.pbkdf2_hmac("sha256", str(password).encode("utf-8"), salt, int(iterations))
+    except (ValueError, binascii.Error):
+        return False
+    return hmac.compare_digest(actual, expected)
+
+
+#: Old workbench addresses. A bookmark to one of these should not show a bare 404: the public
+#: alpha only serves the Radar pages, so GET redirects to the live feed. These paths are public
+#: product routes, not secrets, so naming them here reveals nothing.
+LEGACY_PAGES = frozenset({
+    "/brief", "/organizations", "/events", "/compare", "/sources", "/data-status",
+    "/devices", "/review",
+})
+
+
+def legacy_redirect_target(path: str) -> str | None:
+    """A path that should 302 to the live feed, or ``None``."""
+    if path in LEGACY_PAGES:
+        return "/radar"
+    if path.startswith(("/organizations/", "/events/", "/devices/")):
+        return "/radar"
+    return None
+
+
+def path_allowed(path: str) -> bool:
+    """The allowlist, as one pure function so it can be tested directly."""
+    if path in PUBLIC_PAGES or path in PUBLIC_EXACT or path in OPEN_PATHS:
+        return True
+    if path.startswith(PUBLIC_PREFIXES):
+        # The API namespace itself, not a path-traversal trick through it.
+        return ".." not in path and "\\" not in path
+    return bool(PUBLIC_ASSET.match(path))
+
+
+class FailureLimiter:
+    """Per-address failures inside a window, with a lockout once the budget is spent."""
+
+    def __init__(self, *, max_failures: int = 10, window_seconds: float = 600.0,
+                 lockout_seconds: float = 900.0, max_addresses: int = 4096) -> None:
+        self.max_failures = int(max_failures)
+        self.window_seconds = float(window_seconds)
+        self.lockout_seconds = float(lockout_seconds)
+        self.max_addresses = int(max_addresses)
+        self._failures: dict[str, deque[float]] = defaultdict(deque)
+        self._locked_until: dict[str, float] = {}
+        self._lock = threading.Lock()
+
+    def locked(self, address: str, *, now: float | None = None) -> float:
+        """Seconds remaining in the lockout, or 0 when the address may try again."""
+        moment = time.monotonic() if now is None else now
+        with self._lock:
+            until = self._locked_until.get(address, 0.0)
+            if until <= moment:
+                self._locked_until.pop(address, None)
+                return 0.0
+            return round(until - moment, 1)
+
+    def record_failure(self, address: str, *, now: float | None = None) -> bool:
+        """Record a failure. Returns True when this failure triggered a lockout."""
+        moment = time.monotonic() if now is None else now
+        with self._lock:
+            if len(self._failures) > self.max_addresses:
+                # Bound memory: drop the oldest half rather than grow without limit.
+                for stale in list(self._failures)[: self.max_addresses // 2]:
+                    self._failures.pop(stale, None)
+                    self._locked_until.pop(stale, None)
+            bucket = self._failures[address]
+            bucket.append(moment)
+            while bucket and moment - bucket[0] > self.window_seconds:
+                bucket.popleft()
+            if len(bucket) >= self.max_failures:
+                self._locked_until[address] = moment + self.lockout_seconds
+                bucket.clear()
+                return True
+            return False
+
+    def record_success(self, address: str) -> None:
+        with self._lock:
+            self._failures.pop(address, None)
+            self._locked_until.pop(address, None)
+
+
+def _client_address(scope: dict[str, Any], *, trust_proxy: bool) -> str:
+    headers = {key.lower(): value for key, value in scope.get("headers") or []}
+    if trust_proxy:
+        forwarded = headers.get(b"cf-connecting-ip") or headers.get(b"x-real-ip")
+        if forwarded:
+            return forwarded.decode("latin-1").strip()
+        chain = headers.get(b"x-forwarded-for")
+        if chain:
+            return chain.decode("latin-1").split(",")[0].strip()
+    client = scope.get("client") or ("unknown", 0)
+    return str(client[0] or "unknown")
+
+
+def _basic_credentials(scope: dict[str, Any]) -> tuple[str, str] | None:
+    for key, value in scope.get("headers") or []:
+        if key.lower() != b"authorization":
+            continue
+        text = value.decode("latin-1").strip()
+        if not text.lower().startswith("basic "):
+            return None
+        try:
+            decoded = base64.b64decode(text[6:].strip(), validate=True).decode("utf-8")
+        except (binascii.Error, UnicodeDecodeError):
+            return None
+        username, separator, password = decoded.partition(":")
+        if not separator:
+            return None
+        return username, password
+    return None
+
+
+def _cookies(scope: dict[str, Any]) -> dict[str, str]:
+    out: dict[str, str] = {}
+    for key, value in scope.get("headers") or []:
+        if key.lower() != b"cookie":
+            continue
+        for part in value.decode("latin-1").split(";"):
+            name, separator, item = part.strip().partition("=")
+            if separator and name:
+                out[name] = item
+    return out
+
+
+"""Session cookie: proof that this browser already passed the PBKDF2 check.
+
+Basic auth makes the client send the password on *every* request, including every script and
+API call. Verifying a 240k-iteration PBKDF2 hash per request is ~0.1 s of CPU on a single event
+loop; a phone page load with twenty requests spent seconds hashing and blocked everything else.
+The cookie is an HMAC over (user, expiry) with a server-side secret, so it is cheap to verify and
+cannot be forged; it never contains the password.
+"""
+_SESSION_COOKIE = "medradar_alpha_session"
+_SESSION_TTL_SECONDS = 12 * 3600
+_SESSION_MAX_AGE = _SESSION_TTL_SECONDS
+
+
+def _session_signature(secret: bytes, payload: str) -> str:
+    return hmac.new(secret, payload.encode("utf-8"), hashlib.sha256).hexdigest()
+
+
+def issue_session(secret: bytes, username: str, *, now: float | None = None) -> str:
+    moment = time.time() if now is None else now
+    expires = int(moment) + _SESSION_TTL_SECONDS
+    payload = f"{username}|{expires}"
+    return f"{payload}|{_session_signature(secret, payload)}"
+
+
+def session_valid(secret: bytes, token: str | None, username: str,
+                  *, now: float | None = None) -> bool:
+    if not token:
+        return False
+    parts = token.split("|")
+    if len(parts) != 3:
+        return False
+    user, expires_raw, signature = parts
+    if not hmac.compare_digest(user, username):
+        return False
+    try:
+        expires = int(expires_raw)
+    except ValueError:
+        return False
+    moment = time.time() if now is None else now
+    if expires < moment:
+        return False
+    return hmac.compare_digest(signature, _session_signature(secret, f"{user}|{expires_raw}"))
+
+
+class AlphaGate:
+    """ASGI middleware implementing the public-alpha access policy."""
+
+    def __init__(self, app: Callable, *, username: str, password_hash: str,
+                 trust_proxy: bool = False, limiter: FailureLimiter | None = None,
+                 secure_transport: bool = True, session_secret: bytes | None = None) -> None:
+        if not username or not password_hash:
+            raise ValueError("the alpha gate requires a username and a password hash")
+        self.app = app
+        self.username = username
+        self.password_hash = password_hash
+        self.trust_proxy = bool(trust_proxy)
+        self.limiter = limiter or FailureLimiter()
+        self.secure_transport = bool(secure_transport)
+        # An explicit secret survives restarts (deployments) so browsers are not logged out;
+        # without one the credential hash is still a secret, but sessions end at every restart.
+        self.session_secret = session_secret or password_hash.encode("utf-8")
+
+    async def __call__(self, scope: dict[str, Any], receive: Callable, send: Callable) -> None:
+        if scope.get("type") != "http":
+            await self.app(scope, receive, send)
+            return
+
+        path = str(scope.get("path") or "/")
+        method = str(scope.get("method") or "GET").upper()
+        address = _client_address(scope, trust_proxy=self.trust_proxy)
+
+        if path in OPEN_PATHS:
+            if method not in SAFE_METHODS:
+                await self._plain(send, 405, b"Method Not Allowed\n", scope,
+                                  extra_headers=((b"allow", b"GET, HEAD"),))
+                return
+            await self.app(scope, receive, self._secured(send, scope))
+            return
+
+        if not path_allowed(path):
+            redirect = legacy_redirect_target(path)
+            if redirect and method in SAFE_METHODS:
+                await self._plain(send, 302, b"", scope,
+                                  extra_headers=((b"location", redirect.encode("latin-1")),))
+                return
+            await self._plain(send, 404, b"Not Found\n", scope)
+            return
+        if method not in SAFE_METHODS:
+            await self._plain(send, 405, b"Method Not Allowed\n", scope,
+                              extra_headers=((b"allow", b"GET, HEAD"),))
+            return
+
+        remaining = self.limiter.locked(address)
+        if remaining > 0:
+            LOGGER.warning("alpha auth locked out address=%s path=%s retry_after=%ss",
+                           address, path, remaining)
+            await self._plain(
+                send, 429, b"Too Many Attempts\n", scope,
+                extra_headers=((b"retry-after", str(int(remaining)).encode()),),
+            )
+            return
+
+        cookies = _cookies(scope)
+        if session_valid(self.session_secret, cookies.get(_SESSION_COOKIE), self.username):
+            await self.app(scope, receive, self._secured(send, scope))
+            return
+
+        credentials = _basic_credentials(scope)
+        valid = False
+        if credentials and hmac.compare_digest(str(credentials[0]), self.username):
+            # PBKDF2 is CPU-bound: keep it off the event loop. Blocking here stalled every
+            # concurrent request (including /healthz) behind ~100 ms of hashing per call.
+            loop = asyncio.get_running_loop()
+            valid = await loop.run_in_executor(
+                None, verify_password, credentials[1], self.password_hash
+            )
+        if not valid:
+            triggered = self.limiter.record_failure(address)
+            LOGGER.warning("alpha auth failure address=%s path=%s method=%s lockout=%s",
+                           address, path, method, triggered)
+            await self._unauthorized(send, scope)
+            return
+
+        self.limiter.record_success(address)
+        token = issue_session(self.session_secret, self.username)
+        await self.app(scope, receive, self._secured(send, scope, session_token=token))
+
+    # ------------------------------------------------------------------ responses
+    def _secured(self, send: Callable, scope: dict[str, Any],
+                 *, session_token: str | None = None) -> Callable:
+        async def wrapped(message: dict[str, Any]) -> None:
+            if message.get("type") == "http.response.start":
+                path = str(scope.get("path") or "/")
+                headers = list(message.get("headers") or [])
+                headers.extend(SECURITY_HEADERS)
+                headers.append((b"cache-control", cache_policy(path)))
+                if self._is_https(scope):
+                    headers.append((b"strict-transport-security", b"max-age=31536000"))
+                headers.append((b"x-robots-tag", b"noindex, nofollow"))
+                if session_token:
+                    cookie = (
+                        f"{_SESSION_COOKIE}={session_token}; Path=/; HttpOnly; SameSite=Lax; "
+                        f"Max-Age={_SESSION_MAX_AGE}"
+                    )
+                    if self._is_https(scope):
+                        cookie += "; Secure"
+                    headers.append((b"set-cookie", cookie.encode("latin-1")))
+                message = {**message, "headers": headers}
+            await send(message)
+
+        return wrapped
+
+    def _is_https(self, scope: dict[str, Any]) -> bool:
+        if scope.get("scheme") == "https":
+            return True
+        if not self.trust_proxy:
+            return False
+        for key, value in scope.get("headers") or []:
+            if key.lower() == b"x-forwarded-proto":
+                return value.decode("latin-1").split(",")[0].strip().lower() == "https"
+        return False
+
+    async def _unauthorized(self, send: Callable, scope: dict[str, Any]) -> None:
+        await self._plain(
+            send, 401, b"Authentication required\n", scope,
+            extra_headers=((b"www-authenticate", f'Basic realm="{REALM}", charset="UTF-8"'.encode()),),
+        )
+
+    async def _plain(self, send: Callable, status: int, body: bytes, scope: dict[str, Any],
+                     *, extra_headers: tuple[tuple[bytes, bytes], ...] = ()) -> None:
+        headers = [
+            (b"content-type", b"text/plain; charset=utf-8"),
+            (b"content-length", str(len(body)).encode()),
+            (b"x-robots-tag", b"noindex, nofollow"),
+            *SECURITY_HEADERS,
+            *extra_headers,
+        ]
+        if self._is_https(scope):
+            headers.append((b"strict-transport-security", b"max-age=31536000"))
+        await send({"type": "http.response.start", "status": status, "headers": headers})
+        await send({"type": "http.response.body", "body": body})
+
+
+def install_alpha_gate(app: Callable) -> Callable:
+    """Wrap ``app`` when the environment enables the gate; otherwise return it unchanged.
+
+    Fails closed: ``MEDRADAR_ALPHA_GATE=1`` with a missing or malformed hash raises at import,
+    so a misconfigured deployment does not serve an unauthenticated database.
+    """
+    if os.environ.get("MEDRADAR_ALPHA_GATE") != "1":
+        return app
+    username = str(os.environ.get("MEDRADAR_ALPHA_USER") or "").strip()
+    password_hash = str(os.environ.get("MEDRADAR_ALPHA_HASH") or "").strip()
+    if not username or not password_hash:
+        raise RuntimeError(
+            "MEDRADAR_ALPHA_GATE=1 requires MEDRADAR_ALPHA_USER and MEDRADAR_ALPHA_HASH"
+        )
+    trust_proxy = os.environ.get("MEDRADAR_ALPHA_TRUST_PROXY") == "1"
+    secret_raw = str(os.environ.get("MEDRADAR_ALPHA_SESSION_SECRET") or "").strip()
+    secret: bytes | None = None
+    if secret_raw:
+        try:
+            secret = bytes.fromhex(secret_raw)
+        except ValueError:
+            secret = secret_raw.encode("utf-8")
+        if len(secret) < 16:
+            raise RuntimeError("MEDRADAR_ALPHA_SESSION_SECRET must be at least 16 bytes")
+    LOGGER.info("public alpha gate enabled user=%s trust_proxy=%s session_secret=%s",
+                username, trust_proxy, "configured" if secret else "derived")
+    return AlphaGate(app, username=username, password_hash=password_hash,
+                     trust_proxy=trust_proxy, session_secret=secret)
+
+
+def main(argv: list[str] | None = None) -> int:
+    import argparse
+
+    parser = argparse.ArgumentParser(description="Generate a MedRadar alpha password hash.")
+    parser.add_argument("--hash", dest="password", required=True,
+                        help="plaintext password to hash (it is not written anywhere)")
+    args = parser.parse_args(argv)
+    print(hash_password(args.password))
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

@@ -1,0 +1,831 @@
+{
+  "schema": "medradar.radar.acceptance.v1",
+  "started_at": "2026-11-16T23:19:25Z",
+  "finished_at": "2026-11-16T23:19:59Z",
+  "ok": true,
+  "counts": {
+    "pass": 7,
+    "fail": 0,
+    "skipped": 0
+  },
+  "tests": [
+    {
+      "id": "A",
+      "title": "Live Source Discovery",
+      "status": "PASS",
+      "summary": "A real PubMed check completed in 8.05s with 15 HTTP request(s); the ledger now holds 484 PubMed observation(s), each with its official identifier and URL.",
+      "evidence": {
+        "source": "pubmed",
+        "status": "OK",
+        "counters": {
+          "requests": 15,
+          "pages": 7,
+          "records_seen": 39,
+          "records_new": 0,
+          "records_updated": 0,
+          "records_unchanged": 35,
+          "records_removed": 0,
+          "records_failed": 0,
+          "records_skipped": 4,
+          "scopes_total": 7,
+          "scopes_completed": 7,
+          "scopes_failed": 0,
+          "elapsed_seconds": 8
+        },
+        "requests": 15,
+        "seconds": 8.05,
+        "total_pubmed_observations": 484,
+        "newest_observed": [
+          {
+            "official_identifier": "PMID:43038286",
+            "title": "Digital health infrastructure and research priorities across neonatal intensive care units in Germany: A nationwide cross-sectional survey.",
+            "source_url": "https://pubmed.ncbi.nlm.nih.gov/43038286/",
+            "first_observed_at": "2026-11-16T22:49:00+00:00",
+            "published_at": "2026-11-16"
+          },
+          {
+            "official_identifier": "PMID:42778639",
+            "title": "Feasibility and Usability of Head-Mounted Display Augmented Reality During Routine Radiological Interventions: The Prospective AZURION-AR Study.",
+            "source_url": "https://pubmed.ncbi.nlm.nih.gov/42778639/",
+            "first_observed_at": "2026-11-16T22:21:02+00:00",
+            "published_at": "2026-09-23"
+          },
+          {
+            "official_identifier": "PMID:42861039",
+            "title": "Prediction of late-pregnancy pelvic floor dysfunction: a nomogram model based on proton density fat fraction and synthetic magnetic resonance imaging.",
+            "source_url": "https://pubmed.ncbi.nlm.nih.gov/42861039/",
+            "first_observed_at": "2026-11-16T22:21:02+00:00",
+            "published_at": "2026-09-17"
+          }
+        ]
+      },
+      "detail": null
+    },
+    {
+      "id": "B",
+      "title": "Incremental Detection",
+      "status": "PASS",
+      "summary": "Re-checking an unchanged real source published nothing. On an isolated fixture source, editing one record produced UPDATED with a second payload version while the original version and first_observed_at were preserved.",
+      "evidence": {
+        "real_source_recheck": {
+          "source": "philips_official",
+          "first": {
+            "requests": 1,
+            "pages": 1,
+            "records_seen": 0,
+            "records_new": 0,
+            "records_updated": 0,
+            "records_unchanged": 0,
+            "records_removed": 0,
+            "records_failed": 0,
+            "records_skipped": 0,
+            "scopes_total": 1,
+            "scopes_completed": 1,
+            "scopes_failed": 0,
+            "elapsed_seconds": 0
+          },
+          "second": {
+            "requests": 2,
+            "pages": 1,
+            "records_seen": 0,
+            "records_new": 0,
+            "records_updated": 0,
+            "records_unchanged": 0,
+            "records_removed": 0,
+            "records_failed": 0,
+            "records_skipped": 0,
+            "scopes_total": 1,
+            "scopes_completed": 1,
+            "scopes_failed": 0,
+            "elapsed_seconds": 4
+          },
+          "second_status": "OK"
+        },
+        "isolated_change_test": {
+          "initial": {
+            "requests": 0,
+            "pages": 1,
+            "records_seen": 1,
+            "records_new": 1,
+            "records_updated": 0,
+            "records_unchanged": 0,
+            "records_removed": 0,
+            "records_failed": 0,
+            "records_skipped": 0,
+            "scopes_total": 1,
+            "scopes_completed": 1,
+            "scopes_failed": 0,
+            "elapsed_seconds": 0
+          },
+          "after_edit": {
+            "requests": 0,
+            "pages": 1,
+            "records_seen": 1,
+            "records_new": 0,
+            "records_updated": 1,
+            "records_unchanged": 0,
+            "records_removed": 0,
+            "records_failed": 0,
+            "records_skipped": 0,
+            "scopes_total": 1,
+            "scopes_completed": 1,
+            "scopes_failed": 0,
+            "elapsed_seconds": 0
+          },
+          "versions": [
+            {
+              "version_seq": 1,
+              "change_state": "NEW",
+              "changed_fields": [],
+              "content_hash": "3bd7343405e51221"
+            },
+            {
+              "version_seq": 2,
+              "change_state": "UPDATED",
+              "changed_fields": [
+                "correction",
+                "title"
+              ],
+              "content_hash": "75dc17a26b7e2f38"
+            }
+          ],
+          "change_events": [
+            "NEW",
+            "UPDATED"
+          ],
+          "first_observed_at": "2026-11-16T23:08:49+00:00",
+          "watermark": "2026-05-04"
+        }
+      },
+      "detail": null
+    },
+    {
+      "id": "C",
+      "title": "Cross-source Correlation",
+      "status": "PASS",
+      "summary": "6 (company, topic) pair(s) are supported by an openFDA regulatory record and by a publication from an independent literature API, out of 10285 topic relations. All are TOPIC_RELATED: no source states a specific product capability, so none is asserted.",
+      "evidence": {
+        "cross_source_topic_correlations": [
+          {
+            "topic_id": "ecg_analysis",
+            "organization_id": "philips",
+            "regulatory_records": 17,
+            "publications": 1,
+            "state": "EVIDENCE_PRESENT"
+          },
+          {
+            "topic_id": "spo2_oximetry",
+            "organization_id": "philips",
+            "regulatory_records": 18,
+            "publications": 3,
+            "state": "EVIDENCE_PRESENT"
+          },
+          {
+            "topic_id": "respiratory_monitoring",
+            "organization_id": "philips",
+            "regulatory_records": 6,
+            "publications": 1,
+            "state": "EVIDENCE_PRESENT"
+          },
+          {
+            "topic_id": "haemodynamic_monitoring",
+            "organization_id": "philips",
+            "regulatory_records": 3,
+            "publications": 1,
+            "state": "EVIDENCE_PRESENT"
+          },
+          {
+            "topic_id": "ai_clinical_decision_support",
+            "organization_id": "ge_healthcare",
+            "regulatory_records": 4,
+            "publications": 1,
+            "state": "EVIDENCE_PRESENT"
+          },
+          {
+            "topic_id": "ai_clinical_decision_support",
+            "organization_id": "philips",
+            "regulatory_records": 5,
+            "publications": 4,
+            "state": "EVIDENCE_PRESENT"
+          }
+        ],
+        "worked_example": {
+          "topic_id": "ecg_analysis",
+          "organization_id": "philips",
+          "evidence": [
+            {
+              "source": "pubmed",
+              "record_type": "publication",
+              "confirmation": "TOPIC_RELATED",
+              "title": "Towards Contact-Free Cardiac Magnetic Resonance: Feasibility of Remote Photoplethysmography for Card",
+              "source_url": "https://pubmed.ncbi.nlm.nih.gov/42994798/",
+              "valid_from": "2026-11-06T00:00:00.000000Z"
+            },
+            {
+              "source": "openfda_device",
+              "record_type": "regulatory_record",
+              "confirmation": "TOPIC_RELATED",
+              "title": "Cardiologs Holter Platform",
+              "source_url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K250569",
+              "valid_from": "2025-08-06T00:00:00.000000Z"
+            },
+            {
+              "source": "openfda_device",
+              "record_type": "regulatory_record",
+              "confirmation": "TOPIC_RELATED",
+              "title": "Cardiac Workstation (5000); Cardiac Workstation (7000)",
+              "source_url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K241556",
+              "valid_from": "2024-12-17T00:00:00.000000Z"
+            },
+            {
+              "source": "openfda_device",
+              "record_type": "regulatory_record",
+              "confirmation": "TOPIC_RELATED",
+              "title": "Page Writer TC20 Cardiograph, Page Writer TC30 Cardiograph, Page Writer TC50 Cardiograph, Page Write",
+              "source_url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K210560",
+              "valid_from": "2021-06-30T00:00:00.000000Z"
+            },
+            {
+              "source": "openfda_device",
+              "record_type": "regulatory_record",
+              "confirmation": "TOPIC_RELATED",
+              "title": "PageWriter TC20 Cardiograph, PageWriter TC30 Cardiograph, PageWriter TC50 Cardiograph, PageWriter TC",
+              "source_url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K191738",
+              "valid_from": "2020-09-29T00:00:00.000000Z"
+            },
+            {
+              "source": "openfda_device",
+              "record_type": "regulatory_record",
+              "confirmation": "TOPIC_RELATED",
+              "title": "Philips wearable biosensor-G5 Solution",
+              "source_url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID=K181165",
+              "valid_from": "2019-03-07T00:00:00.000000Z"
+            }
+          ]
+        },
+        "identifier_matches": 0,
+        "identifier_match_note": "PubMed publishes a PMID and Crossref publishes a DOI, so the two sources rarely share one identifier string; the DOI is stored in the publication payload but is not the record's primary identifier. Cross-source correlation is therefore carried by the topic relation. When both sources publish the same identifier, the graph joins them with OFFICIAL_IDENTIFIER_MATCH at CONFIRMED (covered by the test suite).",
+        "topic_edges": 10285,
+        "topics_with_most_evidence": [
+          [
+            "ecg_analysis",
+            1895
+          ],
+          [
+            "nibp",
+            1571
+          ],
+          [
+            "spo2_oximetry",
+            1150
+          ],
+          [
+            "arrhythmia_detection",
+            1053
+          ],
+          [
+            "temperature_monitoring",
+            804
+          ],
+          [
+            "respiratory_monitoring",
+            772
+          ],
+          [
+            "smart_alarms",
+            688
+          ],
+          [
+            "predictive_deterioration",
+            522
+          ]
+        ],
+        "confirmation_note": "Every one of these links is TOPIC_RELATED. No record here states that a specific product implements a specific algorithm, so nothing stronger is asserted."
+      },
+      "detail": null
+    },
+    {
+      "id": "D",
+      "title": "Technology Map",
+      "status": "PASS",
+      "summary": "All three focus companies have evidence-backed technology branches generated from 23619 graph nodes / 18184 edges, and a company node traces to its official source URL.",
+      "evidence": {
+        "mode": "knowledge_time",
+        "topics_with_evidence": 14,
+        "nodes": 23619,
+        "edges": 18184,
+        "per_company": {
+          "draeger": {
+            "topics": 10,
+            "products": 89,
+            "evidence_rows": 98,
+            "earliest": "1980-09-26T00:00:00.000000Z",
+            "sample_source_url": "https://www.draeger.com/en_uk/Newsroom/About-Draeger/draeger-service-story"
+          },
+          "ge_healthcare": {
+            "topics": 12,
+            "products": 246,
+            "evidence_rows": 274,
+            "earliest": "1977-05-06T00:00:00.000000Z",
+            "sample_source_url": "https://pubmed.ncbi.nlm.nih.gov/42925663/"
+          },
+          "philips": {
+            "topics": 14,
+            "products": 289,
+            "evidence_rows": 324,
+            "earliest": "1981-05-15T00:00:00.000000Z",
+            "sample_source_url": "https://pubmed.ncbi.nlm.nih.gov/42994798/"
+          }
+        },
+        "compare_rows": 16,
+        "node_traceable_to_source_url": true,
+        "no_evidence_means": "NO_EVIDENCE_FOUND means MedRadar holds no evidence of that kind in the sources it monitors. It does not mean the company lacks the technology, the product, or the research. Absence of evidence is not evidence of absence."
+      },
+      "detail": null
+    },
+    {
+      "id": "E",
+      "title": "Background AI",
+      "status": "PASS",
+      "summary": "11 real labelled record(s) were processed by Qwen3-0.6B on CPU in a separate process: JSON validity 1.0, topic F1 0.1818, organisation accuracy 0.7273, 9.57 tok/s, peak RSS 3169.1 MB. Every accepted claim passed the verbatim-quote vetting gate; nothing the model produced became a confirmed fact.",
+      "evidence": {
+        "unavailable_model": {
+          "state": "unavailable",
+          "processed": 0,
+          "reason": "transformers and torch are required for the AI worker (ModuleNotFoundError: No module named 'torch'). Discovery does not need them.",
+          "observations_before": 8593,
+          "observations_after": 8593,
+          "queue": {
+            "by_state": {
+              "DEFERRED": 18,
+              "PENDING": 8574
+            },
+            "backlog": 8592,
+            "running": 0,
+            "total": 8592
+          }
+        },
+        "evaluation": {
+          "interpreter": "D:\\DEPPSKK\\mlenv\\Scripts\\python.exe",
+          "model": {
+            "id": "Qwen3-0.6B",
+            "version": "qwen3-0.6b-transformers-cpu-fp32",
+            "prompt_version": "radar-ai-prompt-1",
+            "load_seconds": 4.29,
+            "threads": 4
+          },
+          "metrics": {
+            "json_validity_rate": 1.0,
+            "topic_precision": 0.1818,
+            "topic_recall": 0.1818,
+            "topic_f1": 0.1818,
+            "organization_accuracy": 0.7273,
+            "evidence_fidelity_rate": 1.0,
+            "accepted_claims": 12,
+            "tokens_per_second": 9.57,
+            "median_seconds_per_record": 16.428,
+            "peak_rss_mb": 3169.1,
+            "elapsed_seconds": 232.39
+          },
+          "eval_set": {
+            "name": "RADAR-001 hand-labelled ICU-monitoring slice",
+            "version": "2026.11.1",
+            "labelled_by": "author, by reading each record's official title and abstract on 2026-11-17",
+            "items": 14,
+            "evaluated": 11
+          },
+          "discovery_impact": {
+            "before_seconds": null,
+            "during_seconds": null,
+            "after_seconds": null,
+            "note": "The discovery probe measures one real source check immediately before, during and after the model batch. A materially slower 'during' value would mean the worker competes with collection."
+          },
+          "items": [
+            {
+              "official_identifier": "PMID:43031778",
+              "title": "Prediction of high-flow nasal cannula failure in COVID-19 acute hypoxemic respiratory failure using combined clinical an",
+              "state": "evaluated",
+              "expected_topics": [
+                "ai_clinical_decision_support",
+                "predictive_deterioration"
+              ],
+              "predicted_topics": [
+                "respiratory_monitoring"
+              ],
+              "expected_organization": null,
+              "predicted_organization": null,
+              "accepted_claims": 1,
+              "rejected_claims": 1,
+              "generated_tokens": 132,
+              "seconds": 15.122
+            },
+            {
+              "official_identifier": "PMID:42818838",
+              "state": "json_invalid",
+              "error": "invalid JSON: Expecting ',' delimiter: line 1 column 949 (char 948)",
+              "raw_output": "{\"topics\":[{\"id\":\"haemodynamic_monitoring\",\"evidence_quote\":\"interpretable machine learning models using early dynamic clinical features to predict early hemodynamic stabilization after vasopressor initiation in patients with septic shock: development in MIMIC-IV and external validation in eICU\"},{\"id\":\"ai_clinical_decision_support\",\"evidence_quote\":\"early hemodynamic stabilization after vasopress",
+              "expected_topics": [
+                "ai_clinical_decision_support",
+                "predictive_deterioration"
+              ]
+            },
+            {
+              "official_identifier": "PMID:42964288",
+              "title": "Development and validation of a prognostic prediction model for elderly patients with sepsis-associated acute kidney inj",
+              "state": "evaluated",
+              "expected_topics": [
+                "predictive_deterioration"
+              ],
+              "predicted_topics": [
+                "ai_clinical_decision_support",
+                "modular_monitoring"
+              ],
+              "expected_organization": null,
+              "predicted_organization": null,
+              "accepted_claims": 2,
+              "rejected_claims": 2,
+              "generated_tokens": 166,
+              "seconds": 16.527
+            },
+            {
+              "official_identifier": "PMID:42819091",
+              "title": "Association between lactate dehydrogenase-to-albumin ratio and short-term mortality in critically ill patients with uros",
+              "state": "evaluated",
+              "expected_topics": [
+                "predictive_deterioration"
+              ],
+              "predicted_topics": [
+                "respiratory_monitoring"
+              ],
+              "expected_organization": null,
+              "predicted_organization": null,
+              "accepted_claims": 1,
+              "rejected_claims": 1,
+              "generated_tokens": 113,
+              "seconds": 13.645
+            },
+            {
+              "official_identifier": "PMID:42815208",
+              "title": "Development and external validation of a machine-learning model for classifying documented pressure injury status during",
+              "state": "evaluated",
+              "expected_topics": [
+                "predictive_deterioration"
+              ],
+              "predicted_topics": [],
+              "expected_organization": null,
+              "predicted_organization": null,
+              "accepted_claims": 0,
+              "rejected_claims": 4,
+              "generated_tokens": 147,
+              "seconds": 16.415
+            },
+            {
+              "official_identifier": "PMID:42791621",
+              "title": "Improving early risk stratification for bronchopulmonary Dysplasia in preterm infants using machine learning: developmen",
+              "state": "evaluated",
+              "expected_topics": [
+                "predictive_deterioration"
+              ],
+              "predicted_topics": [
+                "ai_clinical_decision_support",
+                "respiratory_monitoring"
+              ],
+              "expected_organization": null,
+              "predicted_organization": null,
+              "accepted_claims": 2,
+              "rejected_claims": 1,
+              "generated_tokens": 178,
+              "seconds": 18.878
+            },
+            {
+              "official_identifier": "PMID:42902397",
+              "title": "Crystalloid vs colloid for Hemodynamics during Anesthesia INduction in TAVR patients (CHAIN-T): study protocol for a ran",
+              "state": "evaluated",
+              "expected_topics": [
+                "haemodynamic_monitoring"
+              ],
+              "predicted_topics": [
+                "haemodynamic_monitoring"
+              ],
+              "expected_organization": null,
+              "predicted_organization": null,
+              "accepted_claims": 1,
+              "rejected_claims": 2,
+              "generated_tokens": 121,
+              "seconds": 13.276
+            },
+            {
+              "official_identifier": "PMID:43002630",
+              "title": "Leading at night: The learned role of the nocturnal intensivist adult-gerontology acute care nurse practitioner.",
+              "state": "evaluated",
+              "expected_topics": [],
+              "predicted_topics": [
+                "modular_monitoring"
+              ],
+              "expected_organization": null,
+              "predicted_organization": null,
+              "accepted_claims": 1,
+              "rejected_claims": 1,
+              "generated_tokens": 138,
+              "seconds": 14.511
+            },
+            {
+              "official_identifier": "PMID:42903731",
+              "state": "json_invalid",
+              "error": "invalid JSON: Expecting ',' delimiter: line 1 column 837 (char 836)",
+              "raw_output": "{\"topics\":[{\"id\":\"haemodynamic_monitoring\",\"evidence_quote\":\"Falciform ligament pathology is a rare cause of acute upper abdominal pain and may resemble more common pancreatic and hepatobiliary disorders\"},{\"id\":\"haemodynamic_monitoring\",\"evidence_quote\":\"The patient subsequently developed fever, tachycardia, lactic acidosis, and profound hypotension requiring intensive care admission\"},{\"id\":\"hae",
+              "expected_topics": []
+            },
+            {
+              "official_identifier": "PMID:42805622",
+              "title": "Metastatic dedifferentiated malignant melanoma with spindle cell morphology.",
+              "state": "evaluated",
+              "expected_topics": [],
+              "predicted_topics": [
+                "haemodynamic_monitoring"
+              ],
+              "expected_organization": null,
+              "predicted_organization": "philips",
+              "accepted_claims": 2,
+              "rejected_claims": 3,
+              "generated_tokens": 176,
+              "seconds": 17.088
+            },
+            {
+              "official_identifier": "PMID:42791225",
+              "title": "Equation Disagreement as a Zero-Cost Uncertainty Signal for LDL-C Classification: An Interpretable Regime-Aware Calibrat",
+              "state": "evaluated",
+              "expected_topics": [],
+              "predicted_topics": [
+                "predictive_deterioration"
+              ],
+              "expected_organization": null,
+              "predicted_organization": null,
+              "accepted_claims": 1,
+              "rejected_claims": 1,
+              "generated_tokens": 181,
+              "seconds": 20.231
+            },
+            {
+              "official_identifier": "K813279",
+              "title": "ELECTROCARDIOGRAPH CM3000",
+              "state": "evaluated",
+              "expected_topics": [
+                "ecg_analysis"
+              ],
+              "predicted_topics": [
+                "ecg_analysis"
+              ],
+              "expected_organization": "philips",
+              "predicted_organization": null,
+              "accepted_claims": 1,
+              "rejected_claims": 3,
+              "generated_tokens": 130,
+              "seconds": 12.193
+            },
+            {
+              "official_identifier": "K760926",
+              "state": "json_invalid",
+              "error": "invalid JSON: Expecting ',' delimiter: line 1 column 624 (char 623)",
+              "raw_output": "{\"topics\":[{\"id\":\"ecg_analysis\",\"evidence_quote\":\"ELECTROCARDIOGRAPH (MODEL VS-4B) is a device used for electrocardiographic analysis (electrocardiography)\",\"id\":\"arrhythmia_detection\",\"evidence_quote\":\"ELECTROCARDIOGRAPH (MODEL VS-4B) is used for arrhythmia detection (electrocardiography)\",\"id\":\"haemodynamic_monitoring\",\"evidence_quote\":\"ELECTROCARDIOGRAPH (MODEL VS-4B) is used for haemodynamic m",
+              "expected_topics": [
+                "ecg_analysis"
+              ]
+            },
+            {
+              "official_identifier": "https://www.philips.com/a-w/about/news/archive/standard/news/press/2026/philips-launches-hypervue-integrated-system-in-the-u-s-bringing-advanced-coronary-imaging-and-physiology-into-the-cathlab.html",
+              "title": "Philips launches HyperVue",
+              "state": "evaluated",
+              "expected_topics": [],
+              "predicted_topics": [],
+              "expected_organization": "philips",
+              "predicted_organization": null,
+              "accepted_claims": 0,
+              "rejected_claims": 4,
+              "generated_tokens": 85,
+              "seconds": 7.86
+            }
+          ]
+        }
+      },
+      "detail": null
+    },
+    {
+      "id": "F",
+      "title": "Recovery",
+      "status": "PASS",
+      "summary": "A transport failure mid-scope kept the watermark, recorded the page that had already succeeded, and left a checkpoint. The restart resumed the same run, completed the scope, advanced the watermark and recorded no duplicate. 403 is terminal, 429 is retried with backoff, 404 is not a refusal.",
+      "evidence": {
+        "failed_run": {
+          "status": "FAILED",
+          "counters": {
+            "requests": 0,
+            "pages": 1,
+            "records_seen": 1,
+            "records_new": 1,
+            "records_updated": 0,
+            "records_unchanged": 0,
+            "records_removed": 0,
+            "records_failed": 0,
+            "records_skipped": 0,
+            "scopes_total": 1,
+            "scopes_completed": 0,
+            "scopes_failed": 1,
+            "elapsed_seconds": 0
+          },
+          "watermark_after_failure": null,
+          "checkpoints": {
+            "pages": "1"
+          },
+          "observations_recorded_before_failure": 1,
+          "failures": [
+            "FETCH_ERROR"
+          ]
+        },
+        "recovered_run": {
+          "status": "OK",
+          "resumed": true,
+          "counters": {
+            "requests": 0,
+            "pages": 1,
+            "records_seen": 1,
+            "records_new": 1,
+            "records_updated": 0,
+            "records_unchanged": 0,
+            "records_removed": 0,
+            "records_failed": 0,
+            "records_skipped": 0,
+            "scopes_total": 1,
+            "scopes_completed": 1,
+            "scopes_failed": 0,
+            "elapsed_seconds": 0
+          },
+          "watermark_after_recovery": "2026-06-02",
+          "observations_total": 2,
+          "run_statuses": [
+            "OK"
+          ],
+          "consistency_ok": true
+        },
+        "transport_classification": {
+          "refused_raised": true,
+          "refused_retried": false,
+          "rate_limit_retried": true,
+          "not_found_is_not_refusal": true
+        }
+      },
+      "detail": null
+    },
+    {
+      "id": "G",
+      "title": "Resource Safety",
+      "status": "PASS",
+      "summary": "Discovery took 0.23s with no AI and 0.2s while the worker ran (0.87x). The read-only API served 3 request(s) during the batch with a median of 23.3 ms. The worker is a one-shot low-priority process with peak RSS 3095.0 MB.",
+      "evidence": {
+        "host_before": {
+          "available_mb": 11458.3,
+          "total_mb": 32189.3,
+          "cpus": 16,
+          "load_average": null,
+          "disk_free_mb": 533214.6,
+          "guard_basis": "psutil when installed, else the OS primitive"
+        },
+        "discovery_baseline_seconds": 0.23,
+        "discovery_during_ai_seconds": 0.2,
+        "slowdown_ratio": 0.87,
+        "api_probe": {
+          "samples": 3,
+          "median_ms": 23.3,
+          "p95_ms": 43.7,
+          "max_ms": 43.7
+        },
+        "worker": {
+          "state": "ran",
+          "processed": 2,
+          "peak_rss_mb": 3095.0,
+          "tokens_per_second": 10.28
+        },
+        "memory_available_mb_during": 11534.0,
+        "host_after": {
+          "available_mb": 12262.7,
+          "total_mb": 32189.3,
+          "cpus": 16,
+          "load_average": null,
+          "disk_free_mb": 533214.6,
+          "guard_basis": "psutil when installed, else the OS primitive"
+        },
+        "memory_floor_mb": 900.0,
+        "note": "The worker is a separate one-shot process, so its memory is returned to the OS when the batch ends. The measurement above is the host figure while the worker was alive."
+      },
+      "detail": null
+    }
+  ],
+  "merged_from": "docs\\radar\\evidence\\acceptance_report.json",
+  "environment": {
+    "cwd": "D:\\DEPPSKK\\worktrees\\radar-001",
+    "python": "3.12.10",
+    "radar_dir": "D:\\DEPPSKK\\worktrees\\radar-001\\data\\radar",
+    "taxonomy_version": "radar-icu-2026.11.1",
+    "taxonomy_fingerprint": "50d9a75720743adc7fa5d444de0c8636ca2457596e46dc6baee1fae95530cd32",
+    "graph_version": "radar-graph-1",
+    "host": {
+      "available_mb": 12262.5,
+      "total_mb": 32189.3,
+      "cpus": 16,
+      "load_average": null,
+      "disk_free_mb": 533214.6,
+      "guard_basis": "psutil when installed, else the OS primitive"
+    },
+    "data_counts": {
+      "observations": 8593,
+      "versions": 8593,
+      "change_events": 8593,
+      "ai_candidates": 4,
+      "by_source": [
+        {
+          "source": "openfda_device",
+          "n": 6936
+        },
+        {
+          "source": "crossref",
+          "n": 1137
+        },
+        {
+          "source": "pubmed",
+          "n": 484
+        },
+        {
+          "source": "draeger_official",
+          "n": 31
+        },
+        {
+          "source": "philips_official",
+          "n": 5
+        }
+      ],
+      "graph_materialized": 8592
+    },
+    "sources": [
+      {
+        "source_id": "crossref",
+        "status": "OK",
+        "access_state": "ENABLED",
+        "observations": 1137,
+        "watermark": "2027-02",
+        "last_checked_at": "2026-11-16T22:47:20+00:00"
+      },
+      {
+        "source_id": "draeger_official",
+        "status": "OK",
+        "access_state": "ENABLED",
+        "observations": 31,
+        "watermark": "2026-11-09T12:41:36+00:00",
+        "last_checked_at": "2026-11-16T22:24:00+00:00"
+      },
+      {
+        "source_id": "gehealthcare_official",
+        "status": "BLOCKED_BY_ACCESS_POLICY",
+        "access_state": "BLOCKED",
+        "observations": 0,
+        "watermark": null,
+        "last_checked_at": null
+      },
+      {
+        "source_id": "openfda_device",
+        "status": "OK",
+        "access_state": "ENABLED",
+        "observations": 6936,
+        "watermark": "2026-11-02",
+        "last_checked_at": "2026-11-16T22:20:39+00:00"
+      },
+      {
+        "source_id": "philips_official",
+        "status": "OK",
+        "access_state": "ENABLED",
+        "observations": 5,
+        "watermark": "2026-11-16T07:30:00+00:00",
+        "last_checked_at": "2026-11-16T23:19:26+00:00"
+      },
+      {
+        "source_id": "pubmed",
+        "status": "OK",
+        "access_state": "ENABLED",
+        "observations": 484,
+        "watermark": "2026-11-17",
+        "last_checked_at": "2026-11-16T23:08:45+00:00"
+      }
+    ],
+    "latency": {
+      "source": null,
+      "exact_samples": 5,
+      "approximate_samples": 1621,
+      "exact_median_hours": 445.36,
+      "exact_p90_hours": 950.36,
+      "exact_min_hours": 14.86,
+      "exact_max_hours": 950.36,
+      "approximate_median_hours": 16798.35,
+      "note": "Detection latency is first_observed_at - published_at. It is only exact when the source states a timestamp with time-of-day. Date-only publication dates are reported separately as approximate and are never mixed into the exact figure.",
+      "cannot_do": "Latency is not a measure of the source's speed alone: it also includes MedRadar's own check interval, and a record first loaded with its source's history has no meaningful latency."
+    }
+  }
+}

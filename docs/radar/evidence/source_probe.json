@@ -1,0 +1,266 @@
+{
+  "schema": "medradar.radar.source_probe.v1",
+  "generated_at": "2026-11-16T22:02:38Z",
+  "user_agent": "MedRadarBot/0.1 (+https://github.com/ChazY11/medradar; research; contact: repository owner) Python-urllib",
+  "policy": "honest UA; no spoofing, cookies, auth or proxy; no retry on refusal; robots.txt read and evaluated before any vendor page is fetched",
+  "results": [
+    {
+      "source_id": "pubmed",
+      "url": "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi?db=pubmed&term=patient+monitoring&retmax=1&retmode=json",
+      "role": "read_path",
+      "why": "E-utilities search",
+      "ok": true,
+      "status": 200,
+      "content_type": "application/json; charset=UTF-8",
+      "bytes": 696,
+      "elapsed_ms": 534.5,
+      "excerpt": "{\"header\":{\"type\":\"esearch\",\"version\":\"0.3\"},\"esearchresult\":{\"count\":\"375308\",\"retmax\":\"1\",\"retstart\":\"0\",\"idlist\":[\"43037525\"],\"translationset\":[{\"from\":\"patient monitoring\",\"to\":\"\\\"monitoring, physiologic\\\"[MeSH Terms] OR (\\\"monitoring\\\"[All Fields] AND \\\"physiologic\\\"[All Fields]) OR \\\"physiologic monitoring\\\"[All Fields] OR (\\\"patient\\\"[All Fields] AND \\\"monitoring\\\"[All Fields]) OR \\\"patient monitoring\\\"[All Fields]\"}],\"querytranslation\":\"\\\"monitoring, physiologic\\\"[MeSH Terms] OR (\\\"monitoring\\\"[All Fields] AND \\\"physiologic\\\"[All Fields]) OR \\\"physiologic monitoring\\\"[All Fields] OR (\\"
+    },
+    {
+      "source_id": "pubmed",
+      "url": "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=pubmed&id=39000000&retmode=xml",
+      "role": "read_path",
+      "why": "E-utilities fetch",
+      "ok": true,
+      "status": 200,
+      "content_type": "text/xml; charset=UTF-8",
+      "bytes": 24339,
+      "elapsed_ms": 261.2,
+      "excerpt": "<?xml version=\"1.0\" ?> <!DOCTYPE PubmedArticleSet PUBLIC \"-//NLM//DTD PubMedArticle, 1st January 2025//EN\" \"https://dtd.nlm.nih.gov/ncbi/pubmed/out/pubmed_250101.dtd\"> <PubmedArticleSet> <PubmedArticle><MedlineCitation Status=\"MEDLINE\" Owner=\"NLM\" IndexingMethod=\"Automated\"><PMID Version=\"1\">39000000</PMID><DateCompleted><Year>2024</Year><Month>07</Month><Day>13</Day></DateCompleted><DateRevised><Year>2024</Year><Month>07</Month><Day>15</Day></DateRevised><Article PubModel=\"Electronic\"><Journal><ISSN IssnType=\"Electronic\">1422-0067</ISSN><JournalIssue CitedMedium=\"Internet\"><Volume>25</Volume>"
+    },
+    {
+      "source_id": "pubmed",
+      "url": "https://www.ncbi.nlm.nih.gov/pmc/tools/oai/",
+      "role": "policy",
+      "why": "NCBI API usage policy page",
+      "ok": true,
+      "status": 200,
+      "content_type": "text/html; charset=utf-8",
+      "bytes": 90605,
+      "elapsed_ms": 634.4,
+      "excerpt": "<!DOCTYPE html> <html lang=\"en\" > <head > <meta charset=\"UTF-8\" /> <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\" /> <meta name=\"HandheldFriendly\" content=\"True\" /> <meta name=\"MobileOptimized\" content=\"320\" /> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" /> <link rel=\"stylesheet\" href=\"https://cdn.ncbi.nlm.nih.gov/pmc/pd-medc-pmc-cloudpmc-viewer/production/9b1d9d87/var/data/static/assets/base_style-BxRs1iOp.css\" /> <script type=\"module\" crossorigin=\"\" src=\"https://cdn.ncbi.nlm"
+    },
+    {
+      "source_id": "crossref",
+      "url": "https://api.crossref.org/works?query.bibliographic=patient+monitor&rows=2&mailto=research@medradar.example",
+      "role": "read_path",
+      "why": "REST works search",
+      "ok": true,
+      "status": 200,
+      "content_type": "application/json",
+      "bytes": 13652,
+      "elapsed_ms": 337.8,
+      "excerpt": "{\"status\":\"ok\",\"message-type\":\"work-list\",\"message-version\":\"1.0.0\",\"message\":{\"facets\":{},\"total-results\":950847,\"items\":[{\"indexed\":{\"date-parts\":[[2025,4,15]],\"date-time\":\"2025-04-15T04:01:19Z\",\"timestamp\":1744689679300,\"version\":\"3.40.4\"},\"reference-count\":14,\"publisher\":\"Ovid Technologies (Wolters Kluwer Health)\",\"issue\":\"5\",\"content-domain\":{\"domain\":[\"lww.com\",\"ovid.com\"],\"crossmark-restriction\":true},\"short-container-title\":[\"ASA Monitor\"],\"published-print\":{\"date-parts\":[[2015,5]]},\"DOI\":\"10.1097\\/01.asm.0001072984.59192.71\",\"type\":\"journal-article\",\"created\":{\"date-parts\":[[2024,12,1"
+    },
+    {
+      "source_id": "crossref",
+      "url": "https://www.crossref.org/documentation/retrieve-metadata/rest-api/",
+      "role": "policy",
+      "why": "Crossref REST API documentation",
+      "ok": true,
+      "status": 200,
+      "content_type": "text/html",
+      "bytes": 70732,
+      "elapsed_ms": 404.2,
+      "excerpt": "<!doctype html><html lang=en-us><head><meta charset=utf-8><meta name=language content=\"English\"><meta http-equiv=content-language content=\"en\"><meta http-equiv=X-UA-Compatible content=\"IE=edge\"><meta name=generator content=\"Hugo 0.139.4\"><meta name=viewport content=\"width=device-width,initial-scale=1\"><meta name=description content=\"Our publicly available REST API exposes the scholarly metadata that members and trusted sources deposit with Crossref. This bibliographic metadata and much more—you will find funding data, license information, post-publication updates, ORCID and ROR IDs, and abstra"
+    },
+    {
+      "source_id": "fda_openfda",
+      "url": "https://api.fda.gov/device/510k.json?search=applicant:%22Philips%22&limit=2",
+      "role": "read_path",
+      "why": "openFDA 510(k) search",
+      "ok": true,
+      "status": 200,
+      "content_type": "application/json; charset=utf-8",
+      "bytes": 8725,
+      "elapsed_ms": 719.0,
+      "excerpt": "{ \"meta\": { \"disclaimer\": \"Do not rely on openFDA to make decisions regarding medical care. While we make every effort to ensure that data is accurate, you should assume all results are unvalidated. We may limit or otherwise restrict your access to the API in line with our Terms of Service.\", \"terms\": \"https://open.fda.gov/terms/\", \"license\": \"https://open.fda.gov/license/\", \"last_updated\": \"2026-11-02\", \"results\": { \"skip\": 0, \"limit\": 2, \"total\": 994 } }, \"results\": [ { \"third_party_flag\": \"N\", \"city\": \"Best Noord-Brabant\","
+    },
+    {
+      "source_id": "fda_openfda",
+      "url": "https://open.fda.gov/terms/",
+      "role": "policy",
+      "why": "openFDA terms of service",
+      "ok": true,
+      "status": 200,
+      "content_type": "text/html; charset=utf-8",
+      "bytes": 130897,
+      "elapsed_ms": 289.7,
+      "excerpt": "<!DOCTYPE html><html lang=\"en\"><head><style data-href=\"/styles.b6dea51e86868c77fd0e.css\" data-identity=\"gatsby-global-css\">.main-nav-bar{border-bottom:1px solid #ccc;box-shadow:0 3px 10px rgba(0,0,0,.1);height:77px;width:100%;z-index:100}.header-main{height:58px}.blue-nav-bar{align-items:center;display:flex!important;flex-direction:row;justify-content:space-between}.menu-shadow{box-shadow:0 3px 10px rgba(0,0,0,.1)}.hhs{line-height:1.1;vertical-align:text-top}.nav-bar{width:95%}.logo-wrapper{display:flex;margin-left:0;min-height:50px}.fda-logo{width:180px}.dropdown{cursor:pointer;display:inline"
+    },
+    {
+      "source_id": "philips_official",
+      "url": "https://www.philips.com/robots.txt",
+      "role": "policy",
+      "why": "robots for philips.com",
+      "ok": true,
+      "status": 200,
+      "content_type": "text/plain; charset=utf-8",
+      "bytes": 488,
+      "elapsed_ms": 58.7,
+      "excerpt": "User-agent: * Disallow: /crsc/ Disallow: /content/ Disallow: /healthcare/crsc/ Disallow: /content/corporate/en_AA/foundation/philips-foundation.html Disallow: /doclib/getDoc.aspx?func=ll&objId=14467947&objAction=Open Disallow: /doclib/getDoc.aspx?func=ll&objId=14534821&objAction=Open Disallow: /healthcare/resources/n13-config-pages/ Disallow: /healthcare/sandbox/ Disallow: /a-w/sandbox/ Disallow: /c-w/sandbox/ Sitemap: https://www.philips.com/sitemap-corporate-en_AA-web-index.xml"
+    },
+    {
+      "source_id": "philips_official",
+      "url": "https://www.philips.com/a-w/about/news.html",
+      "role": "read_path",
+      "why": "Philips news index",
+      "ok": true,
+      "status": 200,
+      "content_type": "text/html;charset=utf-8",
+      "bytes": 239743,
+      "elapsed_ms": 194.8,
+      "excerpt": "<!DOCTYPE HTML><html lang=\"en\" dir=\"ltr\" class=\"no-js non-ie\" xmlns:wb=\"http://open.weibo.com/wb\"> <head> <meta charset=\"utf-8\"> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"> <script>LUX=function(){function n(){return Date.now?Date.now():+new Date}var r,t=n(),a=window.performance||{},e=a.timing||{activationStart:0,navigationStart:(null===(r=window.LUX)||void 0===r?void 0:r.ns)||t};function i(){return a.now?(r=a.now(),Math.floor(r)):n()-e.navigationStart;var r}(LUX=window.LUX||{}).ac=[],LUX.addData=function(n,r){return LUX.cmd([\"addData\",n,r])},LUX.cmd=function(n){return"
+    },
+    {
+      "source_id": "philips_official",
+      "url": "https://www.philips.com/a-w/about/news/archive/standard/news/press/2026/philips-launches-hypervue-integrated-system-in-the-u-s-bringing-advanced-coronary-imaging-and-physiology-into-the-cathlab.html",
+      "role": "read_path",
+      "why": "one press-release page",
+      "ok": true,
+      "status": 200,
+      "content_type": "text/html;charset=utf-8",
+      "bytes": 217569,
+      "elapsed_ms": 65.6,
+      "excerpt": "<!DOCTYPE HTML><html lang=\"en\" dir=\"ltr\" class=\"no-js non-ie\" xmlns:wb=\"http://open.weibo.com/wb\"> <head> <meta charset=\"utf-8\"> <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"> <link rel=\"preconnect\" href=\"https://www.googletagmanager.com\"> <link rel=\"preconnect\" href=\"https://images.philips.com\"> <link rel=\"preconnect\" href=\"https://consent.trustarc.com/\"> <link rel=\"preconnect\" href=\"https://philipselectronicsne.tt.omtrdc.net\" crossorigin=\"use-credentials\"> <link rel=\"preconnect\" href=\"https://www.googleoptimize.com\"> <link rel=\"preload\" href=\"/c-etc/philips/clientlibs/f"
+    },
+    {
+      "source_id": "gehealthcare_official",
+      "url": "https://www.gehealthcare.com/robots.txt",
+      "role": "policy",
+      "why": "robots for gehealthcare.com",
+      "ok": false,
+      "status": 403,
+      "content_type": "text/html",
+      "bytes": 388,
+      "elapsed_ms": 55.1,
+      "excerpt": "<HTML><HEAD> <TITLE>Access Denied</TITLE> </HEAD><BODY> <H1>Access Denied</H1> You don't have permission to access \"http&#58;&#47;&#47;www&#46;gehealthcare&#46;com&#47;robots&#46;txt\" on this server.<P> Reference&#32;&#35;18&#46;1a847b5c&#46;1794866556&#46;2ff0d93e <P>https&#58;&#47;&#47;errors&#46;edgesuite&#46;net&#47;18&#46;1a847b5c&#46;1794866556&#46;2ff0d93e</P> </BODY> </HTML>",
+      "error": "HTTP 403 Forbidden"
+    },
+    {
+      "source_id": "gehealthcare_official",
+      "url": "https://www.gehealthcare.com/about/newsroom",
+      "role": "read_path",
+      "why": "GE HealthCare newsroom",
+      "ok": false,
+      "status": 403,
+      "content_type": "text/html",
+      "bytes": 392,
+      "elapsed_ms": 63.7,
+      "excerpt": "<HTML><HEAD> <TITLE>Access Denied</TITLE> </HEAD><BODY> <H1>Access Denied</H1> You don't have permission to access \"http&#58;&#47;&#47;www&#46;gehealthcare&#46;com&#47;about&#47;newsroom\" on this server.<P> Reference&#32;&#35;18&#46;19847b5c&#46;1794866557&#46;31f6e047 <P>https&#58;&#47;&#47;errors&#46;edgesuite&#46;net&#47;18&#46;19847b5c&#46;1794866557&#46;31f6e047</P> </BODY> </HTML>",
+      "error": "HTTP 403 Forbidden"
+    },
+    {
+      "source_id": "draeger_official",
+      "url": "https://www.draeger.com/robots.txt",
+      "role": "policy",
+      "why": "robots for draeger.com",
+      "ok": true,
+      "status": 200,
+      "content_type": "text/plain",
+      "bytes": 1258,
+      "elapsed_ms": 78.1,
+      "excerpt": "﻿#updated 05.01.2026 User-agent: * Sitemap: https://www.draeger.com/Sitemap.xml #System Disallow: /*api/ Disallow: */api/hubspot/* #content Disallow: /en_tes* Disallow: /lo_wor* Disallow: /*Partner* Disallow: /*partner* Disallow: /*SearchResults* Disallow: /Products/Content/*-ifu-9027* Disallow: /Products/Content/*-ifu-9028* Disallow: /Products/Content/*-ifu-90291* Disallow: /Products/Content/*-ifu-90292* Disallow: /Products/Content/*-ifu-90293* Disallow: /Products/Content/*-ifu-90294* Disallow: /Products/Content/*-ifu-90295* Disallow: /Products/Content/*-ifu-9037*"
+    },
+    {
+      "source_id": "draeger_official",
+      "url": "https://www.draeger.com/en_uk/sitemap/NewsroomArticle.xml",
+      "role": "read_path",
+      "why": "Draeger newsroom sitemap",
+      "ok": true,
+      "status": 200,
+      "content_type": "application/xml; charset=utf-8",
+      "bytes": 5002,
+      "elapsed_ms": 134.9,
+      "excerpt": "<urlset xmlns:xhtml=\"http://www.w3.org/1999/xhtml\" xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\"> <url> <loc>https://www.draeger.com/en_uk/Newsroom/About-Draeger/The-growing-need-for-flexible-safety-provision</loc> <lastmod>2026-11-09T12:32:48+00:00</lastmod> </url> <url> <loc>https://www.draeger.com/en_uk/Newsroom/About-Draeger/clean-energy</loc> <lastmod>2025-08-12T07:18:03+00:00</lastmod> </url> <url> <loc>https://www.draeger.com/en_uk/Newsroom/About-Draeger/75e-Silent-Care-Package-SDC-ESICM</loc> <lastmod>2026-06-02T09:36:46+00:00</lastmod> </url>"
+    }
+  ],
+  "robots_verdicts": [
+    {
+      "source_id": "philips_official",
+      "rules_parsed": 0,
+      "url": "https://www.philips.com/a-w/about/news.html",
+      "path": "/a-w/about/news.html",
+      "allowed": true,
+      "matched_prefix_len": null
+    },
+    {
+      "source_id": "philips_official",
+      "rules_parsed": 0,
+      "url": "https://www.philips.com/a-w/about/news/archive/standard/news/press/2026/philips-launches-hypervue-integrated-system-in-the-u-s-bringing-advanced-coronary-imaging-and-physiology-into-the-cathlab.html",
+      "path": "/a-w/about/news/archive/standard/news/press/2026/philips-launches-hypervue-integrated-system-in-the-u-s-bringing-advanced-coronary-imaging-and-physiology-into-the-cathlab.html",
+      "allowed": true,
+      "matched_prefix_len": null
+    },
+    {
+      "source_id": "gehealthcare_official",
+      "url": "https://www.gehealthcare.com/about/newsroom",
+      "allowed": false,
+      "reason": "robots.txt could not be read: automated access is not verified"
+    },
+    {
+      "source_id": "draeger_official",
+      "rules_parsed": 0,
+      "url": "https://www.draeger.com/en_uk/sitemap/NewsroomArticle.xml",
+      "path": "/en_uk/sitemap/NewsroomArticle.xml",
+      "allowed": true,
+      "matched_prefix_len": null
+    }
+  ],
+  "decisions": [
+    {
+      "source_id": "pubmed",
+      "decision": "ENABLED",
+      "reason": "read path fetched successfully; documented public API; robots.txt does not govern an API host route",
+      "reachable": true,
+      "robots_permitted": true,
+      "policy_basis": "documented public API; robots.txt does not govern an API host route",
+      "policy_document": "https://www.ncbi.nlm.nih.gov/pmc/tools/oai/"
+    },
+    {
+      "source_id": "crossref",
+      "decision": "ENABLED",
+      "reason": "read path fetched successfully; documented public API; robots.txt does not govern an API host route",
+      "reachable": true,
+      "robots_permitted": true,
+      "policy_basis": "documented public API; robots.txt does not govern an API host route",
+      "policy_document": "https://www.crossref.org/documentation/retrieve-metadata/rest-api/"
+    },
+    {
+      "source_id": "fda_openfda",
+      "decision": "ENABLED",
+      "reason": "read path fetched successfully; documented public API; robots.txt does not govern an API host route",
+      "reachable": true,
+      "robots_permitted": true,
+      "policy_basis": "documented public API; robots.txt does not govern an API host route",
+      "policy_document": "https://open.fda.gov/terms/"
+    },
+    {
+      "source_id": "philips_official",
+      "decision": "ENABLED",
+      "reason": "read path fetched successfully; robots.txt longest-match verdict for the exact read path",
+      "reachable": true,
+      "robots_permitted": true,
+      "policy_basis": "robots.txt longest-match verdict for the exact read path",
+      "policy_document": "https://www.philips.com/robots.txt"
+    },
+    {
+      "source_id": "gehealthcare_official",
+      "decision": "BLOCKED",
+      "reason": "operator refused automated access (HTTP 403); the refusal is recorded and respected - no spoofing, no bypass, adapter stays disabled",
+      "reachable": false,
+      "robots_permitted": false,
+      "policy_basis": "robots.txt longest-match verdict for the exact read path",
+      "policy_document": "https://www.gehealthcare.com/robots.txt"
+    },
+    {
+      "source_id": "draeger_official",
+      "decision": "ENABLED",
+      "reason": "read path fetched successfully; robots.txt longest-match verdict for the exact read path",
+      "reachable": true,
+      "robots_permitted": true,
+      "policy_basis": "robots.txt longest-match verdict for the exact read path",
+      "policy_document": "https://www.draeger.com/robots.txt"
+    }
+  ]
+}

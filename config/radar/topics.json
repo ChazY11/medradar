@@ -1,0 +1,453 @@
+{
+  "schema": "medradar.radar.topics.v1",
+  "taxonomy_version": "radar-icu-2026.11.2",
+  "scope": {
+    "domain": "ICU patient monitoring",
+    "statement": "First-batch monitoring scope, not a permanent product boundary. Topics are versioned data, not code: adding a topic does not require a schema change.",
+    "families": {
+      "electrocardiography": "ECG and electrocardiographic analysis",
+      "haemodynamics": "Blood pressure and circulatory parameters",
+      "oxygenation": "SpO2 and respiratory gas monitoring",
+      "ventilation": "Airway, respiratory rate and capnography",
+      "alarms": "Alarm generation, prioritisation and signal quality",
+      "decision_support": "Prediction, scoring and clinical decision support",
+      "platform": "Monitor platform, modularity and central monitoring",
+      "integration": "Data interoperability, software architecture and security"
+    }
+  },
+  "verified": {
+    "product_codes_source": "openFDA /device/classification.json, queried 2026-11-17 from this host with the MedRadar user agent",
+    "product_codes_note": "Every product code below was returned by an openFDA classification query and is cited with its official device_name. A code that could not be verified is not listed.",
+    "cannot_do": [
+      "A cleared product code never proves that a company implements a particular algorithm.",
+      "A product code describes the regulatory class of a device, not its clinical performance.",
+      "Publication keywords describe what a paper is about, not what a company sells."
+    ]
+  },
+  "topics": [
+    {
+      "id": "ecg_analysis",
+      "family": "electrocardiography",
+      "label_en": "ECG and electrocardiographic analysis",
+      "label_zh": "ECG 与心电分析",
+      "description": "Acquisition and automated analysis of surface ECG: rhythm, rate, ST segment and interval measurement.",
+      "product_codes": [
+        {
+          "code": "DPS",
+          "device_name": "Electrocardiograph",
+          "regulation": "870.2340"
+        },
+        {
+          "code": "DRT",
+          "device_name": "Monitor, Cardiac (Incl. Cardiotachometer & Rate Alarm)",
+          "regulation": "870.2300"
+        },
+        {
+          "code": "DRW",
+          "device_name": "Adaptor, Lead Switching, Electrocardiograph",
+          "regulation": "870.2350"
+        },
+        {
+          "code": "DRX",
+          "device_name": "Electrode, Electrocardiograph",
+          "regulation": "870.2360"
+        },
+        {
+          "code": "DXH",
+          "device_name": "Transmitters And Receivers, Electrocardiograph, Telephone",
+          "regulation": "870.2920"
+        }
+      ],
+      "terms": [
+        "\\belectrocardiogra\\w*",
+        "\\bECG\\b",
+        "\\bEKG\\b",
+        "\\b12[- ]lead\\b",
+        "\\bST[- ]segment\\b",
+        "\\bQTc?\\b",
+        "\\bQRS\\b",
+        "\\bheart rate variability\\b"
+      ]
+    },
+    {
+      "id": "arrhythmia_detection",
+      "family": "electrocardiography",
+      "label_en": "Arrhythmia detection",
+      "label_zh": "心律失常检测",
+      "description": "Automated detection of arrhythmia and the alarm logic that reports it.",
+      "product_codes": [
+        {
+          "code": "DSI",
+          "device_name": "Detector And Alarm, Arrhythmia",
+          "regulation": "870.1025"
+        },
+        {
+          "code": "MHX",
+          "device_name": "Monitor, Physiological, Patient(With Arrhythmia Detection Or Alarms)",
+          "regulation": "870.1025"
+        }
+      ],
+      "terms": [
+        "\\barrhythmia\\w*",
+        "\\batrial fibrillation\\b",
+        "\\bAFib\\b",
+        "\\bAF detection\\b",
+        "\\bpremature ventricular\\b",
+        "\\bheart rate alarm\\b",
+        "\\brhythm analysis\\b"
+      ]
+    },
+    {
+      "id": "spo2_oximetry",
+      "family": "oxygenation",
+      "label_en": "SpO2 and pulse oximetry",
+      "label_zh": "SpO₂ 与脉搏血氧",
+      "description": "Non-invasive arterial oxygen saturation measurement and its signal quality.",
+      "product_codes": [
+        {
+          "code": "DQA",
+          "device_name": "Oximeter",
+          "regulation": "870.2700"
+        },
+        {
+          "code": "DPZ",
+          "device_name": "Oximeter, Ear",
+          "regulation": "870.2710"
+        },
+        {
+          "code": "GLY",
+          "device_name": "Oximeter To Measure Hemoglobin",
+          "regulation": "864.7500"
+        }
+      ],
+      "terms": [
+        "\\bSpO2\\b",
+        "\\bSpO₂\\b",
+        "\\bpulse oximetr\\w*",
+        "\\boximetr\\w*",
+        "\\boxygen saturation\\b",
+        "\\bphotoplethysmogra\\w*",
+        "\\bplethysmogra\\w*"
+      ]
+    },
+    {
+      "id": "nibp",
+      "family": "haemodynamics",
+      "label_en": "Non-invasive blood pressure (NIBP)",
+      "label_zh": "无创血压 NIBP",
+      "description": "Cuff-based blood pressure measurement, including oscillometric method and interval protocols.",
+      "product_codes": [
+        {
+          "code": "DXN",
+          "device_name": "System, Measurement, Blood-Pressure, Non-Invasive",
+          "regulation": "870.1130"
+        },
+        {
+          "code": "DXQ",
+          "device_name": "Blood Pressure Cuff",
+          "regulation": "870.1120"
+        },
+        {
+          "code": "DSK",
+          "device_name": "Computer, Blood-Pressure",
+          "regulation": "870.1110"
+        }
+      ],
+      "terms": [
+        "\\bNIBP\\b",
+        "\\bnon[- ]invasive blood pressure\\b",
+        "\\boscillometric\\b",
+        "\\bblood pressure cuff\\b",
+        "\\bcuff[- ]based\\b"
+      ]
+    },
+    {
+      "id": "ibp",
+      "family": "haemodynamics",
+      "label_en": "Invasive blood pressure (IBP)",
+      "label_zh": "有创血压 IBP",
+      "description": "Pressure transducer channels and arterial/venous pressure monitoring.",
+      "product_codes": [
+        {
+          "code": "DRS",
+          "device_name": "Transducer, Blood-Pressure, Extravascular",
+          "regulation": "870.2850"
+        },
+        {
+          "code": "DSJ",
+          "device_name": "Alarm, Blood-Pressure",
+          "regulation": "870.1100"
+        },
+        {
+          "code": "KRK",
+          "device_name": "Manometer, Blood-Pressure, Venous",
+          "regulation": "870.1140"
+        }
+      ],
+      "terms": [
+        "\\bIBP\\b",
+        "\\binvasive blood pressure\\b",
+        "\\barterial line\\b",
+        "\\barterial pressure\\b",
+        "\\bpressure transducer\\b",
+        "\\bCVP\\b"
+      ]
+    },
+    {
+      "id": "respiratory_monitoring",
+      "family": "ventilation",
+      "label_en": "Respiratory rate, capnography and airway monitoring",
+      "label_zh": "呼吸率、二氧化碳与气道监测",
+      "description": "Respiratory rate, capnography (EtCO2) and airway pressure monitoring.",
+      "product_codes": [
+        {
+          "code": "BZQ",
+          "device_name": "Monitor, Breathing Frequency",
+          "regulation": "868.2375"
+        },
+        {
+          "code": "CAP",
+          "device_name": "Monitor, Airway Pressure (Includes Gauge And/Or Alarm)",
+          "regulation": "868.2600"
+        },
+        {
+          "code": "BZK",
+          "device_name": "Spirometer, Monitoring (W/Wo Alarm)",
+          "regulation": "868.1850"
+        },
+        {
+          "code": "FLS",
+          "device_name": "Monitor, Apnea, Facility Use",
+          "regulation": "868.2377"
+        },
+        {
+          "code": "CCK",
+          "device_name": "Analyzer, Gas, Carbon-Dioxide, Gaseous-Phase",
+          "regulation": "868.1400"
+        },
+        {
+          "code": "LKD",
+          "device_name": "Monitor, Carbon-Dioxide, Cutaneous",
+          "regulation": "868.2480"
+        }
+      ],
+      "terms": [
+        "\\bcapnograph\\w*",
+        "\\bEtCO2\\b",
+        "\\bend[- ]tidal\\b",
+        "\\brespiratory rate\\b",
+        "\\bairway pressure\\b",
+        "\\bapnea\\b",
+        "\\bapnoea\\b"
+      ]
+    },
+    {
+      "id": "temperature_monitoring",
+      "family": "ventilation",
+      "label_en": "Continuous temperature monitoring",
+      "label_zh": "连续体温监测",
+      "description": "Continuous patient temperature measurement channels.",
+      "product_codes": [
+        {
+          "code": "FLL",
+          "device_name": "Continuous Measurement Thermometer",
+          "regulation": "880.2910"
+        },
+        {
+          "code": "FLA",
+          "device_name": "Monitor, Temperature, Dialysis",
+          "regulation": "876.5820"
+        }
+      ],
+      "terms": [
+        "\\bcore temperature\\b",
+        "\\bcontinuous temperature\\b",
+        "\\btemperature probe\\b",
+        "\\bthermometr\\w*"
+      ]
+    },
+    {
+      "id": "haemodynamic_monitoring",
+      "family": "haemodynamics",
+      "label_en": "Advanced haemodynamic monitoring",
+      "label_zh": "进阶血流动力学监测",
+      "description": "Cardiac output, stroke volume and derived circulatory parameters. No verified openFDA product code is asserted for this topic, so it can only be supported by text evidence.",
+      "product_codes": [],
+      "terms": [
+        "\\bcardiac output\\b",
+        "\\bstroke volume\\b",
+        "\\bpulse pressure variation\\b",
+        "\\bhaemodynamic\\b",
+        "\\bhemodynamic\\b",
+        "\\bcardiac index\\b"
+      ]
+    },
+    {
+      "id": "smart_alarms",
+      "family": "alarms",
+      "label_en": "Smart alarms and alarm management",
+      "label_zh": "智能报警与报警管理",
+      "description": "Alarm thresholds, prioritisation, alarm fatigue and alarm-reduction strategies.",
+      "product_codes": [
+        {
+          "code": "MHX",
+          "device_name": "Monitor, Physiological, Patient(With Arrhythmia Detection Or Alarms)",
+          "regulation": "870.1025"
+        }
+      ],
+      "terms": [
+        "\\balarm fatigue\\b",
+        "\\balarm management\\b",
+        "\\bfalse alarm\\w*",
+        "\\balarm priorit\\w*",
+        "\\balarm threshold\\w*",
+        "\\bnurse call\\b"
+      ]
+    },
+    {
+      "id": "signal_quality",
+      "family": "alarms",
+      "label_en": "Signal quality and artifact handling",
+      "label_zh": "信号质量与伪差处理",
+      "description": "Artifact rejection and signal-quality indices that gate a measurement or an alarm.",
+      "product_codes": [],
+      "terms": [
+        "\\bsignal quality\\b",
+        "\\bmotion artifact\\w*",
+        "\\bnoise rejection\\b",
+        "\\blead (?:off|disconnection)\\b"
+      ]
+    },
+    {
+      "id": "predictive_deterioration",
+      "family": "decision_support",
+      "label_en": "Deterioration prediction and early warning",
+      "label_zh": "病情恶化预测与早期预警",
+      "description": "Predictive scoring of patient deterioration, early-warning scores and risk models.",
+      "product_codes": [],
+      "terms": [
+        "\\bearly warning score\\b",
+        "\\bdeterioration\\w*",
+        "\\bpredictive analytics\\b",
+        "\\bsepsis (?:alert|prediction)\\b",
+        "\\bmortality prediction\\b"
+      ]
+    },
+    {
+      "id": "modular_monitoring",
+      "family": "platform",
+      "label_en": "Modular monitor platforms",
+      "label_zh": "模块化监护平台",
+      "description": "Modular physiological monitor platforms with plug-in parameter modules.",
+      "product_codes": [
+        {
+          "code": "MWI",
+          "device_name": "Monitor, Physiological, Patient (Without Arrhythmia Detection Or Alarms)",
+          "regulation": "870.2300"
+        }
+      ],
+      "terms": [
+        "\\bmodular (?:patient )?monitor\\w*",
+        "\\bplug[- ]in module\\w*",
+        "\\bparameter module\\w*",
+        "\\bmodular platform\\b",
+        "\\bmonitor family\\b"
+      ]
+    },
+    {
+      "id": "central_station_telemetry",
+      "family": "platform",
+      "label_en": "Central station and telemetry",
+      "label_zh": "中央监护与遥测",
+      "description": "Central monitoring stations, remote viewing and wireless/telemetry transport.",
+      "product_codes": [
+        {
+          "code": "MSX",
+          "device_name": "System, Network And Communication, Physiological Monitors",
+          "regulation": "870.2300"
+        },
+        {
+          "code": "DRG",
+          "device_name": "Transmitters And Receivers, Physiological Signal, Radiofrequency",
+          "regulation": "870.2910"
+        },
+        {
+          "code": "QYW",
+          "device_name": "Hospital Cardiac Telemetry",
+          "regulation": "870.1025"
+        },
+        {
+          "code": "QYX",
+          "device_name": "Outpatient Cardiac Telemetry",
+          "regulation": "870.1025"
+        }
+      ],
+      "terms": [
+        "\\bcentral station\\b",
+        "\\bcentral monitoring\\b",
+        "\\bcentralised monitoring\\b",
+        "\\bcentralized monitoring\\b",
+        "\\btelemetry\\b",
+        "\\bremote viewing\\b"
+      ]
+    },
+    {
+      "id": "data_interoperability",
+      "family": "integration",
+      "label_en": "Data interoperability and EMR integration",
+      "label_zh": "数据互联与电子病历集成",
+      "description": "Standards-based device connectivity: HL7, FHIR, gateways and EMR integration.",
+      "product_codes": [
+        {
+          "code": "MSX",
+          "device_name": "System, Network And Communication, Physiological Monitors",
+          "regulation": "870.2300"
+        }
+      ],
+      "terms": [
+        "\\bHL7\\b",
+        "\\bFHIR\\b",
+        "\\binteroperabilit\\w*",
+        "\\bEMR integration\\b",
+        "\\bEHR integration\\b",
+        "\\bdevice connectivity\\b",
+        "\\bgateway\\b",
+        "\\bIHE\\b",
+        "\\bMIB\\b",
+        "\\bIEEE 11073\\b"
+      ]
+    },
+    {
+      "id": "software_platform_security",
+      "family": "integration",
+      "label_en": "Software platform, update and security architecture",
+      "label_zh": "软件平台、更新与安全架构",
+      "description": "Monitor software platforms, remote management, update mechanisms and cybersecurity posture.",
+      "product_codes": [],
+      "terms": [
+        "\\bcybersecurity\\b",
+        "\\bcyber[- ]security\\b",
+        "\\bremote management\\b",
+        "\\bsoftware update\\w*",
+        "\\bfirmware\\b",
+        "\\bcloud platform\\b",
+        "\\bservice[- ]oriented\\b"
+      ]
+    },
+    {
+      "id": "ai_clinical_decision_support",
+      "family": "decision_support",
+      "label_en": "AI clinical decision support",
+      "label_zh": "AI 临床决策支持",
+      "description": "Regulated AI/ML clinical decision support attached to patient monitoring.",
+      "product_codes": [],
+      "terms": [
+        "\\bartificial intelligence\\b",
+        "\\bclinical decision support\\b",
+        "\\bAI[- ]enabled\\b",
+        "\\bAI[- ]powered\\b",
+        "\\bfoundation model\\w*"
+      ]
+    }
+  ]
+}

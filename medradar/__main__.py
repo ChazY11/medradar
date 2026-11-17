@@ -779,6 +779,14 @@ def cmd_web(args: argparse.Namespace) -> int:
     return int(web_main(argv) or 0)
 
 
+# ------------------------------------------------------------------------ radar
+def cmd_radar(args: argparse.Namespace) -> int:
+    """Delegate to the RADAR-001 CLI (``python -m medradar radar <command>``)."""
+    from .radar import cli as radar_cli
+
+    return int(radar_cli.main(list(args.args or [])) or 0)
+
+
 # ---------------------------------------------------------------------- argparse
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
@@ -983,10 +991,35 @@ def build_parser() -> argparse.ArgumentParser:
     web.add_argument("--web-dir", default=None, help="built UI directory (default: web/dist)")
     web.add_argument("--open", action="store_true", help="open a browser once the server is up")
     web.set_defaults(func=cmd_web)
+
+    radar = sub.add_parser(
+        "radar",
+        help="RADAR-001 live intelligence radar and company technology graph",
+        description=(
+            "Continuous multi-source medical-technology intelligence: real source adapters, an "
+            "append-only observation ledger, the company technology graph and an optional local "
+            "small-model enrichment worker. Run `python -m medradar radar --help` for commands."
+        ),
+    )
+    radar.add_argument("args", nargs=argparse.REMAINDER,
+                       help="a radar subcommand such as init, run, status, map, compare, watch")
+    radar.set_defaults(func=cmd_radar)
     return parser
 
 
 def main(argv: list[str] | None = None) -> int:
+    # RADAR-001 owns a nested command tree with its own options. Delegate the whole tail
+    # before the top-level parser sees it, so `medradar radar <cmd> --opt value` works with
+    # the sub-command's own option order.
+    raw = list(sys.argv[1:] if argv is None else argv)
+    if raw and raw[0] == "radar":
+        from .radar import cli as radar_cli
+
+        try:
+            return int(radar_cli.main(raw[1:]) or 0)
+        except KeyboardInterrupt:
+            print("interrupted", file=sys.stderr)
+            return 130
     parser = build_parser()
     args = parser.parse_args(argv)
     if getattr(args, "offline", False):

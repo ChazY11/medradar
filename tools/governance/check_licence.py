@@ -758,6 +758,13 @@ def generate_inventory(root: Path, policy: Policy) -> dict:
         kind = detect_kind(data)
         if not _is_data_candidate(path, policy, data):
             continue
+        if _inventory_exempt(path, policy):
+            # Our own reproducible evidence artefacts are reviewed in the PR diff, not tracked
+            # file-by-file (RC-0002 / GOV-0002). The writer must honour the same exemption the
+            # check applies, otherwise regenerating the inventory re-adds an entry the check then
+            # rejects as an unclassified RED source. Content is still classified: a restricted
+            # binary format under an exempt path is rejected by the content check.
+            continue
         match = policy.classify(path)
         if match is None:
             source_id, status = "unclassified", "RED"

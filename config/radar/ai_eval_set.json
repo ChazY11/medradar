@@ -1,0 +1,103 @@
+{
+  "schema": "medradar.radar.ai_eval_set.v1",
+  "version": "2026.11.1",
+  "name": "RADAR-001 hand-labelled ICU-monitoring slice",
+  "labelled_by": "author, by reading each record's official title and abstract on 2026-11-17",
+  "labelling_rules": [
+    "expected_topics lists only what the record's own title/abstract makes clear. A keyword mention is not enough.",
+    "An empty expected_topics list is deliberate: it tests whether the model abstains instead of pattern-matching a word.",
+    "expected_organization is the vendor named by the record itself (an applicant field or a vendor page). A paper affiliation is NOT an expected organisation for a product claim, so PMID items expect null.",
+    "Labels are the author's reading, not a rule layer's output. Disagreement is reported, not resolved in the model's favour."
+  ],
+  "items": [
+    {
+      "official_identifier": "PMID:43031778",
+      "expected_topics": ["predictive_deterioration", "ai_clinical_decision_support"],
+      "expected_organization": null,
+      "rationale": "Machine-learning prediction model for HFNC failure; clearly predictive modelling in critical care."
+    },
+    {
+      "official_identifier": "PMID:42818838",
+      "expected_topics": ["predictive_deterioration", "ai_clinical_decision_support"],
+      "expected_organization": null,
+      "rationale": "Interpretable machine-learning models predicting haemodynamic stabilization."
+    },
+    {
+      "official_identifier": "PMID:42964288",
+      "expected_topics": ["predictive_deterioration"],
+      "expected_organization": null,
+      "rationale": "Prognostic prediction model for sepsis-associated acute kidney injury."
+    },
+    {
+      "official_identifier": "PMID:42819091",
+      "expected_topics": ["predictive_deterioration"],
+      "expected_organization": null,
+      "rationale": "A derived ratio used to build a mortality prediction model; no device is evaluated."
+    },
+    {
+      "official_identifier": "PMID:42815208",
+      "expected_topics": ["predictive_deterioration"],
+      "expected_organization": null,
+      "rationale": "Machine-learning classification model for ICU pressure injury status."
+    },
+    {
+      "official_identifier": "PMID:42791621",
+      "expected_topics": ["predictive_deterioration"],
+      "expected_organization": null,
+      "rationale": "Machine-learning risk stratification model in preterm infants."
+    },
+    {
+      "official_identifier": "PMID:42902397",
+      "expected_topics": ["haemodynamic_monitoring"],
+      "expected_organization": null,
+      "rationale": "A trial protocol about haemodynamics during induction; monitoring-adjacent, not a device study."
+    },
+    {
+      "official_identifier": "PMID:43002630",
+      "expected_topics": [],
+      "expected_organization": null,
+      "rationale": "Nursing workforce role description. It mentions deterioration but is not about a monitoring technology."
+    },
+    {
+      "official_identifier": "PMID:42903731",
+      "expected_topics": [],
+      "expected_organization": null,
+      "rationale": "Surgical case report. Off-topic for ICU monitoring technology."
+    },
+    {
+      "official_identifier": "PMID:42805622",
+      "expected_topics": [],
+      "expected_organization": null,
+      "rationale": "Dermatopathology case report. Off-topic."
+    },
+    {
+      "official_identifier": "PMID:42791225",
+      "expected_topics": [],
+      "expected_organization": null,
+      "rationale": "Lipid-panel equation comparison. Off-topic; a keyword matcher would wrongly fire on 'model'."
+    },
+    {
+      "official_identifier": "K813279",
+      "expected_topics": ["ecg_analysis"],
+      "expected_organization": "philips",
+      "rationale": "FDA 510(k) for an ELECTROCARDIOGRAPH filed by Philips Medical Systems (Cleveland)."
+    },
+    {
+      "official_identifier": "K760926",
+      "expected_topics": ["ecg_analysis"],
+      "expected_organization": null,
+      "rationale": "FDA 510(k) for an ELECTROCARDIOGRAPH filed by Cambridge Instruments, which is not a monitored vendor."
+    },
+    {
+      "official_identifier": "https://www.philips.com/a-w/about/news/archive/standard/news/press/2026/philips-launches-hypervue-integrated-system-in-the-u-s-bringing-advanced-coronary-imaging-and-physiology-into-the-cathlab.html",
+      "expected_topics": [],
+      "expected_organization": "philips",
+      "rationale": "Coronary imaging and physiology in the cathlab: a Philips product, but outside the ICU patient-monitoring topic set, so no topic should be asserted."
+    }
+  ],
+  "limitations": [
+    "14 items is a smoke-sized labelled set. It can detect a broken prompt or a fabrication, not establish general accuracy.",
+    "The sample is skewed towards PubMed prediction papers because that is what the PubMed queries returned; precision on off-topic records is therefore under-sampled relative to the live mix.",
+    "The author is not a clinician; labels follow the record's own wording."
+  ]
+}

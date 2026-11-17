@@ -35,6 +35,31 @@ entries:
     status: GREEN
     content: json
     synthetic: false
+  - path: config/radar/ai_eval_set.json
+    source_id: curated_configuration
+    status: GREEN
+    content: json
+    synthetic: false
+  - path: config/radar/organizations.json
+    source_id: curated_configuration
+    status: GREEN
+    content: json
+    synthetic: false
+  - path: config/radar/quality_eval.json
+    source_id: curated_configuration
+    status: GREEN
+    content: json
+    synthetic: false
+  - path: config/radar/sources.json
+    source_id: curated_configuration
+    status: GREEN
+    content: json
+    synthetic: false
+  - path: config/radar/topics.json
+    source_id: curated_configuration
+    status: GREEN
+    content: json
+    synthetic: false
   - path: config/sources.json
     source_id: curated_configuration
     status: GREEN
@@ -345,57 +370,12 @@ entries:
     status: GREEN
     content: text
     synthetic: false
-  - path: docs/refoundation/phase0/_evidence/governance/pytest_count.json
+  - path: docs/radar/quality_001/evidence/performance.json
     source_id: medradar_derived_artifacts
     status: GREEN
     content: json
     synthetic: false
-  - path: docs/refoundation/phase2/_evidence/e1b/collection.jsonl
-    source_id: medradar_derived_artifacts
-    status: GREEN
-    content: csv
-    synthetic: false
-  - path: docs/refoundation/phase2/_evidence/e1b/findings.json
-    source_id: medradar_derived_artifacts
-    status: GREEN
-    content: json
-    synthetic: false
-  - path: docs/refoundation/phase2/_evidence/e1b/prospective.json
-    source_id: medradar_derived_artifacts
-    status: GREEN
-    content: json
-    synthetic: false
-  - path: docs/refoundation/phase2/_evidence/e1b/retrospective.json
-    source_id: medradar_derived_artifacts
-    status: GREEN
-    content: json
-    synthetic: false
-  - path: docs/refoundation/phase2/_evidence/e1b/summary.json
-    source_id: medradar_derived_artifacts
-    status: GREEN
-    content: json
-    synthetic: false
-  - path: docs/refoundation/phase2/_evidence/evidence_core/evidence_core.json
-    source_id: medradar_derived_artifacts
-    status: GREEN
-    content: json
-    synthetic: false
-  - path: docs/refoundation/phase3/_evidence/core_acceptance/acceptance.json
-    source_id: medradar_derived_artifacts
-    status: GREEN
-    content: json
-    synthetic: false
-  - path: docs/refoundation/phase3/_evidence/data_safety/data_safety_final.json
-    source_id: medradar_derived_artifacts
-    status: GREEN
-    content: json
-    synthetic: false
-  - path: docs/refoundation/phase3/_evidence/pr_metadata_raw.json
-    source_id: medradar_derived_artifacts
-    status: GREEN
-    content: json
-    synthetic: false
-  - path: docs/refoundation/phase3/_evidence/pr_triage.json
+  - path: docs/radar/quality_001/evidence/relevance-eval.json
     source_id: medradar_derived_artifacts
     status: GREEN
     content: json

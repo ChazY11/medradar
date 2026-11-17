@@ -23,6 +23,8 @@ const en = {
   "nav.dataStatus": "Data status",
   "nav.devices": "Devices",
   "nav.review": "Review",
+  "nav.radar": "Live radar",
+  "nav.technologyMap": "Technology map",
   "nav.primary": "Primary navigation",
   "nav.menu": "Menu",
   "search.placeholder": "Search organizations, tickers, applicant names",
@@ -136,6 +138,8 @@ const zh: Record<keyof typeof en, string> = {
   "nav.dataStatus": "数据同步",
   "nav.devices": "医疗器械",
   "nav.review": "身份复核",
+  "nav.radar": "实时雷达",
+  "nav.technologyMap": "科技地图",
   "nav.primary": "主导航",
   "nav.menu": "菜单",
   "search.placeholder": "搜索企业、股票代码、申请人名称",
@@ -250,9 +254,14 @@ interface I18nContextValue {
 const I18nContext = createContext<I18nContextValue | null>(null);
 
 function readInitialLang(): Lang {
-  if (typeof window === "undefined") return "en";
+  if (typeof window === "undefined") return "zh";
   const stored = window.localStorage.getItem(STORAGE_KEY);
-  return stored === "zh" ? "zh" : "en";
+  if (stored === "zh" || stored === "en") return stored;
+  // First launch defaults to Chinese: the first users of this alpha are Chinese medical-device
+  // R&D leads. An explicit toggle choice is always remembered, and an English-locale browser is
+  // still allowed to fall back to English.
+  const preferred = (window.navigator.language || "").toLowerCase();
+  return preferred.startsWith("en") ? "en" : "zh";
 }
 
 export function I18nProvider({ children }: { children: ReactNode }) {
