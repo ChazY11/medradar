@@ -1,0 +1,3140 @@
+{
+ "admission_version": "radar-admission-2026.11.3",
+ "binary": {
+  "false_negative": 12,
+  "false_positive": 12,
+  "labelled_positive": 53,
+  "note": "N/A appears as null, never as 100 percent: a metric with no denominator is not a success.",
+  "precision": 0.7736,
+  "precision_wilson95": [
+   0.6447,
+   0.8655
+  ],
+  "predicted_positive": 53,
+  "recall": 0.7736,
+  "recall_wilson95": [
+   0.6447,
+   0.8655
+  ],
+  "specificity": 0.8209,
+  "true_negative": 55,
+  "true_positive": 41
+ },
+ "by_source": {
+  "crossref": {
+   "labelled_positive": 14,
+   "n": 35,
+   "precision": 0.6667,
+   "precision_wilson95": [
+    0.3542,
+    0.8794
+   ],
+   "predicted_positive": 9,
+   "recall": 0.4286,
+   "recall_wilson95": [
+    0.2138,
+    0.6741
+   ]
+  },
+  "draeger_official": {
+   "labelled_positive": 0,
+   "n": 9,
+   "precision": 0.0,
+   "precision_wilson95": [
+    0.0,
+    0.7935
+   ],
+   "predicted_positive": 1,
+   "recall": null,
+   "recall_wilson95": null
+  },
+  "openfda_device": {
+   "labelled_positive": 31,
+   "n": 31,
+   "precision": 1.0,
+   "precision_wilson95": [
+    0.8897,
+    1.0
+   ],
+   "predicted_positive": 31,
+   "recall": 1.0,
+   "recall_wilson95": [
+    0.8897,
+    1.0
+   ]
+  },
+  "philips_official": {
+   "labelled_positive": 0,
+   "n": 3,
+   "precision": 0.0,
+   "precision_wilson95": [
+    0.0,
+    0.6576
+   ],
+   "predicted_positive": 2,
+   "recall": null,
+   "recall_wilson95": null
+  },
+  "pubmed": {
+   "labelled_positive": 8,
+   "n": 42,
+   "precision": 0.4,
+   "precision_wilson95": [
+    0.1682,
+    0.6873
+   ],
+   "predicted_positive": 10,
+   "recall": 0.5,
+   "recall_wilson95": [
+    0.2152,
+    0.7848
+   ]
+  }
+ },
+ "by_stratum": {
+  "crossref": {
+   "labelled_positive": 13,
+   "n": 34,
+   "predicted_positive": 8
+  },
+  "official_press": {
+   "labelled_positive": 0,
+   "n": 10,
+   "predicted_positive": 1
+  },
+  "openfda": {
+   "labelled_positive": 30,
+   "n": 30,
+   "predicted_positive": 30
+  },
+  "pubmed": {
+   "labelled_positive": 4,
+   "n": 33,
+   "predicted_positive": 1
+  },
+  "top_of_v1_feed": {
+   "labelled_positive": 6,
+   "n": 13,
+   "predicted_positive": 13
+  }
+ },
+ "default_feed": {
+  "count": 17,
+  "items": [
+   {
+    "category": "monitoring_technology_evaluation",
+    "event_at": "2026-11-13",
+    "importance": null,
+    "label": null,
+    "observation_id": "ab88838fc101f338d608affdc40d2ba3",
+    "published_at": "2026-11-13",
+    "source": "crossref",
+    "tier": "HIGH_RELEVANCE",
+    "title": "Feasibility Assessment of Smartphone Camera–Based Atrial Fibrillation Detection Compared With Portable Electrocardiogram: Single-Patient Case Study"
+   },
+   {
+    "category": "monitoring_technology_evaluation",
+    "event_at": "2026-11-13",
+    "importance": null,
+    "label": null,
+    "observation_id": "494dde558edf39f5633d01eb182fe0e8",
+    "published_at": "2026-11-13",
+    "source": "pubmed",
+    "tier": "HIGH_RELEVANCE",
+    "title": "Automated Detection of Abnormal Pediatric Electroencephalograms Using Machine Learning: Retrospective Study."
+   },
+   {
+    "category": "monitoring_technology_evaluation",
+    "event_at": "2026-11-06",
+    "importance": null,
+    "label": null,
+    "observation_id": "7f8bf9e24c706627d25e713d2c63255b",
+    "published_at": "2026-11-06",
+    "source": "pubmed",
+    "tier": "HIGH_RELEVANCE",
+    "title": "Towards Contact-Free Cardiac Magnetic Resonance: Feasibility of Remote Photoplethysmography for Cardiac Triggering and Gating."
+   },
+   {
+    "category": "monitoring_technology_evaluation",
+    "event_at": "2026-11-06",
+    "importance": null,
+    "label": null,
+    "observation_id": "9e2b6810c750707baea88c525e9aa379",
+    "published_at": "2026-11-06",
+    "source": "pubmed",
+    "tier": "HIGH_RELEVANCE",
+    "title": "Multi-Modal FHIR Sensor Fusion for Real-Time Clinical Decision Support: An Architecture for the Hospital Bedside and Its Extension Toward Remote Patient Monitoring."
+   },
+   {
+    "category": "monitoring_technology_evaluation",
+    "event_at": "2026-11-05",
+    "importance": null,
+    "label": null,
+    "observation_id": "a9a6b7c7009758ddcdac53e60974792e",
+    "published_at": "2026-11-05",
+    "source": "pubmed",
+    "tier": "HIGH_RELEVANCE",
+    "title": "Development and Temporal Validation of an Interpretable Machine Learning Model for Classifying Linezolid Trough Concentrations in Critically Ill Patients."
+   },
+   {
+    "category": "vendor_statement",
+    "event_at": "2026-11-02T12:00:00+00:00",
+    "importance": null,
+    "label": null,
+    "observation_id": "8d98a10e14e50a55750531fa67d66a7a",
+    "published_at": "2026-11-02T12:00:00+00:00",
+    "source": "philips_official",
+    "tier": "HIGH_RELEVANCE",
+    "title": "Philips launches HyperVue"
+   },
+   {
+    "category": "monitoring_technology_evaluation",
+    "event_at": "2026-11-02",
+    "importance": null,
+    "label": null,
+    "observation_id": "a2eca905633f2645d10215eb3f73f9df",
+    "published_at": "2026-11-02",
+    "source": "pubmed",
+    "tier": "HIGH_RELEVANCE",
+    "title": "External Validation of a Machine Learning Model for Delirium Risk."
+   },
+   {
+    "category": "monitoring_technology_evaluation",
+    "event_at": "2026-11",
+    "importance": null,
+    "label": null,
+    "observation_id": "47a075532d8391ad2035c497fc1db4dd",
+    "published_at": "2026-11",
+    "source": "pubmed",
+    "tier": "HIGH_RELEVANCE",
+    "title": "Peripheral Perfusion: The Missing Physiological Variable in ICU Pulse Oximetry Accuracy Studies."
+   },
+   {
+    "category": "monitoring_technology_evaluation",
+    "event_at": "2026-11",
+    "importance": null,
+    "label": null,
+    "observation_id": "ad84e457fc60467a807604faeebd0628",
+    "published_at": "2026-11",
+    "source": "pubmed",
+    "tier": "HIGH_RELEVANCE",
+    "title": "Deep Learning-Based BNP and NT-proBNP Evaluation From Wearable-Compatible Single-Lead ECGs for Heart Failure Assessment."
+   },
+   {
+    "category": "monitoring_technology_evaluation",
+    "event_at": "2026-10-30",
+    "importance": null,
+    "label": null,
+    "observation_id": "80d77798effa8d3f820eac7cb721b63e",
+    "published_at": "2026-10-30",
+    "source": "pubmed",
+    "tier": "HIGH_RELEVANCE",
+    "title": "Agreement of consumer wearable pulse oximeters across activity conditions and skin pigmentation."
+   },
+   {
+    "category": "vendor_statement",
+    "event_at": "2026-10-29T09:00:00+00:00",
+    "importance": null,
+    "label": null,
+    "observation_id": "8d788af61d4ea8499a3982def1084b25",
+    "published_at": "2026-10-29T09:00:00+00:00",
+    "source": "philips_official",
+    "tier": "HIGH_RELEVANCE",
+    "title": "Philips launches UniGuide 3D Live Guidance"
+   },
+   {
+    "category": "monitoring_technology_evaluation",
+    "event_at": "2026-10-29",
+    "importance": null,
+    "label": null,
+    "observation_id": "3127f1eeda24b9f5e1558cf637ecbf27",
+    "published_at": "2026-10-29",
+    "source": "crossref",
+    "tier": "HIGH_RELEVANCE",
+    "title": "Patient-Specific Explainable Arrhythmia Detection Using Attention-‎Based Deep Networks‏  ‏"
+   },
+   {
+    "category": "monitoring_technology_evaluation",
+    "event_at": "2026-10-29",
+    "importance": null,
+    "label": null,
+    "observation_id": "5f8c07c18cd2340f9b1e173ef3ddf076",
+    "published_at": "2026-10-29",
+    "source": "pubmed",
+    "tier": "HIGH_RELEVANCE",
+    "title": "Dual-layer edge intelligence for secure real-time medical IoT: a Zero-Trust sequential framework integrating soft-voting intrusion detection and Histogram Gradient Boosting."
+   },
+   {
+    "category": "regulatory_record",
+    "event_at": "2026-10-28",
+    "importance": null,
+    "label": null,
+    "observation_id": "8e6382e79e50a704a3ba461faf9ea027",
+    "published_at": null,
+    "source": "openfda_device",
+    "tier": "HIGH_RELEVANCE",
+    "title": "YUWELL® Electronic Blood Pressure Monitor"
+   },
+   {
+    "category": "regulatory_record",
+    "event_at": "2026-10-26",
+    "importance": null,
+    "label": null,
+    "observation_id": "149fb109bb06d109fd78a37ad31bfc50",
+    "published_at": null,
+    "source": "openfda_device",
+    "tier": "HIGH_RELEVANCE",
+    "title": "RP Check (RP01)"
+   },
+   {
+    "category": "monitoring_technology_evaluation",
+    "event_at": "2026-10-24",
+    "importance": null,
+    "label": null,
+    "observation_id": "e2b8bb8e0ddccd52d970befe1af5c53c",
+    "published_at": "2026-10-24",
+    "source": "pubmed",
+    "tier": "HIGH_RELEVANCE",
+    "title": "Artificial Intelligence-Enhanced Remote Monitoring After Cardiac Surgery: A Prospective Single-Centre Feasibility Study with Retrospective Wound Image Classification."
+   },
+   {
+    "category": "regulatory_record",
+    "event_at": "2026-10-23",
+    "importance": null,
+    "label": null,
+    "observation_id": "930359c10f7d5cc5cce06338399e78d8",
+    "published_at": null,
+    "source": "openfda_device",
+    "tier": "HIGH_RELEVANCE",
+    "title": "Kinetic Software Library"
+   }
+  ],
+  "limit": 40,
+  "note": "recomputed from the stored v1 HIGH_RELEVANCE decisions over a 30-day window; v1 deduplicated by title, as it did in production",
+  "now": "2026-11-18T00:00:00Z",
+  "window_days": 30
+ },
+ "false_accepts": [
+  {
+   "category": "monitoring_technology_evaluation",
+   "label": "TRANSFER",
+   "observation_id": "5f8c07c18cd2340f9b1e173ef3ddf076",
+   "rationale": "medical-IoT zero-trust security architecture; adjacent to monitoring, not a measurement",
+   "reasons": [
+    "engineering/algorithm content",
+    "evaluates performance or accuracy",
+    "device/algorithm evaluation design",
+    "MeSH marks instrumentation/engineering",
+    "set in acute/critical care"
+   ],
+   "source": "pubmed",
+   "title": "Dual-layer edge intelligence for secure real-time medical IoT: a Zero-Trust sequential framework integrating soft-voting intrusion detection and Histogram Gradient Boosting."
+  },
+  {
+   "category": "monitoring_technology_evaluation",
+   "label": "CLINICAL",
+   "observation_id": "ad84e457fc60467a807604faeebd0628",
+   "rationale": "predicts BNP from wearable ECG; clinical biomarker inference, not device engineering",
+   "reasons": [
+    "engineering/algorithm content",
+    "evaluates performance or accuracy",
+    "device/algorithm evaluation design",
+    "MeSH marks instrumentation/engineering",
+    "set in acute/critical care",
+    "clinical outcome/risk framing"
+   ],
+   "source": "pubmed",
+   "title": "Deep Learning-Based BNP and NT-proBNP Evaluation From Wearable-Compatible Single-Lead ECGs for Heart Failure Assessment."
+  },
+  {
+   "category": "vendor_statement",
+   "label": "MEDICAL_UNRELATED",
+   "observation_id": "8d98a10e14e50a55750531fa67d66a7a",
+   "rationale": "Philips imaging system launch; company identity is not monitoring relevance",
+   "reasons": [
+    "a primary record from a monitored source"
+   ],
+   "source": "philips_official",
+   "title": "Philips launches HyperVue"
+  },
+  {
+   "category": "vendor_statement",
+   "label": "MEDICAL_UNRELATED",
+   "observation_id": "8d788af61d4ea8499a3982def1084b25",
+   "rationale": "Philips image-guidance launch; not a monitoring product",
+   "reasons": [
+    "a primary record from a monitored source"
+   ],
+   "source": "philips_official",
+   "title": "Philips launches UniGuide 3D Live Guidance"
+  },
+  {
+   "category": "monitoring_technology_evaluation",
+   "label": "CLINICAL",
+   "observation_id": "e2b8bb8e0ddccd52d970befe1af5c53c",
+   "rationale": "post-discharge remote-monitoring care programme feasibility",
+   "reasons": [
+    "names a monitoring device or sensor",
+    "engineering/algorithm content",
+    "evaluates performance or accuracy",
+    "device/algorithm evaluation design"
+   ],
+   "source": "pubmed",
+   "title": "Artificial Intelligence-Enhanced Remote Monitoring After Cardiac Surgery: A Prospective Single-Centre Feasibility Study with Retrospective Wound Image Classification."
+  },
+  {
+   "category": "monitoring_technology_evaluation",
+   "label": "CLINICAL",
+   "observation_id": "a9a6b7c7009758ddcdac53e60974792e",
+   "rationale": "drug-concentration prediction model",
+   "reasons": [
+    "engineering/algorithm content",
+    "evaluates performance or accuracy",
+    "device/algorithm evaluation design",
+    "MeSH marks instrumentation/engineering",
+    "set in acute/critical care",
+    "clinical outcome/risk framing"
+   ],
+   "source": "pubmed",
+   "title": "Development and Temporal Validation of an Interpretable Machine Learning Model for Classifying Linezolid Trough Concentrations in Critically Ill Patients."
+  },
+  {
+   "category": "monitoring_technology_evaluation",
+   "label": "CLINICAL",
+   "observation_id": "a2eca905633f2645d10215eb3f73f9df",
+   "rationale": "delirium risk model validation",
+   "reasons": [
+    "engineering/algorithm content",
+    "evaluates performance or accuracy",
+    "device/algorithm evaluation design",
+    "set in acute/critical care",
+    "clinical outcome/risk framing"
+   ],
+   "source": "pubmed",
+   "title": "External Validation of a Machine Learning Model for Delirium Risk."
+  },
+  {
+   "category": "monitoring_technology_evaluation",
+   "label": "NON_MEDICAL",
+   "observation_id": "010cada0bc7f56cd6ccf62b855b7de72",
+   "rationale": "oil-leakage detection",
+   "reasons": [
+    "engineering/algorithm content",
+    "evaluates performance or accuracy",
+    "device/algorithm evaluation design",
+    "no abstract: judged from the title only"
+   ],
+   "source": "crossref",
+   "title": "An Automated Real Time Oil Leakage Detection without False Alarm"
+  },
+  {
+   "category": "monitoring_technology_evaluation",
+   "label": "NON_MEDICAL",
+   "observation_id": "84dfd23376581229bd056f7eb2dd5056",
+   "rationale": "radar odometry",
+   "reasons": [
+    "engineering/algorithm content",
+    "evaluates performance or accuracy",
+    "device/algorithm evaluation design"
+   ],
+   "source": "crossref",
+   "title": "BFAR: improving radar odometry estimation using a bounded false alarm rate detector"
+  },
+  {
+   "category": "monitoring_technology_evaluation",
+   "label": "NON_MEDICAL",
+   "observation_id": "a9204ac747f47bcc819ef6141903e5d9",
+   "rationale": "radar CFAR detector",
+   "reasons": [
+    "engineering/algorithm content",
+    "evaluates performance or accuracy",
+    "device/algorithm evaluation design"
+   ],
+   "source": "crossref",
+   "title": "Improved Adaptive Constant False Alarm Rate Detector Based on Fuzzy Theory for Multiple-Target Scenario"
+  },
+  {
+   "category": "monitoring_technology_evaluation",
+   "label": "TRANSFER",
+   "observation_id": "ddf75e9cb181e083988cbe1dbd13b011",
+   "rationale": "time-series forecasting benchmarks on monitoring data; methods, not a monitoring device",
+   "reasons": [
+    "engineering/algorithm content",
+    "evaluates performance or accuracy",
+    "device/algorithm evaluation design",
+    "set in acute/critical care"
+   ],
+   "source": "pubmed",
+   "title": "Performance evaluation of ARIMA, VAR, ANN, GRU, and LSTM for multivariate healthcare time-series prediction: a rigorous, reproducible benchmarking study with ablation analysis on MIMIC-III and eICU."
+  },
+  {
+   "category": "vendor_statement",
+   "label": "MEDICAL_UNRELATED",
+   "observation_id": "4db82d842f60be23bde4637bbd3e9e61",
+   "rationale": "Dräger connected-technology service article",
+   "reasons": [
+    "a primary record from a monitored source"
+   ],
+   "source": "draeger_official",
+   "title": "Service reimagined: What customers can expect from connected technology today"
+  }
+ ],
+ "false_rejects": [
+  {
+   "category": "plausible_monitoring_technology",
+   "label": "DIRECT",
+   "observation_id": "5748135400dabbcdcc7e277d77b44bfa",
+   "predicted_tier": "NEEDS_REVIEW",
+   "rationale": "multi-lead ECG arrhythmia detection network",
+   "reasons": [
+    "engineering/algorithm content",
+    "evaluates performance or accuracy",
+    "no abstract: judged from the title only"
+   ],
+   "source": "crossref",
+   "title": "A coordinated adaptive multiscale enhanced spatio-temporal fusion network for multi-lead electrocardiogram arrhythmia detection"
+  },
+  {
+   "category": "plausible_monitoring_technology",
+   "label": "DIRECT",
+   "observation_id": "7f437a71a5b7cb4501de1486f2947c70",
+   "predicted_tier": "NEEDS_REVIEW",
+   "rationale": "ECG arrhythmia detection network",
+   "reasons": [
+    "engineering/algorithm content",
+    "evaluates performance or accuracy",
+    "no abstract: judged from the title only"
+   ],
+   "source": "crossref",
+   "title": "PRA-Net: Polymorphic Representation-Aware Network for Accurate Cardiac Arrhythmia Detection From Electrocardiogram Signals"
+  },
+  {
+   "category": "plausible_monitoring_technology",
+   "label": "DIRECT",
+   "observation_id": "8613fc92296671c033f1c573ee0b68c9",
+   "predicted_tier": "NEEDS_REVIEW",
+   "rationale": "inter-patient arrhythmia detection network",
+   "reasons": [
+    "engineering/algorithm content",
+    "evaluates performance or accuracy",
+    "no abstract: judged from the title only"
+   ],
+   "source": "crossref",
+   "title": "A homologous and heterogeneous multi-view inter-patient adaptive network for arrhythmia detection"
+  },
+  {
+   "category": "plausible_monitoring_technology",
+   "label": "DIRECT",
+   "observation_id": "0a983f3d9f9442e3902585423089e8b4",
+   "predicted_tier": "NEEDS_REVIEW",
+   "rationale": "oximetry accuracy across hypobaric saturation ranges",
+   "reasons": [
+    "names a monitoring device or sensor",
+    "evaluates performance or accuracy",
+    "device/algorithm evaluation design"
+   ],
+   "source": "crossref",
+   "title": "Arterial Oxygen Saturation, Pulse Oximetry, and Cerebral and Tissue Oximetry in Hypobaric Hypoxia"
+  },
+  {
+   "category": "plausible_monitoring_technology",
+   "label": "DIRECT",
+   "observation_id": "832af58068f17a92a770560b6bae438f",
+   "predicted_tier": "NEEDS_REVIEW",
+   "rationale": "pulse oximetry in the NICU (measurement review)",
+   "reasons": [
+    "names a monitoring device or sensor",
+    "set in acute/critical care",
+    "no abstract: judged from the title only"
+   ],
+   "source": "crossref",
+   "title": "Pulse Oximetry in the Neonatal Intensive Care Unit"
+  },
+  {
+   "category": "plausible_monitoring_technology",
+   "label": "DIRECT",
+   "observation_id": "eead998466c5d2b8c46256a2b8c30dc1",
+   "predicted_tier": "NEEDS_REVIEW",
+   "rationale": "sequence-to-sequence arrhythmia detection",
+   "reasons": [
+    "engineering/algorithm content",
+    "evaluates performance or accuracy",
+    "no abstract: judged from the title only"
+   ],
+   "source": "crossref",
+   "title": "S2SDeepArr: Sequence To Sequence Deep Learning Architecture for Arrhythmia Detection Under the Inter-patient Paradigm"
+  },
+  {
+   "category": "plausible_monitoring_technology",
+   "label": "DIRECT",
+   "observation_id": "f7f4bbcc2577a746e369403bff276fc3",
+   "predicted_tier": "NEEDS_REVIEW",
+   "rationale": "review of cardiorespiratory monitoring technology",
+   "reasons": [
+    "names a monitoring device or sensor",
+    "evaluates performance or accuracy",
+    "set in acute/critical care",
+    "clinical outcome/risk framing"
+   ],
+   "source": "crossref",
+   "title": "Recent advances in cardiorespiratory monitoring in acute respiratory distress syndrome patients"
+  },
+  {
+   "category": "weak_monitoring_signal",
+   "label": "DIRECT",
+   "observation_id": "525e7aa4a3cc8f9689a8b44a3276ff71",
+   "predicted_tier": "LOW_RELEVANCE",
+   "rationale": "clinical review of pulse-oximetry monitoring",
+   "reasons": [
+    "names a monitoring device or sensor",
+    "set in acute/critical care",
+    "clinical outcome/risk framing",
+    "no abstract: judged from the title only"
+   ],
+   "source": "crossref",
+   "title": "Pulse oximetry monitoring: clinical implications"
+  },
+  {
+   "category": "clinical_study_without_device_focus",
+   "label": "DIRECT",
+   "observation_id": "6ec8060a8f7777d3d34e22cd55183633",
+   "predicted_tier": "LOW_RELEVANCE",
+   "rationale": "structured continuous-EEG monitoring framework",
+   "reasons": [
+    "evaluates performance or accuracy",
+    "set in acute/critical care",
+    "clinical outcome/risk framing",
+    "clinical question, no monitoring technology under study"
+   ],
+   "source": "pubmed",
+   "title": "Unexplained neurological deterioration after acute brain injury: A structured intensive care framework for targeted continuous electroencephalogram."
+  },
+  {
+   "category": "plausible_monitoring_technology",
+   "label": "DIRECT",
+   "observation_id": "58aead985bad89675667073c1e54bddf",
+   "predicted_tier": "NEEDS_REVIEW",
+   "rationale": "AI decision support for mechanical ventilation (monitoring/ventilation algorithm)",
+   "reasons": [
+    "names a monitoring device or sensor",
+    "evaluates performance or accuracy",
+    "device/algorithm evaluation design",
+    "set in acute/critical care",
+    "clinical outcome/risk framing"
+   ],
+   "source": "pubmed",
+   "title": "Intelligent Lung Support in the Intensive Care Unit (IntelliLung): study protocol for an international observational, prospective, multicentre study."
+  },
+  {
+   "category": "plausible_monitoring_technology",
+   "label": "DIRECT",
+   "observation_id": "e48bfb2f8ab1fb14eeb34e69236842d7",
+   "predicted_tier": "NEEDS_REVIEW",
+   "rationale": "invasive blood-pressure monitoring accuracy by cannulation site",
+   "reasons": [
+    "names a monitoring device or sensor",
+    "evaluates performance or accuracy",
+    "device/algorithm evaluation design",
+    "set in acute/critical care",
+    "clinical outcome/risk framing"
+   ],
+   "source": "pubmed",
+   "title": "IBP-DISTAL protocol: distal vs radial access for invasive BP in critical care."
+  },
+  {
+   "category": "device_or_algorithm_needs_confirmation",
+   "label": "DIRECT",
+   "observation_id": "654f1bd2124284a4207540f58d588efa",
+   "predicted_tier": "NEEDS_REVIEW",
+   "rationale": "inertial sensor system detecting swallowing/coughing in ICU patients",
+   "reasons": [
+    "names a monitoring device or sensor",
+    "engineering/algorithm content",
+    "evaluates performance or accuracy",
+    "device/algorithm evaluation design",
+    "MeSH marks instrumentation/engineering",
+    "set in acute/critical care",
+    "device + engineering signals, no explicit performance evaluation"
+   ],
+   "source": "pubmed",
+   "title": "Accelerometer- and Gyroscope-Based Sensor System for Detecting Swallowing, Speaking, and Coughing Events in ICU Patients."
+  }
+ ],
+ "five_class": {
+  "confusion": {
+   "CLINICAL": {
+    "CLINICAL": 0,
+    "DIRECT": 0,
+    "MEDICAL_UNRELATED": 45,
+    "NON_MEDICAL": 0,
+    "TRANSFER": 0
+   },
+   "DIRECT": {
+    "CLINICAL": 0,
+    "DIRECT": 0,
+    "MEDICAL_UNRELATED": 53,
+    "NON_MEDICAL": 0,
+    "TRANSFER": 0
+   },
+   "MEDICAL_UNRELATED": {
+    "CLINICAL": 0,
+    "DIRECT": 0,
+    "MEDICAL_UNRELATED": 12,
+    "NON_MEDICAL": 0,
+    "TRANSFER": 0
+   },
+   "NON_MEDICAL": {
+    "CLINICAL": 0,
+    "DIRECT": 0,
+    "MEDICAL_UNRELATED": 8,
+    "NON_MEDICAL": 0,
+    "TRANSFER": 0
+   },
+   "TRANSFER": {
+    "CLINICAL": 0,
+    "DIRECT": 0,
+    "MEDICAL_UNRELATED": 2,
+    "NON_MEDICAL": 0,
+    "TRANSFER": 0
+   }
+  },
+  "labels": [
+   "DIRECT",
+   "TRANSFER",
+   "CLINICAL",
+   "MEDICAL_UNRELATED",
+   "NON_MEDICAL"
+  ],
+  "per_class": {
+   "CLINICAL": {
+    "n": 45,
+    "recall": 0.0,
+    "recall_wilson95": [
+     0.0,
+     0.0787
+    ]
+   },
+   "DIRECT": {
+    "n": 53,
+    "recall": 0.0,
+    "recall_wilson95": [
+     0.0,
+     0.0676
+    ]
+   },
+   "MEDICAL_UNRELATED": {
+    "n": 12,
+    "recall": 1.0,
+    "recall_wilson95": [
+     0.7575,
+     1.0
+    ]
+   },
+   "NON_MEDICAL": {
+    "n": 8,
+    "recall": 0.0,
+    "recall_wilson95": [
+     0.0,
+     0.3244
+    ]
+   },
+   "TRANSFER": {
+    "n": 2,
+    "recall": 0.0,
+    "recall_wilson95": [
+     0.0,
+     0.6576
+    ]
+   }
+  }
+ },
+ "label_counts": {
+  "CLINICAL": 45,
+  "DIRECT": 53,
+  "MEDICAL_UNRELATED": 12,
+  "NON_MEDICAL": 8,
+  "TRANSFER": 2
+ },
+ "predicted_tier_counts": {
+  "HIGH_RELEVANCE": 53,
+  "IRRELEVANT": 2,
+  "LOW_RELEVANCE": 44,
+  "NEEDS_REVIEW": 21
+ },
+ "records": [
+  {
+   "label": "DIRECT",
+   "label_feed_eligible": true,
+   "observation_id": "8e6382e79e50a704a3ba461faf9ea027",
+   "predicted_category": "regulatory_record",
+   "predicted_dimensions": {},
+   "predicted_feed_eligible": true,
+   "predicted_label": "regulatory_record",
+   "predicted_tier": "HIGH_RELEVANCE",
+   "rationale": "FDA clearance: electronic blood pressure monitor (DXN)",
+   "reasons": [
+    "a primary record from a monitored source"
+   ],
+   "record_type": "regulatory_record",
+   "source": "openfda_device",
+   "stratum": "top_of_v1_feed",
+   "title": "YUWELL® Electronic Blood Pressure Monitor"
+  },
+  {
+   "label": "DIRECT",
+   "label_feed_eligible": true,
+   "observation_id": "9e2b6810c750707baea88c525e9aa379",
+   "predicted_category": "monitoring_technology_evaluation",
+   "predicted_dimensions": {},
+   "predicted_feed_eligible": true,
+   "predicted_label": "monitoring_technology_evaluation",
+   "predicted_tier": "HIGH_RELEVANCE",
+   "rationale": "FHIR sensor-fusion monitoring platform architecture",
+   "reasons": [
+    "names a monitoring device or sensor",
+    "engineering/algorithm content",
+    "evaluates performance or accuracy",
+    "device/algorithm evaluation design",
+    "MeSH marks instrumentation/engineering",
+    "set in acute/critical care"
+   ],
+   "record_type": "publication",
+   "source": "pubmed",
+   "stratum": "top_of_v1_feed",
+   "title": "Multi-Modal FHIR Sensor Fusion for Real-Time Clinical Decision Support: An Architecture for the Hospital Bedside and Its Extension Toward Remote Patient Monitoring."
+  },
+  {
+   "label": "DIRECT",
+   "label_feed_eligible": true,
+   "observation_id": "47a075532d8391ad2035c497fc1db4dd",
+   "predicted_category": "monitoring_technology_evaluation",
+   "predicted_dimensions": {},
+   "predicted_feed_eligible": true,
+   "predicted_label": "monitoring_technology_evaluation",
+   "predicted_tier": "HIGH_RELEVANCE",
+   "rationale": "commentary on what limits ICU pulse-oximetry accuracy",
+   "reasons": [
+    "names a monitoring device or sensor",
+    "evaluates performance or accuracy",
+    "device/algorithm evaluation design",
+    "set in acute/critical care",
+    "no abstract: judged from the title only"
+   ],
+   "record_type": "publication",
+   "source": "pubmed",
+   "stratum": "top_of_v1_feed",
+   "title": "Peripheral Perfusion: The Missing Physiological Variable in ICU Pulse Oximetry Accuracy Studies."
+  },
+  {
+   "label": "TRANSFER",
+   "label_feed_eligible": false,
+   "observation_id": "5f8c07c18cd2340f9b1e173ef3ddf076",
+   "predicted_category": "monitoring_technology_evaluation",
+   "predicted_dimensions": {},
+   "predicted_feed_eligible": true,
+   "predicted_label": "monitoring_technology_evaluation",
+   "predicted_tier": "HIGH_RELEVANCE",
+   "rationale": "medical-IoT zero-trust security architecture; adjacent to monitoring, not a measurement",
+   "reasons": [
+    "engineering/algorithm content",
+    "evaluates performance or accuracy",
+    "device/algorithm evaluation design",
+    "MeSH marks instrumentation/engineering",
+    "set in acute/critical care"
+   ],
+   "record_type": "publication",
+   "source": "pubmed",
+   "stratum": "top_of_v1_feed",
+   "title": "Dual-layer edge intelligence for secure real-time medical IoT: a Zero-Trust sequential framework integrating soft-voting intrusion detection and Histogram Gradient Boosting."
+  },
+  {
+   "label": "DIRECT",
+   "label_feed_eligible": true,
+   "observation_id": "ab88838fc101f338d608affdc40d2ba3",
+   "predicted_category": "monitoring_technology_evaluation",
+   "predicted_dimensions": {},
+   "predicted_feed_eligible": true,
+   "predicted_label": "monitoring_technology_evaluation",
+   "predicted_tier": "HIGH_RELEVANCE",
+   "rationale": "smartphone-camera AF detection feasibility against a portable ECG",
+   "reasons": [
+    "names a monitoring device or sensor",
+    "evaluates performance or accuracy",
+    "device/algorithm evaluation design"
+   ],
+   "record_type": "publication",
+   "source": "crossref",
+   "stratum": "top_of_v1_feed",
+   "title": "Feasibility Assessment of Smartphone Camera–Based Atrial Fibrillation Detection Compared With Portable Electrocardiogram: Single-Patient Case Study"
+  },
+  {
+   "label": "CLINICAL",
+   "label_feed_eligible": false,
+   "observation_id": "ad84e457fc60467a807604faeebd0628",
+   "predicted_category": "monitoring_technology_evaluation",
+   "predicted_dimensions": {},
+   "predicted_feed_eligible": true,
+   "predicted_label": "monitoring_technology_evaluation",
+   "predicted_tier": "HIGH_RELEVANCE",
+   "rationale": "predicts BNP from wearable ECG; clinical biomarker inference, not device engineering",
+   "reasons": [
+    "engineering/algorithm content",
+    "evaluates performance or accuracy",
+    "device/algorithm evaluation design",
+    "MeSH marks instrumentation/engineering",
+    "set in acute/critical care",
+    "clinical outcome/risk framing"
+   ],
+   "record_type": "publication",
+   "source": "pubmed",
+   "stratum": "top_of_v1_feed",
+   "title": "Deep Learning-Based BNP and NT-proBNP Evaluation From Wearable-Compatible Single-Lead ECGs for Heart Failure Assessment."
+  },
+  {
+   "label": "MEDICAL_UNRELATED",
+   "label_feed_eligible": false,
+   "observation_id": "8d98a10e14e50a55750531fa67d66a7a",
+   "predicted_category": "vendor_statement",
+   "predicted_dimensions": {},
+   "predicted_feed_eligible": true,
+   "predicted_label": "vendor_statement",
+   "predicted_tier": "HIGH_RELEVANCE",
+   "rationale": "Philips imaging system launch; company identity is not monitoring relevance",
+   "reasons": [
+    "a primary record from a monitored source"
+   ],
+   "record_type": "press_release",
+   "source": "philips_official",
+   "stratum": "top_of_v1_feed",
+   "title": "Philips launches HyperVue"
+  },
+  {
+   "label": "MEDICAL_UNRELATED",
+   "label_feed_eligible": false,
+   "observation_id": "8d788af61d4ea8499a3982def1084b25",
+   "predicted_category": "vendor_statement",
+   "predicted_dimensions": {},
+   "predicted_feed_eligible": true,
+   "predicted_label": "vendor_statement",
+   "predicted_tier": "HIGH_RELEVANCE",
+   "rationale": "Philips image-guidance launch; not a monitoring product",
+   "reasons": [
+    "a primary record from a monitored source"
+   ],
+   "record_type": "press_release",
+   "source": "philips_official",
+   "stratum": "top_of_v1_feed",
+   "title": "Philips launches UniGuide 3D Live Guidance"
+  },
+  {
+   "label": "DIRECT",
+   "label_feed_eligible": true,
+   "observation_id": "7f8bf9e24c706627d25e713d2c63255b",
+   "predicted_category": "monitoring_technology_evaluation",
+   "predicted_dimensions": {},
+   "predicted_feed_eligible": true,
+   "predicted_label": "monitoring_technology_evaluation",
+   "predicted_tier": "HIGH_RELEVANCE",
+   "rationale": "remote photoplethysmography as a monitoring measurement for CMR gating",
+   "reasons": [
+    "names a monitoring device or sensor",
+    "engineering/algorithm content",
+    "evaluates performance or accuracy",
+    "device/algorithm evaluation design"
+   ],
+   "record_type": "publication",
+   "source": "pubmed",
+   "stratum": "top_of_v1_feed",
+   "title": "Towards Contact-Free Cardiac Magnetic Resonance: Feasibility of Remote Photoplethysmography for Cardiac Triggering and Gating."
+  },
+  {
+   "label": "CLINICAL",
+   "label_feed_eligible": false,
+   "observation_id": "e2b8bb8e0ddccd52d970befe1af5c53c",
+   "predicted_category": "monitoring_technology_evaluation",
+   "predicted_dimensions": {},
+   "predicted_feed_eligible": true,
+   "predicted_label": "monitoring_technology_evaluation",
+   "predicted_tier": "HIGH_RELEVANCE",
+   "rationale": "post-discharge remote-monitoring care programme feasibility",
+   "reasons": [
+    "names a monitoring device or sensor",
+    "engineering/algorithm content",
+    "evaluates performance or accuracy",
+    "device/algorithm evaluation design"
+   ],
+   "record_type": "publication",
+   "source": "pubmed",
+   "stratum": "top_of_v1_feed",
+   "title": "Artificial Intelligence-Enhanced Remote Monitoring After Cardiac Surgery: A Prospective Single-Centre Feasibility Study with Retrospective Wound Image Classification."
+  },
+  {
+   "label": "DIRECT",
+   "label_feed_eligible": true,
+   "observation_id": "494dde558edf39f5633d01eb182fe0e8",
+   "predicted_category": "monitoring_technology_evaluation",
+   "predicted_dimensions": {},
+   "predicted_feed_eligible": true,
+   "predicted_label": "monitoring_technology_evaluation",
+   "predicted_tier": "HIGH_RELEVANCE",
+   "rationale": "ML detection of abnormal paediatric EEG",
+   "reasons": [
+    "engineering/algorithm content",
+    "evaluates performance or accuracy",
+    "MeSH marks instrumentation/engineering",
+    "set in acute/critical care",
+    "MeSH marks clinical risk/outcome work"
+   ],
+   "record_type": "publication",
+   "source": "pubmed",
+   "stratum": "top_of_v1_feed",
+   "title": "Automated Detection of Abnormal Pediatric Electroencephalograms Using Machine Learning: Retrospective Study."
+  },
+  {
+   "label": "CLINICAL",
+   "label_feed_eligible": false,
+   "observation_id": "a9a6b7c7009758ddcdac53e60974792e",
+   "predicted_category": "monitoring_technology_evaluation",
+   "predicted_dimensions": {},
+   "predicted_feed_eligible": true,
+   "predicted_label": "monitoring_technology_evaluation",
+   "predicted_tier": "HIGH_RELEVANCE",
+   "rationale": "drug-concentration prediction model",
+   "reasons": [
+    "engineering/algorithm content",
+    "evaluates performance or accuracy",
+    "device/algorithm evaluation design",
+    "MeSH marks instrumentation/engineering",
+    "set in acute/critical care",
+    "clinical outcome/risk framing"
+   ],
+   "record_type": "publication",
+   "source": "pubmed",
+   "stratum": "top_of_v1_feed",
+   "title": "Development and Temporal Validation of an Interpretable Machine Learning Model for Classifying Linezolid Trough Concentrations in Critically Ill Patients."
+  },
+  {
+   "label": "CLINICAL",
+   "label_feed_eligible": false,
+   "observation_id": "a2eca905633f2645d10215eb3f73f9df",
+   "predicted_category": "monitoring_technology_evaluation",
+   "predicted_dimensions": {},
+   "predicted_feed_eligible": true,
+   "predicted_label": "monitoring_technology_evaluation",
+   "predicted_tier": "HIGH_RELEVANCE",
+   "rationale": "delirium risk model validation",
+   "reasons": [
+    "engineering/algorithm content",
+    "evaluates performance or accuracy",
+    "device/algorithm evaluation design",
+    "set in acute/critical care",
+    "clinical outcome/risk framing"
+   ],
+   "record_type": "publication",
+   "source": "pubmed",
+   "stratum": "top_of_v1_feed",
+   "title": "External Validation of a Machine Learning Model for Delirium Risk."
+  },
+  {
+   "label": "DIRECT",
+   "label_feed_eligible": true,
+   "observation_id": "9ac7e615555d42cf9ef1f565572fdb82",
+   "predicted_category": "regulatory_record",
+   "predicted_dimensions": {},
+   "predicted_feed_eligible": true,
+   "predicted_label": "regulatory_record",
+   "predicted_tier": "HIGH_RELEVANCE",
+   "rationale": "FDA clearance: blood-pressure cuffs (measurement accessories)",
+   "reasons": [
+    "a primary record from a monitored source"
+   ],
+   "record_type": "regulatory_record",
+   "source": "openfda_device",
+   "stratum": "openfda",
+   "title": "Disposable Blood Pressure cuff; Reusable Blood Pressure cuff"
+  },
+  {
+   "label": "DIRECT",
+   "label_feed_eligible": true,
+   "observation_id": "beb3a0c38bc9550320a48ec53bba0b07",
+   "predicted_category": "regulatory_record",
+   "predicted_dimensions": {},
+   "predicted_feed_eligible": true,
+   "predicted_label": "regulatory_record",
+   "predicted_tier": "HIGH_RELEVANCE",
+   "rationale": "FDA clearance: telemetry central station",
+   "reasons": [
+    "a primary record from a monitored source"
+   ],
+   "record_type": "regulatory_record",
+   "source": "openfda_device",
+   "stratum": "openfda",
+   "title": "MODELS WEP-8410A AND WEP-8420A TELEMETRY CENTRAL"
+  },
+  {
+   "label": "DIRECT",
+   "label_feed_eligible": true,
+   "observation_id": "758535c2cae4a7fa8facc8346b13fe0b",
+   "predicted_category": "regulatory_record",
+   "predicted_dimensions": {},
+   "predicted_feed_eligible": true,
+   "predicted_label": "regulatory_record",
+   "predicted_tier": "HIGH_RELEVANCE",
+   "rationale": "FDA clearance: continuous thermometer system",
+   "reasons": [
+    "a primary record from a monitored source"
+   ],
+   "record_type": "regulatory_record",
+   "source": "openfda_device",
+   "stratum": "openfda",
+   "title": "DIATEK 600 THERMOMETER SYSTEM"
+  },
+  {
+   "label": "DIRECT",
+   "label_feed_eligible": true,
+   "observation_id": "d21339786a589b07927de2f90a6b3f18",
+   "predicted_category": "regulatory_record",
+   "predicted_dimensions": {},
+   "predicted_feed_eligible": true,
+   "predicted_label": "regulatory_record",
+   "predicted_tier": "HIGH_RELEVANCE",
+   "rationale": "FDA clearance: patient monitor",
+   "reasons": [
+    "a primary record from a monitored source"
+   ],
+   "record_type": "regulatory_record",
+   "source": "openfda_device",
+   "stratum": "openfda",
+   "title": "PATIENT MONITOR MODELS PM-2000A, PM-2000A+, PM-2000A PRO"
+  },
+  {
+   "label": "DIRECT",
+   "label_feed_eligible": true,
+   "observation_id": "a0532edd76b5dcef1349952ff56c38c9",
+   "predicted_category": "regulatory_record",
+   "predicted_dimensions": {},
+   "predicted_feed_eligible": true,
+   "predicted_label": "regulatory_record",
+   "predicted_tier": "HIGH_RELEVANCE",
+   "rationale": "FDA clearance: clinical monitoring platform (MWI)",
+   "reasons": [
+    "a primary record from a monitored source"
+   ],
+   "record_type": "regulatory_record",
+   "source": "openfda_device",
+   "stratum": "openfda",
+   "title": "Sickbay Clinical Platform"
+  },
+  {
+   "label": "DIRECT",
+   "label_feed_eligible": true,
+   "observation_id": "1b1738a64f15aaa8c88e67097e518c99",
+   "predicted_category": "regulatory_record",
+   "predicted_dimensions": {},
+   "predicted_feed_eligible": true,
+   "predicted_label": "regulatory_record",
+   "predicted_tier": "HIGH_RELEVANCE",
+   "rationale": "FDA clearance: sphygmomanometer",
+   "reasons": [
+    "a primary record from a monitored source"
+   ],
+   "record_type": "regulatory_record",
+   "source": "openfda_device",
+   "stratum": "openfda",
+   "title": "THE GUARDIAN SPHYGMOMANOMETER"
+  },
+  {
+   "label": "DIRECT",
+   "label_feed_eligible": true,
+   "observation_id": "cb2962380541fbbce8fc5c2497c264ee",
+   "predicted_category": "regulatory_record",
+   "predicted_dimensions": {},
+   "predicted_feed_eligible": true,
+   "predicted_label": "regulatory_record",
+   "predicted_tier": "HIGH_RELEVANCE",
+   "rationale": "FDA clearance: cardiac event recorder / telemetry transmitter",
+   "reasons": [
+    "a primary record from a monitored source"
+   ],
+   "record_type": "regulatory_record",
+   "source": "openfda_device",
+   "stratum": "openfda",
+   "title": "MEDTRONIC CARDIOCARE MEMORYTRACE ER MODEL 4221"
+  },
+  {
+   "label": "DIRECT",
+   "label_feed_eligible": true,
+   "observation_id": "c0d146e8e97451442d42c2da29207357",
+   "predicted_category": "regulatory_record",
+   "predicted_dimensions": {},
+   "predicted_feed_eligible": true,
+   "predicted_label": "regulatory_record",
+   "predicted_tier": "HIGH_RELEVANCE",
+   "rationale": "FDA clearance: arrhythmia detector and alarm",
+   "reasons": [
+    "a primary record from a monitored source"
+   ],
+   "record_type": "regulatory_record",
+   "source": "openfda_device",
+   "stratum": "openfda",
+   "title": "SCANNER TREND SYSTEM"
+  },
+  {
+   "label": "DIRECT",
+   "label_feed_eligible": true,
+   "observation_id": "5322872ffb7198d79a1a24fdd116d8f9",
+   "predicted_category": "regulatory_record",
+   "predicted_dimensions": {},
+   "predicted_feed_eligible": true,
+   "predicted_label": "regulatory_record",
+   "predicted_tier": "HIGH_RELEVANCE",
+   "rationale": "FDA clearance: ECG telephone transmitter/receiver",
+   "reasons": [
+    "a primary record from a monitored source"
+   ],
+   "record_type": "regulatory_record",
+   "source": "openfda_device",
+   "stratum": "openfda",
+   "title": "DEMODULATOR SERIES 1400"
+  },
+  {
+   "label": "DIRECT",
+   "label_feed_eligible": true,
+   "observation_id": "43818d08352cbcffac2d02abe7d6e4cd",
+   "predicted_category": "regulatory_record",
+   "predicted_dimensions": {},
+   "predicted_feed_eligible": true,
+   "predicted_label": "regulatory_record",
+   "predicted_tier": "HIGH_RELEVANCE",
+   "rationale": "FDA clearance: ECG electrode",
+   "reasons": [
+    "a primary record from a monitored source"
+   ],
+   "record_type": "regulatory_record",
+   "source": "openfda_device",
+   "stratum": "openfda",
+   "title": "QUICKELS QS 200 SYSTEM"
+  },
+  {
+   "label": "DIRECT",
+   "label_feed_eligible": true,
+   "observation_id": "840fc788474fe73e3e8c64db80fab1dc",
+   "predicted_category": "regulatory_record",
+   "predicted_dimensions": {},
+   "predicted_feed_eligible": true,
+   "predicted_label": "regulatory_record",
+   "predicted_tier": "HIGH_RELEVANCE",
+   "rationale": "FDA clearance: ECG analyser",
+   "reasons": [
+    "a primary record from a monitored source"
+   ],
+   "record_type": "regulatory_record",
+   "source": "openfda_device",
+   "stratum": "openfda",
+   "title": "VICOR PD2I ANALYZER"
+  },
+  {
+   "label": "DIRECT",
+   "label_feed_eligible": true,
+   "observation_id": "99f7fb6f4c6beb4a97b7f8f99bc1394e",
+   "predicted_category": "regulatory_record",
+   "predicted_dimensions": {},
+   "predicted_feed_eligible": true,
+   "predicted_label": "regulatory_record",
+   "predicted_tier": "HIGH_RELEVANCE",
+   "rationale": "FDA clearance: upper-arm blood-pressure monitor",
+   "reasons": [
+    "a primary record from a monitored source"
+   ],
+   "record_type": "regulatory_record",
+   "source": "openfda_device",
+   "stratum": "openfda",
+   "title": "Upper Arm Blood pressure monitor (BP7155D)"
+  },
+  {
+   "label": "DIRECT",
+   "label_feed_eligible": true,
+   "observation_id": "4797d6844bee8b33d3b421418689b3b1",
+   "predicted_category": "regulatory_record",
+   "predicted_dimensions": {},
+   "predicted_feed_eligible": true,
+   "predicted_label": "regulatory_record",
+   "predicted_tier": "HIGH_RELEVANCE",
+   "rationale": "FDA clearance: patient monitor with arrhythmia detection",
+   "reasons": [
+    "a primary record from a monitored source"
+   ],
+   "record_type": "regulatory_record",
+   "source": "openfda_device",
+   "stratum": "openfda",
+   "title": "ZOLL PROPAQ XM"
+  },
+  {
+   "label": "DIRECT",
+   "label_feed_eligible": true,
+   "observation_id": "d7739a1ca55e26ea24ec86490c9e7d86",
+   "predicted_category": "regulatory_record",
+   "predicted_dimensions": {},
+   "predicted_feed_eligible": true,
+   "predicted_label": "regulatory_record",
+   "predicted_tier": "HIGH_RELEVANCE",
+   "rationale": "FDA clearance: stand-alone pulse oximeter",
+   "reasons": [
+    "a primary record from a monitored source"
+   ],
+   "record_type": "regulatory_record",
+   "source": "openfda_device",
+   "stratum": "openfda",
+   "title": "DOLPHIN MEDICAL STAND-ALONE PULSE OXIMETER, MODEL 2100"
+  },
+  {
+   "label": "DIRECT",
+   "label_feed_eligible": true,
+   "observation_id": "d42650c4913caddae0096b35899a3638",
+   "predicted_category": "regulatory_record",
+   "predicted_dimensions": {},
+   "predicted_feed_eligible": true,
+   "predicted_label": "regulatory_record",
+   "predicted_tier": "HIGH_RELEVANCE",
+   "rationale": "FDA clearance: monitoring platform (MWI)",
+   "reasons": [
+    "a primary record from a monitored source"
+   ],
+   "record_type": "regulatory_record",
+   "source": "openfda_device",
+   "stratum": "openfda",
+   "title": "Masimo Centroid System"
+  },
+  {
+   "label": "DIRECT",
+   "label_feed_eligible": true,
+   "observation_id": "2f4081c5655d39534e3ffded03230983",
+   "predicted_category": "regulatory_record",
+   "predicted_dimensions": {},
+   "predicted_feed_eligible": true,
+   "predicted_label": "regulatory_record",
+   "predicted_tier": "HIGH_RELEVANCE",
+   "rationale": "FDA clearance: blood-pressure monitor",
+   "reasons": [
+    "a primary record from a monitored source"
+   ],
+   "record_type": "regulatory_record",
+   "source": "openfda_device",
+   "stratum": "openfda",
+   "title": "BLOOD PRESSURE MONITOR BP600X"
+  },
+  {
+   "label": "DIRECT",
+   "label_feed_eligible": true,
+   "observation_id": "982c0163b6a98369409b8fe320b7071b",
+   "predicted_category": "regulatory_record",
+   "predicted_dimensions": {},
+   "predicted_feed_eligible": true,
+   "predicted_label": "regulatory_record",
+   "predicted_tier": "HIGH_RELEVANCE",
+   "rationale": "FDA clearance: clinical automatic blood-pressure monitor",
+   "reasons": [
+    "a primary record from a monitored source"
+   ],
+   "record_type": "regulatory_record",
+   "source": "openfda_device",
+   "stratum": "openfda",
+   "title": "Clinical Automatic Blood Pressure Monitor (DBP-20,DBP-20i)"
+  },
+  {
+   "label": "DIRECT",
+   "label_feed_eligible": true,
+   "observation_id": "047397fca60629013789c6d78793cd90",
+   "predicted_category": "regulatory_record",
+   "predicted_dimensions": {},
+   "predicted_feed_eligible": true,
+   "predicted_label": "regulatory_record",
+   "predicted_tier": "HIGH_RELEVANCE",
+   "rationale": "FDA clearance: digital blood-pressure monitor",
+   "reasons": [
+    "a primary record from a monitored source"
+   ],
+   "record_type": "regulatory_record",
+   "source": "openfda_device",
+   "stratum": "openfda",
+   "title": "TAKEDA MEDICAL AUTO. DIGITAL BLOOD PRES. MONITOR"
+  },
+  {
+   "label": "DIRECT",
+   "label_feed_eligible": true,
+   "observation_id": "a71a5f8818e85849ab208e7d9cd7f089",
+   "predicted_category": "regulatory_record",
+   "predicted_dimensions": {},
+   "predicted_feed_eligible": true,
+   "predicted_label": "regulatory_record",
+   "predicted_tier": "HIGH_RELEVANCE",
+   "rationale": "FDA clearance: pulse-rate monitor",
+   "reasons": [
+    "a primary record from a monitored source"
+   ],
+   "record_type": "regulatory_record",
+   "source": "openfda_device",
+   "stratum": "openfda",
+   "title": "PULSE RATE MONITOR"
+  },
+  {
+   "label": "DIRECT",
+   "label_feed_eligible": true,
+   "observation_id": "dcbf2b0b11f150d367d4e2d0c442c410",
+   "predicted_category": "regulatory_record",
+   "predicted_dimensions": {},
+   "predicted_feed_eligible": true,
+   "predicted_label": "regulatory_record",
+   "predicted_tier": "HIGH_RELEVANCE",
+   "rationale": "FDA clearance: resting ECG electrode",
+   "reasons": [
+    "a primary record from a monitored source"
+   ],
+   "record_type": "regulatory_record",
+   "source": "openfda_device",
+   "stratum": "openfda",
+   "title": "VER-MED A10014 RESTING EKG ELECTRODE & A10021"
+  },
+  {
+   "label": "DIRECT",
+   "label_feed_eligible": true,
+   "observation_id": "dd8403f63daa1ffe83166d94a9801ea3",
+   "predicted_category": "regulatory_record",
+   "predicted_dimensions": {},
+   "predicted_feed_eligible": true,
+   "predicted_label": "regulatory_record",
+   "predicted_tier": "HIGH_RELEVANCE",
+   "rationale": "FDA clearance: health kiosk with blood-pressure measurement",
+   "reasons": [
+    "a primary record from a monitored source"
+   ],
+   "record_type": "regulatory_record",
+   "source": "openfda_device",
+   "stratum": "openfda",
+   "title": "STAYHEALTHY HEALTH KIOSK, STAYHEALTHY HEALTHCENTER KIOSK"
+  },
+  {
+   "label": "DIRECT",
+   "label_feed_eligible": true,
+   "observation_id": "7655a79710cc0214b6a0b3ba072d3b11",
+   "predicted_category": "regulatory_record",
+   "predicted_dimensions": {},
+   "predicted_feed_eligible": true,
+   "predicted_label": "regulatory_record",
+   "predicted_tier": "HIGH_RELEVANCE",
+   "rationale": "FDA clearance: arrhythmia detector",
+   "reasons": [
+    "a primary record from a monitored source"
+   ],
+   "record_type": "regulatory_record",
+   "source": "openfda_device",
+   "stratum": "openfda",
+   "title": "MEMOPORT C"
+  },
+  {
+   "label": "DIRECT",
+   "label_feed_eligible": true,
+   "observation_id": "a7191407a28c9cfffb2344ec70f39445",
+   "predicted_category": "regulatory_record",
+   "predicted_dimensions": {},
+   "predicted_feed_eligible": true,
+   "predicted_label": "regulatory_record",
+   "predicted_tier": "HIGH_RELEVANCE",
+   "rationale": "FDA clearance: heart-rate monitor",
+   "reasons": [
+    "a primary record from a monitored source"
+   ],
+   "record_type": "regulatory_record",
+   "source": "openfda_device",
+   "stratum": "openfda",
+   "title": "MONITOR, HEART RATE"
+  },
+  {
+   "label": "DIRECT",
+   "label_feed_eligible": true,
+   "observation_id": "8e35d49efe439de85b3704aa1fc92e33",
+   "predicted_category": "regulatory_record",
+   "predicted_dimensions": {},
+   "predicted_feed_eligible": true,
+   "predicted_label": "regulatory_record",
+   "predicted_tier": "HIGH_RELEVANCE",
+   "rationale": "FDA clearance: forehead thermometer",
+   "reasons": [
+    "a primary record from a monitored source"
+   ],
+   "record_type": "regulatory_record",
+   "source": "openfda_device",
+   "stratum": "openfda",
+   "title": "KINGTECH FOREHEAD THERMOMETER"
+  },
+  {
+   "label": "DIRECT",
+   "label_feed_eligible": true,
+   "observation_id": "607f5722970064e17fca926a58237c4b",
+   "predicted_category": "regulatory_record",
+   "predicted_dimensions": {},
+   "predicted_feed_eligible": true,
+   "predicted_label": "regulatory_record",
+   "predicted_tier": "HIGH_RELEVANCE",
+   "rationale": "FDA clearance: digital electronic thermometer",
+   "reasons": [
+    "a primary record from a monitored source"
+   ],
+   "record_type": "regulatory_record",
+   "source": "openfda_device",
+   "stratum": "openfda",
+   "title": "DIGITAL ELECTRONIC THERMOMETER, MODEL: FDTH-V0-1 THRU 4."
+  },
+  {
+   "label": "DIRECT",
+   "label_feed_eligible": true,
+   "observation_id": "d90cf02ab434eef9d85014c9cd8cae86",
+   "predicted_category": "regulatory_record",
+   "predicted_dimensions": {},
+   "predicted_feed_eligible": true,
+   "predicted_label": "regulatory_record",
+   "predicted_tier": "HIGH_RELEVANCE",
+   "rationale": "FDA clearance: ECG analyser health-management system",
+   "reasons": [
+    "a primary record from a monitored source"
+   ],
+   "record_type": "regulatory_record",
+   "source": "openfda_device",
+   "stratum": "openfda",
+   "title": "BMT ANSCORE HEALTH MANAGEMENT SYSTEM"
+  },
+  {
+   "label": "DIRECT",
+   "label_feed_eligible": true,
+   "observation_id": "5943341659180b5b4b9fafe449e31a7e",
+   "predicted_category": "regulatory_record",
+   "predicted_dimensions": {},
+   "predicted_feed_eligible": true,
+   "predicted_label": "regulatory_record",
+   "predicted_tier": "HIGH_RELEVANCE",
+   "rationale": "FDA clearance: aneroid sphygmomanometer",
+   "reasons": [
+    "a primary record from a monitored source"
+   ],
+   "record_type": "regulatory_record",
+   "source": "openfda_device",
+   "stratum": "openfda",
+   "title": "Aneroid Sphygmomanometer with Stethoscope; Aneroid Sphygmomanometer"
+  },
+  {
+   "label": "DIRECT",
+   "label_feed_eligible": true,
+   "observation_id": "904b67d3f9857ed22dfed8ffe26d4baa",
+   "predicted_category": "regulatory_record",
+   "predicted_dimensions": {},
+   "predicted_feed_eligible": true,
+   "predicted_label": "regulatory_record",
+   "predicted_tier": "HIGH_RELEVANCE",
+   "rationale": "FDA clearance: arrhythmia detector",
+   "reasons": [
+    "a primary record from a monitored source"
+   ],
+   "record_type": "regulatory_record",
+   "source": "openfda_device",
+   "stratum": "openfda",
+   "title": "CARDIO PERFECT ST 2001"
+  },
+  {
+   "label": "DIRECT",
+   "label_feed_eligible": true,
+   "observation_id": "968b661c554b5e75148a1a350704a39d",
+   "predicted_category": "regulatory_record",
+   "predicted_dimensions": {},
+   "predicted_feed_eligible": true,
+   "predicted_label": "regulatory_record",
+   "predicted_tier": "HIGH_RELEVANCE",
+   "rationale": "FDA clearance: 1-lead Holter monitor",
+   "reasons": [
+    "a primary record from a monitored source"
+   ],
+   "record_type": "regulatory_record",
+   "source": "openfda_device",
+   "stratum": "openfda",
+   "title": "VitalSigns 1-Lead Holter (VSH101)"
+  },
+  {
+   "label": "DIRECT",
+   "label_feed_eligible": true,
+   "observation_id": "57585b3131ce21f814436663ae66ed9d",
+   "predicted_category": "regulatory_record",
+   "predicted_dimensions": {},
+   "predicted_feed_eligible": true,
+   "predicted_label": "regulatory_record",
+   "predicted_tier": "HIGH_RELEVANCE",
+   "rationale": "FDA clearance: rectal thermometer sheath (temperature-measurement accessory)",
+   "reasons": [
+    "a primary record from a monitored source"
+   ],
+   "record_type": "regulatory_record",
+   "source": "openfda_device",
+   "stratum": "openfda",
+   "title": "Medline Digital Rectal Thermometer Sheath"
+  },
+  {
+   "label": "MEDICAL_UNRELATED",
+   "label_feed_eligible": false,
+   "observation_id": "79c89b1302e5e372ab892dc6e470ce72",
+   "predicted_category": "editorial_or_letter",
+   "predicted_dimensions": {},
+   "predicted_feed_eligible": false,
+   "predicted_label": "editorial_or_letter",
+   "predicted_tier": "LOW_RELEVANCE",
+   "rationale": "retraction notice about an ECG paper; bibliographic notice, no technology evidence",
+   "reasons": [
+    "editorial/letter, not a study"
+   ],
+   "record_type": "publication",
+   "source": "crossref",
+   "stratum": "crossref",
+   "title": "Retraction notice: Predicting arrhythmia, atrial fibrillation from electrocardiogram signals using pivot range fitness scale-based machine learning model"
+  },
+  {
+   "label": "CLINICAL",
+   "label_feed_eligible": false,
+   "observation_id": "547f4ca96205f95879fc9972d96d0d80",
+   "predicted_category": "clinical_study_without_device_focus",
+   "predicted_dimensions": {},
+   "predicted_feed_eligible": false,
+   "predicted_label": "clinical_study_without_device_focus",
+   "predicted_tier": "LOW_RELEVANCE",
+   "rationale": "introduction of haemodynamic monitoring into a surgical pathway",
+   "reasons": [
+    "clinical outcome/risk framing",
+    "no abstract: judged from the title only",
+    "clinical question, no monitoring technology under study"
+   ],
+   "record_type": "publication",
+   "source": "crossref",
+   "stratum": "crossref",
+   "title": "AB268. SOH26AB_0079. The introduction of continuous non-invasive blood pressure and advanced haemodynamic monitoring for colorectal surgery"
+  },
+  {
+   "label": "CLINICAL",
+   "label_feed_eligible": false,
+   "observation_id": "c8db2b898b2fae6105ea2f1511c2f7ac",
+   "predicted_category": "no_monitoring_technology",
+   "predicted_dimensions": {},
+   "predicted_feed_eligible": false,
+   "predicted_label": "no_monitoring_technology",
+   "predicted_tier": "IRRELEVANT",
+   "rationale": "blood pressure versus adverse events in stroke",
+   "reasons": [
+    "no abstract: judged from the title only",
+    "neither a monitoring device nor monitoring engineering appears"
+   ],
+   "record_type": "publication",
+   "source": "crossref",
+   "stratum": "crossref",
+   "title": "A Study of Systolic, Diastolic Blood Pressure and Non-Invasive Mean Arterial Pressure with Regard to Adverse Events in Acute Hemorrhagic Stroke in A Rural Tertiary Care Hospital"
+  },
+  {
+   "label": "CLINICAL",
+   "label_feed_eligible": false,
+   "observation_id": "f95e05b7aed6c4036d4390d9ac1aed9d",
+   "predicted_category": "no_monitoring_technology",
+   "predicted_dimensions": {},
+   "predicted_feed_eligible": false,
+   "predicted_label": "no_monitoring_technology",
+   "predicted_tier": "LOW_RELEVANCE",
+   "rationale": "early-warning-score validation",
+   "reasons": [
+    "evaluates performance or accuracy",
+    "device/algorithm evaluation design",
+    "no abstract: judged from the title only",
+    "neither a monitoring device nor monitoring engineering appears"
+   ],
+   "record_type": "publication",
+   "source": "crossref",
+   "stratum": "crossref",
+   "title": "Multicenter validation of Early Warning Scores for detection of clinical deterioration in COVID-19 hospitalized patients"
+  },
+  {
+   "label": "DIRECT",
+   "label_feed_eligible": true,
+   "observation_id": "5748135400dabbcdcc7e277d77b44bfa",
+   "predicted_category": "plausible_monitoring_technology",
+   "predicted_dimensions": {},
+   "predicted_feed_eligible": false,
+   "predicted_label": "plausible_monitoring_technology",
+   "predicted_tier": "NEEDS_REVIEW",
+   "rationale": "multi-lead ECG arrhythmia detection network",
+   "reasons": [
+    "engineering/algorithm content",
+    "evaluates performance or accuracy",
+    "no abstract: judged from the title only"
+   ],
+   "record_type": "publication",
+   "source": "crossref",
+   "stratum": "crossref",
+   "title": "A coordinated adaptive multiscale enhanced spatio-temporal fusion network for multi-lead electrocardiogram arrhythmia detection"
+  },
+  {
+   "label": "CLINICAL",
+   "label_feed_eligible": false,
+   "observation_id": "9dd1ccc2826d90ae1989148ce51020b6",
+   "predicted_category": "weak_monitoring_signal",
+   "predicted_dimensions": {},
+   "predicted_feed_eligible": false,
+   "predicted_label": "weak_monitoring_signal",
+   "predicted_tier": "LOW_RELEVANCE",
+   "rationale": "perioperative oxygen-saturation audit",
+   "reasons": [
+    "names a monitoring device or sensor",
+    "set in acute/critical care",
+    "clinical outcome/risk framing"
+   ],
+   "record_type": "publication",
+   "source": "crossref",
+   "stratum": "crossref",
+   "title": "Oxygen Saturation during General Anaesthesia and Recovery for Outpatient Oral Surgical Procedures"
+  },
+  {
+   "label": "CLINICAL",
+   "label_feed_eligible": false,
+   "observation_id": "32d331db527e430d8804a59efcbcc48f",
+   "predicted_category": "plausible_monitoring_technology",
+   "predicted_dimensions": {},
+   "predicted_feed_eligible": false,
+   "predicted_label": "plausible_monitoring_technology",
+   "predicted_tier": "NEEDS_REVIEW",
+   "rationale": "nursing study of NIBP cuff-related skin irritation",
+   "reasons": [
+    "names a monitoring device or sensor",
+    "evaluates performance or accuracy",
+    "set in acute/critical care",
+    "clinical outcome/risk framing"
+   ],
+   "record_type": "publication",
+   "source": "crossref",
+   "stratum": "crossref",
+   "title": "THE EFFECT OF CUFF RELOCATION FREQUENCY ON NON-INVASIVE BLOOD PRESSURE MONITORING ON THE INCIDENCE OF SKIN IRRITATION IN THE INTENSIVE CARE UNIT"
+  },
+  {
+   "label": "DIRECT",
+   "label_feed_eligible": true,
+   "observation_id": "7f437a71a5b7cb4501de1486f2947c70",
+   "predicted_category": "plausible_monitoring_technology",
+   "predicted_dimensions": {},
+   "predicted_feed_eligible": false,
+   "predicted_label": "plausible_monitoring_technology",
+   "predicted_tier": "NEEDS_REVIEW",
+   "rationale": "ECG arrhythmia detection network",
+   "reasons": [
+    "engineering/algorithm content",
+    "evaluates performance or accuracy",
+    "no abstract: judged from the title only"
+   ],
+   "record_type": "publication",
+   "source": "crossref",
+   "stratum": "crossref",
+   "title": "PRA-Net: Polymorphic Representation-Aware Network for Accurate Cardiac Arrhythmia Detection From Electrocardiogram Signals"
+  },
+  {
+   "label": "DIRECT",
+   "label_feed_eligible": true,
+   "observation_id": "8613fc92296671c033f1c573ee0b68c9",
+   "predicted_category": "plausible_monitoring_technology",
+   "predicted_dimensions": {},
+   "predicted_feed_eligible": false,
+   "predicted_label": "plausible_monitoring_technology",
+   "predicted_tier": "NEEDS_REVIEW",
+   "rationale": "inter-patient arrhythmia detection network",
+   "reasons": [
+    "engineering/algorithm content",
+    "evaluates performance or accuracy",
+    "no abstract: judged from the title only"
+   ],
+   "record_type": "publication",
+   "source": "crossref",
+   "stratum": "crossref",
+   "title": "A homologous and heterogeneous multi-view inter-patient adaptive network for arrhythmia detection"
+  },
+  {
+   "label": "CLINICAL",
+   "label_feed_eligible": false,
+   "observation_id": "43401ccae7291d720e88f5113dc1969c",
+   "predicted_category": "weak_monitoring_signal",
+   "predicted_dimensions": {},
+   "predicted_feed_eligible": false,
+   "predicted_label": "weak_monitoring_signal",
+   "predicted_tier": "LOW_RELEVANCE",
+   "rationale": "epidemiology of continuous pulse-oximetry use",
+   "reasons": [
+    "names a monitoring device or sensor",
+    "clinical outcome/risk framing",
+    "no abstract: judged from the title only"
+   ],
+   "record_type": "publication",
+   "source": "crossref",
+   "stratum": "crossref",
+   "title": "Prevalence of Continuous Pulse Oximetry Monitoring in Hospitalized Children With Bronchiolitis Not Requiring Supplemental Oxygen"
+  },
+  {
+   "label": "NON_MEDICAL",
+   "label_feed_eligible": false,
+   "observation_id": "010cada0bc7f56cd6ccf62b855b7de72",
+   "predicted_category": "monitoring_technology_evaluation",
+   "predicted_dimensions": {},
+   "predicted_feed_eligible": true,
+   "predicted_label": "monitoring_technology_evaluation",
+   "predicted_tier": "HIGH_RELEVANCE",
+   "rationale": "oil-leakage detection",
+   "reasons": [
+    "engineering/algorithm content",
+    "evaluates performance or accuracy",
+    "device/algorithm evaluation design",
+    "no abstract: judged from the title only"
+   ],
+   "record_type": "publication",
+   "source": "crossref",
+   "stratum": "crossref",
+   "title": "An Automated Real Time Oil Leakage Detection without False Alarm"
+  },
+  {
+   "label": "NON_MEDICAL",
+   "label_feed_eligible": false,
+   "observation_id": "ff6fce7d5618bb6ff721eaa1a006d9e3",
+   "predicted_category": "plausible_monitoring_technology",
+   "predicted_dimensions": {},
+   "predicted_feed_eligible": false,
+   "predicted_label": "plausible_monitoring_technology",
+   "predicted_tier": "NEEDS_REVIEW",
+   "rationale": "criminal-law commentary on a 'false alarm'",
+   "reasons": [
+    "engineering/algorithm content",
+    "device/algorithm evaluation design"
+   ],
+   "record_type": "publication",
+   "source": "crossref",
+   "stratum": "crossref",
+   "title": "False opinion or false alarm? About the criminal liability of an expert for giving a false opinion"
+  },
+  {
+   "label": "CLINICAL",
+   "label_feed_eligible": false,
+   "observation_id": "a8b37e5aa249c5b90992f1385db645ce",
+   "predicted_category": "no_monitoring_technology",
+   "predicted_dimensions": {},
+   "predicted_feed_eligible": false,
+   "predicted_label": "no_monitoring_technology",
+   "predicted_tier": "LOW_RELEVANCE",
+   "rationale": "alarm-fatigue commentary in critical care",
+   "reasons": [
+    "set in acute/critical care",
+    "no abstract: judged from the title only",
+    "neither a monitoring device nor monitoring engineering appears"
+   ],
+   "record_type": "publication",
+   "source": "crossref",
+   "stratum": "crossref",
+   "title": "Unraveling the Stubborn Problem of Alarm Fatigue in the Intensive Care Unit"
+  },
+  {
+   "label": "NON_MEDICAL",
+   "label_feed_eligible": false,
+   "observation_id": "2b75d5380263bb1df22e173fd07fc637",
+   "predicted_category": "case_report",
+   "predicted_dimensions": {},
+   "predicted_feed_eligible": false,
+   "predicted_label": "case_report",
+   "predicted_tier": "LOW_RELEVANCE",
+   "rationale": "acculturation-research commentary",
+   "reasons": [
+    "single-case vignette, not monitoring-technology research"
+   ],
+   "record_type": "publication",
+   "source": "crossref",
+   "stratum": "crossref",
+   "title": "“Causality crisis” in acculturation research a false alarm?: A commentary on Kunst (2021)"
+  },
+  {
+   "label": "NON_MEDICAL",
+   "label_feed_eligible": false,
+   "observation_id": "0f7e8e5bf0e1332e73178087517842cc",
+   "predicted_category": "plausible_monitoring_technology",
+   "predicted_dimensions": {},
+   "predicted_feed_eligible": false,
+   "predicted_label": "plausible_monitoring_technology",
+   "predicted_tier": "NEEDS_REVIEW",
+   "rationale": "IoT interference suppression",
+   "reasons": [
+    "engineering/algorithm content",
+    "device/algorithm evaluation design",
+    "no abstract: judged from the title only"
+   ],
+   "record_type": "publication",
+   "source": "crossref",
+   "stratum": "crossref",
+   "title": "Probability of false alarm based interference suppression methods in Internet of Things (IoT) systems"
+  },
+  {
+   "label": "DIRECT",
+   "label_feed_eligible": true,
+   "observation_id": "0a983f3d9f9442e3902585423089e8b4",
+   "predicted_category": "plausible_monitoring_technology",
+   "predicted_dimensions": {},
+   "predicted_feed_eligible": false,
+   "predicted_label": "plausible_monitoring_technology",
+   "predicted_tier": "NEEDS_REVIEW",
+   "rationale": "oximetry accuracy across hypobaric saturation ranges",
+   "reasons": [
+    "names a monitoring device or sensor",
+    "evaluates performance or accuracy",
+    "device/algorithm evaluation design"
+   ],
+   "record_type": "publication",
+   "source": "crossref",
+   "stratum": "crossref",
+   "title": "Arterial Oxygen Saturation, Pulse Oximetry, and Cerebral and Tissue Oximetry in Hypobaric Hypoxia"
+  },
+  {
+   "label": "CLINICAL",
+   "label_feed_eligible": false,
+   "observation_id": "eea502b124d54b02a4d8bad2ec185524",
+   "predicted_category": "plausible_monitoring_technology",
+   "predicted_dimensions": {},
+   "predicted_feed_eligible": false,
+   "predicted_label": "plausible_monitoring_technology",
+   "predicted_tier": "NEEDS_REVIEW",
+   "rationale": "home pulse-oximetry remote-monitoring care study",
+   "reasons": [
+    "names a monitoring device or sensor",
+    "evaluates performance or accuracy",
+    "set in acute/critical care",
+    "clinical outcome/risk framing"
+   ],
+   "record_type": "publication",
+   "source": "crossref",
+   "stratum": "crossref",
+   "title": "Remote monitoring of COVID–19 patients using home pulse oximetry and virtual platform: an observational study"
+  },
+  {
+   "label": "DIRECT",
+   "label_feed_eligible": true,
+   "observation_id": "832af58068f17a92a770560b6bae438f",
+   "predicted_category": "plausible_monitoring_technology",
+   "predicted_dimensions": {},
+   "predicted_feed_eligible": false,
+   "predicted_label": "plausible_monitoring_technology",
+   "predicted_tier": "NEEDS_REVIEW",
+   "rationale": "pulse oximetry in the NICU (measurement review)",
+   "reasons": [
+    "names a monitoring device or sensor",
+    "set in acute/critical care",
+    "no abstract: judged from the title only"
+   ],
+   "record_type": "publication",
+   "source": "crossref",
+   "stratum": "crossref",
+   "title": "Pulse Oximetry in the Neonatal Intensive Care Unit"
+  },
+  {
+   "label": "DIRECT",
+   "label_feed_eligible": true,
+   "observation_id": "562ebba161cd91d455ed9b96230c7350",
+   "predicted_category": "monitoring_technology_evaluation",
+   "predicted_dimensions": {},
+   "predicted_feed_eligible": true,
+   "predicted_label": "monitoring_technology_evaluation",
+   "predicted_tier": "HIGH_RELEVANCE",
+   "rationale": "pulse-oximetry accuracy against arterial blood gas",
+   "reasons": [
+    "names a monitoring device or sensor",
+    "evaluates performance or accuracy",
+    "device/algorithm evaluation design",
+    "set in acute/critical care",
+    "no abstract: judged from the title only"
+   ],
+   "record_type": "publication",
+   "source": "crossref",
+   "stratum": "crossref",
+   "title": "Accuracy of pulse oximetry in comparison with arterial blood gas"
+  },
+  {
+   "label": "DIRECT",
+   "label_feed_eligible": true,
+   "observation_id": "eead998466c5d2b8c46256a2b8c30dc1",
+   "predicted_category": "plausible_monitoring_technology",
+   "predicted_dimensions": {},
+   "predicted_feed_eligible": false,
+   "predicted_label": "plausible_monitoring_technology",
+   "predicted_tier": "NEEDS_REVIEW",
+   "rationale": "sequence-to-sequence arrhythmia detection",
+   "reasons": [
+    "engineering/algorithm content",
+    "evaluates performance or accuracy",
+    "no abstract: judged from the title only"
+   ],
+   "record_type": "publication",
+   "source": "crossref",
+   "stratum": "crossref",
+   "title": "S2SDeepArr: Sequence To Sequence Deep Learning Architecture for Arrhythmia Detection Under the Inter-patient Paradigm"
+  },
+  {
+   "label": "NON_MEDICAL",
+   "label_feed_eligible": false,
+   "observation_id": "84dfd23376581229bd056f7eb2dd5056",
+   "predicted_category": "monitoring_technology_evaluation",
+   "predicted_dimensions": {},
+   "predicted_feed_eligible": true,
+   "predicted_label": "monitoring_technology_evaluation",
+   "predicted_tier": "HIGH_RELEVANCE",
+   "rationale": "radar odometry",
+   "reasons": [
+    "engineering/algorithm content",
+    "evaluates performance or accuracy",
+    "device/algorithm evaluation design"
+   ],
+   "record_type": "publication",
+   "source": "crossref",
+   "stratum": "crossref",
+   "title": "BFAR: improving radar odometry estimation using a bounded false alarm rate detector"
+  },
+  {
+   "label": "DIRECT",
+   "label_feed_eligible": true,
+   "observation_id": "3ad3e5b924adf682f2c23b0f18a5ebea",
+   "predicted_category": "monitoring_technology_evaluation",
+   "predicted_dimensions": {},
+   "predicted_feed_eligible": true,
+   "predicted_label": "monitoring_technology_evaluation",
+   "predicted_tier": "HIGH_RELEVANCE",
+   "rationale": "commentary on a blood-pressure-cuff device problem",
+   "reasons": [
+    "names a monitoring device or sensor",
+    "evaluates performance or accuracy",
+    "set in acute/critical care",
+    "no abstract: judged from the title only"
+   ],
+   "record_type": "publication",
+   "source": "crossref",
+   "stratum": "crossref",
+   "title": "Manufacturers Can Solve Our Blood Pressure Cuff Problem"
+  },
+  {
+   "label": "NON_MEDICAL",
+   "label_feed_eligible": false,
+   "observation_id": "a9204ac747f47bcc819ef6141903e5d9",
+   "predicted_category": "monitoring_technology_evaluation",
+   "predicted_dimensions": {},
+   "predicted_feed_eligible": true,
+   "predicted_label": "monitoring_technology_evaluation",
+   "predicted_tier": "HIGH_RELEVANCE",
+   "rationale": "radar CFAR detector",
+   "reasons": [
+    "engineering/algorithm content",
+    "evaluates performance or accuracy",
+    "device/algorithm evaluation design"
+   ],
+   "record_type": "publication",
+   "source": "crossref",
+   "stratum": "crossref",
+   "title": "Improved Adaptive Constant False Alarm Rate Detector Based on Fuzzy Theory for Multiple-Target Scenario"
+  },
+  {
+   "label": "CLINICAL",
+   "label_feed_eligible": false,
+   "observation_id": "6fefc8968fdb14fea7a394ff75e4dff6",
+   "predicted_category": "plausible_monitoring_technology",
+   "predicted_dimensions": {},
+   "predicted_feed_eligible": false,
+   "predicted_label": "plausible_monitoring_technology",
+   "predicted_tier": "NEEDS_REVIEW",
+   "rationale": "perioperative oxygen-saturation audit",
+   "reasons": [
+    "names a monitoring device or sensor",
+    "engineering/algorithm content",
+    "evaluates performance or accuracy",
+    "set in acute/critical care",
+    "clinical outcome/risk framing"
+   ],
+   "record_type": "publication",
+   "source": "crossref",
+   "stratum": "crossref",
+   "title": "Preoperative and Postoperative Oxygen Saturation in the Elderly following Spinal or General Anaesthesia—An Audit of Current Practice"
+  },
+  {
+   "label": "CLINICAL",
+   "label_feed_eligible": false,
+   "observation_id": "32c159dfbcce38d98bc2dc49acbcd0ed",
+   "predicted_category": "no_monitoring_technology",
+   "predicted_dimensions": {},
+   "predicted_feed_eligible": false,
+   "predicted_label": "no_monitoring_technology",
+   "predicted_tier": "LOW_RELEVANCE",
+   "rationale": "nesting-care intervention and physiological outcomes",
+   "reasons": [
+    "set in acute/critical care",
+    "no abstract: judged from the title only",
+    "neither a monitoring device nor monitoring engineering appears"
+   ],
+   "record_type": "publication",
+   "source": "crossref",
+   "stratum": "crossref",
+   "title": "The Impact of Using Nesting Care on Heart Rate, Oxygen Saturation, and Pain Among Premature Neonates in Neonatal Intensive Care Units in Saudi Arabia: A Quasi-Experimental Study"
+  },
+  {
+   "label": "DIRECT",
+   "label_feed_eligible": true,
+   "observation_id": "548a6306f78ec7260980ca5c24f800ff",
+   "predicted_category": "monitoring_technology_evaluation",
+   "predicted_dimensions": {},
+   "predicted_feed_eligible": true,
+   "predicted_label": "monitoring_technology_evaluation",
+   "predicted_tier": "HIGH_RELEVANCE",
+   "rationale": "edge ECG classification algorithm",
+   "reasons": [
+    "names a monitoring device or sensor",
+    "engineering/algorithm content",
+    "evaluates performance or accuracy",
+    "device/algorithm evaluation design"
+   ],
+   "record_type": "publication",
+   "source": "crossref",
+   "stratum": "crossref",
+   "title": "A Tiny Matched Filter-Based CNN for Inter-Patient ECG Classification and Arrhythmia Detection at the Edge"
+  },
+  {
+   "label": "CLINICAL",
+   "label_feed_eligible": false,
+   "observation_id": "a0b33278134e144d144f20b09f3d2d66",
+   "predicted_category": "clinical_study_without_device_focus",
+   "predicted_dimensions": {},
+   "predicted_feed_eligible": false,
+   "predicted_label": "clinical_study_without_device_focus",
+   "predicted_tier": "LOW_RELEVANCE",
+   "rationale": "alarm-fatigue management quality improvement",
+   "reasons": [
+    "evaluates performance or accuracy",
+    "set in acute/critical care",
+    "clinical outcome/risk framing",
+    "clinical question, no monitoring technology under study"
+   ],
+   "record_type": "publication",
+   "source": "crossref",
+   "stratum": "crossref",
+   "title": "Inisiasi pengelolaan alarm fatigue perawat melalui panduan manajemen alarm  di ruang intensif"
+  },
+  {
+   "label": "CLINICAL",
+   "label_feed_eligible": false,
+   "observation_id": "84e4b6311ecc83553838126a28dc387a",
+   "predicted_category": "weak_monitoring_signal",
+   "predicted_dimensions": {},
+   "predicted_feed_eligible": false,
+   "predicted_label": "weak_monitoring_signal",
+   "predicted_tier": "LOW_RELEVANCE",
+   "rationale": "perfusion index used as a clinical predictor",
+   "reasons": [
+    "names a monitoring device or sensor",
+    "set in acute/critical care",
+    "clinical outcome/risk framing"
+   ],
+   "record_type": "publication",
+   "source": "crossref",
+   "stratum": "crossref",
+   "title": "Pulse oximetry-based perfusion index as a non-invasive indicator of systemic hemodynamics during spinal anesthesia in cesarean delivery"
+  },
+  {
+   "label": "DIRECT",
+   "label_feed_eligible": true,
+   "observation_id": "7eaf8b2e7b0d5904a55a31de90680a10",
+   "predicted_category": "monitoring_technology_evaluation",
+   "predicted_dimensions": {},
+   "predicted_feed_eligible": true,
+   "predicted_label": "monitoring_technology_evaluation",
+   "predicted_tier": "HIGH_RELEVANCE",
+   "rationale": "muscle/tissue oximetry accuracy and limitations",
+   "reasons": [
+    "names a monitoring device or sensor",
+    "evaluates performance or accuracy",
+    "device/algorithm evaluation design",
+    "no abstract: judged from the title only"
+   ],
+   "record_type": "publication",
+   "source": "crossref",
+   "stratum": "crossref",
+   "title": "Distinguishing Muscle Oxygen Saturation from Tissue Oxygen Saturation: Accuracy, Limitations, and Practical Utility in Muscle Oximetry"
+  },
+  {
+   "label": "DIRECT",
+   "label_feed_eligible": true,
+   "observation_id": "f7f4bbcc2577a746e369403bff276fc3",
+   "predicted_category": "plausible_monitoring_technology",
+   "predicted_dimensions": {},
+   "predicted_feed_eligible": false,
+   "predicted_label": "plausible_monitoring_technology",
+   "predicted_tier": "NEEDS_REVIEW",
+   "rationale": "review of cardiorespiratory monitoring technology",
+   "reasons": [
+    "names a monitoring device or sensor",
+    "evaluates performance or accuracy",
+    "set in acute/critical care",
+    "clinical outcome/risk framing"
+   ],
+   "record_type": "publication",
+   "source": "crossref",
+   "stratum": "crossref",
+   "title": "Recent advances in cardiorespiratory monitoring in acute respiratory distress syndrome patients"
+  },
+  {
+   "label": "DIRECT",
+   "label_feed_eligible": true,
+   "observation_id": "a10cb112c978eba239a47d8d9a4465d6",
+   "predicted_category": "monitoring_technology_evaluation",
+   "predicted_dimensions": {},
+   "predicted_feed_eligible": true,
+   "predicted_label": "monitoring_technology_evaluation",
+   "predicted_tier": "HIGH_RELEVANCE",
+   "rationale": "haemoglobin effect on pulse-oximetry accuracy",
+   "reasons": [
+    "names a monitoring device or sensor",
+    "evaluates performance or accuracy",
+    "device/algorithm evaluation design",
+    "no abstract: judged from the title only"
+   ],
+   "record_type": "publication",
+   "source": "crossref",
+   "stratum": "crossref",
+   "title": "Effect of Hbs on accuracy of pulse oximetry in blood oxygen saturation level measurement among adult patients with sickle cell disease"
+  },
+  {
+   "label": "MEDICAL_UNRELATED",
+   "label_feed_eligible": false,
+   "observation_id": "99a693eadc1944728ad0b0871385afc5",
+   "predicted_category": "non_human_subject",
+   "predicted_dimensions": {},
+   "predicted_feed_eligible": false,
+   "predicted_label": "non_human_subject",
+   "predicted_tier": "IRRELEVANT",
+   "rationale": "virology 'false alarm' narrative; medical but not monitoring",
+   "reasons": [
+    "subjects are animals, not patients"
+   ],
+   "record_type": "publication",
+   "source": "crossref",
+   "stratum": "crossref",
+   "title": "False Alarm: XMRV, Cancer, and Chronic Fatigue Syndrome"
+  },
+  {
+   "label": "CLINICAL",
+   "label_feed_eligible": false,
+   "observation_id": "865b2eb72a47eeeedf4a4c8f85b4954a",
+   "predicted_category": "clinical_study_without_device_focus",
+   "predicted_dimensions": {},
+   "predicted_feed_eligible": false,
+   "predicted_label": "clinical_study_without_device_focus",
+   "predicted_tier": "LOW_RELEVANCE",
+   "rationale": "arrhythmia questionnaire validation (patient-reported outcome)",
+   "reasons": [
+    "evaluates performance or accuracy",
+    "device/algorithm evaluation design",
+    "clinical outcome/risk framing",
+    "clinical question, no monitoring technology under study"
+   ],
+   "record_type": "publication",
+   "source": "crossref",
+   "stratum": "crossref",
+   "title": "Validation of the English version of the arrhythmia-specific questionnaire in tachycardia and arrhythmia (ASTA): a Rasch evaluation study"
+  },
+  {
+   "label": "DIRECT",
+   "label_feed_eligible": true,
+   "observation_id": "525e7aa4a3cc8f9689a8b44a3276ff71",
+   "predicted_category": "weak_monitoring_signal",
+   "predicted_dimensions": {},
+   "predicted_feed_eligible": false,
+   "predicted_label": "weak_monitoring_signal",
+   "predicted_tier": "LOW_RELEVANCE",
+   "rationale": "clinical review of pulse-oximetry monitoring",
+   "reasons": [
+    "names a monitoring device or sensor",
+    "set in acute/critical care",
+    "clinical outcome/risk framing",
+    "no abstract: judged from the title only"
+   ],
+   "record_type": "publication",
+   "source": "crossref",
+   "stratum": "crossref",
+   "title": "Pulse oximetry monitoring: clinical implications"
+  },
+  {
+   "label": "CLINICAL",
+   "label_feed_eligible": false,
+   "observation_id": "0d93d3c45dd0e0444a971e3933189c07",
+   "predicted_category": "clinical_study_without_device_focus",
+   "predicted_dimensions": {},
+   "predicted_feed_eligible": false,
+   "predicted_label": "clinical_study_without_device_focus",
+   "predicted_tier": "LOW_RELEVANCE",
+   "rationale": "early-warning-score discharge protocol implementation",
+   "reasons": [
+    "evaluates performance or accuracy",
+    "set in acute/critical care",
+    "clinical outcome/risk framing",
+    "MeSH marks clinical risk/outcome work",
+    "clinical question, no monitoring technology under study"
+   ],
+   "record_type": "publication",
+   "source": "pubmed",
+   "stratum": "pubmed",
+   "title": "Standardizing Intensive Care Unit Discharge Through Use of the National Early Warning Score."
+  },
+  {
+   "label": "CLINICAL",
+   "label_feed_eligible": false,
+   "observation_id": "9093d4141176638291829c65474b78e1",
+   "predicted_category": "clinical_study_without_device_focus",
+   "predicted_dimensions": {},
+   "predicted_feed_eligible": false,
+   "predicted_label": "clinical_study_without_device_focus",
+   "predicted_tier": "LOW_RELEVANCE",
+   "rationale": "inotrope response study",
+   "reasons": [
+    "evaluates performance or accuracy",
+    "set in acute/critical care",
+    "clinical outcome/risk framing",
+    "MeSH marks clinical risk/outcome work",
+    "clinical question, no monitoring technology under study"
+   ],
+   "record_type": "publication",
+   "source": "pubmed",
+   "stratum": "pubmed",
+   "title": "Response to Dobutamine in Septic Shock With Myocardial Dysfunction: A Single-Center Retrospective Study."
+  },
+  {
+   "label": "CLINICAL",
+   "label_feed_eligible": false,
+   "observation_id": "be80a30db370c1b2b102d4c46645c4bd",
+   "predicted_category": "clinical_study_without_device_focus",
+   "predicted_dimensions": {},
+   "predicted_feed_eligible": false,
+   "predicted_label": "clinical_study_without_device_focus",
+   "predicted_tier": "LOW_RELEVANCE",
+   "rationale": "paediatric early-warning-score transfer study",
+   "reasons": [
+    "evaluates performance or accuracy",
+    "set in acute/critical care",
+    "clinical outcome/risk framing",
+    "clinical question, no monitoring technology under study"
+   ],
+   "record_type": "publication",
+   "source": "pubmed",
+   "stratum": "pubmed",
+   "title": "The Role of Pediatric Early Warning Scores (PEWS) in Determining PICU Transfer Necessity and Length of Stay."
+  },
+  {
+   "label": "CLINICAL",
+   "label_feed_eligible": false,
+   "observation_id": "49d4ab90c3dd05e509db24538bb0575c",
+   "predicted_category": "clinical_study_without_device_focus",
+   "predicted_dimensions": {},
+   "predicted_feed_eligible": false,
+   "predicted_label": "clinical_study_without_device_focus",
+   "predicted_tier": "LOW_RELEVANCE",
+   "rationale": "metabolic case report",
+   "reasons": [
+    "evaluates performance or accuracy",
+    "set in acute/critical care",
+    "clinical outcome/risk framing",
+    "clinical question, no monitoring technology under study"
+   ],
+   "record_type": "publication",
+   "source": "pubmed",
+   "stratum": "pubmed",
+   "title": "Acute Confusion as the Presenting Feature of Hypoglycemia and Lactic Acidosis in an Adult With Known Fructose-1,6-Bisphosphatase Deficiency."
+  },
+  {
+   "label": "CLINICAL",
+   "label_feed_eligible": false,
+   "observation_id": "b6b945794171aabeb30db7e3108dbe3b",
+   "predicted_category": "clinical_prediction_model",
+   "predicted_dimensions": {},
+   "predicted_feed_eligible": false,
+   "predicted_label": "clinical_prediction_model",
+   "predicted_tier": "LOW_RELEVANCE",
+   "rationale": "mortality prediction model",
+   "reasons": [
+    "clinical prediction/risk study, not a monitoring technology"
+   ],
+   "record_type": "publication",
+   "source": "pubmed",
+   "stratum": "pubmed",
+   "title": "Development and multi-database validation of machine learning models for 28-day mortality prediction in ICU patients with COPD and pulmonary hypertension."
+  },
+  {
+   "label": "DIRECT",
+   "label_feed_eligible": true,
+   "observation_id": "6ec8060a8f7777d3d34e22cd55183633",
+   "predicted_category": "clinical_study_without_device_focus",
+   "predicted_dimensions": {},
+   "predicted_feed_eligible": false,
+   "predicted_label": "clinical_study_without_device_focus",
+   "predicted_tier": "LOW_RELEVANCE",
+   "rationale": "structured continuous-EEG monitoring framework",
+   "reasons": [
+    "evaluates performance or accuracy",
+    "set in acute/critical care",
+    "clinical outcome/risk framing",
+    "clinical question, no monitoring technology under study"
+   ],
+   "record_type": "publication",
+   "source": "pubmed",
+   "stratum": "pubmed",
+   "title": "Unexplained neurological deterioration after acute brain injury: A structured intensive care framework for targeted continuous electroencephalogram."
+  },
+  {
+   "label": "DIRECT",
+   "label_feed_eligible": true,
+   "observation_id": "58aead985bad89675667073c1e54bddf",
+   "predicted_category": "plausible_monitoring_technology",
+   "predicted_dimensions": {},
+   "predicted_feed_eligible": false,
+   "predicted_label": "plausible_monitoring_technology",
+   "predicted_tier": "NEEDS_REVIEW",
+   "rationale": "AI decision support for mechanical ventilation (monitoring/ventilation algorithm)",
+   "reasons": [
+    "names a monitoring device or sensor",
+    "evaluates performance or accuracy",
+    "device/algorithm evaluation design",
+    "set in acute/critical care",
+    "clinical outcome/risk framing"
+   ],
+   "record_type": "publication",
+   "source": "pubmed",
+   "stratum": "pubmed",
+   "title": "Intelligent Lung Support in the Intensive Care Unit (IntelliLung): study protocol for an international observational, prospective, multicentre study."
+  },
+  {
+   "label": "CLINICAL",
+   "label_feed_eligible": false,
+   "observation_id": "fb0d9e0dfbfe68dc8dc065d47e3ad0f7",
+   "predicted_category": "case_report",
+   "predicted_dimensions": {},
+   "predicted_feed_eligible": false,
+   "predicted_label": "case_report",
+   "predicted_tier": "LOW_RELEVANCE",
+   "rationale": "surgical case report",
+   "reasons": [
+    "single-case vignette, not monitoring-technology research"
+   ],
+   "record_type": "publication",
+   "source": "pubmed",
+   "stratum": "pubmed",
+   "title": "Case Report: Simultaneous continuous renal replacement therapy and endovascular coiling in a poor-grade ruptured distal anterior cerebral artery aneurysm with ESKD and life-threatening hyperkalemia."
+  },
+  {
+   "label": "CLINICAL",
+   "label_feed_eligible": false,
+   "observation_id": "c3338c21024d21dbae716625ea483f2b",
+   "predicted_category": "plausible_monitoring_technology",
+   "predicted_dimensions": {},
+   "predicted_feed_eligible": false,
+   "predicted_label": "plausible_monitoring_technology",
+   "predicted_tier": "NEEDS_REVIEW",
+   "rationale": "dialysis comparison study",
+   "reasons": [
+    "names a monitoring device or sensor",
+    "evaluates performance or accuracy",
+    "set in acute/critical care",
+    "clinical outcome/risk framing"
+   ],
+   "record_type": "publication",
+   "source": "pubmed",
+   "stratum": "pubmed",
+   "title": "Cardiac function, heart failure indicators and inflammatory factors in continuous mild hypothermic hemodialysis patients after valvular heart disease surgery."
+  },
+  {
+   "label": "CLINICAL",
+   "label_feed_eligible": false,
+   "observation_id": "dab6f6ba3ca0fb24b282e3ce0d7f917c",
+   "predicted_category": "clinical_study_without_device_focus",
+   "predicted_dimensions": {},
+   "predicted_feed_eligible": false,
+   "predicted_label": "clinical_study_without_device_focus",
+   "predicted_tier": "LOW_RELEVANCE",
+   "rationale": "drug meta-analysis",
+   "reasons": [
+    "evaluates performance or accuracy",
+    "set in acute/critical care",
+    "clinical outcome/risk framing",
+    "clinical question, no monitoring technology under study"
+   ],
+   "record_type": "publication",
+   "source": "pubmed",
+   "stratum": "pubmed",
+   "title": "Efficacy and safety of anisodamine as adjuvant therapy in septic shock: a systematic review and meta-analysis."
+  },
+  {
+   "label": "CLINICAL",
+   "label_feed_eligible": false,
+   "observation_id": "273ac5cdc9665c1081f5750b0ad7e255",
+   "predicted_category": "plausible_monitoring_technology",
+   "predicted_dimensions": {},
+   "predicted_feed_eligible": false,
+   "predicted_label": "plausible_monitoring_technology",
+   "predicted_tier": "NEEDS_REVIEW",
+   "rationale": "high-flow nasal oxygen treatment effects",
+   "reasons": [
+    "engineering/algorithm content",
+    "evaluates performance or accuracy",
+    "set in acute/critical care",
+    "clinical outcome/risk framing"
+   ],
+   "record_type": "publication",
+   "source": "pubmed",
+   "stratum": "pubmed",
+   "title": "Individualized treatment effects of high flow nasal oxygen in immunocompromised patients."
+  },
+  {
+   "label": "CLINICAL",
+   "label_feed_eligible": false,
+   "observation_id": "413729e5b14fb78e0edc3a8869253113",
+   "predicted_category": "plausible_monitoring_technology",
+   "predicted_dimensions": {},
+   "predicted_feed_eligible": false,
+   "predicted_label": "plausible_monitoring_technology",
+   "predicted_tier": "NEEDS_REVIEW",
+   "rationale": "organ-failure prediction",
+   "reasons": [
+    "engineering/algorithm content",
+    "evaluates performance or accuracy",
+    "device/algorithm evaluation design",
+    "set in acute/critical care",
+    "clinical outcome/risk framing"
+   ],
+   "record_type": "publication",
+   "source": "pubmed",
+   "stratum": "pubmed",
+   "title": "Dynamic prediction of the development of extrahepatic organ failures in ICU patients with decompensated cirrhosis."
+  },
+  {
+   "label": "CLINICAL",
+   "label_feed_eligible": false,
+   "observation_id": "68b50ff4b2eb379380f7eca76fd45788",
+   "predicted_category": "case_report",
+   "predicted_dimensions": {},
+   "predicted_feed_eligible": false,
+   "predicted_label": "case_report",
+   "predicted_tier": "LOW_RELEVANCE",
+   "rationale": "infectious-disease case report",
+   "reasons": [
+    "single-case vignette, not monitoring-technology research"
+   ],
+   "record_type": "publication",
+   "source": "pubmed",
+   "stratum": "pubmed",
+   "title": "Multiple Neurological Complications and Multidrug-Resistant Bacterial Infections During Prolonged Intensive Care for Undocumented Meningoencephalitis in Côte d'Ivoire: A Case Report."
+  },
+  {
+   "label": "CLINICAL",
+   "label_feed_eligible": false,
+   "observation_id": "fe7eaa3265c3ac7ade575352df03d927",
+   "predicted_category": "clinical_prediction_model",
+   "predicted_dimensions": {},
+   "predicted_feed_eligible": false,
+   "predicted_label": "clinical_prediction_model",
+   "predicted_tier": "LOW_RELEVANCE",
+   "rationale": "neonatal mortality score",
+   "reasons": [
+    "clinical prediction/risk study, not a monitoring technology"
+   ],
+   "record_type": "publication",
+   "source": "pubmed",
+   "stratum": "pubmed",
+   "title": "Developing and validating an updated neonatal mortality score on admission to neonatal intensive care units in Ethiopia."
+  },
+  {
+   "label": "CLINICAL",
+   "label_feed_eligible": false,
+   "observation_id": "009f28e7ab00fb679cfb531d9b812939",
+   "predicted_category": "clinical_study_without_device_focus",
+   "predicted_dimensions": {},
+   "predicted_feed_eligible": false,
+   "predicted_label": "clinical_study_without_device_focus",
+   "predicted_tier": "LOW_RELEVANCE",
+   "rationale": "nursing AI survey",
+   "reasons": [
+    "evaluates performance or accuracy",
+    "set in acute/critical care",
+    "clinical outcome/risk framing",
+    "MeSH marks clinical risk/outcome work",
+    "clinical question, no monitoring technology under study"
+   ],
+   "record_type": "publication",
+   "source": "pubmed",
+   "stratum": "pubmed",
+   "title": "Nurses' Experiences With Artificial Intelligence and the Association Between Clinical Decision-Making and Missed Nursing Care: A Convergent Mixed-Methods Study."
+  },
+  {
+   "label": "CLINICAL",
+   "label_feed_eligible": false,
+   "observation_id": "1f185ffd7f285ba6962264dd37c97160",
+   "predicted_category": "plausible_monitoring_technology",
+   "predicted_dimensions": {},
+   "predicted_feed_eligible": false,
+   "predicted_label": "plausible_monitoring_technology",
+   "predicted_tier": "NEEDS_REVIEW",
+   "rationale": "triage AI protocol",
+   "reasons": [
+    "engineering/algorithm content",
+    "evaluates performance or accuracy",
+    "device/algorithm evaluation design",
+    "set in acute/critical care",
+    "clinical outcome/risk framing"
+   ],
+   "record_type": "publication",
+   "source": "pubmed",
+   "stratum": "pubmed",
+   "title": "trIAje project: protocol for a retrospective cohort study to optimise AI-assisted telephone triage of time-sensitive conditions in emergency medical services."
+  },
+  {
+   "label": "CLINICAL",
+   "label_feed_eligible": false,
+   "observation_id": "b4524a61362e77e9392699fc1e79cbd0",
+   "predicted_category": "clinical_study_without_device_focus",
+   "predicted_dimensions": {},
+   "predicted_feed_eligible": false,
+   "predicted_label": "clinical_study_without_device_focus",
+   "predicted_tier": "LOW_RELEVANCE",
+   "rationale": "transport systematic review",
+   "reasons": [
+    "clinical outcome/risk framing",
+    "clinical question, no monitoring technology under study"
+   ],
+   "record_type": "publication",
+   "source": "pubmed",
+   "stratum": "pubmed",
+   "title": "Exploring the impact of non-emergency inter-hospital neonatal transport on infants and their parents: a mixed-methods systematic review."
+  },
+  {
+   "label": "CLINICAL",
+   "label_feed_eligible": false,
+   "observation_id": "66cd0c27d549b8bd57219b1a6e5391e0",
+   "predicted_category": "clinical_prediction_model",
+   "predicted_dimensions": {},
+   "predicted_feed_eligible": false,
+   "predicted_label": "clinical_prediction_model",
+   "predicted_tier": "LOW_RELEVANCE",
+   "rationale": "ML on a PICU database",
+   "reasons": [
+    "clinical prediction/risk study, not a monitoring technology"
+   ],
+   "record_type": "publication",
+   "source": "pubmed",
+   "stratum": "pubmed",
+   "title": "Machine Learning on the Pediatric Intensive Care (PIC) Database: PIC-Powered Prediction."
+  },
+  {
+   "label": "CLINICAL",
+   "label_feed_eligible": false,
+   "observation_id": "d48f4df31e0f46391839140e3c839ef6",
+   "predicted_category": "weak_monitoring_signal",
+   "predicted_dimensions": {},
+   "predicted_feed_eligible": false,
+   "predicted_label": "weak_monitoring_signal",
+   "predicted_tier": "LOW_RELEVANCE",
+   "rationale": "intubation-timing study",
+   "reasons": [
+    "names a monitoring device or sensor",
+    "set in acute/critical care",
+    "clinical outcome/risk framing"
+   ],
+   "record_type": "publication",
+   "source": "pubmed",
+   "stratum": "pubmed",
+   "title": "Timing of Endotracheal Intubation After High-Flow Nasal Cannula Initiation in Patients With Mild-to-Moderate Acute Respiratory Distress Syndrome: A Prospective Observational Cohort Study."
+  },
+  {
+   "label": "CLINICAL",
+   "label_feed_eligible": false,
+   "observation_id": "6da95f0cdbe4fba3cdb1731495771200",
+   "predicted_category": "plausible_monitoring_technology",
+   "predicted_dimensions": {},
+   "predicted_feed_eligible": false,
+   "predicted_label": "plausible_monitoring_technology",
+   "predicted_tier": "NEEDS_REVIEW",
+   "rationale": "postoperative-nausea prediction review",
+   "reasons": [
+    "engineering/algorithm content",
+    "evaluates performance or accuracy",
+    "device/algorithm evaluation design",
+    "set in acute/critical care",
+    "clinical outcome/risk framing"
+   ],
+   "record_type": "publication",
+   "source": "pubmed",
+   "stratum": "pubmed",
+   "title": "Artificial Intelligence in Predicting Postoperative Nausea and Vomiting Among Surgical Patients Following General Anesthesia: A Systematic Review."
+  },
+  {
+   "label": "CLINICAL",
+   "label_feed_eligible": false,
+   "observation_id": "02e159c118889783f11f5f4e0a0f4191",
+   "predicted_category": "case_report",
+   "predicted_dimensions": {},
+   "predicted_feed_eligible": false,
+   "predicted_label": "case_report",
+   "predicted_tier": "LOW_RELEVANCE",
+   "rationale": "endocrinology case report",
+   "reasons": [
+    "single-case vignette, not monitoring-technology research"
+   ],
+   "record_type": "publication",
+   "source": "pubmed",
+   "stratum": "pubmed",
+   "title": "Refractory Cushing's Disease Complicated by Severe Thrombocytopenia and Pituitary Apoplexy Culminating in a Fatal Outcome: A Case Report."
+  },
+  {
+   "label": "CLINICAL",
+   "label_feed_eligible": false,
+   "observation_id": "24a88930042ae08a791890ad0ee914bb",
+   "predicted_category": "case_report",
+   "predicted_dimensions": {},
+   "predicted_feed_eligible": false,
+   "predicted_label": "case_report",
+   "predicted_tier": "LOW_RELEVANCE",
+   "rationale": "neurology case report",
+   "reasons": [
+    "single-case vignette, not monitoring-technology research"
+   ],
+   "record_type": "publication",
+   "source": "pubmed",
+   "stratum": "pubmed",
+   "title": "Critical Kennedy's disease with Guillain-Barré syndrome and respiratory failure: A case report."
+  },
+  {
+   "label": "CLINICAL",
+   "label_feed_eligible": false,
+   "observation_id": "7b2182effd7c92d766f0219fb6417e0d",
+   "predicted_category": "clinical_prediction_model",
+   "predicted_dimensions": {},
+   "predicted_feed_eligible": false,
+   "predicted_label": "clinical_prediction_model",
+   "predicted_tier": "LOW_RELEVANCE",
+   "rationale": "cardiovascular deterioration prediction model",
+   "reasons": [
+    "clinical prediction/risk study, not a monitoring technology"
+   ],
+   "record_type": "publication",
+   "source": "pubmed",
+   "stratum": "pubmed",
+   "title": "MultiCardioNet: A Multimodal Deep Learning Model for Early Cardiovascular Deterioration Prediction in ICU Patients."
+  },
+  {
+   "label": "CLINICAL",
+   "label_feed_eligible": false,
+   "observation_id": "b9984e032abbb85d2eafe678d3e30736",
+   "predicted_category": "case_report",
+   "predicted_dimensions": {},
+   "predicted_feed_eligible": false,
+   "predicted_label": "case_report",
+   "predicted_tier": "LOW_RELEVANCE",
+   "rationale": "plasma-exchange therapy study",
+   "reasons": [
+    "single-case vignette, not monitoring-technology research"
+   ],
+   "record_type": "publication",
+   "source": "pubmed",
+   "stratum": "pubmed",
+   "title": "Plasma exchange and double plasma molecular adsorption system combined with continuous renal replacement therapy for hepatitis B-related liver failure complicated by stage 3 acute kidney injury: a case report."
+  },
+  {
+   "label": "CLINICAL",
+   "label_feed_eligible": false,
+   "observation_id": "7af10dd6e1700e68d378c467c5779b00",
+   "predicted_category": "clinical_study_without_device_focus",
+   "predicted_dimensions": {},
+   "predicted_feed_eligible": false,
+   "predicted_label": "clinical_study_without_device_focus",
+   "predicted_tier": "LOW_RELEVANCE",
+   "rationale": "high-flow nasal cannula outcomes",
+   "reasons": [
+    "evaluates performance or accuracy",
+    "set in acute/critical care",
+    "clinical outcome/risk framing",
+    "MeSH marks clinical risk/outcome work",
+    "clinical question, no monitoring technology under study"
+   ],
+   "record_type": "publication",
+   "source": "pubmed",
+   "stratum": "pubmed",
+   "title": "High-Flow Nasal Cannula Outcomes in COVID-19-Associated Acute Hypoxemic Respiratory Failure: Illness Severity, Awake Prone Positioning, and Risk of Intubation in a Single-Center ICU Cohort."
+  },
+  {
+   "label": "CLINICAL",
+   "label_feed_eligible": false,
+   "observation_id": "f83ef6c0f533126aa49cdf27ddafa79c",
+   "predicted_category": "plausible_monitoring_technology",
+   "predicted_dimensions": {},
+   "predicted_feed_eligible": false,
+   "predicted_label": "plausible_monitoring_technology",
+   "predicted_tier": "NEEDS_REVIEW",
+   "rationale": "ECMO mortality prediction",
+   "reasons": [
+    "engineering/algorithm content",
+    "evaluates performance or accuracy",
+    "device/algorithm evaluation design",
+    "set in acute/critical care",
+    "clinical outcome/risk framing"
+   ],
+   "record_type": "publication",
+   "source": "pubmed",
+   "stratum": "pubmed",
+   "title": "Pre-ECMO characteristics, organ dysfunction and exploratory mortality prediction in COVID-19 versus non-COVID-19 ARDS treated with veno-venous ECMO: a retrospective cohort study."
+  },
+  {
+   "label": "CLINICAL",
+   "label_feed_eligible": false,
+   "observation_id": "938b1b8e1f212f39934c8712ce6ea17b",
+   "predicted_category": "clinical_prediction_model",
+   "predicted_dimensions": {},
+   "predicted_feed_eligible": false,
+   "predicted_label": "clinical_prediction_model",
+   "predicted_tier": "LOW_RELEVANCE",
+   "rationale": "weaning prediction model",
+   "reasons": [
+    "clinical prediction/risk study, not a monitoring technology"
+   ],
+   "record_type": "publication",
+   "source": "pubmed",
+   "stratum": "pubmed",
+   "title": "Interpretable machine learning predicts successful weaning and ICU discharge alive following prone positioning ventilation in moderate-to-severe acute respiratory distress syndrome (ARDS) secondary to pneumonia."
+  },
+  {
+   "label": "CLINICAL",
+   "label_feed_eligible": false,
+   "observation_id": "5ad9015a5f8bd92487f136cb1e362f4b",
+   "predicted_category": "clinical_prediction_model",
+   "predicted_dimensions": {},
+   "predicted_feed_eligible": false,
+   "predicted_label": "clinical_prediction_model",
+   "predicted_tier": "LOW_RELEVANCE",
+   "rationale": "antimicrobial-resistance prediction",
+   "reasons": [
+    "clinical prediction/risk study, not a monitoring technology"
+   ],
+   "record_type": "publication",
+   "source": "pubmed",
+   "stratum": "pubmed",
+   "title": "An explainable machine learning approach to predicting carbapenem resistance in Klebsiella pneumoniae with imbalanced data and resistance-ratio validation."
+  },
+  {
+   "label": "DIRECT",
+   "label_feed_eligible": true,
+   "observation_id": "e48bfb2f8ab1fb14eeb34e69236842d7",
+   "predicted_category": "plausible_monitoring_technology",
+   "predicted_dimensions": {},
+   "predicted_feed_eligible": false,
+   "predicted_label": "plausible_monitoring_technology",
+   "predicted_tier": "NEEDS_REVIEW",
+   "rationale": "invasive blood-pressure monitoring accuracy by cannulation site",
+   "reasons": [
+    "names a monitoring device or sensor",
+    "evaluates performance or accuracy",
+    "device/algorithm evaluation design",
+    "set in acute/critical care",
+    "clinical outcome/risk framing"
+   ],
+   "record_type": "publication",
+   "source": "pubmed",
+   "stratum": "pubmed",
+   "title": "IBP-DISTAL protocol: distal vs radial access for invasive BP in critical care."
+  },
+  {
+   "label": "TRANSFER",
+   "label_feed_eligible": false,
+   "observation_id": "ddf75e9cb181e083988cbe1dbd13b011",
+   "predicted_category": "monitoring_technology_evaluation",
+   "predicted_dimensions": {},
+   "predicted_feed_eligible": true,
+   "predicted_label": "monitoring_technology_evaluation",
+   "predicted_tier": "HIGH_RELEVANCE",
+   "rationale": "time-series forecasting benchmarks on monitoring data; methods, not a monitoring device",
+   "reasons": [
+    "engineering/algorithm content",
+    "evaluates performance or accuracy",
+    "device/algorithm evaluation design",
+    "set in acute/critical care"
+   ],
+   "record_type": "publication",
+   "source": "pubmed",
+   "stratum": "pubmed",
+   "title": "Performance evaluation of ARIMA, VAR, ANN, GRU, and LSTM for multivariate healthcare time-series prediction: a rigorous, reproducible benchmarking study with ablation analysis on MIMIC-III and eICU."
+  },
+  {
+   "label": "DIRECT",
+   "label_feed_eligible": true,
+   "observation_id": "654f1bd2124284a4207540f58d588efa",
+   "predicted_category": "device_or_algorithm_needs_confirmation",
+   "predicted_dimensions": {},
+   "predicted_feed_eligible": false,
+   "predicted_label": "device_or_algorithm_needs_confirmation",
+   "predicted_tier": "NEEDS_REVIEW",
+   "rationale": "inertial sensor system detecting swallowing/coughing in ICU patients",
+   "reasons": [
+    "names a monitoring device or sensor",
+    "engineering/algorithm content",
+    "evaluates performance or accuracy",
+    "device/algorithm evaluation design",
+    "MeSH marks instrumentation/engineering",
+    "set in acute/critical care",
+    "device + engineering signals, no explicit performance evaluation"
+   ],
+   "record_type": "publication",
+   "source": "pubmed",
+   "stratum": "pubmed",
+   "title": "Accelerometer- and Gyroscope-Based Sensor System for Detecting Swallowing, Speaking, and Coughing Events in ICU Patients."
+  },
+  {
+   "label": "CLINICAL",
+   "label_feed_eligible": false,
+   "observation_id": "c06e16c975034e0c418d1eb259ef3600",
+   "predicted_category": "clinical_study_without_device_focus",
+   "predicted_dimensions": {},
+   "predicted_feed_eligible": false,
+   "predicted_label": "clinical_study_without_device_focus",
+   "predicted_tier": "LOW_RELEVANCE",
+   "rationale": "pharmacy/health-economics commentary on neuromuscular monitoring",
+   "reasons": [
+    "clinical outcome/risk framing",
+    "no abstract: judged from the title only",
+    "clinical question, no monitoring technology under study"
+   ],
+   "record_type": "publication",
+   "source": "pubmed",
+   "stratum": "pubmed",
+   "title": "Looking Beyond Drug Acquisition Costs: Generic Sugammadex and Quantitative Neuromuscular Monitoring."
+  },
+  {
+   "label": "CLINICAL",
+   "label_feed_eligible": false,
+   "observation_id": "065d827510c3789a0f27a300f0d4f275",
+   "predicted_category": "health_economics",
+   "predicted_dimensions": {},
+   "predicted_feed_eligible": false,
+   "predicted_label": "health_economics",
+   "predicted_tier": "LOW_RELEVANCE",
+   "rationale": "care-pathway and budget-impact cohort study",
+   "reasons": [
+    "health-economic analysis, not monitoring technology"
+   ],
+   "record_type": "publication",
+   "source": "pubmed",
+   "stratum": "pubmed",
+   "title": "Real-world implementation of AI-assisted PERT-workflow and its association with care processes and budget impact: a retrospective cohort study."
+  },
+  {
+   "label": "MEDICAL_UNRELATED",
+   "label_feed_eligible": false,
+   "observation_id": "4db82d842f60be23bde4637bbd3e9e61",
+   "predicted_category": "vendor_statement",
+   "predicted_dimensions": {},
+   "predicted_feed_eligible": true,
+   "predicted_label": "vendor_statement",
+   "predicted_tier": "HIGH_RELEVANCE",
+   "rationale": "Dräger connected-technology service article",
+   "reasons": [
+    "a primary record from a monitored source"
+   ],
+   "record_type": "press_release",
+   "source": "draeger_official",
+   "stratum": "official_press",
+   "title": "Service reimagined: What customers can expect from connected technology today"
+  },
+  {
+   "label": "MEDICAL_UNRELATED",
+   "label_feed_eligible": false,
+   "observation_id": "074f3adbb8054c7576a2d5e41faa669c",
+   "predicted_category": "primary_record_unmapped",
+   "predicted_dimensions": {},
+   "predicted_feed_eligible": false,
+   "predicted_label": "primary_record_unmapped",
+   "predicted_tier": "LOW_RELEVANCE",
+   "rationale": "executive interview",
+   "reasons": [
+    "primary source, but it mentions no monitored product or topic"
+   ],
+   "record_type": "press_release",
+   "source": "draeger_official",
+   "stratum": "official_press",
+   "title": "Interview with Stefan Dräger"
+  },
+  {
+   "label": "MEDICAL_UNRELATED",
+   "label_feed_eligible": false,
+   "observation_id": "abcde26eaa140768fceb6071efb96c59",
+   "predicted_category": "primary_record_unmapped",
+   "predicted_dimensions": {},
+   "predicted_feed_eligible": false,
+   "predicted_label": "primary_record_unmapped",
+   "predicted_tier": "LOW_RELEVANCE",
+   "rationale": "employer-branding article",
+   "reasons": [
+    "primary source, but it mentions no monitored product or topic"
+   ],
+   "record_type": "press_release",
+   "source": "draeger_official",
+   "stratum": "official_press",
+   "title": "Women at Dräger"
+  },
+  {
+   "label": "MEDICAL_UNRELATED",
+   "label_feed_eligible": false,
+   "observation_id": "c50942656730308a6b629c62e0a219d8",
+   "predicted_category": "primary_record_unmapped",
+   "predicted_dimensions": {},
+   "predicted_feed_eligible": false,
+   "predicted_label": "primary_record_unmapped",
+   "predicted_tier": "LOW_RELEVANCE",
+   "rationale": "safety-services article",
+   "reasons": [
+    "primary source, but it mentions no monitored product or topic"
+   ],
+   "record_type": "press_release",
+   "source": "draeger_official",
+   "stratum": "official_press",
+   "title": "The growing need for flexible safety provision"
+  },
+  {
+   "label": "MEDICAL_UNRELATED",
+   "label_feed_eligible": false,
+   "observation_id": "9dfd6b0f71a2ce8eea5d948fa76272f9",
+   "predicted_category": "primary_record_unmapped",
+   "predicted_dimensions": {},
+   "predicted_feed_eligible": false,
+   "predicted_label": "primary_record_unmapped",
+   "predicted_tier": "LOW_RELEVANCE",
+   "rationale": "executive interview",
+   "reasons": [
+    "primary source, but it mentions no monitored product or topic"
+   ],
+   "record_type": "press_release",
+   "source": "draeger_official",
+   "stratum": "official_press",
+   "title": "Interview Stefanie Hirsch"
+  },
+  {
+   "label": "MEDICAL_UNRELATED",
+   "label_feed_eligible": false,
+   "observation_id": "c6b956727e37eff916a9ecbd03c0da9d",
+   "predicted_category": "primary_record_unmapped",
+   "predicted_dimensions": {},
+   "predicted_feed_eligible": false,
+   "predicted_label": "primary_record_unmapped",
+   "predicted_tier": "LOW_RELEVANCE",
+   "rationale": "corporate training article",
+   "reasons": [
+    "primary source, but it mentions no monitored product or topic"
+   ],
+   "record_type": "press_release",
+   "source": "draeger_official",
+   "stratum": "official_press",
+   "title": "Involvement in Africa: Dräger trains medical technology specialists"
+  },
+  {
+   "label": "MEDICAL_UNRELATED",
+   "label_feed_eligible": false,
+   "observation_id": "fa7f7d1d66e22b2b89af99164d15289d",
+   "predicted_category": "primary_record_unmapped",
+   "predicted_dimensions": {},
+   "predicted_feed_eligible": false,
+   "predicted_label": "primary_record_unmapped",
+   "predicted_tier": "LOW_RELEVANCE",
+   "rationale": "corporate award",
+   "reasons": [
+    "primary source, but it mentions no monitored product or topic"
+   ],
+   "record_type": "press_release",
+   "source": "draeger_official",
+   "stratum": "official_press",
+   "title": "Dräger Receives 2026 Best Managed Companies Award"
+  },
+  {
+   "label": "MEDICAL_UNRELATED",
+   "label_feed_eligible": false,
+   "observation_id": "c0cdd04662916de54fcc512e3d18d05d",
+   "predicted_category": "primary_record_unmapped",
+   "predicted_dimensions": {},
+   "predicted_feed_eligible": false,
+   "predicted_label": "primary_record_unmapped",
+   "predicted_tier": "LOW_RELEVANCE",
+   "rationale": "governance/nomination announcement",
+   "reasons": [
+    "primary source, but it mentions no monitored product or topic"
+   ],
+   "record_type": "press_release",
+   "source": "philips_official",
+   "stratum": "official_press",
+   "title": "Philips to nominate Boer, Debroux and Brinton to SvB at the 2027 AGM of Shareholders"
+  },
+  {
+   "label": "NON_MEDICAL",
+   "label_feed_eligible": false,
+   "observation_id": "2ca89833114f6cc5b1cdd610dd3468ed",
+   "predicted_category": "primary_record_unmapped",
+   "predicted_dimensions": {},
+   "predicted_feed_eligible": false,
+   "predicted_label": "primary_record_unmapped",
+   "predicted_tier": "LOW_RELEVANCE",
+   "rationale": "renewable-energy safety content",
+   "reasons": [
+    "primary source, but it mentions no monitored product or topic"
+   ],
+   "record_type": "press_release",
+   "source": "draeger_official",
+   "stratum": "official_press",
+   "title": "Moving forward safely into the future of renewable energies"
+  },
+  {
+   "label": "NON_MEDICAL",
+   "label_feed_eligible": false,
+   "observation_id": "9fe5d69f10ca0778daff6975fd08160e",
+   "predicted_category": "primary_record_unmapped",
+   "predicted_dimensions": {},
+   "predicted_feed_eligible": false,
+   "predicted_label": "primary_record_unmapped",
+   "predicted_tier": "LOW_RELEVANCE",
+   "rationale": "energy-sector safety content",
+   "reasons": [
+    "primary source, but it mentions no monitored product or topic"
+   ],
+   "record_type": "press_release",
+   "source": "draeger_official",
+   "stratum": "official_press",
+   "title": "Safety Concepts for the Energies of the Future"
+  }
+ ],
+ "sample": {
+  "evaluated": 120,
+  "label_rule": "DIRECT = the record's own subject is a patient-monitoring device, a physiological measurement or its engineering/performance, or a regulatory action about such a device. TRANSFER = non-monitoring technology whose stated purpose is patient monitoring. CLINICAL = medical research whose subject is clinical care/outcome and which merely uses monitoring data. MEDICAL_UNRELATED = medical but not about monitoring technology. NON_MEDICAL = the subject is not a patient at all. Feed-relevant = DIRECT, or TRANSFER with an explicit monitoring purpose.",
+  "labelled_by": "single reviewer (the REFOUNDATION-004 agent) reading the record title, and the abstract where the source provided one, against the frozen label rule before any rule change. This is an auditable machine-assisted adjudication, not an independent human panel.",
+  "missing_from_ledger": [],
+  "sampling_frame": {
+   "database": "radar.db copy, 8593 observations, copied 2026-11-18",
+   "inference_limit": "Disproportionate stratified sample of one corpus snapshot. It estimates the precision/recall of the rules on records like these; it is not a random sample of all medical-technology publications and cannot estimate the population prevalence of monitoring technology.",
+   "method": "fixed-seed random draw within each stratum, without replacement",
+   "seed": 20261118,
+   "strata": {
+    "crossref": 34,
+    "official_press": 10,
+    "openfda": 30,
+    "pubmed": 33,
+    "top_of_v1_feed": 13
+   }
+  },
+  "sha256_items": "6b284a6fddda576b0a683cff66d5e3f76205b770b8040d188a1cf6e418b96737",
+  "size": 120,
+  "version": "refoundation-004-independent-sample-1"
+ },
+ "schema": "medradar.quality.relevance-eval.v2",
+ "window": {
+  "feed_window_days": 30,
+  "note": "The stored v1 decisions are shown over the product's 30-day window; the v1 development evaluator itself used 14 days (QA-002 finding)."
+ }
+}
