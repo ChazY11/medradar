@@ -124,11 +124,15 @@ class RadarScheduler:
             self._log(f"[scheduler] {source_id} is not due yet")
         if not due:
             finished = _now()
+            # Nothing was due at the sources, but the pipeline may still hold pending work from
+            # an interrupted or previous cycle. Draining it on an idle cycle is what makes a
+            # kill-during-materialise recoverable without waiting for the next source window.
+            advanced = advance(self.ledger, self.graph, self.taxonomy, log=self._log)
             result = CycleResult(
                 started_at=started, finished_at=finished, status="IDLE",
                 ingested={"sources": [], "note": "no source was due in this cycle",
                           "skipped": skipped},
-                advanced={}, ai={},
+                advanced=advanced, ai={},
                 note="Nothing was due. No request was sent and nothing was claimed to have changed.",
             )
             # An idle cycle is still a cycle: the operator must be able to see that the

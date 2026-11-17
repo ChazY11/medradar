@@ -20,7 +20,9 @@ DATA="$ROOT/data/radar"
 BACKUP="$DATA/backups"
 ENVFILE=/etc/medradar/radar-alpha.env
 SERVICE_USER=medradar
-UNIT_SRC="$(cd "$(dirname "$0")/.." && pwd)/systemd"
+# Units come from the release being deployed, not from the caller's directory: an operator who
+# runs an older release's script must still install that release's units.
+UNIT_SRC="$RELEASE/deploy/systemd"
 
 log() { printf '%s %s\n' "$(date -u +%Y-%m-%dT%H:%M:%SZ)" "$*"; }
 

@@ -126,6 +126,28 @@ def test_a_disabled_source_is_never_due(scheduler):
     assert scheduler._is_due("never_seen_source") is True
 
 
+def test_an_idle_cycle_still_drains_pending_pipeline_work(scheduler):
+    """Regression for the production restart that interrupted graph materialisation.
+
+    A kill during ``advance`` leaves observations pending. The next scheduler cycle finds no
+    source due and used to return before touching the pipeline, so the graph stayed partial for
+    hours. An idle cycle must still drain whatever is pending, without claiming a source check.
+    """
+    scheduler.cycle(force=True)          # ingest + advance
+    pending_before = scheduler.ledger.raw(
+        "SELECT observation_id FROM observation WHERE processing_state IN ('RAW','CLASSIFIED','LINKED')"
+    )
+    assert pending_before == []
+    # Simulate an interrupted materialisation: the observation exists, but the graph does not
+    # know it was materialised (exactly the state a SIGKILL between write and commit leaves).
+    scheduler.ledger.con.execute("DELETE FROM graph_materialization")
+    idle = scheduler.cycle(force=False)
+    assert idle.status == "IDLE"
+    assert idle.ingested["sources"] == [], "an idle cycle sends no request"
+    assert idle.advanced["graph"]["materialized"] >= 1
+    assert "did not observe" not in idle.note
+
+
 def test_the_watch_loop_runs_a_bounded_number_of_cycles(scheduler):
     result = scheduler.watch(interval_seconds=0.01, max_cycles=2)
     assert result["cycles"] == 2

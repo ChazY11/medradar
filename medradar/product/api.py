@@ -568,7 +568,11 @@ def create_app(
     application is this function without setup, so it contains no write route at all.
     """
     holder = DatasetHolder(Path(data_dir) if data_dir else None)
-    resolved_web = Path(web_dir) if web_dir else _default_web_dir()
+    # Resolve once: a release tree is deployed behind a symlink, and the SPA handler compares
+    # the served file's real parents against this directory. An unresolved symlink path made the
+    # containment check fail, so every asset request fell through to index.html and the app
+    # rendered nothing (production symptom: text/html for a .js URL).
+    resolved_web = (Path(web_dir) if web_dir else _default_web_dir()).resolve()
 
     # LAUNCH-001: a published deployment does not serve the interactive API schema. The public
     # alpha gate would 404 those paths anyway; not generating them removes the surface entirely.

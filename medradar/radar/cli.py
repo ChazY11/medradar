@@ -343,6 +343,94 @@ def cmd_rebuild_graph(args) -> int:
     return 0
 
 
+def cmd_corroborate_doi(args) -> int:
+    """Confirm PubMed works against the DOI registration agency.
+
+    A PubMed record usually states a DOI. Asking Crossref for that exact DOI returns the
+    registration record for the same work from an independent API, which is what makes the
+    cross-source relation *verifiable*: the join key is the normalised DOI, and the title is
+    never used as identity. The corroborating record is stored as its own observation, so the
+    two sources remain separable and the second one is genuine corroboration rather than a merge.
+    """
+    from urllib.parse import quote
+
+    from .adapters.crossref import WORKS, CrossrefAdapter, _record_from_item
+    from .classify import RuleMapper, publication_relevance
+    from .scheduler import build_fetcher
+
+    taxonomy = load_taxonomy()
+    paths, ledger, graph = _open(args)
+    fetcher = build_fetcher(taxonomy, max_requests=args.max_requests)
+    mapper = RuleMapper(taxonomy)
+    adapter = CrossrefAdapter(taxonomy)
+    attempted = corroborated = rejected = failed = 0
+    failures: list[dict[str, Any]] = []
+    try:
+        rows = ledger.raw(
+            "SELECT i.observation_id, i.value AS doi, o.discovery_phase"
+            " FROM observation_identifier i JOIN observation o USING(observation_id)"
+            " WHERE i.source='pubmed' AND i.kind='DOI'"
+            "   AND NOT EXISTS (SELECT 1 FROM observation_identifier c"
+            "                   WHERE c.kind='DOI' AND c.value=i.value"
+            "                     AND c.observation_id<>i.observation_id)"
+            " ORDER BY o.first_observed_at DESC, i.value LIMIT ?",
+            (int(args.limit),),
+        )
+        run_id = "corroborate-doi:" + str(int(__import__("time").time()))
+        for row in rows:
+            doi = str(row["doi"])
+            attempted += 1
+            try:
+                payload = fetcher.get_json(f"{WORKS}/{quote(doi, safe='')}")
+            except Exception as error:  # noqa: BLE001 - one DOI must not stop the batch
+                failed += 1
+                failures.append({"doi": doi, "error": f"{type(error).__name__}: {error}"[:200]})
+                continue
+            message = (payload or {}).get("message") if isinstance(payload, dict) else None
+            if not isinstance(message, dict):
+                failed += 1
+                failures.append({"doi": doi, "error": "no registration record returned"})
+                continue
+            record = _record_from_item(message)
+            if record is None or str(record.payload.get("doi") or "").lower() != doi.lower():
+                rejected += 1
+                failures.append({"doi": doi, "error": "registration record does not match the DOI"})
+                continue
+            mapping = mapper.map(record)
+            accepted, reason = publication_relevance(mapping)
+            if not accepted:
+                rejected += 1
+                failures.append({"doi": doi, "error": str(reason)[:200]})
+                continue
+            outcome = ledger.record_observation(
+                record, mapping, run_id=run_id, adapter_version=adapter.adapter_version,
+                mapping_version=mapping.method_version, phase=str(row["discovery_phase"]),
+            )
+            corroborated += 1 if outcome.is_new or outcome.is_updated else 0
+        advanced = advance(ledger, graph, taxonomy, log=print)
+    finally:
+        graph.store.close()
+        ledger.close()
+    report = {
+        "attempted": attempted,
+        "corroborated": corroborated,
+        "rejected_or_incompatible": rejected,
+        "failed": failed,
+        "failures": failures[:10],
+        "advance": advanced,
+        "note": (
+            "Each Crossref record is a second, independent observation of the same work, joined "
+            "later by exact normalised DOI equality. Nothing was merged and no title was used."
+        ),
+    }
+    if args.json:
+        _print_json(report)
+    else:
+        print(f"attempted={attempted} corroborated={corroborated} rejected={rejected} failed={failed}")
+        print(report["note"])
+    return 0
+
+
 def cmd_watch(args) -> int:
     taxonomy = load_taxonomy()
     paths, ledger, graph = _open(args)
@@ -541,6 +629,15 @@ def build_parser() -> argparse.ArgumentParser:
     watch.add_argument("--source", default=None)
     watch.add_argument("--no-ai", action="store_true")
     watch.set_defaults(func=cmd_watch)
+
+    corroborate = sub.add_parser(
+        "corroborate-doi",
+        help="confirm PubMed works against Crossref by exact DOI (stores a second observation)",
+    )
+    corroborate.add_argument("--limit", type=int, default=50)
+    corroborate.add_argument("--max-requests", type=int, default=200)
+    corroborate.add_argument("--json", action="store_true")
+    corroborate.set_defaults(func=cmd_corroborate_doi)
 
     backup_cmd = sub.add_parser("backup", help="consistent online backup of radar.db, verified")
     backup_cmd.add_argument("--destination", default=None)
