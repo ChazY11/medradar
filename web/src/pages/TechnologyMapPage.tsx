@@ -56,13 +56,13 @@ export function TechnologyMapPage() {
   const [at, setAt] = useState<string>("");
   const [selectedTopic, setSelectedTopic] = useState<string | null>(null);
   const [node, setNode] = useState<{ nodeType: string; nodeId: string } | null>(null);
-  // The company switcher is the primary navigation on a phone: one company at a time, instead
-  // of scrolling a three-company comparison built for a desktop column.
-  const [activeCompanies, setActiveCompanies] = useState<string[]>([...COMPANIES]);
+  // Exclusive company selection: tapping Dräger shows Dräger. The previous toggle-off behaviour
+  // meant tapping a company hid it, which on a phone reads as "the filter is broken".
+  const [activeCompany, setActiveCompany] = useState<string | null>(null);
 
   const companyQuery = useMemo(
-    () => (activeCompanies.length ? activeCompanies.join(",") : COMPANIES.join(",")),
-    [activeCompanies],
+    () => (activeCompany ? activeCompany : COMPANIES.join(",")),
+    [activeCompany],
   );
 
   const timeQuery: TimeQuery = useMemo(
@@ -107,31 +107,22 @@ export function TechnologyMapPage() {
         <button
           type="button"
           className="chip"
-          aria-pressed={activeCompanies.length === COMPANIES.length}
-          onClick={() => setActiveCompanies([...COMPANIES])}
+          aria-pressed={activeCompany === null}
+          onClick={() => setActiveCompany(null)}
         >
           {bi("All", "全部")}
         </button>
-        {COMPANIES.map((company) => {
-          const on = activeCompanies.includes(company);
-          return (
-            <button
-              key={company}
-              type="button"
-              className="chip"
-              aria-pressed={on && activeCompanies.length !== COMPANIES.length}
-              onClick={() => {
-                const next = on
-                  ? activeCompanies.filter((item) => item !== company)
-                  : [...activeCompanies, company];
-                // Never leave the view empty: the last remaining company stays selected.
-                setActiveCompanies(next.length ? next : [company]);
-              }}
-            >
-              {COMPANY_LABELS[company]}
-            </button>
-          );
-        })}
+        {COMPANIES.map((company) => (
+          <button
+            key={company}
+            type="button"
+            className="chip"
+            aria-pressed={activeCompany === company}
+            onClick={() => setActiveCompany(company)}
+          >
+            {COMPANY_LABELS[company]}
+          </button>
+        ))}
       </div>
 
       <Card
