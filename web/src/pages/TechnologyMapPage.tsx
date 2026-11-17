@@ -164,7 +164,10 @@ export function TechnologyMapPage() {
         </div>
         {map.data ? (
           <Banner tone={map.data.reconstructed ? "warning" : "info"} title={map.data.reconstructed ? bi("Reconstruction, not history", "这是回溯重建，不是当时已知") : bi("Knowledge-time view", "知识时间视图")}>
-            {map.data.time_semantics.statement}
+            {bi(
+              map.data.time_semantics.statement,
+              "本视图仅包含截至所选时间点 MedRadar 已实际记录的断言；之后发现的证据不会出现在更早的视图里。",
+            )}
           </Banner>
         ) : null}
       </Card>
@@ -207,7 +210,7 @@ export function TechnologyMapPage() {
                       key={branch.topic_id}
                       title={
                         <span>
-                          {branch.label_en}
+                          {bi(branch.label_en, branch.label_zh ?? branch.label_en)}
                           <span className="small muted" style={{ marginLeft: 8 }}>
                             {branch.family} · {branch.topic_id}
                           </span>
@@ -333,7 +336,12 @@ export function TechnologyMapPage() {
                               </tbody>
                             </table>
                           </div>
-                          <div className="small muted mt-8">{payload.time_semantics.cannot_do}</div>
+                          <div className="small muted mt-8">
+                            {bi(
+                              payload.time_semantics.cannot_do,
+                              "已经记录的断言不会被回填到更早的知识时间：如果 MedRadar 在 2026 年才发现 2016 年的批文，它只会出现在 2026 年的知识视图中。",
+                            )}
+                          </div>
                         </div>
                       ) : null}
                     </Card>
