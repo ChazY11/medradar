@@ -1,0 +1,156 @@
+{
+  "artifacts": [
+    {
+      "bytes": 45273088,
+      "counts": {
+        "observation": 8360,
+        "observation_admission": 8360,
+        "observation_change": 8360,
+        "observation_mapping": 8360,
+        "observation_version": 8360,
+        "source_state": 6
+      },
+      "integrity_check": "ok",
+      "journal_mode": "wal",
+      "path": "radar.db",
+      "role": "database",
+      "sha256": "c7961fe1a41262641ac55821226fcd66ed9f926f0d0069bfe2ff5fe1c25a65fe"
+    },
+    {
+      "bytes": 67727360,
+      "counts": {
+        "observation": null,
+        "observation_admission": null,
+        "observation_change": null,
+        "observation_mapping": null,
+        "observation_version": null,
+        "source_state": null
+      },
+      "integrity_check": "ok",
+      "journal_mode": "delete",
+      "path": "graph.db",
+      "role": "database",
+      "sha256": "dad156b081614bd6ee37a4b644f77823072718f9b804228482e7cdc177f1b8e8"
+    },
+    {
+      "bytes": 13621,
+      "path": "radar.schema.sql",
+      "role": "schema",
+      "sha256": "8e3295e233cc48723fd4c1344ba2a35c105d134743171deb7ba7378af3fa6c56"
+    },
+    {
+      "bytes": 27632576,
+      "path": "deployed-code.tar.gz",
+      "role": "deployed_code",
+      "sha256": "9d5643e052838b14840db40388b7d6f050f38e99bb93528eace06f2e45188015"
+    },
+    {
+      "bytes": 552,
+      "path": "identity.txt",
+      "role": "identity",
+      "sha256": "b30c220dd9dbff775c8d045081c86c2b36da081dda3a75b9ff26f96f59b25339"
+    },
+    {
+      "bytes": 1894,
+      "path": "systemd/medradar-radar-web.service.txt",
+      "role": "systemd",
+      "sha256": "45f7a2043f4ac0b3bba598033de554af06a7c25addb038d9f2439a9f4be3d8d8"
+    },
+    {
+      "bytes": 1940,
+      "path": "systemd/medradar-radar-scheduler.service.txt",
+      "role": "systemd",
+      "sha256": "a5338060fc3495de463af9a1081980bfc4fa09d67af3a17e591cce3b586a6689"
+    },
+    {
+      "bytes": 804,
+      "path": "systemd/medradar-radar-tunnel.service.txt",
+      "role": "systemd",
+      "sha256": "6ddcb5c43b7dbc78d172fe1d3671dae1d219a7fbb3f16011bbefeac1b3dd57f9"
+    },
+    {
+      "bytes": 974,
+      "path": "systemd/medradar-radar-backup.service.txt",
+      "role": "systemd",
+      "sha256": "29bc670847639efe40ece83f334f6a602461dbec87306164173a1d52ae0f8bd3"
+    },
+    {
+      "bytes": 364,
+      "path": "systemd/medradar-radar-backup.timer.txt",
+      "role": "systemd",
+      "sha256": "437c00b6316ed0ad4ef6c9b1fb81e5a07706a84d2dd65038791a3a8be9cd1e1d"
+    },
+    {
+      "bytes": 272,
+      "path": "systemd/medradar-health.service.txt",
+      "role": "systemd",
+      "sha256": "072e6b735d8e9bf9f02cad29bac1a2984fe3c1e9e8d5be07830114366c135599"
+    },
+    {
+      "bytes": 218,
+      "path": "systemd/medradar-health.timer.txt",
+      "role": "systemd",
+      "sha256": "66a1569cd3a1de8ba0cee94ba2c17b6d05b825f8a69b74a537699169aef56494"
+    },
+    {
+      "bytes": 1500,
+      "path": "systemd/medradar-data-update.service.txt",
+      "role": "systemd",
+      "sha256": "e40b0c7d3db1ceafe722e1691417a12cedd2bd81a3b97d35048576e4ee1a3b85"
+    },
+    {
+      "bytes": 639,
+      "path": "systemd/medradar-data-update.timer.txt",
+      "role": "systemd",
+      "sha256": "c84ce2913aa896bb10ed1ff94e04a94562103b88c6a087eb230484ef1d30407f"
+    },
+    {
+      "bytes": 952,
+      "path": "systemd/medradar-web.service.txt",
+      "role": "systemd",
+      "sha256": "81dba0e7a7bf05c8f258b7626a4a9778ac19665b338eee70cb7343f377fe6499"
+    },
+    {
+      "bytes": 64246,
+      "path": "service-state.txt",
+      "role": "service_state",
+      "sha256": "20dbb6246f7b494aa0ffc1df69c168c2c0c554d2a88e202cd9856d6e24d3560d"
+    },
+    {
+      "bytes": 307,
+      "path": "config/radar-alpha.env.keys.txt",
+      "role": "config_names_only",
+      "sha256": "12a35b377c8d48c2c3419131fc1c813cbf816a1a9fd4d807df00144df33a0193"
+    },
+    {
+      "bytes": 359,
+      "path": "config/pipeline.env.keys.txt",
+      "role": "config_names_only",
+      "sha256": "8f512368e8dac8640e2d548d40e32cbe8f3f04645c79294cd1d247731e03c101"
+    },
+    {
+      "bytes": 8904,
+      "path": "sources-registry.json",
+      "role": "source_registry",
+      "sha256": "62aa910a70fcf4a92815af4810c5602aba833f5b2c9d8b476c7f88f47d9bf875"
+    }
+  ],
+  "created_at": "2026-11-18T18:51:50Z",
+  "ledger_meta": {
+    "created_at": "2026-11-17T00:13:33+00:00",
+    "schema_version": "radar-ledger-v2"
+  },
+  "live_wal_state": {
+    "graph.db": {
+      "main_bytes": 67727360,
+      "shm_bytes": 0,
+      "wal_bytes": 0
+    },
+    "radar.db": {
+      "main_bytes": 45268992,
+      "shm_bytes": 32768,
+      "wal_bytes": 4280712
+    }
+  },
+  "stamp": "20261118T185150Z"
+}

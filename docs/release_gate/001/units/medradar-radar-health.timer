@@ -1,0 +1,13 @@
+# CANDIDATE - NOT INSTALLED. Release-gate artifact.
+# Install path: /etc/systemd/system/medradar-radar-health.timer
+[Unit]
+Description=Run the MedRadar Radar health probe every 5 minutes
+
+[Timer]
+OnBootSec=2min
+OnUnitActiveSec=5min
+AccuracySec=30s
+Persistent=true
+
+[Install]
+WantedBy=timers.target

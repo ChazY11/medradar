@@ -1,0 +1,190 @@
+{
+  "state": "DEGRADED",
+  "generated_at": "2026-11-18T19:17:22Z",
+  "radar_dir": "/srv/medradar/release-gate/001/staging/data",
+  "layers": {
+    "availability": [
+      {
+        "id": "port",
+        "ok": true,
+        "detail": "127.0.0.1:8792"
+      },
+      {
+        "id": "healthz",
+        "ok": true,
+        "detail": "200 in 35.2 ms"
+      },
+      {
+        "id": "api_health",
+        "ok": true,
+        "detail": "200"
+      },
+      {
+        "id": "api_feed",
+        "ok": true,
+        "detail": "200"
+      },
+      {
+        "id": "spa_index",
+        "ok": true,
+        "detail": "/srv/medradar/release-gate/001/staging/release-f2f70dd248587e4691e58e0bcebe4f05572bc745/web/dist/index.html"
+      }
+    ],
+    "pipeline": {
+      "checks": [
+        {
+          "id": "critical_sources",
+          "status": "PASS",
+          "severity": "CRITICAL",
+          "detail": "Every monitored source was checked inside its declared cadence.",
+          "observed": {
+            "monitored_sources": [
+              "crossref",
+              "draeger_official",
+              "openfda_device",
+              "openfda_recall",
+              "philips_official",
+              "pubmed"
+            ]
+          }
+        },
+        {
+          "id": "watermark_legal",
+          "status": "WARN",
+          "severity": "MAJOR",
+          "detail": "A watermark leads the UTC date by 1 day(s), inside the 1-day grace for source clock skew. The adapter clamps it for the query, so this costs overlap rather than discovery; the stored claim is still wrong and is reported.",
+          "observed": {
+            "problems": [
+              {
+                "kind": "watermark_in_future",
+                "count": 2,
+                "sources": [
+                  "crossref",
+                  "pubmed"
+                ]
+              }
+            ],
+            "sources": [
+              "crossref",
+              "pubmed"
+            ],
+            "max_lead_days": 1
+          }
+        },
+        {
+          "id": "scheduler_heartbeat",
+          "status": "PASS",
+          "severity": "CRITICAL",
+          "detail": "The scheduler recorded a cycle inside its liveness budget.",
+          "observed": {
+            "seconds_since_cycle": 1651.7,
+            "budget_seconds": 64800.0
+          }
+        },
+        {
+          "id": "acquisition_progress",
+          "status": "PASS",
+          "severity": "MINOR",
+          "detail": "At least one source produced a new or updated observation recently.",
+          "observed": {
+            "newest_observed_update_at": "2026-11-18T19:11:29+00:00",
+            "quiet_sources": []
+          }
+        }
+      ],
+      "state": "DEGRADED"
+    },
+    "product": {
+      "checks": [
+        {
+          "id": "ledger_integrity",
+          "status": "PASS",
+          "severity": "CRITICAL",
+          "detail": "No orphan version, orphan change, broken version chain or drifted first-observed timestamp was found.",
+          "observed": {
+            "observations": 16253
+          }
+        },
+        {
+          "id": "ledger_writable",
+          "status": "UNKNOWN",
+          "severity": "CRITICAL",
+          "detail": "This connection was opened read-only, so writability was not probed.",
+          "observed": {}
+        },
+        {
+          "id": "recall_channel",
+          "status": "PASS",
+          "severity": "CRITICAL",
+          "detail": "recall channel present with 6563 records",
+          "observed": {
+            "source_rows": 1,
+            "records": 6563
+          }
+        },
+        {
+          "id": "brief_generation",
+          "status": "PASS",
+          "severity": "CRITICAL",
+          "detail": "generated in 1.25 s",
+          "observed": {
+            "items": 0
+          }
+        }
+      ],
+      "state": "DEGRADED",
+      "source_states": [
+        {
+          "source_id": "crossref",
+          "status": "OK",
+          "watermark": "2026-11-19",
+          "last_success": "2026-11-18T19:11:25+00:00",
+          "failures": 0
+        },
+        {
+          "source_id": "draeger_official",
+          "status": "OK",
+          "watermark": "2026-11-09T12:41:36+00:00",
+          "last_success": "2026-11-18T19:11:29+00:00",
+          "failures": 0
+        },
+        {
+          "source_id": "gehealthcare_official",
+          "status": "BLOCKED_BY_ACCESS_POLICY",
+          "watermark": null,
+          "last_success": null,
+          "failures": 0
+        },
+        {
+          "source_id": "openfda_device",
+          "status": "OK",
+          "watermark": "2026-11-09",
+          "last_success": "2026-11-18T19:12:35+00:00",
+          "failures": 0
+        },
+        {
+          "source_id": "openfda_recall",
+          "status": "OK",
+          "watermark": "2026-11-05",
+          "last_success": "2026-11-18T19:10:48+00:00",
+          "failures": 0
+        },
+        {
+          "source_id": "philips_official",
+          "status": "OK",
+          "watermark": "2026-11-18T14:00:00+00:00",
+          "last_success": "2026-11-18T19:11:29+00:00",
+          "failures": 0
+        },
+        {
+          "source_id": "pubmed",
+          "status": "OK",
+          "watermark": "2026-11-19",
+          "last_success": "2026-11-18T19:10:55+00:00",
+          "failures": 0
+        }
+      ]
+    }
+  },
+  "notification_channel": "none configured - failures are recorded here and in the journal"
+}
