@@ -256,6 +256,12 @@ _WATERMARK_PROBLEMS = frozenset({
 # cadence intervals is worth showing to an operator. It is NOT a fault: a quiet source and a
 # broken source must stay distinguishable, because treating quiet as broken trains people to
 # ignore the light.
+# A watermark can legitimately lead the UTC date by a day: a source that timestamps in its own
+# timezone can report tomorrow before UTC reaches it (measured on production: PubMed
+# advanced to 2026-11-19 at 2026-11-18T18:24Z). The adapter clamps a future watermark to
+# today, so a small lead costs overlap, not discovery capability - it is reported as a
+# warning. A lead beyond this window is a broken coverage claim and is a failure.
+WATERMARK_FUTURE_GRACE_DAYS = 1
 QUIET_INTERVALS_BEFORE_NOTE = 12
 # A scheduler heartbeat older than this is not "between cycles".
 HEARTBEAT_INTERVALS = 3
@@ -328,20 +334,36 @@ def health_checks(ledger: ObservationLedger, sources: list[dict[str, Any]],
 
     # ---- every watermark is a coverage claim that can actually be served
     watermark = [item for item in problems if item.get("kind") in _WATERMARK_PROBLEMS]
+    future = [item for item in watermark if item.get("kind") == "watermark_in_future"]
+    unbacked = [item for item in watermark if item.get("kind") == "watermark_without_successful_run"]
     affected = sorted({str(name) for item in watermark for name in (item.get("sources") or [])})
-    if watermark:
+    # How far ahead is the worst offender? The adapter clamps to today, so the cost of a small
+    # lead is overlap rather than discovery; a large lead means the stored claim is meaningless.
+    today = now.date()
+    lead_days = 0
+    for row in sources:
+        moment = parse_moment(row.get("watermark"))
+        if moment is not None:
+            lead_days = max(lead_days, (moment.date() - today).days)
+    if unbacked or (future and lead_days > WATERMARK_FUTURE_GRACE_DAYS):
         critical_hit = bool(set(affected) & V1_CRITICAL_SOURCES)
         checks.append(_check(
             "watermark_legal", FAIL,
-            # A future or unbacked watermark on a core channel stops discovery silently: the
-            # adapter still returns 200, the source still looks healthy and nothing arrives.
-            # That is a failed key capability, not a cosmetic warning.
             SEVERITY_CRITICAL if critical_hit else SEVERITY_MAJOR,
-            "At least one source states a coverage watermark it cannot have covered, or holds a"
-            " watermark with no successful run behind it. Discovery on that source cannot be"
-            " trusted even though its checks still succeed.",
-            problems=watermark, sources=affected,
+            "At least one source states a coverage watermark it cannot have covered by more than"
+            f" {WATERMARK_FUTURE_GRACE_DAYS} day(s), or holds a watermark with no successful run"
+            " behind it. Discovery on that source cannot be trusted even though its checks still"
+            " succeed.",
+            problems=watermark, sources=affected, max_lead_days=lead_days,
             critical_sources=sorted(set(affected) & V1_CRITICAL_SOURCES)))
+    elif future:
+        checks.append(_check(
+            "watermark_legal", WARN, SEVERITY_MAJOR,
+            f"A watermark leads the UTC date by {lead_days} day(s), inside the"
+            f" {WATERMARK_FUTURE_GRACE_DAYS}-day grace for source clock skew. The adapter clamps it"
+            " for the query, so this costs overlap rather than discovery; the stored claim is still"
+            " wrong and is reported.",
+            problems=watermark, sources=affected, max_lead_days=lead_days))
     else:
         checks.append(_check(
             "watermark_legal", PASS, SEVERITY_MAJOR,

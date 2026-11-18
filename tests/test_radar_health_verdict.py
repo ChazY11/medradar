@@ -219,3 +219,49 @@ def test_a_read_only_connection_reports_the_probe_as_unknown_not_failed(tmp_path
 
 def test_the_critical_source_list_names_the_v1_dependencies():
     assert {"pubmed", "crossref", "openfda_device", "openfda_recall"} <= V1_CRITICAL_SOURCES
+
+def _successful_run(ledger: ObservationLedger, source: str) -> None:
+    """A watermark is only credible when a successful run stands behind it."""
+    ledger.con.execute(
+        "INSERT OR REPLACE INTO sync_run(run_id, source, trigger, adapter_version,"
+        " status, started_at, finished_at) VALUES(?,?,?,?,?,'2026-11-18T00:00:00Z',"
+        " '2026-11-18T00:00:01Z')",
+        (source + ":test", source, "test", "test-adapter", "OK"))
+    ledger.con.commit()
+
+
+def _future_watermark(days_ahead: int) -> str:
+    from datetime import timedelta
+
+    from medradar.radar.ledger import utc_now
+
+    return (utc_now().date() + timedelta(days=days_ahead)).isoformat()
+
+
+def test_a_one_day_lead_is_a_warning_because_the_adapter_clamps_it(tmp_path: Path):
+    # Measured on production: PubMed advanced its watermark to 2026-11-19 at 2026-11-18T18:24Z,
+    # one day ahead of UTC. The adapter clamps a future watermark to today, so the cost is
+    # overlap, not discovery. Reporting that as UNHEALTHY on the day of deployment would train
+    # an operator to ignore the light.
+    ledger = _healthy_ledger(tmp_path)
+    _successful_run(ledger, "pubmed")
+    ledger.set_watermark("pubmed", _future_watermark(1))
+    payload = _status(ledger)
+    check = _check(payload, "watermark_legal")
+    assert check["status"] == "WARN"
+    assert check["severity"] == "MAJOR"
+    assert check["observed"]["max_lead_days"] == 1
+    assert payload["state"] == DEGRADED, payload["verdict"]["reasons"]
+    ledger.close()
+
+
+def test_a_lead_beyond_the_grace_window_is_a_failure(tmp_path: Path):
+    ledger = _healthy_ledger(tmp_path)
+    _successful_run(ledger, "pubmed")
+    ledger.set_watermark("pubmed", _future_watermark(3))
+    payload = _status(ledger)
+    check = _check(payload, "watermark_legal")
+    assert check["status"] == "FAIL"
+    assert check["severity"] == "CRITICAL"
+    assert payload["state"] == UNHEALTHY
+    ledger.close()
