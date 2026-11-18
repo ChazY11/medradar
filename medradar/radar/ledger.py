@@ -74,8 +74,10 @@ from .records import (
     canonical_json,
     changed_fields,
     content_hash,
+    normalize_moment,
     observation_id as make_observation_id,
     standard_identifiers,
+    utc_now,
     utc_now_iso,
     version_id as make_version_id,
 )
@@ -2113,6 +2115,19 @@ class ObservationLedger:
         ).fetchone()[0])
         if backfill_without_reason:
             problems.append({"kind": "backfill_without_reason", "count": backfill_without_reason})
+        # A watermark is a claim about coverage. One in the future cannot have been covered,
+        # and the adapters use it as a query lower bound, so it silently stops discovery
+        # (measured: Crossref 2027-02 on a 2026-11 ledger). Report it instead of trusting it.
+        future_watermarks = sorted(
+            row["source_id"]
+            for row in self.con.execute(
+                "SELECT source_id, watermark FROM source_state WHERE watermark IS NOT NULL"
+            )
+            if (normalize_moment(row["watermark"])[0] or "")[:10] > utc_now().date().isoformat()
+        )
+        if future_watermarks:
+            problems.append({"kind": "watermark_in_future", "count": len(future_watermarks),
+                             "sources": future_watermarks})
         watermark_ahead = int(self.con.execute(
             "SELECT COUNT(*) FROM source_state s WHERE s.watermark IS NOT NULL AND NOT EXISTS ("
             "  SELECT 1 FROM sync_run r WHERE r.source = s.source_id AND r.status IN ('OK','PARTIAL')"

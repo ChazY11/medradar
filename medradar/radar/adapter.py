@@ -67,15 +67,64 @@ from .records import (
     RUN_PARTIAL,
     SOURCE_STATUS_OK,
     MappingResult,
+    PRECISION_YEAR,
     Page,
     RawRecord,
     RecordOutcome,
     Scope,
     canonical_json,
+    normalize_moment,
+    utc_now,
     utc_now_iso,
 )
 
 MAX_PAGES_PER_SCOPE = 200
+
+
+def usable_incremental_watermark(value: Any, *, today: str | None = None) -> tuple[Any, dict[str, Any] | None]:
+    """Return a watermark an adapter can actually use as an incremental lower bound.
+
+    A watermark means "this source has been covered up to here", and every adapter turns it
+    into the lower bound of its query (Crossref from-created-date, PubMed mindate, openFDA
+    decision_date). Two stored forms cannot serve that purpose, and both were measured on the
+    production-shaped ledger copied on 2026-11-18:
+
+    * A watermark in the future. Crossref was stored as 2027-02. It cannot have been covered,
+      so obeying it asks the source for records that do not exist yet.
+    * A watermark at year or month precision. normalize_moment("2027-02") returns "2027-02",
+      "2027-02" is not an ISO date, date.fromisoformat raises, and the Crossref adapter falls
+      back to its EARLIEST constant of 2018-01-01. Every Crossref run therefore re-queried
+      nearly nine years of relevance-ranked literature three pages at a time, so recent
+      deposits competed with older, more topically central papers and the run still reported
+      OK. Because the stored value can never be replaced by a smaller one, it never healed.
+
+    The repair is non-destructive: a coarse watermark is widened to the START of its period
+    (the conservative lower bound - it can only request more, never skip), and a future
+    watermark is clamped to today. The stored state is left exactly as it was, because it is
+    evidence, and the adjustment is returned so the caller can report it.
+
+    Returns (usable_watermark, adjustment) where adjustment is None when nothing changed.
+    """
+    normalized, precision = normalize_moment(value)
+    if not normalized:
+        return value, None
+    text = str(normalized)
+    original = text
+    coarsened = False
+    if precision == PRECISION_YEAR and len(text) == 4:
+        text = text + "-01-01"
+        coarsened = True
+    elif len(text) == 7:
+        text = text + "-01"
+        coarsened = True
+    now = today or utc_now().date().isoformat()
+    clamped = text[:10] > now
+    if clamped:
+        text = now
+    if not (coarsened or clamped):
+        return value, None
+    return text, {"from": value, "to": text, "coarsened_to_period_start": coarsened,
+                  "clamped_from_future": clamped}
 
 
 @dataclass
@@ -217,7 +266,9 @@ def run_source(adapter: SourceAdapter, ctx: CollectContext, *, resume: bool = Tr
         enabled=bool(getattr(adapter, "enabled", True)),
     )
     watermark_before = (state_before or {}).get("watermark")
-    ctx.watermark = watermark_before
+    # A stored watermark is evidence, not necessarily a usable query bound: see
+    # usable_incremental_watermark for the two forms that silently break discovery.
+    ctx.watermark, watermark_adjustment = usable_incremental_watermark(watermark_before)
     ctx.cursor = (state_before or {}).get("cursor") or {}
 
     if not bool((state_before or {}).get("enabled", 1)):
@@ -424,6 +475,9 @@ def run_source(adapter: SourceAdapter, ctx: CollectContext, *, resume: bool = Tr
         "errors": errors,
         "watermark_before": watermark_before,
         "watermark_after": watermark_after,
+        # Reported, not silently fixed: an adjustment means the stored state could not be
+        # used as a query bound and an operator has to see it.
+        "watermark_adjustment": watermark_adjustment,
         "dry_run": ctx.dry_run,
     }
 
