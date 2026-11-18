@@ -571,7 +571,6 @@ class ObservationLedger:
             self._set_meta("created_at", utc_now_iso())
             return
         found = self._get_meta("schema_version")
-        legacy_admissions = False
         if found in ("radar-ledger-v1", "radar-ledger-v2"):
             if self.read_only:
                 self.con.close()
@@ -582,7 +581,7 @@ class ObservationLedger:
                 )
             if found == "radar-ledger-v1":
                 self._migrate_status_history_key()
-            legacy_admissions = self._prepare_admission_migration()
+            self._prepare_admission_migration()
             self._set_meta("schema_version", SCHEMA_VERSION)
             found = SCHEMA_VERSION
         if found != SCHEMA_VERSION:
@@ -596,8 +595,14 @@ class ObservationLedger:
         if self.read_only:
             return
         self.con.executescript(SCHEMA)  # idempotent: adds any table missing from an older build
-        if legacy_admissions:
-            self._finish_admission_migration()
+        # Always try to finish the admission copy, not only on the run that renamed the table.
+        # The version bump above is committed before this point, so a crash in between leaves a
+        # ledger that claims to be v3 while every judgement still lives in the renamed v2 table.
+        # That state used to be permanent: the next open saw v3, skipped the legacy branch, and
+        # the product read zero admissions (measured: 8,360 rows orphaned, reproducible by
+        # renaming the table and bumping the version by hand). The copy is idempotent -
+        # INSERT OR IGNORE on a deterministic legacy evidence key - so resuming is free.
+        self._finish_admission_migration()
         self._ensure_work_key_column()
         self._refresh_admission_current()
 
