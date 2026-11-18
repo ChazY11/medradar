@@ -59,6 +59,7 @@ from datetime import datetime, timedelta, timezone
 from typing import Any, Iterable, Mapping, Sequence
 
 from .recall import is_recall_payload, screen_recall
+from .records import effective_precision
 
 # --------------------------------------------------------------------------- version
 #: Bumped whenever the vocabulary, thresholds or policy change. Stored on every decision.
@@ -443,8 +444,13 @@ def index_text(payload: Mapping[str, Any]) -> str:
 
 
 def _precision_of(value: str | None, stated: str | None = None) -> str:
-    if stated and stated not in ("", "unknown"):
-        return str(stated)
+    # A stored label can understate the value it accompanies (a YYYY-MM value stored as
+    # "year"). Freshness is graded from the earliest instant the date can denote, so an
+    # understated label makes a recent record look old and depresses its grade. The value
+    # wins when it is more specific; it can only sharpen the claim.
+    label = str(stated or "").strip()
+    if label not in ("", "unknown"):
+        return effective_precision(value, label)
     if not value:
         return "unknown"
     text = str(value)

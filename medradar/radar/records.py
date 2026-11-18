@@ -74,9 +74,15 @@ CHANGE_LABELS_ZH = {
 
 PRECISION_DATETIME = "datetime"
 PRECISION_DATE = "date"
+PRECISION_MONTH = "month"
 PRECISION_YEAR = "year"
 PRECISION_UNKNOWN = "unknown"
-PRECISIONS = (PRECISION_DATETIME, PRECISION_DATE, PRECISION_YEAR, PRECISION_UNKNOWN)
+# Ordered from most to least specific. A month is a real precision class: a value of the form
+# YYYY-MM used to be labelled "year", which understated what the source said and, because
+# freshness is graded from the earliest instant a date can denote, made a November record look
+# ten months old.
+PRECISIONS = (PRECISION_DATETIME, PRECISION_DATE, PRECISION_MONTH, PRECISION_YEAR,
+              PRECISION_UNKNOWN)
 
 ORIGIN_LIVE = "LIVE"
 ORIGIN_BACKFILLED = "BACKFILLED"
@@ -300,7 +306,10 @@ def normalize_moment(value: Any) -> tuple[str | None, str]:
     * aware datetime -> ``YYYY-MM-DDTHH:MM:SS+00:00`` (precision ``datetime``)
     * naive datetime -> the date part only, precision ``date``; a zone is never guessed
     * date -> ``YYYY-MM-DD`` (precision ``date``), **not** a fake midnight
-    * ``YYYY`` / ``YYYY-MM`` -> precision ``year``
+    * ``YYYY`` -> precision ``year``; ``YYYY-MM`` -> precision ``month``
+
+    The two are different claims and are kept apart: a month value means the source said
+    which month, not merely which year.
     """
     if value is None:
         return None, PRECISION_UNKNOWN
@@ -317,7 +326,7 @@ def normalize_moment(value: Any) -> tuple[str | None, str]:
     if _YEAR_ONLY.match(text):
         return text, PRECISION_YEAR
     if _YEAR_MONTH.match(text):
-        return text, PRECISION_YEAR
+        return text, PRECISION_MONTH
     try:
         parsed = datetime.fromisoformat(text.replace("Z", "+00:00"))
     except ValueError:
@@ -331,6 +340,31 @@ def normalize_moment(value: Any) -> tuple[str | None, str]:
         return datetime.strptime(text, "%Y/%m/%d").date().isoformat(), PRECISION_DATE
     except ValueError:
         return None, PRECISION_UNKNOWN
+
+
+_PRECISION_RANK = {PRECISION_DATETIME: 4, PRECISION_DATE: 3, PRECISION_MONTH: 2,
+                   PRECISION_YEAR: 1, PRECISION_UNKNOWN: 0}
+
+
+def effective_precision(value: Any, stated: str | None) -> str:
+    """The precision a stored value actually has, when its label understates it.
+
+    The ledger stored ``YYYY-MM`` values with precision ``year`` because the model had no
+    month class. The stored *value* was right and the label was wrong, and the ledger is
+    append-only, so the label is corrected at read time from the value's own granularity
+    instead of rewriting evidence. A label that is already at least as specific is kept:
+    this can only sharpen a claim, never invent one.
+    """
+    text = str(value or "").strip()
+    derived = PRECISION_UNKNOWN
+    if len(text) == 7 and text[4:5] == "-" and text[:4].isdigit() and text[5:].isdigit():
+        derived = PRECISION_MONTH
+    elif len(text) >= 10 and text[4:5] == "-" and text[7:8] == "-":
+        derived = PRECISION_DATE
+    label = str(stated or "").strip() or PRECISION_UNKNOWN
+    if label not in _PRECISION_RANK:
+        label = PRECISION_UNKNOWN
+    return derived if _PRECISION_RANK[derived] > _PRECISION_RANK[label] else label
 
 
 def parse_moment(value: Any, precision: str | None = None) -> datetime | None:

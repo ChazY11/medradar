@@ -225,7 +225,7 @@ def _publication_moment(item: Mapping[str, Any]) -> tuple[str | None, str]:
                 if len(values) >= 3:
                     return f"{values[0]:04d}-{values[1]:02d}-{values[2]:02d}", "date"
                 if len(values) == 2:
-                    return f"{values[0]:04d}-{values[1]:02d}", "year"
+                    return f"{values[0]:04d}-{values[1]:02d}", "month"
                 if len(values) == 1:
                     return f"{values[0]:04d}", "year"
     return None, "unknown"

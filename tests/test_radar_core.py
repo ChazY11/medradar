@@ -32,6 +32,7 @@ from medradar.radar.http import (
 from medradar.radar.records import (
     PRECISION_DATE,
     PRECISION_DATETIME,
+    PRECISION_MONTH,
     PRECISION_UNKNOWN,
     PRECISION_YEAR,
     RawRecord,
@@ -69,8 +70,11 @@ def test_naive_datetime_is_downgraded_to_date_rather_than_guessing_a_zone():
 
 
 def test_year_and_year_month_precision_are_preserved():
+    # A month is its own claim. Labelling "2026-07" as a year understated what the source
+    # said, and because freshness is graded from the earliest instant a date can denote,
+    # it made a July record look as if it might be from January.
     assert normalize_moment("2026") == ("2026", PRECISION_YEAR)
-    assert normalize_moment("2026-07") == ("2026-07", PRECISION_YEAR)
+    assert normalize_moment("2026-07") == ("2026-07", PRECISION_MONTH)
 
 
 def test_missing_time_is_unknown_and_never_today():

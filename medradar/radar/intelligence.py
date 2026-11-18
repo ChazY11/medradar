@@ -38,7 +38,10 @@ from datetime import date, timedelta
 from typing import Any, Mapping, Sequence
 
 from .assessment import IMPORTANCE_CRITICAL, IMPORTANCE_HIGH, IMPORTANCE_LEVELS, IMPORTANCE_MEDIUM
-from .records import CHANGE_UPDATED, ORIGIN_BACKFILLED, PHASE_BACKFILL, PRECISION_UNKNOWN, parse_moment
+from .records import (
+    CHANGE_UPDATED, ORIGIN_BACKFILLED, PHASE_BACKFILL, PRECISION_UNKNOWN,
+    effective_precision, parse_moment,
+)
 from .recall import is_recall_payload, recall_event_id
 
 #: Bumped when the view or the brief policy changes. Recorded on every brief.
@@ -420,7 +423,10 @@ def _uncertainty(row: Mapping[str, Any], novelty: str, review: str) -> list[str]
         terminated = str(payload.get("event_date_terminated") or "").strip()
         if terminated:
             notes.append("the source states the action ended on " + terminated)
-    precision = str(row.get("published_at_precision") or row.get("event_at_precision") or "unknown")
+    precision = effective_precision(
+        row.get("published_at") or row.get("event_at"),
+        str(row.get("published_at_precision") or row.get("event_at_precision") or "unknown"),
+    )
     if precision in ("year", "month"):
         notes.append("the source states the date at " + precision + " precision, not to the day")
     if not row.get("published_at"):
@@ -437,9 +443,11 @@ def _uncertainty(row: Mapping[str, Any], novelty: str, review: str) -> list[str]
 def _dates(row: Mapping[str, Any]) -> dict[str, Any]:
     return {
         "event_date": row.get("event_at"),
-        "event_date_precision": row.get("event_at_precision") or "unknown",
+        "event_date_precision": effective_precision(
+            row.get("event_at"), str(row.get("event_at_precision") or "unknown")),
         "published_date": row.get("published_at"),
-        "published_date_precision": row.get("published_at_precision") or "unknown",
+        "published_date_precision": effective_precision(
+            row.get("published_at"), str(row.get("published_at_precision") or "unknown")),
         "first_observed_at": row.get("first_observed_at"),
         "source_updated_at": row.get("source_updated_at"),
     }

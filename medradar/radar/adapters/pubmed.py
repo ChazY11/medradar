@@ -319,7 +319,7 @@ def _publication_moment(article: ET.Element) -> tuple[str | None, str]:
         if year and month and day.isdigit():
             return f"{year}-{_month_number(month):02d}-{int(day):02d}", "date"
         if year and month:
-            return f"{year}-{_month_number(month):02d}", "year"
+            return f"{year}-{_month_number(month):02d}", "month"
         if year:
             return year, "year"
         if medline:

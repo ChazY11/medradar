@@ -37,7 +37,7 @@ from .graph import (
 from .health import change_stream, detection_latency, source_status, system_status
 from .ledger import ObservationLedger
 from .paths import radar_paths
-from .records import CHANGE_STATES, PHASE_LABELS_EN, PHASES
+from .records import CHANGE_STATES, PHASE_LABELS_EN, PHASES, effective_precision
 from .relevance import ADMISSION_VERSION, HIGH_RELEVANCE, NEEDS_REVIEW, TIER_ORDER
 from .taxonomy import Taxonomy, TaxonomyError, load_taxonomy
 
@@ -669,9 +669,11 @@ def _event(row: dict[str, Any], taxonomy: Taxonomy) -> dict[str, Any]:
         "source_url": row.get("source_url"),
         "record_type": row.get("record_type"),
         "event_date": row.get("event_at"),
-        "event_date_precision": row.get("event_at_precision"),
+        "event_date_precision": effective_precision(
+            row.get("event_at"), row.get("event_at_precision")),
         "source_published_at": row.get("published_at"),
-        "source_published_at_precision": row.get("published_at_precision"),
+        "source_published_at_precision": effective_precision(
+            row.get("published_at"), row.get("published_at_precision")),
         "first_observed_at": row.get("first_observed_at"),
         "admission": row.get("admission"),
         "last_checked_at": row.get("last_checked_at"),
