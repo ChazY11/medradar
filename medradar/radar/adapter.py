@@ -278,10 +278,14 @@ def run_source(adapter: SourceAdapter, ctx: CollectContext, *, resume: bool = Tr
             "counters": _zero_counters(), "errors": [],
         }
 
-    run = ledger.last_resumable_run(source) if resume else None
+    # A dry run must not leave a sync_run an operator can read as a stuck real cycle: measured
+    # on this ledger, a dry run left a RUNNING row that the next status report showed forever.
+    run = None if ctx.dry_run else (ledger.last_resumable_run(source) if resume else None)
     checkpoints: dict[str, dict[str, Any]] = {}
     resumed = False
-    if run and run["status"] in ("INTERRUPTED", "PARTIAL", "FAILED"):
+    if ctx.dry_run:
+        ctx.run_id = "dry-run:" + source
+    elif run and run["status"] in ("INTERRUPTED", "PARTIAL", "FAILED"):
         ctx.run_id = run["run_id"]
         resumed = True
         if run["status"] == "INTERRUPTED":
@@ -307,10 +311,12 @@ def run_source(adapter: SourceAdapter, ctx: CollectContext, *, resume: bool = Tr
         scopes = list(adapter.plan(ctx))
     except Exception as error:  # noqa: BLE001 - a planning failure is a source failure
         kind, retryable = classify_exception(error)
-        ledger.note_source_failure(source, run_id=ctx.run_id, message=f"{type(error).__name__}: {error}",
-                                   kind=kind, retryable=retryable)
-        ledger.finish_run(ctx.run_id, status=RUN_FAILED, counters=counters,
-                          errors=[{"phase": "plan", "kind": kind, "message": str(error)[:800]}])
+        if not ctx.dry_run:
+            ledger.note_source_failure(source, run_id=ctx.run_id,
+                                       message=f"{type(error).__name__}: {error}",
+                                       kind=kind, retryable=retryable)
+            ledger.finish_run(ctx.run_id, status=RUN_FAILED, counters=counters,
+                              errors=[{"phase": "plan", "kind": kind, "message": str(error)[:800]}])
         return {
             "source": source, "status": RUN_FAILED, "outcome": OUTCOME_FETCH_FAILED,
             "counters": counters, "errors": [{"phase": "plan", "kind": kind, "message": str(error)}],
@@ -348,9 +354,10 @@ def run_source(adapter: SourceAdapter, ctx: CollectContext, *, resume: bool = Tr
                 scope_ok = False
                 errors.append({"phase": "fetch", "scope": scope.scope_id, "kind": kind,
                                "message": f"{type(error).__name__}: {error}"[:800]})
-                ledger.note_source_failure(source, run_id=ctx.run_id,
-                                           message=f"{scope.scope_id}: {type(error).__name__}: {error}",
-                                           kind=kind, retryable=retryable)
+                if not ctx.dry_run:
+                    ledger.note_source_failure(source, run_id=ctx.run_id,
+                                               message=f"{scope.scope_id}: {type(error).__name__}: {error}",
+                                               kind=kind, retryable=retryable)
                 ctx.emit(f"[{source}] scope {scope.scope_id} failed: {kind}: {error}")
                 break
 

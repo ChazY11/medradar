@@ -252,6 +252,19 @@ def standard_identifiers(record: "RawRecord") -> tuple[tuple[str, str], ...]:
         pmid = normalize_pmid(candidate)
         if pmid:
             found.append(("PMID", pmid))
+    # Source-specific official identifiers (for example the FDA recall EVENT number that groups
+    # several recalled products under one action). They are declared by the adapter, not guessed,
+    # and they live in the same identifier table as DOI/PMID so an event-level count is a GROUP BY
+    # rather than a second fact store. Unknown shapes are ignored, never coerced.
+    for item in record.extra.get("identifiers") or ():
+        try:
+            declared_kind, declared_value = item
+        except (TypeError, ValueError):
+            continue
+        declared_kind = str(declared_kind or "").strip().upper()
+        declared_value = str(declared_value or "").strip()
+        if declared_kind and declared_value:
+            found.append((declared_kind, declared_value))
     if kind == "DOI":
         doi = normalize_doi(official[4:])
         if doi:

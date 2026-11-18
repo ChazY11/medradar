@@ -51,6 +51,9 @@ from .ledger import ObservationLedger
 from .relevance import ADMISSION_VERSION, classify_observation, now_iso, rules_digest
 from .records import (
     MAPPING_VERSION,
+    ORIGIN_BACKFILLED,
+    ORIGIN_LIVE,
+    PHASE_BACKFILL,
     PROC_AI_PENDING,
     PROC_LINKED,
     PROC_PUBLISHED,
@@ -131,9 +134,16 @@ def ingest(
     limit: int = 0,
     dry_run: bool = False,
     resume: bool = True,
+    origin: str = ORIGIN_LIVE,
+    backfill_reason: str | None = None,
     log: Any = print,
 ) -> IngestReport:
-    """Run each adapter independently. One failure never stops another source."""
+    """Run each adapter independently. One failure never stops another source.
+
+    origin/backfill_reason separate a deliberate historical import from live discovery. A
+    BACKFILLED observation records why it was imported, and the ledger refuses one without a
+    reason; the weekly brief then cannot present an imported history as this week's news.
+    """
     started = time.time()
     report = IngestReport(started_at=time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()))
     transport = fetcher or PoliteFetcher()
@@ -145,6 +155,9 @@ def ingest(
             adapter_version=adapter.adapter_version,
             limit=limit,
             dry_run=dry_run,
+            origin=origin,
+            backfill_reason=backfill_reason,
+            phase=PHASE_BACKFILL if origin == ORIGIN_BACKFILLED else None,
             log=log,
         )
         try:
@@ -348,6 +361,21 @@ def _rebuild_record(ledger: ObservationLedger, observation_id: str,
             "product_codes": [payload.get("product_code")] if payload.get("product_code") else [],
             "product_hint": payload.get("device_name") or payload.get("trade_name"),
             "product_identifier": head.get("official_identifier"),
+        })
+    elif source == "openfda_recall":
+        from .recall import RECALL_EVENT_IDENTIFIER, RECALL_PRODUCT_IDENTIFIER
+
+        event_id = str(payload.get("res_event_number") or "").strip()
+        identifiers = [(RECALL_PRODUCT_IDENTIFIER, str(head.get("official_identifier") or ""))]
+        if event_id:
+            identifiers.append((RECALL_EVENT_IDENTIFIER, event_id))
+        extra.update({
+            "organization_hint": payload.get("recalling_firm"),
+            "organization_role": "regulatory_applicant",
+            "product_codes": [payload.get("product_code")] if payload.get("product_code") else [],
+            "product_hint": payload.get("product_description"),
+            "product_identifier": head.get("official_identifier"),
+            "identifiers": identifiers,
         })
     elif source in ("pubmed", "crossref"):
         affiliations = list(payload.get("affiliations") or [])

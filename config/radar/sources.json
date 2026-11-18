@@ -39,6 +39,34 @@
       }
     },
     {
+      "id": "openfda_recall",
+      "display_name": "FDA device recalls (openFDA)",
+      "kind": "api",
+      "record_types": ["regulatory_record"],
+      "adapter": "openfda_recall",
+      "enabled": true,
+      "access": {
+        "verification": "ENABLED",
+        "read_path": "https://api.fda.gov/device/recall.json",
+        "robots": "not applicable: documented public API host route",
+        "evidence": "docs/v1/001/RECALL_COVERAGE.md"
+      },
+      "licence": {
+        "name": "openFDA terms of service; U.S. Government work, public domain",
+        "url": "https://open.fda.gov/terms/",
+        "redistribution": "Recall rows are public domain; MedRadar stores the official recall numbers, the recall event number, the product description, the reason for recall, the status and the official URL with attribution."
+      },
+      "cadence_hours": 24,
+      "cadence_basis": "openFDA declares a weekly recall refresh; a 24h check notices a new official version within a day without polling an unchanged dataset.",
+      "incremental": "all-code event_date_posted window with a 30-day overlap, plus a per-product-code inventory that is repeated only when the official endpoint version changes",
+      "reuses": "medradar.data_pipeline.openfda (URL construction), medradar.data_pipeline.model.SOURCES (endpoint + official URL), the committed taxonomy (product codes and organisation aliases)",
+      "queries": {
+        "product_codes": "derived from config/radar/topics.json at run time; never a second code register",
+        "window": "event_date_posted:[watermark - 30d TO today], every product code, screened locally",
+        "note": "A row is one recalled product; an FDA recall event (res_event_number) can cover several rows, so event counts are a GROUP BY on the stored identifier, never a row count."
+      }
+    },
+    {
       "id": "pubmed",
       "display_name": "PubMed / NCBI E-utilities",
       "kind": "api",

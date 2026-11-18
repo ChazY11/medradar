@@ -12,12 +12,14 @@ from .crossref import CrossrefAdapter
 from .draeger import DraegerAdapter
 from .gehealthcare import GEHealthCareAdapter
 from .openfda import OpenFDAAdapter
+from .openfda_recall import OpenFDARecallAdapter
 from .philips import PhilipsAdapter
 from .pubmed import PubMedAdapter
 
 #: source_id -> factory(taxonomy) -> adapter
 FACTORIES: dict[str, Callable[[Any], Any]] = {
     "openfda_device": lambda taxonomy: OpenFDAAdapter(taxonomy),
+    "openfda_recall": lambda taxonomy: OpenFDARecallAdapter(taxonomy),
     "pubmed": lambda taxonomy: PubMedAdapter(taxonomy),
     "crossref": lambda taxonomy: CrossrefAdapter(taxonomy),
     "philips_official": lambda taxonomy: PhilipsAdapter(taxonomy),
@@ -28,6 +30,9 @@ FACTORIES: dict[str, Callable[[Any], Any]] = {
 #: Order the scheduler and the CLI use by default: cheapest verified API first.
 DEFAULT_ORDER: tuple[str, ...] = (
     "openfda_device",
+    # The safety channel is cheap (three API pages per code) and is the highest-value source;
+    # it runs before the literature sources so a slow PubMed cycle cannot delay it.
+    "openfda_recall",
     "pubmed",
     "crossref",
     "philips_official",
@@ -61,6 +66,7 @@ __all__ = [
     "FACTORIES",
     "GEHealthCareAdapter",
     "OpenFDAAdapter",
+    "OpenFDARecallAdapter",
     "PhilipsAdapter",
     "PubMedAdapter",
     "available_sources",
