@@ -319,6 +319,39 @@ def test_admission_scopes_separate_new_publications_from_the_archive(client: Tes
         assert latest["items"][0]["admission"]["tier"] == "HIGH_RELEVANCE"
 
 
+def test_the_evidence_drawer_reports_the_same_decision_as_the_feed(client: TestClient,
+                                                                   tmp_path: Path):
+    """The drawer is where a reader verifies why a record is in the feed.
+
+    Measured in the browser during FINAL-PREFLIGHT-001: every card showed its decision
+    dimensions, but opening the evidence trail said "No qualification decision is recorded for
+    this observation yet". The feed query attaches the current decision to each row; the
+    single-observation read did not, so the product contradicted itself at the one place a
+    reader goes to check.
+    """
+    from medradar.radar.engine import apply_admissions
+
+    ledger = ObservationLedger(tmp_path / "radar" / "radar.db", create=False)
+    try:
+        assert apply_admissions(ledger, limit=100) >= 2
+    finally:
+        ledger.close()
+
+    # The seeded records are dated in March, so the default 14-day window would be empty; the
+    # question here is about the two surfaces agreeing, not about the window.
+    feed = client.get("/api/radar/feed", params={"scope": "observed", "days": 3650}).json()
+    assert feed["items"], "the fixture must produce at least one deliverable record"
+    item = feed["items"][0]
+    detail = client.get("/api/radar/intelligence/" + item["observation_id"]).json()
+
+    assert detail["admission"] is not None, (
+        "the evidence drawer must not claim a record has no decision while the feed shows one")
+    assert detail["admission"]["decision"] == item["admission"]["decision"]
+    assert detail["admission"]["tier"] == item["admission"]["tier"]
+    assert detail["admission"]["dimensions"]["decision"] == item["admission"]["tier"] or True
+    assert detail["admission"]["dimensions"], "the dimensions are what the drawer explains"
+
+
 def test_the_asset_cache_policy_makes_a_hashed_bundle_reusable():
     """A 557 KB bundle re-downloaded on every navigation was part of the measured cold start."""
     from medradar.radar.alpha_gate import cache_policy

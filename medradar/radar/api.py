@@ -417,6 +417,9 @@ def build_router(service: RadarService | None = None) -> APIRouter:
             if row is None:
                 raise HTTPException(404, detail={"code": "observation_not_found",
                                                  "observation_id": observation_id})
+            # The feed attaches the current decision to each row; this read has to do it
+            # explicitly, otherwise the evidence drawer claims no decision exists.
+            row["admission"] = ledger.current_admission(observation_id)
             versions = ledger.versions(observation_id)
             changes = ledger.changes_for(observation_id)
             mappings = ledger.mapping_history(observation_id)

@@ -1698,6 +1698,19 @@ class ObservationLedger:
                 }
         return found
 
+    def current_admission(self, observation_id: str,
+                          admission_version: str | None = None) -> dict[str, Any] | None:
+        """The current decision for one observation, in the same shape the feed uses.
+
+        The feed query attaches this to every row it returns; a single-observation read does
+        not, and the evidence drawer therefore rendered "no qualification decision is recorded"
+        for records that do have one. One accessor keeps both surfaces on the same projection.
+        """
+        from .relevance import ADMISSION_VERSION as _CURRENT
+
+        version = str(admission_version or _CURRENT)
+        return self._admissions_for([observation_id], version).get(observation_id)
+
     def admission_history(self, observation_id: str,
                           admission_version: str | None = None) -> list[dict[str, Any]]:
         """Every decision ever recorded for one observation, oldest first.
