@@ -28,8 +28,11 @@ medical_domain       MEDICAL | NON_MEDICAL | UNCERTAIN
 monitoring_relevance DIRECT | TRANSFER | CLINICAL | MEDICAL_UNRELATED | NON_MEDICAL
 entity_link          NONE | AFFILIATION | VENDOR | APPLICANT
 freshness            FRESH | RECENT | STALE | UNKNOWN (from the source-stated date and its precision)
-importance           HIGH | MEDIUM | LOW (regulatory safety actions and first-of-kind evidence rank
-                     higher; a routine clearance is not a breakthrough)
+importance           CRITICAL | HIGH | MEDIUM | LOW, graded by grade_importance() from the record
+                     type, the safety content of an official reason for recall, the monitoring
+                     relevance, the freshness and whether the record evaluates the measurement
+                     itself. Every grade carries its reasons in dimensions["importance_reasons"];
+                     no quota and no fixed ratio is imposed.
 confidence           0..1 in the monitoring_relevance judgement
 decision             FEED | REVIEW | EXCLUDED
 
@@ -55,11 +58,13 @@ from dataclasses import dataclass, field
 from datetime import datetime, timedelta, timezone
 from typing import Any, Iterable, Mapping, Sequence
 
+from .recall import is_recall_payload, screen_recall
+
 # --------------------------------------------------------------------------- version
 #: Bumped whenever the vocabulary, thresholds or policy change. Stored on every decision.
-ASSESSMENT_VERSION = "radar-assessment-2026.11.19"
+ASSESSMENT_VERSION = "radar-assessment-2026.11.21"
 ADMISSION_VERSION = ASSESSMENT_VERSION  # backward-compatible name used by the ledger and API
-RULES_VERSION = "assessment-rules-2026.11.19"
+RULES_VERSION = "assessment-rules-2026.11.21"
 
 # --------------------------------------------------------------------------- tiers
 HIGH_RELEVANCE = "HIGH_RELEVANCE"
@@ -109,10 +114,13 @@ STALE = "STALE"
 FRESHNESS_UNKNOWN = "UNKNOWN"
 FRESHNESS_VALUES = (FRESH, RECENT, STALE, FRESHNESS_UNKNOWN)
 
+IMPORTANCE_CRITICAL = "CRITICAL"
 IMPORTANCE_HIGH = "HIGH"
 IMPORTANCE_MEDIUM = "MEDIUM"
 IMPORTANCE_LOW = "LOW"
-IMPORTANCE_VALUES = (IMPORTANCE_HIGH, IMPORTANCE_MEDIUM, IMPORTANCE_LOW)
+#: Ordered most important first; the brief and the API render in this order.
+IMPORTANCE_LEVELS = (IMPORTANCE_CRITICAL, IMPORTANCE_HIGH, IMPORTANCE_MEDIUM, IMPORTANCE_LOW)
+IMPORTANCE_VALUES = IMPORTANCE_LEVELS
 
 #: Record types whose text is the issuer's own statement about the subject.
 PRIMARY_RECORD_TYPES = {"regulatory_record", "press_release", "product_document"}
@@ -529,6 +537,185 @@ def _registry_loaded() -> Any | None:
         return None
 
 
+# --------------------------------------------------------------------- safety grading
+#: Language an official reason for recall uses when the failure can reach the patient. It is the
+#: only signal that lifts a confirmed recall from HIGH to CRITICAL, and the matched phrase is
+#: quoted in the recorded reason instead of being asserted.
+HARM_SIGNAL = _rx(
+    r"\bcould (?:cause|result in|lead to)\b", r"\bmay (?:cause|result in|lead to)\b",
+    r"\bpotential(?:ly)? (?:for )?(?:serious|fatal|harm|injury)\b", r"\bpatient harm\b",
+    r"\bserious (?:injury|adverse event|patient injury)\b", r"\bdeath\b", r"\bfatal\b",
+    r"\bloss of (?:monitoring|connectivity|alarm|data)\b",
+    r"\bfail(?:s|ed|ure)? to (?:alarm|alert|monitor|display)\b",
+    r"\bno (?:audible )?(?:alarm|alert|notification)\b",
+    r"\bdelay(?:ed)? (?:in )?(?:treatment|therapy|diagnosis|care)\b",
+    r"\binaccurate (?:reading|measurement|value|result|data|display)s?\b",
+    r"\bincorrect (?:reading|measurement|value|result|data|display|parameter)s?\b",
+    r"\b(?:may|can|could) (?:display|report|show) (?:an? )?(?:incorrect|inaccurate|wrong)\b",
+    r"\bfreez(?:e|es|ing)\b", r"\block(?:s|ed|ing)? ?up\b",
+    r"\bunresponsive (?:screen|display|device|monitor|system)\b",
+    r"\bmiss(?:ed|es)? (?:an? )?(?:alarm|arrhythmia|alert|event|desaturation)\b",
+    r"\bwrong (?:patient|value|reading|data)\b",
+    r"\bnot (?:meet|comply with)\b.{0,40}\bperformance standard\b",
+)
+#: A title that states a review, a commentary or a perspective is not primary evidence. It is still
+#: admissible (a systematic review of NIBP accuracy is genuinely valuable), but a narrative review
+#: cannot reach HIGH on the strength of the word "accuracy" in its title.
+REVIEW_NOT_PRIMARY = _rx(
+    r"\bnarrative review\b", r"\bperspective\b", r"\bcommentary\b", r"\bviewpoint\b",
+    r"\beditorial\b", r"\bbeyond\b", r"\boverview\b",
+)
+PRIMARY_SYNTHESIS = _rx(r"\bsystematic review\b", r"\bmeta-?analysis\b", r"\bscoping review\b")
+#: A study design too weak to support "this changes how you verify your device": one patient, a
+#: case report, a case series. It caps the grade instead of excluding the record.
+WEAK_DESIGN = _rx(
+    r"\bsingle[- ]patient\b", r"\bcase (?:study|series|report)\b", r"\bn\s*=\s*1\b",
+    r"\bsingle[- ]centre feasibility\b",
+)
+
+
+# --------------------------------------------------------------------- safety grading
+_IMPORTANCE_RANK = {
+    IMPORTANCE_CRITICAL: 0,
+    IMPORTANCE_HIGH: 1,
+    IMPORTANCE_MEDIUM: 2,
+    IMPORTANCE_LOW: 3,
+}
+
+
+def merge_importance(graded: str, declared: str | None) -> str:
+    """The graded level, with one veto a decision branch is allowed to keep.
+
+    A branch that has positively identified a non-intelligence record (a case vignette, an
+    animal study, an editorial notice) may say LOW, and that veto holds. A branch may NOT raise
+    a level: doing so would let a template override staleness and evidence strength, which is
+    exactly how the previous round ended up with 8,590 MEDIUM out of 8,593.
+    """
+    if declared == IMPORTANCE_LOW:
+        return IMPORTANCE_LOW
+    return graded
+
+
+def _safety_text(payload: Mapping[str, Any]) -> str:
+    """The source's own statement of what went wrong (not our summary of it)."""
+    return " ".join(str(payload.get(field) or "") for field in
+                    ("product_description", "reason_for_recall", "action", "root_cause_description"))
+
+
+def _device_class(payload: Mapping[str, Any]) -> str | None:
+    """The FDA device class the endpoint states for the recall row, when it states one."""
+    official = payload.get("openfda_device")
+    if not isinstance(official, Mapping):
+        return None
+    value = str(official.get("device_class") or "").strip()
+    return value or None
+
+
+def grade_importance(
+    *,
+    record_type: str,
+    category: str,
+    decision: str,
+    relevance: str | None = None,
+    freshness: str | None = None,
+    payload: Mapping[str, Any] | None = None,
+    recall_verdict: Mapping[str, Any] | None = None,
+    strict_evaluation: bool = False,
+    title: str | None = None,
+) -> tuple[str, list[str]]:
+    """Grade one record CRITICAL / HIGH / MEDIUM / LOW and say exactly why.
+
+    The rules are ordered and each returns its reasons, so a reader can check the grade instead
+    of trusting it. Nothing is quota-driven: a quiet week can be all LOW and a bad week can hold
+    three CRITICALs.
+
+    CRITICAL  a still-open safety action on a monitoring device whose official reason states a
+              patient-safety consequence (loss of monitoring, failed alarm, incorrect value,
+              freezing, harm), or an FDA class-1 action on a monitoring device.
+    HIGH      a still-open safety action on a monitoring device without a stated consequence; or
+              fresh evidence that evaluates the measurement itself (accuracy/agreement/bias).
+    MEDIUM    a monitored-device regulatory decision in the last 12 months, a direct monitoring
+              record published in the last 12 months, or a recent record that still needs review.
+    LOW       everything else, including historical archive and out-of-scope records.
+    """
+    payload = dict(payload or {})
+    reasons: list[str] = []
+    status = str(payload.get("recall_status") or "").strip()
+    terminated = status.lower().startswith("terminated")
+    device_class = _device_class(payload)
+    recall = recall_verdict if recall_verdict is not None else None
+    in_scope_recall = bool(recall and recall.get("in_scope"))
+
+    if in_scope_recall:
+        reasons.append(str(recall.get("reason") or "a safety action on a monitoring device"))
+        text = _safety_text(payload)
+        matches = sorted({match.group(0).lower() for match in HARM_SIGNAL.finditer(text)})
+        if terminated:
+            reasons.append("the action is recorded as terminated (" + (status or "unknown") + ")")
+        else:
+            reasons.append("the action is still open (" + (status or "status not stated") + ")")
+        if matches and not terminated:
+            reasons.append(
+                "the official reason states a potential patient-safety consequence: "
+                + ", ".join(matches[:3])
+            )
+            if device_class == "1":
+                reasons.append("FDA device class 1")
+            return IMPORTANCE_CRITICAL, reasons
+        if device_class == "1" and not terminated:
+            reasons.append("FDA device class 1 action on a monitoring device")
+            return IMPORTANCE_CRITICAL, reasons
+        reasons.append("the official reason states no patient-safety consequence of its own")
+        return (IMPORTANCE_MEDIUM if terminated else IMPORTANCE_HIGH), reasons
+
+    if recall is not None and not recall.get("in_scope"):
+        return IMPORTANCE_LOW, [str(recall.get("reason") or "not a monitoring device")]
+
+    title_text = str(title or "")
+    weak = bool(WEAK_DESIGN.search(title_text))
+    review_piece = bool(REVIEW_NOT_PRIMARY.search(title_text)) and not bool(
+        PRIMARY_SYNTHESIS.search(title_text))
+    if (relevance == DIRECT and freshness == FRESH and strict_evaluation and not weak
+            and not review_piece):
+        return IMPORTANCE_HIGH, [
+            "monitoring technology is the subject of the record",
+            "the record evaluates the measurement itself (accuracy/agreement/validation)",
+            "the source-stated date is within the last 30 days",
+        ]
+    if relevance == DIRECT and freshness == FRESH and strict_evaluation and weak:
+        return IMPORTANCE_MEDIUM, [
+            "the record evaluates the measurement itself",
+            "but the stated design is one patient or a case report, so it cannot carry a HIGH",
+            "the source-stated date is within the last 30 days",
+        ]
+    if relevance == DIRECT and freshness == FRESH and strict_evaluation and review_piece:
+        return IMPORTANCE_MEDIUM, [
+            "the record evaluates the measurement itself",
+            "but the title states a review, commentary or perspective, not a primary study",
+            "the source-stated date is within the last 30 days",
+        ]
+    if record_type == "regulatory_record" and relevance == DIRECT and freshness in (FRESH, RECENT):
+        return IMPORTANCE_MEDIUM, [
+            "a regulatory decision for a monitored device family",
+            "the official decision date is within the last 12 months",
+        ]
+    if relevance == DIRECT and freshness in (FRESH, RECENT):
+        return IMPORTANCE_MEDIUM, [
+            "monitoring technology is the subject of the record",
+            "the source-stated date is within the last 12 months",
+        ]
+    if decision == DECISION_REVIEW and freshness in (FRESH, RECENT):
+        return IMPORTANCE_MEDIUM, [
+            "the record needs a reviewer to classify it",
+            "the source-stated date is within the last 12 months",
+        ]
+    if freshness in (STALE, FRESHNESS_UNKNOWN):
+        return IMPORTANCE_LOW, [
+            "historical archive: the source-stated date is older than 12 months or not stated",
+        ]
+    return IMPORTANCE_LOW, ["not a monitoring-technology record for the default brief"]
+
+
 # --------------------------------------------------------------------------- assessment
 @dataclass(frozen=True)
 class _Signals:
@@ -631,7 +818,8 @@ def _non_medical_subject(signals: _Signals) -> bool:
 def assess_publication(*, title: str | None, payload: Mapping[str, Any] | None = None,
                        mapped_topics: Sequence[str] | None = None,
                        mapped_products: Sequence[str] | None = None,
-                       taxonomy: Any | None = None) -> Admission:
+                       taxonomy: Any | None = None,
+                       freshness: str | None = None) -> Admission:
     payload = dict(payload or {})
     registry = taxonomy if taxonomy is not None else _registry_loaded()
     signals = _signals(str(title or payload.get("title") or ""), payload, mapped_topics, registry)
@@ -664,7 +852,7 @@ def assess_publication(*, title: str | None, payload: Mapping[str, Any] | None =
     }
 
     def decide(relevance: str, domain: str, category: str, score: float, reasons: list[str],
-               importance: str = IMPORTANCE_MEDIUM, confidence: float = 0.7) -> Admission:
+               importance: str | None = None, confidence: float = 0.7) -> Admission:
         if relevance == DIRECT:
             tier, decision = HIGH_RELEVANCE, DECISION_FEED
         elif relevance == TRANSFER:
@@ -680,12 +868,24 @@ def assess_publication(*, title: str | None, payload: Mapping[str, Any] | None =
             tier, decision = LOW_RELEVANCE, DECISION_EXCLUDED
         else:
             tier, decision = IRRELEVANT, DECISION_EXCLUDED
+        level, why = grade_importance(
+            record_type="publication",
+            category=category,
+            decision=decision,
+            relevance=relevance,
+            freshness=freshness,
+            payload=payload,
+            strict_evaluation=bool(signals.title_strict_evaluation),
+            title=title,
+        )
         dimensions = {
             "source_authenticity": SCHOLARLY,
             "medical_domain": domain,
             "monitoring_relevance": relevance,
             "entity_link": _role_entity_link("publication", None, mapped_products),
-            "importance": importance,
+            "freshness": freshness or FRESHNESS_UNKNOWN,
+            "importance": merge_importance(level, importance),
+            "importance_reasons": why,
             "confidence": round(confidence, 2),
             "decision": decision,
         }
@@ -830,8 +1030,13 @@ def assess_observation(record: Mapping[str, Any], *, mapped_topics: Sequence[str
     )
     freshness = _freshness(str(published or event) if (published or event) else None, precision,
                           now or datetime.now(timezone.utc))
+    # A recall is identified by the source's own event number, and screened against the
+    # committed taxonomy. The screen is a rule (not stored content), so a later rule version
+    # re-judges the row instead of looking like a source correction.
+    recall_verdict = None
+    if record_type == "regulatory_record" and is_recall_payload(payload):
+        recall_verdict = screen_recall(payload, taxonomy=registry)
     recall = bool(RECALL_TERMS.search(signals.subject)) and record_type == "regulatory_record"
-    importance = IMPORTANCE_HIGH if recall else IMPORTANCE_MEDIUM
     source = _source_authenticity(record_type)
     entity_link = _role_entity_link(record_type, record.get("organization_role"), mapped_products)
     device_family = bool(signals.device_family_topics)
@@ -843,6 +1048,7 @@ def assess_observation(record: Mapping[str, Any], *, mapped_topics: Sequence[str
         "device_family_topics": list(signals.device_family_topics),
         "mapped_products": mapped_products[:5],
         "recall_terms": recall,
+        "recall_screen": recall_verdict,
         "date_precision": precision,
         "journal_is_not_subject_evidence": True,
     }
@@ -865,13 +1071,25 @@ def assess_observation(record: Mapping[str, Any], *, mapped_topics: Sequence[str
                 DECISION_REVIEW: NEEDS_REVIEW,
                 DECISION_EXCLUDED: LOW_RELEVANCE,
             }[decision]
+        level, why = grade_importance(
+            record_type=record_type,
+            category=category,
+            decision=decision,
+            relevance=relevance,
+            freshness=freshness,
+            payload=payload,
+            recall_verdict=recall_verdict,
+            strict_evaluation=bool(signals.title_strict_evaluation),
+            title=title,
+        )
         dimensions = {
             "source_authenticity": source,
             "medical_domain": domain,
             "monitoring_relevance": relevance,
             "entity_link": entity_link,
             "freshness": freshness,
-            "importance": imp or importance,
+            "importance": merge_importance(level, imp),
+            "importance_reasons": why,
             "confidence": round(confidence, 2),
             "decision": decision,
         }
@@ -879,11 +1097,25 @@ def assess_observation(record: Mapping[str, Any], *, mapped_topics: Sequence[str
 
     # ---------------------------------------------------------------- primary records
     if record_type == "regulatory_record":
+        if recall_verdict is not None:
+            if not recall_verdict["in_scope"]:
+                # Stored, excluded, and its reason is kept: a recall feed that silently drops
+                # rows is indistinguishable from a feed that missed them.
+                return finish(MEDICAL_UNRELATED, MEDICAL, "recall_not_monitoring_device", 0.0,
+                              [str(recall_verdict["reason"])], confidence=0.9)
+            if recall_verdict["needs_review"]:
+                return finish(DIRECT, MEDICAL, "recall_monitoring_device_unconfirmed", 6.0,
+                              [str(recall_verdict["reason"]),
+                               "the monitoring classification is MedRadar's, not FDA's: a "
+                               "reviewer must confirm it"],
+                              decision=DECISION_REVIEW, confidence=0.7)
+            reasons = [str(recall_verdict["reason"]),
+                       "an official FDA safety action on a monitored device"]
+            return finish(DIRECT, MEDICAL, "monitoring_safety_action", 9.5, reasons,
+                          confidence=0.95)
         if device_family:
-            reasons = ["a primary regulatory record for a monitored device family"]
-            if recall:
-                reasons.append("safety action on a monitoring device: high importance")
-            return finish(DIRECT, MEDICAL, "regulatory_monitoring_device", 9.0, reasons,
+            return finish(DIRECT, MEDICAL, "regulatory_monitoring_device", 9.0,
+                          ["a primary regulatory record for a monitored device family"],
                           confidence=0.95)
         # A regulatory record outside every monitored device family is not monitoring
         # intelligence, however authentic the source.
@@ -911,13 +1143,13 @@ def assess_observation(record: Mapping[str, Any], *, mapped_topics: Sequence[str
                       confidence=0.85)
     if record_type == "publication":
         admission = assess_publication(title=title, payload=payload, mapped_topics=mapped_topics,
-                                       mapped_products=mapped_products, taxonomy=registry)
+                                       mapped_products=mapped_products, taxonomy=registry,
+                                       freshness=freshness)
         dimensions = dict(admission.dimensions)
         dimensions.update({
             "source_authenticity": SCHOLARLY,
             "entity_link": entity_link,
             "freshness": freshness,
-            "importance": importance,
             "decision": admission.decision,
         })
         # Keep the observation-level facts (date precision, mapped products, recall terms) on the
@@ -963,6 +1195,8 @@ __all__ = [
     "TIER_ORDER", "TIER_LABELS_ZH", "AUTHORITATIVE_RECORD_TYPES", "PRIMARY_RECORD_TYPES",
     "DECISION_FEED", "DECISION_REVIEW", "DECISION_EXCLUDED", "DECISIONS",
     "DIRECT", "TRANSFER", "CLINICAL", "MEDICAL_UNRELATED", "NON_MEDICAL",
+    "IMPORTANCE_CRITICAL", "IMPORTANCE_LEVELS", "IMPORTANCE_VALUES", "grade_importance",
+    "merge_importance",
     "MONITORING_RELEVANCE_CLASSES", "DEVICE_FAMILIES", "DEVICE_TOPICS",
     "assess_observation", "assess_publication", "classify_observation",
     "classify_publication", "summarize", "now_iso", "tier_for_label",
