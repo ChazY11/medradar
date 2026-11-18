@@ -1,0 +1,1615 @@
+{
+  "recall_observations": 6563,
+  "distinct_events_all": 2330,
+  "basis_records": {
+    "PRODUCT_CODE": 1215,
+    "OUT_OF_SCOPE": 5211,
+    "DEVICE_TEXT": 122,
+    "UNCONFIRMED": 15
+  },
+  "basis_events": {
+    "PRODUCT_CODE": 565,
+    "OUT_OF_SCOPE": 1711,
+    "DEVICE_TEXT": 56,
+    "UNCONFIRMED": 6
+  },
+  "monitoring_events_total": 626,
+  "monitoring_records_by_year": {
+    "2003": 11,
+    "2004": 33,
+    "2005": 58,
+    "2006": 28,
+    "2007": 11,
+    "2008": 24,
+    "2009": 21,
+    "2010": 82,
+    "2011": 49,
+    "2012": 40,
+    "2013": 33,
+    "2014": 55,
+    "2015": 31,
+    "2016": 200,
+    "2017": 3,
+    "2018": 5,
+    "2019": 3,
+    "2020": 24,
+    "2021": 11,
+    "2022": 8,
+    "2023": 35,
+    "2024": 63,
+    "2025": 171,
+    "2026": 120,
+    "unknown": 233
+  },
+  "monitoring_records_by_firm": {
+    "ICU Medical, Inc.": 200,
+    "Philips Healthcare Inc.": 66,
+    "Oridion Medical 1987 Ltd.": 62,
+    "GE Healthcare, LLC": 62,
+    "Philips North America Llc": 59,
+    "Smiths Medical PM, Inc.": 47,
+    "Boston Scientific Corporation": 39,
+    "Philips North America, LLC": 38,
+    "Philips Electronics North America Corporation": 30,
+    "Baxter Healthcare Corporation": 26,
+    "Mindray DS USA, Inc. dba Mindray North America": 25,
+    "GE Healthcare Finland Oy": 19,
+    "Spacelabs Healthcare Inc": 18,
+    "Dexcom, Inc.": 18,
+    "Invivo Corporation": 17,
+    "Masimo Corporation": 16,
+    "Edan Diagnostics": 16,
+    "Spacelabs Healthcare, Llc": 16,
+    "Welch Allyn Inc": 16,
+    "GE Medical Systems Information Technologies Inc": 15
+  },
+  "out_of_scope_records": 5211,
+  "out_of_scope_sample": [
+    {
+      "event": "95841",
+      "code": "KLE",
+      "firm": "3M Unitek Corporation",
+      "reason": "not a monitoring device: the product code is not a monitored family and the official text names no monitoring device or measurement"
+    },
+    {
+      "event": "95909",
+      "code": "HOZ",
+      "firm": "Carwild Corporation",
+      "reason": "not a monitoring device: the product code is not a monitored family and the official text names no monitoring device or measurement"
+    },
+    {
+      "event": "95909",
+      "code": "HOZ",
+      "firm": "Carwild Corporation",
+      "reason": "not a monitoring device: the product code is not a monitored family and the official text names no monitoring device or measurement"
+    },
+    {
+      "event": "95909",
+      "code": "HOZ",
+      "firm": "Carwild Corporation",
+      "reason": "not a monitoring device: the product code is not a monitored family and the official text names no monitoring device or measurement"
+    },
+    {
+      "event": "95908",
+      "code": "GEI",
+      "firm": "Maquet Cardiovascular, LLC",
+      "reason": "not a monitoring device: the product code is not a monitored family and the official text names no monitoring device or measurement"
+    },
+    {
+      "event": "95908",
+      "code": "GEI",
+      "firm": "Maquet Cardiovascular, LLC",
+      "reason": "not a monitoring device: the product code is not a monitored family and the official text names no monitoring device or measurement"
+    },
+    {
+      "event": "95818",
+      "code": "CAW",
+      "firm": "JIANGSU JUMAO X-CARE MEDICAL EQUIPMENT CO LTD",
+      "reason": "not a monitoring device: the product code is not a monitored family and the official text names no monitoring device or measurement"
+    },
+    {
+      "event": "95884",
+      "code": "KDI",
+      "firm": "Fresenius Medical Care Holdings, Inc.",
+      "reason": "not a monitoring device: the product code is not a monitored family and the official text names no monitoring device or measurement"
+    },
+    {
+      "event": "95748",
+      "code": "FMI",
+      "firm": "Greiner Bio-One GmbH",
+      "reason": "not a monitoring device: the product code is not a monitored family and the official text names no monitoring device or measurement (needle)"
+    },
+    {
+      "event": "95871",
+      "code": "CEW",
+      "firm": "Beckman Coulter, Inc.",
+      "reason": "not a monitoring device: the product code is not a monitored family and the official text names no monitoring device or measurement (reagent)"
+    }
+  ],
+  "discovery_lag_days": {
+    "n": 1119,
+    "median": 3655,
+    "min": 33,
+    "max": 8659
+  },
+  "reference_cases": [
+    {
+      "case": "GE Portrait - software may cause loss of monitoring",
+      "matched_rows": 7,
+      "distinct_events": [
+        "96027",
+        "97786",
+        "99475",
+        "99536"
+      ],
+      "present": true,
+      "records": [
+        {
+          "event": "97786",
+          "product_res_number": "Z-0456-2026",
+          "product_code": "MHX",
+          "firm": "GE Healthcare Finland Oy",
+          "posted": "2025-11-07",
+          "initiated": "2025-09-26",
+          "status": "Open, Classified",
+          "device": "Portrait VSM Model nos. 6660000-666 Monitor, Physiological, Patient (With Arrhythmia Detection or Alarms",
+          "reason": "Potential loss of monitoring on affected monitors when powered by certain batteries. Affected batteries can lose capability to hold charge and provide back up power. If this situation occurs, it will cause loss of patient monitoring and potentially delay recognizing patient status changes requiring treatment.",
+          "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfRes/res.cfm?id=97786",
+          "first_observed_at": "2026-11-18T14:52:29+00:00",
+          "origin": "BACKFILLED",
+          "phase": "HISTORICAL_BACKFILL"
+        },
+        {
+          "event": "96027",
+          "product_res_number": "Z-0918-2025",
+          "product_code": "MWI",
+          "firm": "GE Medical Systems, LLC",
+          "posted": "2025-01-15",
+          "initiated": "2024-12-06",
+          "status": "Open, Classified",
+          "device": "Portrait Core Services, a set of software services that enable the communication and interaction of the Portrait Mobile Monitoring Solution components and will integrate into existing healthcare facil",
+          "reason": "There is a software issue that can result in the loss of patient monitoring on the Portrait Central Viewer Application after 425 days of continuous run-time.",
+          "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfRes/res.cfm?id=96027",
+          "first_observed_at": "2026-11-18T14:52:33+00:00",
+          "origin": "BACKFILLED",
+          "phase": "HISTORICAL_BACKFILL"
+        },
+        {
+          "event": "99475",
+          "product_res_number": "Z-2878-2026",
+          "product_code": "MWI",
+          "firm": "GE Medical Systems Information Technologies Inc",
+          "posted": "2026-08-04",
+          "initiated": "2026-07-10",
+          "status": "Open, Classified",
+          "device": "GE Healthcare Portrait Core Services SW V 1.2.0, REF 5700592. patient monitoring system",
+          "reason": "A software vulnerability may allow unauthorized persons to gain privileged access to the device, which could result in loss of patient monitoring, missed patient alarms, and/or access to Protected Health Information (PHI).",
+          "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfRes/res.cfm?id=99475",
+          "first_observed_at": "2026-11-18T14:52:33+00:00",
+          "origin": "BACKFILLED",
+          "phase": "HISTORICAL_BACKFILL"
+        },
+        {
+          "event": "99536",
+          "product_res_number": "Z-3036-2026",
+          "product_code": "MWI",
+          "firm": "GE Medical Systems Information Technologies Inc",
+          "posted": "2026-08-27",
+          "initiated": "2026-07-20",
+          "status": "Open, Classified",
+          "device": "PORTRAIT CORE SERVICES SOFTWARE V1.1, Ref# 5700209",
+          "reason": "Software issue may result in a loss of patient monitoring at the Hub and Central Viewer. In addition, all alarm settings could be reset to factory defaults following the update and will not follow the alarm settings previously configured for each patient or care area.",
+          "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfRes/res.cfm?id=99536",
+          "first_observed_at": "2026-11-18T14:52:33+00:00",
+          "origin": "BACKFILLED",
+          "phase": "HISTORICAL_BACKFILL"
+        },
+        {
+          "event": "99536",
+          "product_res_number": "Z-3037-2026",
+          "product_code": "MWI",
+          "firm": "GE Medical Systems Information Technologies Inc",
+          "posted": "2026-08-27",
+          "initiated": "2026-07-20",
+          "status": "Open, Classified",
+          "device": "PORTRAIT COMPUTE AND CORE SERVICES V1.2, Ref# 5700592",
+          "reason": "Software issue may result in a loss of patient monitoring at the Hub and Central Viewer. In addition, all alarm settings could be reset to factory defaults following the update and will not follow the alarm settings previously configured for each patient or care area.",
+          "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfRes/res.cfm?id=99536",
+          "first_observed_at": "2026-11-18T14:52:33+00:00",
+          "origin": "BACKFILLED",
+          "phase": "HISTORICAL_BACKFILL"
+        },
+        {
+          "event": "99536",
+          "product_res_number": "Z-3038-2026",
+          "product_code": "MWI",
+          "firm": "GE Medical Systems Information Technologies Inc",
+          "posted": "2026-08-27",
+          "initiated": "2026-07-20",
+          "status": "Open, Classified",
+          "device": "PORTRAIT CORE SERVICES SOFTWARE V1.0.5, Ref# 5697353",
+          "reason": "Software issue may result in a loss of patient monitoring at the Hub and Central Viewer. In addition, all alarm settings could be reset to factory defaults following the update and will not follow the alarm settings previously configured for each patient or care area.",
+          "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfRes/res.cfm?id=99536",
+          "first_observed_at": "2026-11-18T14:52:33+00:00",
+          "origin": "BACKFILLED",
+          "phase": "HISTORICAL_BACKFILL"
+        }
+      ]
+    },
+    {
+      "case": "Philips PIC iX - telemetry loses the central station",
+      "matched_rows": 16,
+      "distinct_events": [
+        "64507",
+        "85241",
+        "92992",
+        "93638",
+        "94185",
+        "94340",
+        "94468",
+        "95316",
+        "95325",
+        "98158",
+        "98217",
+        "99126",
+        "99566",
+        "99908"
+      ],
+      "present": true,
+      "records": [
+        {
+          "event": "95325",
+          "product_res_number": "Z-0035-2025",
+          "product_code": "DSI",
+          "firm": "Philips North America",
+          "posted": "2024-10-08",
+          "initiated": "2023-04-19",
+          "status": "Open, Classified",
+          "device": "Patient Information Center iX, Product Code 866386, and Patient Information Center iX Expand, Product Code 866390, Software Revision 4.0.1",
+          "reason": "During extended operation of the MX40 with the PIC iX, the DHCP (Dynamic Host Configuration Protocol) lease can expire on the MX40. If the DHCP lease expires while the device is offline, upon reconnecting with the PIC iX, a new IP address will be assigned to the MX40. The PIC iX will not recognize the new IP address after reconnecting and therefore the expecting settings sync fails.",
+          "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfRes/res.cfm?id=95325",
+          "first_observed_at": "2026-11-18T14:52:07+00:00",
+          "origin": "BACKFILLED",
+          "phase": "HISTORICAL_BACKFILL"
+        },
+        {
+          "event": "64507",
+          "product_res_number": "Z-1783-2014",
+          "product_code": "MHX",
+          "firm": "Philips Healthcare Inc.",
+          "posted": "2014-06-11",
+          "initiated": "2013-03-05",
+          "status": "Terminated",
+          "device": "Philips IntellVue Info Center iX 866023; PIIC iX Upgrade 866024; IntellVue Server iX Upgrade 866026; PIIC Classic Upgrade 866117 Patient Physiological Monitor.",
+          "reason": "If a customer creates customized trend scales in the trend review tile and the iX or primary server reboots for any reason, the iX(s) will enter a reboot loop. If one iX reboots, the issue will impact only those patients monitored on that device. If the primary server reboots, all patients across all iX devices will be impacted.",
+          "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfRes/res.cfm?id=64507",
+          "first_observed_at": "2026-11-18T14:52:28+00:00",
+          "origin": "BACKFILLED",
+          "phase": "HISTORICAL_BACKFILL"
+        },
+        {
+          "event": "85241",
+          "product_res_number": "Z-1766-2020",
+          "product_code": "MHX",
+          "firm": "Philips North America, LLC",
+          "posted": "2020-04-23",
+          "initiated": "2020-03-05",
+          "status": "Terminated",
+          "device": "TRx4851A 2.4 GHz IntelliVue Tele TRX, Model Number 862231; Includes Service Numbers 453564052401, 453564052411, 453564052441, 453564052451, 453564166851, 453564166861",
+          "reason": "The ECG signal from patients being monitored using a Philips TRx4841A and TRx4851A Telemetry Transceiver may not be properly analyzed when it is used with a Philips Patient Information Center iX Release C.02.xx or C.03.01. If this occurs, the Information Center will not display a heart rate or generate, display or annunciate any heart rate or arrhythmia alarms.",
+          "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfRes/res.cfm?id=85241",
+          "first_observed_at": "2026-11-18T14:52:28+00:00",
+          "origin": "BACKFILLED",
+          "phase": "HISTORICAL_BACKFILL"
+        },
+        {
+          "event": "85241",
+          "product_res_number": "Z-1767-2020",
+          "product_code": "MHX",
+          "firm": "Philips North America, LLC",
+          "posted": "2020-04-23",
+          "initiated": "2020-03-05",
+          "status": "Terminated",
+          "device": "TRx4841A 1.4 GHz IntelliVue Tele TRX, Model Number 862439; Includes System Codes 453564007261, 453564007271, 453564007281, 989803196951",
+          "reason": "The ECG signal from patients being monitored using a Philips TRx4841A and TRx4851A Telemetry Transceiver may not be properly analyzed when it is used with a Philips Patient Information Center iX Release C.02.xx or C.03.01. If this occurs, the Information Center will not display a heart rate or generate, display or annunciate any heart rate or arrhythmia alarms.",
+          "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfRes/res.cfm?id=85241",
+          "first_observed_at": "2026-11-18T14:52:28+00:00",
+          "origin": "BACKFILLED",
+          "phase": "HISTORICAL_BACKFILL"
+        },
+        {
+          "event": "92992",
+          "product_res_number": "Z-2608-2023",
+          "product_code": "MHX",
+          "firm": "Philips North America Llc",
+          "posted": "2023-09-19",
+          "initiated": "2023-08-17",
+          "status": "Open, Classified",
+          "device": "Patient Information Center iX with Software Version Number 4.x in the following: (1) Patient Information Center iX Product Number: 866389; (2) Patient Information Center iX Expand Product Number: 8663",
+          "reason": "Patient Information Center (PIC iX) Release 4.x Surveillance Crash Caused by Intel Graphics Driver Error-with a blank screen and subsequently require a manual reboot of the hardware to restart and continue central patient monitoring. Potential for a delay in the detection of a change or deterioration in the condition of one or more patients",
+          "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfRes/res.cfm?id=92992",
+          "first_observed_at": "2026-11-18T14:52:29+00:00",
+          "origin": "BACKFILLED",
+          "phase": "HISTORICAL_BACKFILL"
+        },
+        {
+          "event": "93638",
+          "product_res_number": "Z-0731-2024",
+          "product_code": "MHX",
+          "firm": "Philips North America",
+          "posted": "2024-01-13",
+          "initiated": "2023-11-28",
+          "status": "Open, Classified",
+          "device": "(1) Patient Information Center iX, Model No. 866389 (2) Patient Information Center iX Expand, Model No. 866390 (3) PIC iX Hardware, Model No. 866424",
+          "reason": "Push notifications may fail to send to the user under certain conditions. This could potentially result in patient harm due to delay in detection of a change in patient condition.",
+          "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfRes/res.cfm?id=93638",
+          "first_observed_at": "2026-11-18T14:52:29+00:00",
+          "origin": "BACKFILLED",
+          "phase": "HISTORICAL_BACKFILL"
+        }
+      ]
+    },
+    {
+      "case": "Mindray - operator manual alarm wording",
+      "matched_rows": 12,
+      "distinct_events": [
+        "87380",
+        "97437",
+        "97810",
+        "99828"
+      ],
+      "present": true,
+      "records": [
+        {
+          "event": "97437",
+          "product_res_number": "Z-2622-2025",
+          "product_code": "MHX",
+          "firm": "Mindray DS USA, Inc. dba Mindray North America",
+          "posted": "2025-09-25",
+          "initiated": "2025-08-15",
+          "status": "Open, Classified",
+          "device": "BeneVision N1 Patient Monitor (N1). Part Numbers: 6660E-PA00017, 6660E-PA00014, 6660E-PA00012, 6660E-PA00011, 6660E-PA00018, 6660E-PA00015, 6660E-PA00020, Q6660E-PA00011, 6660E-PA00021, 6660E-PA00016,",
+          "reason": "Potential for activation of an abnormal alarm pause.",
+          "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfRes/res.cfm?id=97437",
+          "first_observed_at": "2026-11-18T14:52:29+00:00",
+          "origin": "BACKFILLED",
+          "phase": "HISTORICAL_BACKFILL"
+        },
+        {
+          "event": "99828",
+          "product_res_number": "Z-0109-2027",
+          "product_code": "MHX",
+          "firm": "Mindray DS USA, Inc.",
+          "posted": "2026-10-07",
+          "initiated": "2026-08-31",
+          "status": "Open, Classified",
+          "device": "ePM Series Patient Monitor. Patient Monitor Series: ePM 10M/ePM 12M/ePM 12MA/ ePM 15M/ePM 10A",
+          "reason": "Certain monitor operator's manuals contain descriptions that may be insufficient or may require clarification regarding selected physiological alarm functions",
+          "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfRes/res.cfm?id=99828",
+          "first_observed_at": "2026-11-18T14:52:29+00:00",
+          "origin": "BACKFILLED",
+          "phase": "HISTORICAL_BACKFILL"
+        },
+        {
+          "event": "99828",
+          "product_res_number": "Z-0110-2027",
+          "product_code": "MHX",
+          "firm": "Mindray DS USA, Inc.",
+          "posted": "2026-10-07",
+          "initiated": "2026-08-31",
+          "status": "Open, Classified",
+          "device": "BeneVision N1 and N-Series Patient Monitor. Patient Monitor: N12/N15/N17/N19/N22.",
+          "reason": "Certain monitor operator's manuals contain descriptions that may be insufficient or may require clarification regarding selected physiological alarm functions",
+          "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfRes/res.cfm?id=99828",
+          "first_observed_at": "2026-11-18T14:52:29+00:00",
+          "origin": "BACKFILLED",
+          "phase": "HISTORICAL_BACKFILL"
+        },
+        {
+          "event": "99828",
+          "product_res_number": "Z-0113-2027",
+          "product_code": "MHX",
+          "firm": "Mindray DS USA, Inc.",
+          "posted": "2026-10-07",
+          "initiated": "2026-08-31",
+          "status": "Open, Classified",
+          "device": "BeneView Series. Operator's Manuals: T5 / T8",
+          "reason": "Certain monitor operator's manuals contain descriptions that may be insufficient or may require clarification regarding selected physiological alarm functions",
+          "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfRes/res.cfm?id=99828",
+          "first_observed_at": "2026-11-18T14:52:29+00:00",
+          "origin": "BACKFILLED",
+          "phase": "HISTORICAL_BACKFILL"
+        },
+        {
+          "event": "99828",
+          "product_res_number": "Z-0114-2027",
+          "product_code": "MHX",
+          "firm": "Mindray DS USA, Inc.",
+          "posted": "2026-10-07",
+          "initiated": "2026-08-31",
+          "status": "Open, Classified",
+          "device": "Passport Series Patient Monitor. Operator's Manuals: 8 / 12 / 12M / 17M / V",
+          "reason": "Certain monitor operator's manuals contain descriptions that may be insufficient or may require clarification regarding selected physiological alarm functions",
+          "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfRes/res.cfm?id=99828",
+          "first_observed_at": "2026-11-18T14:52:29+00:00",
+          "origin": "BACKFILLED",
+          "phase": "HISTORICAL_BACKFILL"
+        },
+        {
+          "event": "99828",
+          "product_res_number": "Z-0115-2027",
+          "product_code": "MHX",
+          "firm": "Mindray DS USA, Inc.",
+          "posted": "2026-10-07",
+          "initiated": "2026-08-31",
+          "status": "Open, Classified",
+          "device": "cPM Series Patient Monitor. Operator's Manual: cPM 8/cPM 12",
+          "reason": "Certain monitor operator's manuals contain descriptions that may be insufficient or may require clarification regarding selected physiological alarm functions",
+          "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfRes/res.cfm?id=99828",
+          "first_observed_at": "2026-11-18T14:52:29+00:00",
+          "origin": "BACKFILLED",
+          "phase": "HISTORICAL_BACKFILL"
+        }
+      ]
+    },
+    {
+      "case": "Nihon Kohden - central station cybersecurity",
+      "matched_rows": 3,
+      "distinct_events": [
+        "68459",
+        "76723",
+        "99549"
+      ],
+      "present": true,
+      "records": [
+        {
+          "event": "68459",
+          "product_res_number": "Z-1979-2014",
+          "product_code": "MHX",
+          "firm": "Nihon Kohden America Inc",
+          "posted": "2014-07-02",
+          "initiated": "2014-06-03",
+          "status": "Terminated",
+          "device": "CNS-6200 Series Central Nurse Station and accessories. Model Number: CNS-6201 For cardiac and vital signs monitoring for multiple patients.",
+          "reason": "Software Version 02-26, when used with the Central Nursing Station (CNS) 6201, (PU-621 RA) may unexpectedly and without warning reboot, resulting in a period of approximately 3 minutes during which time the system does not display patient data and does not emit alarms based on that data should they be appropriate.",
+          "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfRes/res.cfm?id=68459",
+          "first_observed_at": "2026-11-18T14:52:28+00:00",
+          "origin": "BACKFILLED",
+          "phase": "HISTORICAL_BACKFILL"
+        },
+        {
+          "event": "76723",
+          "product_res_number": "Z-1768-2017",
+          "product_code": "MHX",
+          "firm": "Nihon Kohden America Inc",
+          "posted": "2017-03-20",
+          "initiated": "2017-03-13",
+          "status": "Terminated",
+          "device": "Bedside monitor CSM-1901(Life Scope G9) with main unit CU-192RA. The Problem only affects CSM-1901(Life Scope G9) communicating with CNS-6201A (PU-621RA) and CNS-9701A (MU-971RA).",
+          "reason": "The Pause function on central monitors will not automatically resume when connected to a Life Scope G9 patient monitor.",
+          "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfRes/res.cfm?id=76723",
+          "first_observed_at": "2026-11-18T14:52:28+00:00",
+          "origin": "BACKFILLED",
+          "phase": "HISTORICAL_BACKFILL"
+        },
+        {
+          "event": "99549",
+          "product_res_number": "Z-0089-2027",
+          "product_code": "MHX",
+          "firm": "Nihon Kohden America LLC",
+          "posted": "2026-10-06",
+          "initiated": "2026-09-08",
+          "status": "Open, Classified",
+          "device": "Product Name: Nihon Kohden CNS-6200 Series Central Nurse Station, Model/Catalog Number: CN-6201 Software Version: software versions: 01-03, 01-04, 01-05, 01-06, 02-10, 02-11, and 02-40 Product Descrip",
+          "reason": "Due to a cybersecurity issue associate with a NULL Pointer Dereferences vulnerabiity. If exploited would potentially cause disruption of the centralized monitoring of multiple beds and the visualization of alarms.",
+          "url": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfRes/res.cfm?id=99549",
+          "first_observed_at": "2026-11-18T14:52:29+00:00",
+          "origin": "BACKFILLED",
+          "phase": "HISTORICAL_BACKFILL"
+        }
+      ]
+    }
+  ],
+  "monitoring_codes_configured": [
+    "BZK",
+    "BZQ",
+    "CAP",
+    "CCK",
+    "DPS",
+    "DPZ",
+    "DQA",
+    "DRG",
+    "DRS",
+    "DRT",
+    "DRW",
+    "DRX",
+    "DSI",
+    "DSJ",
+    "DSK",
+    "DXH",
+    "DXN",
+    "DXQ",
+    "FLA",
+    "FLL",
+    "FLS",
+    "GLY",
+    "KRK",
+    "LKD",
+    "MHX",
+    "MSX",
+    "MWI",
+    "QYW",
+    "QYX"
+  ],
+  "recent_monitoring_events": [
+    {
+      "event": "99908",
+      "records": [
+        {
+          "product_res_number": "Z-0199-2027",
+          "product_code": "MHX",
+          "firm": "Philips North America",
+          "posted": "2026-10-16",
+          "status": "Open, Classified",
+          "device": "Philips Smart-hopping 2.0 AP 1.4 GHz; Product/Model Number: 867216;",
+          "reason": "Unreliable wireless roaming behavior of Smart-hopping 1.0 wireless clients during transport when connecting to Smart-hopping 2.0 infrastructure, resulting in loss of connectivity to the central monitoring system (PIC iX).",
+          "basis": "PRODUCT_CODE",
+          "needs_review": false
+        }
+      ]
+    },
+    {
+      "event": "99838",
+      "records": [
+        {
+          "product_res_number": "Z-0144-2027",
+          "product_code": "CCX",
+          "firm": "Sarnova HC, Llc",
+          "posted": "2026-10-09",
+          "status": "Open, Classified",
+          "device": "Curaplex Capnography EtCO2/O2 Oral/Nasal Cannula Multipack (10 pk), Item Number 670272-KIT",
+          "reason": "Affected kits were assembled with pediatric nasal cannula instead of the intended adult nasal cannula.",
+          "basis": "DEVICE_TEXT",
+          "needs_review": true
+        }
+      ]
+    },
+    {
+      "event": "99828",
+      "records": [
+        {
+          "product_res_number": "Z-0109-2027",
+          "product_code": "MHX",
+          "firm": "Mindray DS USA, Inc.",
+          "posted": "2026-10-07",
+          "status": "Open, Classified",
+          "device": "ePM Series Patient Monitor. Patient Monitor Series: ePM 10M/ePM 12M/ePM 12MA/ ePM 15M/ePM 10A",
+          "reason": "Certain monitor operator's manuals contain descriptions that may be insufficient or may require clarification regarding selected physiological alarm functions",
+          "basis": "PRODUCT_CODE",
+          "needs_review": false
+        },
+        {
+          "product_res_number": "Z-0110-2027",
+          "product_code": "MHX",
+          "firm": "Mindray DS USA, Inc.",
+          "posted": "2026-10-07",
+          "status": "Open, Classified",
+          "device": "BeneVision N1 and N-Series Patient Monitor. Patient Monitor: N12/N15/N17/N19/N22.",
+          "reason": "Certain monitor operator's manuals contain descriptions that may be insufficient or may require clarification regarding selected physiological alarm functions",
+          "basis": "PRODUCT_CODE",
+          "needs_review": false
+        },
+        {
+          "product_res_number": "Z-0113-2027",
+          "product_code": "MHX",
+          "firm": "Mindray DS USA, Inc.",
+          "posted": "2026-10-07",
+          "status": "Open, Classified",
+          "device": "BeneView Series. Operator's Manuals: T5 / T8",
+          "reason": "Certain monitor operator's manuals contain descriptions that may be insufficient or may require clarification regarding selected physiological alarm functions",
+          "basis": "PRODUCT_CODE",
+          "needs_review": false
+        },
+        {
+          "product_res_number": "Z-0114-2027",
+          "product_code": "MHX",
+          "firm": "Mindray DS USA, Inc.",
+          "posted": "2026-10-07",
+          "status": "Open, Classified",
+          "device": "Passport Series Patient Monitor. Operator's Manuals: 8 / 12 / 12M / 17M / V",
+          "reason": "Certain monitor operator's manuals contain descriptions that may be insufficient or may require clarification regarding selected physiological alarm functions",
+          "basis": "PRODUCT_CODE",
+          "needs_review": false
+        },
+        {
+          "product_res_number": "Z-0115-2027",
+          "product_code": "MHX",
+          "firm": "Mindray DS USA, Inc.",
+          "posted": "2026-10-07",
+          "status": "Open, Classified",
+          "device": "cPM Series Patient Monitor. Operator's Manual: cPM 8/cPM 12",
+          "reason": "Certain monitor operator's manuals contain descriptions that may be insufficient or may require clarification regarding selected physiological alarm functions",
+          "basis": "PRODUCT_CODE",
+          "needs_review": false
+        },
+        {
+          "product_res_number": "Z-0116-2027",
+          "product_code": "MHX",
+          "firm": "Mindray DS USA, Inc.",
+          "posted": "2026-10-07",
+          "status": "Open, Classified",
+          "device": "T1 Patient Monitor. Operator's Manual: T1 Patient Monitor",
+          "reason": "Certain monitor operator's manuals contain descriptions that may be insufficient or may require clarification regarding selected physiological alarm functions",
+          "basis": "PRODUCT_CODE",
+          "needs_review": false
+        },
+        {
+          "product_res_number": "Z-0111-2027",
+          "product_code": "MSX",
+          "firm": "Mindray DS USA, Inc.",
+          "posted": "2026-10-07",
+          "status": "Open, Classified",
+          "device": "BeneVision Series Telemetry Monitor. Operator's Manuals: TM70/TM80",
+          "reason": "Certain monitor operator's manuals contain descriptions that may be insufficient or may require clarification regarding selected physiological alarm functions",
+          "basis": "PRODUCT_CODE",
+          "needs_review": false
+        },
+        {
+          "product_res_number": "Z-0112-2027",
+          "product_code": "MSX",
+          "firm": "Mindray DS USA, Inc.",
+          "posted": "2026-10-07",
+          "status": "Open, Classified",
+          "device": "Panorama and Telemetry Monitoring System. Operator's Manuals: TMS-6016/Panorama Telepack-608/TMS60 (TD60).",
+          "reason": "Certain monitor operator's manuals contain descriptions that may be insufficient or may require clarification regarding selected physiological alarm functions",
+          "basis": "PRODUCT_CODE",
+          "needs_review": false
+        }
+      ]
+    },
+    {
+      "event": "99549",
+      "records": [
+        {
+          "product_res_number": "Z-0089-2027",
+          "product_code": "MHX",
+          "firm": "Nihon Kohden America LLC",
+          "posted": "2026-10-06",
+          "status": "Open, Classified",
+          "device": "Product Name: Nihon Kohden CNS-6200 Series Central Nurse Station, Model/Catalog Number: CN-6201 Software Version: software versions: 01-03, 01-04, 01-05, 01-06, 02-10, 02-11, and 0",
+          "reason": "Due to a cybersecurity issue associate with a NULL Pointer Dereferences vulnerabiity. If exploited would potentially cause disruption of the centralized monitoring of multiple beds and the visualization of alarms.",
+          "basis": "PRODUCT_CODE",
+          "needs_review": false
+        }
+      ]
+    },
+    {
+      "event": "99801",
+      "records": [
+        {
+          "product_res_number": "Z-0079-2027",
+          "product_code": "LRP",
+          "firm": "Cardinal Health 200, LLC",
+          "posted": "2026-10-02",
+          "status": "Open, Classified",
+          "device": "Presource Packs containing Medtronic Microstream Components: Intubation Kit Catalog Numbers AN23366084 AN23366085 AN2336608H AN2336608J Intubating Bag Kit Catalog Number OMSVM4166A",
+          "reason": "Kits contain Microstream components. Medtronic issued an update to the Instructions for Use of these components due reports of difficulty in disconnecting the adapter from the patient's endotracheal tube to perform a procedure. The issue can result in a delay to treatment and unintended extubation. The potential exists for respiratory failure, hypoxia, aspiration, or low oxygen saturation.",
+          "basis": "DEVICE_TEXT",
+          "needs_review": true
+        }
+      ]
+    },
+    {
+      "event": "99617",
+      "records": [
+        {
+          "product_res_number": "Z-3319-2026",
+          "product_code": "NHJ",
+          "firm": "Percussionaire Corporation",
+          "posted": "2026-09-28",
+          "status": "Open, Classified",
+          "device": "Intrapulmonary Percussive Ventilation, IPV 1, Product Number: S00065; Phasitron 5 Breathing Circuit with Unified Connector, Product Number: P5-UC, used with In-Line Valve Instructi",
+          "reason": "Labeling updated warning not to use Intrapulmonary percussive ventilation (IPV) in conjunction with volatile anesthetic delivery systems because IPV may alter controlled delivery of volatile anesthetic agents, resulting in deeper/lighter anesthetic effects that may result in hypertonia/hypotonia, tachycardia/ bradycardia, elevated intracranial pressure, awareness during anesthesia, oversedation",
+          "basis": "DEVICE_TEXT",
+          "needs_review": true
+        },
+        {
+          "product_res_number": "Z-3320-2026",
+          "product_code": "MOD",
+          "firm": "Percussionaire Corporation",
+          "posted": "2026-09-28",
+          "status": "Open, Classified",
+          "device": "In-Line Valve, Product Number: P5-TEE",
+          "reason": "Labeling updated warning not to use Intrapulmonary percussive ventilation (IPV) in conjunction with volatile anesthetic delivery systems because IPV may alter controlled delivery of volatile anesthetic agents, resulting in deeper/lighter anesthetic effects that may result in hypertonia/hypotonia, tachycardia/ bradycardia, elevated intracranial pressure, awareness during anesthesia, oversedation",
+          "basis": "DEVICE_TEXT",
+          "needs_review": true
+        },
+        {
+          "product_res_number": "Z-3321-2026",
+          "product_code": "NHJ",
+          "firm": "Percussionaire Corporation",
+          "posted": "2026-09-28",
+          "status": "Open, Classified",
+          "device": "Intrapulmonary Percussive Ventilation, IPV-1C, Product Number: S00002-C; Phasitron 5, Product Number: P5 used with Instruction Manual",
+          "reason": "Labeling updated warning not to use Intrapulmonary percussive ventilation (IPV) in conjunction with volatile anesthetic delivery systems because IPV may alter controlled delivery of volatile anesthetic agents, resulting in deeper/lighter anesthetic effects that may result in hypertonia/hypotonia, tachycardia/ bradycardia, elevated intracranial pressure, awareness during anesthesia, oversedation",
+          "basis": "DEVICE_TEXT",
+          "needs_review": true
+        },
+        {
+          "product_res_number": "Z-3322-2026",
+          "product_code": "NHJ",
+          "firm": "Percussionaire Corporation",
+          "posted": "2026-09-28",
+          "status": "Open, Classified",
+          "device": "Intrapulmonary Percussive Ventilation, IPV-2C, Product Number: S00002-C; Phasitron 5, Product Number: P5 used with Instruction Manual",
+          "reason": "Labeling updated warning not to use Intrapulmonary percussive ventilation (IPV) in conjunction with volatile anesthetic delivery systems because IPV may alter controlled delivery of volatile anesthetic agents, resulting in deeper/lighter anesthetic effects that may result in hypertonia/hypotonia, tachycardia/ bradycardia, elevated intracranial pressure, awareness during anesthesia, oversedation",
+          "basis": "DEVICE_TEXT",
+          "needs_review": true
+        },
+        {
+          "product_res_number": "Z-3323-2026",
+          "product_code": "NHJ",
+          "firm": "Percussionaire Corporation",
+          "posted": "2026-09-28",
+          "status": "Open, Classified",
+          "device": "Impulsator, Product Number: S00010, Phasitron 5, Product Number: P5 used with Instruction Manual",
+          "reason": "Labeling updated warning not to use Intrapulmonary percussive ventilation (IPV) in conjunction with volatile anesthetic delivery systems because IPV may alter controlled delivery of volatile anesthetic agents, resulting in deeper/lighter anesthetic effects that may result in hypertonia/hypotonia, tachycardia/ bradycardia, elevated intracranial pressure, awareness during anesthesia, oversedation",
+          "basis": "DEVICE_TEXT",
+          "needs_review": true
+        },
+        {
+          "product_res_number": "Z-3324-2026",
+          "product_code": "NHJ",
+          "firm": "Percussionaire Corporation",
+          "posted": "2026-09-28",
+          "status": "Open, Classified",
+          "device": "Travel Air, Product Number: S00055; Phasitron 5, Product Number: P5 used with Instruction Manual",
+          "reason": "Labeling updated warning not to use Intrapulmonary percussive ventilation (IPV) in conjunction with volatile anesthetic delivery systems because IPV may alter controlled delivery of volatile anesthetic agents, resulting in deeper/lighter anesthetic effects that may result in hypertonia/hypotonia, tachycardia/ bradycardia, elevated intracranial pressure, awareness during anesthesia, oversedation",
+          "basis": "DEVICE_TEXT",
+          "needs_review": true
+        },
+        {
+          "product_res_number": "Z-3325-2026",
+          "product_code": "NHJ",
+          "firm": "Percussionaire Corporation",
+          "posted": "2026-09-28",
+          "status": "Open, Classified",
+          "device": "Intrapulmonary Percussive Ventilation, IPV HC, Product Number: S00009; Phasitron, P5-HC",
+          "reason": "Labeling updated warning not to use Intrapulmonary percussive ventilation (IPV) in conjunction with volatile anesthetic delivery systems because IPV may alter controlled delivery of volatile anesthetic agents, resulting in deeper/lighter anesthetic effects that may result in hypertonia/hypotonia, tachycardia/ bradycardia, elevated intracranial pressure, awareness during anesthesia, oversedation",
+          "basis": "DEVICE_TEXT",
+          "needs_review": true
+        }
+      ]
+    },
+    {
+      "event": "99728",
+      "records": [
+        {
+          "product_res_number": "Z-3256-2026",
+          "product_code": "FLL",
+          "firm": "DeRoyal Industries Inc",
+          "posted": "2026-09-22",
+          "status": "Open, Classified",
+          "device": "REF: 81-030415 Myocardial Probe Non-Pyrogenic , 400 Series",
+          "reason": "Myocardial temperature probes contain an incorrect needle. Specifically, an 18mm needle was included instead of a 15mm needle.",
+          "basis": "PRODUCT_CODE",
+          "needs_review": false
+        }
+      ]
+    },
+    {
+      "event": "99545",
+      "records": [
+        {
+          "product_res_number": "Z-3253-2026",
+          "product_code": "MHX",
+          "firm": "Criticare Technologies, Inc.",
+          "posted": "2026-09-22",
+          "status": "Open, Classified",
+          "device": "nGenuity Patient Monitor with Capnography (ETCO2) CAT 8100E1-ST-US, CAT 8100E1-US, CAT 8100EP1, CAT 8100EP1-ST, CAT 8100EP1-ST-US, CAT 8100EP1-US, CAT 8100EP1R",
+          "reason": "Complaint trend where \"Checkline Error\" alarm presents at device setup, rendering the CO2 monitoring function inoperable. May result in procedure delay.",
+          "basis": "PRODUCT_CODE",
+          "needs_review": false
+        }
+      ]
+    },
+    {
+      "event": "99370",
+      "records": [
+        {
+          "product_res_number": "Z-3250-2026",
+          "product_code": "MUD",
+          "firm": "Becton, Dickinson and Company",
+          "posted": "2026-09-21",
+          "status": "Open, Classified",
+          "device": "ForeSight Elite Tissue Oximetry Cable REF HEMFSM10 UDI-DI code: 00690103210927 The non-invasive ForeSight oximeter cable is intended for use as an adjunct monitor of absolute regio",
+          "reason": "Due to incorrect switching of Channel 1 and 2 on the module and flag labels on the tissue oximetry cables.",
+          "basis": "DEVICE_TEXT",
+          "needs_review": true
+        }
+      ]
+    },
+    {
+      "event": "99641",
+      "records": [
+        {
+          "product_res_number": "Z-3217-2026",
+          "product_code": "MWI",
+          "firm": "Midmark Corporation",
+          "posted": "2026-09-18",
+          "status": "Open, Classified",
+          "device": "Midmark IQvitals Zone, automatically and noninvasively measures systolic and diastolic blood pressure, pulse rate, temperature (temporal), and oxygen saturation (SpO2) for adult an",
+          "reason": "A performance issue may result in inaccurate blood pressure readings when the Linear Deflation Method is used.",
+          "basis": "PRODUCT_CODE",
+          "needs_review": false
+        },
+        {
+          "product_res_number": "Z-3218-2026",
+          "product_code": "MWI",
+          "firm": "Midmark Corporation",
+          "posted": "2026-09-18",
+          "status": "Open, Classified",
+          "device": "Midmark IQvitals Zone, automatically and noninvasively measures systolic and diastolic blood pressure, pulse rate, temperature (temporal), and oxygen saturation (SpO2) for adult an",
+          "reason": "A performance issue may result in inaccurate blood pressure readings when the Linear Deflation Method is used.",
+          "basis": "PRODUCT_CODE",
+          "needs_review": false
+        },
+        {
+          "product_res_number": "Z-3219-2026",
+          "product_code": "MWI",
+          "firm": "Midmark Corporation",
+          "posted": "2026-09-18",
+          "status": "Open, Classified",
+          "device": "Midmark IQvitals Zone, automatically and noninvasively measures systolic and diastolic blood pressure, pulse rate, temperature (temporal), and oxygen saturation (SpO2) for adult an",
+          "reason": "A performance issue may result in inaccurate blood pressure readings when the Linear Deflation Method is used.",
+          "basis": "PRODUCT_CODE",
+          "needs_review": false
+        },
+        {
+          "product_res_number": "Z-3220-2026",
+          "product_code": "MWI",
+          "firm": "Midmark Corporation",
+          "posted": "2026-09-18",
+          "status": "Open, Classified",
+          "device": "Midmark IQvitals Zone, automatically and noninvasively measures systolic and diastolic blood pressure, pulse rate, temperature (temporal), and oxygen saturation (SpO2) for adult an",
+          "reason": "A performance issue may result in inaccurate blood pressure readings when the Linear Deflation Method is used.",
+          "basis": "PRODUCT_CODE",
+          "needs_review": false
+        }
+      ]
+    },
+    {
+      "event": "99649",
+      "records": [
+        {
+          "product_res_number": "Z-3192-2026",
+          "product_code": "BSZ",
+          "firm": "Datex-Ohmeda, Inc.",
+          "posted": "2026-09-16",
+          "status": "Open, Classified",
+          "device": "Et Control, Software option for anesthesia gas machine to achieve and maintain targeted end tidal oxygen and anesthetic agents, Field replaceable unit (FRU) part numbers: 1011-8000",
+          "reason": "Anesthesia Delivery Systems containing certain electronic gas mixer assemblies can automatically transition to Alternate O2 control. In Alternate O2 control, the system delivers 100% O2 to the breathing system enabling continued controlled or manual ventilation and initiates audible and visual alarms. When this issue occurs, anesthetic agent delivery will be interrupted and requires clinician inte",
+          "basis": "DEVICE_TEXT",
+          "needs_review": true
+        }
+      ]
+    },
+    {
+      "event": "99566",
+      "records": [
+        {
+          "product_res_number": "Z-3141-2026",
+          "product_code": "MHX",
+          "firm": "Philips North America",
+          "posted": "2026-09-11",
+          "status": "Open, Classified",
+          "device": "Philips Patient Information Center iX REF:866389",
+          "reason": "Due to software malfunction, patient information system may freeze and become unresponsive.",
+          "basis": "PRODUCT_CODE",
+          "needs_review": false
+        },
+        {
+          "product_res_number": "Z-3142-2026",
+          "product_code": "MHX",
+          "firm": "Philips North America",
+          "posted": "2026-09-11",
+          "status": "Open, Classified",
+          "device": "Philips PIC iX Essentials REF:867093",
+          "reason": "Due to software malfunction, patient information system may freeze and become unresponsive.",
+          "basis": "PRODUCT_CODE",
+          "needs_review": false
+        }
+      ]
+    },
+    {
+      "event": "99637",
+      "records": [
+        {
+          "product_res_number": "Z-3143-2026",
+          "product_code": "DQK",
+          "firm": "GE Medical Systems Information Technologies Inc",
+          "posted": "2026-09-11",
+          "status": "Open, Classified",
+          "device": "Carescape Central Station CSCS V3 MAS800 Desktop Part Number 5867474-04, 5867474-13 Product code STU CSCS V3 MAI800 Integrated Part Number 5867474-03 Product Code STV",
+          "reason": "Device may not resume patient monitoring for at least 3 minutes following system restart. Issue can lead to potential delay in recognition of clinically significant events.",
+          "basis": "DEVICE_TEXT",
+          "needs_review": true
+        }
+      ]
+    },
+    {
+      "event": "99524",
+      "records": [
+        {
+          "product_res_number": "Z-3081-2026",
+          "product_code": "MXD",
+          "firm": "Boston Scientific Corporation",
+          "posted": "2026-09-02",
+          "status": "Open, Classified",
+          "device": "LUX-Dx, LUX-Dx II, LUX-Dx II+ Insertable Cardiac Monitor System, SERVER SW LAT CLARITY DS US, Model Number 7260, All Versions (Current 7.8)",
+          "reason": "There is potential for a delay in AF Burden Alert notification affecting the server software which supports the Insertable Cardiac Monitors (ICMs). Delayed notification of an AF Burden Alert may delay clinical evaluation or therapeutic intervention of an atrial arrhythmia.",
+          "basis": "DEVICE_TEXT",
+          "needs_review": true
+        },
+        {
+          "product_res_number": "Z-3082-2026",
+          "product_code": "MXD",
+          "firm": "Boston Scientific Corporation",
+          "posted": "2026-09-02",
+          "status": "Open, Classified",
+          "device": "LUX-Dx, LUX-Dx II, LUX-Dx II+ Insertable Cardiac Monitor System, SERVER SW LAT CLARITY DS EU, Model Number 7246, All Versions (Current 7.7)",
+          "reason": "There is potential for a delay in AF Burden Alert notification affecting the server software which supports the Insertable Cardiac Monitors (ICMs). Delayed notification of an AF Burden Alert may delay clinical evaluation or therapeutic intervention of an atrial arrhythmia.",
+          "basis": "DEVICE_TEXT",
+          "needs_review": true
+        },
+        {
+          "product_res_number": "Z-3083-2026",
+          "product_code": "MXD",
+          "firm": "Boston Scientific Corporation",
+          "posted": "2026-09-02",
+          "status": "Open, Classified",
+          "device": "LUX-Dx, LUX-Dx II, LUX-Dx II+ Insertable Cardiac Monitor System, SERVER SW LAT CLARITY DS ANZ, Model Number 7248, All Versions (Current 7.7)",
+          "reason": "There is potential for a delay in AF Burden Alert notification affecting the server software which supports the Insertable Cardiac Monitors (ICMs). Delayed notification of an AF Burden Alert may delay clinical evaluation or therapeutic intervention of an atrial arrhythmia.",
+          "basis": "DEVICE_TEXT",
+          "needs_review": true
+        }
+      ]
+    },
+    {
+      "event": "99536",
+      "records": [
+        {
+          "product_res_number": "Z-3036-2026",
+          "product_code": "MWI",
+          "firm": "GE Medical Systems Information Technologies Inc",
+          "posted": "2026-08-27",
+          "status": "Open, Classified",
+          "device": "PORTRAIT CORE SERVICES SOFTWARE V1.1, Ref# 5700209",
+          "reason": "Software issue may result in a loss of patient monitoring at the Hub and Central Viewer. In addition, all alarm settings could be reset to factory defaults following the update and will not follow the alarm settings previously configured for each patient or care area.",
+          "basis": "PRODUCT_CODE",
+          "needs_review": false
+        },
+        {
+          "product_res_number": "Z-3037-2026",
+          "product_code": "MWI",
+          "firm": "GE Medical Systems Information Technologies Inc",
+          "posted": "2026-08-27",
+          "status": "Open, Classified",
+          "device": "PORTRAIT COMPUTE AND CORE SERVICES V1.2, Ref# 5700592",
+          "reason": "Software issue may result in a loss of patient monitoring at the Hub and Central Viewer. In addition, all alarm settings could be reset to factory defaults following the update and will not follow the alarm settings previously configured for each patient or care area.",
+          "basis": "PRODUCT_CODE",
+          "needs_review": false
+        },
+        {
+          "product_res_number": "Z-3038-2026",
+          "product_code": "MWI",
+          "firm": "GE Medical Systems Information Technologies Inc",
+          "posted": "2026-08-27",
+          "status": "Open, Classified",
+          "device": "PORTRAIT CORE SERVICES SOFTWARE V1.0.5, Ref# 5697353",
+          "reason": "Software issue may result in a loss of patient monitoring at the Hub and Central Viewer. In addition, all alarm settings could be reset to factory defaults following the update and will not follow the alarm settings previously configured for each patient or care area.",
+          "basis": "PRODUCT_CODE",
+          "needs_review": false
+        },
+        {
+          "product_res_number": "Z-3039-2026",
+          "product_code": "MWI",
+          "firm": "GE Medical Systems Information Technologies Inc",
+          "posted": "2026-08-27",
+          "status": "Open, Classified",
+          "device": "FRU (Field replaceable unit), PORTRAIT CORE SERVICES SW RELOAD V1.1, Ref# 5700225",
+          "reason": "Software issue may result in a loss of patient monitoring at the Hub and Central Viewer. In addition, all alarm settings could be reset to factory defaults following the update and will not follow the alarm settings previously configured for each patient or care area.",
+          "basis": "PRODUCT_CODE",
+          "needs_review": false
+        }
+      ]
+    },
+    {
+      "event": "99404",
+      "records": [
+        {
+          "product_res_number": "Z-3012-2026",
+          "product_code": "DPS",
+          "firm": "Midmark Corporation",
+          "posted": "2026-08-25",
+          "status": "Open, Classified",
+          "device": "Midmark IQecg Digital ECG, Model/Catalog Number: 4-000-0061, 4-000-0062 Software Version: Midmark IQecg Plugin versions starting with v10 and prior to v10.1.0.18.",
+          "reason": "A communication anomoly may result in incorrect electrocardiogram waveforms of a patient and an inaccurate beats-per-minute calculation.",
+          "basis": "PRODUCT_CODE",
+          "needs_review": false
+        },
+        {
+          "product_res_number": "Z-3013-2026",
+          "product_code": "DRG",
+          "firm": "Midmark Corporation",
+          "posted": "2026-08-25",
+          "status": "Open, Classified",
+          "device": "Midmark Digital ECG HD+12, HD+15, Model/Catalog Number: 4-000-0080 Software Version: Midmark IQecg Plugin versions starting with v10 and prior to v10.1.0.18.",
+          "reason": "A communication anomoly may result in incorrect electrocardiogram waveforms of a patient and an inaccurate beats-per-minute calculation.",
+          "basis": "PRODUCT_CODE",
+          "needs_review": false
+        }
+      ]
+    },
+    {
+      "event": "99361",
+      "records": [
+        {
+          "product_res_number": "Z-2955-2026",
+          "product_code": "DPS",
+          "firm": "Philips North America Llc",
+          "posted": "2026-08-14",
+          "status": "Open, Classified",
+          "device": "Cardiac Workstation 5000. Product Number: 860439.",
+          "reason": "Device will intermittently provide inaccurate data related to native heart rate.",
+          "basis": "PRODUCT_CODE",
+          "needs_review": false
+        },
+        {
+          "product_res_number": "Z-2956-2026",
+          "product_code": "DPS",
+          "firm": "Philips North America Llc",
+          "posted": "2026-08-14",
+          "status": "Open, Classified",
+          "device": "Cardiac Workstation 7000. Product Number: 860441.",
+          "reason": "Device will intermittently provide inaccurate data related to native heart rate.",
+          "basis": "PRODUCT_CODE",
+          "needs_review": false
+        }
+      ]
+    },
+    {
+      "event": "99260",
+      "records": [
+        {
+          "product_res_number": "Z-2916-2026",
+          "product_code": "MHX",
+          "firm": "Spacelabs Healthcare, Inc.",
+          "posted": "2026-08-07",
+          "status": "Open, Classified",
+          "device": "Brand Name: Xhibit Product Name: Xhibit Central Station Model/Catalog Number: 96102 Software Version: N/A Product Description: The Spacelabs Healthcare (Spacelabs) Xhibit Central S",
+          "reason": "Due to off-the-shelf display port component that has audio/video failures",
+          "basis": "PRODUCT_CODE",
+          "needs_review": false
+        }
+      ]
+    },
+    {
+      "event": "99128",
+      "records": [
+        {
+          "product_res_number": "Z-2899-2026",
+          "product_code": "CHL",
+          "firm": "Instrumentation Laboratory",
+          "posted": "2026-08-06",
+          "status": "Open, Classified",
+          "device": "GEM Premier 7000 with iQM3 Part Numbers: 00077407508 00077407510 00077415004 00077415008 00077415010 00077430010 Product Description: The GEM Premier 7000 with iQM3 is a portable c",
+          "reason": "The active ingredient concentration in the lysing bag solution of specific GEM Premier 7000 with iQM3 PAK lots did not meet established manufacturing specifications. The malfunction could result in delayed recognition and management of Co-Oximetry and total bilirubin abnormalities and their sequelae.",
+          "basis": "DEVICE_TEXT",
+          "needs_review": true
+        },
+        {
+          "product_res_number": "Z-2900-2026",
+          "product_code": "CHL",
+          "firm": "Instrumentation Laboratory",
+          "posted": "2026-08-06",
+          "status": "Open, Classified",
+          "device": "GEM Premier 5000 PAK Part Numbers: 00055360010 00055360011 00055407504 00055415010 00055430010 00055430011 00055445010 00055445011 00055360010.A",
+          "reason": "The active ingredient concentration in the lysing bag solution of specific GEM Premier 5000 lots did not meet established manufacturing specifications. The malfunction could result in delayed recognition and management of Co-Oximetry and total bilirubin abnormalities and their sequelae.",
+          "basis": "DEVICE_TEXT",
+          "needs_review": true
+        }
+      ]
+    },
+    {
+      "event": "99400",
+      "records": [
+        {
+          "product_res_number": "Z-2876-2026",
+          "product_code": "DPS",
+          "firm": "GE Medical Systems Information Technologies Inc",
+          "posted": "2026-08-04",
+          "status": "Open, Classified",
+          "device": "GE Healthcare MAC VU360, REF# part number 2030361-023; Electrocardiograph",
+          "reason": "Software issue issue with the MAC VU360 v3.0 system. After selecting the order refresh icon, an open preview or review screen might fail to close automatically after 2 minutes of inactivity. As a result, data from a previous patient may remain on the screen and could be incorrectly associated with a subsequent patient.",
+          "basis": "PRODUCT_CODE",
+          "needs_review": false
+        }
+      ]
+    },
+    {
+      "event": "99475",
+      "records": [
+        {
+          "product_res_number": "Z-2878-2026",
+          "product_code": "MWI",
+          "firm": "GE Medical Systems Information Technologies Inc",
+          "posted": "2026-08-04",
+          "status": "Open, Classified",
+          "device": "GE Healthcare Portrait Core Services SW V 1.2.0, REF 5700592. patient monitoring system",
+          "reason": "A software vulnerability may allow unauthorized persons to gain privileged access to the device, which could result in loss of patient monitoring, missed patient alarms, and/or access to Protected Health Information (PHI).",
+          "basis": "PRODUCT_CODE",
+          "needs_review": false
+        }
+      ]
+    },
+    {
+      "event": "99359",
+      "records": [
+        {
+          "product_res_number": "Z-2860-2026",
+          "product_code": "BSZ",
+          "firm": "Maquet Critical Care AB",
+          "posted": "2026-08-03",
+          "status": "Open, Classified",
+          "device": "Flow Anesthesia Machine Flow-i C20 6677200 Flow-i C30 6677300 Flow-i C40 6677400 Flow-i C20 6888520 Flow-i C30 6888530 Flow-i C40 6888540 Flow-c 6887700 Flow-e 6887900",
+          "reason": "Events observed where anesthetic agent was not delivered when the vaporizer was activated. Failure to deliver the anesthetic agent may result in the patient receiving insufficient anesthesia and may lead to intraoperative awareness.",
+          "basis": "DEVICE_TEXT",
+          "needs_review": true
+        }
+      ]
+    },
+    {
+      "event": "98481",
+      "records": [
+        {
+          "product_res_number": "Z-2670-2026",
+          "product_code": "MHX",
+          "firm": "Masimo Corporation",
+          "posted": "2026-07-02",
+          "status": "Open, Classified",
+          "device": "Radius VSM ECG pre-connected Set, REF: 4842, 4695",
+          "reason": "Two devices recalled: 1) Electrocardiogram (ECG) electrode assembly ECG feature may incorrectly detect extreme bradycardia, tachycardia and trigger alarms on normal heart rate patients, which may distract clinicians away from management of true positive alarms, which could delay treatment; 2) Small and medium size blood pressure cuffs may contain rough edges, may result in skin irritation/redness.",
+          "basis": "PRODUCT_CODE",
+          "needs_review": false
+        },
+        {
+          "product_res_number": "Z-2671-2026",
+          "product_code": "MHX",
+          "firm": "Masimo Corporation",
+          "posted": "2026-07-02",
+          "status": "Open, Classified",
+          "device": "Radius VSM Disposable NIBP Cuff, REF: 4825, 4826",
+          "reason": "Two devices recalled: 1) Electrocardiogram (ECG) electrode assembly ECG feature may incorrectly detect extreme bradycardia, tachycardia and trigger alarms on normal heart rate patients, which may distract clinicians away from management of true positive alarms, which could delay treatment; 2) Small and medium size blood pressure cuffs may contain rough edges, may result in skin irritation/redness.",
+          "basis": "PRODUCT_CODE",
+          "needs_review": false
+        }
+      ]
+    },
+    {
+      "event": "99126",
+      "records": [
+        {
+          "product_res_number": "Z-2579-2026",
+          "product_code": "MHX",
+          "firm": "Philips North America Llc",
+          "posted": "2026-06-24",
+          "status": "Open, Classified",
+          "device": "Philips Telemetry Monitor 5500 1.4 GHz. Model Number: 867232. Includes the following system descriptions: TELE Monitor 5500, 1.4 Ghz, ECG only, ex; Telemetry Monitor 5500 1.4 GHz F",
+          "reason": "Potential for device reset to default \"NEW_DEVICE\" state, which may lead to a to loss of device configuration and the equipment label, resulting in a failure to reconnect to the PIC iX central monitoring system.",
+          "basis": "PRODUCT_CODE",
+          "needs_review": false
+        }
+      ]
+    },
+    {
+      "event": "98968",
+      "records": [
+        {
+          "product_res_number": "Z-2574-2026",
+          "product_code": "QBJ",
+          "firm": "Dexcom, Inc.",
+          "posted": "2026-06-24",
+          "status": "Open, Classified",
+          "device": "Brand Name: Dexcom G7 Continuous Glucose Monitoring System Product Name: Dexcom G7 US Retail Sensor/Transmitter 1-pack Model/Catalog Number: STP-AT-012 Software Version: N/A Produc",
+          "reason": "Certain lots of Dexcom G7 sensors originally designated as scrap and intended for destruction were stolen during the destruction process. The sensors were later sold to pharmacies and distributors by Pharmsource, LLC. Lot 1725204004 were designated for destruction because the G7 sensors were not properly sterilized and have an increased risk of skin infection if used. Lot 1725069002 were designate",
+          "basis": "DEVICE_TEXT",
+          "needs_review": true
+        }
+      ]
+    },
+    {
+      "event": "99084",
+      "records": [
+        {
+          "product_res_number": "Z-2522-2026",
+          "product_code": "HGM",
+          "firm": "Philips North America Llc",
+          "posted": "2026-06-22",
+          "status": "Open, Classified",
+          "device": "Philips Avalon Fetal Monitor, FM20, Part number M2702A, Part M2703A",
+          "reason": "Monitor has incorrect assembly of the speaker connector which can cause device cables to be pulled out of the housing and increase the risk of intermittent or permanent loss of speaker output.",
+          "basis": "UNCONFIRMED",
+          "needs_review": true
+        },
+        {
+          "product_res_number": "Z-2523-2026",
+          "product_code": "HGM",
+          "firm": "Philips North America Llc",
+          "posted": "2026-06-22",
+          "status": "Open, Classified",
+          "device": "Philips Avalon Fetal Monitor, FM 30 Part numberM2703A",
+          "reason": "Monitor has incorrect assembly of the speaker connector which can cause device cables to be pulled out of the housing and increase the risk of intermittent or permanent loss of speaker output.",
+          "basis": "UNCONFIRMED",
+          "needs_review": true
+        }
+      ]
+    },
+    {
+      "event": "98855",
+      "records": [
+        {
+          "product_res_number": "Z-2514-2026",
+          "product_code": "FMG",
+          "firm": "BD SWITZERLAND SARL",
+          "posted": "2026-06-18",
+          "status": "Open, Classified",
+          "device": "BD Connecta\" BD Luer-Lok\" 360 REF 394910 UDI-DI code: 00382903949106 BD Connecta\" Stopcocks are used to administer fluids or medication through one or two different ports via an IV",
+          "reason": "Due to stopcock issues when using the plastic luer-lok syringe, the connection at the Port C may over thread or continue to spin rather than tightening securely. This behavior has led some clinical users to perceive the connection as unstable.",
+          "basis": "DEVICE_TEXT",
+          "needs_review": true
+        }
+      ]
+    },
+    {
+      "event": "98924",
+      "records": [
+        {
+          "product_res_number": "Z-2353-2026",
+          "product_code": "GWQ",
+          "firm": "Micromed S.p.A.",
+          "posted": "2026-06-05",
+          "status": "Open, Classified",
+          "device": "SD LTM 64 PLUS, EEG Amplifier/recorder, Model/Catalog Number: SD LTM 64 PLUS, Software Version: firmware 2021.02, 2022.01 or 2022.02",
+          "reason": "Natus has become aware of two complaints related to the SD LTM 64 PLUS where the EEG traces acquired from two or four different amplifiers used in a multiple amplifier configuration (128 or 256 channels) running firmware version 2022.02 were displayed with a shift of 1 second between the 64channels blocks. In rare circumstances, a fixed 1-second temporal delay may appear between two 64-channel mod",
+          "basis": "DEVICE_TEXT",
+          "needs_review": true
+        }
+      ]
+    },
+    {
+      "event": "98914",
+      "records": [
+        {
+          "product_res_number": "Z-2207-2026",
+          "product_code": "BSZ",
+          "firm": "Draeger, Inc.",
+          "posted": "2026-06-04",
+          "status": "Open, Classified",
+          "device": "Atlan A350. Model Number: 8211500. anesthesia workstation",
+          "reason": "The Atlan anesthesia workstation either indicated a failure of the piston ventilator before use or suffered a failure of the mechanical ventilation during use.",
+          "basis": "UNCONFIRMED",
+          "needs_review": true
+        },
+        {
+          "product_res_number": "Z-2208-2026",
+          "product_code": "BSZ",
+          "firm": "Draeger, Inc.",
+          "posted": "2026-06-04",
+          "status": "Open, Classified",
+          "device": "Atlan A350XL. Model Number: 8621600. anesthesia workstation",
+          "reason": "The Atlan anesthesia workstation either indicated a failure of the piston ventilator before use or suffered a failure of the mechanical ventilation during use.",
+          "basis": "UNCONFIRMED",
+          "needs_review": true
+        }
+      ]
+    },
+    {
+      "event": "98917",
+      "records": [
+        {
+          "product_res_number": "Z-2306-2026",
+          "product_code": "DXH",
+          "firm": "GE Medical Systems China Co., Ltd.",
+          "posted": "2026-06-03",
+          "status": "Open, Classified",
+          "device": "MAC 5 A4 Resting ECG Analysis System 855001-001; MAC 5 A5 Resting ECG Analysis System 8855002-001. Electrocardiograph",
+          "reason": "Software in development inadvertently made available for customer use. Use of this software version can result in clinical information being associated with the incorrect patient. This could impact clinical decision-making.",
+          "basis": "PRODUCT_CODE",
+          "needs_review": false
+        }
+      ]
+    },
+    {
+      "event": "98938",
+      "records": [
+        {
+          "product_res_number": "Z-2242-2026",
+          "product_code": "MHX",
+          "firm": "GE Medical Systems Information Technologies Inc",
+          "posted": "2026-05-28",
+          "status": "Open, Classified",
+          "device": "GE HealthCare CARESCAPE TELEMETRY SERVER V5 ATO MODEL, REF #2063702-101, Product Code SS9; used in conjunction with ApexPro CARESCAPE Telemetry Server (CTS) v5.0; Monitor, Physiolo",
+          "reason": "GE HealthCare has become aware of an unlikely situation where potential loss of ECG and SpO2 monitoring involving ApexPro CARESCAPE Telemetry Server (CTS) v5.0 and v6.0, can result from a persistent NO COMM or OFF NETWORK condition at the CARESCAPE Central Station or CIC Pro Clinical Information Center (Central Station).",
+          "basis": "PRODUCT_CODE",
+          "needs_review": false
+        },
+        {
+          "product_res_number": "Z-2243-2026",
+          "product_code": "MHX",
+          "firm": "GE Medical Systems Information Technologies Inc",
+          "posted": "2026-05-28",
+          "status": "Open, Classified",
+          "device": "GE HealthCare APEXPRO v5.0 - ARK2250 - Software Disaster Recovery USB Kit - Orderable by GE Service only, REF #2108523-01; ApexPro CARESCAPE Telemetry Server (CTS) v5.0; Monitor, P",
+          "reason": "GE HealthCare has become aware of an unlikely situation where potential loss of ECG and SpO2 monitoring involving ApexPro CARESCAPE Telemetry Server (CTS) v5.0 and v6.0, can result from a persistent NO COMM or OFF NETWORK condition at the CARESCAPE Central Station or CIC Pro Clinical Information Center (Central Station).",
+          "basis": "PRODUCT_CODE",
+          "needs_review": false
+        },
+        {
+          "product_res_number": "Z-2244-2026",
+          "product_code": "MHX",
+          "firm": "GE Medical Systems Information Technologies Inc",
+          "posted": "2026-05-28",
+          "status": "Open, Classified",
+          "device": "GE HealthCare IOU ASSY ARK2250 CARESCAPE TELEMETRY SERVER, REF #2108729-901, Product Code SS9; ApexPro CARESCAPE Telemetry Server (CTS) v5.0; Monitor, Physiological, Patient(With A",
+          "reason": "GE HealthCare has become aware of an unlikely situation where potential loss of ECG and SpO2 monitoring involving ApexPro CARESCAPE Telemetry Server (CTS) v5.0 and v6.0, can result from a persistent NO COMM or OFF NETWORK condition at the CARESCAPE Central Station or CIC Pro Clinical Information Center (Central Station).",
+          "basis": "PRODUCT_CODE",
+          "needs_review": false
+        },
+        {
+          "product_res_number": "Z-2245-2026",
+          "product_code": "MHX",
+          "firm": "GE Medical Systems Information Technologies Inc",
+          "posted": "2026-05-28",
+          "status": "Open, Classified",
+          "device": "GE HealthCare CARESCAPE TELEMETRY SERVER ARK-2250L - NORTH AMERICA, REF #5697603, Product Code KSA; used in conjunction wtih ApexPro CARESCAPE Telemetry Server (CTS) v6.0; Monitor,",
+          "reason": "GE HealthCare has become aware of an unlikely situation where potential loss of ECG and SpO2 monitoring involving ApexPro CARESCAPE Telemetry Server (CTS) v5.0 and v6.0, can result from a persistent NO COMM or OFF NETWORK condition at the CARESCAPE Central Station or CIC Pro Clinical Information Center (Central Station).",
+          "basis": "PRODUCT_CODE",
+          "needs_review": false
+        },
+        {
+          "product_res_number": "Z-2246-2026",
+          "product_code": "MHX",
+          "firm": "GE Medical Systems Information Technologies Inc",
+          "posted": "2026-05-28",
+          "status": "Open, Classified",
+          "device": "GE HealthCare TRADE IN CARESCAPE TELEMETRY SERVER ARK-2250L - NORTH AMERICA, REF #5697603-902, Product Code KSA; used in conjunction wtih ApexPro CARESCAPE Telemetry Server (CTS) v",
+          "reason": "GE HealthCare has become aware of an unlikely situation where potential loss of ECG and SpO2 monitoring involving ApexPro CARESCAPE Telemetry Server (CTS) v5.0 and v6.0, can result from a persistent NO COMM or OFF NETWORK condition at the CARESCAPE Central Station or CIC Pro Clinical Information Center (Central Station).",
+          "basis": "PRODUCT_CODE",
+          "needs_review": false
+        },
+        {
+          "product_res_number": "Z-2247-2026",
+          "product_code": "MHX",
+          "firm": "GE Medical Systems Information Technologies Inc",
+          "posted": "2026-05-28",
+          "status": "Open, Classified",
+          "device": "GE HealthCare ApexPro v6.0 eDelivery Software, REF #5700026, Product Code SUV; used in conjunction wtih ApexPro CARESCAPE Telemetry Server (CTS) v6.0; Monitor, Physiological, Patie",
+          "reason": "GE HealthCare has become aware of an unlikely situation where potential loss of ECG and SpO2 monitoring involving ApexPro CARESCAPE Telemetry Server (CTS) v5.0 and v6.0, can result from a persistent NO COMM or OFF NETWORK condition at the CARESCAPE Central Station or CIC Pro Clinical Information Center (Central Station).",
+          "basis": "PRODUCT_CODE",
+          "needs_review": false
+        }
+      ]
+    },
+    {
+      "event": "98603",
+      "records": [
+        {
+          "product_res_number": "Z-2202-2026",
+          "product_code": "DYB",
+          "firm": "Becton, Dickinson and Company",
+          "posted": "2026-05-15",
+          "status": "Open, Classified",
+          "device": "Swan-Ganz Catheter, Models: 131F7/131F7P, 131F7J, 141F7, 151F7, 834F75, 096F6/096F6P, C144F7, 782F75M, 132F5, C146F7, 831F75/831F75P, TS105F5, 774F75, 777F8, AIQSGF8;",
+          "reason": "Catheters may, due to a manufacturing process and material changes, leak/break from the (blue) proximal injectate lumen hub, which may lead to infection, medication loss, and/or blood loss.",
+          "basis": "DEVICE_TEXT",
+          "needs_review": true
+        },
+        {
+          "product_res_number": "Z-2203-2026",
+          "product_code": "DYG",
+          "firm": "Becton, Dickinson and Company",
+          "posted": "2026-05-15",
+          "status": "Open, Classified",
+          "device": "Swan-Ganz Jr Catheter, Models: SGPT54, SGPT64P, SGPT755P",
+          "reason": "Catheters may, due to a manufacturing process and material changes, leak/break from the (blue) proximal injectate lumen hub, which may lead to infection, medication loss, and/or blood loss.",
+          "basis": "DEVICE_TEXT",
+          "needs_review": true
+        },
+        {
+          "product_res_number": "Z-2204-2026",
+          "product_code": "DYG",
+          "firm": "Becton, Dickinson and Company",
+          "posted": "2026-05-15",
+          "status": "Open, Classified",
+          "device": "Swan-Ganz Pacing Catheter, Models: D200F7;",
+          "reason": "Catheters may, due to a manufacturing process and material changes, leak/break from the (blue) proximal injectate lumen hub, which may lead to infection, medication loss, and/or blood loss.",
+          "basis": "DEVICE_TEXT",
+          "needs_review": true
+        }
+      ]
+    },
+    {
+      "event": "98748",
+      "records": [
+        {
+          "product_res_number": "Z-2170-2026",
+          "product_code": "OWB",
+          "firm": "PHILIPS MEDICAL SYSTEMS NEDERLAND B.V.",
+          "posted": "2026-05-12",
+          "status": "Open, Classified",
+          "device": "Philips Azurion. System Code Description (Model Number): Azurion 3 M12 (722221, 722229), Azurion 3 M15 (722222, 722230), Azurion 5 (722281), Azurion 5 M12 (722227, 722231), Azurion",
+          "reason": "Potential for the bolts and plastic parts of the Cable Hose Carriers that hold the cable hose to the monitor ceiling suspension may loosen and/or break over time due to the forces applied when the monitor is moved or rotated.",
+          "basis": "UNCONFIRMED",
+          "needs_review": true
+        }
+      ]
+    },
+    {
+      "event": "98639",
+      "records": [
+        {
+          "product_res_number": "Z-2163-2026",
+          "product_code": "QBJ",
+          "firm": "Dexcom, Inc.",
+          "posted": "2026-05-11",
+          "status": "Open, Classified",
+          "device": "Brand Name: Dexcom G7 Continuous Glucose Monitoring System Product Name: Dexcom G7 CGM iOS App Model/Catalog Number: SW12300 Software Version: Versions 2.9.0 through 2.11.2 Product",
+          "reason": "A software defect in which a low-priority file I/O check blocks the higher-priority thread responsible for processing estimated glucose values (EGVs) and trend arrows. When the app is running in the background, EGV notifications may queue up and then \"replay\" sequentially when the user brings the app to the foreground, causing the Glucose Compass to flicker through previous EGVs. In more severe in",
+          "basis": "DEVICE_TEXT",
+          "needs_review": true
+        },
+        {
+          "product_res_number": "Z-2164-2026",
+          "product_code": "QBJ",
+          "firm": "Dexcom, Inc.",
+          "posted": "2026-05-11",
+          "status": "Open, Classified",
+          "device": "Brand Name: Dexcom G7 Continuous Glucose Monitoring System Product Name: Dexcom G7 CGM watchOS App Model/Catalog Number: SW13355 Software Version: Versions 2.9.0 through 2.11.2 Pro",
+          "reason": "A software defect in which a low-priority file I/O check blocks the higher-priority thread responsible for processing estimated glucose values (EGVs) and trend arrows. When the app is running in the background, EGV notifications may queue up and then \"replay\" sequentially when the user brings the app to the foreground, causing the Glucose Compass to flicker through previous EGVs. In more severe in",
+          "basis": "DEVICE_TEXT",
+          "needs_review": true
+        },
+        {
+          "product_res_number": "Z-2165-2026",
+          "product_code": "QBJ",
+          "firm": "Dexcom, Inc.",
+          "posted": "2026-05-11",
+          "status": "Open, Classified",
+          "device": "Brand Name: Dexcom ONE+ Continuous Glucose Monitoring System Product Name: Dexcom ONE+ iOS CGM App Model/Catalog Number: SW14244 Software Version: versions 1.5.0 and 1.6.0 Product ",
+          "reason": "A software defect in which a low-priority file I/O check blocks the higher-priority thread responsible for processing estimated glucose values (EGVs) and trend arrows. When the app is running in the background, EGV notifications may queue up and then \"replay\" sequentially when the user brings the app to the foreground, causing the Glucose Compass to flicker through previous EGVs. In more severe in",
+          "basis": "DEVICE_TEXT",
+          "needs_review": true
+        }
+      ]
+    },
+    {
+      "event": "98735",
+      "records": [
+        {
+          "product_res_number": "Z-2141-2026",
+          "product_code": "DRS",
+          "firm": "Medline Industries, LP",
+          "posted": "2026-05-08",
+          "status": "Open, Classified",
+          "device": "Namic Preceptor Manifold, custom, Medline Product Number/SKU 64037107; Extravascular blood pressure transducer",
+          "reason": "Medline has identified the presence of particulate within the fluid path of the Manifolds.",
+          "basis": "PRODUCT_CODE",
+          "needs_review": false
+        },
+        {
+          "product_res_number": "Z-2142-2026",
+          "product_code": "DRS",
+          "firm": "Medline Industries, LP",
+          "posted": "2026-05-08",
+          "status": "Open, Classified",
+          "device": "Namic Preceptor Manifold, custom, Medline Product Number/SKU 64039307; Extravascular blood pressure transducer",
+          "reason": "Medline has identified the presence of particulate within the fluid path of the Manifolds.",
+          "basis": "PRODUCT_CODE",
+          "needs_review": false
+        }
+      ]
+    },
+    {
+      "event": "98722",
+      "records": [
+        {
+          "product_res_number": "Z-2052-2026",
+          "product_code": "DSI",
+          "firm": "Spacelabs Healthcare, Inc.",
+          "posted": "2026-05-01",
+          "status": "Open, Classified",
+          "device": "Brand Name: Spacelabs Ultraview SL Command Module Product Name: SL Command Module Model/Catalog Number: 91496 Software Version: N/A Product Description: The Command Module (91496) ",
+          "reason": "Due to a manufacturing issue (i.e. malfunctioning of electrical Leakage tester).",
+          "basis": "PRODUCT_CODE",
+          "needs_review": false
+        }
+      ]
+    },
+    {
+      "event": "98679",
+      "records": [
+        {
+          "product_res_number": "Z-2048-2026",
+          "product_code": "MXD",
+          "firm": "Boston Scientific Corporation",
+          "posted": "2026-05-01",
+          "status": "Open, Classified",
+          "device": "LUX-DX II, Arrythmia detector and alarm, Model M302, with SERVER SW LATITUDE DRAGON US, Model 6460, Version 7.5",
+          "reason": "For some patients upgraded from a LUX-Dx M301 device to a new Model M302 or M312, the new ICM device is not collecting PVC Burden data (both M302/M312) or monitoring for Bradyarrhythmia and Pause (M312 only). In addition, for these devices that are not being monitored, the LATITUDE Clarity programming screens have discrepant information, indicating that the monitoring is enabled for these features",
+          "basis": "DEVICE_TEXT",
+          "needs_review": true
+        },
+        {
+          "product_res_number": "Z-2049-2026",
+          "product_code": "MXD",
+          "firm": "Boston Scientific Corporation",
+          "posted": "2026-05-01",
+          "status": "Open, Classified",
+          "device": "LUX-Dx II Plus, Arrythmia detector and alarm, Model M312, with SERVER SW LATITUDE DRAGON EU (Europe), Model 6446, Version 7.5, or SERVER SW LATITUDE DRAGON AU (Australia/New Zealan",
+          "reason": "For some patients upgraded from a LUX-Dx M301 device to a new Model M302 or M312, the new ICM device is not collecting PVC Burden data (both M302/M312) or monitoring for Bradyarrhythmia and Pause (M312 only). In addition, for these devices that are not being monitored, the LATITUDE Clarity programming screens have discrepant information, indicating that the monitoring is enabled for these features",
+          "basis": "DEVICE_TEXT",
+          "needs_review": true
+        }
+      ]
+    },
+    {
+      "event": "98653",
+      "records": [
+        {
+          "product_res_number": "Z-1948-2026",
+          "product_code": "OAD",
+          "firm": "Medtronic, Inc.",
+          "posted": "2026-04-24",
+          "status": "Open, Classified",
+          "device": "Medtronic Sphere-9 Catheter, Model Number AFR-00001; catheter, percutaneous, cardiac ablation, for treatment of atrial flutter.",
+          "reason": "Ventricular fibrillation (VF) occurred during radiofrequency (RF) therapy with the Medtronic Sphere-9 catheter in patients who have a Biotronik Implantable Cardioverter Defibrillator (ICD) or Biotronik Cardiac Resynchronization Therapy-Defibrillator (CRT-D) implanted. The observation is caused by an interaction between the Sphere-9 catheter current flow and a safety feature built into Biotronik IC",
+          "basis": "DEVICE_TEXT",
+          "needs_review": true
+        }
+      ]
+    },
+    {
+      "event": "98374",
+      "records": [
+        {
+          "product_res_number": "Z-1793-2026",
+          "product_code": "DSI",
+          "firm": "Spacelabs Healthcare, Inc.",
+          "posted": "2026-04-07",
+          "status": "Open, Classified",
+          "device": "Multi-parameter Command Module, Model 91496, optioned with Masimo or Nellcor",
+          "reason": "Multi-parameter command module has a circuit board issue and when in Auto mode, Cardiac Output (CO) measurement may activate early, resulting in Bad Curve error with no CO measurement or Irregular Curve error with CO measurement not automatically excluded, which may result in inaccurate readings, or the need of additional readings, which may lead to delayed care and/or fluid overload.",
+          "basis": "PRODUCT_CODE",
+          "needs_review": false
+        }
+      ]
+    },
+    {
+      "event": "98458",
+      "records": [
+        {
+          "product_res_number": "Z-1637-2026",
+          "product_code": "NHJ",
+          "firm": "Baxter Healthcare Corporation",
+          "posted": "2026-04-01",
+          "status": "Open, Classified",
+          "device": "Blue Ventilator Adapter Module, single-patient use circuit, Product Code M07937. Accessory to Baxter Volara Respiratory Therapy system.",
+          "reason": "Urgent Medical Device Correction for the Volara system single-patient use circuit due to the potential that patients or caregivers may be unaware of a possible decrease in oxygen levels (oxygen desaturation), or potential lung tissue injury from overexpansion (barotrauma) when the Volara device is used in the home care environment. This correction is providing the home caregiver specific instructi",
+          "basis": "DEVICE_TEXT",
+          "needs_review": true
+        }
+      ]
+    }
+  ]
+}

@@ -18,7 +18,7 @@ from .graph import open_graph
 from .health import detection_latency, source_status, system_status
 from .ledger import ObservationLedger
 from .paths import radar_paths
-from .records import PHASE_LABELS_EN
+from .records import ORIGIN_BACKFILLED, ORIGIN_LIVE, PHASE_LABELS_EN
 from .scheduler import RadarScheduler, build_fetcher
 from .taxonomy import TaxonomyError, load_taxonomy
 
@@ -87,8 +87,11 @@ def cmd_run(args) -> int:
         sources = args.source.split(",") if args.source else None
         adapters = build_adapters(taxonomy, sources)
         fetcher = build_fetcher(taxonomy, max_requests=args.max_requests)
+        backfill_reason = getattr(args, "backfill_reason", None)
         report = ingest(adapters, ledger, taxonomy, fetcher=fetcher, trigger="cli",
-                        limit=args.limit, dry_run=args.dry_run, log=print)
+                        limit=args.limit, dry_run=args.dry_run,
+                        origin=ORIGIN_BACKFILLED if backfill_reason else ORIGIN_LIVE,
+                        backfill_reason=backfill_reason, log=print)
         print()
         rows = []
         for item in report.sources:
@@ -103,7 +106,7 @@ def cmd_run(args) -> int:
         print()
         print(report.as_dict()["statement"])
         if args.dry_run:
-            print("(dry run: nothing was written)")
+            print("(dry run: no observation, version, admission or run was written)")
             return 0
         advanced = advance(ledger, graph, taxonomy, log=print,
                            enqueue_ai=not getattr(args, "no_ai", False))
@@ -115,6 +118,75 @@ def cmd_run(args) -> int:
     finally:
         graph.store.close()
         ledger.close()
+
+
+def cmd_brief(args) -> int:
+    """Render the weekly brief from the ledger. Read-only; it writes no ledger state."""
+    from .intelligence import build_brief, evaluate, render_markdown
+
+    paths = radar_paths(args.data_dir)
+    if not paths.ledger.is_file():
+        print(f"No radar ledger at {paths.ledger}")
+        return 1
+    import datetime as _dt
+
+    today = _dt.date.today()
+    start = args.since or (today - _dt.timedelta(days=7)).isoformat()
+    end = args.until or today.isoformat()
+    review = _read_json_map(args.review) if args.review else {}
+    reference = _read_json_list(args.reference) if getattr(args, "reference", None) else []
+    feedback = _read_json_list(args.feedback) if getattr(args, "feedback", None) else []
+    ledger = ObservationLedger(paths.ledger, create=False, read_only=True)
+    try:
+        brief = build_brief(
+            ledger,
+            start=start,
+            end=end,
+            generated_at=_dt.datetime.now(_dt.timezone.utc).replace(microsecond=0).isoformat(),
+            review=review,
+            max_items=int(args.max_items),
+        )
+    finally:
+        ledger.close()
+    markdown = render_markdown(brief)
+    metrics = evaluate(brief, reference, feedback)
+    if args.output:
+        path = Path(args.output)
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(markdown, encoding="utf-8")
+        print(f"wrote {path}")
+    body = brief.as_dict()
+    if not getattr(args, "with_index", False):
+        # The index maps every loaded event identity to a view. It is what the metric script
+        # needs and what a reader never does; printing it made the JSON unreadable.
+        body.pop("index", None)
+    if args.json:
+        _print_json({"brief": body, "metrics": metrics})
+    elif not args.output:
+        print(markdown)
+    if args.metrics:
+        _print_json(metrics)
+    return 0
+
+
+def _read_json_map(path: str) -> dict[str, Any]:
+    import json as _json
+
+    value = _json.loads(Path(path).read_text(encoding="utf-8-sig"))
+    if not isinstance(value, dict):
+        raise SystemExit(f"{path}: expected a JSON object mapping event identity to review state")
+    return {str(key): str(item) for key, item in value.items()}
+
+
+def _read_json_list(path: str) -> list[dict[str, Any]]:
+    import json as _json
+
+    value = _json.loads(Path(path).read_text(encoding="utf-8-sig"))
+    if isinstance(value, dict):
+        value = value.get("events") or value.get("items") or []
+    if not isinstance(value, list):
+        raise SystemExit(f"{path}: expected a JSON array")
+    return [dict(item) for item in value if isinstance(item, dict)]
 
 
 def cmd_advance(args) -> int:
@@ -654,8 +726,28 @@ def build_parser() -> argparse.ArgumentParser:
     run.add_argument("--dry-run", action="store_true")
     run.add_argument("--no-ai", action="store_true",
                      help="do not queue enrichment work (AI is disabled on this host)")
+    run.add_argument("--backfill-reason", default=None,
+                     help="import a historical inventory on purpose; every observation is"
+                          " recorded as BACKFILLED with this reason and never as new news")
     run.add_argument("--json", action="store_true")
     run.set_defaults(func=cmd_run)
+
+    brief = sub.add_parser(
+        "brief",
+        help="render the weekly brief: archive / candidate / deliverable intelligence",
+    )
+    brief.add_argument("--since", default=None, help="window start (YYYY-MM-DD), default 7 days ago")
+    brief.add_argument("--until", default=None, help="window end (YYYY-MM-DD), default today")
+    brief.add_argument("--max-items", type=int, default=15, help="maximum deliverable items")
+    brief.add_argument("--output", default=None, help="write the Markdown brief to this path")
+    brief.add_argument("--json", action="store_true", help="print the structured brief and metrics")
+    brief.add_argument("--metrics", action="store_true", help="print the pilot metrics as JSON")
+    brief.add_argument("--review", default=None, help="JSON object: event identity -> review state")
+    brief.add_argument("--reference", default=None, help="JSON array of independently found events")
+    brief.add_argument("--feedback", default=None, help="JSON array of user verdicts")
+    brief.add_argument("--with-index", action="store_true",
+                       help="include the per-event view index (for the metric script)")
+    brief.set_defaults(func=cmd_brief)
 
     adv = sub.add_parser("advance", help="resolve, link and publish pending observations")
     adv.add_argument("--limit", type=int, default=400)

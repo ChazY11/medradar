@@ -361,3 +361,22 @@ def test_graph_changes_reports_offset_and_has_more(client: TestClient):
         "earlier": "2020-01-01T00:00:00Z", "limit": 1, "offset": 1,
     }).json()
     assert second["list_offset"] == 1
+
+def test_the_weekly_brief_endpoint_serves_the_three_views(client: TestClient):
+    response = client.get("/api/radar/brief", params={"since": "2026-01-01", "until": "2026-12-31"})
+    assert response.status_code == 200, response.text
+    body = response.json()
+    assert "items" in body and "candidates" in body and "counts" in body
+    assert body["counts"]["views"].keys() >= {"ARCHIVE", "CANDIDATE", "INTELLIGENCE"}
+    assert "index" not in body, "the per-observation index must not be shipped to a client"
+    assert body["metrics"]["policy_version"] == body["policy_version"]
+    for item in body["items"]:
+        for field in ("title", "dates", "source_url", "importance", "importance_reasons",
+                      "what_happened", "why_it_matters", "rd_attention", "uncertainty",
+                      "review_status", "field_basis"):
+            assert field in item, field
+
+
+def test_the_weekly_brief_endpoint_rejects_a_backwards_window(client: TestClient):
+    response = client.get("/api/radar/brief", params={"since": "2026-12-31", "until": "2026-01-01"})
+    assert response.status_code == 400

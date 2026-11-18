@@ -360,6 +360,40 @@ def build_router(service: RadarService | None = None) -> APIRouter:
                 "tiers": list(TIER_ORDER),
             }
 
+    @router.get("/brief")
+    def brief(since: str | None = None, until: str | None = None,
+              max_items: int = Query(15, ge=1, le=100)) -> dict[str, Any]:
+        """The weekly brief: archive / candidate / deliverable intelligence for one window.
+
+        Read-only and derived: it reads the ledger the feed already serves and applies the
+        intelligence policy. It never writes a decision, so serving it cannot change the record.
+        """
+        import datetime as _dt
+
+        from .intelligence import build_brief, evaluate
+
+        today = _dt.date.today()
+        start = since or (today - _dt.timedelta(days=7)).isoformat()
+        stop = until or today.isoformat()
+        try:
+            _dt.date.fromisoformat(start)
+            _dt.date.fromisoformat(stop)
+        except ValueError as error:
+            raise HTTPException(status_code=400, detail="since/until must be YYYY-MM-DD") from error
+        if start > stop:
+            raise HTTPException(status_code=400, detail="since is after until")
+        generated_at = _dt.datetime.now(_dt.timezone.utc).replace(microsecond=0).isoformat()
+        with svc.ledger() as ledger:
+            payload = build_brief(ledger, start=start, end=stop, generated_at=generated_at,
+                                  max_items=max_items)
+        body = payload.as_dict()
+        # The index is a per-observation map used by the offline metric script; a client needs the
+        # brief itself, and shipping 20k keys would be a payload, not an answer.
+        body.pop("index", None)
+        body["schema"] = SCHEMA
+        body["metrics"] = evaluate(payload)
+        return body
+
     @router.get("/feed/facets")
     def feed_facets(limit: int = Query(40, ge=1, le=200)) -> dict[str, Any]:
         taxonomy = svc.taxonomy()
