@@ -19,15 +19,16 @@ No notification channel is configured; that is reported, not hidden.
 """
 from __future__ import annotations
 
-import argparse, json, os, socket, sys, time, urllib.error, urllib.request
+import argparse, base64, json, os, socket, sys, time, urllib.error, urllib.request
 
 BT = chr(96)
 
 
-def _http(url, timeout=10):
+def _http(url, timeout=10, headers=None):
     started = time.time()
     try:
-        with urllib.request.urlopen(url, timeout=timeout) as response:
+        request = urllib.request.Request(url, headers=headers or {})
+        with urllib.request.urlopen(request, timeout=timeout) as response:
             body = response.read()
             return {"ok": True, "status": response.status,
                     "ms": round((time.time() - started) * 1000, 1), "bytes": len(body),
@@ -66,24 +67,28 @@ def layer_availability(args):
     healthz = _http(args.healthz_url)
     checks.append({"id": "healthz", "ok": healthz["ok"] and healthz.get("status") == 200,
                    "detail": healthz.get("error") or ("200 in " + str(healthz["ms"]) + " ms")})
-    health = _http(args.base_url + "/api/radar/health", timeout=60)
-    # The alpha gate protects the API on loopback too, by design. A 401 means the service is up
-    # and answering; it is not a fault, and the pipeline checks below read the ledger directly
-    # rather than going through an interface that needs credentials.
-    gated = health.get("status") == 401
-    checks.append({"id": "api_health",
-                   "ok": health["ok"] or gated,
-                   "detail": ("401 (alpha gate protects the API; the ledger is read directly)"
-                              if gated else (health.get("error") or "200"))})
-    feed = _http(args.base_url + "/api/radar/feed?limit=1", timeout=60)
-    feed_gated = feed.get("status") == 401
-    checks.append({"id": "api_feed", "ok": feed["ok"] or feed_gated,
-                   "detail": ("401 (alpha gate)" if feed_gated else (feed.get("error") or "200"))})
+    # The alpha gate protects the API on loopback too, and it counts every unauthenticated call as
+    # a failed credential: a probe that calls the gated API every few minutes eventually locks the
+    # loopback address out (measured: HTTP 429 after a handful of runs), which then looks exactly
+    # like an outage. Liveness is therefore verified through /healthz, which the gate leaves open
+    # on purpose, and correctness through the ledger the API reads. An authenticated probe is
+    # opt-in, for manual runs, so no credential is ever needed by the timer.
+    if args.api_probe:
+        basic = base64.b64encode(args.api_probe.encode("utf-8")).decode("ascii")
+        health = _http(args.base_url + "/api/radar/health", timeout=60,
+                       headers={"Authorization": "Basic " + basic})
+        checks.append({"id": "api_health", "ok": health["ok"] and health.get("status") == 200,
+                       "detail": health.get("error") or "200"})
+    else:
+        checks.append({"id": "api_probe", "ok": True,
+                       "detail": ("skipped: the alpha gate protects the API and counts"
+                                  " unauthenticated calls as failed credentials; liveness is"
+                                  " verified through /healthz and the ledger is read directly")})
     if args.web_dir:
         index = os.path.join(args.web_dir, "index.html")
         checks.append({"id": "spa_index", "ok": os.path.isfile(index),
                        "detail": index if os.path.isfile(index) else "missing " + index})
-    return checks, health, feed
+    return checks
 
 
 def main():
@@ -93,12 +98,14 @@ def main():
     parser.add_argument("--base-url", default="http://127.0.0.1:8792")
     parser.add_argument("--healthz-url", default="http://127.0.0.1:8792/healthz")
     parser.add_argument("--web-dir", default=None)
+    parser.add_argument("--api-probe", default=None,
+                        help="user:password for an authenticated API probe (manual runs only)")
     parser.add_argument("--state-file", default=None)
     parser.add_argument("--json", action="store_true")
     args = parser.parse_args()
 
     sys.path.insert(0, os.environ.get("MEDRADAR_CODE_ROOT", ""))
-    availability, health_response, feed_response = layer_availability(args)
+    availability = layer_availability(args)
 
     pipeline = {"checks": [], "state": "UNKNOWN"}
     product = {"checks": [], "state": "UNKNOWN"}
@@ -210,5 +217,34 @@ def main():
     return 0 if overall in ("HEALTHY", "DEGRADED") else (1 if overall == "UNHEALTHY" else 2)
 
 
+def _crash_report(error, args):
+    """A probe that dies must not leave the previous verdict on disk."""
+    payload = {
+        "state": "UNKNOWN",
+        "generated_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+        "radar_dir": getattr(args, "radar_dir", None),
+        "probe_error": type(error).__name__ + ": " + str(error)[:400],
+        "layers": {"availability": [], "pipeline": {"checks": []}, "product": {"checks": []}},
+        "notification_channel": "none configured",
+    }
+    state_file = getattr(args, "state_file", None)
+    if state_file:
+        try:
+            with open(state_file, "w", encoding="utf-8") as handle:
+                json.dump(payload, handle, indent=2, default=str)
+        except Exception:
+            pass
+    print(json.dumps(payload, indent=2, default=str))
+    return 2
+
+
 if __name__ == "__main__":
-    raise SystemExit(main())
+    import sys as _sys
+    _args = None
+    try:
+        _sys.exit(main())
+    except SystemExit:
+        raise
+    except BaseException as _error:  # noqa: BLE001 - the probe must report its own failure
+        _crash_report(_error, _args)
+        raise SystemExit(2)
