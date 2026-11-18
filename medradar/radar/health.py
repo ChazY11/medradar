@@ -210,28 +210,302 @@ def change_stream(ledger: ObservationLedger, *, since: str | None = None,
     }
 
 
+# ------------------------------------------------------------------ health verdicts
+# Four verdicts, and only four. The defect this replaces was not that the checks were missing -
+# consistency problems, watermarks and per-source failures were all computed - but that they were
+# displayed next to a green light instead of changing it.
+HEALTHY = "HEALTHY"
+DEGRADED = "DEGRADED"
+UNHEALTHY = "UNHEALTHY"
+UNKNOWN = "UNKNOWN"
+
+SEVERITY_CRITICAL = "CRITICAL"
+SEVERITY_MAJOR = "MAJOR"
+SEVERITY_MINOR = "MINOR"
+
+PASS = "PASS"
+WARN = "WARN"
+FAIL = "FAIL"
+UNDETERMINED = "UNKNOWN"
+
+# Which sources the narrowed V1 product cannot serve without. A fault in one of these is a
+# product fault; a fault anywhere else is still reported, weighted MAJOR so it degrades the
+# verdict. The list is explicit because how much a source matters is a product decision, not a
+# property of the connector, and hard-coding "everything is equal" is what made a stalled core
+# channel look like background noise.
+V1_CRITICAL_SOURCES = frozenset({
+    "openfda_recall",    # the safety-event channel: recalls are the product first promise
+    "openfda_device",    # the regulatory record behind a device performance claim
+    "pubmed",            # device performance literature
+    "crossref",          # the second, independent copy of the same literature
+})
+
+# Problems that mean the stored history itself is inconsistent, as opposed to incomplete.
+_STRUCTURAL_PROBLEMS = frozenset({
+    "orphan_versions",
+    "orphan_changes",
+    "latest_version_missing",
+    "first_observed_at_drift",
+})
+_WATERMARK_PROBLEMS = frozenset({
+    "watermark_in_future",
+    "watermark_without_successful_run",
+})
+
+# A source that has completed successful checks but produced nothing for this many of its own
+# cadence intervals is worth showing to an operator. It is NOT a fault: a quiet source and a
+# broken source must stay distinguishable, because treating quiet as broken trains people to
+# ignore the light.
+QUIET_INTERVALS_BEFORE_NOTE = 12
+# A scheduler heartbeat older than this is not "between cycles".
+HEARTBEAT_INTERVALS = 3
+MIN_HEARTBEAT_SECONDS = 1800.0
+
+
+def _check(check_id: str, status: str, severity: str, detail: str, **observed: Any) -> dict[str, Any]:
+    return {"id": check_id, "status": status, "severity": severity, "detail": detail,
+            "observed": observed}
+
+
+def _seconds_since(value: Any, now: datetime) -> float | None:
+    moment = _parse(value)
+    return None if moment is None else (now - moment).total_seconds()
+
+
+def _ledger_writable(ledger: ObservationLedger) -> dict[str, Any]:
+    """Does the ledger still accept a write? Answered by taking and releasing a write lock.
+
+    A full, locked or read-only database can still serve a cached page while it silently stops
+    recording what it observes. That loses evidence, so it is a critical check. A connection that
+    was opened read-only on purpose cannot answer the question, which is reported as UNKNOWN
+    rather than as a failure.
+    """
+    if getattr(ledger, "read_only", False):
+        return _check("ledger_writable", UNDETERMINED, SEVERITY_CRITICAL,
+                      "This connection was opened read-only, so writability was not probed.")
+    if ledger.con.in_transaction:
+        return _check("ledger_writable", UNDETERMINED, SEVERITY_CRITICAL,
+                      "A transaction is already open on this connection, so writability was not probed.")
+    try:
+        ledger.con.execute("BEGIN IMMEDIATE")
+        ledger.con.execute("ROLLBACK")
+        return _check("ledger_writable", PASS, SEVERITY_CRITICAL,
+                      "The ledger accepted a write lock and released it.")
+    except Exception as error:  # noqa: BLE001 - any refusal is the finding
+        try:
+            ledger.con.execute("ROLLBACK")
+        except Exception:  # pragma: no cover - nothing left to roll back
+            pass
+        return _check("ledger_writable", FAIL, SEVERITY_CRITICAL,
+                      f"The ledger refused a write lock: {type(error).__name__}: {str(error)[:200]}")
+
+
+def health_checks(ledger: ObservationLedger, sources: list[dict[str, Any]],
+                  consistency: Mapping[str, Any], *, last_cycle: Mapping[str, Any] | None = None,
+                  now: datetime | None = None) -> list[dict[str, Any]]:
+    """Every reason the top-level verdict is what it is, as a measured value.
+
+    Each check answers one question an operator asks. A question that cannot be answered is
+    reported as UNKNOWN with the reason, never as PASS.
+    """
+    now = now or _now()
+    checks: list[dict[str, Any]] = [_ledger_writable(ledger)]
+    problems = list(consistency.get("problems") or [])
+
+    # ---- the stored history does not contradict itself
+    structural = [item for item in problems if item.get("kind") in _STRUCTURAL_PROBLEMS]
+    if structural:
+        checks.append(_check(
+            "ledger_integrity", FAIL, SEVERITY_CRITICAL,
+            "The stored history contradicts itself; no derived view can be trusted until this is"
+            " explained.", problems=structural))
+    else:
+        checks.append(_check(
+            "ledger_integrity", PASS, SEVERITY_CRITICAL,
+            "No orphan version, orphan change, broken version chain or drifted first-observed"
+            " timestamp was found.",
+            observations=consistency.get("counts", {}).get("observations")))
+
+    # ---- every watermark is a coverage claim that can actually be served
+    watermark = [item for item in problems if item.get("kind") in _WATERMARK_PROBLEMS]
+    affected = sorted({str(name) for item in watermark for name in (item.get("sources") or [])})
+    if watermark:
+        critical_hit = bool(set(affected) & V1_CRITICAL_SOURCES)
+        checks.append(_check(
+            "watermark_legal", FAIL,
+            # A future or unbacked watermark on a core channel stops discovery silently: the
+            # adapter still returns 200, the source still looks healthy and nothing arrives.
+            # That is a failed key capability, not a cosmetic warning.
+            SEVERITY_CRITICAL if critical_hit else SEVERITY_MAJOR,
+            "At least one source states a coverage watermark it cannot have covered, or holds a"
+            " watermark with no successful run behind it. Discovery on that source cannot be"
+            " trusted even though its checks still succeed.",
+            problems=watermark, sources=affected,
+            critical_sources=sorted(set(affected) & V1_CRITICAL_SOURCES)))
+    else:
+        checks.append(_check(
+            "watermark_legal", PASS, SEVERITY_MAJOR,
+            "Every stored watermark is in the past or present and is backed by a successful run.",
+            sources_with_watermark=sum(1 for row in sources if row.get("watermark"))))
+
+    # ---- the sources the product depends on are actually being collected
+    monitored = [row for row in sources
+                 if row.get("enabled") and row.get("access_state") != "BLOCKED"]
+    cadences = [float(row.get("cadence_hours") or 12.0) for row in monitored] or [12.0]
+    critical_failures: list[dict[str, Any]] = []
+    critical_warnings: list[dict[str, Any]] = []
+    quiet: list[dict[str, Any]] = []
+    for row in monitored:
+        source_id = str(row.get("source_id"))
+        critical = source_id in V1_CRITICAL_SOURCES
+        cadence = float(row.get("cadence_hours") or 12.0)
+        failures = int(row.get("consecutive_failures") or 0)
+        since_check = _seconds_since(row.get("last_checked_at"), now)
+        since_update = _seconds_since(row.get("last_observed_update_at"), now)
+        entry = {"source_id": source_id, "status": row.get("status"),
+                 "hours_since_check": None if since_check is None else round(since_check / 3600, 2),
+                 "hours_since_observed_update": (None if since_update is None
+                                                 else round(since_update / 3600, 2)),
+                 "consecutive_failures": failures, "critical": critical}
+        if since_check is None:
+            target = critical_failures if critical else critical_warnings
+            target.append({**entry, "reason": "never checked since this ledger was created"})
+        elif failures >= 3:
+            target = critical_failures if critical else critical_warnings
+            target.append({**entry, "reason": f"{failures} consecutive failed checks"})
+        elif failures > 0:
+            critical_warnings.append({**entry, "reason": f"{failures} consecutive failed check(s)"})
+        elif since_check > 3.0 * cadence * 3600:
+            target = critical_failures if critical else critical_warnings
+            target.append({**entry, "reason": f"last check was {round(since_check / 3600, 1)} h ago"
+                                                 f" but the declared cadence is {cadence:g} h"})
+        elif since_update is not None and since_update > QUIET_INTERVALS_BEFORE_NOTE * cadence * 3600:
+            # Not a fault, and deliberately not in any failure list.
+            quiet.append({**entry, "reason": "no new or updated record for many cadence intervals"})
+    # A ledger that has never completed a single check is warming up, not broken. Reporting it as
+    # a failure on the first day is exactly the false alarm that teaches operators to ignore the
+    # light, so the question is left open until there is something to measure.
+    first_check_pending = not any(row.get("last_success_check_at") for row in sources)
+    if first_check_pending:
+        checks.append(_check(
+            "critical_sources", UNDETERMINED, SEVERITY_CRITICAL,
+            "No source has completed a successful check on this ledger yet, so whether the core"
+            " channels are being collected is unknown rather than assumed.",
+            monitored_sources=sorted(str(row.get("source_id")) for row in monitored)))
+    elif critical_failures:
+        checks.append(_check(
+            "critical_sources", FAIL, SEVERITY_CRITICAL,
+            "A source the product cannot serve without is failing, or has not been checked for far"
+            " longer than its cadence. The system is not collecting the evidence its output claims"
+            " to rest on.", sources=critical_failures))
+    elif critical_warnings:
+        checks.append(_check(
+            "critical_sources", WARN, SEVERITY_MAJOR,
+            "A monitored source has failed at least once or has never run; one successful cycle may"
+            " clear it.", sources=critical_warnings))
+    else:
+        checks.append(_check(
+            "critical_sources", PASS, SEVERITY_CRITICAL,
+            "Every monitored source was checked inside its declared cadence.",
+            monitored_sources=sorted(str(row.get("source_id")) for row in monitored)))
+
+    # ---- something has to be moving, but "no new records" is not a fault
+    progressing = [row for row in sources if row.get("last_observed_update_at")]
+    if not progressing:
+        checks.append(_check(
+            "acquisition_progress", UNDETERMINED, SEVERITY_MINOR,
+            "No source has recorded a new or updated observation yet, so there is no evidence"
+            " either way about whether collection progresses."))
+    else:
+        newest = max(str(row.get("last_observed_update_at")) for row in progressing)
+        checks.append(_check(
+            "acquisition_progress", WARN if quiet else PASS, SEVERITY_MINOR,
+            ("At least one source has been quiet for many of its own intervals. A quiet source is"
+             " not a failing one; this line exists so the two can be told apart.") if quiet else
+            "At least one source produced a new or updated observation recently.",
+            newest_observed_update_at=newest, quiet_sources=quiet))
+
+    # ---- the scheduler is alive
+    cycle = dict(last_cycle or {})
+    heartbeat = _seconds_since(cycle.get("finished_at") or cycle.get("started_at"), now)
+    min_cadence = min(cadences) if cadences else 12.0
+    budget = max(MIN_HEARTBEAT_SECONDS, HEARTBEAT_INTERVALS * min_cadence * 3600)
+    if heartbeat is None:
+        checks.append(_check(
+            "scheduler_heartbeat", UNDETERMINED, SEVERITY_CRITICAL,
+            "No cycle has been recorded on this ledger yet, so whether the scheduler is running is"
+            " unknown rather than assumed.", last_cycle=cycle or None))
+    elif heartbeat > budget:
+        checks.append(_check(
+            "scheduler_heartbeat", FAIL, SEVERITY_CRITICAL,
+            f"The last recorded cycle finished {round(heartbeat / 3600, 2)} h ago, past the"
+            f" {round(budget / 3600, 2)} h liveness budget. Sources are not being polled.",
+            seconds_since_cycle=round(heartbeat, 1), budget_seconds=round(budget, 1),
+            last_cycle=cycle))
+    else:
+        checks.append(_check(
+            "scheduler_heartbeat", PASS, SEVERITY_CRITICAL,
+            "The scheduler recorded a cycle inside its liveness budget.",
+            seconds_since_cycle=round(heartbeat, 1), budget_seconds=round(budget, 1)))
+    return checks
+
+
+def verdict(checks: Iterable[Mapping[str, Any]], *, observations: int,
+            ever_checked: bool) -> str:
+    """Collapse the checks into one of four verdicts.
+
+    Order matters: a critical failure outranks missing evidence. An unreadable history is not
+    "unknown", it is broken.
+    """
+    checked = list(checks)
+    if any(item["status"] == FAIL and item["severity"] == SEVERITY_CRITICAL for item in checked):
+        return UNHEALTHY
+    if not ever_checked or observations <= 0:
+        return UNKNOWN
+    if any(item["status"] == FAIL for item in checked):
+        return DEGRADED
+    if any(item["status"] == WARN and item["severity"] in (SEVERITY_CRITICAL, SEVERITY_MAJOR)
+           for item in checked):
+        return DEGRADED
+    return HEALTHY
+
+
+def _legacy_state(state: str) -> str:
+    """The pre-PILOT vocabulary, kept so a reader of the old strings keeps its meaning."""
+    return {HEALTHY: "ok", DEGRADED: "degraded", UNHEALTHY: "blocked",
+            UNKNOWN: "warming_up"}.get(state, state)
+
+
 def system_status(ledger: ObservationLedger, graph=None, taxonomy=None, *,
                   data_dir: str | None = None) -> dict[str, Any]:
     sources = source_status(ledger, taxonomy)
     queue = ledger.queue_summary()
     counts = ledger.counts()
+    consistency = ledger.consistency_check()
+    last_cycle = ledger.get_runtime("last_cycle", {}) or {}
+    now = _now()
+    ever_checked = any(row.get("last_success_check_at") for row in sources)
+    checks = health_checks(ledger, sources, consistency, last_cycle=last_cycle, now=now)
+    state = verdict(checks, observations=counts.observations, ever_checked=ever_checked)
     blocking = [row["source_id"] for row in sources if row["status"] == SOURCE_STATUS_BLOCKED]
     degraded = [row["source_id"] for row in sources
                 if row["status"] in (SOURCE_STATUS_DEGRADED, SOURCE_STATUS_FAILED)]
     never = [row["source_id"] for row in sources if row["status"] == SOURCE_STATUS_NEVER_RUN]
-    if degraded:
-        overall = "degraded"
-    elif never:
-        overall = "warming_up"
-    elif blocking and len(blocking) == len(sources):
-        overall = "blocked"
-    else:
-        overall = "ok"
     ai_state = ledger.get_runtime("ai_state", {}) or {}
-    last_cycle = ledger.get_runtime("last_cycle", {}) or {}
     payload = {
-        "state": overall,
-        "generated_at": _now().strftime("%Y-%m-%dT%H:%M:%SZ"),
+        "state": state,
+        "legacy_state": _legacy_state(state),
+        "verdict": {
+            "state": state,
+            "critical_sources": sorted(V1_CRITICAL_SOURCES),
+            "reasons": [item for item in checks if item["status"] in (FAIL, WARN, UNDETERMINED)],
+            "checks": checks,
+            "statement": (
+                "The verdict is derived from the checks below, not from the absence of an error."
+                " A quiet source is not a failing one; a failing core source is never reported as"
+                " healthy."),
+        },
+        "generated_at": now.strftime("%Y-%m-%dT%H:%M:%SZ"),
         "counts": {
             "observations": counts.observations,
             "versions": counts.versions,
@@ -244,18 +518,18 @@ def system_status(ledger: ObservationLedger, graph=None, taxonomy=None, *,
         "degraded_sources": degraded,
         "never_checked_sources": never,
         "backlog": queue,
-        "resources": resource_snapshot(data_dir).as_dict() if data_dir else resource_snapshot().as_dict(),
+        "resources": (resource_snapshot(data_dir).as_dict() if data_dir
+                      else resource_snapshot().as_dict()),
         "ai": ai_state,
         "last_cycle": last_cycle,
-        "consistency": ledger.consistency_check(),
+        "consistency": consistency,
         "change_counts": ledger.change_counts(),
         "terminology": {
             "continuously_monitored": any(row["status"] == SOURCE_STATUS_OK for row in sources),
             "real_time_claim": False,
             "statement": (
-                "MedRadar can only discover a source update after that source publishes it and "
-                "a scheduled check runs. No real-time or pre-publication access is claimed."
-            ),
+                "MedRadar can only discover a source update after that source publishes it and"
+                " a scheduled check runs. No real-time or pre-publication access is claimed."),
         },
     }
     if graph is not None:
@@ -271,7 +545,6 @@ def system_status(ledger: ObservationLedger, graph=None, taxonomy=None, *,
     if blocking:
         payload["blocked_explanation"] = (
             "A blocked source is one whose operator refuses anonymous automated access. It is "
-            "not a failing connector and it is not 'no results': the restriction is reported, "
-            "and no attempt is made to bypass it."
-        )
+            "not a failing connector and it is not no results: the restriction is reported, and"
+            " no attempt is made to bypass it.")
     return payload

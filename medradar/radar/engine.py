@@ -192,13 +192,35 @@ def advance(
     limit: int = 400,
     enqueue_ai: bool = True,
     max_batches: int = 60,
+    deadline_seconds: float | None = None,
     log: Any = print,
 ) -> dict[str, Any]:
     """Resolve, link and publish whatever is pending. Idempotent.
 
-    Runs in batches so a large first load cannot produce one unbounded transaction, and keeps
-    going until nothing is pending (or ``max_batches`` is reached, which is reported).
+    Runs in batches so a large first load cannot produce one unbounded transaction. The call
+    stops for exactly one measured reason and always says which:
+
+    ``CONVERGED``
+        A whole batch did no work, and the backlog count that is taken afterwards is zero.
+        Running it again would change nothing.
+
+    ``PARTIAL``
+        ``deadline_seconds`` or ``max_batches`` ended the call while work was still pending.
+        Everything processed so far is committed and the rest is still queued, so the next call
+        continues from there. Nothing is skipped and nothing is called finished.
+
+    ``STALLED``
+        A batch did no work yet the backlog is not empty: the queries that select work and the
+        loop that consumes it disagree. That is a defect, not a busy system, so it is reported
+        once instead of being looped over until the budget runs out.
+
+    Continuation is decided by this batch's own deltas. In particular ``admitted`` is the
+    number of admission history rows this call added - not the number of rows offered, and not
+    the running total. Testing the running total made ``converged`` unreachable after any
+    admission at all: a rule-version bump always burnt the full batch budget and then reported
+    that it had not converged even when it had finished.
     """
+    started = time.monotonic()
     reclassified = 0
     published = 0
     queued = 0
@@ -207,7 +229,7 @@ def advance(
                     "assertions_duplicate": 0, "errors": []}
     mapper = RuleMapper(taxonomy)
     batches = 0
-    converged = False
+    stop_reason = "batch_budget_exhausted"
     for _batch in range(max(1, int(max_batches))):
         batches += 1
         batch_work = 0
@@ -263,13 +285,36 @@ def advance(
                 queued += 1
                 batch_work += 1
 
-        admitted += apply_admissions(ledger, limit=limit)
-        batch_work += 1 if admitted else 0
+        batch_admitted = apply_admissions(ledger, limit=limit)
+        admitted += batch_admitted
+        batch_work += batch_admitted
 
         if batch_work == 0:
-            converged = True
+            stop_reason = "converged"
+            break
+        if deadline_seconds is not None and (time.monotonic() - started) >= float(deadline_seconds):
+            stop_reason = "deadline_exceeded"
             break
 
+    backlog = pipeline_backlog(ledger, enqueue_ai=enqueue_ai)
+    converged = stop_reason == "converged" and backlog["total"] == 0
+    if converged:
+        status = "CONVERGED"
+    elif stop_reason == "converged":
+        # A batch found nothing to do while the measured backlog is non-empty.
+        status = "STALLED"
+        stop_reason = "stalled"
+    else:
+        status = "PARTIAL"
+    elapsed = round(time.monotonic() - started, 3)
+    if not converged:
+        try:
+            log(f"[advance] {status} after {batches} batch(es) in {elapsed}s (stop_reason="
+                f"{stop_reason}): mapping={backlog['mapping']} publish={backlog['publish']}"
+                f" ai_queue={backlog['ai_queue']} admission={backlog['admission']}."
+                " The remaining work is committed as pending and the next advance() continues it.")
+        except Exception:  # pragma: no cover - logging must never fail the pipeline
+            pass
     return {
         "reclassified": reclassified,
         "graph": materialized,
@@ -278,6 +323,41 @@ def advance(
         "admitted": admitted,
         "batches": batches,
         "converged": converged,
+        "status": status,
+        "stop_reason": stop_reason,
+        "elapsed_seconds": elapsed,
+        "backlog": backlog,
+    }
+
+
+def pipeline_backlog(ledger: ObservationLedger, *, enqueue_ai: bool = True) -> dict[str, int]:
+    """Count what ``advance`` still owes, so termination is measured instead of assumed.
+
+    Read-only. ``ai_queue`` only counts towards ``total`` when the caller asked for AI queueing,
+    because otherwise that step is deliberately not run and the rows are not outstanding work.
+    The graph backlog lives in the separate graph database and is driven by the same batch loop,
+    so a zero here means the ledger side is empty, not that every assertion is written.
+    """
+    mapping = int(ledger.con.execute(
+        "SELECT COUNT(*) FROM observation o WHERE COALESCE((SELECT m.mapping_version"
+        " FROM observation_mapping m WHERE m.observation_id = o.observation_id"
+        " ORDER BY m.mapped_at DESC LIMIT 1), '') <> ?",
+        (str(MAPPING_VERSION),),
+    ).fetchone()[0])
+    publish = int(ledger.con.execute(
+        "SELECT COUNT(*) FROM observation WHERE processing_state IN ('RAW','CLASSIFIED','LINKED')"
+    ).fetchone()[0])
+    ai_queue = int(ledger.con.execute(
+        "SELECT COUNT(*) FROM observation WHERE processing_state='PUBLISHED'"
+        " AND observation_status='ACTIVE'"
+    ).fetchone()[0])
+    admission = ledger.admission_backlog(ADMISSION_VERSION, rules_digest=rules_digest())
+    return {
+        "mapping": mapping,
+        "publish": publish,
+        "ai_queue": ai_queue,
+        "admission": admission,
+        "total": mapping + publish + admission + (ai_queue if enqueue_ai else 0),
     }
 
 

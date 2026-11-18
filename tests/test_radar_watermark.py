@@ -16,7 +16,7 @@ value handed to an adapter is clamped to today, and the disagreement is reported
 from __future__ import annotations
 
 import unittest
-from datetime import date
+from datetime import date, datetime, timezone
 from pathlib import Path
 
 try:  # the repository selftest runs under unittest without pytest installed
@@ -107,7 +107,11 @@ def test_a_future_watermark_does_not_stop_discovery(ledger):
     _seed_watermark(ledger, "2027-02")
     adapter = _RecordingAdapter()
     result = _run(adapter, ledger)
-    today = date.today().isoformat()
+    # The clamp is defined against the product clock, which is UTC (medradar.radar.records
+    # utc_now). Comparing it with the host's *local* date made this test fail for the hours
+    # between local midnight and UTC midnight - a suite that is red for eight hours a day
+    # cannot be used as an acceptance gate.
+    today = datetime.now(timezone.utc).date().isoformat()
     assert adapter.seen_watermarks
     assert all(value == today for value in adapter.seen_watermarks), adapter.seen_watermarks
     assert result["watermark_adjustment"]["clamped_from_future"] is True

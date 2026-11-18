@@ -523,6 +523,16 @@ class LedgerCounts:
     graph_materialized: int
 
 
+# One definition of "this observation still needs a decision", shared by the page query and the
+# backlog count. Two copies of this predicate would drift and then the count that decides whether
+# advance() has finished would describe a different set from the rows actually processed.
+_ADMISSION_PENDING_WHERE = (
+    " (a.observation_id IS NULL"
+    "  OR o.observation_id IN (SELECT observation_id FROM admission_workqueue)"
+    "  OR (a.rules_digest IS NOT NULL AND a.rules_digest <> ?))"
+)
+
+
 class ObservationLedger:
     """One SQLite database, two kinds of storage, enforced invariants."""
 
@@ -1530,11 +1540,18 @@ class ObservationLedger:
         )
 
     def record_admissions(self, rows: Iterable[Mapping[str, Any]]) -> int:
-        """Append admission decisions for one rule version.
+        """Append admission decisions for one rule version. Returns rows *actually inserted*.
 
         Append-only: a re-judgement under the same version with different evidence is a new row.
         Idempotent: the same evidence judged by the same rules has the same evidence_key and
         inserts nothing. Processed observations leave the work queue.
+
+        The return value is the number of history rows this call added, not the number of rows
+        offered. The distinction is load-bearing: the caller reads it as "did this batch make
+        progress", and a count of *offered* rows stays non-zero forever once any row exists, so
+        the pipeline could never observe that it had finished. INSERT OR IGNORE silently drops
+        the duplicates, so the committed delta is read from the connection change counter inside
+        the same transaction.
         """
         prepared = []
         cleared: list[str] = []
@@ -1560,6 +1577,7 @@ class ObservationLedger:
         if not prepared:
             return 0
         with self._transaction():
+            before = self.con.total_changes
             self.con.executemany(
                 "INSERT OR IGNORE INTO observation_admission"
                 " (observation_id, admission_version, tier, category, score, reasons, features,"
@@ -1567,6 +1585,7 @@ class ObservationLedger:
                 " VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)",
                 prepared,
             )
+            inserted = self.con.total_changes - before
             # The history row above is the evidence; this is the rebuildable current view of it.
             self.con.executemany(
                 "INSERT INTO admission_current"
@@ -1585,7 +1604,7 @@ class ObservationLedger:
                 "DELETE FROM admission_workqueue WHERE observation_id=?",
                 [(obs_id,) for obs_id in cleared],
             )
-        return len(prepared)
+        return int(inserted)
 
     def admission_pending(self, admission_version: str, *, limit: int = 500,
                           rules_digest: str | None = None) -> list[dict[str, Any]]:
@@ -1606,9 +1625,7 @@ class ObservationLedger:
             " JOIN observation_version v ON v.version_id = o.latest_version_id"
             " LEFT JOIN admission_current a ON a.observation_id = o.observation_id"
             "   AND a.admission_version = ?"
-            " WHERE a.observation_id IS NULL"
-            "    OR o.observation_id IN (SELECT observation_id FROM admission_workqueue)"
-            "    OR (a.rules_digest IS NOT NULL AND a.rules_digest <> ?)"
+            " WHERE" + _ADMISSION_PENDING_WHERE +
             " ORDER BY o.first_observed_at DESC LIMIT ?",
             (str(admission_version), str(rules_digest or ""), int(limit)),
         )
@@ -1629,6 +1646,21 @@ class ObservationLedger:
                 row["mapped_topics"] = entry.get("topic", [])
                 row["mapped_products"] = entry.get("product", [])
         return rows
+
+    def admission_backlog(self, admission_version: str, *,
+                          rules_digest: str | None = None) -> int:
+        """How many observations still need a decision for this version.
+
+        The same predicate as admission_pending, counted instead of paged. The pipeline uses
+        the count to prove that it finished rather than to assume that it did.
+        """
+        return int(self.con.execute(
+            "SELECT COUNT(*) FROM observation o"
+            " LEFT JOIN admission_current a ON a.observation_id = o.observation_id"
+            "   AND a.admission_version = ?"
+            " WHERE" + _ADMISSION_PENDING_WHERE,
+            (str(admission_version), str(rules_digest or "")),
+        ).fetchone()[0])
 
     def _admissions_for(self, observation_ids: Sequence[str], admission_version: str | None
                         ) -> dict[str, dict[str, Any]]:
