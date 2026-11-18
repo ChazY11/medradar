@@ -9,7 +9,7 @@
 
 | 对象 | SHA | 怎么确认的 |
 | --- | --- | --- |
-| **候选分支 HEAD** | `55b269e` | `git rev-parse HEAD`（起草时为 `58067da`，本轮新增 2 个提交） |
+| **候选代码冻结** | `55b269e`（`medradar/` 最后一次修改；其后的提交只含文档与工具） | `git diff --stat 55b269e HEAD -- medradar web config scripts` 为空 |
 | **候选的代码内容** | 与 staging 部署目录逐字节一致 | 第 2 节 |
 | **生产运行** | `14eaf615` | 1,759 个文件指纹全等 + 进程 cwd + 实际 import 路径 |
 
