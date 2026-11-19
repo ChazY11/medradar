@@ -394,13 +394,34 @@ class TechnologyGraph:
         """The one canonical spec for a record node.
 
         Both the record's own materialisation and a cross-source sibling reference must build
-        the *identical* assertion, otherwise the shared idempotency key would carry two
-        different contents (which the store rejects, correctly). The evidence locator and the
-        public time are therefore derived from the record row, never from the caller.
+        the *identical* assertion, so the evidence locator and the public time are derived from
+        the record row and never from the caller.
+
+        The idempotency key is content-addressed, exactly like an edge key. A record node is
+        normally written once, but an observation can be *updated* when the source revises a
+        title, an event date or a publication date. A key naming only the observation id could
+        never record that revision: the store saw the same key with a different content hash,
+        refused it as an idempotency conflict, and left the record pending for ever with the
+        superseded text still in the graph. Hashing the attrs into the key gives the store what
+        it already models for every other assertion - identical content is a duplicate, changed
+        content is a new revision - and the bitemporal query picks the latest revision by
+        (recorded_at, seq). Superseding the old revision explicitly is therefore neither needed
+        nor attempted.
         """
         observation_id = row["observation_id"]
         rec_id = record_node_id(observation_id)
         public_time, public_basis = _public_time(row)
+        attrs = {
+            "observation_id": observation_id,
+            "title": row.get("title"),
+            "official_url": row.get("source_url"),
+            "source": row.get("source"),
+            "record_type": row.get("record_type"),
+            "first_observed_at": row.get("first_observed_at"),
+            "event_at": row.get("event_at"),
+            "published_at": row.get("published_at"),
+        }
+        digest = hashlib.sha256(canonical_json(attrs).encode("utf-8")).hexdigest()[:16]
         base = {
             "source_locator": row.get("source_url") or f"radar://observation/{observation_id}",
             "evidence_kind": "source_observed",
@@ -409,18 +430,9 @@ class TechnologyGraph:
         }
         return {
             "record": "node", "node_type": node_type, "node_id": rec_id,
-            "attrs": {
-                "observation_id": observation_id,
-                "title": row.get("title"),
-                "official_url": row.get("source_url"),
-                "source": row.get("source"),
-                "record_type": row.get("record_type"),
-                "first_observed_at": row.get("first_observed_at"),
-                "event_at": row.get("event_at"),
-                "published_at": row.get("published_at"),
-            },
+            "attrs": attrs,
             "valid_from": _record_valid_from(row),
-            "idempotency_key": f"node:{rec_id}",
+            "idempotency_key": f"node:{rec_id}#{digest}",
             **base,
             "confidence": 1.0,
         }

@@ -557,3 +557,38 @@ def test_an_empty_graph_reports_empty_rather_than_inventing_branches(tmp_path: P
     summary = graph.summary()
     assert summary["nodes"] == 0 and summary["edges"] == 0
     graph.store.close()
+
+def test_an_updated_record_rewrites_its_graph_node_as_a_new_revision(tmp_path: Path):
+    """A source that revises a record must be able to update the graph too.
+
+    The production failure this covers: an observation was materialised, the source then
+    changed its title, and materialisation failed for ever with an idempotency conflict -
+    the observation stayed pending and the graph kept the superseded text. The node key is
+    content-addressed now, so the revision is recorded and the query returns the latest one.
+    """
+    ledger = _ledger(tmp_path)
+    _fda(ledger, device="INTELLIVUE MX800 PATIENT MONITOR")
+    graph = _graph(tmp_path)
+    first = graph.materialize(ledger, limit=50, log=lambda _m: None)
+    assert first["materialized"] == 1 and first["errors"] == []
+
+    # the source revises the device name of the same record
+    outcome = _fda(ledger, device="INTELLIVUE MX800 PATIENT MONITOR (REVISED)")
+    assert outcome.state == "UPDATED"
+
+    second = graph.materialize(ledger, limit=50, log=lambda _m: None)
+    assert second["errors"] == [], second["errors"]
+    assert second["materialized"] == 1
+
+    snapshot = graph.query.snapshot()
+    node = next(n for n in snapshot["nodes"] if n["node_id"].endswith(outcome.observation_id))
+    assert node["attrs"]["title"] == "INTELLIVUE MX800 PATIENT MONITOR (REVISED)"
+
+    # the superseded revision is still there: this is a revision, not an overwrite
+    rows = graph.store.conn.execute(
+        "SELECT attrs FROM nodes WHERE node_id = ? ORDER BY recorded_at, seq",
+        (node["node_id"],)).fetchall()
+    assert len(rows) == 2
+    assert "REVISED" not in rows[0]["attrs"]
+    ledger.close()
+    graph.store.close()
