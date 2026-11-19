@@ -15,6 +15,7 @@ import {
   type IntelEvent,
 } from "../api/radar";
 import { AsyncSection } from "../components/async";
+import { DailyDigest } from "../components/DailyDigest";
 import { cleanTitle } from "../lib/text";
 import {
   Badge,
@@ -187,6 +188,8 @@ export function LiveIntelligencePage() {
           </div>
         </Banner>
       ) : null}
+
+      <DailyDigest />
 
       <div className="radar-status">
       <Card

@@ -514,6 +514,55 @@ export const getRadarHealth = () => fetchJson<RadarHealth>("/api/radar/health");
 export const getRadarSources = () => fetchJson<{ available: boolean; sources: RadarSource[] }>("/api/radar/sources");
 export const getFeed = (params: FeedQuery) => fetchJson<FeedResponse>(`/api/radar/feed${query({ ...params })}`);
 export const getFeedFacets = () => fetchJson<FeedFacets>("/api/radar/feed/facets");
+
+export interface DigestItem {
+  observation_id: string;
+  title: string | null;
+  source: string | null;
+  record_type: string | null;
+  source_url: string | null;
+  published_at: string | null;
+  event_at: string | null;
+  first_observed_at: string | null;
+  decision: string | null;
+  tier: string | null;
+  category: string | null;
+  score: number | null;
+  relevance: string | null;
+  reasons: string[];
+  future_dated: boolean;
+  duplicates: number;
+}
+
+export interface DigestWarning {
+  code: string;
+  count?: number;
+  sources?: string[];
+}
+
+/** The daily digest: what arrived in the window and what deserves a look. */
+export interface RadarDigest {
+  schema: string;
+  generated_at: string;
+  window: { since: string; until: string; hours: number };
+  totals: {
+    arrived: number;
+    feed: number;
+    review: number;
+    excluded: number;
+    safety: number;
+    duplicates_merged: number;
+  };
+  items: DigestItem[];
+  safety: DigestItem[];
+  review: { count: number; categories: { category: string; count: number }[]; examples: DigestItem[] };
+  sources: { ok: number; blocked: string[]; failing: string[]; total: number };
+  warnings: DigestWarning[];
+  empty: boolean;
+  note?: string;
+}
+export const getRadarDigest = (hours = 24, limit = 5) =>
+  fetchJson<RadarDigest>("/api/radar/digest?hours=" + hours + "&limit=" + limit);
 export const getIntelligence = (observationId: string) =>
   fetchJson<IntelDetail>(`/api/radar/intelligence/${encodeURIComponent(observationId)}`);
 export const getNotices = (since: string | null) =>

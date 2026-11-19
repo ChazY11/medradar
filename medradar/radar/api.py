@@ -34,6 +34,7 @@ from .graph import (
     TechnologyGraph,
     open_graph,
 )
+from .digest import digest as build_digest
 from .health import change_stream, detection_latency, source_status, system_status
 from .ledger import ObservationLedger
 from .paths import radar_paths
@@ -465,6 +466,29 @@ def build_router(service: RadarService | None = None) -> APIRouter:
             "note": (
                 "Counted from first_observed_at, which is a real clock reading. Each item keeps "
                 "its discovery phase so an initial load is not shown as today's news."
+            ),
+        }
+
+    # ---------------------------------------------------------------- digest
+    @router.get("/digest")
+    def digest_endpoint(hours: int = Query(24, ge=1, le=168),
+                        limit: int = Query(5, ge=1, le=10)) -> dict[str, Any]:
+        """The one screen a reader can open without reading the whole feed.
+
+        Everything here is derived from records already in the ledger: the admission decision,
+        its dimensions and the source state. Nothing is model-generated, so every line points
+        at a record that can be opened and checked. When nothing arrived the answer says so
+        instead of padding the list.
+        """
+        with svc.ledger() as ledger:
+            payload = build_digest(ledger, hours=hours, limit=limit)
+        return {
+            **payload,
+            "note": (
+                "Counts are records newly observed inside the window, not records published "
+                "inside it. A stated public date more than a week ahead is reported as "
+                "future-dated and sorted last: conference abstracts routinely carry a future "
+                "issue date and are not today's news."
             ),
         }
 
