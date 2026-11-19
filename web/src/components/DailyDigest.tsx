@@ -33,15 +33,20 @@ function Meta({ item }: { item: DigestItem }) {
 function ItemRow({ item, index }: { item: DigestItem; index: number }) {
   const { bi } = useI18n();
   return (
-    <li style={{ marginBottom: 8 }}>
-      <div className="row" style={{ gap: 8, alignItems: "baseline" }}>
+    <li style={{ marginBottom: 8, minWidth: 0 }}>
+      <div className="row" style={{ gap: 8, alignItems: "baseline", minWidth: 0 }}>
         <span className="small muted" style={{ minWidth: 16 }}>{index}.</span>
-        <a href={item.source_url ?? undefined} target="_blank" rel="noreferrer noopener">
+        <a
+          href={item.source_url ?? undefined}
+          target="_blank"
+          rel="noreferrer noopener"
+          style={{ minWidth: 0, overflowWrap: "anywhere" }}
+        >
           {item.title ?? item.observation_id}
         </a>
         {item.future_dated ? <Badge tone="warn">{bi("future date", "日期在未来")}</Badge> : null}
       </div>
-      <div style={{ marginLeft: 24 }}>
+      <div style={{ marginLeft: 24, minWidth: 0, overflowWrap: "anywhere" }}>
         <Meta item={item} />
       </div>
     </li>
