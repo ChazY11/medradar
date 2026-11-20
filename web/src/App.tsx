@@ -13,6 +13,9 @@ import { DataStatusPage } from "./pages/DataStatusPage";
 import { BriefPage } from "./pages/BriefPage";
 import { LiveIntelligencePage } from "./pages/LiveIntelligencePage";
 import { TechnologyMapPage } from "./pages/TechnologyMapPage";
+import { CompaniesPage } from "./pages/CompaniesPage";
+import { CompanyPage } from "./pages/CompanyPage";
+import { ReviewQueuePage } from "./pages/ReviewQueuePage";
 import { EmptyState } from "./components/ui";
 import { IS_PUBLIC_ALPHA } from "./lib/alpha";
 
@@ -27,6 +30,9 @@ export default function App() {
           <Route path="/" element={<LiveIntelligencePage />} />
           <Route path="/radar" element={<LiveIntelligencePage />} />
           <Route path="/radar/technology-map" element={<TechnologyMapPage />} />
+          <Route path="/radar/companies" element={<CompaniesPage />} />
+          <Route path="/radar/companies/:organizationId" element={<CompanyPage />} />
+          <Route path="/radar/review" element={<ReviewQueuePage />} />
           <Route path="*" element={<Navigate to="/radar" replace />} />
         </Routes>
       </AppShell>
@@ -40,6 +46,9 @@ export default function App() {
         <Route path="/brief" element={<BriefPage />} />
         <Route path="/radar" element={<LiveIntelligencePage />} />
         <Route path="/radar/technology-map" element={<TechnologyMapPage />} />
+        <Route path="/radar/companies" element={<CompaniesPage />} />
+        <Route path="/radar/companies/:organizationId" element={<CompanyPage />} />
+        <Route path="/radar/review" element={<ReviewQueuePage />} />
         <Route path="/organizations" element={<OrganizationsPage />} />
         <Route path="/organizations/:key" element={<OrganizationPage />} />
         <Route path="/events" element={<EventsPage />} />

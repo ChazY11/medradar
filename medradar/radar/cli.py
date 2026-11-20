@@ -709,6 +709,61 @@ def cmd_export(args) -> int:
     return 0
 
 
+def cmd_digest(args) -> int:
+    """Print the daily digest, and deliver it when a channel is configured."""
+    from .deliver import deliver, render_text
+    from .digest import digest as build_digest
+    from .human import HumanStore
+
+    paths = radar_paths(args.data_dir)
+    if not paths.ledger.is_file():
+        print("radar: no ledger at %s" % paths.ledger, file=sys.stderr)
+        return 2
+    ledger = ObservationLedger(paths.ledger, create=False, read_only=True)
+    try:
+        payload = build_digest(ledger, hours=args.hours, limit=args.limit)
+    finally:
+        ledger.close()
+
+    text = render_text(payload, lang=args.lang)
+    if args.format == "json":
+        print(json.dumps(payload, indent=2, ensure_ascii=False, default=str))
+    else:
+        print(text)
+
+    channels: dict[str, Any] = {}
+    if args.webhook:
+        channels["webhook"] = args.webhook
+    if args.smtp_host:
+        channels["smtp"] = {
+            "host": args.smtp_host,
+            "port": args.smtp_port,
+            "sender": args.smtp_from,
+            "recipients": [item.strip() for item in (args.smtp_to or "").split(",") if item.strip()],
+            "username": args.smtp_user,
+            # A password on the command line ends up in ps output and shell history; the
+            # environment variable is the supported way to pass one.
+            "password": os.environ.get("MEDRADAR_SMTP_PASSWORD"),
+            "starttls": not args.smtp_no_starttls,
+        }
+    dry_run = bool(args.dry_run) or not channels
+    if dry_run and not channels:
+        print("(no channel configured: dry run, nothing was sent)", file=sys.stderr)
+    store = HumanStore(str(paths.human))
+    try:
+        outcome = deliver(payload, human=store, channels=channels, lang=args.lang,
+                          dry_run=dry_run)
+    finally:
+        store.close()
+    if not dry_run:
+        for result in outcome.get("results", []):
+            status = "ok" if result.get("ok") else "FAILED"
+            print("%s: %s %s" % (result.get("channel"), status,
+                                 result.get("error") or ""), file=sys.stderr)
+        if any(not result.get("ok") for result in outcome.get("results", [])):
+            return 1
+    return 0
+
 # ------------------------------------------------------------------------ parser
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(prog="medradar radar",
@@ -840,6 +895,22 @@ def build_parser() -> argparse.ArgumentParser:
     export.add_argument("--out", default="out/radar")
     export.add_argument("--limit", type=int, default=100)
     export.set_defaults(func=cmd_export)
+
+    digest = sub.add_parser("digest", help="print the daily digest and optionally deliver it")
+    digest.add_argument("--hours", type=int, default=24)
+    digest.add_argument("--limit", type=int, default=5)
+    digest.add_argument("--format", choices=("text", "json"), default="text")
+    digest.add_argument("--lang", choices=("zh", "en"), default="zh")
+    digest.add_argument("--webhook", default=None, help="POST a Slack-compatible JSON body here")
+    digest.add_argument("--smtp-host", default=None)
+    digest.add_argument("--smtp-port", type=int, default=587)
+    digest.add_argument("--smtp-from", default=None)
+    digest.add_argument("--smtp-to", default=None, help="comma-separated recipients")
+    digest.add_argument("--smtp-user", default=None)
+    digest.add_argument("--smtp-no-starttls", action="store_true")
+    digest.add_argument("--dry-run", action="store_true",
+                        help="build the digest but send nothing (the default without a channel)")
+    digest.set_defaults(func=cmd_digest)
     return parser
 
 

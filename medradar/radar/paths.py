@@ -34,6 +34,10 @@ from ..config import IS_SOURCE_TREE, ROOT, SOURCE_ROOT
 ENV_RADAR_DIR = "MEDRADAR_RADAR_DIR"
 LEDGER_FILENAME = "radar.db"
 GRAPH_FILENAME = "graph.db"
+#: Human judgement (watchlists, review decisions, audit trail). Deliberately a third file:
+#: the ledger is evidence and must never be written by a web request, so what a person decides
+#: lives beside it, revisable, in ~human.db~.
+HUMAN_FILENAME = "human.db"
 
 
 def resolve_radar_dir(override: str | Path | None = None) -> Path:
@@ -56,6 +60,10 @@ class RadarPaths:
     @property
     def ledger(self) -> Path:
         return self.root / LEDGER_FILENAME
+
+    @property
+    def human(self) -> Path:
+        return self.root / HUMAN_FILENAME
 
     @property
     def graph(self) -> Path:

@@ -14,14 +14,17 @@ Design rules:
 
 from __future__ import annotations
 
+import csv
+import io
+import json
 import os
 import threading
 import time
 from contextlib import contextmanager
 from pathlib import Path
-from typing import Any, Iterator
+from typing import Any, Iterator, Mapping
 
-from fastapi import APIRouter, HTTPException, Query
+from fastapi import APIRouter, HTTPException, Query, Response
 from fastapi.responses import JSONResponse
 
 from .graph import (
@@ -35,6 +38,7 @@ from .graph import (
     open_graph,
 )
 from .digest import digest as build_digest
+from .human import REVIEW_STATES, HumanStore
 from .health import change_stream, detection_latency, source_status, system_status
 from .ledger import ObservationLedger
 from .paths import radar_paths
@@ -109,6 +113,22 @@ class RadarService:
 
     def taxonomy(self) -> Taxonomy:
         return load_taxonomy()
+
+    @contextmanager
+    def human(self) -> Iterator[HumanStore]:
+        """The side store of human judgement.
+
+        Unlike the ledger this one is opened read-write, because saving a filter or recording a
+        review is a write. It is a separate file precisely so that no web request can ever touch
+        the evidence.
+        """
+        path = self.paths.human
+        path.parent.mkdir(parents=True, exist_ok=True)
+        store = HumanStore(str(path))
+        try:
+            yield store
+        finally:
+            store.close()
 
     @contextmanager
     def ledger(self) -> Iterator[ObservationLedger]:
@@ -492,6 +512,309 @@ def build_router(service: RadarService | None = None) -> APIRouter:
             ),
         }
 
+    # ------------------------------------------------------------ watchlists
+    def _feed_kwargs(filt: Mapping[str, Any], *, limit: int, offset: int = 0) -> dict[str, Any]:
+        """Translate a saved filter into the same arguments the feed route uses."""
+        scope = str(filt.get("scope") or "latest")
+        if scope not in ("latest", "observed", "archive", "review"):
+            scope = "latest"
+        default_tiers = {
+            "latest": [HIGH_RELEVANCE],
+            "observed": [HIGH_RELEVANCE, NEEDS_REVIEW],
+            "archive": [HIGH_RELEVANCE],
+            "review": [NEEDS_REVIEW],
+        }[scope]
+        tiers = _csv(filt.get("tier")) or default_tiers
+        order = filt.get("order") or ("observed" if scope == "observed" else "published")
+        return {
+            "limit": limit, "offset": offset,
+            "sources": _csv(filt.get("source")),
+            "organizations": _csv(filt.get("organization")),
+            "topics": _csv(filt.get("topic")),
+            "change_states": _csv(filt.get("change_state")),
+            "confirmations": _csv(filt.get("confirmation")),
+            "record_types": _csv(filt.get("record_type")),
+            "phases": _csv(filt.get("phase")),
+            "published_from": filt.get("published_from"),
+            "published_to": filt.get("published_to"),
+            "observed_from": filt.get("observed_from"),
+            "observed_to": filt.get("observed_to"),
+            "search": filt.get("q"),
+            "order": order,
+            "tiers": tiers,
+            "admission_version": ADMISSION_VERSION,
+            "scope": scope,
+            "scope_days": 30,
+        }
+
+    @router.get("/watchlists")
+    def list_watchlists(counts: bool = False) -> dict[str, Any]:
+        with svc.human() as human:
+            items = human.list_watchlists()
+        if counts and items:
+            with svc.ledger() as ledger:
+                live = _admissions_present(ledger)
+                for item in items:
+                    kwargs = _feed_kwargs(item["filter"], limit=1)
+                    try:
+                        _, total = ledger.feed(**kwargs)
+                        item["count"] = total
+                    except Exception:
+                        item["count"] = None
+                if not live:
+                    for item in items:
+                        item["count"] = None
+        return {"schema": SCHEMA, "count": len(items), "items": items}
+
+    @router.post("/watchlists")
+    def create_watchlist(payload: dict[str, Any]) -> dict[str, Any]:
+        name = str(payload.get("name") or "").strip()
+        filt = payload.get("filter") or {}
+        if not isinstance(filt, Mapping):
+            raise HTTPException(400, detail={"code": "bad_filter"})
+        try:
+            with svc.human() as human:
+                saved = human.save_watchlist(name, filt, actor=str(payload.get("actor") or "operator"))
+        except ValueError as error:
+            raise HTTPException(400, detail={"code": "bad_name", "message": str(error)}) from error
+        return {"schema": SCHEMA, "watchlist": saved}
+
+    @router.patch("/watchlists/{watchlist_id}")
+    def update_watchlist(watchlist_id: str, payload: dict[str, Any]) -> dict[str, Any]:
+        with svc.human() as human:
+            current = human.get_watchlist(watchlist_id)
+            if current is None:
+                raise HTTPException(404, detail={"code": "watchlist_not_found"})
+            name = str(payload.get("name") or current["name"])
+            filt = payload.get("filter") if isinstance(payload.get("filter"), Mapping) else current["filter"]
+            try:
+                saved = human.save_watchlist(name, filt, watchlist_id=watchlist_id,
+                                             actor=str(payload.get("actor") or "operator"))
+            except ValueError as error:
+                raise HTTPException(400, detail={"code": "bad_name", "message": str(error)}) from error
+        return {"schema": SCHEMA, "watchlist": saved}
+
+    @router.delete("/watchlists/{watchlist_id}")
+    def delete_watchlist(watchlist_id: str) -> dict[str, Any]:
+        with svc.human() as human:
+            removed = human.delete_watchlist(watchlist_id)
+        if not removed:
+            raise HTTPException(404, detail={"code": "watchlist_not_found"})
+        return {"schema": SCHEMA, "deleted": watchlist_id}
+
+    # ---------------------------------------------------------------- review
+    @router.get("/review/queue")
+    def review_queue(status: str | None = None, limit: int = Query(100, ge=1, le=500)) -> dict[str, Any]:
+        if status and status not in REVIEW_STATES:
+            raise HTTPException(400, detail={"code": "bad_status", "allowed": list(REVIEW_STATES)})
+        with svc.human() as human:
+            rows = human.review_queue(status=status, limit=limit)
+            stats = human.stats()
+        titles: dict[str, dict[str, Any]] = {}
+        if rows and svc.available():
+            with svc.ledger() as ledger:
+                ids = [row["observation_id"] for row in rows]
+                marks = ",".join("?" * len(ids))
+                for record in ledger.raw(
+                    f"SELECT observation_id, source, title, source_url, first_observed_at,"
+                    f" published_at FROM observation WHERE observation_id IN ({marks})", ids):
+                    titles[record["observation_id"]] = dict(record)
+        items = [{**row, **(titles.get(row["observation_id"]) or {})} for row in rows]
+        return {"schema": SCHEMA, "count": len(items), "items": items, "stats": stats,
+                "states": list(REVIEW_STATES)}
+
+    @router.get("/review/{observation_id}")
+    def get_review(observation_id: str) -> dict[str, Any]:
+        with svc.human() as human:
+            decision = human.get_review(observation_id)
+            history = human.review_history(observation_id)
+        return {"schema": SCHEMA, "observation_id": observation_id,
+                "review": decision, "history": history}
+
+    @router.post("/review/{observation_id}")
+    def set_review(observation_id: str, payload: dict[str, Any]) -> dict[str, Any]:
+        status = payload.get("status")
+        if status is not None and status not in REVIEW_STATES:
+            raise HTTPException(400, detail={"code": "bad_status", "allowed": list(REVIEW_STATES)})
+        assignee = payload.get("assignee")
+        note = payload.get("note")
+        try:
+            with svc.human() as human:
+                decision = human.set_review(
+                    observation_id,
+                    status=str(status) if status is not None else None,
+                    assignee=str(assignee) if assignee is not None else None,
+                    note=str(note) if note is not None else None,
+                    actor=str(payload.get("actor") or "operator"),
+                )
+                history = human.review_history(observation_id)
+        except ValueError as error:
+            raise HTTPException(400, detail={"code": "bad_status", "message": str(error)}) from error
+        return {"schema": SCHEMA, "observation_id": observation_id, "review": decision,
+                "history": history}
+
+    @router.get("/audit")
+    def audit(limit: int = Query(100, ge=1, le=500)) -> dict[str, Any]:
+        with svc.human() as human:
+            return {"schema": SCHEMA, "items": human.audit_log(limit=limit)}
+
+    # -------------------------------------------------------------- companies
+    def _org_index() -> dict[str, Any]:
+        taxonomy = svc.taxonomy()
+        return {org.id: org for org in getattr(taxonomy, "organizations", ())}
+
+    @router.get("/companies")
+    def companies(limit: int = Query(50, ge=1, le=200)) -> dict[str, Any]:
+        """Every company the taxonomy tracks, with how much evidence the ledger holds for it."""
+        if not svc.available():
+            return {"schema": SCHEMA, "available": False, "items": []}
+        organisations = _org_index()
+        with svc.ledger() as ledger:
+            rows = list(ledger.raw(
+                "SELECT f.value AS organization_id, COUNT(*) AS observations,"
+                " MAX(o.first_observed_at) AS newest,"
+                " SUM(CASE WHEN o.source = 'openfda_recall' THEN 1 ELSE 0 END) AS recalls"
+                " FROM observation_facet f JOIN observation o ON o.observation_id = f.observation_id"
+                " WHERE f.kind = 'organization' GROUP BY f.value ORDER BY 3 DESC"))
+        items = []
+        for row in rows:
+            org = organisations.get(row["organization_id"])
+            items.append({
+                "organization_id": row["organization_id"],
+                "display_name": getattr(org, "display_name", None) or row["organization_id"],
+                "canonical_name": getattr(org, "canonical_name", None),
+                "label_zh": getattr(org, "label_zh", None),
+                "country": getattr(org, "country", None),
+                "observations": row["observations"],
+                "recalls": row["recalls"],
+                "newest_observation_at": row["newest"],
+            })
+        items.sort(key=lambda item: (-int(item["observations"] or 0), str(item["display_name"])))
+        return {"schema": SCHEMA, "available": True, "count": len(items), "items": items[:limit]}
+
+    @router.get("/company/{organization_id}")
+    def company(organization_id: str, limit: int = Query(20, ge=1, le=100)) -> dict[str, Any]:
+        """One company: what the product holds about it, in the reader's own unit."""
+        if not svc.available():
+            return {"schema": SCHEMA, "available": False}
+        org = _org_index().get(organization_id)
+        with svc.ledger() as ledger:
+            total = int(ledger.raw(
+                "SELECT COUNT(*) AS n FROM observation_facet WHERE kind = 'organization' AND value = ?",
+                (organization_id,))[0]["n"])
+            if total == 0 and org is None:
+                raise HTTPException(404, detail={"code": "company_not_found"})
+            recent = [dict(row) for row in ledger.raw(
+                "SELECT o.observation_id, o.source, o.record_type, o.title, o.source_url, o.published_at,"
+                " o.event_at, o.first_observed_at, o.official_identifier, o.observation_origin,"
+                " a.decision, a.tier, a.score, a.dimensions"
+                " FROM observation_facet f JOIN observation o ON o.observation_id = f.observation_id"
+                " LEFT JOIN admission_current a ON a.observation_id = o.observation_id"
+                " WHERE f.kind = 'organization' AND f.value = ?"
+                " ORDER BY o.first_observed_at DESC LIMIT ?", (organization_id, limit))]
+            recalls = [dict(row) for row in ledger.raw(
+                "SELECT o.observation_id, o.title, o.source_url, o.published_at, o.event_at,"
+                " o.official_identifier, o.first_observed_at"
+                " FROM observation_facet f JOIN observation o ON o.observation_id = f.observation_id"
+                " WHERE f.kind = 'organization' AND f.value = ? AND o.source = 'openfda_recall'"
+                " ORDER BY o.published_at DESC LIMIT ?", (organization_id, limit))]
+            counts = {row["source"]: row["n"] for row in ledger.raw(
+                "SELECT o.source, COUNT(*) AS n FROM observation_facet f"
+                " JOIN observation o ON o.observation_id = f.observation_id"
+                " WHERE f.kind = 'organization' AND f.value = ? GROUP BY o.source", (organization_id,))}
+            topics = [dict(row) for row in ledger.raw(
+                "SELECT f.value AS topic_id, COUNT(*) AS n FROM observation_facet f"
+                " WHERE f.kind = 'topic' AND f.observation_id IN ("
+                "   SELECT observation_id FROM observation_facet WHERE kind = 'organization' AND value = ?)"
+                " GROUP BY f.value ORDER BY 2 DESC LIMIT 12", (organization_id,))]
+            products = [dict(row) for row in ledger.raw(
+                "SELECT f.value AS product_key, COUNT(*) AS n FROM observation_facet f"
+                " WHERE f.kind = 'product' AND f.observation_id IN ("
+                "   SELECT observation_id FROM observation_facet WHERE kind = 'organization' AND value = ?)"
+                " GROUP BY f.value ORDER BY 2 DESC LIMIT 12", (organization_id,))]
+        return {
+            "schema": SCHEMA,
+            "available": True,
+            "company": {
+                "organization_id": organization_id,
+                "display_name": getattr(org, "display_name", None) or organization_id,
+                "canonical_name": getattr(org, "canonical_name", None),
+                "label_zh": getattr(org, "label_zh", None),
+                "country": getattr(org, "country", None),
+                "notes": getattr(org, "notes", None),
+                "known_in_taxonomy": org is not None,
+            },
+            "totals": {"observations": total, "by_source": counts, "recalls": len(recalls)},
+            "recent": recent,
+            "recalls": recalls,
+            "topics": topics,
+            "products": products,
+        }
+
+    # ---------------------------------------------------------------- export
+    @router.get("/export")
+    def export(
+        format: str = Query("csv", pattern="^(csv|json)$"),
+        limit: int = Query(1000, ge=1, le=5000),
+        scope: str = Query("latest", pattern="^(latest|observed|archive|review)$"),
+        source: str | None = None,
+        organization: str | None = None,
+        topic: str | None = None,
+        q: str | None = None,
+    ) -> Response:
+        """Export what the reader is looking at, so a judgement can leave the page."""
+        if not svc.available():
+            raise HTTPException(503, detail={"code": "radar_not_configured"})
+        kwargs = _feed_kwargs(
+            {"scope": scope, "source": source, "organization": organization, "topic": topic, "q": q},
+            limit=limit,
+        )
+        with svc.ledger() as ledger:
+            rows, total = ledger.feed(**kwargs)
+            reviews: dict[str, Any] = {}
+            if rows:
+                ids = [row["observation_id"] for row in rows]
+                with svc.human() as human:
+                    reviews = human.reviews(ids)
+        taxonomy = svc.taxonomy()
+        records = []
+        for row in rows:
+            event = _event(row, taxonomy)
+            decision = event.get("admission") or {}
+            decision_review = reviews.get(row["observation_id"]) or {}
+            records.append({
+                "observation_id": event.get("observation_id"),
+                "source": event.get("source"),
+                "record_type": event.get("record_type"),
+                "title": event.get("title"),
+                "published_at": event.get("published_at"),
+                "event_at": event.get("event_at"),
+                "first_observed_at": event.get("first_observed_at"),
+                "official_identifier": event.get("official_identifier"),
+                "discovery_phase": event.get("discovery_phase"),
+                "decision": decision.get("decision"),
+                "tier": decision.get("tier"),
+                "score": decision.get("score"),
+                "review_status": decision_review.get("status"),
+                "review_note": decision_review.get("note"),
+                "source_url": event.get("source_url"),
+            })
+        if format == "json":
+            body = json.dumps({"schema": SCHEMA, "exported_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+                               "total": total, "count": len(records), "scope": scope,
+                               "records": records}, ensure_ascii=False)
+            return Response(content=body, media_type="application/json",
+                            headers={"Content-Disposition": "attachment; filename=medradar-export.json"})
+        buffer = io.StringIO()
+        writer = csv.DictWriter(buffer, fieldnames=list(records[0].keys()) if records else [
+            "observation_id", "source", "record_type", "title", "published_at", "event_at",
+            "first_observed_at", "official_identifier", "discovery_phase", "decision", "tier",
+            "score", "review_status", "review_note", "source_url"])
+        writer.writeheader()
+        for record in records:
+            writer.writerow(record)
+        return Response(content=buffer.getvalue(), media_type="text/csv; charset=utf-8",
+                        headers={"Content-Disposition": "attachment; filename=medradar-export.csv"})
     # ----------------------------------------------------------------- graph
     @router.get("/technology-map")
     def technology_map(

@@ -16,6 +16,9 @@ import {
 } from "../api/radar";
 import { AsyncSection } from "../components/async";
 import { DailyDigest } from "../components/DailyDigest";
+import { ReviewPanel } from "../components/ReviewPanel";
+import { WatchlistBar } from "../components/WatchlistBar";
+import { exportUrl } from "../api/human";
 import { cleanTitle } from "../lib/text";
 import {
   Badge,
@@ -190,6 +193,21 @@ export function LiveIntelligencePage() {
       ) : null}
 
       <DailyDigest />
+
+      <div className="row wrap" style={{ gap: 12, marginBottom: 12, alignItems: "center" }}>
+        <WatchlistBar
+          filters={filters as Record<string, unknown>}
+          onApply={(filter) => setFilters(filter as typeof filters)}
+        />
+        <a
+          className="btn sm"
+          href={exportUrl({ format: "csv", scope: filters.scope ?? "latest", source: filters.source,
+                             organization: filters.organization, topic: filters.topic, q: filters.q, limit: 1000 })}
+          download
+        >
+          {bi("Export these records (CSV)", "导出这些记录（CSV）")}
+        </a>
+      </div>
 
       <div className="radar-status">
       <Card
@@ -691,6 +709,7 @@ function IntelligenceDrawer({ observationId, onClose }: { observationId: string;
                       {bi("Open the original record", "打开原始记录")}
                     </a>
                   ) : null}
+                  <ReviewPanel observationId={observationId} />
                 </div>
 
                 <div className="drawer-section">

@@ -16,6 +16,8 @@ const NAV_ITEMS: NavItem[] = [
   { to: "/brief", labelKey: "nav.brief" },
   { to: "/radar", labelKey: "nav.radar" },
   { to: "/radar/technology-map", labelKey: "nav.technologyMap" },
+  { to: "/radar/companies", labelKey: "nav.companies" },
+  { to: "/radar/review", labelKey: "nav.reviewQueue" },
   { to: "/", labelKey: "nav.overview", end: true },
   { to: "/organizations", labelKey: "nav.organizations" },
   { to: "/events", labelKey: "nav.events" },
@@ -30,6 +32,8 @@ const NAV_ITEMS: NavItem[] = [
 const ALPHA_NAV_ITEMS: NavItem[] = [
   { to: "/radar", labelKey: "nav.radar" },
   { to: "/radar/technology-map", labelKey: "nav.technologyMap" },
+  { to: "/radar/companies", labelKey: "nav.companies" },
+  { to: "/radar/review", labelKey: "nav.reviewQueue" },
 ];
 
 export function AppShell({ children }: { children: ReactNode }) {
