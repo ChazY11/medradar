@@ -104,6 +104,30 @@ def backup(paths: RadarPaths | None = None, *, destination: str | Path | None = 
     integrity = _integrity(temporary)
     counts = _counts(temporary)
     source_counts = _counts(source)
+
+    # Human judgement is not derivable from the ledger: a saved watchlist and a review note
+    # exist nowhere else. It is small, so it is copied in the same window and verified the same
+    # way rather than left out of the backup.
+    human_copy: Path | None = None
+    human_counts: dict[str, int] | None = None
+    if paths.human.is_file():
+        human_copy = target_dir / f"human-{stamp}.db"
+        hsrc = sqlite3.connect(f"file:{paths.human.resolve().as_posix()}?mode=ro", uri=True,
+                                timeout=60)
+        hdst = sqlite3.connect(str(human_copy))
+        try:
+            hsrc.backup(hdst)
+        finally:
+            hdst.close()
+            hsrc.close()
+        if _integrity(human_copy) != "ok":
+            human_copy = None
+        else:
+            human_counts = {table: int(human_copy_stats) for table, human_copy_stats in (
+                (name, sqlite3.connect(f"file:{human_copy.as_posix()}?mode=ro", uri=True)
+                 .execute(f"SELECT COUNT(*) FROM {name}").fetchone()[0])
+                for name in ("watchlist", "review", "audit")
+                if _has_table(human_copy, name))}
     verified = integrity == "ok" and all(
         counts[key] >= source_counts[key] for key in ("observation", "observation_version")
     )
@@ -128,20 +152,38 @@ def backup(paths: RadarPaths | None = None, *, destination: str | Path | None = 
             "It can be rebuilt with `python -m medradar radar rebuild-graph`; losing it never "
             "loses an observation."
         ),
+        "human_included": human_copy is not None,
+        "human_backup": str(human_copy) if human_copy else None,
+        "human_counts": human_counts,
+        "human_note": (
+            "human.db holds watchlists, review decisions and the audit trail. It is not "
+            "derivable from the ledger, so it is copied with it."
+        ),
         "retention": {"keep": int(keep)},
     }
     manifest_path = target_dir / f"radar-{stamp}.json"
     manifest_path.write_text(json.dumps(manifest, indent=2, ensure_ascii=False) + "\n",
                              encoding="utf-8")
     _rotate(target_dir, keep=max(1, int(keep)))
+    _rotate(target_dir, pattern="human-*.db", keep=max(1, int(keep)))
     log(f"[backup] {final_path} verified={verified} integrity={integrity} "
         f"observations={counts['observation']}")
     return BackupResult(final_path, manifest)
 
 
-def _rotate(target_dir: Path, *, keep: int) -> None:
+def _has_table(path: Path, table: str) -> bool:
+    con = sqlite3.connect(f"file:{path.as_posix()}?mode=ro", uri=True)
+    try:
+        return con.execute(
+            "SELECT 1 FROM sqlite_master WHERE type = 'table' AND name = ?", (table,)
+        ).fetchone() is not None
+    finally:
+        con.close()
+
+
+def _rotate(target_dir: Path, *, keep: int, pattern: str = "radar-*.db") -> None:
     """Keep the newest ``keep`` verified backups; never touch a file outside the pattern."""
-    files = sorted(target_dir.glob("radar-*.db"), key=lambda item: item.name)
+    files = sorted(target_dir.glob(pattern), key=lambda item: item.name)
     for stale in files[:-keep] if len(files) > keep else []:
         try:
             stale.unlink()

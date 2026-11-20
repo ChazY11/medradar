@@ -7,6 +7,8 @@ isolated directory and rebuild the technology graph from it.
 
 from __future__ import annotations
 
+import sqlite3
+
 from pathlib import Path
 
 import unittest
@@ -148,3 +150,41 @@ def test_a_restore_drill_proves_the_graph_can_be_rebuilt_from_the_backup(tmp_pat
     assert report["graph"]["nodes"] > 0
     # The untouched original still exists; the drill wrote only into the isolated directory.
     assert (root / "radar.db").is_file()
+
+def test_a_backup_carries_the_human_store_because_it_is_not_derivable(tmp_path: Path):
+    """A watchlist and a review note exist nowhere else; a backup that omits them loses them.
+
+    The ledger can be rebuilt from sources, the graph from the ledger, but a person's decision
+    cannot be recomputed. So the same backup window must capture human.db too.
+    """
+    from medradar.radar.backup import backup
+    from medradar.radar.human import HumanStore
+    from medradar.radar.paths import radar_paths
+
+    radar_dir = tmp_path / "radar"
+    radar_dir.mkdir()
+    ledger = ObservationLedger(radar_dir / "radar.db")
+    ledger.ensure_source("crossref", label="Crossref", adapter_version="a1", cadence_hours=6)
+    ledger.close()
+
+    store = HumanStore(str(radar_dir / "human.db"))
+    store.save_watchlist("Recalls", {"source": "openfda_recall"})
+    store.set_review("obs-1", status="CONFIRMED", note="verified")
+    store.close()
+
+    paths = radar_paths(radar_dir)
+    result = backup(paths, destination=tmp_path / "backups", keep=5, log=lambda _m: None)
+    manifest = result.manifest
+    assert manifest["human_included"] is True
+    human_path = Path(manifest["human_backup"])
+    assert human_path.is_file()
+    assert manifest["human_counts"]["watchlist"] == 1
+    assert manifest["human_counts"]["review"] == 1
+    assert manifest["human_counts"]["audit"] >= 1, "the audit trail travels with the decisions"
+
+    restored = sqlite3.connect(f"file:{human_path.as_posix()}?mode=ro", uri=True)
+    try:
+        assert restored.execute("SELECT name FROM watchlist").fetchone()[0] == "Recalls"
+        assert restored.execute("SELECT status FROM review").fetchone()[0] == "CONFIRMED"
+    finally:
+        restored.close()
