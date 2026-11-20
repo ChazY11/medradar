@@ -21,6 +21,34 @@
   <a href="README.zh-CN.md">中文</a>
 </p>
 
+## Live radar: what arrived today (RADAR-001)
+
+A second surface watches public regulatory and research sources and answers one question a day:
+**what arrived that is worth a look?**
+
+* **Admission, not a river.** Every record is judged on separate dimensions (source, domain,
+  relevance, confidence, date precision). On a measured day 1,660 records arrived and 17 were
+  worth reading; the feed says so instead of showing 1,660 rows.
+* **A daily digest** on the front page: what arrived, the top five with one line each, safety
+  and recalls, what waits for a human, and the caveats (future-dated records, near-duplicates,
+  sources blocked by policy). Nothing in it is model-generated; every line points at a record
+  you can open and check.
+* **Watchlists** save the filter you are looking at, with a live count.
+* **Company pages** answer "what happened at Philips recently", not "how many rows exist".
+* **A review workflow** (NEW / REVIEWING / CONFIRMED / DISMISSED + note, with an audit trail).
+  Human decisions live in their own `human.db`; the evidence ledger stays append-only and is
+  opened read-only by every web request, so no button can corrupt it.
+* **Export** whatever you are filtered to as CSV or JSON, including your review decisions.
+* **Delivery** by webhook or SMTP (`radar digest --webhook/--smtp-*`), dry run by default.
+* **An MCP server** (`python -m medradar.mcp_server`) exposing five read-only tools so an agent
+  can ask the same questions. Nothing in it can write.
+
+See [docs/features/001/CAPABILITIES.md](docs/features/001/CAPABILITIES.md) for the API,
+[MCP.md](docs/features/001/MCP.md) for client configuration, and
+[DELIVERY.md](docs/features/001/DELIVERY.md) for the scheduler example.
+The capability scan behind these choices is in
+[docs/research/001/TOOL_CAPABILITY_SCAN.md](docs/research/001/TOOL_CAPABILITY_SCAN.md).
+
 ## Product workbench (PRODUCT-001)
 
 The repository now also ships a **working analyst workbench**, not only the research programme:
