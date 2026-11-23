@@ -1,0 +1,283 @@
+workflow "medradar-intel-audit-v2" completed (43 agents).
+Return value:
+{
+  "total_tasks": 43,
+  "completed": 39,
+  "failed": 4,
+  "facts_collected": 1037,
+  "tasks_with_verified_endpoints": 39,
+  "distinct_open_sources": 579,
+  "results": [
+    {
+      "id": "cmp-clarivate-ci",
+      "phase": "批1-商业情报平台货架",
+      "title": "Clarivate DRG Medtech Competitive Intelligence / Medtech 360 / Medtech Insights",
+      "summary": "实测结论（Clarivate 医疗科技情报线）：**它不卖 openFDA 那类器械安全数据，与 MedRadar 现有 375,378 条事件零重叠**；它卖的是①市场规模/10年预测模型 ②医院采购订单级 SKU 定价 ③竞品管线情报 ④分析师报告，全部登录制、无公开 API、无公开报价。但发现一个关键可利用面：**整个报告目录（11,799 份，其中 medtech 2,034 份）连同每份 2,195 字摘要通过 WordPress REST 端点免密钥可读**，每份报告页还公开 259 条目录项，等于把\"行业公认该有哪些指标\"的完整蓝本免费摊开了。真正不可复制的是 2.2M SKU / 1,900 家医院采购订单 + 1.2 亿患者 claims/EHR 数据——这才是护城河，也是 MedRadar 不该去硬碰的层。",
+      "fact_count": 23,
+      "endpoint_count": 10,
+      "gaps": [
+        "价格全部未核实：五处产品/报告页面均无货币数字，只有 demo/contact 表单；如需真实价位只能走销售报价或第三方转售渠道，本次未取得任何公开单价",
+        "『50+ 国家』无法在报告粒度证实——slug 只解析出约 14 个地理区且以区域块为主。国家明细据推断在 Data Explorer 的市场模型内，需订阅账号实测才能确认是否真有 50 国逐国数据（需实测）",
+        "『80+ 器械市场』与实测 72 个 slug 市场有差距；差异可能来自 Data Explorer 更细的细分口径或治疗领域计数方式，无法在不登录情况下对齐（需实测）",
+        "Medtech 360 Data Explorer 基础版的具体保存视图上限数字未披露（FAQ 仅说『limited number』）；加价升级档的价格与额度均未公开（需实测）",
+        "acf 字段（Advanced Custom Fields）在列表 REST 视图中为空数组，未确认是否存在能返回结构化字段（市场规模/份额数值）的 REST 参数或单条详情端点；若能取到将是重大发现（需实测）",
+        "Medtech Insights Platform 作为独立产品的边界不清：无官网页面，唯一权威描述在被锁的 test.clarivate.com 培训 PDF（Pantheon Site Locked，HTTP 401）；其模块清单（Brand Tracking/PriceTrack 等）来自搜索摘要而非一手读取（需实测）",
+        "13 vs 12 治疗领域、1,900 vs 1,500+ 医院——官方自身数字存在内部不一致，无法判定哪个为准",
+        "所有市场规模/份额/ASP 的具体数值均无法验证——报告正文在登录墙后，公开面只有摘要与目录标题，不含任何数字",
+        "WP REST 端点是否为官方许可用途未声明（robots.txt 未禁 /wp-json/，但属未文档化实现细节，随时可能关闭或加白名单）；批量枚举的合规性需法务口径确认",
+        "PriceTrack/Marketrack 的区域覆盖（是否仅美国）与更新频率未逐页取证；本次仅确认 PriceTrack 为美国医院口径"
+      ]
+    },
+    {
+      "id": "cmp-clarivate-cortellis",
+      "phase": "批1-商业情报平台货架",
+      "title": "Clarivate Cortellis（监管+竞争情报）",
+      "summary": "结论（可直接执行）：Cortellis 不是「器械监管数据库」，它是「跨辖区监管文档＋人工摘要＋变更版本」的订阅库，器械在其中是二等公民——这不是印象，是厂商自己公布的数字对比：CRI 全库 310K+ 监管文档 / 2K+ 人工摘要 / 81 个国家模块，而器械侧（Medtech Regulatory Intelligence 页面）只有 79k+ 源文档（≈25%）、270+ 摘要（≈13.5%）、75 个国家；器械 Approval Package 仅回溯到 2013 年（药品/生物制品回溯到 1997 年）；Cortellis CI 的药品管线明确把「一般医疗器械、影像设备、牙科设备、IVD、医疗 App」列入不收范围；API 层面是决定性证据：CRI 的 MCP 服务只暴露 12 个工具、CCI 暴露 10 个工具，全部围绕 IDRAC 文档 / 摘要 / 比较表 / 药物，**没有任何一个器械提交记录（510(k)/PMA）的结构化查询工具**，也没有器械专属 endpoint。\n\n对 MedRadar 的三层拆解（买什么 / 自建什么 / 空白在哪）：\n① 公开可自建层：openFDA 实测 510(k) 176,683 条 + PMA 57,518 条 + 器械召回 59,705 条 = 293,906 条结构化记录，免费无 key。MedRadar 现有 375,378 条已覆盖并超出，这一层零独占性，且比 CRI 器械包（2013 起、文档形态）历史更深。\n② 真花钱才买得到的层：非美辖区原文 + 人工英译（15K+ 人工译、16K+ 机译、81 国模块）、分析师摘要与情报报告（器械 270+ 摘要 / 700+ 报告）、文档版本 diff（IDRAC 版本链）。这是人力，不是数据可得性问题。\n③ 厂商自己也没做的空白（MedRadar 的真机会）：结构化器械监管图谱——510(k)↔PMA↔product code↔召回↔UDI↔企业注册的实体关联、predicate/SE 链、记录级变更告警。Clarivate 卖的是「文档 + 会说话的 agent」，不是「表 + 主键」。\n\n采购建议：不要为器械买 CRI 全包。器械是独立 SKU（CRI for Medical Devices and IVDs，与 CRI for Drugs and Biologics 分包），只为非美辖区文档＋人工翻译＋分析师摘要这两项议价；器械竞争情报要买也在 DRG Medtech Competitive Intelligence / Medtech 360（按 device series / 分析师 / 财务模型），不在 Cortellis CI。另注意厂商侧变动：Clarivate LSH 已独立成公司并以 Insira 品牌运营，合同主体与产品命名会变，采购前需书面确认。\n\n全部数字均有实测来源；价格一律未核实（无公开报价页，只有 contact us）。",
+      "fact_count": 27,
+      "endpoint_count": 7,
+      "gaps": [
+        "CRI 是否包含 510(k)/PMA 的『结构化记录』（可按 k_number、product_code、decision_date 字段检索/导出）——文档站只暴露文档级工具（IDRAC/章节/摘要），无任何字段化提交记录接口；不排除 Web 端有表格视图。需实测：申请 CRI 器械包试用，用 k_number 与 product_code 各搜一次，看返回是记录行还是 PDF 包",
+        "器械 Approval Package『2013 年起』这一关键结论仅来自搜索引擎索引到的日文培训 PDF 片段；该 PDF 本体返回 401（Pantheon 站点锁），未取得原文。需实测：向厂商索取 US Approval Overview 现行版并核对器械起止年份与覆盖获批类型（510(k)/PMA/De Novo/HDE）",
+        "CRI for Medical Devices and IVDs 独立 SKU 的内容清单、计价单位（按国/按席位/按模块）与实际报价 —— 全部未核实，官网无报价页。需实测：走 sales 询价，明确要求『仅器械包』报价单",
+        "CRI MCP 的 product types 过滤值枚举（是否含 device/IVD 细分，如 510(k)、PMA、De Novo）未知；需实测：拿到 key 后调用 Extract_Librarian_Filter_Values，记录返回的 product type 全量取值",
+        "Cortellis CI 排除一般器械的结论仅有日文版『type of drugs』PDF 索引片段为据，英文对应文件与版本未核实；且 CI 通过临床试验/新闻间接含有器械信息，边界模糊。需实测：在 CI 内以 device 名称检索，看命中类型分布",
+        "openFDA UDI 数据集总量未取得：/device/udi.json?count=device_class 实测返回 404『Nothing to count』（该数据集不支持 count）。需换 limit=1 取 meta.results.total 重测，才能补齐 MedRadar 375,378 条与公开源的对账",
+        "Clarivate LSH 独立为 Insira 后的合同主体、数据再分发权（能否在 MedRadar 内二次呈现）、以及 Cortellis/DRG 产品是否改名 —— 官网仅有品牌说明，无商务条款。需实测：法务向厂商索取实体变更与再分发许可书面确认",
+        "是否存在『未上架 Developer Portal』的私有数据 feed（例如 ric-download-api/LSH Data Product Search & Retrieve 的 GraphQL 是否覆盖 CRI 器械内容集）—— 该 GraphQL API 在目录中标记 excludeSwagger，无公开 schema，无法从文档判断。需实测：向 account manager 索要 data feed 内容集清单",
+        "器械侧是否存在监管『变更告警』（record-level change alert）产品形态未确认；CRI 仅提供文档版本 diff（按 IDRAC），不等于按 k_number 的批准/变更告警。需实测：订阅试用后验证告警粒度",
+        "第三方图书馆页面（如 ic.simm.ac.cn 描述『232,000+ 份法规文件、3,000+ 独家英译、5,000+ 检查文件』）与厂商 310K+/15K+ 数字不一致，可能是版本时点差异或口径差异，未核实来源基准日"
+      ]
+    },
+    {
+      "id": "cmp-globaldata",
+      "phase": "批1-商业情报平台货架",
+      "title": "GlobalData Medical Devices",
+      "summary": "实测审计 GlobalData Medical Devices：10 个医疗器械数据集 + Deals/Patents 两个跨行业 Signals 库。核心发现：GlobalData 自己在规格表中把 Clinical Trials(84,937)、Marketed Products(115,673)、Patents(170.3M+) 标为 Proprietary Data: No，Marketed Products 明确写明源自美/澳/中/日监管机构——即公开数据再加工。真正的护城河仅 Market Models(250+市场×20治疗领域×39国×2015–2036)、Procedures(235,002 编码)、US Hospital SKU(447,743,545 条采购面板) 与 Contacts(136,036 决策人)。官网页面上所有 223 个产品的 £1,000.00 是全站占位价（447M 条与 10K 条同价，非医疗器械产品同样 £1,000），不是商品定价；真实可核实价格只有第三方分销商的公司 SWOT 报告 US$125/20–23 页。API 仅合约定制：api.globaldata.com 全路径 503、全站 0 处 openapi/swagger/developer/apikey 痕迹。对比 openFDA 实测：device/event 公开 26,849,547 条，MedRadar 现有 375,378 条仅覆盖 1.4%；GlobalData 收费的 Marketed Products(115,673) 比 openFDA 510k+registrationlisting 合计(514,129) 还少。",
+      "fact_count": 21,
+      "endpoint_count": 13,
+      "gaps": [
+        "GlobalData 真实订阅价 / 按数据集单价 / API 接入费：未核实。官网 /store/* 全部 403，/product/* 只有跨站统一的 £1,000 占位价，无公开报价页。需实测：走 sales 询价或索取 quote。",
+        "£1,000 到底买什么：未核实。页面未说明该价含 Excel 还是含 API 调用权、是否按用户/年、是否单数据集。需实测（询价确认交付物边界）。",
+        "GlobalData 医疗器械分析师报告目录总量：未核实。/store/sitemap.xml 403，免费报告 sitemap 仅 200 条（3 条医疗）。第三方线索称 Pipeline Summary 类报告 2018 年至今 '4,000+' 份、AfterMarket Research 收录 1,100+ 份医疗类 GlobalData 报告，但我无法在本站核实这两个数字。需实测（订阅后查报告库，或经 ProQuest/AfterMarket Research 侧统计）。",
+        "api.globaldata.com 是否为真实客户端入口：需实测。目前全路径 503，无法判定是未开放、需 IP 白名单、还是仅内网/客户专用网关。需实测（持客户凭据 + 我方出口 IP 加白后重试）。",
+        "Snowflake / Databricks / Redshift / BigQuery / Salesforce / HubSpot / MCP 集成是否已上线：未核实。仅见 /solutions/api-data-feeds/ 营销文案，无任何技术文档、连接器 ID、市场 listing 证据。需实测。",
+        "447,743,545 条记录在 SKU Basic 与 Ultra 完全相同、235,002 条在 Market Data & Forecasts 与 Procedures 完全相同：疑为站点录入错误，未核实两者真实差异（Ultra 相对 Basic 增补了哪些字段/维度）。需实测（询价索取字段表）。",
+        "Contacts 库 '1,36,036 Records' 的位数格式异常（印度式千分位）：未核实是 136,036 还是 1,360,036。需实测。",
+        "厂商自标 'Proprietary Data: No'（Clinical Trials / Marketed Products / Patents）究竟是法务口径还是营销口径：未核实。无法从公开页面判断其许可来源（是否有上游排他协议）。需向厂商确认。",
+        "Market Models 里 20 个治疗领域的具体名称清单：未核实到完整列表（行业页只举了 aesthetic/dental/anesthesia/cardiovascular/reproductive 少数例子）。需实测（订阅后取 taxonomy，或从第三方 JISC 目录页 JS 渲染取全表——该页需启用 JS，我未渲染）。",
+        "robots.txt 明确禁止 AI 爬虫 UA 抓取 /product/、/reports/、/company-profile/：这对我方自动化管道构成实际限制，但 ToS 层面对通用 UA 抓取是否允许、以及对已抓取内容能否入库再分发，未核实。需法务/合规实测评估。",
+        "GlobalData 数据来源分为一手调研（'over 2,000 experts'、physician feedback、hospital purchasing panel）与公开再加工两类的具体配比：未核实。厂商只给总量口径，未披露每张表的原始采集方式。需实测（索取 data lineage 文档）。",
+        "『over 290 proprietary datasets』（行业页）与『300+ deep, authoritative datasets』（API 页）与『259 Market Models』（第三方 JISC 目录页）三处数字口径不一致：未核实哪个是当前真实数字。需实测。"
+      ]
+    },
+    {
+      "id": "cmp-evaluate",
+      "phase": "批1-商业情报平台货架",
+      "title": "Evaluate MedTech / Evaluate Vantage",
+      "summary": "实测核查 evaluate.com（2026-11-21）：Evaluate MedTech 仍在售，但已不在主导航，只在页脚；「Evaluate Vantage」作为独立站点已死——/vantage/ 与 /vantage 都 301 跳到 /resources，编辑内容并进 blog/resources，是免费内容营销，不是数据产品。MedTech 卖的是三层：①公开数据再加工（Devices@FDA「6 个整合库」= PMA/510(k)/HDE/BLA/PDP/FDA 新技术标识；CMS/CDC/CT/HCUP/EUCOMED/OECD 手术量），②broker 共识预测（brochure 明写「4,000+ 条公司分部与产品共识预测」），③交易与公司财务结构化（器械与诊断交易、deal terms/values、按器械分类的风投、分部销售额+市占率+排名）。**预测不是模型而是人工+broker 共识**：官网明示 87% 共识预测遵循专有方法学、81% 纳入 3 家以上 broker 模型、83% 做到适应症级、并对 III 期读出做「analyst-driven likelihood-of-approval」人工调整——注意这套口径是 pharma/biotech 语境，器械侧方法学未公开。API 确实存在但全封闭：api.evaluate.com 返回 403 + application/json + 42 字节 {\"message\":\"Missing Authentication Token\"} + x-amzn-ErrorType: MissingAuthenticationTokenException（AWS API Gateway），无公开文档，developer.evaluate.com DNS 不解析。交付形态是 Snowflake / CSV·XML 平文件 /「selected APIs where available」/ MCP（Claude、Copilot）；**data-feeds 目录里只有 pharma-biotech 数据集（Product Sales、Indication Sales、PTRS、Deals、Company Financials 等），没有 MedTech 数据集**——器械预测大概率只能走平台 UI（app.evaluate.com，robots 全站 Disallow；meddevicetracker.com 独立 ColdFusion 登录墙），这本身就是一条产品化缺口。免费样本：只有一份 6 页、2.79MB 的营销 brochure 可直连下载（HTTP 200，application/pdf，X-Robots-Tag: noindex，内容是产品能力清单、没有数据记录）；「Request sample data」和「Request a demo」都是销售表单，非自助。价格：平台价「Priced for your team」不公开（未核实）；但报告店公开挂价——Chronic Urticaria Disease Report（2025-08-28 发布）Price $16,275，这是唯一能拿到的真实数字锚点，且是单份疾病报告而非器械平台价。对 MedRadar 的结论：Evaluate 那层公开数据壳子可以完全自建——我实测 openFDA 无 key 记录数 device/event 26,849,547、udi 5,182,695、registrationlisting 337,446、510k 176,683、recall 59,705、pma 57,518、enforcement 40,535、classification 7,103；真正买不到的是「器械分部-产品级共识预测 + 修订历史 + broker 一致性分布」和「deal terms 结构化 + 按器械分类的风投」，以及 HDE/BLA/PDP 这类公开端点外的补全（openFDA device/pma 查 pma_number:\"H*\" 返回 NOT_FOUND，HDE 不在该字段下）。可执行动作：把 openFDA 六源+手术量做成基线层（成本≈0），把差异化押在「器械预测数据库 + 预测修订时间序列 + 交易可比表」，并用 $16,275/份的量级去设计单报告定价。",
+      "fact_count": 23,
+      "endpoint_count": 15,
+      "gaps": [
+        "MedTech 数据集的记录条数、刷新频率、覆盖公司/产品清单：公开页只给「4,000+ consensus forecasts」，无 DB 计数、无 update cadence、无产品清单 → 需实测（销售 demo 或试用账号）。",
+        "器械侧预测方法学未公开：官网 87%/81%/83%/65% 与 analyst LoA 调整口径是 pharma/biotech 语境（Phase I–III、indication level）；器械是否同样做 broker 共识、纳入几家 broker、是否 bottom-up 用手术量×渗透率、修订节奏与 consensus archive 起点（EvaluatePharma 侧公开称 archive 自 2003-01，器械侧无对应说明）→ 需实测。",
+        "MedTech 是否可通过 API 取数：data-feeds 目录不含任何 MedTech 数据集，api.evaluate.com 存在但需鉴权且无文档；MedTech API 可用性/字段/配额完全未知 → 需销售确认或试用实测。",
+        "MedTech 平台价格与包结构：/pricing/ 明示 tailored，无任何金额；$16,275 是单份疾病报告价，不能当作器械平台价 → 未核实。",
+        "是否有免费试用/自助样本：未发现任何自助注册或试用入口；「Request sample data」「Request a demo」均为销售表单，实际是否给数据样本、给到什么颗粒度未知 → 需实测（提交表单后观测）。",
+        "HDE / BLA(器械) / PDP 的公开可得性：openFDA device/pma 查 pma_number:\"H*\" 返回 NOT_FOUND，HDE 是否另有端点或藏在 supplement 字段未核实；器械 BLA 与 PDP 在 openFDA 未见对应端点 → 需实测。",
+        "「Evaluate Vantage」是否彻底停更（而非仅换 URL）：/vantage/ 301→/resources、sitemap 无 vantage 页、blog 仍在更新；但 Vantage 品牌署名是否仍在产出、是否有独立订阅/newsletter 产品 → 需实测（对比 2024 前 vantage 文章与当前 blog 的作者/口径）。",
+        "MedTech 与 Meddevicetracker 的数据关系：两页描述重叠（都含器械事件/试验/预测），是否同一底层库的两个界面、是否共用登录（app.evaluate.com vs meddevicetracker.com）→ 未核实。",
+        "World Preview 2026 等年度报告是否免费可下：页面 200 但未发现直链 .pdf，也无 elementor-form 标识，下载路径（表单 vs 直链）未确认 → 需实测。",
+        "Evaluate 的 MedTech 客户数/市占/续约等商业指标，以及 Norstella 并购后产品线是否在整合（MedTech 已不在主导航、仅页脚）→ 属观察性推断，需实测（对比历史快照或销售口径）。",
+        "openFDA 单次返回记录上限与 api_key 提额阈值本次未实测定量（仅确认 limit=1 与 meta.results.total），批量拉取时的分页/限流行为需实测。"
+      ]
+    },
+    {
+      "id": "cmp-informa",
+      "phase": "批1-商业情报平台货架",
+      "title": "Informa Pharma Intelligence: Meddevicetracker + Medtech Insight",
+      "summary": "**结论先说：这条线对 MedRadar 的威胁远小于名义，而且它自己把底牌亮了。**\n\n**1. 归属已变，Informa 已不是主体。** pharmaintelligence.informa.com 的产品页现在 302 到 clinicalintelligence.citeline.com；meddevicetracker.com 首页版权是「Copyright © 2026 Evaluate, a Norstella Company」，Demo 按钮指向 evaluate.com。所以「Informa Pharma Intelligence」作为对手已经过期，实际是 **Norstella 旗下 Citeline（新闻）+ Evaluate（数据）** 双产品。审计对象要按 Evaluate/Citeline 记。\n\n**2. 新闻与数据是两套东西，不是\"混合\"。** Medtech Insight（insights.citeline.com）= 纯记者稿，有署名/byline、Arc XP 平台、`contentRestrictions: premium` 逐条标记付费。Meddevicetracker = 结构化库（Product/Company/Event/Catalyst/Trial 各自有 ID），但**未登录访问详情页返回 HTTP 200 + 空 body**（静默登录墙，不是 403）。两者靠超链接互导，不存在统一 schema。\n\n**3. 最值钱的发现：Citeline 自己标注了数据来源，大半是 FDA.gov 再包装。** Data Trackers 索引页逐条写着：\n- US Original PMAs / US PMA Supplements → 「Data derived from **FDA.gov**. Updated weekly.」\n- 已归档的 US 510(k) Clearances、US De Novo、Warning Letters → 同样 FDA.gov，**且已停止更新**（510(k) 停在 2026-05，De Novo 停在 2026-09）\n- 只有 Global Medtech Guidance Tracker（全球监管指南，月度）和 M&A/Financing（来自自家 Meddevicetracker）不是公开数据直搬\n\n**这意味着：MedRadar 现有 375,378 条 openFDA 事件，和 Citeline 卖的结构化监管层是同源同质——它没有独占性，你也没有劣势。** 且它把 510(k) tracker 归档停更了，这是空档。\n\n**4. 真正的差异化在\"预期\"层，不在\"事实\"层。** Meddevicetracker 的 Catalyst（带 Expected Date Range，如 \"Now - Dec 31, 2026\" + \"Regulatory - PMA Approval Decision\"）是人工判断的前瞻预测，加上分析师报告（Report Library，$ 级市场预测）和 MTI 100 收入榜。这些是人工加工，也是它敢收费的地方。\n\n**5. 可执行结论（给 MedRadar）：**\n- **可自建、别买**：PMA/PMA supplement/510(k)/De Novo/Warning Letters/Breakthrough——全部 FDA.gov 可得，Citeline 只是清洗+周更。你已做类似事。\n- **值得抄作业的空档**：510(k) 英文结构化追踪已被它停更，你可以接上并做成比它更细的器械级视图。\n- **可白嫖的合法入口**：`insights.citeline.com/arc/outboundfeeds/rss/` 免 key 返回完整 RSS（含 premium/free 逐条标记、作者、摘要、日期），`/companies/{slug}` 免费给出公司级行业分类树 + 子公司/别名。robots.txt 全站 `Allow: /`。\n- **真正的空白层**：跨源器械级实体归一（同一器械在 510(k)/PMA/UDI/召回/临床试验里的统一 ID）。Citeline 是「按产品建档 + 人工打预期」，不是「按器械 ID 贯通全生命周期」。这是它结构性没做的，也是 MedRadar 该抢的。\n\n**6. API 未能证实。** 只有 2020 年一份「MDT Devices API use-case flyer」营销 PDF 提到 \"Device API\"，但该 PDF 现 302 到 clinicalintelligence.citeline.com，且 `api.meddevicetracker.com` DNS 直接失败。没有找到任何技术文档、端点或字段定义。按\"营销宣称、未经技术证实\"处理。价格全网无公开报价页，一律未核实。",
+      "fact_count": 17,
+      "endpoint_count": 5,
+      "gaps": [
+        "Meddevicetracker 实际记录数未知（Products / Events / Catalysts / Trials 各多少条）——需实测：登录后查总数，或找公开统计口径。未登录详情页返回空 body，无法估算",
+        "API 是否真实存在且可调用：未证实。仅有一份 2020 年营销 PDF 提及 \"Device API\"，PDF 现 302 无法读取，api.meddevicetracker.com DNS 失败，无任何技术文档。需实测：向 Evaluate 索取 API 文档，或确认该 API 是否已随产品迁移下线",
+        "API 字段名、鉴权方式、速率限制、计价模式：全部未知，需实测",
+        "价格：未核实。citeline.com / evaluate.com 均无公开报价页，仅 Free Trial 与 Request a Demo。需实测：走销售流程询价，或查 GSA/政府采购中标公告、高校图书馆订阅费公示",
+        "Data Trackers 表格内的具体行数与字段：页面仅渲染标题与「Data derived from FDA.gov. Updated weekly」描述，表格本体未在 HTML 中出现（疑 JS/JSON 渲染且需登录）。需实测：抓 Arc XP 底层 content API 或登录后核对列名与行数",
+        "Meddevicetracker 是否仍作为独立 SKU 售卖，或已并入 Evaluate 平台（Evaluate Home / platform.evaluate.com/app）：页面同时存在两套导流，归属关系需实测确认",
+        "Medtech Insight 与 Meddevicetracker 是否共用同一后端公司/产品主数据（同一 CompanyID 体系？）：meddevicetracker 用 CompanyID=4052 表 Abbott，insights 用 slug；是否映射未知，需实测",
+        "官方方法学 PDF（人工分析师流程、质检标准、更新频率细则）被 406 阻断，正文未读到；仅由搜索摘要侧证存在 in-house analysts 与质检环节。需实测：用浏览器 UA 取 PDF",
+        "Clinical Trials 追踪的字段粒度未知（是否含 NCT ID、入组数、终点、里程碑日期）：Trials 检索页需登录，未登录为空 body。需实测",
+        "是否有器械级唯一标识（UDI/DI）贯通：未找到任何公开证据表明 Meddevicetracker 使用 UDI 作为主键；若确认无，则 MedRadar 的器械级归一即为真空档，需进一步实测验证"
+      ]
+    },
+    {
+      "id": "cmp-iqvia",
+      "phase": "批1-商业情报平台货架",
+      "title": "IQVIA MedTech",
+      "summary": "## 结论先行\n\n**1. IQVIA MedTech 的主体不是数据平台，是服务公司。** 这是最容易被误判的一点。iqvia.com/sub-brands/medtech 的五个板块是 Regulatory / Clinical Research / Reimbursement / Quality Assurance(QMS·RIM) / Commercialization，自述\"2,500+ experts in over 80 countries\"、\"40+ years regulatory expertise\"。数据只是这些服务的燃料。所以客户掏钱买的不是\"一张表\"，是\"有人替我把合规做完\"。\n\n**2. 差异化确实是 claims + procedure volume + RWE，但三者全部闭源、全部靠合同，不靠技术。**\n- **claims**：`PharMetrics Plus for MedTech` = 美国纵向健康计划库，adjudicated integrated medical + pharmacy claims，覆盖 national/regional health plans 与 self-insured employer groups，字段含 diagnoses / procedures / device utilization / medications / costs（2021-06-23 fact sheet）。\n- **procedure volume**：`MedTech Market Monitor (MMM)` = 950 台手术 × 12 大类 × 45 个国家，7 年历史 + 3 年预测，按 ambulatory/inpatient 与 open/minimally-invasive 拆分，**国家级（National Level）**粒度。\n- **RWE**：作为 HEOR/证据生成服务包装出售。\n- **另有医院级 targeting**：`Hospital Procedures and Diagnosis (HPD)`，实时 claims 驱动，定位到单个外科医生、其患者与术式、所用产品耗材，并挂接 IDN/GPO 采购路径——**仅美国**（面包屑为 \"United States / Our U.S. Solutions\"）。\n\n**3. 数据渠道共三类，IQVIA 自己的博客把话说得很干净**：① reference data（OneKey：HCO/HCP 人口学、医生隶属、ASC、ACO、医院、挂母公司）；② claims data（非标识的患者就诊级，含诊断/术式/治疗/账单，部分含报销额，可做本地到全国的价格比较）；③ external sales data（SKU 级、所有卖进美国医院的产品采购量）。\n\n**4. API：没有面向 MedTech/claims/procedure 的公开 API。这是我实测到的硬证据链**：\n- `developer.iqvia.com` → **HTTP 302 → `https://deviq.iqvia.com/docs/developer-migration/`**，而 `deviq.iqvia.com` **无 A 记录（NXDOMAIN）**。开发者门户是一个指向死域的重定向。\n- `api.iqvia.com` → **无法解析（无 A 记录）**。\n- `www.iqvia.com/api/` 与 `/api/v1/` → **HTTP 404**。\n- `page-sitemap.xml` 共 **11,509** 条 URL，**没有一条** `/api` 或 developer 路径（唯一相关是一条视频《Developers and AI》）。\n- `robots.txt` 仅 99 字节、只有两行 `Sitemap:`、**无任何 Disallow** → 公开页面可抓（scrapable），无 WAF/robots 阻拦。\n\n**5. 价格完全未核实。** 所有产品页终点都是 \"Contact Us\" / \"Request a demo\" / \"Get instant access\"，没有任何公开报价页。按客户级合同定价。\n\n**6. 器械研发情报：有服务，没有产品化数据库。** 临床研究覆盖 feasibility → pivotal → post-market → real-world registries；监管覆盖 FDA、Breakthrough Device Designation、日本 DMASH/Shonin、APAC、生物相容性；另有 QMS/RIM。但**在所有抓取页面与 11,509 条 sitemap 中，未发现任何\"器械管线/竞品研发情报库\"产品**（pharma 侧有 pipeline 内容，器械侧没有对应的产品化数据订阅）。这是真实空白。\n\n---\n\n## 对 MedRadar 的可执行判断\n\n**A. 不要在 claims / procedure volume 上竞争——不是钱的问题，是牌照与合同问题。**\nMMM 的 950×45 需要逐国住院/医保数据授权，外加把 **25+ 套编码体系人工映射到单一 ICD-9 框架**；PharMetrics 需要与商业保险计划签数据合同。这两样无法用工程手段复制。任何\"我们也做 procedure volume\"的路线都是死路。\n\n**B. 你的 375,378 条 openFDA 事件确实没有独占性——但你没做的那层有。**\n我实测了空白层的原料，**全部 HTTP 200、全部无需 key**：\n\n| 数据层 | 实测记录数 |\n|---|---|\n| `device/udi`（GUDID 器械标识） | **5,182,695** |\n| `device/registrationlisting`（企业注册/产品列名） | **337,446** |\n| `device/510k` | **176,683** |\n| `device/recall` | **59,705** |\n| `device/pma` | **57,518** |\n| `device/enforcement`（召回执法） | **40,535** |\n| `device/classification`（分类骨架） | **7,103** |\n\n外加 ClinicalTrials.gov v2（器械临床试验）与 CMS Coverage API（NCD/LCD 报销路径），均实测可用。\n\n**C. 真正的护城河是\"主键打通\"，不是事件数。**\n把 MAUDE 从\"37 万条事件\"升级成\"器械实体图\"，路径是：\n`product_code` → `device/classification`(7,103 骨架) → `510(k)/PMA` → `UDI-DI`(GUDID) → `recall` → `MAUDE 事件` → 器械临床试验 → CMS 覆盖决定。\n\n这条 crosswalk 是**人工映射 + 实体消解**的活。这正是小团队能赢大厂的地方：IQVIA 不会把公开数据加工成它卖不出溢价的产品，而 MedRadar 可以靠它把\"人人可得\"变成\"只有你有\"。\n\n**D. 落点建议**：先把 `device/classification` 的 7,103 条做成全量产品码字典（这是全集骨架，成本最低、收益最广），再接 510(k)/PMA 拿审批谱系，再接 UDI 拿真实型号与 DI。做完这层，MAUDE 才有器械级可解释性——这是 IQVIA 卖给 MedTech 客户时唯一无法反驳的差异点。\n\n**注**：IQVIA 自述 MMM 是 \"the only objective global data in the world for surgical procedure volumes\"，属营销主张，未独立验证。",
+      "fact_count": 23,
+      "endpoint_count": 14,
+      "gaps": [
+        "各数据集的实际规模未公开：MMM 的医院/样本量、PharMetrics 的患者数与计划数、HPD 的覆盖医院数均未在任何页面披露 → 需实测（须与销售对接并签合同）。禁止据此编造记录数。",
+        "价格全部未核实：未发现任何公开报价页，所有产品页终点为 Contact Us / Request a demo / Get instant access。实际定价为合同级，未核实。",
+        "OneKey 是否真有可用 REST API 存疑：IQVIA OneKey fact sheet（PDF）提及 'With APIs, portals, and integrated data services'，但该 PDF 无法被解析，且开发者门户已死（302 至 NXDOMAIN）→ 需实测（需客户账号）。不得据此声称 OneKey 有公开 API。",
+        "claims/procedure 数据是否支持 API 交付：无任何证据，官网无 API 文档 → 需实测。第三方（supergood.ai 报告卡）称核心数据（OneKey 全量、Xponent、claims）不走 API，而是企业合同 + 每日 SFTP 平文件——此为第三方转述，IQVIA 官网未确认 → 需实测。",
+        "MMM 的方法学未公开：45 国手术量如何估算（是否来自各国住院出院数据、商业 panel 还是建模投影）、预测模型与置信区间、'objective' 的验证依据 → 需实测。页面自称 'the only objective global data in the world for surgical procedure volumes' 属营销主张，未独立验证。",
+        "器械研发/管线情报是否真有产品化数据库：官网与 11,509 条 sitemap 中未出现任何器械管线/竞品研发情报订阅产品（pharma 侧有 pipeline 内容，器械侧无对应产品）→ 需实测（直接问销售是否存在未公开产品线）。",
+        "是否存在免费层或试用：未发现任何免费数据下载或 API 试用。日本站导航出现 'トップライン市場データ'（topline 市场数据披露）暗示可能有免费垂类披露，但未验证且为日本药品侧，与美国器械无关 → 需实测。",
+        "device/cma 端点返回 404（本次实测），说明 openFDA 器械侧无 cma 数据集；若需该层需另寻来源。"
+      ]
+    },
+    {
+      "id": "cmp-commercial-side",
+      "phase": "批1-商业情报平台货架",
+      "title": "Definitive Healthcare / AcuityMD / MedScout（商业侧情报）",
+      "summary": "结论先说：这三家卖的是「谁在做手术、做多少、拿谁的钱」的销售靶向情报，数据模型里根本没有器械技术维度。对「工程师要研发情报」这个需求，它们的模型答不上来——而且这一点有硬证据，不是推断。\n\n一、三家的真实形态（全部实测）\n1) Definitive Healthcare：唯一有真 API 的一家。https://api.defhc.com/v5/Documentation 公开可读（HTTP 200，47,741 字节），API 只暴露 Executives / Hospitals / NewsItems / RFPs / Reports 五类实体，OData 风格；未带 Bearer token 请求 /odata-v4/Hospitals 返回 401。文档原文写明「A Data Integration License is required to utilize data outside of DefinitiveHealthcare.com」——凭证由客户经理发放，属付费授权。我探到 /odata-v4/HCPs 也返回 401（存在但公开文档未列），/odata-v4/Physicians 为 404。其 swagger 规范 /v5/swagger/v1/swagger.json 返回 HTTP 500，异常栈里漏出控制器名 ExecutivesController / HCPsController / HospitalsController / NewsItemsController / RFPsController（DefinitiveAPI.V2）——这是 HCPs 实体真实存在的最硬证据。v4 路径 301 跳到 /v5/v4/... 后 404，说明已迁到 v5。\n   关键结构事实：Hospitals 的 $expand 里含 HCIPPVs（Hospital Compare InPatient Procedure Volumes）、HCOPPVs、HCSMs、HCDs——即把 CMS Hospital Compare 的公开度量当成 API 属性在卖。而 claims 层（Atlas All-Payor / Prescription，号称 billions of claims）不在 API 里，要走「自定义报告」且报告名得找客户经理要。\n2) AcuityMD：没有公开 API。api.acuitymd.com 与 /v1 均 404；官网 integrations 页给出的集成面只有 Salesforce AppExchange、Snowflake Marketplace、Databricks Marketplace 和一个「Data Connector」推数仓——都是企业级交付，不是开发者接口。/pricing 返回 404，Databricks 的列表页明写 Pricing: Paid、Access: By request。其 Encounters Data Mart 的字段倒是公开可读：HCP & Site of Care IDs、Procedure/Diagnosis Code、Encounter Volume、Payer Type、HCP Specialty、Site of Care Type & Location、IDN/GPO Affiliation；地理覆盖 US + Canada，季度更新，时间起 2018-01-01，6 张基础表 + 18 张按需加购表。官网自述数据来自「CMS 与医疗 claims 聚合商」，覆盖 3.3 亿患者。\n3) MedScout：同样没有公开 REST API（api.medscout.io 404、app.medscout.io/api 404），/pricing 404。它的分发方式反而是三家里最\"现代\"的：MCP 连接器接进 Claude / Copilot / ChatGPT / Gemini，两周试用、不要信用卡、工作邮箱报名、邮件发 trial 登录 + OAuth 授权。数据自述为 Medicare + Commercial claims、3.3 亿患者、月度更新，字段覆盖术式/诊断/处方量、报销与 payer mix、Open Payments、隶属关系、IDN、转诊关系、患者旅程，还包括「provider office schedules」（医生出诊日）这种人工加工层。\n   最值得注意的一点：MedScout 自己做了 openpayments.healthcare，把 CMS Open Payments 免费公开，还带一套 JSON 接口。我单次手工请求 /api/years 得到 HTTP 200、application/json、21 字节，内容 [2025,2024,2023,2022]。但 robots.txt 明确 Disallow: /api/ 并注明背后是 MotherDuck 聚合查询、怕爬虫打爆——所以自动化抓取按 blocked 记。\n\n二、对 MedRadar 的判定（可执行）\n1) 不要为「研发情报」买这三家。三家 API/数据市场暴露的字段全部是 provider / facility / procedure volume / payer / affiliation，没有 510(k)、PMA、召回、MAUDE、临床试验、材料/BOM、灭菌或设计变更任何一个维度。我对 AcuityMD /platform 页做了全文正则（FDA|510(k)|recall|regulatory），零命中。Definitive 的 API 实体清单里同样没有监管数据。这是\"模型不匹配\"，不是\"数据不全\"。\n2) 它们的独占层只有三样，其余可自建：① 商业/Medicaid claims（不公开，这是真护城河）；② NPI 级身份解析 + 隶属/IDN/GPO 关系；③ 转诊图与术式迁移的推断。而 Medicare Part B 的 NPI×HCPCS 服务量与支付额在 data.cms.gov 是公开可下载/可 API 取（无登录）；Hospital Compare 的术式量是公开的（Definitive 只是包了一层 $expand）；Open Payments 是公开的（MedScout 干脆免费送）。换句话说：凡是用 Medicare FFS 就能刻画的\"术式量\"，你自建成本≈0；只有\"商业保险覆盖的患者流向\"才值得付费。\n3) 真正的空白层（也是 MedRadar 的差异点）：器械 × 术式 × 机构的「技术采用」映射——某家医院/某位术者当前在用哪一代产品、哪家厂商的植入物，并把它与 openFDA 的 510(k)/MAUDE/召回事件关联。三家里只有 Definitive 的 Atlas Technology Install 沾一点边，但那是医院 IT 技术栈（EHR/软件装机），不是植入物；而且 API 根本不暴露。\n4) 落地建议：短期用 data.cms.gov（NPI×HCPCS 服务量）+ openFDA（device/510k.json、device/event.json）做\"器械-术式-机构\"三元关联，这是纯公开、可复现、可审计的底座；把\"商业 claims 覆盖的患者流向\"和\"IDN/GPO 采购关系\"列为唯一需要采购的两块，且只在有付费客户要求时买。\n\n三、诚实边界\n- 三家的实际价格全部未核实。官网要么 404 要么\"Get a custom quote\"（Definitive 明确 custom pricing、à la carte/bundle/add-on，无价目表）。第三方流传的数字（Definitive 年框 2.5–6 万美元、AcuityMD 3–8 万美元、MedScout 1.5–4 万美元）均来自 Vendr/Provyx/Fathom 这类二手渠道，我没有原始报价页，一律不作事实。\n- 三家都没有公开任何记录数/行数；只有营销口径的 \"billions of claims\"、\"330M patients\"。不要把这些当实测计数。\n- Definitive 的 HCPs 实体字段、claims 是否以明细形式进 API、MedScout MCP 返回的是字段级记录还是叙述文本，都需要拿到凭证/试用后实测。\n- Snowflake Marketplace 上 Definitive 的 Atlas 样本列表页是懒加载 + 需登录，我拿不到内容，已列入 gaps。",
+      "fact_count": 29,
+      "endpoint_count": 9,
+      "gaps": [
+        "三家实际价格全部未核实：Definitive 只给 custom quote（à la carte/bundle/add-on），AcuityMD /pricing 404 且 Databricks 标 Paid/By request，MedScout /pricing 404。第三方流传数字（Definitive 年框 $25k–60k、AcuityMD $30k–80k、MedScout $15k–40k）来自 Vendr / Provyx / Fathom 等二手渠道，无原始报价页，需向销售索取书面报价后实测。",
+        "Definitive 的 claims 数据是否有明细级 API：文档只暴露 Hospitals/Executives/NewsItems/RFPs/Reports，claims 要走「自定义报告」且报告名需客户经理提供。claims 是否以结构化明细行返回、字段有哪些，需持有效凭证实测。",
+        "Definitive HCPs 实体的字段结构未知：公开文档页未列，swagger spec 因 500 不可读。需持 Bearer token 调 /v5/odata-v4/HCPs?$top=1 实测字段名。",
+        "三家均未公开任何记录数/行数：只有营销口径「billions of claims」「330+ million patients」「9K+ hospitals / 3M+ providers / 130K+ physician groups」。真实表行数、时间跨度、payer 覆盖比例需实测或索取数据字典。",
+        "Definitive 在 Snowflake Marketplace 的 Atlas 样本列表页（GZT1Z13RCC9）为懒加载且需登录，页面 200 但内容全为 Loading 占位，未取得行数与字段清单，需 Snowflake 账号实测。",
+        "AcuityMD 的 claims 上游具体是哪几家聚合商（官网只说 CMS + medical claims aggregators）：未披露，需查其数据许可协议或直接询问。",
+        "MedScout MCP 返回的是字段级结构化记录还是自然语言摘要：帮助文档只给 prompt 示例，未给 schema。需用两周试用登录后实测工具返回结构。",
+        "MedScout openpayments.healthcare 的 /api/ 数据规模与刷新滞后：robots 禁止自动化，仅单次探到 /api/years = [2025,2024,2023,2022]，其余 17 条路径未逐个请求（合规原因），记录数与更新频率需人工授权后再测。",
+        "data.cms.gov 上 Medicare Physician & Other Practitioners 的 API 具体端点与 ~9.78M 行量级来自第三方 MCP 描述，我未逐个验证其 datastore 端点（data-api/v1/dataset 试探返回 404）；需按其 API 指南取 datasetId 后实测。",
+        "Definitive v5 API 的配额/限流策略（QPS、日调用上限）文档未提及，需实测或索取 SLA。"
+      ]
+    },
+    {
+      "id": "cmp-financial",
+      "phase": "批1-商业情报平台货架",
+      "title": "S&P Capital IQ / PitchBook（财务与交易）",
+      "summary": "已实测两家：**都是 contract-gated 付费，无公开 API、无自助注册**；但端点真实存在且契约干净（PitchBook 返回 401 JSON，S&P token 端点 405 Allow:POST / form-encoded 401）。\n\n**对 MedRadar 的可执行结论：不要自建财务层，也不要买整层——买\"窄口\"。** 理由：① 器械行业分类本身没有独占性，GICS `351010 / 35101010`（Health Care Equipment & Supplies / Health Care Equipment）方法论公开、免费可查；真正收费的是**公司到分类的映射**（assignment），而这层你只需要覆盖自己的 watchlist。② PitchBook 的器械专属分类（5 个 segment / 41 个 category / 1,100+ 公司）价值不在\"分类\"而在 analyst 打的 `Emerging Spaces`（原文：defined by PB analysts）。③ 最关键发现：它的 schema 里 `lastFinancingSizeStatus` / `lastFinancingValuationStatus` 字面标注 `Estimated` vs `Actual` —— 平台自己承认哪条数字是估的，这就是人工层的准确位置。④ PitchBook API 的字段集**按合同定制**（第三方文档原文：common endpoints depend on your specific contract），意味着\"买 API\"不等于\"拿到固定数据面\"。\n\n因此建议：自建公开层（openFDA 6 源 + CMS + ClinicalTrials + GICS 映射 + 公司实体对齐），交易/融资数据按需租用（per-company deals/financings 拉 watchlist，不做全量 feed）。真正空白在**器械 SKU/UDI 与公司实体的对齐**，不在财务。",
+      "fact_count": 22,
+      "endpoint_count": 6,
+      "gaps": [
+        "**PitchBook 单次调用价格 / credit 单价：未核实。** 已知 API 是按 credit 计费且按合同开通（生态文档提到 'Each request incurs a credit cost'、'PitchBook charges that account'、bulk POST 同样消耗 credit），但公开渠道拿不到 credit 单价与套餐门槛，**需实测**（向 PitchBook 索取报价单）。",
+        "**Capital IQ 与 PitchBook 的准确年费：未核实。** 两家均无公开报价页；$13k–$30k/用户/年 仅来自第三方聚合站（multiples.vc / tamarly），非官方，**需实测**报价。",
+        "**PitchBook medtech 的 41 个 category 具体编码与名称：未核实。** 只确认了 5 个 segment 名称与'41 categories/1,100+ 公司'的规模，具体 category 清单在登录后的 lookup table 里，**需实测**（有 API key 后调 /companies/{pbId}/industries 或码表接口）。",
+        "**PitchBook API 是否支持按 medtech vertical 直接过滤并批量拉取全量器械公司：未核实。** spec 有 verticals/emergingSpaces 参数，但可用的具体 vertical code、单次返回上限、是否允许全量遍历，**需实测**。",
+        "**Capital IQ 是否有器械级（SKU/产品线）交易颗粒度：未核实。** 只确认到 1,000+ 个交易数据项与行业级分类；能否按具体器械细分筛交易，**需实测**。",
+        "**Capital IQ 数据路径的正确形态：待定。** 社区 OpenAPI 给的 /v1/mdcs/priceGroup 实测 404，真实的 fundamentals / transactions 路径需从官方开发者文档或授权账号取得，**需实测**。",
+        "**两家对'再分发/衍生数据'的许可边界：未核实。** 只见 license=Commercial 与 terms-of-use 链接；能否把交易数据加工成 MedRadar 的情报产品对外提供、是否需单独授权，**需实测**（法务/合同条款）。",
+        "**PitchBook Emerging Spaces 的更新频率与人工投入规模：未核实。** 只知其'由 PB analysts 定义且动态变化'，不知道多少人维护、多久更新一次——这决定人工层是否可复制。**需实测**。",
+        "**GICS 公司级 assignment 的授权成本：未核实。** GICS 编码方法论公开免费，但把具体公司映射到 351010/35101010 属 MSCI 许可数据，价格**需实测**。"
+      ]
+    },
+    {
+      "id": "cmp-patsnap",
+      "phase": "批1-商业情报平台货架",
+      "title": "PatSnap Synapse / Zyme",
+      "summary": "PatSnap 审计结论（全部经实测核实，非记忆）：\\n\\n【1】最大发现——\"PatSnap Synapse\" 不是专利情报产品。patsnap.com/products/synapse/ 页面标题实测为 \"Synapse | Biopharma Intelligence & Drug Discovery Platform\"；OpenAPI spec 里 60 个 /synapse/* 端点全部是药物域（drug/target/disease/antibody/clinical-trial/mechanism-action/XDC/drug-deal/organization pipeline），无一条器械。把它当器械竞品是误判。\\n\\n【2】\"专利→工程设计约束\"翻译：确实存在，但只在材料域 + AI 层。确定性层是 POST /material/patent-pum，从专利正文抽 raw_property / raw_unit / measurement_min / measurement_max / section，并给归一化 ppi_id / lower_bound / upper_bound / display_name_en / print_friendly_units（即\"性能参数+数值区间+单位\"的结构化抽取，真·加工层）。AI 层 /ai/find-solution/step1..5/v3 输出 problem_statement.technical_constraints[{category,description,impact_level}]、performance_requirements[{parameter,unit,target_value,tolerance}]、success_criteria[{metric,target,priority,validation_method}]。注意：AI 层非确定性，材料域 PUM 不覆盖器械。\\n\\n【3】器械行业解决方案：REST 层为零。对 268 条路径做 device/fda/510k/mdr/ivdr/iso13485/implant/surgical/medtech/medical 精确匹配 → 全部 0 命中。营销层只有 3 个行业 solution（/solutions/ip、/solutions/life-science、/solutions/financial-service），/solutions/medtech 与 /solutions/medical-device 实测 404。但 MCP 市场藏着一个 Beta 的 medical-device-search（id=165，6 工具，20,353 用户，7 家企业），覆盖 US/EU/CN/AU/SG/HK/JP/UK 八法域，分类体系含 FDA_PRODUCT_CODE / GMDN / EMDN / EU_RISK_CLASS / EU_SPECIAL_DEVICE_TYPE / TGA_DEVICE_CLASS。致命短板：organization_patents 只回 PN_STR + 内部 _id（无标题/摘要/权利要求），且官方明写\"Company-linked patents are not device-level patents\"。器械数据有、但是 Beta、无 REST、专利只到公司级。\\n\\n【4】专利价值评估护城河不成立。权重、阈值、评分规则在 /devportal/data-reference/patent-evaluation 完整公开（Technical Innovation 15% / Patentability 17% / Commercialization 58% / Self-assessment 10%，合计 100%，连\"相似度≥95% 且 0≤Y<5 个相似专利得 10 分\"这种分档都列了）。这是可复现的加权评分表，不是黑箱。\\n\\n【5】价格（公开页实测，非传闻）：Starter 免费 10,000 credits/90 天、单 key、basic 限速；Pro From $100、60 QPM；Enterprise Custom、120+ QPM、SSO/SAML/JWT。1 credit = 1 美分，$100 = 10,000 credits，按条扣费（不同 API 每次调用扣不同 credits），无订阅制。\\n\\n【6】数据覆盖：170+ patent offices/authorities、210M+ 专利与科技文献、30+ 年历史、110,000+ 上市公司。但 /data-coverage 的逐局明细是客户端渲染，SSR HTML 里表头全为 \"(0)\" → 具体每局记录数未核实。\\n\\n【对 MedRadar 的可执行结论】(a) Synapse 不在你的赛道，别对标它；(b) 真正相关的是 medical-device-search MCP，Beta 且有 device-level patent 缺口——这是你的位置；(c) 估值模型权重全公开，你那层评分可以直接自建等价物，不存在购买必要；(d) Patsnap 唯一真正\"加工\"出来的结构化资产是 PUM（专利正文→性能参数+数值区间+单位+归一化），而它只做材料，器械域 PUM 是空白；(e) 它们卖的不是分析，是 170+ 局的获取与清洗成本——这一层你自建很贵，这也是它们价格能站住的原因。",
+      "fact_count": 22,
+      "endpoint_count": 9,
+      "gaps": [
+        "【未核实】/data-coverage 的逐专利局明细（每个局的 bibliography/fulltext/PDF/legal events/file wrapper/license/litigation 记录数）。实测该表为客户端渲染：SSR HTML 内表头计数全部渲染为 '(0)'，真实数字需带 JS 渲染或找到其底层数据 API。因此'170+' 只有总量口径，无法给出每局记录数分布。",
+        "【未核实·需实测】器械 MCP 的实际记录量（每法域多少条 device records）、调用计费（1 次 device_search 扣多少 credits）、以及 QPM 限速。需 PATSNAP_API_KEY 实测；目前只有 401 证明端点存在且鉴权生效。",
+        "【未核实】Enterprise 档实际报价与 bulk data export（离线数据包）定价。公开页仅写 'Custom'。第三方（apis.io）称 Pro 级 $200/month 分 10k/20k/40k/60k credits 四档，未经官方页确认，不采信。",
+        "【未核实】器械 MCP 是否也存在于 REST 层（可能在未写入 openapi.json 的 alpha 端点）。已确认 268 条公开 path 里器械为 0，但 openapi.json 是否为全量契约未验证。",
+        "【未核实】/insights/portfolio-value 与 /patent-valuation-data/patent_valuation 的口径差异与是否同源。两者都涉及专利价值，但未见文档说明关系。",
+        "【未核实】organization_patents 的 ONE_ID_NOT_AVAILABLE 发生率（多少器械企业无法映射到专利身份）。官方承认存在该错误码，但未公布覆盖率。这直接决定器械级专利关联的可建性，需实测。",
+        "【未核实】Patsnap 的器械数据上游来源（是自采各国监管库还是转载第三方）。器械 MCP 只说 source_device_id 与 source_updated_at，未披露 source 名称；若上游即各国公开监管库（FDA 510(k)/GUDID、EUDAMED、NMPA 等），则这一层同样不具独占性。需实测 device_get 返回验证 source 字段。",
+        "【方法论警告】器械相关能力只在 MCP marketplace 出现、REST spec 为 0、营销 solutions 页为 0。任何'Patsnap 有器械 REST API'的说法都不成立；同时任何'Patsnap 完全没有器械数据'的说法也不成立——它在 MCP 层有 Beta 产品。两个方向的结论都必须落到这个精确位置。"
+      ]
+    },
+    {
+      "id": "cmp-greyb",
+      "phase": "批1-商业情报平台货架",
+      "title": "GreyB / Dolcera（专利+技术侦察服务）",
+      "summary": "审计结论（基于 14 次真实请求，非记忆）：\n\n**1. 这两家卖的不是数据，是「判断 + 成品文档」。**\nGreyB 与 Dolcera 的服务目录里没有任何一个是以「数据访问」计价的产品：GreyB 是五大服务线（专利检索/景观/货币化/研发咨询/合规监测），Dolcera 是 11 项服务（invention evaluation、prior art、SEP claim charts、EoU claim charts、non-infringement、portfolio mining、acquisition diligence、hidden-gem、landscapes、white-space、trend signals）。Dolcera 在 how-we-work 页把这点写到明面上：「买方拿到的是 decision-ready work product，不是软件」。\n\n**2. 定价结构：服务不公开、软件公开 —— 而公开的恰好是「非判断」那层。**\n· GreyB 的 /pricing/ 实测返回 **HTTP 404**，全站无报价页 → 项目制、需询价、**价格未核实**。\n· Dolcera 服务侧同样无公开价（EoU 页仅一句 template 文案）。\n· 但它把「软件化」的那半单独拿出来公开报价：IP Author 官网实测 **Drafting $4,800/yr、OA Response $4,800/yr、两者 Bundle $9,590/yr、14 天免费试用**（ipauthor.com/pricing，HTTP 200）。\n· 结论：**可公开标价的只有工具层；判断层永远按 matter 报价**。第三方站点（crozdesk／日文 PDF）流传的 $499/mo、$1,499/mo 与官网年费口径冲突，以官网为准。\n\n**3. claim chart 是核心工艺，且已被拆成可复核的三元结构。**\nGreyB 的 Wi-Fi 6 案例：把每条 claim 拆成独立 limitation，逐条在标准全文（IEEE 802.11ax）中定位，每个 limitation 产出「标准原文 + 解释 + 披露评级 Explicit / Implicit / Missing」，据此判定 5 件中 4 件非必要。\nDolcera 的 EoU chart = 「patent-to-product mapping」，用于主张与诉讼。\n**design-around 不是一个产品线**：GreyB 官网无 design around 命名服务（WP 全文检索 design around 返回的是无关的技术侦察访谈稿），近似能力散落在 Claim Amendment Study / Reverse Engineering / Non-Infringement Analysis 三处 —— 即 design-around 是 claim chart 的副产品，不被单独售卖。\n\n**4. 人机比例：只有 Dolcera 给了可引用的口径。**\npod = **1 名 domain expert : 1 个 agent（Lexa）**，处理一个 matter，三档交互 Agree / Elaborate / Disagree；bulk 模式用 triage 分流（确定阴性 / 确定阳性 / 模糊中段），**专家时间只花在模糊中段**。single-matter 模式出单件可诉交付物，bulk 模式跨数千件专利编排。GreyB 无量化披露，仅有「AI SEP Tool」这一处 AI 化证据。\n\n**5. 对 MedRadar 最关键的实测发现：景观分析层已完全免费可自建。**\n`patents.google.com/xhr/query` 是无需 key 的 JSON 接口，实测 q=catheter&country=US → HTTP 200，`total_num_results=123797`、`total_num_pages=99`，单条即含 publication_number / assignee / grant_date / family_metadata.country_status，且 `summary` 层**直接返回 assignee / inventor / cpc 的按年段频次桶**（如 A61M=785、B61B=622 同期分布），外加 `landscape.related_landscapes`。也就是说 GreyB/Dolcera 卖的「patent landscape / white space」的**数据与聚合口径，一次免费请求即可复现**。\n反证另一侧：旧 PatentsView API 实测**跨域重定向到 data.uspto.gov**（已迁移），而 data.uspto.gov 返回 HTTP 200 但服务端正文为空（JS SPA）—— 免费不等于好拿，工程细节仍值钱。\n\n**6. 一个反面教材：Dolcera 的公开样例库已经烂掉。**\n旧 MediaWiki（dolcera.com/wiki/api.php）可访问，但 allpages 前 50 条全是外挂/赌博 SEO 垃圾（pageid 5415–5481），搜索 \"claim chart\" **返回 0 条**。任何拿旧 wiki 样例当「现行方法论证据」的做法都是错的。另外 lexa.dolcera.com 实测抓取失败，仅在 how-we-work 页以 UI mock 文本出现，平台可访问性**未核实**。\n\n**可执行结论（三层定价带）**\n· Layer 0 原始专利/公开文献：**免费、零护城河**（Google Patents JSON 免费拿 1.2 亿级检索面）。别在这里投入建库成本当卖点。\n· Layer 1 聚合分析（landscape / assignee-CPC 趋势 / white space）：**已被单次免费调用商品化**，只能作为功能，不能作为产品。\n· Layer 2 claim element → 产品证据 的映射（含 △ 需佐证标注）：**这是唯一在卖的判断层**，按 matter 计价、价格不公开。IP Author 已把它软件化为 claim chart 矩阵（✓ / △）+ examiner dossier（allowance rate、面谈前后成功率）+ 184,000,000 publications，$4,800–9,590/yr 起。\n→ **MedRadar 的定位：不要卖 patent landscape（已是commodity），不要卖原始数据（无独占）。要做的是目前两家都没做的 join —— 把器械监管身份（510(k)/PMA/product code/UDI）与专利族、以及 openFDA 的 MAUDE/召回/IFU 文本缝成一张实体图**，在这张图上产出「器械级 claim chart 候选 + 佐证缺口」。他们手上有专利没有器械生命周期数据；你有 375,378 条事件但没有专利映射 —— 这个缝是空白，且两侧原料都公开、难在装配而不在获取。",
+      "fact_count": 21,
+      "endpoint_count": 3,
+      "gaps": [
+        "GreyB 的服务真实报价（无效检索、FTO、claim chart 每件多少钱）：官网 /pricing/ 实测 404，无任何公开价格。需实测：走询价流程或索取 SOW 模板才能拿到区间。当前结论只能写「项目制、价格未核实」。",
+        "Dolcera 的 EoU / SEP claim chart 每件报价：服务页无价格、无样例。需实测：其 /contact 表单转化后的 SOW 口径，或第三方采购记录。",
+        "两家是否有机器可读的 claim chart 交付格式（CSV/JSON/结构化表）还是仅 Word/PDF：Dolcera 旧 wiki 样例库已废弃（搜索 0 命中），GreyB 无公开样例。需实测：索取样例交付物。这直接决定 MedRadar 能否把 claim chart 当数据资产而非文档。",
+        "lexa.dolcera.com 是否真的对外可用：实测抓取失败，仅作为 UI mock 文本出现在 how-we-work 页。需实测（换网络环境/登录态重试）。若不可用，则 Dolcera 的 agentic 能力对外只体现为 IP Author。",
+        "mcp.ipauthor.com 的具体 MCP 工具清单、参数 schema、配额与单价：只拿到落地页营销描述，未拿到 /docs 的协议细节与调用限额。需实测：注册 14 天试用后连接 MCP client 抓 tools/list。",
+        "「184,000,000 publications」这一数字的口径与可验证性：属营销宣称，未说明是否含全文、是否去重、是否含 NPL。需实测。",
+        "GreyB 除 SEP 外是否在 invalidity / FTO 上也用 AI：仅有 AI SEP Tool 与 Wi-Fi 6 案例一处证据，其余服务未披露自动化程度。需实测。",
+        "GreyB 的人机比例（分析师/件、工时）：完全无公开披露，仅 Dolcera 给出 pod=1 expert : 1 agent 的口径。GreyB 侧只能标未知。",
+        "两家在医疗器械领域的实际项目样本（器械级 claim chart、510(k)/PMA 与专利的映射）：GreyB 有 medical-devices 行业页但入口仍是专利侧；Dolcera 无器械专属案例。是否有该能力：需实测。",
+        "商业平台宣称的专利族/法律状态数据（是否含 INPADOC 法律状态、诉讼 docket、PTAB 记录）：未见任何公开字段清单。需实测。",
+        "报价口径冲突（$499/mo、$1,499/mo vs 官网 $4,800/yr、$9,590/yr）的成因：是否曾有过月付档或第三方代售。需实测。",
+        "GreyB 与 Dolcera 是否互为分包/白标关系：两家同在印度（Gurugram/Hyderabad）、服务面高度重合，但无公开证据。需实测。"
+      ]
+    },
+    {
+      "id": "cmp-regdesk",
+      "phase": "批1-商业情报平台货架",
+      "title": "RegDesk / Obsidian / RAPS（监管情报）",
+      "summary": "## 结论先行（给决策用）\n\n**这五家不是同一类东西**：Obsidian = 监管情报\"数据+服务\"公司（唯一公开报价的）；RegDesk = 器械 RIM 平台（情报是模块，不公开报价）；RAPS Regulatory Focus = 记者式行业媒体（会员制，卖人写的报道）；Emergo/UL RAMS = 咨询公司附带的工具包（免费注册，高级模块订阅，不公开价）；NAMSA = CRO/检测实验室（公开站点上没有监管情报数据产品，只有双月邮件简报）。\n\n**Obsidian 三条宣称逐条核实结果**（obsidianri.com，Switzerland, Lausanne, Obsidian Technologies Sarl，创始人 Richard Kanda Bile）：\n1. **\"official-source monitoring\" 成立但不是独占**——它自己写明\"6.7k+ official sources worldwide\"，MCP 文档写\"850+ official, tier-0 sources across 50+ jurisdictions\"。原料 100% 是各国官方原文（EU OJ / FDA / legislation.gov.uk 等），**任何人可抓**；它卖的是\"读+筛+判定\"。\n2. **\"published pricing\" 成立且罕见**——英文定价页真在：Regulatory Mapping 起价 $16,000；Managed Monitoring **$2,900/月**（3 个月试点 $9,000）；Impact Study $6,500/法规；平台版 Regulatory Monitoring **$3,000/年起**、Regulatory Database $6,000/年起；Full Platform 面议。**计价单位是\"1 jurisdiction × 1 industry\"**——每多一个辖区/行业就再加一档，这是它最赚钱的地方。\n3. **\"audit-traceable\" 成立且是它真正的护城河**——链式日志（每行带前一行的指纹）、电子签名（重认证+UTC 时间戳+签名含义+版本指纹）、可导出给审计师。演示截图示例\"2026-01-01 至 10-15，1,284 条链式事件\"。\n4. **监控频率**：入库\"Every day reads your authorities' official sources\"、案例里\"Same day\"完成校验；交付物 Managed Monitoring 是**每周一份 2 页 note**（示例：80 条变更读入 → 26 条影响客户 → 47 条带理由排除）；首份 note 10 个工作日。\n\n**唯一实测到的接口**：`https://mcp.obsidianri.com/mcp` 真实存活，GET/POST 均返回 **HTTP 401**，头 `WWW-Authenticate: Bearer resource_metadata=\"https://mcp.obsidianri.com/.well-known/oauth-protected-resource\"`，体 `{\"error\":\"unauthorized\",\"error_description\":\"Authentication required. Connect your Obsidian account.\"}`，`Server: cloudflare`。即：**OAuth 登录门，无公有数据出口**，拿不到字段与记录数（需注册实测）。\n\n## 商业平台到底卖什么（三层，只有第三层别人做不了）\n- **第一层｜原文聚合**：公开可自建。openFDA 已实测可用（`api.fda.gov/device/event.json`、`device/enforcement.json` 均 200，无需 key），加上 EUR-Lex/FDA guidance/MHRA 页面——Obsidian 的\"official-source monitoring\"原料全在这里，工程问题不是数据资产问题。\n- **第二层｜人工判读**：Obsidian 的 note（读 80 条→留 26 条→排除 47 条并给理由）就是人工+AI 判读，按 $2,900/月卖；Emergo 的 process charts/fees/timelines 也是人工写的知识库；RAPS 卖的是记者的\"解释\"，不是数据。\n- **第三层｜应变映射 + 留痕签核**：把\"某条变更\"落到\"我哪个实体/哪个产品/哪一天起必须做什么\"，并给出可导出、可验签、可审计的证据链。**数据全公开，但这一层客户仍然付钱**——因为审计要的是流程可追溯，不是原始数据。\n\n## 哪一层是真正的空白（MedRadar 可攻）\n- 五家全部是**\"法规/要求\"向前推（forward）**：新规 → 影响谁。**没人做\"事件向后追（reverse）\"**：一次 recall / MDR 事件 → 命中哪些同类产品、同厂商、同 510(k)/PMA 号、同公告机构、同材料/组件——而这恰好是 MedRadar 手上 375,378 条 openFDA 事件能直接算出来的层。这是公开数据但**无人产品化**的一层，也是\"独占性\"唯一可能出现的地方（独占性来自索引与关系，不来自数据）。\n- 覆盖面空白：Obsidian 的辖区口径是 EU/US/UK/CH/APAC 泛化，RegDesk 的 120 市场偏\"申报要求\"，两者都**没做\"中文/亚太逐国结构化字段 + 与欧美事件库打通\"**。\n- 定价锚：Obsidian 公开价签给了我们定价参照系（$3,000/年起 单辖区单行业；$2,900/月 managed）。**不要在\"监管动态监控\"正面打价格战**，它已经把价格透明化并将 MCP 免费层（宣称 100 次/月）做成了漏斗。\n\n## 可执行结论（五条）\n1. **不做**：通用\"新规监控 + 周报\"。已被 $3k/年（自助）到 $2.9k/月（代做）锚死，且原料公开。\n2. **拿来做底座**：openFDA 六源 + 官方原文抓取，作为 MedRadar 的原料层，明确对外说\"数据公开\"，把价值叙事挪到加工层。\n3. **主攻**：事件→产品的**反向影响索引**（recall/MDR/召回 → 同类产品、同厂商、同 510(k)、同材料）+ 可导出证据链。这是 Obsidian 明确没做、RegDesk 也没做的一层。\n4. **定价**：以 Obsidian 价签为参照做\"按辖区/按产品线\"的门槛设计，而不是按 seat。\n5. **必须实测补三件事**：Obsidian MCP 免费层真实字段/记录数（注册后打 100 次）；RegDesk 实际报价；RAMS premium 报价与 Regulatory Watch 频率。",
+      "fact_count": 27,
+      "endpoint_count": 3,
+      "gaps": [
+        "Obsidian 的监管机构清单与每辖区机构数：未公开。现存三个口径（定价页 6.7k+ sources / MCP 文档 850+ tier-0 sources / 50+ jurisdictions）互相对不上，且没有 regulator-by-regulator 名单。需注册账号后实测其 jurisdiction/framework 枚举值才能核对。",
+        "Obsidian MCP 免费层（宣称 100 次/月）的真实字段名、返回记录数、是否含全文与生效日期：当前 401，无法匿名验证。需实测（注册 OAuth 后打一次 regulatory_search）。",
+        "Obsidian 方法论页（obsidianri.com/methodology）已 301 回首页，\"No intermediaries / exclusively official sources\" 只剩搜索引擎快照，不能作主源引用。其\"每行经 AI 校验\"的具体校验规则无法核实。",
+        "Obsidian 'audit-traceable' 的技术实现（哈希链算法、是否满足 21 CFR Part 11 / Annex 11 电子签名要求）：页面上无合规声明或证书，仅描述性文案。需实测/问询。",
+        "RegDesk 价格完全未核实（无公开价页，/pricing 为 404）。其 'real-time / daily alerts' 无 SLA 定义，实际抓取频率、来源机构数量、是否含各国费用与时限字段均需销售确认。",
+        "RegDesk 是否提供 API / 导出：站点无开发者文档或 API 路径可探，未找到任何证据，故未列入 endpoints。",
+        "Emergo RAMS premium（Registration Tracker / Regulatory Updates / Regulatory Intelligence）的价格未核实；Regulatory Watch 的实际推送频率与来源机构数量未公开。第三方站点给出的 ~$4,100/月 属估算，非官方报价。",
+        "RAPS Regulatory Focus 的付费墙边界未实测：落地页无 paywall 标记、文章列表为 JS 渲染未取到文章 URL；RF Today 订阅页渲染为登录表单。哪部分是免费全文、哪部分仅会员可见，需登录后实测。",
+        "NAMSA 是否存在未公开的监管情报数据库/订阅产品：公开站点只展示 CRO/检测/咨询与双月简报，无证据；第三方旧闻（clinivation WorldView 被 NAMSA 采用）为历史信息，非现产品。需销售确认。",
+        "五家均未公开可用条目数/记录数，无法与 MedRadar 的 375,378 条做规模对比；Obsidian 只给\"来源数\"而非\"条目数\"，属刻意模糊。这一项对所有竞品都需实测。",
+        "Obsidian 的 'Try for free' 真实试用范围（试用哪个模块、是否含 Database 与 Audit Trail）未核实，注册前无法判断。"
+      ]
+    },
+    {
+      "id": "cmp-ai-newcomers",
+      "phase": "批1-商业情报平台货架",
+      "title": "NavaX / SyneticX / Intuceo（AI 情报新玩家）",
+      "summary": "核实了 NavaX/SyneticX/Intuceo 三家。核心结论：三者均不持有医疗器械事件层数据，与 MedRadar 不存在数据层竞争。NavaX 是 ArisGlobal 的 AI 引擎（LifeSphere Safety/Regulatory 的 LLM/RAG+Agentic 层，新增 XDI 联邦语义层，正被 Dassault 以约 $1.8B+$200M 对赌收购），卖的是受监管工作流与治理，不是数据。SyneticX 是 SyneticX Ltd 两人初创（2 位联合创始人+1 位前 FDA 律师顾问，ToS 留 gmail，sitemap 仅 15 URL，/competitive 404，任意路径返回同一 168,012 字节 SPA 外壳、无真实 API），页面标题写 \"for MedTech & Pharma\" 但正文器械词 maude/510(k)/recall/pma/de novo/medical device 全部命中 0，数据源 100% 药品侧。Intuceo 自述为 iCube Consultancy Services Inc 的品牌，是咨询服务公司；\"5M+ documents\" 指给客户内部 SharePoint/LIMS/PLM 搭的检索工程，非自有语料。三家实体解析均无方法论：SyneticX 仅一行 \"Entity resolution, deduplication, quality assurance\"；NavaX 是联邦语义对齐+confidence scoring，非实体消解；Intuceo 两篇技术长文中 vector 仅 2 次、embedding 1 次、ontology/neo4j/weaviate/elastic/rerank 全为 0，零栈披露。真正空白在器械侧实体解析图（UDI-DI 为主键，串联 510(k)/PMA/De Novo 申请人与 establishment/owner-operator，再接 recall↔MAUDE↔product code），以及可审计溯源字段化。合作优于竞争：ArisGlobal 有 300+ 客户含器械企业但无器械事件情报，Intuceo 可作受监管私有化交付渠道。三家均无公开报价页。",
+      "fact_count": 27,
+      "endpoint_count": 12,
+      "gaps": [
+        "三家的实体解析实现均未公开：SyneticX 只有一行营销文案，NavaX 是联邦语义对齐+confidence scoring（非实体消解），Intuceo 零栈披露。要判断真实能力，需实测 SyneticX 的 Try Leaf AI（观察返回是否给稳定实体 ID）与另两家 demo。",
+        "SyneticX 声称『trained on thousands of complete response letters』——FDA 不以结构化数据集批量发布 CRL（多为逐件 PDF），该语料是否真实存在及规模需实测，这是它唯一可能构成独占的资产。",
+        "Intuceo 的『5M+ documents』『90% search time reduction』『$6M productivity savings』均为客户私有部署指标，外部不可验证，需实测或索取客户参考。",
+        "NavaX 的模型供应商、向量库/检索实现、以及『up to 50% efficiency gains』的具体口径未披露；AI Trust Center FAQ 为 PDF 且脚本访问 403，未能解析正文。",
+        "三家均无公开报价页（syneticx /pricing 为 SPA 兜底、intuceo /pricing/ 404、ArisGlobal 仅 Book a Demo），价格全部未核实，需销售询价。",
+        "SyneticX 的 Leaf AI 是否为可用的在线产品（vs 静态演示页）未验证：其 /api/ 与任意路径均返回同一 168,012 字节兜底页，无法确认后端是否存在。",
+        "Intuceo 实际检索栈（向量库/embedding 模型/rerank/本体）完全未披露，其 Accelators 页(iPDLC/iTMS/Modular AI)与 Intuceo-Ix 的架构说明因页面 accordion 折叠+共享浏览器会话被干扰，未能完整取得。",
+        "UDI 词频统计中 6 次命中系 'audit' 子串误报，已在事实中标注；若需精确判定器械覆盖，应对 SyneticX 做全站 (含 blog/regulatory 子页) 而非单页扫描。",
+        "本次浏览器会话与其它 agent 共享（多次出现 reg-int.com、lens.org 等无关页面劫持导航），所有页面正文均通过单次原子 navigate+evaluate 取得，未依赖跨调用的页面状态；如需复查建议独立浏览器实例。"
+      ]
+    },
+    {
+      "id": "cmp-free-alternatives",
+      "phase": "批1-商业情报平台货架",
+      "title": "免费/开源替代（Reg-Int、openFDA 生态、行业媒体）",
+      "summary": "## 一句话结论\nFDA 器械数据的「采集→检索→聚合→AI 取用」四层已被免费化到**没有商业空间**：openFDA 免 key 直连 7 个 device 端点是真（MDR 事件实测 26,849,547 条，不是 37 万），而且**已经有一个免费、免 token、带 MCP/RSS 的前端把这块做完了**（Innolitics）。监管情报内容层也正在被 Reg-Int 免费送（其官方口径：「绝大部分内容与工具改为免费」）。行业媒体层虽然免费，但对机器访问敌意最强（MassDevice 直接 Cloudflare 403，MDDI 在 robots 里点名封 GPTBot/ClaudeBot）。\n\n**MedRadar 不该投的 4 件事**：① 自己做 FDA 数据 ETL/清洗当护城河；② 做「召回/510(k)/MAUDE 搜索界面」；③ 把新闻聚合当核心价值；④ 对外发布 FDA 公开文档的摘要/结构化当主打功能。\n**真正空白的 3 个位置**：跨辖区归一化（欧/日/中/加——本次未找到任何免费 API，见 gaps）、FEI/owner_operator/美国代理人这条**主体链路**（openFDA 已给字段，但没人做成可比对的实体层）、把 510(k)→PMA→召回→MDR→警告信按**单个器械（UDI-DI/型号）**串成时间线的**解释层**。\n\n## 关键数量校正（会直接影响判断）\n上下文说「openFDA 6 个源共 375,378 条事件」，实测 device/event 单源就是 **26,849,547** 条且 `last_updated` 2026-11-11——37.5 万只占 1.4%。也就是说：不是「我们有数据所以有价值」，而是**我们的切片比免费源还小两个数量级**。若这 37.5 万是唯一资产，加数据不是解法，改口径才是。\n\n## 免费层已经吃掉了哪些能力（逐层判定）\n1. **原始数据层：全灭。** 9 个 device 端点全 200 免 key；另有整季 bulk zip（每片 95,000 条、52–81 MB）可无人值守重建全史，`export_date` 2026-11-20。\n2. **分析/聚合层：也灭了。** `count=event_type.exact` 免 key 直出 Malfunction 16,796,984 / Injury 9,656,791 / Death 232,397——「做个统计看板」不再构成产品。\n3. **产品化/前端层：被 Innolitics 占了。** 免费、无 token 的 corpus 批量导出、predicate-graph、guidance、warning-letters、recalls，加 RSS + `llms.txt` + `/mcp`，还做了 510(k) 文档 OCR。它抢的正是 MedRadar 想做的「人可读的监管视图」，且对 AI agent 更友好。\n4. **监管情报解读层：正在被免费化。** Reg-Int 宣布大部分内容/工具免费，覆盖 clearance/recall/adverse event/classification/协调标准/指南，100+ 官方源。\n5. **新闻层：免费但难抓。** 免费可读，但 MassDevice 403、MDDI 明确禁 AI 爬虫——这里没有可防守的资产，只有合规摩擦。\n\n## MedRadar 的可执行动作\n- 停掉任何「再接入更多 openFDA 源」的排期，改为 1 周内做 **bulk 全量落地 + 实体层（firm/FEI/owner_operator/us_agent）+ 单器械时间线**，这是免费层没做的部分。\n- 把「搜索」降级为入口而非产品；产品口径改成「某个器械/某条 predicate 链上发生了什么变化，为什么，证据在哪一页」。\n- 情报内容不要拼覆盖广度（拼不过 Reg-Int 免费），只做**美国器械×跨境合规的判定**这一刀。\n- 新闻只做**触发信号**（FDA 动作→影响哪些已上市器械），不做内容分发；避免依赖 AI 爬取被 robots 挡住的源。",
+      "fact_count": 24,
+      "endpoint_count": 11,
+      "gaps": [
+        "Reg-Int 免费范围与真实能力深度：站点为纯 SPA，HTML 无正文，/request-access 后是否要人工审核、免费层具体给到哪些jurisdiction与工具，均需实测（建议用真实浏览器渲染 + 注册一个账号抓一次搜索结果条数与字段）",
+        "Reg-Int 是否存在可编程接口（API/MCP/导出）：sitemap 与页面均无暴露，未发现任何 public endpoint —— 若无 API，它对 MedRadar 的威胁止于「人工查询替代」，需实测确认",
+        "Innolitics 的语义检索 credits 单价与额度上限：llms.txt 只说 semantic 默认 true 且「uses credits」，无公开报价页 —— 价格未核实，需实测或查其 pricing 页",
+        "Innolitics /api/v1/search、/api/v1/corpus、/api/v1/predicate-graph、/api/guidance/search 仅见其官方文档描述，本次未逐个发请求验证响应结构与限流 —— 需实测（尤其 corpus 批量导出的行数上限与 413 阈值）",
+        "Fierce Medtech（fiercebiotech.com/medtech）是否计费墙/注册墙：简单 fetch 得到 200 空正文，无法区分「JS 渲染」与「付费墙」—— 需用浏览器实测读到第 4 篇之后是否被拦",
+        "MDDI（mddionline.com）全文是否需注册：robots 允通用抓取且对 AI 爬虫整体封禁，但正文可读性未实测 —— 需实测读取一篇长文的完整段落数",
+        "MassDevice：机房 IP 被 Cloudflare 403 硬拦，但住宅 IP/浏览器是否可正常读全文未验证 —— 需实测；若住宅可读，则其「禁抓」只是弱防线而非合规红线",
+        "AdvaMed 会员专属内容（auth-sitemap.xml 对应部分，如资源库/白皮书/工作组文件）的规模与独占价值 —— 需实测登录态",
+        "MedRadar「openFDA 6 源 375,378 条事件」的口径未明：与 device/event 单源 26.85M 相差约 70 倍，需内部确认这 37.5 万是「某时间窗」还是「某产品码子集」，否则后续排期基线是错的",
+        "美国以外辖区的免费可编程数据源本次未覆盖（EU EUDAMED、Health Canada MDALL、TGA ARTG、日本 PMDA、中国 NMPA）—— 这些恰好是「免费层还没打进来」的候选空白，但需逐个实测是否有公开 API 与更新频率，不能凭印象写入",
+        "所有涉猎产品的价格（Reg-Int 付费工具、Innolitics credits、Fierce/MDDI 订阅、AdvaMed 会员）均未核实，禁止对外引用任何数字"
+      ]
+    },
+    {
+      "id": "layer-2-clinical",
+      "phase": "批2-8层情报源清单",
+      "title": "L2 临床证据层：试验/结果/真实世界",
+      "summary": "L2 临床证据层实测结论（2026-11-21，全部为本人实发请求所得）\n\n一、先说清一个被低估的事实：MedRadar 现有 375,378 条不是「全部公开、人人可得」的等量替代品，而是漏了 98.6%。openFDA 的器械不良事件库 MAUDE（api.fda.gov/device/event）实测 total=26,849,547 条。375,378 ÷ 26,849,547 ≈ 1.4%。所以「没有独占性」这个判断是对的，但理由要换：不是大家都有同样的数据，而是大家都能拿到比 MedRadar 多 70 倍的同源数据。独占性缺失的严重程度被低估了。\n\n二、L2 这一层里，真正「公开可自建」的部分（占绝大部分）\n- ClinicalTrials.gov API v2：实发 200，apiVersion 2.0.5，dataTimestamp 2026-11-20T10:00:05；stats/size 报 totalStudies=612,892；按 AREA[InterventionType]DEVICE 过滤 totalCount=77,301。无 key、无配额声明页。这一层完全可自建。\n- CT.gov 的 resultsSection：可拿，但单条巨大。NCT03688620 只要 resultsSection 就返回 2,689,909 字节（≈2.7MB）。按 AREA[ResultsFirstPostDate]RANGE[2024-01-01,MAX] 实测 totalCount=19,509 条已挂结果。这是本层唯一「真·有工作量」的地方，但工作量属于工程（解析嵌套 adverseEventsModule/outcomeMeasuresModule），不属于数据获取壁垒。\n- openFDA 器械系全家族：device/event 26,849,547；device/udi 5,182,695；device/registrationlisting 337,446；device/510k 176,683；device/pma 57,518；device/recall 59,705；device/enforcement 40,535；device/classification 7,103。全部 public。\n- CMS：data.cms.gov 的 data-api/v1/dataset/{uuid}/data 实测 200 JSON；data.json 目录实测 3,542 个数据集；其中「Medicare Durable Medical Equipment, Devices & Supplies」系 55 个数据集，最新一期 UUID 1746a83e-bb65-4300-8e02-21edbab77c6b 实测返回 Suplr_NPI / HCPCS_Cd / HCPCS_Desc / RBCS_Id / RBCS_Desc 等真实字段。这是器械层唯一能拿到「报销+用量」维度的公开源。\n- 病例报告：PubMed E-utilities 实测免 key 可用，esearch(\"case report\" AND \"insulin pump\") count=109；efetch 返回 ArticleTitle/PubDate/AbstractText/DOI。\n\n三、器械型号（MedRadar 最该关心的一题）逐源结论\n- MAUDE：能。device[] 嵌套对象实测含 brand_name / model_number / catalog_number / udi_di / device_report_product_code。这是全层最强的一条。\n- openFDA device/udi：能。实测字段含 brand_name / version_or_model_number / catalog_number / identifiers / product_codes / gmdn_terms。这是把 MAUDE 的型号对齐到 UDI-DI 的桥。\n- ClinicalTrials.gov：不能。metadata（175,633 字节）里实测没有 UDI/model 字段——我把 \"udi\" 的 65 次命中逐条看了，全部是 \"guidance\"/\"studies\" 之类词内子串的假阳性。器械只以 interventions[].type=\"DEVICE\" + name/description 自由文本出现（实测 NCT03784027：name=\"CamAPS FX\"，型号写在 description 散文里）。这是本层最大的结构性缺口。\n- EU CTIS / jRCT / WHO ICTRP：型号层级未证实，需实测（见 gaps）。\n\n四、商业平台的护城河到底在哪（可直接执行的判断）\n不在数据获取。L2 全部 9 类源里，能免 key 直接拉的有 6 类；剩下 3 类（CTIS、PROSPERO、Open Payments）是「接口存在但请求体/鉴权/网络可达性未解」，属于几小时到几天的逆向工作，不构成长期壁垒。\n真正卖钱的是三件人工/工程活，且都有实测证据支撑：\n1) 器械身份解析（UDI-DI 作为主键）。公开世界没有任何一个源把 MAUDE 事件 → UDI-DI → 510(k)/PMA → CT.gov 试验结果 → CMS HCPCS 报销/用量 串成一条。每一段都公开，串起来的那张映射表没人给你。这才是可收费资产，且越串越难被复制。\n2) CT.gov resultsSection 的结构化。19,509 条挂结果的试验、单条 2.7MB 嵌套 JSON，把「器械→结局指标→不良事件分组计数」抽成表，是纯工程量，但因为是嵌套+自由文本器械名，自动化质量差、人工校对重，商业平台卖的就是这个校对。\n3) CMS DMEPOS + HCPCS 的器械级用量/金额聚合。字段公开，但 RBCS/HCPCS 到具体器械型号的归类是人工判断，且逐年 55 个数据集要归并去重。\n\n五、一条必须现在就处理的法律约束（不是行业概述，是实测条款）\nWHO ICTRP 的使用条款第 4(d) 条原文：不得将 ICTRP 库中提取的信息用于 marketing、promotional 或 commercial purposes；第 4(a) 还要求不得对任何部分主张所有权。MedRadar 是商业情报平台，把 ICTRP 批量数据做进付费产品，条款上站不住。竞品大概率在违规使用——但这不构成 MedRadar 可以照做的理由，反而是一个可用来做合规差异化的点：明确标注 L2 中 ICTRP 段为「仅内部参考、不进入商业输出」，或干脆只用 CT.gov + EU CTIS + jRCT 覆盖同一批试验（三者在授权上更干净）。\n\n六、真正的空白（结论）\n空白不是「数据」，是「器械维度的纵向结局链」。具体说：同一个器械型号，从 510(k)/PMA 获批 → 进入哪些 CT.gov 试验 → 试验挂了什么结果/不良事件 → MAUDE 上该型号的现实世界故障谱 → CMS 上该 HCPCS 的报销量与金额。这条链现在没有任何单一公开产品提供，每一环都要自建映射。MedRadar 若要建立独占性，应把资源全部压在「UDI-DI 主键化 + 五源串联」上，而不是继续加第 7 个 openFDA 源。\n\n七、本次未打通、需实测的（不许当已知用）\nEU CTIS 的 POST body schema（端点确认存在但 3 种 body 全部 totalRecords=0）；PROSPERO API 的鉴权头（端点确认存在但返回 \"Error code: header value undefined\"）；Open Payments 在本机出口 IP 全路径 403；HCUP NIS 价格；jRCT 是否有 JSON 接口。逐条见 gaps。",
+      "fact_count": 30,
+      "endpoint_count": 23,
+      "gaps": [
+        "EU CTIS 的 POST /ctis-public-api/search 请求体字段名：端点确认存在（200 + JSON + pagination 结构），但 {pagination:{page,size}}、{searchCriteria:{}}、{searchPhrase}、{sort:{property,direction}} 四种 body 全部 totalRecords=0。需实测：拉 /ctis-public/chunk-*.js（已确认存在 chunk-RIVCMEZB/HRBHAQNA/K5PVB2VJ/WZUH5KZN/NI4HHJ4V，其中 HRBHAQNA 312,859 字节）逐个 grep 出 search DTO 字段名，再用真实 CT 号验证。未确认前不许把字段名写进代码。",
+        "PROSPERO API 鉴权头名：/PROSPERO/api/view/{CRD} 返回 \"Error code: header value undefined\"，说明缺一个必需头。试过 prospero-access-token / access-token / x-access-token 均 400。需实测：从上文提到的第三方资料（https://s
+… [truncated: 131372 more characters]
+[status: completed, 43 agents]

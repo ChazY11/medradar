@@ -44,6 +44,7 @@ from typing import Any, Mapping, Sequence
 from ...data_pipeline.model import SOURCES
 from ...data_pipeline.openfda import build_url
 from ..adapter import CollectContext
+from ..http import OPENFDA_MAX_LIMIT_WITHOUT_KEY, with_openfda_key
 from ..recall import (
     RECALL_EVENT_IDENTIFIER,
     RECALL_PAYLOAD_FIELDS,
@@ -56,7 +57,8 @@ from ..recall import (
 from ..records import MappingResult, PRECISION_DATE, Page, RawRecord, Scope, normalize_moment
 
 DEFAULT_BASE = "https://api.fda.gov"
-PAGE_SIZE = 1000
+#: See medradar.radar.http.OPENFDA_MAX_LIMIT_WITHOUT_KEY: 1000 is now key-gated.
+PAGE_SIZE = OPENFDA_MAX_LIMIT_WITHOUT_KEY
 WINDOW_OVERLAP_DAYS = 30
 #: The earliest publication date a first (unrequested) incremental run looks back to.
 #: A deliberate historical import uses --backfill-reason, which widens this to BACKFILL_START.
@@ -87,7 +89,7 @@ class OpenFDARecallAdapter:
         self.product_codes = tuple(
             product_codes if product_codes is not None else sorted(monitoring_codes(taxonomy))
         )
-        self.page_size = int(page_size)
+        self.page_size = min(int(page_size), OPENFDA_MAX_LIMIT_WITHOUT_KEY)
         self.inventory = bool(inventory)
 
     # --------------------------------------------------------------------- plan

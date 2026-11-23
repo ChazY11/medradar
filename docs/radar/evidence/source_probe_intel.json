@@ -1,0 +1,390 @@
+{
+  "schema": "medradar.radar.source_probe.v1",
+  "probe_id": "INTEL-002",
+  "probed_at": "2026-11-21",
+  "prober": "MedRadarBot/0.1 (python-urllib; anonymous)",
+  "note": "Every number below was measured by this project, on the stated date, against the live source. Where a source could not be reached the entry says so instead of being omitted: an unreachable endpoint is a fact, not an absence.",
+  "sources": [
+    {
+      "source_id": "openfda_maude",
+      "endpoint": "https://api.fda.gov/device/event.json",
+      "verification": "ENABLED",
+      "http_status": 200,
+      "endpoint_version": "2026-11-11",
+      "measured": {
+        "total_device_event_reports_unfiltered": 26849547,
+        "correction": "An earlier revision of this file recorded 513,481 as the total. That number was the count for search=device.generic_name:\"catheter\", i.e. a filtered count presented as a population. The unfiltered endpoint returns 26,849,547. The error understated the source by a factor of 52 and is corrected here rather than deleted, because a probe log that can quietly repair itself is not a log.",
+        "endpoint_last_updated": "2026-11-11",
+        "filtered_count_catheter": 513481,
+        "query": "device.device_report_product_code:\"DQY\"",
+        "matching_rows": 42296,
+        "page_sampled": 999,
+        "records_with_narrative": 959,
+        "records_with_model_number": 944,
+        "records_with_baseline_510k": 10
+      },
+      "fields_confirmed_present": [
+        "mdr_report_key", "report_number", "event_type",
+        "date_of_event", "date_received", "date_report", "date_added",
+        "device[].brand_name", "device[].generic_name", "device[].manufacturer_d_name",
+        "device[].model_number", "device[].catalog_number",
+        "device[].device_report_product_code", "device[].baseline_510_k__number",
+        "device[].openfda.device_class", "device[].openfda.regulation_number",
+        "mdr_text[].text_type_code", "mdr_text[].text",
+        "product_problems[]", "type_of_report[]", "report_source_code"
+      ],
+      "time_semantics": {
+        "event_at": "date_of_event",
+        "incremental_bound": "date_received",
+        "published_at": "date_added",
+        "published_at_caveat": "date_added is a database-add date, not a publication timestamp. It is labelled database_add_date in extra.published_at_status and never presented as a publication instant."
+      },
+      "observations": [
+        "The narrative is the reason this source matters: a real sampled record reads 'WHEN CATHETER WAS REMOVED FROM THE ARTERY, AFTER THE THIRD PASS, THE BALLOON AND SPRING TIP WERE MISSING'.",
+        "Only 10 of 999 sampled reports carry a baseline 510(k) number, so the model-number path to UDI is the primary join, not the 510(k) field.",
+        "Scale correction: MAUDE alone holds 26,849,547 reports. The committed 375,378-event snapshot is therefore not 'the same data everyone has' - it is about 1.4% of this one endpoint. The missing asset is depth, not exclusivity."
+      ]
+    },
+    {
+      "source_id": "openfda_dataset_sizes",
+      "endpoint": "https://api.fda.gov/device/*.json?limit=1",
+      "verification": "ENABLED",
+      "measured_at": "2026-11-21",
+      "measured": {
+        "device_event_maude": 26849547,
+        "device_udi": 5182695,
+        "device_registrationlisting": 337446,
+        "device_510k": 176683,
+        "device_pma": 57518,
+        "device_recall": 59705,
+        "device_enforcement": 40535,
+        "device_classification": 7103
+      },
+      "observations": [
+        "Every count is meta.results.total from an unfiltered limit=1 request, not a page length. The distinction is the whole point: this file previously mistook a filtered total for a population.",
+        "device/classification is only 7,103 rows and is the skeleton the other seven hang from - it is the cheapest complete dictionary in the corpus."
+      ]
+    },
+    {
+      "source_id": "europepmc",
+      "endpoint": "https://www.ebi.ac.uk/europepmc/webservices/rest/search",
+      "verification": "ENABLED",
+      "http_status": 200,
+      "measured": {
+        "hit_count_query": "\"left atrial appendage occlusion\"",
+        "hit_count": 3853,
+        "window_sampled": "FIRST_PDATE 2026-09-22..2026-11-21",
+        "records_sampled": 100,
+        "records_with_both_dates": 100,
+        "index_lag_days_median": 2,
+        "index_lag_days_max": 38,
+        "index_lag_days_min": -391
+      },
+      "fields_confirmed_present": [
+        "id", "source", "pmid", "pmcid", "doi", "title", "abstractText",
+        "authorList.author[].fullName",
+        "authorList.author[].authorAffiliationDetailsList.authorAffiliation[].affiliation",
+        "journalInfo.journal.title",
+        "firstPublicationDate", "firstIndexDate", "electronicPublicationDate", "dateOfCreation",
+        "isOpenAccess", "inPMC", "hasPDF", "citedByCount", "pubTypeList", "keywordList"
+      ],
+      "time_semantics": {
+        "event_at": "firstPublicationDate",
+        "published_at": "firstPublicationDate",
+        "source_updated_at": "firstIndexDate",
+        "why_it_matters": "This is the first source in this repository that publishes a real per-record public instant, so the literature lane can support a point-in-time statement instead of inheriting the same-day assumption that applies to openFDA."
+      },
+      "observations": [
+        "sort=FIRST_PDATE:asc makes the endpoint answer HTTP 503 'Search service is temporarily unavailable' rather than rejecting the sort field. The adapter therefore sends no sort parameter; a retry loop against this would look like an outage.",
+        "The lag distribution is not one-sided: the minimum is negative (-391 days), meaning firstIndexDate can precede the stated firstPublicationDate. An ahead-of-print record is the likely cause. This is recorded rather than smoothed, because silently clamping it would hide that the two fields answer different questions."
+      ]
+    },
+    {
+      "source_id": "openfda_udi",
+      "endpoint": "https://api.fda.gov/device/udi.json",
+      "verification": "ENABLED (reference layer, not an event stream)",
+      "http_status": 200,
+      "endpoint_version": "2026-11-02",
+      "measured": {
+        "total_udi_records": 5182695,
+        "pages_sampled": 3,
+        "devices_written": 2997,
+        "company_name_rows_seen": 1466,
+        "distinct_labeler_duns": 972,
+        "premarket_links_written": 1085,
+        "distinct_submission_numbers": 767,
+        "pages_needed_for_full_sweep_at_1000_per_page": 5183
+      },
+      "fields_confirmed_present": [
+        "identifiers[].id", "identifiers[].type", "identifiers[].issuing_agency",
+        "brand_name", "device_description", "company_name", "labeler_duns_number",
+        "catalog_number", "version_or_model_number",
+        "product_codes[].code", "product_codes[].openfda.regulation_number",
+        "product_codes[].openfda.device_class",
+        "premarket_submissions[].submission_number", "premarket_submissions[].supplement_number",
+        "gmdn_terms[].code", "gmdn_terms[].name", "gmdn_terms[].implantable",
+        "is_single_use", "is_kit", "is_rx", "is_pm_exempt", "mri_safety",
+        "publish_date", "public_version_date", "record_status",
+        "sterilization", "storage"
+      ],
+      "verified_join": {
+        "path": "MAUDE device.model_number -> udi_device.version_or_model -> labeler_duns -> udi_premarket.submission_number",
+        "sample": [
+          {"model": "56739413", "duns": "315666321", "company": "Kulzer GmbH", "submission": "K000213"},
+          {"model": "202.151", "duns": "295437313", "company": "CORIN LTD", "submission": "K000232"},
+          {"model": "182A095", "duns": "079375431", "company": "Avanos Medical, Inc.", "submission": "K000495"}
+        ]
+      },
+      "observations": [
+        "100% of the sampled device rows carried a labeler DUNS, and 100% carried a resolvable model or catalogue number. This is the identifier the current applicant-string matcher cannot produce, and it is why the 35.2% company-resolution rate is a fixable defect rather than a data limitation.",
+        "A full keyless sweep needs 5,183 pages against a 1,000/day anonymous budget, i.e. about six days. With an openFDA key it is 120,000/day and one afternoon. The GUDID bulk download is the third route and is not implemented here."
+      ]
+    },
+    {
+      "source_id": "patent_lane",
+      "verification": "CREDENTIAL-GATED (no credential on this host)",
+      "measured_at": "2026-11-21",
+      "hosts_probed": [
+        {"host": "search.patentsview.org", "result": "DNS does not resolve"},
+        {"host": "assignment-api.uspto.gov", "result": "DNS does not resolve"},
+        {"host": "assignment.uspto.gov", "result": "DNS does not resolve"},
+        {"host": "ped.uspto.gov", "result": "DNS does not resolve"},
+        {"host": "bulkdata.uspto.gov", "result": "DNS does not resolve"},
+        {"host": "api.uspto.gov", "result": "HTTP 401 Unauthorized (needs a key)"},
+        {"host": "data.uspto.gov", "result": "HTTP 200, Angular SPA shell only"},
+        {"host": "patents.google.com /xhr/query", "result": "HTTP 503 bot block"},
+        {"host": "patents-public-data (BigQuery)", "result": "no gcloud/bq and no credentials on this host"}
+      ],
+      "odp_route_table": {
+        "measured_at": "2026-11-21",
+        "keyless": true,
+        "reading_rule": "AWS API Gateway answers 401 for a live route that wants a credential, and 403 with body 'Missing Authentication Token' for a path that has no route at all. Without this distinction a missing endpoint looks exactly like a refusal.",
+        "routes": [
+          {"path": "/api/v1/patent/applications/search", "status": 401, "meaning": "live, needs a key"},
+          {"path": "/api/v1/datasets/products/search", "status": 401, "meaning": "live, needs a key"},
+          {"path": "/api/v1/patent/assignments/search", "status": 403, "meaning": "no such route"},
+          {"path": "/api/v1/patent/assignments", "status": 403, "meaning": "no such route"},
+          {"path": "/api/v1/patent/assignment/", "status": 403, "meaning": "no such route"},
+          {"path": "/api/v1/ptab/", "status": 403, "meaning": "no such route"},
+          {"path": "/api/v1/trademarks/", "status": 403, "meaning": "no such route"},
+          {"path": "/api/v1/bulk/", "status": 403, "meaning": "no such route"},
+          {"path": "/openapi.json and /api/v1/openapi.json", "status": 403, "meaning": "no published spec"}
+        ],
+        "consequence": "ODP exposes patent applications and a dataset catalogue. It does NOT expose a patent-assignment search, so the ownership chain cannot be read from ODP; ownership is resolved from the assignee name on each application record via radar.patents.AssigneeResolver."
+      },
+      "observations": [
+        "The patent fetch lane is therefore credential-gated here, and is recorded as such rather than worked around: no spoofed identity, no proxy, no scraping of a host that answers 503.",
+        "The clients in medradar/radar/patents.py implement the documented contracts and raise CredentialMissing naming the exact environment variable, so a missing credential can never be mistaken for zero patents."
+      ],
+      "delivered_without_a_credential": {
+        "what": "assignee string -> labeler DUNS resolution against the device register",
+        "candidate_set": 12536,
+        "measured": {
+          "positive_strings_tried": 39,
+          "resolved": 31,
+          "exact": 30,
+          "token_subset_or_flagged": 1,
+          "negative_strings_tried": 4,
+          "false_positives": 0
+        },
+        "examples": [
+          {"assignee": "MEDTRONIC SOFAMOR DANEK, INC.", "duns": "830350380", "method": "exact", "confidence": 1.0},
+          {"assignee": "COVIDIEN LP", "duns": "058614483", "method": "exact", "confidence": 1.0},
+          {"assignee": "Biosense Webster, Inc.", "duns": "020163218", "method": "exact", "confidence": 1.0},
+          {"assignee": "SIEMENS HEALTHINEERS AG", "duns": "314699460", "method": "exact", "confidence": 1.0},
+          {"assignee": "STRYKER CORPORATION", "duns": "481999654", "method": "exact_entity_mismatch", "confidence": 0.55, "note": "matched Stryker GmbH - a different legal entity in a different country; flagged rather than reported as certain"},
+          {"assignee": "BAXTER HEALTHCARE SA", "duns": "005083209", "method": "token_subset_entity_mismatch", "confidence": 0.55},
+          {"assignee": "BIOTRONIK SE & CO. KG", "duns": "480862817", "method": "token_subset_entity_mismatch", "confidence": 0.55}
+        ],
+        "why_it_matters": "This is the 'who owns the patent' half of the DUNS spine. It runs today because the candidate set is the register we already hold, so the patent fetch credential is not on the critical path for the resolver."
+      }
+    },
+    {
+      "source_id": "maude_failure_index",
+      "endpoint": "https://api.fda.gov/device/event.json",
+      "verification": "ENABLED",
+      "measured_at": "2026-11-23",
+      "why": "The chain 510(k) document -> device -> DUNS was finished and then stopped: exact device.model_number matching into MAUDE returned 0 events for all three samples. The field is free text and usually blank, so the fix is to sweep once at a coarse key (product code) and join locally.",
+      "measured": {
+        "product_codes_swept": 12,
+        "product_codes_available": 554,
+        "device_coverage_of_swept_codes": 0.718,
+        "pages": 137,
+        "events_seen": 33604,
+        "rows_written": 17998,
+        "device_entries_without_model": 15794,
+        "blank_model_share": 0.54,
+        "distinct_models": 5636,
+        "distinct_brands": 4155,
+        "join_on_3973_aligned_devices": {
+          "model_exact": {"count": 125, "share": 0.034},
+          "brand_only": {"count": 1020, "share": 0.275},
+          "neither": {"count": 2570, "share": 0.692}
+        },
+        "event_types": {"Malfunction": 44011, "Injury": 41047, "Death": 385, "Other": 35, "unknown": 35}
+      },
+      "honest_limits": [
+        "The index covers 2015 onward and at most 15 pages per code, so every count is a lower bound; stop_reason records the cap instead of pretending the sweep was complete.",
+        "The 69.2% 'neither' is not a coverage artefact: 71.8% of those devices sit inside the swept codes. It is the cost of a field that is blank 54% of the time, plus brand normalisation that GUDID and MAUDE disagree about.",
+        "Model and brand attribution are reported separately because they are different claims: the same model failing is this device, the same brand failing is the manufacturer's family."
+      ],
+      "transport_defect_found_and_fixed": {
+        "symptom": "http.client.IncompleteRead: 5,209,171 bytes read, 3,643,358 more expected",
+        "cause": "IncompleteRead inherits from HTTPException which inherits from Exception, NOT from OSError, so it escaped the transport handler and killed the sweep",
+        "fix": "truncation is now a retryable transport failure, and MAUDE page size dropped from 999 rows (about 9 MB) to 250 rows (about 2.2 MB)"
+      },
+      "binding_constraint": {
+        "finding": "Bandwidth, not request rate. One product code at 40 pages x 2.2 MB is 88 MB, and 300 codes would be 26 GB over the same uplink the document crawl is using.",
+        "measured": "the sweep completed 4 codes in about 20 minutes while the crawl was running, i.e. roughly 5 minutes and 300 MB per code",
+        "consequence": "the sweep was stopped rather than left to starve the crawl; it resumes from reference_kv['failure_codes_done'] and should run with a 10-page cap after the crawl finishes"
+      }
+    },
+    {
+      "source_id": "premarket_bridge",
+      "endpoint": "https://api.fda.gov/device/udi.json",
+      "verification": "ENABLED",
+      "measured_at": "2026-11-21",
+      "measured": {
+        "bridge_set_query": "premarket_submissions.submission_number:[K000000 TO K999999]",
+        "bridge_set_total": 1584610,
+        "unfiltered_udi_total": 5182695,
+        "pages_if_restricted": 1586,
+        "pages_if_unfiltered": 5187,
+        "or_syntax_verified": {
+          "K250063_alone": 794,
+          "K950913_alone": 50,
+          "A_or_B": 844,
+          "B_or_A": 844,
+          "conclusion": "openFDA OR is correct and order-independent; the sum matches exactly"
+        },
+        "bridge_density_by_year_random_real_filings": {
+          "2005": [2, 10], "2010": [1, 10], "2013": [2, 10], "2016": [7, 10],
+          "2019": [6, 10], "2021": [5, 10], "2023": [4, 10], "2025": [6, 10],
+          "overall": [33, 80]
+        },
+        "alignment_on_stored_corpus": {
+          "2021": {"documents": 17, "aligned": 7, "rate": 0.412},
+          "2022": {"documents": 93, "aligned": 36, "rate": 0.387},
+          "2025": {"documents": 234, "aligned": 7, "rate": 0.030},
+          "2026": {"documents": 969, "aligned": 11, "rate": 0.011},
+          "old_cohort_2000_2023": {"documents": 111, "aligned": 43, "rate": 0.387},
+          "recent_cohort_2024_2026": {"documents": 1205, "aligned": 18, "rate": 0.015},
+          "blended": {"documents": 1316, "aligned": 61, "rate": 0.046}
+        },
+        "third_leg": {
+          "method": "device.model_number exact match into device/event",
+          "samples_tried": 3,
+          "samples_with_events": 0,
+          "interpretation": "not proof of zero failures: MAUDE model_number is exact-match free text and most labels leave it empty (944 of 999 sampled DQY reports carried one). Widening to brand + product code is a matching problem, not a data problem."
+        }
+      },
+      "observations": [
+        "The chain 510(k) document -> UDI device -> labeler DUNS -> MAUDE uses equality joins only; no company-name matching appears anywhere in it.",
+        "The blended 4.6% is an artifact of a newest-first corpus, not a bridge defect: labelers publish the UDI record after clearance, so the last eighteen months have almost no links yet. Two independent methods put the older cohort at 39-41%.",
+        "Practical consequence: the corpus must target 2000-2023. A newest-first crawl produces documents that cannot be attached to a device.",
+        "Measured example: K210313 EasyFinder Fixed Curve Diagnostic catheter -> di:06952450918906 -> Shanghai Microport Ep Medtech Co., Ltd. -> DUNS 542965535 -> model EPD6AB252, with 56 devices sharing that submission."
+      ]
+    },
+    {
+      "source_id": "fda_510k_summary_documents",
+      "endpoint": "https://www.accessdata.fda.gov/cdrh_docs/pdf<nn>/K<nnnnnn>.pdf",
+      "verification": "ENABLED (document layer, attached to regulatory records)",
+      "measured": {
+        "filings_with_summary_flag": 6017,
+        "url_rule_sample": 6,
+        "url_rule_hits": 6,
+        "http_200_sampled": 6,
+        "content_type_sampled": "application/pdf",
+        "bytes_range": "308 KB .. 2.65 MB",
+        "text_layer_present_sampled": 6,
+        "extracted_chars_range": "11869 .. 70013",
+        "real_corpus_size": 39176,
+        "corpus_size_note": "Three successive measurements each shrank this number. 176,683 = filings. 94,291 = filings whose statement_or_summary field says 'Summary'. 39,176 = filings from 2010-06 onward, which is the range whose documents are actually digitised and therefore the real index size.",
+        "digitisation_floor": {
+          "floor": "2010-06-01",
+          "measured": "five real filings per year, derived URL requested for each",
+          "by_year_url_200": {
+            "1998": "0/5", "1999": "0/5", "2000": "0/5", "2001": "0/5", "2002": "0/5",
+            "2003": "0/5", "2004": "0/5", "2005": "0/5", "2006": "0/5", "2007": "0/5",
+            "2008": "0/5", "2009": "0/5", "2010": "2/5 (April onward; 4/4 from July)",
+            "2011": "5/5", "2012": "5/5", "2013": "5/5", "2014": "5/5", "2015": "5/5"
+          },
+          "alternative_paths_tried_and_rejected": [
+            "cdrh_docs/pdf/K002182.pdf", "cdrh_docs/pdf2/K002182.pdf",
+            "cdrh_docs/pdf00/K002182.PDF", "cdrh_docs/pdf2000/K002182.pdf",
+            "cdrh_docs/pdf/K093456.pdf"
+          ],
+          "conclusion": "not a URL rule that needs fixing: the pre-2010 scans are not public"
+        },
+        "scanned_era": {
+          "measured_during_live_crawl_at_1750_attempts": {
+            "with_text": 682, "no_text_layer": 1013, "not_published": 55
+          },
+          "interpretation": "image-only PDFs, concentrated in 2010-2012; the no-text count plateaus while the text count keeps climbing, so 2013 onward is digital-born. Expect roughly 28,000 of the 39,176 to yield readable text; the remainder needs OCR, which is a defect in our reader rather than a network problem."
+        },
+        "summary_availability_by_era": {
+          "1976-1989": {"filings": 47440, "summaries": 0},
+          "1990-1999": {"filings": 44082, "summaries": 17778, "share": 0.403},
+          "2000-2009": {"filings": 32942, "summaries": 27562, "share": 0.837},
+          "2010-2019": {"filings": 30476, "summaries": 28381, "share": 0.931},
+          "2020-2026": {"filings": 21743, "summaries": 20570, "share": 0.946}
+        },
+        "unfiltered_batch_measurement": {
+          "attempted": 120,
+          "with_text": 62,
+          "not_published": 58,
+          "failed": 0,
+          "text_rate": 0.5167,
+          "mean_chars": 13492.2,
+          "note": "The first batch did not filter the index by the source's own statement_or_summary field, so 48% of its requests were spent on filings FDA never published a document for. The filter is now on by default."
+        }
+      },
+      "samples": [
+        {"k_number": "K252901", "device": "Tyber Medical Trauma Screw", "bytes": 315622, "chars": 11869, "sections": ["bench_testing", "conclusion"]},
+        {"k_number": "K252951", "device": "Genesis Sleep", "bytes": 2711552, "chars": 50914, "sections": []},
+        {"k_number": "K243627", "device": "Laryngoscope Junctional-Arterial Restriction", "bytes": 534528, "chars": 11047, "sections": ["indications"]},
+        {"k_number": "K253888", "device": "MOLLI 2 System", "bytes": 2563780, "chars": 27494, "sections": ["indications"]},
+        {"k_number": "K250168", "device": "Life Ultra 25L Tabletop Mono Chamber Sterilizer", "bytes": 990208, "chars": 29695, "sections": []},
+        {"k_number": "K251091", "device": "Lipids", "bytes": 2727936, "chars": 42992, "sections": []}
+      ],
+      "url_rule": "K<nnnnnn> resolves to /cdrh_docs/pdf<first two digits of the numeric part>/K<nnnnnn>.pdf",
+      "observations": [
+        "This is the only public document class that states, in the manufacturer's own words, which predicate was used and which bench tests were run. No market-intelligence platform sells it as a structured corpus.",
+        "Not every filing publishes one: openFDA's statement_or_summary field separates Summary from Statement from an empty value. A missing document is recorded as not_published, never as an empty summary.",
+        "The extractor is standard-library only and reads the text layer. A scanned filing returns has_text_layer=false with a named reason and needs OCR, which is deliberately out of scope for the core package."
+      ]
+    },
+    {
+      "source_id": "gudid_direct_api",
+      "endpoint": "https://api.accessgudid.fda.gov/api/v1/devices",
+      "verification": "UNREACHABLE FROM THIS HOST",
+      "http_status": null,
+      "measured": {"attempts": 1, "outcome": "transport failure, no HTTP response"},
+      "observations": [
+        "Not relied on. openFDA device/udi serves the same register through a verified read path, so the reference layer does not need this host.",
+        "Recorded so a later reader does not repeat the attempt believing it untried."
+      ]
+    },
+    {
+      "source_id": "patentsview",
+      "endpoint": "https://search.patentsview.org/api/v1/patent/",
+      "verification": "UNVERIFIED FROM THIS HOST",
+      "http_status": null,
+      "measured": {"attempts": 1, "outcome": "transport failure, no HTTP response"},
+      "observations": [
+        "The patent lane is not implemented in this pass. This probe did not establish whether the current PatentsView API requires a key from this host, so the entry stays UNVERIFIED rather than being described as enabled or blocked.",
+        "The patent source inventory is recorded in docs/radar/INTEL_SOURCES.md as not-started, with the candidate routes named."
+      ]
+    }
+  ],
+  "openfda_limit_ceiling": {
+    "measured_at": "2026-11-21",
+    "endpoint": "https://api.fda.gov/device/event.json",
+    "results": [
+      {"limit": 999, "http_status": 200, "rows_returned": 999},
+      {"limit": 1000, "http_status": 403, "error_code": "API_KEY_MISSING"}
+    ],
+    "consequence": "Every openFDA caller in this repository now takes its page size from medradar.radar.http.OPENFDA_MAX_LIMIT_WITHOUT_KEY. Before this probe, openfda.py and openfda_recall.py asked for 1,000 rows and would therefore have received a 403 that the client recorded as the operator refusing automated access.",
+    "classification": "A 403 whose body names API_KEY_MISSING is a capability limit, not an access refusal. medradar.radar.http now raises CapabilityLimit for these and keeps Refused for a refusal that survives bounded confirmation."
+  }
+}

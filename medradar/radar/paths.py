@@ -1,6 +1,6 @@
 """Where the radar keeps its data, and how that location is chosen.
 
-Two databases, on purpose:
+Four databases, on purpose:
 
 ``radar.db``
     the append-only observation ledger plus the mutable cursor/health/work state;
@@ -10,8 +10,19 @@ Two databases, on purpose:
     "what did MedRadar know at T" and "what was publicly true at T" are two different,
     separately answerable questions.
 
-Keeping them apart means a graph rebuild can never damage the observation history, and the
-ledger can be copied without dragging the derived graph along.
+``human.db``
+    what a person decided (watchlists, review status, audit trail). A decision is not
+    derivable from sources, so it must not live in a file that can be rebuilt.
+
+``reference.db``
+    the world as the regulator describes it - device identity from UDI/GUDID, and the
+    company identifier that identity hangs on. It is a *dimension*, not evidence: it can be
+    rebuilt from the source at any time, it is never cited as "what MedRadar knew", and it
+    is deliberately not in the ledger, because 5.18M device records are not 5.18M events.
+
+Keeping them apart means a graph rebuild can never damage the observation history, the
+ledger can be copied without dragging the derived graph along, and re-syncing device
+identity cannot rewrite evidence.
 
 Resolution order for the directory (first match wins):
 
@@ -38,6 +49,15 @@ GRAPH_FILENAME = "graph.db"
 #: the ledger is evidence and must never be written by a web request, so what a person decides
 #: lives beside it, revisable, in ~human.db~.
 HUMAN_FILENAME = "human.db"
+#: Device identity from the regulator (UDI/GUDID). A dimension table, rebuildable at will.
+REFERENCE_FILENAME = "reference.db"
+
+#: Environment overrides. A deployment that keeps the register or the document corpus outside
+#: the radar directory has to be able to say so without editing code; an unset variable means
+#: "use the conventional location", not "disabled".
+ENV_REFERENCE_DB = "MEDRADAR_REFERENCE_DB"
+ENV_CORPUS_DIR = "MEDRADAR_CORPUS_DIR"
+CORPUS_DIRNAME = "corpus510k"
 
 
 def resolve_radar_dir(override: str | Path | None = None) -> Path:
@@ -68,6 +88,23 @@ class RadarPaths:
     @property
     def graph(self) -> Path:
         return self.root / GRAPH_FILENAME
+
+    @property
+    def reference(self) -> Path:
+        """The device register. ``MEDRADAR_REFERENCE_DB`` wins when the file lives elsewhere."""
+        override = os.environ.get(ENV_REFERENCE_DB)
+        return Path(override) if override else self.root / REFERENCE_FILENAME
+
+    @property
+    def corpus(self) -> Path:
+        """Where the 510(k) Summary documents are stored, if they are.
+
+        DocumentStore writes one ``.json`` sidecar and one ``.txt`` per filing, so this is a
+        directory rather than a database file, and it is optional: a deployment can run the
+        register without ever having crawled a document.
+        """
+        override = os.environ.get(ENV_CORPUS_DIR)
+        return Path(override) if override else self.root / CORPUS_DIRNAME
 
     @property
     def diagnostics(self) -> Path:

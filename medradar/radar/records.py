@@ -141,6 +141,11 @@ RECORD_TYPES = (
     "press_release",       # vendor official news
     "product_document",    # vendor official product page/datasheet
     "clinical_trial",      # reserved for a later adapter
+    # Federal research funding. Its own type rather than a press release because it answers a
+    # different question ("what is being paid for") and carries an organisation DUNS that joins
+    # to the device register. Collapsing it into an existing type would lose that distinction in
+    # every filter that reads record_type.
+    "grant_award",
 )
 
 RUN_RUNNING = "RUNNING"

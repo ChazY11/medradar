@@ -67,6 +67,34 @@
       }
     },
     {
+      "id": "openfda_maude",
+      "display_name": "FDA device adverse events (MAUDE, openFDA)",
+      "kind": "api",
+      "record_types": ["regulatory_record"],
+      "adapter": "maude",
+      "enabled": true,
+      "access": {
+        "verification": "ENABLED",
+        "read_path": "https://api.fda.gov/device/event.json",
+        "robots": "not applicable: documented public API host route",
+        "evidence": "docs/radar/evidence/source_probe_intel.json"
+      },
+      "licence": {
+        "name": "openFDA terms of service; U.S. Government work, public domain",
+        "url": "https://open.fda.gov/terms/",
+        "redistribution": "MAUDE reports are public domain. MedRadar stores the report key, the report number, the event type, the device model and catalogue numbers, the product-problem terms and the narrative the reporter wrote, plus the official MAUDE URL. The narrative is quoted, not rewritten."
+      },
+      "cadence_hours": 24,
+      "cadence_basis": "openFDA refreshes the MAUDE endpoint continuously as reports are coded; a 24h check on date_received notices new reports without polling an unchanged dataset.",
+      "incremental": "date_received window with a 30-day overlap; the watermark is the newest date_received observed, never the wall clock",
+      "why_it_matters": "This is the only public corpus of free-text device failure narratives (measured 513,481 device event reports on 2026-11-21). It is the source that makes a failure attributable to a device model and therefore engineering-usable; no market-intelligence platform sells it as a corpus.",
+      "time_semantics": "event_at = date_of_event (when it happened); published_at = date_added (when the record entered MAUDE, labelled database_add_date); date_received is the incremental bound. Unlike 510(k)/PMA this source therefore does publish a public-availability proxy.",
+      "queries": {
+        "product_codes": "derived from config/radar/topics.json at run time; never a second code register",
+        "note": "One row is one MDR report. A single event can produce several reports from several parties, so event counts are a GROUP BY on mdr_report_key, never a row count."
+      }
+    },
+    {
       "id": "pubmed",
       "display_name": "PubMed / NCBI E-utilities",
       "kind": "api",
@@ -90,6 +118,34 @@
       "rate_limit": {"requests_per_second": 3.0, "burst": 3, "note": "NCBI documented limit without an API key"}
     },
     {
+      "id": "europepmc",
+      "display_name": "Europe PMC (real publication date, open-access state)",
+      "kind": "api",
+      "record_types": ["publication"],
+      "adapter": "europepmc",
+      "enabled": true,
+      "access": {
+        "verification": "ENABLED",
+        "read_path": "https://www.ebi.ac.uk/europepmc/webservices/rest/search",
+        "robots": "documented public REST API; no key required for the search endpoint",
+        "evidence": "docs/radar/evidence/source_probe_intel.json"
+      },
+      "licence": {
+        "name": "Europe PMC REST API terms; metadata is openly available, full text reuse follows the per-article licence",
+        "url": "https://europepmc.org/RestfulWebService",
+        "redistribution": "MedRadar stores the identifier (PMID/PMCID/DOI), title, journal, dates, author affiliations, the abstract and the article URL. Full text is fetched only for records the source marks open access or in PMC."
+      },
+      "cadence_hours": 12,
+      "cadence_basis": "Indexing is continuous; 12h matches the Crossref cadence and is a politeness ceiling, not a technical limit.",
+      "incremental": "FIRST_PDATE window with a 14-day overlap; the watermark is the window end, never the wall clock",
+      "why_it_matters": "This is the first source in this repository that publishes a per-record public instant. It closes the 'independent public time = 0 rows' limitation for the literature lane instead of arguing about it: firstPublicationDate is published_at, firstIndexDate is source_updated_at, and the gap between them is the access lag a naive backtest hides.",
+      "time_semantics": "event_at = published_at = firstPublicationDate (a real public instant). source_updated_at = firstIndexDate. dateOfCreation is recorded in the payload and never presented as publication time.",
+      "queries": {
+        "terms": ["monitoring", "respiratory", "cardiovascular_devices", "surgical_robotics", "device_safety"],
+        "note": "Defined in medradar/radar/adapters/europepmc.py QUERIES. The date window is applied by the adapter and never baked into the term, so one term serves both a backfill and an incremental cycle."
+      }
+    },
+    {
       "id": "crossref",
       "display_name": "Crossref metadata",
       "kind": "api",
@@ -111,6 +167,35 @@
       "cadence_basis": "Crossref deposits arrive continuously from publishers; 12h keeps the check cheap.",
       "incremental": "filter=from-created-date with a 2-day overlap on the newest created timestamp",
       "rate_limit": {"requests_per_second": 2.0, "burst": 2, "note": "polite pool; requests identify the project"}
+    },
+    {
+      "id": "nih_reporter",
+      "display_name": "NIH RePORTER (funded research, DUNS-linked)",
+      "kind": "api",
+      "record_types": ["grant_award"],
+      "adapter": "nih_reporter",
+      "enabled": true,
+      "access": {
+        "verification": "ENABLED",
+        "read_path": "https://api.reporter.nih.gov/v2/projects/search (POST, JSON criteria)",
+        "robots": "documented public API; no key and no registration required",
+        "evidence": "docs/radar/evidence/source_probe_intel.json"
+      },
+      "licence": {
+        "name": "NIH RePORTER public API; U.S. Government work, public domain",
+        "url": "https://api.reporter.nih.gov/",
+        "redistribution": "MedRadar stores the project number, title, fiscal year, award notice and project dates, amount, administering institute, principal investigators, the organisation name with its DUNS and UEI, and the project abstract, plus the RePORTER project URL."
+      },
+      "cadence_hours": 168,
+      "cadence_basis": "Awards are announced on a fiscal-year cycle, not continuously; a weekly check is enough to notice a new notice date without polling an unchanged corpus.",
+      "incremental": "one scope per (fiscal year, term); the fiscal-year set is enumerated in the adapter, so a run is idempotent and never depends on a stored watermark",
+      "why_it_matters": "This is the earliest public statement that a technology direction is being funded, and it is the layer every commercial medtech intelligence platform leaves empty. RePORTER returns organization.primary_duns, which is the same key as UDI labeler_duns_number, so 'who is funded to solve this' and 'who cleared a device for it' become one join rather than two lists.",
+      "time_semantics": "event_at = published_at = award_notice_date (a real public instant). project_start_date and project_end_date describe the funded period, not publication, and fiscal_year is an administrative bucket - neither is ever used as the event time.",
+      "queries": {
+        "terms": ["catheter", "implant", "monitoring", "ventilation", "stent", "surgical_robot", "neuromodulation"],
+        "fiscal_years": "current and previous fiscal year by default; older awards enter through an explicit backfill",
+        "note": "RePORTER v2 is POST-only, which is why medradar.radar.http.PoliteFetcher gained post_json in this pass."
+      }
     },
     {
       "id": "philips_official",

@@ -34,6 +34,7 @@ from typing import Any, Mapping, Sequence
 from ...data_pipeline.model import SOURCES
 from ...data_pipeline.openfda import build_url
 from ..adapter import CollectContext
+from ..http import OPENFDA_MAX_LIMIT_WITHOUT_KEY, with_openfda_key
 from ..records import (
     MappingResult,
     Page,
@@ -44,7 +45,9 @@ from ..records import (
 )
 
 DEFAULT_BASE = "https://api.fda.gov"
-PAGE_SIZE = 1000
+#: openFDA refuses limit=1000 from an unidentified client (measured 2026-11-21:
+#: 999 -> 200, 1000 -> 403 API_KEY_MISSING), so the shipped page size is 999.
+PAGE_SIZE = OPENFDA_MAX_LIMIT_WITHOUT_KEY
 WINDOW_DAYS = 45
 #: Record fields that constitute the *content* of a 510(k) row. The hash covers exactly
 #: these, so a re-fetch of unchanged data is idempotent and a real correction is a version.
@@ -80,7 +83,7 @@ class OpenFDAAdapter:
         self.base = base.rstrip("/")
         self.product_codes = tuple(product_codes or _codes_from(taxonomy))
         self.include_pma = include_pma
-        self.page_size = int(page_size)
+        self.page_size = min(int(page_size), OPENFDA_MAX_LIMIT_WITHOUT_KEY)
 
     # --------------------------------------------------------------------- plan
     def plan(self, ctx: CollectContext) -> list[Scope]:
@@ -119,7 +122,8 @@ class OpenFDAAdapter:
 
     def _version_page(self, ctx: CollectContext) -> Page:
         data = ctx.fetcher.get_json(
-            build_url(self.base, SOURCES["openfda_510k"].endpoint, {"limit": 1})
+            build_url(self.base, SOURCES["openfda_510k"].endpoint,
+                      with_openfda_key({"limit": 1}))
         )
         meta = (data or {}).get("meta") or {}
         version = str(meta.get("last_updated") or "").strip() or None
@@ -137,7 +141,9 @@ class OpenFDAAdapter:
             "skip": skip,
             "sort": "decision_date:asc",
         }
-        data = ctx.fetcher.get_json(build_url(self.base, SOURCES["openfda_510k"].endpoint, params))
+        data = ctx.fetcher.get_json(
+            build_url(self.base, SOURCES["openfda_510k"].endpoint, with_openfda_key(params))
+        )
         rows = _results(data)
         records = [self._record_510k(row) for row in rows]
         total = _total(data)
@@ -172,7 +178,9 @@ class OpenFDAAdapter:
             search += f" AND decision_date:[{since} TO {(date.today() + timedelta(days=1)).isoformat()}]"
         params = {"search": search, "limit": self.page_size, "skip": skip,
                   "sort": "decision_date:asc"}
-        data = ctx.fetcher.get_json(build_url(self.base, SOURCES["openfda_510k"].endpoint, params))
+        data = ctx.fetcher.get_json(
+            build_url(self.base, SOURCES["openfda_510k"].endpoint, with_openfda_key(params))
+        )
         rows = _results(data)
         total = _total(data)
         records = [self._record_510k(row) for row in rows]
@@ -189,8 +197,10 @@ class OpenFDAAdapter:
             "skip": skip,
             "sort": "decision_date:asc",
         }
-        data = ctx.fetcher.get_json(build_url(self.base, SOURCES["openfda_pma"].endpoint, params),
-                                   allow_not_found=True)
+        data = ctx.fetcher.get_json(
+            build_url(self.base, SOURCES["openfda_pma"].endpoint, with_openfda_key(params)),
+            allow_not_found=True,
+        )
         rows = _results(data)
         total = _total(data)
         records = [record for row in rows if (record := self._record_pma(row))]

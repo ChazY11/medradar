@@ -15,6 +15,7 @@ Design rules:
 from __future__ import annotations
 
 import csv
+import html
 import io
 import json
 import os
@@ -25,7 +26,7 @@ from pathlib import Path
 from typing import Any, Iterator, Mapping
 
 from fastapi import APIRouter, HTTPException, Query, Response
-from fastapi.responses import JSONResponse
+from fastapi.responses import HTMLResponse, JSONResponse
 
 from .graph import (
     EDGE_TYPES,
@@ -47,6 +48,40 @@ from .relevance import ADMISSION_VERSION, HIGH_RELEVANCE, NEEDS_REVIEW, TIER_ORD
 from .taxonomy import Taxonomy, TaxonomyError, load_taxonomy
 
 SCHEMA = "medradar.radar.api.v1"
+
+#: The one page that exposes the device view. Deliberately hand-written and dependency-free:
+#: the workbench UI is a built React bundle, and rebuilding it to show a text answer would cost
+#: more than it returns. ``{{BODY}}`` is the single substitution point.
+_DEVICE_PAGE = """<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MedRadar · device</title>
+<style>
+ :root { color-scheme: light dark; }
+ body { font: 14px/1.55 ui-sans-serif, system-ui, sans-serif; margin: 0; padding: 24px 20px 60px;
+        max-width: 78ch; }
+ h1 { font-size: 15px; font-weight: 600; margin: 0 0 4px; letter-spacing: .01em; }
+ p.note { color: #6b7280; margin: 0 0 18px; font-size: 12.5px; }
+ form { display: flex; gap: 8px; margin-bottom: 22px; }
+ input[type=search] { flex: 1; padding: 8px 10px; border: 1px solid #9ca3af; border-radius: 6px;
+                       font: inherit; background: transparent; color: inherit; }
+ button { padding: 8px 14px; border: 1px solid #9ca3af; border-radius: 6px; background: #f3f4f6;
+          font: inherit; cursor: pointer; color: #111; }
+ pre { white-space: pre-wrap; word-break: break-word; background: #f9fafb; border: 1px solid #e5e7eb;
+       border-radius: 8px; padding: 14px 16px; font: 12.5px/1.5 ui-monospace, monospace; margin: 0; }
+ pre.err { background: #fef2f2; border-color: #fecaca; color: #991b1b; }
+</style></head><body>
+<h1>One device, its whole public life</h1>
+<p class="note">K number · DI · DUNS · model · catalog number · brand · company.
+Answers come from the local device register, the 510(k) document store and the failure index;
+nothing is fetched while you wait.</p>
+<form method="get" action="/api/radar/device/view">
+  <input type="search" name="query" placeholder="e.g. X1209255, K210313, 830350380" autofocus>
+  <button type="submit">Describe</button>
+</form>
+{{BODY}}
+</body></html>
+"""
 
 #: Whether the ledger carries admission decisions for this version. Before the projection is
 #: applied the feed keeps its historic behaviour instead of silently going empty.
@@ -221,7 +256,45 @@ def build_router(service: RadarService | None = None) -> APIRouter:
                 }
                 for source in taxonomy.sources()
             ],
+            # What a reader can actually ask for, and whether the data behind each answer is
+            # loaded. Advertising a capability whose table is empty would send a tester to a
+            # dead end, so the flags are read from the stores rather than hard-coded.
+            "capabilities": _capabilities(svc),
         }
+
+    def _capabilities(service: RadarService) -> dict[str, Any]:
+        capabilities: dict[str, Any] = {
+            "device_view": {
+                "query": "/api/radar/device?query=<K number|DI|DUNS|model|brand|company>",
+                "page": "/api/radar/device/view?query=<same>",
+                "sources": ["udi_register", "510k_documents", "maude_failure_index"],
+            }
+        }
+        reference_path = service.paths.reference
+        if not reference_path.is_file():
+            capabilities["device_view"]["available"] = False
+            capabilities["device_view"]["why"] = "device register absent"
+            return capabilities
+        capabilities["device_view"]["available"] = True
+        try:
+            from .failure_index import index_summary
+            from .patents_bulk import bulk_summary, tables_present as patents_present
+            from .reference import UdiReference
+            from .trials import tables_present as trials_present
+            from .trials import trials_summary
+
+            store = UdiReference(str(reference_path))
+            try:
+                capabilities["device_view"]["failures"] = index_summary(store)
+                capabilities["device_view"]["trials"] = (
+                    trials_summary(store) if trials_present(store) else None)
+                capabilities["device_view"]["patents"] = (
+                    bulk_summary(store) if patents_present(store) else None)
+            finally:
+                store.close()
+        except Exception as error:  # noqa: BLE001 - meta must never fail a reader
+            capabilities["device_view"]["diagnostics_error"] = f"{type(error).__name__}: {error}"
+        return capabilities
 
     @router.get("/taxonomy")
     def taxonomy_catalog() -> dict[str, Any]:
@@ -975,6 +1048,64 @@ def build_router(service: RadarService | None = None) -> APIRouter:
         payload["schema"] = SCHEMA
         payload["available"] = True
         return payload
+
+    # --------------------------------------------------- one device, whole life
+    def _device_payload(query: str, limit: int, failures: bool,
+                        section_chars: int) -> dict[str, Any]:
+        from .device_view import build as build_view
+        from .device_view import render as render_view
+        from .reference import UdiReference
+
+        reference_path = svc.paths.reference
+        if not reference_path.is_file():
+            raise HTTPException(status_code=503, detail=(
+                "the device register does not exist on this deployment, so there is no device "
+                "to describe. This is an absent store, not an empty result."
+            ))
+        corpus = svc.paths.corpus
+        store = UdiReference(str(reference_path))
+        try:
+            timeline = build_view(store, query, corpus_root=corpus if corpus.is_dir() else None,
+                                  limit=limit, failures=failures)
+        finally:
+            store.close()
+        payload = timeline.to_dict()
+        payload["schema"] = "medradar.radar.device.v1"
+        payload["render"] = render_view(timeline, section_chars=section_chars)
+        return payload
+
+    @router.get("/device")
+    def device(query: str = Query(..., min_length=1, max_length=120),
+               limit: int = Query(25, ge=1, le=100),
+               failures: bool = True,
+               sections: int = Query(1200, ge=0, le=8000)) -> dict[str, Any]:
+        """Describe one device: its clearances, what the filings say, and how it has failed.
+
+        ``query`` accepts a K number, a DI, a DUNS, a model or catalog number, a brand, or a
+        company name. Identifier matches win over name matches; a name that resolves to hundreds
+        of devices is capped and the cap is visible in ``devices``.
+        """
+        return _device_payload(query, limit, failures, sections)
+
+    @router.get("/device/view", response_class=HTMLResponse)
+    def device_page(query: str | None = Query(None, max_length=120),
+                    limit: int = Query(10, ge=1, le=50)) -> Any:
+        """A deliberately plain page over the same data.
+
+        The workbench UI is a built React bundle; a device view does not justify a rebuild, and
+        an endpoint nobody can open is not a feature. This renders the text view directly so the
+        capability is reachable today.
+        """
+        if not query:
+            return HTMLResponse(_DEVICE_PAGE.replace("{{BODY}}", ""))
+        try:
+            payload = _device_payload(query, limit, True, 1200)
+        except HTTPException as error:
+            body = f'<pre class="err">{html.escape(str(error.detail))}</pre>'
+            return HTMLResponse(_DEVICE_PAGE.replace("{{BODY}}", body),
+                                status_code=error.status_code)
+        body = f'<pre>{html.escape(payload["render"])}</pre>'
+        return HTMLResponse(_DEVICE_PAGE.replace("{{BODY}}", body))
 
     return router
 
