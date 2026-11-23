@@ -529,6 +529,61 @@ was measured the hard way: a `--summary` call created the empty tables, and the 
 reported `no_patent_for_this_assignee` — "this company holds no patents" — when the truth was
 "the bulk files were never imported". Two different facts, and only one of them is honest.
 
+## The literature lane: two sources added, three traps found
+
+The repository already had PubMed, Europe PMC and Crossref. Two gaps mattered, and both were
+measured from the production host before anything was written (academic endpoints are *not*
+geo-blocked, unlike every patent endpoint tried):
+
+| Endpoint | Result 2026-11-24 |
+|---|---|
+| `api.medrxiv.org` / `api.biorxiv.org` | **200**, 30 records/page, `total` in the message block |
+| `api.openalex.org/works` | **200**, 1,350,820 works for `catheter` |
+| `api.semanticscholar.org` | 429 (rate-limited, not blocked) |
+| `eutils.ncbi.nlm.nih.gov` | 200 |
+| `api.crossref.org` | 200 |
+
+### Preprints are the only records measured in days
+
+Everything else in the literature lane indexes a paper after a journal accepted it. For "what is
+this company working on right now" that is months late. `radar/adapters/preprints.py` reads both
+servers over a date interval, filters to device-relevant categories client-side (a scope is a
+**server**, not a category, or ten categories would mean ten identical downloads), and stops
+paging on the `total` the API reports rather than on a fixed page count.
+
+**Trap: a new `record_type` would have silently disabled the assessment.** The obvious design is
+`record_type = "preprint"`. But `assessment.py` decides the entire publication path with an exact
+`record_type == "publication"` test, and classifies authenticity with
+`record_type in ("publication", "clinical_trial")`. A fourth type would have skipped both and
+graded every preprint as `SECONDARY`. Preprints therefore carry `record_type="publication"` and
+mark themselves in `payload["channel"]` and `extra["peer_review"]`, where nothing has to branch on
+them to stay correct.
+
+### OpenAlex is metered now, and that changes the design
+
+Measured: an unkeyed request costs **$0.001** against a **$0.10/day budget shared by everyone on
+the host's IP** — roughly 100 requests a day. A free key raises it to **$1/day**; the signup is one
+`POST https://api.openalex.org/api-keys` with an email, and the key works after the user clicks the
+mailed link. Response headers carry `x-ratelimit-remaining-usd` and `x-ratelimit-reset`.
+
+So the lane is budgeted, not throttled: eight queries at two pages each is **16 requests (~$0.016)
+per cycle**, leaving the shared budget for anything else on the host. `MAX_RESULTS_PER_SCOPE` is
+400 for that reason, not for politeness.
+
+**Trap: `grants` is not a valid `select` field.** Requesting it returns
+`400 "grants is not a valid select field"`. The default therefore selects a small field set and
+`MEDRADAR_OPENALEX_FULL_RECORDS=1` opts into unselected records (which do carry grants) at roughly
+twenty times the bytes.
+
+**Trap: "University College London" is not a company.** The first version matched legal-form
+tokens as substrings, so `" CO"` matched inside `COLLEGE` and a university paper was attributed to
+a vendor. Matching is now on whole tokens, and a test pins it.
+
+OpenAlex's own value is that it answers three things the biomedical indexes cannot: **who**
+(institution entities rather than free-text affiliations), **how much it mattered**
+(`cited_by_count`, `counts_by_year`), and **who paid** (`grants[]`, which joins onto the NIH award
+table this repository already builds).
+
 ## The openFDA page-size ceiling (a live defect this pass found)
 
 Measured 2026-11-21 on `api.fda.gov/device/event.json`, keyless:

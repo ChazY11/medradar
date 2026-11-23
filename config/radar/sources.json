@@ -169,6 +169,63 @@
       "rate_limit": {"requests_per_second": 2.0, "burst": 2, "note": "polite pool; requests identify the project"}
     },
     {
+      "id": "preprints",
+      "display_name": "medRxiv / bioRxiv preprints (posted date, category, later journal outcome)",
+      "kind": "api",
+      "record_types": ["publication"],
+      "adapter": "preprints",
+      "enabled": true,
+      "access": {
+        "verification": "ENABLED",
+        "read_path": "https://api.medrxiv.org/details/medrxiv/{start}/{end}/{offset}",
+        "robots": "documented public JSON endpoint on both servers; no key and no registration",
+        "evidence": "docs/radar/evidence/source_probe_intel.json"
+      },
+      "licence": {
+        "name": "medRxiv and bioRxiv preprint licences (CC BY / CC BY-NC / CC BY-ND per record)",
+        "url": "https://www.medrxiv.org/about/terms",
+        "redistribution": "MedRadar stores the DOI, title, authors, corresponding institution, category, abstract and the per-record licence, so downstream reuse can respect it."
+      },
+      "cadence_hours": 6,
+      "cadence_basis": "Preprints post continuously and are the only records here measured in days rather than months; 6h is a politeness ceiling, not a limit of the API.",
+      "incremental": "date interval with a 7-day overlap; the record total comes back in messages[].total, so paging stops on evidence rather than on a fixed page count",
+      "why_it_matters": "Every other literature source in this repository indexes a paper after a journal accepted it. For 'what is this company working on right now' that is months late. A preprint is the earliest public artefact of a research direction, and both servers expose it keyless.",
+      "time_semantics": "event_at = published_at = the posted date, a real public instant. The journal publication date is a different event: it is stored in payload.journal_published as 'NA' or a date and is never substituted for the preprint date.",
+      "queries": {
+        "terms": ["medrxiv", "biorxiv"],
+        "categories": ["cardiovascular medicine", "surgery", "radiology and imaging", "intensive care and critical care medicine", "rehabilitation medicine and physical therapy", "health informatics", "medical ethics", "primary care research", "orthopedics", "oncology"],
+        "note": "Defined in medradar/radar/adapters/preprints.py. A scope is a server, not a category: the API returns one window per server and categories are filtered client-side, so ten categories do not mean ten identical downloads."
+      }
+    },
+    {
+      "id": "openalex",
+      "display_name": "OpenAlex (institution entities, citation velocity, grant funding)",
+      "kind": "api",
+      "record_types": ["publication"],
+      "adapter": "openalex",
+      "enabled": true,
+      "access": {
+        "verification": "ENABLED",
+        "read_path": "https://api.openalex.org/works",
+        "robots": "documented public API; no key. A mailto address opts into the faster polite pool and is sent only when MEDRADAR_CONTACT_EMAIL is set.",
+        "evidence": "docs/radar/evidence/source_probe_intel.json"
+      },
+      "licence": {
+        "name": "OpenAlex data is CC0",
+        "url": "https://docs.openalex.org/how-to-use-the-api/rate-limits-and-authentication",
+        "redistribution": "CC0 metadata: MedRadar stores identifiers, title, date, type, citation counts, institution names, topic labels and grant identifiers."
+      },
+      "cadence_hours": 24,
+      "cadence_basis": "Citation counts move daily at most and the lane is eight queries with cursor paging; 24h keeps it well inside the polite pool.",
+      "incremental": "filter=from_publication_date..to_publication_date with a 14-day overlap, cursor paging via meta.next_cursor",
+      "why_it_matters": "It answers three questions the biomedical indexes cannot: who (institution entities rather than free-text affiliations, so a company attaches without guessing), how much it mattered (cited_by_count and counts_by_year), and who paid (grants[] carries funder and award id, joining onto the NIH award table this repository already builds).",
+      "time_semantics": "event_at = published_at = publication_date. OpenAlex publishes no separate indexing instant, so source_updated_at repeats it and no access lag is claimed.",
+      "queries": {
+        "terms": ["catheter_intervention", "patient_monitoring", "surgical_robotics", "cardiac_implant", "wearable_sensing", "device_safety", "imaging_guidance", "neural_interface"],
+        "note": "Defined in medradar/radar/adapters/openalex.py. Measured 2026-11-24: an unfiltered search for 'catheter' returns 1,350,820 works, so the date filter is mandatory rather than an optimisation."
+      }
+    },
+    {
       "id": "nih_reporter",
       "display_name": "NIH RePORTER (funded research, DUNS-linked)",
       "kind": "api",

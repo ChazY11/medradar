@@ -14,9 +14,11 @@ from .europepmc import EuropePmcAdapter
 from .gehealthcare import GEHealthCareAdapter
 from .maude import MaudeAdapter
 from .nih_reporter import NihReporterAdapter
+from .openalex import OpenAlexAdapter
 from .openfda import OpenFDAAdapter
 from .openfda_recall import OpenFDARecallAdapter
 from .philips import PhilipsAdapter
+from .preprints import PreprintAdapter
 from .pubmed import PubMedAdapter
 
 #: source_id -> factory(taxonomy) -> adapter
@@ -27,6 +29,10 @@ FACTORIES: dict[str, Callable[[Any], Any]] = {
     "pubmed": lambda taxonomy: PubMedAdapter(taxonomy),
     "europepmc": lambda taxonomy: EuropePmcAdapter(taxonomy),
     "crossref": lambda taxonomy: CrossrefAdapter(taxonomy),
+    # Preprints before the journal indexes: they are two requests per cycle and they are the
+    # only source whose records are days old rather than months.
+    "preprints": lambda taxonomy: PreprintAdapter(taxonomy),
+    "openalex": lambda taxonomy: OpenAlexAdapter(taxonomy),
     "nih_reporter": lambda taxonomy: NihReporterAdapter(taxonomy),
     "philips_official": lambda taxonomy: PhilipsAdapter(taxonomy),
     "draeger_official": lambda taxonomy: DraegerAdapter(taxonomy),
@@ -46,7 +52,13 @@ DEFAULT_ORDER: tuple[str, ...] = (
     # Europe PMC is the first source here that publishes a real per-record public instant, so
     # it runs before Crossref: a record from it can support a point-in-time statement.
     "europepmc",
+    # Preprints cost two requests per cycle and are the only records that are days old instead of
+    # months, so they run ahead of the wider indexes even though they carry less authority.
+    "preprints",
     "crossref",
+    # OpenAlex is the broadest lane (eight queries, cursor paging) and the slowest, so it goes
+    # after the narrow biomedical indexes that answer most of the questions.
+    "openalex",
     # Federal funding is the earliest public signal in the set: an award precedes a clearance by
     # years, and its organisation DUNS joins straight into the device register.
     "nih_reporter",

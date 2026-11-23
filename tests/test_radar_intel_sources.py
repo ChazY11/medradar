@@ -11,6 +11,7 @@ from __future__ import annotations
 
 import json
 import zlib
+from pathlib import Path
 
 import pytest
 
@@ -24,7 +25,11 @@ from medradar.radar.documents import (
     split_sections,
 )
 from medradar.radar.pdf import extract_text
+from medradar.radar.records import Scope
 from medradar.radar.reference import DEVICE_COLUMNS, UdiReference
+
+#: The repository's config directory, used by the adapter fixtures below.
+CONFIG_DIR = Path(__file__).resolve().parents[1] / "config" / "radar"
 
 
 # --------------------------------------------------------------------------- fixtures
@@ -1740,6 +1745,183 @@ def test_an_empty_table_is_not_mistaken_for_a_real_import(tmp_path):
     assert GAP_NO_PATENT_SOURCE in timeline.gaps
     assert GAP_NO_TRIAL_SOURCE in timeline.gaps
     store.close()
+
+
+# --------------------------------------------------- preprint + OpenAlex adapters
+class _ParamFetcher:
+    """Records the params of each call and replays canned payloads in order."""
+
+    def __init__(self, payloads):
+        self.payloads = list(payloads)
+        self.calls = []
+
+    def get_json(self, url, *, params=None, headers=None, allow_not_found=False):
+        self.calls.append({"url": url, "params": dict(params or {})})
+        if not self.payloads:
+            return {}
+        return self.payloads.pop(0)
+
+
+def _ctx(fetcher, *, watermark=None):
+    from medradar.radar.adapter import CollectContext
+
+    return CollectContext(fetcher=fetcher, ledger=None, adapter_version="test",
+                          log=lambda _m: None, watermark=watermark)
+
+
+def _taxonomy():
+    from medradar.radar.taxonomy import load_taxonomy
+
+    return load_taxonomy(str(CONFIG_DIR))
+
+
+def test_preprints_plan_is_one_scope_per_server_not_per_category():
+    """Ten categories over one window would be ten identical downloads."""
+    from medradar.radar.adapters.preprints import PreprintAdapter
+
+    adapter = PreprintAdapter(_taxonomy())
+    scopes = adapter.plan(_ctx(_ParamFetcher([])))
+    assert [scope.scope_id for scope in scopes] == ["server:medrxiv", "server:biorxiv"]
+
+
+def test_a_preprint_keeps_the_posted_date_and_never_invents_a_journal_date():
+    from medradar.radar.adapters.preprints import _record
+
+    record = _record({
+        "doi": "10.1101/2026.11.01.26351441",
+        "title": "A device study",
+        "authors": "Rani, A.; Mishra, S.",
+        "author_corresponding_institution": "Medtronic PLC",
+        "date": "2026-11-01",
+        "version": "1",
+        "category": "cardiovascular medicine",
+        "abstract": "We tested a catheter.",
+        "published": "NA",
+        "license": "CC-BY 4.0",
+        "server": "medRxiv",
+    }, "medrxiv")
+    assert record.published_at == "2026-11-01"
+    assert record.event_at == record.published_at
+    # A preprint that has not become a paper must not carry a fabricated publication date.
+    assert record.extra["journal_outcome"] == "not_yet_published"
+    assert record.payload["journal_published"] == "NA"
+    # The corresponding institution is what lets this lane attach to a company.
+    assert record.extra["organization_hint"] == "Medtronic PLC"
+
+
+def test_preprint_paging_stops_on_the_reported_total():
+    from medradar.radar.adapters.preprints import PreprintAdapter
+
+    adapter = PreprintAdapter(_taxonomy(), categories=("surgery",))
+    payload = {
+        "messages": [{"total": 150, "count": 2}],
+        "collection": [
+            {"doi": "10.1/a", "title": "Surgical robot", "date": "2026-11-02",
+             "category": "surgery"},
+            {"doi": "10.1/b", "title": "Oncology piece", "date": "2026-11-02",
+             "category": "oncology"},
+        ],
+    }
+    page = adapter.fetch_page(_ctx(_ParamFetcher([payload])), Scope("server:medrxiv"), "0")
+    assert len(page.records) == 1                   # oncology filtered out client-side
+    assert page.records[0].payload["category"] == "surgery"
+    assert page.next_cursor == "2"                  # offset advances by what the API returned
+    assert page.watermark
+
+
+def test_openalex_select_is_a_cost_and_correctness_decision(monkeypatch):
+    """Measured 2026-11-24: ``grants`` is not a valid select field (the request 400s), and a
+    request costs $0.001 out of a $0.10/day budget shared across the host's IP. So the default
+    selects a small field set and funding metadata is opt-in at ~20x the bytes.
+    """
+    from medradar.radar.adapters.openalex import (FULL_RECORD_ENV, SELECT_FIELDS,
+                                                  OpenAlexAdapter)
+
+    assert "grants" not in SELECT_FIELDS
+
+    monkeypatch.delenv(FULL_RECORD_ENV, raising=False)
+    fetcher = _ParamFetcher([{"meta": {"count": 0, "next_cursor": None}, "results": []}])
+    OpenAlexAdapter(_taxonomy()).fetch_page(_ctx(fetcher), Scope("query:device_safety"), None)
+    params = fetcher.calls[0]["params"]
+    assert params["select"] == SELECT_FIELDS
+    assert params["cursor"] == "*"
+    assert "from_publication_date" in params["filter"]
+
+    monkeypatch.setenv(FULL_RECORD_ENV, "1")
+    full = _ParamFetcher([{"meta": {"count": 0, "next_cursor": None}, "results": []}])
+    OpenAlexAdapter(_taxonomy()).fetch_page(_ctx(full), Scope("query:device_safety"), None)
+    assert "select" not in full.calls[0]["params"]      # full records carry grants
+
+
+def test_openalex_separates_a_company_from_the_hospitals_around_it():
+    from medradar.radar.adapters.openalex import _record
+
+    record = _record({
+        "id": "https://openalex.org/W123",
+        "doi": "https://doi.org/10.1/x",
+        "title": "Robot assisted surgery outcomes",
+        "publication_date": "2026-10-01",
+        "type": "article",
+        "cited_by_count": 42,
+        "counts_by_year": [{"year": 2026, "cited_by_count": 42}],
+        "authorships": [
+            {"author": {"display_name": "A. Surgeon"},
+             "institutions": [{"display_name": "Massachusetts General Hospital"},
+                              {"display_name": "Medtronic Inc"}]},
+        ],
+        "grants": [{"funder_display_name": "National Institutes of Health",
+                    "award_id": "R01HL000001"}],
+        "topics": [{"display_name": "Surgical Robotics"}],
+        "primary_location": {"source": {"display_name": "Annals of Surgery"}},
+        "open_access": {"is_oa": True, "oa_status": "gold"},
+    })
+    assert record.payload["cited_by_count"] == 42
+    assert "Medtronic Inc" in record.payload["institutions"]
+    assert record.payload["grants"][0]["award_id"] == "R01HL000001"
+    # The hospital must not win the organisation hint: the company is what this project tracks.
+    assert record.extra["organization_hint"] == "Medtronic Inc"
+    assert record.published_at == "2026-10-01"
+
+
+def test_the_new_sources_are_registered_and_configured():
+    from medradar.radar.adapters import DEFAULT_ORDER, FACTORIES
+
+    assert "preprints" in FACTORIES and "openalex" in FACTORIES
+    assert DEFAULT_ORDER.index("preprints") < DEFAULT_ORDER.index("openalex")
+    data = json.loads((CONFIG_DIR / "sources.json").read_text(encoding="utf-8"))
+    sources = data["sources"] if isinstance(data, dict) and "sources" in data else data
+    by_id = {entry["id"]: entry for entry in sources}
+    for source_id in ("preprints", "openalex"):
+        assert by_id[source_id]["enabled"] is True
+        assert by_id[source_id]["adapter"] == source_id
+        # The registry refuses a source without a recorded licence; keep that bar.
+        assert by_id[source_id]["licence"]["name"]
+
+
+def test_a_university_is_not_mistaken_for_a_company():
+    """Measured false positive: "University College London" matched the substring " CO" inside
+    COLLEGE and would have attached a university paper to a vendor."""
+    from medradar.radar.adapters.openalex import _first_company_like
+
+    assert _first_company_like(["University College London"]) is None
+    assert _first_company_like(["San Diego State University"]) is None
+    assert _first_company_like(["Massachusetts General Hospital"]) is None
+    assert _first_company_like(["Medtronic Inc"]) == "Medtronic Inc"
+    assert _first_company_like(["Siemens Healthineers AG"]) == "Siemens Healthineers AG"
+    # The company still wins when it sits behind a hospital in the list.
+    assert _first_company_like(
+        ["Massachusetts General Hospital", "Medtronic Inc"]) == "Medtronic Inc"
+
+
+def test_openalex_select_never_asks_for_grants():
+    """Measured: ``grants`` is not a valid select field and the request 400s."""
+    from medradar.radar.adapters.openalex import OpenAlexAdapter, SELECT_FIELDS
+
+    assert "grants" not in SELECT_FIELDS
+    fetcher = _ParamFetcher([{"meta": {"count": 0, "next_cursor": None}, "results": []}])
+    OpenAlexAdapter(_taxonomy()).fetch_page(_ctx(fetcher), Scope("query:surgical_robotics"), None)
+    assert "grants" not in fetcher.calls[0]["params"]["select"]
+    assert "authorships" in fetcher.calls[0]["params"]["select"]
 
 
 def test_a_pre_digitisation_filing_is_never_requested(tmp_path):
