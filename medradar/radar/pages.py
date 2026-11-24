@@ -129,6 +129,11 @@ GAP_TEXT = {
     "only_generic_words_in_this_name": "这个名称里只有通用词（如 spinal、system），无法定位到具体论文",
     "technology_map_unavailable": "科技地图接口没有挂载，或图谱库为空",
     "no_topic_evidence": "图谱里还没有任何主题证据",
+    "company_not_in_register": "设备注册表里没有匹配到这家公司",
+    "company_not_in_technology_map": "这家公司不在科技地图覆盖的 3 家公司之内（图谱目前只覆盖 Philips / GE / Dräger）",
+    "no_brand_for_this_company": "这家公司名下没有任何登记了品牌的设备",
+    "patent_only_searched_not_recorded": "专利库里有按这个名字搜到、但申请人字段并非本公司的记录；"
+                                         "这类不算本公司的专利，所以这里不展示",
 }
 
 
@@ -377,7 +382,7 @@ def device_dossier(timeline: Any, *, query: str) -> str:
     body = f"""
 <p class="small muted"><a href="/">← 重新查询</a></p>
 <h1>{esc(head.brand_name or head.version_or_model or query)}</h1>
-<p class="lede">{esc(head.company_name or "厂商未知")}
+<p class="lede"><a href="/company?q={esc(head.company_name or '')}">{esc(head.company_name or "厂商未知")}</a>
 {('· 型号 ' + esc(head.version_or_model)) if head.version_or_model else ''}</p>
 <div class="chips">{_identifier_chips(head)}</div>
 <div class="grid" style="margin-top:22px">{summary_cards}</div>
@@ -488,7 +493,7 @@ def map_page(*, payload: Mapping[str, Any]) -> str:
         codes = "".join(_chip(f"产品码 {c}") for c in (topic.get("product_codes") or [])[:6])
         cards.append(f"""
 <div class="card">
-  <h4>{esc(topic.get("label_zh") or topic.get("label_en"))}
+  <h4><a href="/topic?id={esc(topic.get("topic_id") or "")}">{esc(topic.get("label_zh") or topic.get("label_en"))}</a>
       <span class="muted small">· {esc(topic.get("label_en") or "")}</span></h4>
   <p class="muted small">{esc(topic.get("description") or "")}</p>
   <div class="chips">{codes}</div>
@@ -506,6 +511,281 @@ def map_page(*, payload: Mapping[str, Any]) -> str:
 {''.join(cards) or gap_note("no_topic_evidence")}
 """
     return layout(title="科技地图 · MedRadar", body=body, active="map")
+
+
+def topic_page(*, payload: Mapping[str, Any], topic_id: str) -> str:
+    """One technology topic, with every company in it and the citations behind each claim."""
+    topics = payload.get("topics") or []
+    topic = next((t for t in topics if str(t.get("topic_id")) == topic_id), None)
+    if topic is None:
+        return layout(
+            title="科技地图 · MedRadar",
+            body=(f'<h1>没有这个技术主题：{esc(topic_id)}</h1>'
+                  + gap_note("no_topic_evidence")
+                  + '<p class="small muted"><a href="/map">← 回到科技地图</a></p>'),
+            active="map")
+
+    blocks = []
+    for company in (topic.get("companies") or []):
+        evidence = company.get("evidence") or []
+        items = "".join(
+            f'<li><a href="{esc(item.get("source_url") or "#")}" rel="noopener" target="_blank">'
+            f'{esc((item.get("title") or "（无标题）")[:110])}</a>'
+            f'<div class="muted small">{esc(item.get("source") or "")}'
+            f' · {esc(item.get("confirmation") or "")}'
+            f' · {esc(item.get("record_type") or "")}'
+            f'{(" · " + esc(str(item.get("valid_from"))[:10])) if item.get("valid_from") else ""}'
+            f"</div></li>"
+            for item in evidence)
+        total = company.get("evidence_total")
+        shown = len(evidence)
+        note = ("" if total is None or shown >= int(total)
+                else f'<p class="muted small">显示 {shown} / 共 {n(total)} 条，'
+                     f'其余在实时雷达里按需展开。</p>')
+        name = company.get("display_name") or ""
+        blocks.append(f"""
+<div class="card">
+  <h4><a href="/company?q={esc(name)}">{esc(company.get("label_zh") or name)}</a>
+      <span class="muted small">· 共 {n(total)} 条证据</span></h4>
+  <ul style="margin:8px 0 0;padding-left:18px">{items or "<li class=muted>暂无公开证据</li>"}</ul>
+  {note}
+</div>""")
+
+    body = f"""
+<p class="small muted"><a href="/map">← 科技地图</a></p>
+<h1>{esc(topic.get("label_zh") or topic.get("label_en"))}</h1>
+<p class="lede">{esc(topic.get("label_en") or "")}</p>
+<p class="muted">{esc(topic.get("description") or "")}</p>
+<div class="chips">{''.join(_chip(f"产品码 {c}") for c in (topic.get("product_codes") or [])[:8])}</div>
+<h2>谁在这块</h2>
+<p class="muted small">每条都挂着公开出处，可直接点开核对。
+<code>TOPIC_RELATED</code> 是按文本规则关联的，比 <code>CONFIRMED</code> 弱。</p>
+{''.join(blocks) or gap_note("no_topic_evidence")}
+"""
+    return layout(title=f"{topic.get('label_zh') or topic_id} · MedRadar", body=body, active="map")
+
+
+def company_page(*, data: Mapping[str, Any]) -> str:
+    """One company: how much it has registered, filed, failed, is trialling, owns, and publishes."""
+    name = data.get("company_name") or data.get("query") or ""
+    if not data.get("found"):
+        return layout(
+            title="没有这家公司 · MedRadar",
+            body=(f'<h1>没有找到「{esc(name)}」</h1>'
+                  '<p class="lede">在设备注册表里按公司名匹配（先精确、后包含）。</p>'
+                  + gap_note("company_not_in_register")
+                  + '<p class="small muted"><a href="/">← 回到查询</a></p>'),
+            active="company")
+
+    codes = data.get("product_codes") or []
+    stats = "".join([
+        f'<div class="stat"><b>{n(data.get("devices"))}</b><span>注册设备</span></div>',
+        f'<div class="stat"><b>{n(data.get("clearances"))}</b><span>批文</span></div>',
+        f'<div class="stat"><b>{n(data.get("failures"))}</b><span>失效记录</span></div>',
+        f'<div class="stat"><b>{n(data.get("trials"))}</b><span>在研试验</span></div>',
+        f'<div class="stat"><b>{n(data.get("patents"))}</b><span>专利</span></div>',
+        f'<div class="stat"><b>{n(data.get("papers"))}</b><span>相关论文</span></div>',
+    ])
+
+    brands = data.get("brands") or []
+    brand_rows = "".join(
+        f'<tr><td><a href="/device?query={esc(item["brand"])}">{esc(item["brand"])}</a></td>'
+        f'<td class="num">{n(item["devices"])}</td></tr>'
+        for item in brands)
+    brand_html = (f'<div class="card"><table><thead><tr><th>品牌</th><th>设备数</th></tr></thead>'
+                  f'<tbody>{brand_rows}</tbody></table></div>'
+                  if brands else gap_note("no_brand_for_this_company"))
+
+    topics = data.get("topics") or []
+    topic_html = "".join(
+        f'<div class="card"><h4><a href="/topic?id={esc(t["topic_id"])}">'
+        f'{esc(t.get("label_zh") or t.get("topic_id"))}</a>'
+        f' <span class="muted small">· 本公司在其中有 {n(t.get("evidence_total"))} 条证据</span></h4>'
+        f'<p class="muted small">{esc(t.get("description") or "")}</p></div>'
+        for t in topics) or gap_note(data.get("topic_gap") or "no_topic_evidence")
+
+    trial_rows = "".join(
+        f'<tr><td>{esc((item.get("start_date") or "—")[:10])}</td>'
+        f'<td>{esc(item.get("nct_id") or "")}</td>'
+        f'<td>{esc((item.get("title") or "")[:80])}</td>'
+        f'<td class="num">{n(item.get("enrollment") or 0)}</td></tr>'
+        for item in (data.get("trial_recent") or [])[:8])
+    trial_note = ""
+    if trial_rows and data.get("trial_method") == "group":
+        trial_note = (f'<p class="muted small">按集团名「{esc(data.get("trial_sponsor") or "")}」'
+                      f'匹配，不是这个法人实体的精确统计。</p>')
+    trial_html = (f'<div class="card">{trial_note}<table><thead><tr><th>起始</th><th>NCT</th>'
+                  f'<th>标题</th><th>入组</th></tr></thead><tbody>{trial_rows}</tbody></table></div>'
+                  if trial_rows else gap_note(data.get("trial_gap") or "no_trial_for_this_sponsor"))
+
+    paper_rows = "".join(
+        f'<tr><td>{esc(str(item.get("year") or "—")[:10])}</td>'
+        f'<td>{esc(item.get("paper_id") or "")}</td>'
+        f'<td>{esc((item.get("title") or "")[:90])}</td></tr>'
+        for item in (data.get("paper_recent") or [])[:8])
+    paper_note = ""
+    if paper_rows:
+        terms = "、".join(esc(t) for t in (data.get("paper_terms") or [])[:4])
+        paper_note = (f'<p class="muted small">公司级匹配：论文里出现「{terms}」，'
+                      f'不等于研究这台设备。</p>')
+    paper_html = (f'<div class="card">{paper_note}<table><thead><tr><th>年份</th><th>编号</th>'
+                  f'<th>标题</th></tr></thead><tbody>{paper_rows}</tbody></table></div>'
+                  if paper_rows else gap_note(data.get("paper_gap") or "no_paper_mentions_this_device"))
+
+    patent_rows = "".join(
+        f'<tr><td>{esc((item.get("patent_date") or "—")[:10])}</td>'
+        f'<td>{esc(item.get("patent_id") or "")}</td>'
+        f'<td>{esc((item.get("title") or "")[:90])}</td></tr>'
+        for item in (data.get("patent_recent") or [])[:8])
+    patent_html = (f'<div class="card"><table><thead><tr><th>公开日</th><th>公开号</th>'
+                   f'<th>标题</th></tr></thead><tbody>{patent_rows}</tbody></table></div>'
+                   if patent_rows else gap_note(data.get("patent_gap") or "patent_bulk_tables_absent"))
+
+    body = f"""
+<p class="small muted"><a href="/">← 重新查询</a></p>
+<h1>{esc(name)}</h1>
+<p class="lede">{esc(data.get("matched_by") or "")} · DUNS {esc(data.get("labeler_duns") or "—")}</p>
+<div class="grid">{stats}</div>
+
+<h2>1 · 它注册了哪些器械</h2>
+<p class="muted small">来源：FDA UDI 设备注册表。点击品牌进入设备档案。</p>
+{brand_html}
+<p class="muted small">产品码（{n(len(codes))} 个，前 20）：
+{esc("、".join(codes[:20]) or "—")}</p>
+
+<h2>2 · 它在哪些技术方向上有公开证据</h2>
+<p class="muted small">来自科技地图：每个方向一条，点进去看具体出处。</p>
+{topic_html}
+
+<h2>3 · 在研试验</h2>
+{trial_html}
+
+<h2>4 · 相关论文</h2>
+{paper_html}
+
+<h2>5 · 专利</h2>
+{patent_html}
+"""
+    return layout(title=f"{name} · MedRadar", body=body, active="company")
+
+
+def _company_data(store: Any, query: str, *, snapshot: Mapping[str, Any]) -> dict[str, Any]:
+    """Everything the company page shows, in one place, with each absence named."""
+    from .papers_index import papers_for_tokens, tokens as tokenise
+    from .patents_bulk import patents_for_assignee
+    from .trials import trials_for_sponsor
+
+    out: dict[str, Any] = {"query": query, "found": False}
+    row = None
+    try:
+        row = store.conn.execute(
+            "SELECT labeler_duns, company_name, device_count FROM udi_company "
+            "WHERE company_name = ? COLLATE NOCASE ORDER BY device_count DESC LIMIT 1",
+            (query,)).fetchone()
+        matched_by = "公司名精确匹配"
+        if row is None:
+            row = store.conn.execute(
+                "SELECT labeler_duns, company_name, device_count FROM udi_company "
+                "WHERE company_name LIKE ? ORDER BY device_count DESC LIMIT 1",
+                (f"%{query}%",)).fetchone()
+            matched_by = "公司名包含匹配"
+    except Exception:  # noqa: BLE001
+        row = None
+    if row is None:
+        return out
+
+    duns, name, devices = str(row[0] or ""), str(row[1] or ""), int(row[2] or 0)
+    out.update({"found": True, "labeler_duns": duns, "company_name": name,
+                "devices": devices, "matched_by": matched_by})
+
+    def scalar(sql: str, args: Sequence[Any]) -> int:
+        try:
+            value = store.conn.execute(sql, args).fetchone()[0]
+            return int(value) if value is not None else 0
+        except Exception:  # noqa: BLE001
+            return 0
+
+    out["clearances"] = scalar(
+        "SELECT COUNT(DISTINCT submission_number) FROM udi_premarket WHERE labeler_duns = ?",
+        (duns,))
+    try:
+        codes = [str(r[0]) for r in store.conn.execute(
+            "SELECT DISTINCT j.value FROM udi_device d, json_each(d.product_codes) j "
+            "WHERE d.labeler_duns = ? LIMIT 200", (duns,))]
+    except Exception:  # noqa: BLE001 - a store without JSON1 still renders the rest
+        codes = []
+    out["product_codes"] = codes
+    if codes:
+        placeholders = ",".join("?" for _ in codes)
+        out["failures"] = scalar(
+            f"SELECT COUNT(*) FROM maude_failure_index WHERE product_code IN ({placeholders})",
+            codes)
+    else:
+        out["failures"] = 0
+    try:
+        out["brands"] = [
+            {"brand": str(r[0]), "devices": int(r[1])}
+            for r in store.conn.execute(
+                "SELECT brand_name, COUNT(*) FROM udi_device WHERE labeler_duns = ? "
+                "AND brand_name IS NOT NULL AND brand_name <> '' "
+                "GROUP BY brand_name ORDER BY 2 DESC LIMIT 12", (duns,))
+        ]
+    except Exception:  # noqa: BLE001
+        out["brands"] = []
+
+    # The registry holds the legal entity ("MEDTRONIC SOFAMOR DANEK, INC."); registry sponsors are
+    # filed under the group ("Medtronic"). Try the full name, then the first distinctive token, and
+    # label the weaker match rather than reporting zero trials for a company that runs thousands.
+    trials = trials_for_sponsor(store, name, limit=8)
+    trial_method = "exact"
+    if not int(trials.get("trials") or 0):
+        first = name.replace(",", " ").split()
+        candidate = first[0] if first and len(first[0]) >= 5 else ""
+        if candidate:
+            trials = trials_for_sponsor(store, candidate, limit=8)
+            trial_method = "group"
+    out["trials"] = int(trials.get("trials") or 0)
+    out["trial_recent"] = trials.get("recent") or []
+    out["trial_method"] = trial_method
+    out["trial_sponsor"] = trials.get("organization") or trials.get("sponsor") or name
+    out["trial_gap"] = None if out["trials"] else "no_trial_for_this_sponsor"
+
+    patents = patents_for_assignee(store, name, limit=8)
+    out["patents"] = int(patents.get("patents") or 0)
+    out["patent_recent"] = patents.get("recent") or []
+    out["patent_searched_for"] = int(patents.get("searched_for") or 0)
+    out["patent_gap"] = None if out["patents"] else (
+        "patent_only_searched_not_recorded" if out["patent_searched_for"]
+        else "patent_bulk_tables_absent")
+
+    # A company name is *supposed* to be common: "medtronic" occurs in 117 of 2,552 papers, which
+    # the device-level 2% cut-off would call generic. At company level that frequency is the signal,
+    # so the allowance is raised and the weaker claim is labelled in the page.
+    papers = papers_for_tokens(store, tokenise(name), max_df_ratio=0.10)
+    out["papers"] = int(papers.get("papers") or 0)
+    out["paper_recent"] = papers.get("recent") or []
+    out["paper_terms"] = papers.get("terms") or []
+    out["paper_gap"] = (None if out["papers"]
+                        else ("paper_index_absent" if not papers.get("available")
+                              else "no_paper_mentions_this_device"))
+
+    topics = []
+    for topic in snapshot.get("topics") or []:
+        for company in topic.get("companies") or []:
+            if str(company.get("organization_id") or "") and (
+                    str(company.get("display_name") or "").lower() == name.lower()
+                    or str(company.get("organization_id") or "").lower() in name.lower()
+                    or name.lower().startswith(str(company.get("display_name") or "###").lower())):
+                topics.append({"topic_id": topic.get("topic_id"),
+                               "label_zh": topic.get("label_zh"),
+                               "description": topic.get("description"),
+                               "evidence_total": company.get("evidence_total")})
+                break
+    out["topics"] = topics
+    # "This company is not in the graph" and "the graph has no evidence" are different statements.
+    out["topic_gap"] = None if topics else (
+        "company_not_in_technology_map" if (snapshot.get("topics")) else "no_topic_evidence")
+    return out
 
 
 def pages_router(service: Any, *, endpoints: Mapping[str, Any] | None = None) -> Any:
@@ -645,6 +925,44 @@ def pages_router(service: Any, *, endpoints: Mapping[str, Any] | None = None) ->
         except Exception:  # noqa: BLE001 - the coverage page must render even if meta fails
             meta["sources"] = []
         return HTMLResponse(sources_page(meta=meta))
+
+    def _snapshot() -> Mapping[str, Any]:
+        path = Path(str(getattr(service.paths, "root", ""))) / "map_page.json"
+        if not path.is_file():
+            return {}
+        try:
+            payload = json.loads(path.read_text(encoding="utf-8"))
+        except (OSError, ValueError):
+            return {}
+        return payload if isinstance(payload, Mapping) else {}
+
+    @router.get("/topic", response_class=HTMLResponse)
+    def topic_view(id: str | None = Query(None, max_length=80)) -> Any:
+        if not id:
+            return HTMLResponse(layout(
+                title="科技地图 · MedRadar",
+                body='<h1>缺少主题 id</h1><p><a href="/map">← 科技地图</a></p>', active="map"))
+        return HTMLResponse(topic_page(payload=_snapshot(), topic_id=id))
+
+    @router.get("/company", response_class=HTMLResponse)
+    def company_view(q: str | None = Query(None, max_length=120)) -> Any:
+        if not q:
+            return HTMLResponse(layout(
+                title="公司 · MedRadar",
+                body='<h1>缺少公司名</h1><p><a href="/">← 查询</a></p>', active="company"))
+
+        def render() -> str:
+            store = _store()
+            if store is None:
+                return layout(title="设备库不存在 · MedRadar",
+                              body=gap_note("device_not_in_udi_register"), active="company")
+            try:
+                data = _company_data(store, q, snapshot=_snapshot())
+            finally:
+                store.close()
+            return company_page(data=data)
+
+        return HTMLResponse(cached(f"company:{q}", 300.0, render))
 
     @router.get("/map", response_class=HTMLResponse)
     def map_view() -> Any:

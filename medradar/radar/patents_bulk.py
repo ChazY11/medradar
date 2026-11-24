@@ -301,24 +301,40 @@ def _norm(raw: Any) -> str | None:
 
 # ------------------------------------------------------------------------ queries
 def patents_for_assignee(reference, name: str, *, limit: int = 10) -> dict[str, Any]:
-    """Patents held by one organisation, matched on the normalised disambiguated name."""
+    """Patents whose recorded applicant is this organisation.
+
+    The distinction that matters: a row written by a search for this name is not the same fact as a
+    row whose applicant field says this name. Measured on the first Google Patents fill - a search
+    for one manufacturer returned an exercise strap, a nail lamp and a car trunk organiser, and
+    counting those as "this company's patents" put five unrelated products on its page.
+
+    So ``applicant`` rows are the answer. Rows that only exist because this name was *searched for*
+    are counted separately and returned under ``searched_for`` - visible, never mixed in.
+    """
     ensure_tables(reference)
     key = _norm(name)
     if not key:
-        return {"organization": name, "patents": 0, "recent": [], "method": "none"}
+        return {"organization": name, "patents": 0, "recent": [], "searched_for": 0,
+                "method": "none"}
     total = reference.conn.execute(
         "SELECT COUNT(DISTINCT patent_id) FROM bulk_patent_assignee "
-        "WHERE organization_norm = ?", (key,)).fetchone()[0]
+        "WHERE organization_norm = ? AND COALESCE(assignee_type, 'applicant') <> 'query_matched'",
+        (key,)).fetchone()[0]
     recent = [
         {"patent_id": row[0], "title": row[1], "patent_date": row[2]}
         for row in reference.conn.execute(
             "SELECT p.patent_id, p.title, p.patent_date "
             "FROM bulk_patent_assignee a JOIN bulk_patent p ON p.patent_id = a.patent_id "
             "WHERE a.organization_norm = ? "
+            "AND COALESCE(a.assignee_type, 'applicant') <> 'query_matched' "
             "ORDER BY p.patent_date DESC LIMIT ?", (key, limit))
     ]
+    searched = reference.conn.execute(
+        "SELECT COUNT(DISTINCT patent_id) FROM bulk_patent_assignee "
+        "WHERE organization_norm = ? AND assignee_type = 'query_matched'", (key,)).fetchone()[0]
     return {"organization": name, "patents": int(total), "recent": recent,
-            "method": "disambiguated_assignee"}
+            "searched_for": int(searched),
+            "method": "disambiguated_assignee" if total else "no_applicant_row"}
 
 
 def organisation_patents(reference, organization: str, *, limit: int = 10) -> dict[str, Any]:

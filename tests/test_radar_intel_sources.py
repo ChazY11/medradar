@@ -2529,7 +2529,7 @@ def test_the_pages_router_mounts_at_the_site_root():
             corpus = Path("/nonexistent/corpus")
 
     paths = [route.path for route in pages_router(_Svc()).routes]
-    assert paths == ["/", "/device", "/sources", "/map"]
+    assert paths == ["/", "/device", "/sources", "/topic", "/company", "/map"]
 
 
 def test_the_alpha_gate_lets_the_new_pages_through_and_nothing_else():
@@ -2572,6 +2572,99 @@ def test_an_empty_map_says_so_instead_of_rendering_a_blank_page():
 
     page = map_page(payload={"topics": [], "counts": {}})
     assert "no_topic_evidence" in page
+
+
+def test_the_topic_page_lists_every_company_with_its_citations():
+    from medradar.radar.pages import topic_page
+
+    page = topic_page(payload={"topics": [{
+        "topic_id": "ecg_analysis", "label_zh": "ECG 与心电分析", "description": "d",
+        "product_codes": ["DPS"],
+        "companies": [{"organization_id": "philips", "display_name": "Philips", "label_zh": "飞利浦",
+                       "evidence_total": 41,
+                       "evidence": [{"title": "An ECG study", "source": "pubmed",
+                                     "confirmation": "CONFIRMED", "record_type": "publication",
+                                     "valid_from": "2025-01-02T00:00:00Z",
+                                     "source_url": "https://pubmed.ncbi.nlm.nih.gov/9/"}]}]}]},
+        topic_id="ecg_analysis")
+    assert "ECG 与心电分析" in page
+    assert "/company?q=Philips" in page
+    assert "https://pubmed.ncbi.nlm.nih.gov/9/" in page
+    assert "共 41 条证据" in page
+    # The page says it is showing a subset rather than pretending the list is complete.
+    assert "显示 1 / 共 41 条" in page
+
+
+def test_an_unknown_topic_id_is_a_named_dead_end():
+    from medradar.radar.pages import topic_page
+
+    page = topic_page(payload={"topics": []}, topic_id="does_not_exist")
+    assert "没有这个技术主题" in page
+    assert 'href="/map"' in page
+
+
+def test_the_company_page_shows_counts_and_names_each_absence(tmp_path):
+    from medradar.radar.pages import company_page
+
+    page = company_page(data={
+        "found": True, "company_name": "ARUM DENTISTRY Co., Ltd.", "query": "ARUM",
+        "labeler_duns": "557821945", "devices": 3, "clearances": 1, "failures": 12,
+        "trials": 0, "patents": 0, "papers": 0, "matched_by": "公司名精确匹配",
+        "product_codes": ["DZE", "NHA"],
+        "brands": [{"brand": "ARUM NB 1 SA Fixture", "devices": 2}],
+        "topics": [{"topic_id": "dental", "label_zh": "牙科种植",
+                    "description": "d", "evidence_total": 1}],
+        "trial_gap": "no_trial_for_this_sponsor", "patent_gap": "patent_bulk_tables_absent",
+        "paper_gap": "paper_index_absent"})
+    assert "ARUM DENTISTRY Co., Ltd." in page
+    assert "注册设备" in page and "批文" in page and "失效记录" in page
+    assert "/device?query=ARUM NB 1 SA Fixture" in page
+    assert "/topic?id=dental" in page
+    for code in ("no_trial_for_this_sponsor", "patent_bulk_tables_absent", "paper_index_absent"):
+        assert code in page
+
+
+def test_an_unknown_company_is_a_named_dead_end():
+    from medradar.radar.pages import company_page
+
+    page = company_page(data={"query": "NoSuchCompany", "found": False})
+    assert "没有找到" in page and "company_not_in_register" in page
+
+
+def test_the_gate_allows_the_drill_down_pages():
+    from medradar.radar.alpha_gate import path_allowed
+
+    for path in ("/topic", "/company", "/topic/", "/company/"):
+        assert path_allowed(path) is True, path
+
+
+def test_a_searched_for_patent_is_never_counted_as_this_companys_patent(tmp_path):
+    """Measured on the first Google fill: a search for one manufacturer returned an exercise strap,
+    a nail lamp and a car trunk organiser. Counting those put five unrelated products on its page."""
+    from medradar.radar.patents_bulk import ensure_tables, patents_for_assignee
+    from medradar.radar.reference import UdiReference
+
+    store = UdiReference(tmp_path / "reference.db")
+    ensure_tables(store)
+    rows = [
+        ("US90000001B2", "A spinal rod", "2024-01-01"),
+        ("US90000002B2", "A nail lamp", "2024-02-01"),      # only matched by the search term
+    ]
+    for patent_id, title, date in rows:
+        store.conn.execute("INSERT INTO bulk_patent VALUES (?,?,?,?)",
+                           (patent_id, title, date, "grant"))
+    store.conn.execute("INSERT INTO bulk_patent_assignee VALUES (?,?,?,?,?)",
+                       ("US90000001B2", "a1", "Medtronic", "MEDTRONIC", "applicant"))
+    store.conn.execute("INSERT INTO bulk_patent_assignee VALUES (?,?,?,?,?)",
+                       ("US90000002B2", "q1", "Medtronic", "MEDTRONIC", "query_matched"))
+    store.conn.commit()
+
+    result = patents_for_assignee(store, "Medtronic")
+    assert result["patents"] == 1
+    assert [item["patent_id"] for item in result["recent"]] == ["US90000001B2"]
+    # The search-derived row is still visible as a separate count, never mixed into the total.
+    assert result["searched_for"] == 1
+    store.close()
 
 
 def test_a_pre_digitisation_filing_is_never_requested(tmp_path):
