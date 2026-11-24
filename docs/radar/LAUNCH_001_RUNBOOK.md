@@ -43,6 +43,9 @@ sudo -u medradar MEDRADAR_RADAR_DIR=/srv/medradar/data/radar \
   /srv/medradar/radar-venv/bin/python -m medradar radar status
 ```
 
+`healthz` is not evidence that the deployed code is live: it exists in every release and answers
+200 even when the process imported an older tree. Section 7.1 has the check that does prove it.
+
 `radar status` prints per-source state, watermark, consecutive failures, detection latency and an
 integrity check. `NO_CHANGE` is a real result and is printed as one.
 
@@ -155,7 +158,47 @@ If only the tunnel is unhealthy, restart `medradar-radar-tunnel.service`; the da
 scheduler are unaffected. If the alpha credential env file is lost, the web service fails closed
 (401 for everything except `/healthz`) rather than opening up.
 
+### 7.1 Switching a release without being lied to
+
+**Measured fault (2026-11-24). The service ran for hours on a release nobody deployed.**
+
+The unit started with `WorkingDirectory=/srv/medradar/radar/app` and
+`ExecStart=... python -m medradar.product.web`. `python -m` puts the working directory at
+`sys.path[0]`, so the `medradar` package inside that directory won over the virtualenv's editable
+install. `app` was a symlink to an older release than the venv pointed at, so the process imported
+the older tree: `/api/radar/device` and `/api/radar/device/view` were 404 and `/api/radar/meta`
+had no `capabilities` key, while every verification run *inside the venv* passed, because the venv
+and the symlink disagreed and only the service used the symlink.
+
+`/healthz` and the workbench UI kept working because they exist in every release, which is why the
+fault was invisible.
+
+Two things are now true, and both must stay true:
+
+1. `WorkingDirectory=/srv/medradar` (via
+   `/etc/systemd/system/medradar-radar-web.service.d/cwd.conf`). That directory contains no
+   `medradar` package, so the editable install is the only possible source of the code.
+2. `app` and the editable install point at the same release.
+
+Verify the running process, not just the import path:
+
+```bash
+PID=$(systemctl show medradar-radar-web -p MainPID --value)
+readlink /proc/$PID/cwd                    # must be /srv/medradar, not a release directory
+readlink -f /srv/medradar/radar/app        # must equal the release the venv was installed from
+grep -oE "releases/[^/]+/medradar" \
+  /srv/medradar/radar-venv/lib/python3*/site-packages/__editable___medradar_*_finder.py | sort -u
+# then answer from the service itself, which is the only opinion that counts:
+curl -s -u "$USER:$PASS" http://127.0.0.1:8791/api/radar/meta | grep -c capabilities
+curl -s -o /dev/null -w '%{http_code}\n' -u "$USER:$PASS" \
+  'http://127.0.0.1:8791/api/radar/device?query=X1209255'      # 200, not 404
+```
+
+A 404 from an `/api/radar/...` path means the router answered with the SPA catch-all, i.e. the
+route is absent from the code the process actually imported - not that the URL is wrong.
+
 ## 8. Resource envelope (measured on this host)
+
 
 `systemd` cgroup limits in the unit files are set from measurements on the 2 vCPU / 3.6 GiB
 Lighthouse instance; see `docs/radar/LAUNCH_001_ACCEPTANCE.md` for the numbers. The scheduler and
