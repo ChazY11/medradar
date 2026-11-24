@@ -106,7 +106,11 @@ font-size:12.5px}
 .kv div{display:flex;gap:10px;padding:3px 0}
 .kv dt{color:var(--muted);min-width:96px}
 .kv dd{margin:0}
-@media(max-width:600px){h1{font-size:21px}.wrap{padding:0 14px}th,td{padding:6px 6px}}
+@media(max-width:600px){h1{font-size:21px}.wrap{padding:0 14px}th,td{padding:6px 6px}
+/* A four-column evidence table cannot fit 375 px without either wrapping into mush or running off
+   the screen. Let it scroll inside its own box instead of pushing the page sideways. */
+table{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch}
+.stat b{font-size:18px}}
 """
 
 _CSS = f"<style>{CSS}</style>"
