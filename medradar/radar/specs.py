@@ -106,6 +106,22 @@ def _is_clinical_statistics(clause: str) -> bool:
     return any(marker in lowered for marker in STATISTICS_MARKERS)
 
 
+#: Page furniture and federal-paperwork notices. Measured on K163337 and K223602: "Page 2 of 13"
+#: and "DO NOT SEND YOUR COMPLETED FORM TO THE PRA STAFF EMAIL ADDRESS" both yielded parameters
+#: ("22.9 cm", "79 h"). They are the two largest junk classes and both are exactly matchable.
+BOILERPLATE_MARKERS = (
+    "page ", " of 1", " of 2", " of 3", " of 4", " of 5", " of 6", " of 7", " of 8", " of 9",
+    "do not send", "omb ", "paperwork reduction", "form approved", "pra ", "expiration date",
+    "according to the paperwork", "public reporting burden", "table of contents",
+    "confidential", "all rights reserved", "fda form", "cdrh", "rev. ", "version ",
+)
+
+
+def _is_boilerplate(clause: str) -> bool:
+    lowered = f" {clause.lower()} "
+    return any(marker in lowered for marker in BOILERPLATE_MARKERS)
+
+
 @dataclass
 class Parameter:
     value: str
@@ -166,6 +182,9 @@ def extract_parameters(text: str, *, document: str = "") -> list[Parameter]:
         clause = _clause(text, match.start(), match.end())
         if _is_clinical_statistics(clause):
             # A percentage with a p-value beside it is a result, not a specification.
+            continue
+        if _is_boilerplate(clause):
+            # Page furniture and OMB notices produce confident-looking numbers that are not specs.
             continue
         # "0.014 inch" and "0.014 in" are the same claim; dedupe on the normalised triple.
         key = (value, unit, clause[:80])
