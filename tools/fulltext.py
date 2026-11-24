@@ -58,13 +58,19 @@ def _fetcher() -> PoliteFetcher:
     return PoliteFetcher(
         user_agent=USER_AGENT,
         policies={
-            "www.ebi.ac.uk": HostPolicy(requests_per_second=2.0),
+            # Discovery. EBI answers a search page in ~15 s on its own; 2/s is already more than
+            # the host can deliver and keeps us from stacking requests behind that latency.
+            "www.ebi.ac.uk": HostPolicy(requests_per_second=2.0, timeout_seconds=60.0),
+            # Full text. Measured 163 KB/s per article and no 503s, and every S3 GET is a distinct
+            # object, so pacing here is about being a good citizen rather than about capacity.
+            "pmc-oa-opendata.s3.amazonaws.com": HostPolicy(requests_per_second=10.0,
+                                                          timeout_seconds=45.0),
             "api.medrxiv.org": HostPolicy(requests_per_second=1.0),
             "api.biorxiv.org": HostPolicy(requests_per_second=1.0),
             "www.medrxiv.org": HostPolicy(requests_per_second=1.0),
             "www.biorxiv.org": HostPolicy(requests_per_second=1.0),
         },
-        max_requests=50_000,
+        max_requests=100_000,
     )
 
 
@@ -231,7 +237,6 @@ def fetch_preprints(fetcher: PoliteFetcher, out_dir: Path, days: int, limit: int
                 if _out_path(out_dir, identifier).exists():
                     stats["skipped_cached"] += 1
                     continue
-                time.sleep(SECONDS_BETWEEN)
                 try:
                     response = fetcher.get_bytes(jats, allow_not_found=True)
                 except Exception as error:  # noqa: BLE001

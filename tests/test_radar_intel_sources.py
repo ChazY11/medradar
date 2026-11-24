@@ -2002,6 +2002,56 @@ def test_heading_numbering_is_stripped_without_eating_the_first_letter():
     assert _clean_heading("Results.") == "Results"
 
 
+# --------------------------------------------------- device parameters from summaries
+def test_parameters_carry_their_clause_and_the_manufacturer_assertion():
+    from medradar.radar.specs import ASSERTION, extract_parameters
+
+    text = ("The guidewire has a 0.014 inch tip and is 190 cm long. "
+            "Inflation must not exceed 120 mmHg.")
+    found = extract_parameters(text, document="K123456")
+    assert found, "expected parameters"
+    assert all(p.assertion == ASSERTION for p in found)
+    assert all(p.sentence for p in found)          # a bare number is not a specification
+    units = {(p.value, p.unit, p.quantity) for p in found}
+    assert ("0.014", "in", "length") in units
+    assert ("190", "cm", "length") in units
+    assert ("120", "mmHg", "pressure") in units
+    assert found[0].document == "K123456"
+
+
+def test_a_parameter_without_its_sentence_is_never_returned_alone():
+    from medradar.radar.specs import extract_parameters
+
+    clause = extract_parameters("Tip diameter 0.035 in.", document="K1")[0].sentence
+    assert "0.035 in" in clause
+    assert "diameter" in clause.lower()
+
+
+def test_units_are_normalised_and_ambiguous_words_need_a_digit():
+    from medradar.radar.specs import extract_parameters, normalise_unit
+
+    assert normalise_unit("MMHG") == ("mmHg", "pressure")
+    assert normalise_unit("ug") == ("µg", "mass")
+    assert normalise_unit("nonsense") is None
+    # "g" as a unit is only accepted directly after a digit; the word "g" alone is not a gram.
+    assert extract_parameters("we went to 5 g of gel")[0].unit == "g"
+    assert extract_parameters("the group g of patients") == []
+
+
+def test_only_spec_bearing_sections_are_read():
+    """A number in unrelated boilerplate must not become a device parameter."""
+    from medradar.radar.specs import specs_from_sections
+
+    result = specs_from_sections("K1", {
+        "device_description": "The catheter is 6 Fr with a 0.038 in lumen.",
+        "regulatory_info": "Submitted under section 510(k), 90 days review.",
+    })
+    assert result.document_sections == ["device_description"]
+    quantities = set(result.by_quantity)
+    assert "gauge" in quantities and "length" in quantities
+    assert all(p.document == "K1" for p in result.parameters)
+
+
 def test_a_pre_digitisation_filing_is_never_requested(tmp_path):
     """Measured: 0 of 60 sampled filings from 1998-2009 have a PDF at any path shape.
 
