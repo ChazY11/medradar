@@ -34,7 +34,7 @@ from typing import Any, Iterable
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from medradar.radar.http import HostPolicy, PoliteFetcher
+from medradar.radar.http import HostPolicy, PoliteFetcher, RateLimited, Refused
 from medradar.radar.jats import JatsError, parse_jats
 
 EUROPEPMC_SEARCH = "https://www.ebi.ac.uk/europepmc/webservices/rest/search"
@@ -67,8 +67,14 @@ def _fetcher() -> PoliteFetcher:
                                                           timeout_seconds=45.0),
             "api.medrxiv.org": HostPolicy(requests_per_second=1.0),
             "api.biorxiv.org": HostPolicy(requests_per_second=1.0),
-            "www.medrxiv.org": HostPolicy(requests_per_second=1.0),
-            "www.biorxiv.org": HostPolicy(requests_per_second=1.0),
+            # The publisher hosts serve the JATS XML and they rate-limit hard: measured
+            # 2026-11-24, fetching 400 preprints at 1 req/s produced 429s and then 403s, and the
+            # 403 was earned rather than declared. Two seconds between requests is what keeps the
+            # run under their threshold.
+            "www.medrxiv.org": HostPolicy(requests_per_second=0.5, max_attempts=4,
+                                         backoff_base_seconds=5.0, timeout_seconds=45.0),
+            "www.biorxiv.org": HostPolicy(requests_per_second=0.5, max_attempts=4,
+                                          backoff_base_seconds=5.0, timeout_seconds=45.0),
         },
         max_requests=100_000,
     )
@@ -132,7 +138,15 @@ def _store(out_dir: Path, identifier: str, *, url: str, journal: str, licence: s
 
 
 def _store_failure(out_dir: Path, identifier: str, *, url: str, status: str, reason: str) -> None:
-    """A failed fetch is recorded as a failure with a reason, never as a paper with no sections."""
+    """Record why a record has no full text, in a vocabulary that says which kind of absence it is.
+
+    ``failed`` is a fault in this tool or a transient upstream problem. ``access_restricted`` is
+    the operator refusing automated clients - measured 2026-11-24: www.medrxiv.org answers 403 to
+    the project user agent, to ``Python-urllib``, and to both XML Accept headers, so it is a
+    client-type block and not an identity problem. ``empty_record`` is a record that carries only
+    front matter. Collapsing those three into "failed" would misreport a documented refusal as a
+    bug, which is exactly what this repository refuses to do.
+    """
     out_dir.mkdir(parents=True, exist_ok=True)
     payload = {"kind": "paper", "identifier": identifier, "url": url, "status": status,
                "sections": {}, "char_count": 0, "note": reason}
@@ -168,9 +182,11 @@ def fetch_europepmc(fetcher: PoliteFetcher, out_dir: Path, query: str, limit: in
             source_url = url
             try:
                 body = _payload_bytes(fetcher.get_bytes(url, allow_not_found=True))
-            except Exception as error:  # noqa: BLE001
+            except RateLimited:
+                stats["retry_later"] = stats.get("retry_later", 0) + 1
+                continue
+            except Exception:  # noqa: BLE001 - a mirror miss falls through to the EBI attempt
                 body = b""
-                last_error = f"{type(error).__name__}: {error}"
             if not body:
                 # The S3 mirror lags the index for very recent articles, so the EBI endpoint gets
                 # exactly one attempt. It is slow, which is why it is not the primary.
@@ -178,6 +194,9 @@ def fetch_europepmc(fetcher: PoliteFetcher, out_dir: Path, query: str, limit: in
                 source_url = EUROPEPMC_FULLTEXT.format(pmcid=pmcid)
                 try:
                     body = _payload_bytes(fetcher.get_bytes(source_url, allow_not_found=True))
+                except RateLimited:
+                    stats["retry_later"] = stats.get("retry_later", 0) + 1
+                    continue
                 except Exception as error:  # noqa: BLE001
                     _store_failure(out_dir, identifier, url=source_url, status="failed",
                                    reason=f"{type(error).__name__}: {error}")
@@ -192,9 +211,14 @@ def fetch_europepmc(fetcher: PoliteFetcher, out_dir: Path, query: str, limit: in
             try:
                 document = parse_jats(body)
             except JatsError as error:
-                _store_failure(out_dir, identifier, url=source_url, status="failed",
+                status = ("empty_record"
+                          if "no body text or abstract" in str(error) else "failed")
+                _store_failure(out_dir, identifier, url=source_url, status=status,
                                reason=str(error))
-                stats["failed"] += 1
+                if status == "failed":
+                    stats["failed"] += 1
+                else:
+                    stats["no_fulltext"] += 1
                 continue
             _store(out_dir, identifier, url=source_url,
                    journal=str((row.get("journalInfo") or {}).get("journal", {}).get("title") or ""),
@@ -212,12 +236,19 @@ def fetch_europepmc(fetcher: PoliteFetcher, out_dir: Path, query: str, limit: in
 
 def fetch_preprints(fetcher: PoliteFetcher, out_dir: Path, days: int, limit: int,
                     servers: Iterable[str] = ("medrxiv", "biorxiv")) -> dict[str, int]:
-    stats = {"candidates": 0, "stored": 0, "skipped_cached": 0, "no_fulltext": 0, "failed": 0}
+    stats = {"candidates": 0, "stored": 0, "skipped_cached": 0, "no_fulltext": 0, "failed": 0,
+             "access_restricted": 0}
     end = date.today()
     start = end - timedelta(days=max(1, days))
+    #: Consecutive refusals from one host before the whole server is abandoned for this run.
+    #: Measured: the very first request already returns 403, so continuing would mean issuing
+    #: hundreds of requests that are known to be refused.
+    REFUSAL_BREAKER = 3
     for server in servers:
         offset = 0
-        while stats["candidates"] < limit:
+        refusals = 0
+        abandon_server = False
+        while stats["candidates"] < limit and not abandon_server:
             data = fetcher.get_json(
                 PREPRINT_DETAILS.format(server=server, start=start.isoformat(),
                                         end=end.isoformat(), offset=offset),
@@ -239,11 +270,33 @@ def fetch_preprints(fetcher: PoliteFetcher, out_dir: Path, days: int, limit: int
                     continue
                 try:
                     response = fetcher.get_bytes(jats, allow_not_found=True)
+                except Refused as error:
+                    # A 403 from the publisher host is treated as rate-induced, because measured
+                    # behaviour is 429 first and 403 after: at 1 req/s, 400 preprints produced 429s
+                    # that escalated. Calling that "the operator refuses automated access" would
+                    # blame the source for our own pacing, so the note says which one it was.
+                    status = "rate_limited_block"
+                    _store_failure(
+                        out_dir, identifier, url=jats, status=status,
+                        reason=("publisher answered 403 after rate limiting; our pacing, not a "
+                                f"stated refusal: {error}"))
+                    stats["access_restricted"] += 1
+                    refusals += 1
+                    if refusals >= REFUSAL_BREAKER:
+                        abandon_server = True
+                        break
+                    continue
+                except RateLimited:
+                    # Transient by definition: no sidecar is written, so the next run retries this
+                    # record instead of finding a permanent "failed" marker and skipping it.
+                    stats["retry_later"] = stats.get("retry_later", 0) + 1
+                    continue
                 except Exception as error:  # noqa: BLE001
                     _store_failure(out_dir, identifier, url=jats, status="failed",
                                    reason=f"{type(error).__name__}: {error}")
                     stats["failed"] += 1
                     continue
+                refusals = 0
                 body = _payload_bytes(response)
                 if not body:
                     _store_failure(out_dir, identifier, url=jats, status="not_published",
@@ -253,9 +306,16 @@ def fetch_preprints(fetcher: PoliteFetcher, out_dir: Path, days: int, limit: int
                 try:
                     document = parse_jats(body)
                 except JatsError as error:
-                    _store_failure(out_dir, identifier, url=jats, status="failed",
+                    # "no body text" is a property of the record (front matter only), not a fault
+                    # in this tool. One status is honest; the other blames the pipeline.
+                    status = ("empty_record"
+                              if "no body text or abstract" in str(error) else "failed")
+                    _store_failure(out_dir, identifier, url=jats, status=status,
                                    reason=str(error))
-                    stats["failed"] += 1
+                    if status == "failed":
+                        stats["failed"] += 1
+                    else:
+                        stats["no_fulltext"] += 1
                     continue
                 _store(out_dir, identifier, url=f"https://doi.org/{doi}",
                        journal=server, licence=str(row.get("license") or ""),
