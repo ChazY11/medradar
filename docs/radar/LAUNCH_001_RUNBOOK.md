@@ -197,8 +197,32 @@ curl -s -o /dev/null -w '%{http_code}\n' -u "$USER:$PASS" \
 A 404 from an `/api/radar/...` path means the router answered with the SPA catch-all, i.e. the
 route is absent from the code the process actually imported - not that the URL is wrong.
 
-## 8. Resource envelope (measured on this host)
+## 7.2 The nightly acquisition pass
 
+`deploy/preprint_nightly.sh` is deployed as `/srv/medradar/intel/preprint_nightly.sh` and run by
+`medradar-preprint.timer` at 04:20 with up to fifteen minutes of jitter.
+
+It does three things and is allowed to fail at all of them:
+
+1. one preprints pass — 200 candidates over a 21-day window, at 0.5 requests/second. Measured
+   2026-11-24: 400 records at 1 req/s earned a 429 that escalated to 403 and persisted; the same
+   code at 0.5 req/s stored 20 of 20. The pass is idempotent, so a blocked night is a no-op.
+2. rebuild of the paper-to-device index, so a newly stored paper becomes findable without a second
+   operator step.
+3. a deliberately tiny patent probe — twelve applicants, one page — because both patent lanes are
+   currently closed (Google Patents answers 503 to this host and to a residential line since the
+   probing on 2026-11-24; EPO OPS is awaiting its administrator, reference 51279). When either
+   opens, the table starts filling on its own.
+
+The unit always exits 0. A blocked night is a normal outcome and must not turn the unit red; the
+log and the corpus record what happened. Check it with:
+
+```bash
+systemctl list-timers medradar-preprint.timer
+journalctl -u medradar-preprint -n 40 --no-pager
+```
+
+## 8. Resource envelope (measured on this host)
 
 `systemd` cgroup limits in the unit files are set from measurements on the 2 vCPU / 3.6 GiB
 Lighthouse instance; see `docs/radar/LAUNCH_001_ACCEPTANCE.md` for the numbers. The scheduler and
