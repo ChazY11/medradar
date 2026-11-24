@@ -521,6 +521,21 @@ def pages_router(service: Any, *, endpoints: Mapping[str, Any] | None = None) ->
     from .reference import UdiReference
 
     router = APIRouter()
+    # Measured on the production store: the landing page counts 5.2M device rows and globs 40,731
+    # corpus files (5.8 s), and one device dossier builds a todo list of clearances, failures,
+    # trials, patents and papers (12.6 s). Neither number may change inside a few minutes, and a
+    # reader who waits twelve seconds decides the tool is broken. Small in-process TTL cache, one
+    # entry per key.
+    cache: dict[str, tuple[float, str]] = {}
+
+    def cached(key: str, ttl: float, render) -> str:
+        hit = cache.get(key)
+        now = time.time()
+        if hit and now - hit[0] < ttl:
+            return hit[1]
+        page = render()
+        cache[key] = (now, page)
+        return page
 
     def _store():
         path = service.paths.reference
@@ -549,50 +564,57 @@ def pages_router(service: Any, *, endpoints: Mapping[str, Any] | None = None) ->
 
     @router.get("/", response_class=HTMLResponse)
     def home() -> Any:
-        store = _store()
-        try:
-            counts = _counts(store)
-        finally:
-            if store is not None:
-                store.close()
-        corpus_docs = 0
-        try:
-            corpus = service.paths.corpus
-            if corpus.is_dir():
-                corpus_docs = len(list(corpus.glob("*.json")))
-        except Exception:  # noqa: BLE001
+        def render() -> str:
+            store = _store()
+            try:
+                counts = _counts(store)
+            finally:
+                if store is not None:
+                    store.close()
             corpus_docs = 0
-        stats = {
-            "设备注册": counts["devices"],
-            "批文语料": corpus_docs,
-            "失效记录": counts["failures"],
-            "在研试验": counts["trials"],
-            "专利": counts["patents"],
-            "论文索引": counts["papers"],
-        }
-        examples = [("X1209255", "按 DI"), ("K213506", "按 K 号"),
-                    ("Medtronic", "按公司"), ("Clydesdale", "按品牌")]
-        return HTMLResponse(landing(stats=stats, examples=examples))
+            try:
+                corpus = service.paths.corpus
+                if corpus.is_dir():
+                    corpus_docs = len(list(corpus.glob("*.json")))
+            except Exception:  # noqa: BLE001
+                corpus_docs = 0
+            stats = {
+                "设备注册": counts["devices"],
+                "批文语料": corpus_docs,
+                "失效记录": counts["failures"],
+                "在研试验": counts["trials"],
+                "专利": counts["patents"],
+                "论文索引": counts["papers"],
+            }
+            examples = [("X1209255", "按 DI"), ("K213506", "按 K 号"),
+                        ("Medtronic", "按公司"), ("Clydesdale", "按品牌")]
+            return landing(stats=stats, examples=examples)
+
+        return HTMLResponse(cached("home", 300.0, render))
 
     @router.get("/device", response_class=HTMLResponse)
     def device_page_view(query: str | None = Query(None, max_length=120),
                          limit: int = Query(25, ge=1, le=100)) -> Any:
         if not query:
             return HTMLResponse(landing(stats={"设备注册": 0}, examples=[]))
-        store = _store()
-        if store is None:
-            return HTMLResponse(layout(
-                title="设备库不存在 · MedRadar",
-                body=(f'<h1>这台部署没有设备库</h1>'
-                      + gap_note("device_not_in_udi_register")),
-                active="device"), status_code=503)
-        try:
-            corpus = service.paths.corpus
-            timeline = build_view(store, query, limit=limit,
-                                  corpus_root=corpus if corpus.is_dir() else None)
-        finally:
-            store.close()
-        return HTMLResponse(device_dossier(timeline, query=query))
+
+        def render() -> str:
+            store = _store()
+            if store is None:
+                return layout(
+                    title="设备库不存在 · MedRadar",
+                    body=(f'<h1>这台部署没有设备库</h1>'
+                          + gap_note("device_not_in_udi_register")),
+                    active="device")
+            try:
+                corpus = service.paths.corpus
+                timeline = build_view(store, query, limit=limit,
+                                      corpus_root=corpus if corpus.is_dir() else None)
+            finally:
+                store.close()
+            return device_dossier(timeline, query=query)
+
+        return HTMLResponse(cached(f"device:{query}:{limit}", 120.0, render))
 
     @router.get("/sources", response_class=HTMLResponse)
     def sources_view() -> Any:
