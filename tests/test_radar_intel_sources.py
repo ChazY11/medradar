@@ -2436,6 +2436,32 @@ def test_a_company_level_match_is_labelled_and_never_counted_as_device_evidence(
     store.close()
 
 
+def test_the_device_view_shows_the_manufacturers_own_parameters(tmp_path):
+    """specs existed but nothing called it: a capability with no entry point is not a feature."""
+    from medradar.radar.device_view import build, render
+
+    store = _view_store(tmp_path)
+    root = tmp_path / "corpus_specs"
+    root.mkdir()
+    (root / "510k_summary_K250063.json").write_text(json.dumps({
+        "identifier": "K250063", "status": "text", "text_source": "text", "text_chars": 400,
+        "sections": {
+            "device_description": (
+                "The catheter has a tip diameter of 0.035 in and is rated to 1200 psi. "
+                "Sterilize at 250 °F for 3 min. Ignore the 12500 °F typo."),
+        }}), encoding="utf-8")
+    timeline = build(store, "K250063", corpus_root=root)
+    block = timeline.specs["K250063"]
+    assert block["count"] > 0
+    assert block["rejected_implausible"] == 1
+
+    text = render(timeline)
+    assert "规格（厂家在 510(k) 里自己写的，不是第三方测得）" in text
+    assert "丢弃不合理 1 条" in text
+    assert "0.035 in" in text
+    store.close()
+
+
 def test_a_pre_digitisation_filing_is_never_requested(tmp_path):
     """Measured: 0 of 60 sampled filings from 1998-2009 have a PDF at any path shape.
 

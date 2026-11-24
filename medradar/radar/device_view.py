@@ -192,6 +192,7 @@ class DeviceTimeline:
     patents: dict[str, PatentHistory] = field(default_factory=dict)
     trials: dict[str, TrialHistory] = field(default_factory=dict)
     papers: dict[str, PaperHistory] = field(default_factory=dict)
+    specs: dict[str, dict[str, Any]] = field(default_factory=dict)
     gaps: list[str] = field(default_factory=list)
 
     def to_dict(self) -> dict[str, Any]:
@@ -203,6 +204,7 @@ class DeviceTimeline:
             "patents": {key: value.to_dict() for key, value in self.patents.items()},
             "trials": {key: value.to_dict() for key, value in self.trials.items()},
             "papers": {key: value.to_dict() for key, value in self.papers.items()},
+            "specs": self.specs,
             "gaps": self.gaps,
         }
 
@@ -458,7 +460,7 @@ def paper_history(reference, ref: DeviceRef, *, limit: int = 5) -> PaperHistory:
 # ---------------------------------------------------------------------- build
 def build(reference, query: str, *, corpus_root: str | Path | None = None,
           limit: int = 25, failures: bool = True, patents: bool = True,
-          trials: bool = True, papers: bool = True) -> DeviceTimeline:
+          trials: bool = True, papers: bool = True, specs: bool = True) -> DeviceTimeline:
     timeline = DeviceTimeline(query=query)
     timeline.refs = resolve(reference, query, limit=limit)
     if not timeline.refs:
@@ -478,6 +480,20 @@ def build(reference, query: str, *, corpus_root: str | Path | None = None,
 
     for number in sorted(submissions):
         timeline.clearances[number] = summarise_document(corpus_root, number)
+
+    # Parameters the manufacturer wrote in the filing. Extracted from the same stored sections the
+    # summary already carries, so this costs a pass over text that is already in memory and needs no
+    # second source. A rejected count travels with the result: a silently shorter list is
+    # indistinguishable from a filing that said less.
+    if specs:
+        from .specs import specs_from_sections
+
+        for number, summary in timeline.clearances.items():
+            if not summary.sections:
+                continue
+            found = specs_from_sections(number, summary.sections).to_dict()
+            if found.get("count") or found.get("rejected_implausible"):
+                timeline.specs[number] = found
 
     if failures:
         for ref in timeline.refs:
@@ -658,6 +674,16 @@ def render(timeline: DeviceTimeline, *, section_chars: int = 900,
                 lines.append(f"  没有论文提到这个名称（{GAP_NO_PAPER_MATCH}）")
         else:
             lines.append(f"  论文索引未构建（{GAP_NO_PAPER_SOURCE}）")
+
+    if timeline.specs:
+        lines.append("")
+        lines.append("规格（厂家在 510(k) 里自己写的，不是第三方测得）")
+        for number, block in list(timeline.specs.items())[:3]:
+            lines.append(f"  {number}  提取 {block['count']} 条"
+                         f"（丢弃不合理 {block['rejected_implausible']} 条）")
+            for quantity, items in list((block.get("by_quantity") or {}).items())[:4]:
+                shown = "、".join(f"{item['value']} {item['unit']}" for item in items[:4])
+                lines.append(f"      {quantity:12} {shown}")
 
     if timeline.gaps:
         lines.append("")
