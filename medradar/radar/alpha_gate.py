@@ -41,7 +41,9 @@ HASH_SCHEME = "pbkdf2_sha256"
 DEFAULT_ITERATIONS = 240_000
 
 #: Pages the alpha exposes. React Router renders these; the document is the SPA index.
-PUBLIC_PAGES = frozenset({"/", "/radar", "/radar/", "/radar/technology-map", "/radar/technology-map/"})
+PUBLIC_PAGES = frozenset({"/", "/device", "/device/", "/sources", "/sources/",
+                          "/radar", "/radar/", "/radar/technology-map",
+                          "/radar/technology-map/"})
 #: Exact non-page paths that the app itself needs.
 PUBLIC_EXACT = frozenset({"/favicon.svg", "/api/meta"})
 #: Liveness probe: no data, no database access. Unauthenticated so a proxy or an operator's

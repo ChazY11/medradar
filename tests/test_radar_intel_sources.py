@@ -2462,6 +2462,85 @@ def test_the_device_view_shows_the_manufacturers_own_parameters(tmp_path):
     store.close()
 
 
+# --------------------------------------------------- reader-facing pages
+def test_the_landing_page_asks_one_question_and_shows_what_the_tool_is_for():
+    """The old entry point was a filter wall with eight facets and counts in the thousands."""
+    from medradar.radar.pages import landing
+
+    page = landing(stats={"设备注册": 5258159, "批文语料": 40731},
+                   examples=[("X1209255", "按 DI"), ("Medtronic", "按公司")])
+    assert "查一台器械，看完它整个公开生命" in page
+    assert 'action="/device"' in page
+    assert "5,258,159" in page and "40,731" in page
+    assert "/device?query=X1209255" in page
+    # Five capabilities are named, so a first-time reader knows what the answers will contain.
+    for n in ("1 ·", "2 ·", "3 ·", "4 ·", "5 ·"):
+        assert n in page
+
+
+def test_a_device_dossier_puts_the_reason_next_to_every_absence(tmp_path):
+    from medradar.radar.device_view import build
+    from medradar.radar.pages import device_dossier
+
+    store = _view_store(tmp_path)
+    timeline = build(store, "K250063", corpus_root=_corpus(tmp_path))
+    page = device_dossier(timeline, query="K250063")
+    assert "批文与规格" in page and "现场失效" in page
+    assert "patent_bulk_tables_absent" in page
+    assert "没有数据，原因：" in page
+    # Sources are named next to each section, never left implicit.
+    assert "MAUDE" in page and "ClinicalTrials.gov" in page
+    store.close()
+
+
+def test_a_missing_device_page_offers_the_examples_instead_of_a_dead_end():
+    from medradar.radar.device_view import DeviceTimeline
+    from medradar.radar.pages import device_dossier
+
+    page = device_dossier(DeviceTimeline(query="nope"), query="nope")
+    assert "没有找到" in page
+    assert "device_not_in_udi_register" in page
+    assert "/device?query=X1209255" in page
+
+
+def test_the_coverage_page_reads_its_numbers_from_the_stores(tmp_path):
+    from medradar.radar.pages import sources_page
+
+    page = sources_page(meta={"capabilities": {"device_view": {
+        "failures": {"rows": 348742}, "trials": {"trials": 2967},
+        "papers": {"papers": 2552}, "patents": None}},
+        "sources": [{"source_id": "openfda_device", "display_name": "openFDA",
+                     "enabled": True, "cadence_hours": 24, "licence": "CC0"}]})
+    assert "348,742" in page and "2,967" in page and "2,552" in page
+    assert "openFDA" in page
+    # An absent import is described, not rendered as zero-with-no-explanation.
+    assert "尚未导入" in page
+
+
+def test_the_pages_router_mounts_at_the_site_root():
+    """A device dossier under /api/... is a page nobody finds."""
+    from pathlib import Path
+
+    from medradar.radar.pages import pages_router
+
+    class _Svc:
+        class paths:
+            reference = Path("/nonexistent/reference.db")
+            corpus = Path("/nonexistent/corpus")
+
+    paths = [route.path for route in pages_router(_Svc()).routes]
+    assert paths == ["/", "/device", "/sources"]
+
+
+def test_the_alpha_gate_lets_the_new_pages_through_and_nothing_else():
+    from medradar.radar.alpha_gate import path_allowed
+
+    for allowed in ("/", "/device", "/device/", "/sources", "/sources/"):
+        assert path_allowed(allowed) is True, allowed
+    for blocked in ("/review", "/export", "/user/login", "/api/docs", "/openapi.json"):
+        assert path_allowed(blocked) is False, blocked
+
+
 def test_a_pre_digitisation_filing_is_never_requested(tmp_path):
     """Measured: 0 of 60 sampled filings from 1998-2009 have a PDF at any path shape.
 

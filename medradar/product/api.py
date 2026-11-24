@@ -1439,8 +1439,14 @@ def create_app(
     if resolved_radar:
         try:
             from ..radar.api import RadarService, build_router
+            from ..radar.pages import pages_router
 
-            app.include_router(build_router(RadarService(resolved_radar)))
+            radar_service = RadarService(resolved_radar)
+            app.include_router(build_router(radar_service))
+            # Reader-facing pages are mounted at the site root, before the SPA catch-all below.
+            # A device dossier under /api/... is a page nobody finds; this is the entry a person
+            # types, links and shares.
+            app.include_router(pages_router(radar_service))
             app.state.radar_dir = str(resolved_radar)
         except Exception as error:  # pragma: no cover - the workbench must still start
             app.state.radar_error = f"{type(error).__name__}: {error}"
