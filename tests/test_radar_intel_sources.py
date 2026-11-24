@@ -2052,6 +2052,105 @@ def test_only_spec_bearing_sections_are_read():
     assert all(p.document == "K1" for p in result.parameters)
 
 
+# --------------------------------------------------- EPO OPS patent lane
+def test_ops_without_credentials_names_what_is_missing():
+    """An absent credential is reported by name, never as "this company holds no patents"."""
+    from medradar.radar.patents_ops import OpsClient, OpsCredentialMissing
+
+    import os
+    for name in ("EPO_OPS_KEY", "EPO_OPS_SECRET"):
+        os.environ.pop(name, None)
+    with pytest.raises(OpsCredentialMissing) as error:
+        OpsClient.from_env(fetcher=None)
+    assert "EPO_OPS_KEY" in str(error.value)
+
+
+def test_ops_search_parses_the_documented_envelope():
+    from medradar.radar.patents_ops import parse_search
+
+    payload = {"ops:world-patent-data": {"ops:biblio-search": {
+        "@total-result-count": "173833",
+        "ops:search-result": {"exchange-documents": {"exchange-document": [
+            {"@country": "US", "@doc-number": "12279798", "@kind": "B2",
+             "bibliographic-data": {
+                 "invention-title": [{"@lang": "en", "$": "Spinal surgical pathways"}],
+                 "publication-reference": {"document-id": [
+                     {"@document-id-type": "docdb", "date": {"$": "20250114"}}]}}},
+            {"@country": "EP", "@doc-number": "4123456", "@kind": "A1",
+             "bibliographic-data": {"invention-title": {"@lang": "en",
+                                                         "$": "Catheter hub"}}},
+        ]}}}}}
+    total, patents = parse_search(payload, assignee="Medtronic")
+    assert total == 173833
+    assert [p.publication for p in patents] == ["US12279798B2", "EP4123456A1"]
+    assert patents[0].title == "Spinal surgical pathways"
+    assert patents[0].date == "2025-01-14"
+    assert patents[1].title == "Catheter hub"
+
+
+def test_ops_single_hit_is_an_object_not_a_list():
+    """The envelope puts an object where a page puts a list; both must read."""
+    from medradar.radar.patents_ops import parse_search
+
+    payload = {"ops:world-patent-data": {"ops:biblio-search": {
+        "@total-result-count": "1",
+        "ops:search-result": {"exchange-documents": {"exchange-document":
+            {"@country": "US", "@doc-number": "1", "@kind": "A1",
+             "bibliographic-data": {"invention-title": {"$": "Only one"}}}}}}}}
+    total, patents = parse_search(payload)
+    assert total == 1 and [p.publication for p in patents] == ["US1A1"]
+
+
+def test_an_unrecognisable_ops_payload_is_an_error_not_zero_patents():
+    from medradar.radar.patents_ops import OpsError, parse_search
+
+    with pytest.raises(OpsError):
+        parse_search({"unexpected": {"shape": True}})
+
+
+def test_assignee_quotes_are_stripped_rather_than_escaped():
+    """A bare embedded quote makes OPS reject the query; a mangled one searches for something else."""
+    from medradar.radar.patents_ops import cql_for_assignee
+
+    assert cql_for_assignee('Medtronic "Sofamor"') == 'pa="Medtronic Sofamor"'
+    assert cql_for_assignee("  Medtronic   Inc  ") == 'pa="Medtronic Inc"'
+    with pytest.raises(ValueError):
+        cql_for_assignee("   ")
+
+
+def test_ops_rows_land_in_the_same_tables_the_file_importer_uses(tmp_path):
+    """device_view needs no second code path: one table, whichever origin filled it."""
+    from medradar.radar.device_view import build
+    from medradar.radar.patents_bulk import patents_for_assignee
+
+    store = _view_store(tmp_path)
+
+    class _FakeOps:
+        def search(self, cql, *, rows=10):
+            return {"ops:world-patent-data": {"ops:biblio-search": {
+                "@total-result-count": "2",
+                "ops:search-result": {"exchange-documents": {"exchange-document": [
+                    {"@country": "US", "@doc-number": "9000001", "@kind": "B1",
+                     "bibliographic-data": {"invention-title": {"$": "Spinal rod"},
+                                            "publication-reference": {"document-id": [
+                                                {"date": {"$": "20240301"}}]}}},
+                ]}}}}}
+
+    from medradar.radar.patents_ops import import_assignee
+
+    result = import_assignee(store, "ARUM DENTISTRY Co., Ltd.", client=_FakeOps(), rows=10)
+    assert result["total_reported"] == 2 and result["rows_written"] == 1
+
+    found = patents_for_assignee(store, "ARUM DENTISTRY Co., Ltd.")
+    assert found["patents"] == 1
+
+    timeline = build(store, "K250063", corpus_root=_corpus(tmp_path))
+    history = timeline.patents[timeline.refs[0].device_key]
+    assert history.available is True and history.patents == 1
+    assert "patent_bulk_tables_absent" not in timeline.gaps
+    store.close()
+
+
 def test_a_pre_digitisation_filing_is_never_requested(tmp_path):
     """Measured: 0 of 60 sampled filings from 1998-2009 have a PDF at any path shape.
 

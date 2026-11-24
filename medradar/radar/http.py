@@ -389,6 +389,28 @@ class PoliteFetcher:
                  allow_not_found: bool = False) -> FetchResult:
         return self._request(url, headers=headers, allow_not_found=allow_not_found)
 
+    def post_form(self, url: str, payload: Mapping[str, Any], *,
+                  headers: Mapping[str, str] | None = None,
+                  allow_not_found: bool = False) -> Any:
+        """POST an ``application/x-www-form-urlencoded`` body and return the parsed JSON.
+
+        OAuth token endpoints speak this and nothing else: EPO's ``/auth/accesstoken`` wants
+        ``grant_type=client_credentials`` as a form field, and sending the JSON body that
+        ``post_json`` produces is rejected without explaining why. Like ``post_json`` this shares
+        ``_request``, so pacing, budget, refusal and retry semantics stay identical to every other
+        call rather than acquiring a private set.
+        """
+        body = urllib.parse.urlencode(dict(payload)).encode("utf-8")
+        merged = {"Content-Type": "application/x-www-form-urlencoded", "Accept": "application/json"}
+        merged.update(headers or {})
+        result = self._request(url, headers=merged, allow_not_found=allow_not_found, body=body)
+        if result.status == 404 and not result.body:
+            return None
+        try:
+            return json.loads(result.body)
+        except ValueError as error:
+            raise ParseFailure(f"invalid JSON from {url}: {error}", url=url) from error
+
     def post_json(self, url: str, payload: Mapping[str, Any], *,
                   headers: Mapping[str, str] | None = None,
                   allow_not_found: bool = False) -> Any:
