@@ -30,6 +30,7 @@ that silently made requests would be unreproducible.
 from __future__ import annotations
 
 import json
+import re
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any, Iterable, Mapping, Sequence
@@ -46,6 +47,9 @@ GAP_NO_PATENT_SOURCE = "patent_bulk_tables_absent"
 GAP_NO_PATENT_MATCH = "no_patent_for_this_assignee"
 GAP_NO_TRIAL_SOURCE = "trials_table_absent"
 GAP_NO_TRIAL_MATCH = "no_trial_for_this_sponsor"
+GAP_NO_PAPER_SOURCE = "paper_index_absent"
+GAP_NO_PAPER_MATCH = "no_paper_mentions_this_device"
+GAP_NO_PAPER_GENERIC = "only_generic_words_in_this_name"
 
 _SECTION_ORDER = (
     "indications", "intended_use", "device_description", "submission_identity",
@@ -159,6 +163,27 @@ class TrialHistory:
 
 
 @dataclass
+class PaperHistory:
+    """Papers whose harvested full text mentions this device's brand, model or company.
+
+    A mention is not proof that the paper studies the device, so the count is reported as mentions
+    and the sample carries ids and titles a reader can open. ``available=False`` means the index
+    was never built, which is a different statement from "nothing was written about it".
+    """
+
+    available: bool = False
+    papers: int = 0
+    recent: list[dict[str, Any]] = field(default_factory=list)
+    terms: list[str] = field(default_factory=list)
+    level: str = "none"
+    gap: str | None = None
+
+    def to_dict(self) -> dict[str, Any]:
+        return {"available": self.available, "papers": self.papers, "recent": self.recent[:5],
+                "terms": self.terms[:8], "level": self.level, "gap": self.gap}
+
+
+@dataclass
 class DeviceTimeline:
     query: str
     refs: list[DeviceRef] = field(default_factory=list)
@@ -166,6 +191,7 @@ class DeviceTimeline:
     failures: dict[str, FailureHistory] = field(default_factory=dict)
     patents: dict[str, PatentHistory] = field(default_factory=dict)
     trials: dict[str, TrialHistory] = field(default_factory=dict)
+    papers: dict[str, PaperHistory] = field(default_factory=dict)
     gaps: list[str] = field(default_factory=list)
 
     def to_dict(self) -> dict[str, Any]:
@@ -176,6 +202,7 @@ class DeviceTimeline:
             "failures": {key: value.to_dict() for key, value in self.failures.items()},
             "patents": {key: value.to_dict() for key, value in self.patents.items()},
             "trials": {key: value.to_dict() for key, value in self.trials.items()},
+            "papers": {key: value.to_dict() for key, value in self.papers.items()},
             "gaps": self.gaps,
         }
 
@@ -379,10 +406,59 @@ def trial_history(reference, ref: DeviceRef, *, limit: int = 5) -> TrialHistory:
     return TrialHistory(available=True, gap=GAP_NO_TRIAL_MATCH)
 
 
+# ---------------------------------------------------------------------- papers
+def paper_history(reference, ref: DeviceRef, *, limit: int = 5) -> PaperHistory:
+    """Harvested papers that name this device, or failing that, its manufacturer.
+
+    Two levels, because they are different claims. A brand or model token identifies *this* device;
+    a company token identifies whoever made it, and papers mentioning "Shanghai" or "Medtronic" are
+    not papers about this catheter. Measured on the real corpus: a brand name of ordinary words
+    ("Clydesdale Spinal System" -> spinal, system) matched 1,759 of 2,552 papers, and a model that
+    appears nowhere in the corpus was still "matched" by the company's home city. Both are reported
+    as what they are instead of being counted as device evidence.
+    """
+    from .papers_index import papers_for_tokens
+
+    device_terms: list[str] = []
+    company_terms: list[str] = []
+    for values, bucket, minimum in ((ref.brand_name, device_terms, 4),
+                                    (ref.version_or_model, device_terms, 4),
+                                    (ref.company_name, company_terms, 6)):
+        if not values:
+            continue
+        text = str(values)
+        for token in text.replace(",", " ").split():
+            token = token.strip("-.").lower()
+            if len(token) >= minimum:
+                bucket.append(token)
+        # The register spaces a brand out; a paper usually does not.
+        joined = re.sub(r"[^a-z0-9]", "", text.lower())
+        if len(joined) >= minimum:
+            bucket.append(joined)
+
+    for terms, level in ((device_terms, "device"), (company_terms, "company")):
+        if not terms:
+            continue
+        result = papers_for_tokens(reference, terms, limit=limit)
+        if not result["available"]:
+            return PaperHistory(available=False, gap=GAP_NO_PAPER_SOURCE)
+        if result["papers"]:
+            return PaperHistory(available=True, papers=int(result["papers"]),
+                                recent=result["recent"], terms=result["terms"], level=level)
+        if level == "device" and result.get("generic_terms"):
+            generic_seen = list(result["generic_terms"])
+            continue
+    generic_seen = locals().get("generic_seen") or []
+    if generic_seen:
+        return PaperHistory(available=True, gap=GAP_NO_PAPER_GENERIC, terms=generic_seen)
+    # Nothing matched at either level: the name may simply not occur in the harvested corpus.
+    return PaperHistory(available=True, gap=GAP_NO_PAPER_MATCH)
+
+
 # ---------------------------------------------------------------------- build
 def build(reference, query: str, *, corpus_root: str | Path | None = None,
           limit: int = 25, failures: bool = True, patents: bool = True,
-          trials: bool = True) -> DeviceTimeline:
+          trials: bool = True, papers: bool = True) -> DeviceTimeline:
     timeline = DeviceTimeline(query=query)
     timeline.refs = resolve(reference, query, limit=limit)
     if not timeline.refs:
@@ -415,6 +491,10 @@ def build(reference, query: str, *, corpus_root: str | Path | None = None,
         for ref in timeline.refs:
             timeline.trials[ref.device_key] = trial_history(reference, ref)
 
+    if papers:
+        for ref in timeline.refs:
+            timeline.papers[ref.device_key] = paper_history(reference, ref)
+
     if not submissions:
         timeline.gaps.append("no_clearance_linked_to_this_device")
     if not any(summary.sections for summary in timeline.clearances.values()):
@@ -426,6 +506,9 @@ def build(reference, query: str, *, corpus_root: str | Path | None = None,
             timeline.gaps.append(str(state))
     if trials and timeline.trials:
         for state in sorted({h.gap for h in timeline.trials.values() if h.gap}):
+            timeline.gaps.append(str(state))
+    if papers and timeline.papers:
+        for state in sorted({h.gap for h in timeline.papers.values() if h.gap}):
             timeline.gaps.append(str(state))
     return timeline
 
@@ -548,6 +631,33 @@ def render(timeline: DeviceTimeline, *, section_chars: int = 900,
             lines.append(f"  未匹配到申办方（{GAP_NO_TRIAL_MATCH}）")
         else:
             lines.append(f"  试验表未导入（{GAP_NO_TRIAL_SOURCE}）")
+
+    lines.append("")
+    lines.append("论文（全文里提到这个名称，不等于研究它）")
+    if not timeline.papers:
+        lines.append("  （未查询）")
+    else:
+        paper_hits = {key: history for key, history in timeline.papers.items()
+                      if history.available and history.papers}
+        if paper_hits:
+            for key, history in paper_hits.items():
+                terms = "、".join(history.terms[:4])
+                level = "公司级，不是这台设备" if history.level == "company" else "设备名"
+                lines.append(f"  {key}  提到「{terms}」（{level}）· 共 {history.papers:,} 篇")
+                for item in history.recent[:3]:
+                    year = item.get("year") or "年份未知"
+                    lines.append(f"      {year}  {item.get('paper_id')}  "
+                                 f"{(item.get('title') or '')[:70]}")
+        elif any(history.available for history in timeline.papers.values()):
+            generic = sorted({t for h in timeline.papers.values() for t in (h.terms or [])})
+            if generic and all(not h.papers and h.terms for h in timeline.papers.values()):
+                shown = "、".join(generic[:5])
+                lines.append(f"  名称里只有通用词（{shown}），无法定位到论文"
+                             f"（{GAP_NO_PAPER_GENERIC}）")
+            else:
+                lines.append(f"  没有论文提到这个名称（{GAP_NO_PAPER_MATCH}）")
+        else:
+            lines.append(f"  论文索引未构建（{GAP_NO_PAPER_SOURCE}）")
 
     if timeline.gaps:
         lines.append("")

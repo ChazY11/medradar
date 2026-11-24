@@ -2299,6 +2299,143 @@ def test_specs_report_how_many_it_dropped(tmp_path):
     assert [p.unit for p in specs.parameters] == ["°F", "psi"]
 
 
+# --------------------------------------------------- paper-to-device index
+def test_tokens_are_lowercased_deduplicated_and_skip_short_noise():
+    from medradar.radar.papers_index import tokens
+
+    assert tokens("Clydesdale Spinal System X1209255 a b") == [
+        "clydesdale", "spinal", "system", "x1209255"]
+    assert tokens("") == []
+
+
+def test_an_unbuilt_index_is_reported_as_missing_not_as_no_research(tmp_path):
+    from medradar.radar.device_view import GAP_NO_PAPER_SOURCE, build
+
+    store = _view_store(tmp_path)
+    timeline = build(store, "K250063", corpus_root=_corpus(tmp_path))
+    history = timeline.papers[timeline.refs[0].device_key]
+    assert history.available is False
+    assert history.gap == GAP_NO_PAPER_SOURCE
+    assert GAP_NO_PAPER_SOURCE in timeline.gaps
+    store.close()
+
+
+def test_indexing_the_corpus_links_a_device_by_brand_name(tmp_path):
+    from medradar.radar.device_view import build
+    from medradar.radar.papers_index import index_corpus, summary
+
+    store = _view_store(tmp_path)
+    papers = tmp_path / "papers"
+    papers.mkdir()
+    (papers / "paper_a.json").write_text(json.dumps({
+        "identifier": "PMC111", "title": "Outcomes with the GalaxyStar implant",
+        "year": "2025",
+        "sections": {"results": "The GalaxyStar device was used in 42 cases."},
+    }), encoding="utf-8")
+    (papers / "paper_b.json").write_text(json.dumps({
+        "identifier": "PMC222", "title": "An unrelated topic", "year": "2024",
+        "sections": {"results": "Nothing to do with the register."},
+    }), encoding="utf-8")
+    result = index_corpus(store, papers)
+    assert result["papers_indexed"] == 1
+    assert summary(store)["papers"] == 1
+
+    timeline = build(store, "K250063", corpus_root=_corpus(tmp_path))
+    history = timeline.papers[timeline.refs[0].device_key]
+    assert history.available is True and history.papers == 1
+    assert history.recent[0]["paper_id"] == "PMC111"
+    assert "galaxystar" in history.terms
+    assert "paper_index_absent" not in timeline.gaps
+    store.close()
+
+
+def test_a_mention_is_labelled_as_a_mention_not_as_evidence(tmp_path):
+    """The section header must not claim the paper studies the device - only that it names it."""
+    from medradar.radar.device_view import build, render
+    from medradar.radar.papers_index import index_corpus
+
+    store = _view_store(tmp_path)
+    papers = tmp_path / "papers"
+    papers.mkdir()
+    (papers / "paper_a.json").write_text(json.dumps({
+        "identifier": "PMC333", "title": "A GalaxyStar comparison", "year": "2025",
+        "sections": {"discussion": "GalaxyStar was excluded."},
+    }), encoding="utf-8")
+    index_corpus(store, papers)
+    text = render(build(store, "K250063", corpus_root=_corpus(tmp_path)))
+    assert "论文（全文里提到这个名称，不等于研究它）" in text
+    assert "PMC333" in text
+    store.close()
+
+
+def test_an_empty_index_table_still_reads_as_not_built(tmp_path):
+    from medradar.radar.papers_index import ensure_tables, tables_present
+
+    store = _view_store(tmp_path)
+    ensure_tables(store)
+    assert tables_present(store) is False
+    store.close()
+
+
+def test_a_common_word_alone_never_links_a_paper_to_a_device(tmp_path):
+    """Measured failure on the real corpus: "spinal" and "system" matched 1,759 of 2,552 papers.
+
+    A name made only of ordinary vocabulary cannot identify a device, and saying so is the honest
+    answer - matching anyway would return most of the corpus and call it evidence.
+    """
+    from medradar.radar.device_view import GAP_NO_PAPER_GENERIC, build
+    from medradar.radar.papers_index import index_corpus, papers_for_tokens
+
+    store = _view_store(tmp_path)
+    papers = tmp_path / "papers"
+    papers.mkdir()
+    for index in range(40):
+        (papers / f"paper_{index}.json").write_text(json.dumps({
+            "identifier": f"PMC{index:03d}", "title": f"Study {index}",
+            "sections": {"discussion": "The spinal system was discussed."}}), encoding="utf-8")
+    index_corpus(store, papers, vocab={"spinal", "system", "clydesdalespinalsystem"})
+
+    generic = papers_for_tokens(store, ["spinal", "system"])
+    assert generic["papers"] == 0
+    assert set(generic["generic_terms"]) == {"spinal", "system"}
+
+    # A model number and a run-together product name are discriminating by construction.
+    (papers / "paper_x.json").write_text(json.dumps({
+        "identifier": "PMC999", "title": "ClydesdaleSpinalSystem outcomes",
+        "sections": {"results": "ClydesdaleSpinalSystem was used."}}), encoding="utf-8")
+    index_corpus(store, papers, vocab={"spinal", "system", "clydesdalespinalsystem"})
+    specific = papers_for_tokens(store, ["clydesdalespinalsystem"])
+    assert specific["papers"] == 1
+    store.close()
+
+
+def test_a_company_level_match_is_labelled_and_never_counted_as_device_evidence(tmp_path):
+    """Measured on the real corpus: a model absent from every paper was "matched" by the company's
+    home city, and the papers were those of an unrelated field. The count survives, the claim is
+    relabelled."""
+    from medradar.radar.device_view import build, render
+    from medradar.radar.papers_index import index_corpus
+
+    store = _view_store(tmp_path)
+    papers = tmp_path / "papers"
+    papers.mkdir()
+    # Names the manufacturer only - never the brand "Galaxy Star".
+    (papers / "paper_a.json").write_text(json.dumps({
+        "identifier": "PMC777", "title": "A registry report",
+        "sections": {"discussion": "Devices from Arum Dentistry were reviewed."},
+    }), encoding="utf-8")
+    index_corpus(store, papers, vocab={"dentistry", "arum", "galaxy", "star"})
+
+    timeline = build(store, "K250063", corpus_root=_corpus(tmp_path))
+    history = timeline.papers[timeline.refs[0].device_key]
+    assert history.papers == 1
+    assert history.level == "company"
+    assert "dentistry" in history.terms
+    text = render(timeline)
+    assert "公司级，不是这台设备" in text
+    store.close()
+
+
 def test_a_pre_digitisation_filing_is_never_requested(tmp_path):
     """Measured: 0 of 60 sampled filings from 1998-2009 have a PDF at any path shape.
 

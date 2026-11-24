@@ -278,6 +278,7 @@ def build_router(service: RadarService | None = None) -> APIRouter:
         capabilities["device_view"]["available"] = True
         try:
             from .failure_index import index_summary
+            from .papers_index import summary as papers_summary
             from .patents_bulk import bulk_summary, tables_present as patents_present
             from .reference import UdiReference
             from .trials import tables_present as trials_present
@@ -290,6 +291,7 @@ def build_router(service: RadarService | None = None) -> APIRouter:
                     trials_summary(store) if trials_present(store) else None)
                 capabilities["device_view"]["patents"] = (
                     bulk_summary(store) if patents_present(store) else None)
+                capabilities["device_view"]["papers"] = papers_summary(store)
             finally:
                 store.close()
         except Exception as error:  # noqa: BLE001 - meta must never fail a reader
