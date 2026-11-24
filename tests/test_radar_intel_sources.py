@@ -2151,6 +2151,154 @@ def test_ops_rows_land_in_the_same_tables_the_file_importer_uses(tmp_path):
     store.close()
 
 
+# --------------------------------------------------- Google Patents lane
+def test_google_pagination_is_a_term_of_the_search_not_a_top_level_argument():
+    """Measured: `&page=` beside `url=` is ignored and num_page stays 0."""
+    from medradar.radar.patents_google import inner_query
+
+    assert inner_query("medtronic") == "assignee=medtronic"
+    assert inner_query("medtronic", page=2) == "assignee=medtronic&page=2"
+    assert inner_query("medtronic", country="US") == "assignee=medtronic&country=US"
+    with pytest.raises(ValueError):
+        inner_query("")
+
+
+def test_google_response_highlights_the_matched_term_and_it_is_stripped():
+    """The page ships its own markup: assignee comes back as "<b>Medtronic</b> CV Luxembourg"."""
+    from medradar.radar.patents_google import parse
+
+    payload = {"results": {"total_num_results": 124609, "total_num_pages": 100, "num_page": 0,
+                           "cluster": [{"result": [{"id": "patent/US10478291B2/en", "rank": 0,
+                                                    "patent": {
+                                                        "title": " Heart valve &amp; prosthesis",
+                                                        "publication_date": "2019-11-19",
+                                                        "grant_date": "2019-11-19",
+                                                        "assignee": "<b>Medtronic</b> CV Luxembourg S.a.r.l",
+                                                        "inventor": "Jane Q. Doe",
+                                                        "pdf": "ab/cd/x/US10478291B2.pdf"}}]}]}}
+    total, hits = parse(payload)
+    assert total == 124609
+    assert hits[0].publication_number == "US10478291B2"
+    assert hits[0].assignee == "Medtronic CV Luxembourg S.a.r.l"
+    assert hits[0].title == "Heart valve & prosthesis"
+    assert hits[0].kind == "B2"
+
+
+def test_google_kind_code_decides_grant_versus_application_and_never_guesses():
+    from medradar.radar.patents_google import _kind_of, _patent_type
+
+    assert _patent_type(_kind_of("US12279798B2")) == "grant"
+    assert _patent_type(_kind_of("US20230123456A1")) == "application"
+    assert _patent_type(_kind_of("US1234567U1")) is None
+
+
+def test_google_shape_change_is_an_error_not_zero_patents():
+    from medradar.radar.patents_google import GooglePatentsError, parse
+
+    with pytest.raises(GooglePatentsError):
+        parse({"unexpected": True})
+    # A total with no parsable hit is a broken record shape, not an empty portfolio.
+    with pytest.raises(GooglePatentsError):
+        parse({"results": {"total_num_results": 42, "cluster": []}})
+
+
+def test_google_writes_both_attribution_rows_and_the_device_view_finds_them(tmp_path):
+    """A subsidiary's patents are not silently attributed to the parent, and the parent stays
+    queryable. Both rows land; the split is auditable from assignee_type."""
+    from medradar.radar.device_view import build
+    from medradar.radar.patents_bulk import patents_for_assignee
+    from medradar.radar.patents_google import import_assignee
+
+    store = _view_store(tmp_path)
+
+    class _FakeGoogle:
+        def search(self, assignee="", *, query="", page=0, country=""):
+            return {"results": {"total_num_results": 1, "num_page": page,
+                                "cluster": [{"result": [
+                                    {"id": "patent/US10478291B2/en", "rank": 0, "patent": {
+                                        "title": "Heart valve",
+                                        "publication_number": "US10478291B2",
+                                        "publication_date": "2019-11-19",
+                                        "assignee": "<b>ARUM DENTISTRY</b> Co., Ltd.",
+                                        "inventor": "Jane Q. Doe"}}]}]}}
+
+    result = import_assignee(store, "ARUM DENTISTRY Co., Ltd.", client=_FakeGoogle(), pages=1)
+    assert result["rows_written"] == 1
+    assert result["applicant_rows"] == 1 and result["query_rows"] == 1
+
+    kinds = dict(store.conn.execute(
+        "SELECT assignee_type, COUNT(*) FROM bulk_patent_assignee GROUP BY assignee_type"))
+    assert kinds == {"applicant": 1, "query_matched": 1}
+
+    found = patents_for_assignee(store, "ARUM DENTISTRY Co., Ltd.")
+    assert found["patents"] == 1
+    assert found["recent"][0]["patent_id"] == "US10478291B2"
+
+    timeline = build(store, "K250063", corpus_root=_corpus(tmp_path))
+    history = timeline.patents[timeline.refs[0].device_key]
+    assert history.available is True and history.patents == 1
+    assert "patent_bulk_tables_absent" not in timeline.gaps
+    store.close()
+
+
+def test_printed_thousands_are_not_read_as_a_decimal_comma():
+    """``1,000 mL`` is one litre. A blanket comma-to-dot rewrite makes it 1.0 and understates a
+    specification by three orders of magnitude."""
+    from medradar.radar.specs import parse_number
+
+    assert parse_number("1,000") == 1000.0
+    assert parse_number("12,500") == 12500.0
+    assert parse_number("1,5") == 1.5
+    assert parse_number("0.22") == 0.22
+    assert parse_number("abc") is None
+
+
+def test_impossible_values_are_rejected_with_a_reason_and_counted():
+    from medradar.radar.specs import extract_parameters
+
+    diagnostics: dict = {}
+    kept = extract_parameters(
+        "Sterilize at 250 °F for 3 min at 40 psi. Pump 1000 mL/min. "
+        "A 12500 °F artefact. Pressure 200000 mmHg. Spin 800000 rpm.",
+        diagnostics=diagnostics)
+    pairs = [(p.value, p.unit) for p in kept]
+    assert ("250", "°F") in pairs and ("40", "psi") in pairs and ("1000", "mL/min") in pairs
+    assert not any(value in ("12500", "200000", "800000") for value, _ in pairs)
+    assert diagnostics["rejected"] == 3
+    reasons = " ".join(item["why"] for item in diagnostics["rejected_examples"])
+    assert "°F" in reasons and "mmHg" in reasons and "rpm" in reasons
+
+
+def test_five_digit_specifications_are_no_longer_invisible():
+    """The old pattern stopped at four integer digits, so a real 12000 rpm was never a candidate -
+    a recall hole that read as precision."""
+    from medradar.radar.specs import extract_parameters
+
+    kept = extract_parameters("Centrifuge at 12000 rpm for 10 min.")
+    assert [(p.value, p.unit) for p in kept] == [("12000", "rpm"), ("10", "min")]
+
+
+def test_every_unit_the_extractor_knows_has_a_plausibility_range():
+    """A unit without a range is silently unfiltered; this makes the omission a test failure."""
+    from medradar.radar.specs import NON_NUMERIC_UNITS, PLAUSIBLE, UNITS
+
+    canonical = {unit for unit, _quantity in UNITS.values()}
+    uncovered = sorted(canonical - set(PLAUSIBLE) - NON_NUMERIC_UNITS)
+    assert uncovered == []
+
+
+def test_specs_report_how_many_it_dropped(tmp_path):
+    from medradar.radar.specs import specs_from_sections
+
+    specs = specs_from_sections("K1", {
+        "device_description": "Sterilize at 250 °F. Ignore the 12500 °F typo. 40 psi.",
+    })
+    assert specs.rejected == 1
+    assert specs.to_dict()["rejected_implausible"] == 1
+    assert specs.to_dict()["rejected_examples"][0]["unit"] == "°F"
+    assert [p.unit for p in specs.parameters] == ["°F", "psi"]
+
+
 def test_a_pre_digitisation_filing_is_never_requested(tmp_path):
     """Measured: 0 of 60 sampled filings from 1998-2009 have a PDF at any path shape.
 

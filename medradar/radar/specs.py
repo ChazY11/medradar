@@ -34,6 +34,10 @@ UNITS: dict[str, tuple[str, str]] = {
     "cm": ("cm", "length"), "centimeter": ("cm", "length"), "centimeters": ("cm", "length"),
     "m": ("m", "length"), "inch": ("in", "length"), "inches": ("in", "length"),
     "in": ("in", "length"), "ft": ("ft", "length"), "feet": ("ft", "length"),
+    "µm": ("µm", "length"), "μm": ("µm", "length"), "um": ("µm", "length"),
+    "micron": ("µm", "length"), "microns": ("µm", "length"), "nm": ("nm", "length"),
+    # rotational speed: centrifuges, surgical motors, drill consoles
+    "rpm": ("rpm", "speed"), "rpm.": ("rpm", "speed"),
     # catheter and needle gauges
     "fr": ("Fr", "gauge"), "french": ("Fr", "gauge"),
     "g": ("ga", "gauge"), "ga": ("ga", "gauge"), "gauge": ("ga", "gauge"),
@@ -76,7 +80,11 @@ UNITS: dict[str, tuple[str, str]] = {
 #: are the ambiguous ones and are listed here so a change to the pattern cannot silently loosen them.
 AMBIGUOUS = ("g", "m", "l", "s", "in", "ct", "v", "w", "h", "min")
 
-NUMBER = r"\d{1,4}(?:[.,]\d{1,4})?"
+#: Six integer digits: "10000 mL/min" and "12000 rpm" are real specifications, and the four-digit
+#: ceiling that used to live here silently dropped every five-digit value - a recall hole that read
+#: as high precision. The plausibility range below is what now keeps the impossible ones out, so the
+#: pattern may be generous.
+NUMBER = r"\d{1,6}(?:[.,]\d{1,4})?"
 _UNIT_ALTERNATION = "|".join(
     sorted((re.escape(unit) for unit in UNITS), key=len, reverse=True))
 PATTERN = re.compile(
@@ -87,6 +95,94 @@ SENTENCE_SPLIT = re.compile(r"(?<=[.;:])\s+")
 MAX_PARAMETERS = 400
 
 ASSERTION = "manufacturer_statement_in_510k_summary"
+
+#: What a number in each unit can physically be on a medical device.
+#:
+#: Measured on the harvested corpus: a raw number-with-unit scan keeps about 40% of what it finds
+#: after page furniture is removed, and a further share is arithmetically impossible - a steam
+#: steriliser "250 °F" is a real specification, "12500 °F" is an OCR artefact or a model number
+#: that happened to sit next to a degree sign. Ranges are deliberately generous at both ends: the
+#: job is to drop the impossible, not to second-guess a manufacturer.
+PLAUSIBLE: dict[str, tuple[float, float]] = {
+    # length
+    "mm": (0.001, 5000.0), "cm": (0.001, 500.0), "m": (0.0001, 50.0),
+    "in": (0.0001, 500.0), "ft": (0.001, 100.0),
+    "µm": (0.0001, 5000.0), "nm": (0.0001, 100000.0),
+    # rotational speed
+    "rpm": (0.1, 200000.0),
+    # gauges: French and Birmingham wire gauge both live in the low tens
+    "Fr": (0.5, 40.0), "ga": (0.5, 40.0),
+    # volume and flow
+    "mL": (0.0001, 20000.0), "L": (0.00001, 500.0), "µL": (0.0001, 100000.0),
+    "mL/min": (0.0001, 20000.0), "L/min": (0.00001, 500.0), "mL/h": (0.0001, 20000.0),
+    # pressure
+    "mmHg": (0.01, 2000.0), "kPa": (0.001, 300.0), "Pa": (0.01, 300000.0),
+    "psi": (0.01, 2000.0), "bar": (0.0001, 200.0), "cmH2O": (0.01, 1000.0),
+    # electrical
+    "V": (0.001, 100000.0), "mV": (0.0001, 100000.0), "kV": (0.001, 500.0),
+    "mA": (0.0001, 20000.0), "µA": (0.0001, 1000000.0),
+    "W": (0.0001, 20000.0), "mW": (0.0001, 100000.0),
+    "Hz": (0.01, 1000000.0), "kHz": (0.001, 1000.0), "MHz": (0.0001, 200.0),
+    "GHz": (0.00001, 20.0), "bps": (1.0, 1000000000.0),
+    # temperature, negative allowed
+    "°C": (-100.0, 2000.0), "°F": (-148.0, 3600.0),
+    # mass and concentration
+    "mg": (0.0001, 100000.0), "g": (0.0001, 10000.0), "kg": (0.0001, 1000.0),
+    "µg": (0.0001, 10000000.0),
+    "mg/mL": (0.00001, 2000.0), "mg/L": (0.00001, 100000.0),
+    "mmol/L": (0.00001, 5000.0), "mEq/L": (0.00001, 1000.0),
+    "%": (0.0, 100.0), "ppm": (0.0, 1000000.0),
+    # time
+    "ms": (0.0001, 10000000.0), "µs": (0.0001, 1000000000.0),
+    "s": (0.00001, 1000000.0), "min": (0.00001, 100000.0), "h": (0.00001, 10000.0),
+    # radiation and imaging
+    "mGy": (0.00001, 500.0), "Gy": (0.000001, 100.0),
+    "kVp": (10.0, 300.0), "mAs": (0.01, 5000.0),
+}
+
+#: Units that carry no numeric magnitude, so no range can be checked.
+NON_NUMERIC_UNITS = frozenset({"ct"})
+
+_THOUSANDS = re.compile(r"^\d{1,3}(?:,\d{3})+(?:\.\d+)?$")
+_DECIMAL_COMMA = re.compile(r"^\d+,\d+$")
+
+
+def parse_number(raw: str) -> float | None:
+    """Read a printed number without guessing its locale wrongly.
+
+    ``1,000`` in an English 510(k) summary is one thousand; ``1,5`` in a translated one is one and
+    a half. A blanket ``replace(",", ".")`` turns the first into 1.0 and silently understates a
+    specification by three orders of magnitude, which is worse than dropping it.
+    """
+    text = str(raw or "").strip().replace(" ", "")
+    if not text:
+        return None
+    if _THOUSANDS.match(text):
+        text = text.replace(",", "")
+    elif _DECIMAL_COMMA.match(text):
+        text = text.replace(",", ".")
+    else:
+        text = text.replace(",", "")
+    try:
+        return float(text)
+    except ValueError:
+        return None
+
+
+def implausibility(value: str, unit: str) -> str | None:
+    """Why a value cannot be a specification in this unit, or ``None`` if it can."""
+    if unit in NON_NUMERIC_UNITS:
+        return None
+    bounds = PLAUSIBLE.get(unit)
+    if bounds is None:
+        return None
+    number = parse_number(value)
+    if number is None:
+        return "not a number"
+    low, high = bounds
+    if number < low or number > high:
+        return f"{value} {unit} is outside the physically possible {low:g}-{high:g} {unit}"
+    return None
 
 #: Clause markers that mean the number is a clinical statistic, not a device parameter. Measured
 #: need for this: without it, "approximately 30% to 50% are at high risk" and "5 L" from a
@@ -104,6 +200,29 @@ STATISTICS_MARKERS = (
 def _is_clinical_statistics(clause: str) -> bool:
     lowered = f" {clause.lower()} "
     return any(marker in lowered for marker in STATISTICS_MARKERS)
+
+
+#: Quantities whose unit alone proves nothing. A percentage is a specification when the clause says
+#: what it measures ("accuracy of ± 2 %", "relative humidity 30 %"), and is page noise otherwise:
+#: measured on 1,802 real summaries, a bare "2 %" / "42 %" / "0 %" run from a form table survived
+#: both the statistics and the boilerplate filter. Other quantities (mm, psi, mL/min) carry their own
+#: evidence in the unit and need no cue.
+AMBIGUOUS_QUANTITIES = frozenset({"percentage"})
+
+#: Words that turn an ambiguous number into a claim about the device.
+SPEC_CUES = (
+    "accuracy", "tolerance", "±", "+/-", "up to", "maximum", "minimum", " max", " min",
+    "range", "capacity", "diameter", "length", "width", "height", "weight", "pressure",
+    "temperature", "flow", "rate", "concentration", "humidity", "precision", "resolution",
+    "output", "input", "dose", "deliver", "infus", "volume", "speed", "torque", "voltage",
+    "current", "power", "frequency", "battery", "cycle", "duration", "exposure", "steriliz",
+    "filled", "oxygen", "saturation", "slope", "gradient", "efficiency", "grade", "purity",
+)
+
+
+def _has_spec_cue(clause: str) -> bool:
+    lowered = clause.lower()
+    return any(cue in lowered for cue in SPEC_CUES)
 
 
 #: Page furniture and federal-paperwork notices. Measured on K163337 and K223602: "Page 2 of 13"
@@ -143,9 +262,13 @@ class DeviceSpecs:
     parameters: list[Parameter] = field(default_factory=list)
     by_quantity: dict[str, list[dict[str, Any]]] = field(default_factory=dict)
     document_sections: list[str] = field(default_factory=list)
+    rejected: int = 0
+    rejected_examples: list[dict[str, str]] = field(default_factory=list)
 
     def to_dict(self) -> dict[str, Any]:
         return {"identifier": self.identifier, "count": len(self.parameters),
+                "rejected_implausible": self.rejected,
+                "rejected_examples": self.rejected_examples[:5],
                 "by_quantity": self.by_quantity,
                 "parameters": [p.to_dict() for p in self.parameters[:60]],
                 "document_sections": self.document_sections,
@@ -167,24 +290,51 @@ def _clause(text: str, start: int, end: int) -> str:
     return clause[:400]
 
 
-def extract_parameters(text: str, *, document: str = "") -> list[Parameter]:
-    """Every number-with-unit in the text, each carrying the clause it came from."""
+def extract_parameters(text: str, *, document: str = "",
+                       diagnostics: dict[str, Any] | None = None) -> list[Parameter]:
+    """Every *plausible* number-with-unit in the text, each carrying the clause it came from.
+
+    ``diagnostics`` collects what was dropped and why, so a caller can report "found 61, kept 40,
+    rejected 21 as impossible" instead of quietly returning a shorter list. A silent filter is
+    indistinguishable from a source that had less to say.
+    """
     if not text:
         return []
     found: list[Parameter] = []
     seen: set[tuple[str, str, str]] = set()
+    rejected = 0
+    examples: list[dict[str, str]] = []
     for match in PATTERN.finditer(text):
         mapped = normalise_unit(match.group("unit"))
         if mapped is None:
             continue
         unit, quantity = mapped
-        value = match.group("value").replace(",", ".")
+        value = match.group("value")
         clause = _clause(text, match.start(), match.end())
-        if _is_clinical_statistics(clause):
+        # "± 2 %" is a tolerance whether or not the same clause also says "accuracy". Without this
+        # precedence a tolerance line is thrown away by the statistics filter, which lists
+        # "accuracy" because diagnostic-accuracy studies quote it as an outcome.
+        strong_spec = any(mark in clause for mark in ("±", "+/-", "tolerance"))
+        if not strong_spec and _is_clinical_statistics(clause):
             # A percentage with a p-value beside it is a result, not a specification.
             continue
         if _is_boilerplate(clause):
             # Page furniture and OMB notices produce confident-looking numbers that are not specs.
+            continue
+        why = implausibility(value, unit)
+        if why:
+            rejected += 1
+            if len(examples) < 8:
+                examples.append({"value": value, "unit": unit, "why": why,
+                                 "sentence": clause[:200]})
+            continue
+        if quantity in AMBIGUOUS_QUANTITIES and not _has_spec_cue(clause):
+            # A bare percentage with nothing saying what it measures is a form field, not a spec.
+            rejected += 1
+            if len(examples) < 8:
+                examples.append({"value": value, "unit": unit,
+                                 "why": "percentage with no specification cue in the clause",
+                                 "sentence": clause[:200]})
             continue
         # "0.014 inch" and "0.014 in" are the same claim; dedupe on the normalised triple.
         key = (value, unit, clause[:80])
@@ -195,6 +345,9 @@ def extract_parameters(text: str, *, document: str = "") -> list[Parameter]:
                                sentence=clause, document=document))
         if len(found) >= MAX_PARAMETERS:
             break
+    if diagnostics is not None:
+        diagnostics["rejected"] = rejected
+        diagnostics["rejected_examples"] = examples
     return found
 
 
@@ -204,7 +357,6 @@ def extract_parameters(text: str, *, document: str = "") -> list[Parameter]:
 SPEC_SECTIONS = ("device_description", "indications", "principles_of_operation",
                  "specifications", "technical_description", "measurand")
 
-
 def specs_from_sections(identifier: str, sections: Mapping[str, str]) -> DeviceSpecs:
     result = DeviceSpecs(identifier=identifier)
     for name, body in sections.items():
@@ -213,21 +365,30 @@ def specs_from_sections(identifier: str, sections: Mapping[str, str]) -> DeviceS
         if not any(key in name.lower() for key in SPEC_SECTIONS):
             continue
         result.document_sections.append(name)
-        result.parameters.extend(extract_parameters(body, document=identifier))
+        diagnostics: dict[str, Any] = {}
+        result.parameters.extend(
+            extract_parameters(body, document=identifier, diagnostics=diagnostics))
+        result.rejected += int(diagnostics.get("rejected") or 0)
+        result.rejected_examples.extend(diagnostics.get("rejected_examples") or [])
     grouped: dict[str, list[dict[str, Any]]] = {}
     for parameter in result.parameters:
         grouped.setdefault(parameter.quantity, []).append(parameter.to_dict())
     result.by_quantity = {key: value[:20] for key, value in grouped.items()}
+    result.rejected_examples = result.rejected_examples[:8]
     return result
 
 
 __all__ = [
     "ASSERTION",
     "DeviceSpecs",
+    "NON_NUMERIC_UNITS",
+    "PLAUSIBLE",
     "Parameter",
     "SPEC_SECTIONS",
     "UNITS",
     "extract_parameters",
+    "implausibility",
     "normalise_unit",
+    "parse_number",
     "specs_from_sections",
 ]
