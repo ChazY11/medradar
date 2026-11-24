@@ -28,5 +28,11 @@ echo "[$(date -Is)] re-index papers"
 echo "[$(date -Is)] patent probe (google)"
 "$PY" "$REL/tools/google_patents.py" --top-companies 12 --pages 1 2>&1 | tail -6 || true
 
+# The technology-map page is served from this snapshot. Measured: computing it live over 122k nodes
+# took longer than two minutes, and the answer cannot change faster than the 300 s scheduler cycle.
+echo "[$(date -Is)] technology map snapshot"
+"$PY" "$REL/tools/build_map.py" --radar "${MEDRADAR_RADAR_DIR:-/srv/medradar/data/radar}" \
+  --out "${MEDRADAR_RADAR_DIR:-/srv/medradar/data/radar}/map_page.json" 2>&1 | tail -3 || true
+
 echo "[$(date -Is)] done: $(ls "$OUT"/*.json 2>/dev/null | wc -l) records"
 exit 0

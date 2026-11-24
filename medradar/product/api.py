@@ -1442,11 +1442,14 @@ def create_app(
             from ..radar.pages import pages_router
 
             radar_service = RadarService(resolved_radar)
-            app.include_router(build_router(radar_service))
+            radar_router = build_router(radar_service)
+            app.include_router(radar_router)
             # Reader-facing pages are mounted at the site root, before the SPA catch-all below.
             # A device dossier under /api/... is a page nobody finds; this is the entry a person
-            # types, links and shares.
-            app.include_router(pages_router(radar_service))
+            # types, links and shares. The page layer reads the technology map through the same
+            # endpoint the API exposes, rather than growing a second implementation of it.
+            endpoints = {route.path: route.endpoint for route in radar_router.routes}
+            app.include_router(pages_router(radar_service, endpoints=endpoints))
             app.state.radar_dir = str(resolved_radar)
         except Exception as error:  # pragma: no cover - the workbench must still start
             app.state.radar_error = f"{type(error).__name__}: {error}"

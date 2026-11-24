@@ -28,7 +28,15 @@ Design rules, learned from what went wrong
 from __future__ import annotations
 
 import html
+import json
+import time
+from pathlib import Path
 from typing import Any, Mapping, Sequence
+
+#: Rendered technology map, keyed by nothing but the clock: the answer cannot change faster than
+#: the scheduler cycle (300 s), so five minutes of staleness costs nothing and saves a minute's wait.
+_MAP_CACHE: dict[str, Any] = {}
+_MAP_TTL = 300.0
 
 CSS = """
 :root{color-scheme:light dark;--bg:#fff;--fg:#111827;--muted:#6b7280;--line:#e5e7eb;
@@ -79,8 +87,9 @@ color:var(--muted);white-space:nowrap}
 .chip.k{color:var(--fg);font-weight:600}
 table{width:100%;border-collapse:collapse;font-size:13.5px}
 th,td{text-align:left;padding:7px 10px;border-bottom:1px solid var(--line);vertical-align:top}
-th{color:var(--muted);font-weight:600;font-size:12.5px}
-td.num{text-align:right;font-variant-numeric:tabular-nums}
+th{color:var(--muted);font-weight:600;font-size:12.5px;white-space:nowrap}
+td.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+td.nw{white-space:nowrap}
 details{margin:8px 0;border:1px solid var(--line);border-radius:9px;padding:8px 12px}
 summary{cursor:pointer;font-size:13.5px;color:var(--muted);font-weight:600}
 details pre{white-space:pre-wrap;word-break:break-word;font:12.5px/1.55 ui-monospace,SFMono-Regular,
@@ -118,6 +127,8 @@ GAP_TEXT = {
     "paper_index_absent": "论文索引还没有构建",
     "no_paper_mentions_this_device": "已入库的论文里没有提到这个名称",
     "only_generic_words_in_this_name": "这个名称里只有通用词（如 spinal、system），无法定位到具体论文",
+    "technology_map_unavailable": "科技地图接口没有挂载，或图谱库为空",
+    "no_topic_evidence": "图谱里还没有任何主题证据",
 }
 
 
@@ -150,8 +161,8 @@ def layout(*, title: str, body: str, active: str = "") -> str:
         '<header><div class="wrap"><div class="brand">MedRadar'
         '<span>医疗器械情报</span></div><nav>'
         + link("/", "设备查询", "device")
+        + link("/map", "科技地图", "map")
         + link("/radar", "实时雷达", "feed")
-        + link("/radar/technology-map", "科技地图", "map")
         + link("/sources", "数据覆盖", "sources")
         + "</nav></div></header>"
         f'<main class="wrap">{body}</main>'
@@ -447,7 +458,57 @@ def sources_page(*, meta: Mapping[str, Any]) -> str:
     return layout(title="数据覆盖 · MedRadar", body=body, active="sources")
 
 
-def pages_router(service: Any) -> Any:
+def map_page(*, payload: Mapping[str, Any]) -> str:
+    """The technology map, browsable: which company is working on which topic, and what says so.
+
+    The API answers this as JSON with per-evidence nodes; a reader needs the opposite order - the
+    topic first, then who is in it, then the citation they can open. Confirmation level is printed
+    next to every claim because TOPIC_RELATED is a weaker statement than CONFIRMED and the two must
+    not look alike.
+    """
+    topics = payload.get("topics") or []
+    counts = payload.get("counts") or {}
+    cards = []
+    for topic in topics:
+        companies = topic.get("companies") or []
+        rows = []
+        for company in companies:
+            evidence = company.get("evidence") or []
+            cites = "".join(
+                f'<li><a href="{esc(item.get("source_url") or "#")}" rel="noopener" target="_blank">'
+                f'{esc((item.get("title") or "（无标题）")[:96])}</a>'
+                f'<span class="muted small"> · {esc(item.get("source") or "")}'
+                f' · {esc(item.get("confirmation") or "")}</span></li>'
+                for item in evidence[:2])
+            rows.append(
+                f'<tr><td class="nw"><a href="/device?query={esc(company.get("display_name") or "")}">'
+                f'{esc(company.get("label_zh") or company.get("display_name"))}</a></td>'
+                f'<td class="num">{n(company.get("evidence_total"))}</td>'
+                f'<td><ul style="margin:0;padding-left:18px">{cites or "<li class=muted>暂无公开证据</li>"}</ul></td></tr>')
+        codes = "".join(_chip(f"产品码 {c}") for c in (topic.get("product_codes") or [])[:6])
+        cards.append(f"""
+<div class="card">
+  <h4>{esc(topic.get("label_zh") or topic.get("label_en"))}
+      <span class="muted small">· {esc(topic.get("label_en") or "")}</span></h4>
+  <p class="muted small">{esc(topic.get("description") or "")}</p>
+  <div class="chips">{codes}</div>
+  <table style="margin-top:10px"><thead><tr><th>公司</th><th>证据</th><th>最近的公开出处</th></tr></thead>
+  <tbody>{''.join(rows) or '<tr><td colspan=3 class=muted>这个主题下还没有证据</td></tr>'}</tbody></table>
+</div>""")
+
+    body = f"""
+<h1>科技地图：谁在做哪一块</h1>
+<p class="lede">{n(len(topics))} 个技术主题 · {n(counts.get("nodes"))} 个图谱节点 ·
+{n(counts.get("edges"))} 条关联。每一条"某公司在做某主题"都挂着它的出处，
+可以点开核对。标着 <code>TOPIC_RELATED</code> 的是按文本规则关联的，比
+<code>CONFIRMED</code> 弱——不要把两者当成一件事。</p>
+<p class="small muted">时间语义：{esc((payload.get("time_semantics") or {}).get("statement_zh") or "")}</p>
+{''.join(cards) or gap_note("no_topic_evidence")}
+"""
+    return layout(title="科技地图 · MedRadar", body=body, active="map")
+
+
+def pages_router(service: Any, *, endpoints: Mapping[str, Any] | None = None) -> Any:
     """Reader-facing routes, mounted at the site root rather than under /api/radar.
 
     The workbench SPA keeps `/radar` and `/radar/technology-map`; these paths are the ones a person
@@ -563,8 +624,35 @@ def pages_router(service: Any) -> Any:
             meta["sources"] = []
         return HTMLResponse(sources_page(meta=meta))
 
+    @router.get("/map", response_class=HTMLResponse)
+    def map_view() -> Any:
+        # Served from a snapshot, not computed per request. Measured: the live call walks 122k nodes
+        # and 107k edges and took longer than two minutes cold, and the answer cannot change faster
+        # than the 300-second scheduler cycle anyway. tools/build_map.py writes the snapshot; the
+        # nightly job refreshes it. An absent snapshot says so, and says what to run.
+        snapshot = Path(str(getattr(service.paths, "root", ""))) / "map_page.json"
+        if not snapshot.is_file():
+            return HTMLResponse(layout(
+                title="科技地图 · MedRadar",
+                body=('<h1>科技地图还没有生成</h1>'
+                      + gap_note("technology_map_unavailable",
+                                 extra='<p class="small muted">运行 '
+                                       '<code>tools/build_map.py</code> 生成快照；'
+                                       '夜间任务也会刷新。</p>')),
+                active="map"), status_code=503)
+        try:
+            payload = json.loads(snapshot.read_text(encoding="utf-8"))
+        except (OSError, ValueError) as error:
+            return HTMLResponse(layout(
+                title="科技地图 · MedRadar",
+                body=('<h1>科技地图快照读取失败</h1>'
+                      + gap_note("technology_map_unavailable",
+                                 extra=f'<span class="small muted">{esc(str(error)[:200])}</span>')),
+                active="map"), status_code=503)
+        return HTMLResponse(map_page(payload=payload if isinstance(payload, Mapping) else {}))
+
     return router
 
 
-__all__ = ["CSS", "device_dossier", "esc", "gap_note", "landing", "layout", "pages_router",
-           "sources_page"]
+__all__ = ["CSS", "device_dossier", "esc", "gap_note", "landing", "layout", "map_page",
+           "pages_router", "sources_page"]

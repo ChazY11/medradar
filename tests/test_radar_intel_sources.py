@@ -2529,7 +2529,7 @@ def test_the_pages_router_mounts_at_the_site_root():
             corpus = Path("/nonexistent/corpus")
 
     paths = [route.path for route in pages_router(_Svc()).routes]
-    assert paths == ["/", "/device", "/sources"]
+    assert paths == ["/", "/device", "/sources", "/map"]
 
 
 def test_the_alpha_gate_lets_the_new_pages_through_and_nothing_else():
@@ -2539,6 +2539,39 @@ def test_the_alpha_gate_lets_the_new_pages_through_and_nothing_else():
         assert path_allowed(allowed) is True, allowed
     for blocked in ("/review", "/export", "/user/login", "/api/docs", "/openapi.json"):
         assert path_allowed(blocked) is False, blocked
+
+
+def test_the_map_page_lists_topics_then_companies_then_citations():
+    """The API orders by evidence node; a reader needs topic -> who -> the link they can open."""
+    from medradar.radar.pages import map_page
+
+    page = map_page(payload={
+        "counts": {"nodes": 122849, "edges": 107115},
+        "time_semantics": {"statement_zh": "以已知时间重建"},
+        "topics": [{
+            "topic_id": "ecg_analysis", "label_zh": "ECG 与心电分析",
+            "label_en": "ECG and electrocardiographic analysis",
+            "description": "Acquisition and automated analysis of surface ECG.",
+            "product_codes": ["DPS", "DRT"],
+            "companies": [{"organization_id": "philips", "display_name": "Philips",
+                           "label_zh": "飞利浦", "evidence_total": 2,
+                           "evidence": [{"title": "A study of ECG alarms",
+                                         "source": "pubmed", "confirmation": "CONFIRMED",
+                                         "source_url": "https://pubmed.ncbi.nlm.nih.gov/1/"}]}],
+        }]})
+    assert "科技地图" in page
+    assert "ECG 与心电分析" in page
+    assert "飞利浦" in page and "/device?query=Philips" in page
+    assert "https://pubmed.ncbi.nlm.nih.gov/1/" in page
+    # The weaker relation is named where it appears, not buried in documentation.
+    assert "TOPIC_RELATED" in page and "CONFIRMED" in page
+
+
+def test_an_empty_map_says_so_instead_of_rendering_a_blank_page():
+    from medradar.radar.pages import map_page
+
+    page = map_page(payload={"topics": [], "counts": {}})
+    assert "no_topic_evidence" in page
 
 
 def test_a_pre_digitisation_filing_is_never_requested(tmp_path):
