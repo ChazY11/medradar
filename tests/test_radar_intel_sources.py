@@ -1924,6 +1924,84 @@ def test_openalex_select_never_asks_for_grants():
     assert "authorships" in fetcher.calls[0]["params"]["select"]
 
 
+# --------------------------------------------------- JATS full-text parsing
+JATS_SAMPLE = b"""<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article PUBLIC "-//NLM//DTD JATS//EN" "x.dtd">
+<article>
+  <front><article-meta>
+    <title-group><article-title>A catheter study</article-title></title-group>
+    <abstract><p>We tested it.</p></abstract>
+  </article-meta>
+  <journal-meta><journal-title>Journal of Tests</journal-title></journal-meta></front>
+  <body>
+    <sec><title>1. Introduction</title><p>Background text.</p></sec>
+    <sec><title>2. Methods</title><p>We used a catheter.</p>
+      <sec><title>2.1 Study Limitations</title><p>Small sample.</p></sec>
+    </sec>
+    <sec><title>Results</title><p>It worked.</p></sec>
+  </body>
+  <back><ref-list>
+    <ref><mixed-citation>A</mixed-citation></ref>
+    <ref><mixed-citation>B</mixed-citation></ref>
+  </ref-list></back>
+</article>
+"""
+
+
+def test_jats_sections_keep_the_publishers_structure():
+    from medradar.radar.jats import parse_jats
+
+    document = parse_jats(JATS_SAMPLE)
+    assert document.title == "A catheter study"
+    assert document.journal == "Journal of Tests"
+    assert document.abstract == "We tested it."
+    assert document.reference_count == 2
+    # Numbering is stripped from the heading, and a nested section keeps its parent path.
+    assert "2. Methods" not in document.sections
+    assert document.sections["Methods"] == "We used a catheter."
+    assert document.sections["Methods > Study Limitations"] == "Small sample."
+    assert document.sections["Results"] == "It worked."
+
+
+def test_a_parent_section_never_swallows_its_children():
+    """If the parent repeated the child's text, every result would be counted twice."""
+    from medradar.radar.jats import parse_jats
+
+    document = parse_jats(JATS_SAMPLE)
+    assert "Small sample" not in document.sections["Methods"]
+
+
+def test_canonical_headings_are_offered_for_a_stable_question():
+    from medradar.radar.jats import parse_jats
+
+    document = parse_jats(JATS_SAMPLE)
+    assert document.canonical["results"] == "It worked."
+    assert document.canonical["limitations"] == "Small sample."
+    assert document.canonical["methods"] == "We used a catheter."
+
+
+def test_jats_without_body_text_is_an_error_not_an_empty_paper():
+    """An unparseable payload must not be stored as 'this paper has no sections'."""
+    from medradar.radar.jats import JatsError, parse_jats
+
+    with pytest.raises(JatsError):
+        parse_jats(b"<article><front/></article>")
+    with pytest.raises(JatsError):
+        parse_jats(b"not xml at all")
+
+
+def test_heading_numbering_is_stripped_without_eating_the_first_letter():
+    """Measured on the first real record (PMC13744766): "Introduction" arrived as "ntroduction"
+    because the Roman-numeral rule consumed the leading I."""
+    from medradar.radar.jats import _clean_heading
+
+    assert _clean_heading("Introduction") == "Introduction"
+    assert _clean_heading("1. Introduction") == "Introduction"
+    assert _clean_heading("2.3 Study Limitations") == "Study Limitations"
+    assert _clean_heading("IV. Discussion") == "Discussion"
+    assert _clean_heading("Results.") == "Results"
+
+
 def test_a_pre_digitisation_filing_is_never_requested(tmp_path):
     """Measured: 0 of 60 sampled filings from 1998-2009 have a PDF at any path shape.
 
