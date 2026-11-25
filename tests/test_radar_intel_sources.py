@@ -2556,7 +2556,7 @@ def test_the_pages_router_mounts_at_the_site_root():
 
     paths = [route.path for route in pages_router(_Svc()).routes]
     assert paths == ["/", "/device", "/sources", "/topic", "/company", "/compare",
-                     "/download", "/paper", "/map"]
+                     "/download", "/paper", "/areas", "/map"]
 
 
 def test_the_alpha_gate_lets_the_new_pages_through_and_nothing_else():
@@ -3170,6 +3170,63 @@ def test_a_never_refreshed_store_falls_back_to_counting_live(tmp_path):
     store = UdiReference(tmp_path / "reference.db")
     assert read(store)["available"] is False
     store.close()
+
+
+def test_specialty_distribution_says_what_it_counts_and_who_leads(tmp_path):
+    from medradar.radar.pages import areas_page
+    from medradar.radar.product_codes import store_classes
+    from medradar.radar.reference import UdiReference
+    from medradar.radar.specialty import read, refresh
+
+    store = UdiReference(tmp_path / "reference.db")
+    rows = []
+    for i in range(6):
+        rows.append({
+            "identifiers": [{"id": f"08800{i:04d}00", "type": "Primary", "issuing_agency": "GS1"}],
+            "brand_name": f"Spine Fixation {i}", "company_name": "ACME SPINE" if i < 4 else "OTHER",
+            "labeler_duns_number": f"111{i}", "version_or_model_number": f"M{i}",
+            "device_description": "d", "product_codes": [{"code": "NKB"}],
+            "catalog_number": "", "publish_date": "2024-01-01"})
+    store.write_udi_rows(rows)
+    store_classes(store, [{"product_code": "NKB",
+                           "device_name": "Thoracolumbosacral Pedicle Screw System",
+                           "medical_specialty": "Orthopedic", "regulation_number": "888.3070",
+                           "device_class": "2"}], at="2026-11-26T00:00:00Z")
+
+    refresh(store, leaders=3)
+    data = read(store)
+    assert data["available"] is True
+    item = data["items"][0]
+    assert item["specialty"] == "Orthopedic"
+    assert item["devices"] == 6 and item["companies"] >= 2
+    assert item["top_companies"][0]["company"] == "ACME SPINE"
+
+    page = areas_page(data=data)
+    # The page must not present repeated counting as a census.
+    assert "各行相加会大于总设备数" in page
+    assert "不说明它技术领先" in page
+    assert 'href="/company?q=ACME SPINE"' in page
+    assert "29 秒" in page  # it says why this is not live
+
+    empty = areas_page(data={"available": False, "items": [], "updated_at": None})
+    assert "specialty_stats_absent" in empty
+    store.close()
+
+
+def test_every_page_route_passes_the_gate_allowlist():
+    """A route the gate does not list answers 404 to everyone, credentials included.
+
+    The gate 404s unlisted paths on purpose - "an unauthenticated scanner learns nothing about what
+    exists" - so a page added without its allowlist entry is invisible rather than unauthorised. That
+    is how /areas answered 404 for twenty minutes after it was built and deployed.
+    """
+    from medradar.radar.alpha_gate import path_allowed
+    from medradar.radar.api import RadarService
+    from medradar.radar.pages import pages_router
+
+    router = pages_router(RadarService("/tmp/nonexistent-radar"))
+    missing = [route.path for route in router.routes if not path_allowed(route.path)]
+    assert missing == [], f"these pages would 404 for everyone: {missing}"
 
 
 def test_a_pre_digitisation_filing_is_never_requested(tmp_path):

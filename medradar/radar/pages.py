@@ -84,6 +84,7 @@ min-width:0}
 .stat b{display:block;font-size:20px;font-variant-numeric:tabular-nums;letter-spacing:-.01em;
 overflow-wrap:anywhere}
 .stat span{color:var(--muted);font-size:12px;display:block}
+.bar{display:block;height:6px;border-radius:3px;background:var(--accent);min-width:2px}
 .stat i{display:block;margin-top:3px;font-size:11px;font-style:normal;color:var(--warn);
 letter-spacing:.02em}
 .card{border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin:0 0 14px;
@@ -164,6 +165,7 @@ def layout(*, title: str, body: str, active: str = "") -> str:
         + link("/", "设备查询", "device")
         + link("/paper", "论文反查", "paper")
         + link("/map", "科技地图", "map")
+        + link("/areas", "技术领域", "areas")
         + link("/compare", "公司对比", "compare")
         + link("/sources", "数据覆盖", "sources")
         + link("/radar", "实时雷达", "feed")
@@ -1124,6 +1126,55 @@ def paper_page(*, record: Mapping[str, Any] | None, terms: Sequence[Mapping[str,
     return layout(title=f"{record.get('title') or paper_id} · MedRadar", body=body, active="device")
 
 
+def areas_page(*, data: Mapping[str, Any]) -> str:
+    """Every medical specialty in the register: how big, and who is crowded into it.
+
+    This is the whole-market view the company pages could not give. It answers a different question
+    from the technology map and from a company dossier: not what one company registered, but how the
+    register splits across device categories, and which manufacturers dominate each.
+    """
+    items = data.get("items") or []
+    if not items:
+        return layout(
+            title="技术领域 · MedRadar",
+            body=('<h1>技术领域分布</h1>'
+                  + gap_note(data.get("gap") or "specialty_stats_absent")),
+            active="areas")
+
+    largest = max((int(item.get("devices") or 0) for item in items), default=0) or 1
+    rows = []
+    for item in items:
+        leaders = item.get("top_companies") or []
+        share = int(round(100.0 * int(item.get("devices") or 0) / largest))
+        company_list = "；".join(
+            f'<a href="/company?q={esc(str(lead.get("company") or ""))}">'
+            f'{esc(str(lead.get("company") or ""))[:34]}</a>'
+            f'<span class="muted small"> {n(lead.get("devices"))}</span>'
+            for lead in leaders[:4])
+        rows.append(
+            f'<tr><td>{esc(item.get("specialty"))}</td>'
+            f'<td class="num">{n(item.get("codes"))}</td>'
+            f'<td class="num">{n(item.get("devices"))}</td>'
+            f'<td class="num">{n(item.get("companies"))}</td>'
+            f'<td>{company_list or "<span class=\'muted\'>—</span>"}</td>'
+            f'<td><span class="bar" style="width:{share}%"></span></td></tr>')
+    body = f"""
+<h1>技术领域分布</h1>
+<p class="lede">按 FDA 产品码分类，全库 {n(len(items))} 个技术领域里，各自有多少设备、多少家公司，
+以及设备数最多的那几家。点公司名直接进档案。</p>
+<div class="gap"><b>这张表说明什么：</b>它数的是<b>注册了什么</b>——产品码来自厂商登记，
+不是论文、不是专利。一家公司在某领域设备多，说明它在那里铺得广，不说明它技术领先。
+「设备数」按注册条目计，同一台设备有多个产品码时会分别计入各领域，所以各行相加会大于总设备数。</div>
+<div class="card"><table>
+<thead><tr><th>技术领域</th><th>产品码</th><th>设备数</th><th>公司数</th><th>设备最多的公司</th>
+<th>规模</th></tr></thead>
+<tbody>{''.join(rows)}</tbody></table></div>
+<p class="small muted">数据更新于 {esc(str(data.get("updated_at") or "未知")[:16])}，
+由夜间任务重算（全库聚合约 29 秒，不实时计算）。</p>
+"""
+    return layout(title="技术领域分布 · MedRadar", body=body, active="areas")
+
+
 def pages_router(service: Any, *, endpoints: Mapping[str, Any] | None = None) -> Any:
     """Reader-facing routes, mounted at the site root rather than under /api/radar.
 
@@ -1443,6 +1494,28 @@ def pages_router(service: Any, *, endpoints: Mapping[str, Any] | None = None) ->
                               suggestions=suggestions)
 
         return HTMLResponse(cached(f"paper:{id}", 300.0, render))
+
+    @router.get("/areas", response_class=HTMLResponse)
+    def areas_view() -> Any:
+        def render() -> str:
+            store = _store()
+            if store is None:
+                return layout(title="技术领域 · MedRadar",
+                              body=gap_note("device_index_absent"), active="areas")
+            try:
+                from .specialty import read as read_specialties
+
+                data = dict(read_specialties(store))
+                if not data.get("available"):
+                    data["gap"] = "specialty_stats_absent"
+            except Exception:  # noqa: BLE001 - an absent table is a gap, not a crash
+                data = {"available": False, "items": [], "updated_at": None,
+                        "gap": "specialty_stats_absent"}
+            finally:
+                store.close()
+            return areas_page(data=data)
+
+        return HTMLResponse(cached("areas", 300.0, render))
 
     @router.get("/map", response_class=HTMLResponse)
     def map_view() -> Any:

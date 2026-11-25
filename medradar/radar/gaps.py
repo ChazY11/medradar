@@ -53,6 +53,7 @@ GAP_TEXT: dict[str, str] = {
     "device_index_absent": "这台部署没有设备库",
     "product_classification_absent": "产品码分类表还没有导入（运行 tools/product_classes.py）",
     "no_classified_product_code": "这家公司的产品码都还没分类，无法归入技术领域",
+    "specialty_stats_absent": "技术领域分布表还没有生成（运行 tools/specialty_stats.py --refresh）",
     # --- should never appear
     "no_data": "这一项没有数据，而且没有记录原因（不该发生）",
 }
