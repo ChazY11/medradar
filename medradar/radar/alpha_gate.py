@@ -45,7 +45,7 @@ PUBLIC_PAGES = frozenset({"/", "/device", "/device/", "/map", "/map/",
                           "/topic", "/topic/", "/company", "/company/",
                           "/compare", "/compare/", "/download", "/paper", "/paper/", "/areas", "/areas/", "/area", "/area/",
                           "/sources", "/sources/",
-                          "/radar", "/radar/", "/radar/technology-map",
+                          "/radar", "/radar/", "/radar/live", "/radar/live/", "/radar/technology-map",
                           "/radar/technology-map/"})
 #: Exact non-page paths that the app itself needs.
 PUBLIC_EXACT = frozenset({"/favicon.svg", "/api/meta"})

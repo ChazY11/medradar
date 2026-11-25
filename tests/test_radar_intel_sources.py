@@ -2587,7 +2587,7 @@ def test_the_pages_router_mounts_at_the_site_root():
 
     paths = [route.path for route in pages_router(_Svc()).routes]
     assert paths == ["/", "/device", "/sources", "/topic", "/company", "/compare",
-                     "/download", "/paper", "/areas", "/area", "/map"]
+                     "/download", "/paper", "/areas", "/area", "/radar", "/map"]
 
 
 def test_the_alpha_gate_lets_the_new_pages_through_and_nothing_else():
@@ -3583,6 +3583,43 @@ def test_a_watermark_means_one_thing_wherever_it_is_written(tmp_path):
         assert stored["watermark"] == "2026-11-26"
     finally:
         ledger.close()
+
+
+def test_the_radar_page_is_readable_without_javascript_and_marks_backfill_as_history():
+    """Measured: /radar answered with an empty SPA shell, so nothing could be read or linked."""
+    from medradar.radar.pages import radar_page
+
+    feed = {
+        "note": "A NEW row whose first_observed_at is in the INITIAL_DISCOVERY phase is a historical record.",
+        "items": [
+            {"observed_at": "2026-11-25T20:44:00", "first_observed_at": "2026-11-25T20:44:00",
+             "source": "crossref", "change_state": "NEW", "record_type": "publication",
+             "discovery_phase": "INCREMENTAL", "title": "A genuinely new paper",
+             "url": "https://example.org/a"},
+            {"observed_at": "2026-11-20T09:00:00", "first_observed_at": "2026-11-20T09:00:00",
+             "source": "pubmed", "change_state": "NEW", "record_type": "publication",
+             "discovery_phase": "INITIAL_DISCOVERY", "title": "Backfilled in 2024",
+             "url": "https://example.org/b"},
+        ],
+    }
+    page = radar_page(feed=feed, stats={"observations": 54024, "changes": 900, "sources": 6})
+
+    # Readable content, not a shell.
+    assert "A genuinely new paper" in page and "Backfilled in 2024" in page
+    assert "54,024" in page
+    # The backfilled row is labelled history, and the genuinely new one is not. Anchor on the table
+    # body: the legend above it also contains the words 历史记录.
+    table = page[page.index("<tbody>"):page.index("</tbody>")]
+    backfill_row = table[table.index("Backfilled in 2024") - 400:table.index("Backfilled in 2024")]
+    assert "历史记录 · 首次开启时已公开" in backfill_row
+    new_row = table[table.index("A genuinely new paper") - 400:table.index("A genuinely new paper")]
+    assert "历史记录" not in new_row
+    # Links are only made for http(s) and never carry a referrer.
+    assert 'rel="noopener noreferrer nofollow"' in page
+    assert "怎么读这张表" in page
+
+    empty = radar_page(feed={"items": [], "note": ""}, stats={})
+    assert "还没有任何变化记录" in empty
 
 
 def test_a_pre_digitisation_filing_is_never_requested(tmp_path):

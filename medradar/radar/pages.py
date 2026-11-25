@@ -1368,6 +1368,65 @@ def _compare_names(store: Any, raw: Sequence[str], snapshot: Mapping[str, Any]) 
     return list(dict.fromkeys(values))[:4]
 
 
+def radar_page(*, feed: Mapping[str, Any], stats: Mapping[str, Any]) -> str:
+    """A server-rendered front door for the live radar.
+
+    /radar used to be the SPA alone: the server answered with an empty shell, so the page could not
+    be linked into a summary, could not be read with JavaScript off, and had nothing to show if the
+    bundle failed to load. This is the same data the app fetches, ordered for reading.
+
+    The distinction the feed's own note makes is kept visible in the table: a NEW row from the
+    INITIAL_DISCOVERY phase is a historical record that was already public when the source was
+    switched on, not a new event. Printing both as "new" is the overstatement this product exists to
+    avoid.
+    """
+    items = feed.get("items") or []
+
+    def stamp(value: Any) -> str:
+        return str(value or "")[:19].replace("T", " ")
+
+    rows = []
+    for item in items:
+        phase = str(item.get("discovery_phase") or "")
+        state = str(item.get("change_state") or "")
+        first_seen = stamp(item.get("first_observed_at"))
+        observed = stamp(item.get("observed_at"))
+        # INITIAL_DISCOVERY is history, not news. Say so in the row itself.
+        if phase == "INITIAL_DISCOVERY":
+            when = (f'<span class="muted small">历史记录 · 首次开启时已公开</span><br>'
+                    f'<span class="small muted">{esc(observed)}</span>')
+        else:
+            when = esc(observed)
+        title = esc(str(item.get("title") or "")[:120])
+        url = str(item.get("url") or "")
+        link = (f'<a href="{esc(url)}" rel="noopener noreferrer nofollow">{title}</a>'
+                if url.startswith(("http://", "https://")) else title)
+        rows.append(
+            f'<tr><td class="small">{when}</td>'
+            f'<td class="small">{esc(str(item.get("source") or ""))}</td>'
+            f'<td class="small">{esc(str(item.get("record_type") or ""))}</td>'
+            f'<td>{link}</td>'
+            f'<td class="small">{esc(state)}</td></tr>')
+
+    body = f"""
+<h1>实时雷达</h1>
+<p class="lede">各追踪源最近观测到的变化。下面的表由服务端直出，不需要 JavaScript；
+交互式视图在 <a href="/radar/live">/radar/live</a>。</p>
+<div class="grid">
+  <div class="stat"><b>{n(stats.get("observations"))}</b><span>观测总数</span></div>
+  <div class="stat"><b>{n(stats.get("changes"))}</b><span>变化记录</span></div>
+  <div class="stat"><b>{n(stats.get("sources"))}</b><span>在产出的源</span></div>
+  <div class="stat"><b>{n(len(items))}</b><span>本页条数</span></div>
+</div>
+<div class="gap"><b>怎么读这张表：</b>「NEW」不都是新闻。首次开启某个源时回填的历史记录也会以 NEW 出现，
+这类行标着<span class="muted">历史记录 · 首次开启时已公开</span>。只有不带这个标记的行才是我们观察到的变化。</div>
+<div class="card"><table><thead><tr><th>观测时间</th><th>源</th><th>类型</th><th>标题</th>
+<th>变化</th></tr></thead><tbody>{''.join(rows) or '<tr><td colspan="5" class="muted">还没有任何变化记录</td></tr>'}</tbody></table></div>
+<p class="small muted">{esc(str(feed.get("note") or ""))}</p>
+"""
+    return layout(title="实时雷达 · MedRadar", body=body, active="feed")
+
+
 def pages_router(service: Any, *, endpoints: Mapping[str, Any] | None = None) -> Any:
     """Reader-facing routes, mounted at the site root rather than under /api/radar.
 
@@ -1766,6 +1825,31 @@ def pages_router(service: Any, *, endpoints: Mapping[str, Any] | None = None) ->
             return area_page(specialty=name, summary=summary, companies=companies)
 
         return HTMLResponse(cached(f"area:{name}", 300.0, render))
+
+    @router.get("/radar", response_class=HTMLResponse)
+    def radar_view() -> Any:
+        def render() -> str:
+            feed: dict[str, Any] = {"items": [], "note": ""}
+            stats: dict[str, Any] = {}
+            try:
+                from .health import change_stream
+
+                with service.ledger() as ledger:
+                    feed = change_stream(ledger, limit=40)
+                    stats["observations"] = int(
+                        ledger.raw("SELECT COUNT(*) AS n FROM observation")[0]["n"] or 0)
+                    stats["changes"] = int(ledger.raw(
+                        "SELECT COUNT(*) AS n FROM observation_change "
+                        "WHERE change_state IN ('NEW','UPDATED','REMOVED_OR_UNAVAILABLE')"
+                    )[0]["n"] or 0)
+                    stats["sources"] = int(ledger.raw(
+                        "SELECT COUNT(DISTINCT source) AS n FROM observation_change"
+                    )[0]["n"] or 0)
+            except Exception as error:  # noqa: BLE001 - no ledger is a state, and the page says so
+                feed = {"items": [], "note": f"读不到雷达台账：{type(error).__name__}"}
+            return radar_page(feed=feed, stats=stats)
+
+        return HTMLResponse(cached("radar", 60.0, render))
 
     @router.get("/map", response_class=HTMLResponse)
     def map_view() -> Any:
