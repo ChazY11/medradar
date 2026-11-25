@@ -652,7 +652,15 @@ def company_page(*, data: Mapping[str, Any]) -> str:
         f'<td>{esc(item.get("patent_id") or "")}</td>'
         f'<td>{esc((item.get("title") or "")[:90])}</td></tr>'
         for item in (data.get("patent_recent") or [])[:8])
-    patent_html = (f'<div class="card"><table><thead><tr><th>公开日</th><th>公开号</th>'
+    patent_note = ""
+    if patent_rows and data.get("patent_variants"):
+        # The same applicant is written several ways in the documents; say which spellings were merged.
+        merged = "、".join(esc(v) for v in (data["patent_variants"] or [])[:4])
+        patent_note = (f'<p class="muted small">已合并同一申请人的其他写法：{merged}</p>')
+    if patent_rows and data.get("patent_searched_for"):
+        patent_note += (f'<p class="muted small">另有 {n(data["patent_searched_for"])} 件是按这个名字'
+                        f'搜到、但申请人字段并非本公司的记录，不计入。</p>')
+    patent_html = (f'<div class="card">{patent_note}<table><thead><tr><th>公开日</th><th>公开号</th>'
                    f'<th>标题</th></tr></thead><tbody>{patent_rows}</tbody></table></div>'
                    if patent_rows else gap_note(data.get("patent_gap") or "patent_bulk_tables_absent"))
 
@@ -764,9 +772,10 @@ def _company_data(store: Any, query: str, *, snapshot: Mapping[str, Any]) -> dic
     out["trial_sponsor"] = trials.get("organization") or trials.get("sponsor") or name
     out["trial_gap"] = None if out["trials"] else "no_trial_for_this_sponsor"
 
-    patents = patents_for_assignee(store, name, limit=8)
+    patents = patents_for_assignee(store, name, limit=8, include_variants=True)
     out["patents"] = int(patents.get("patents") or 0)
     out["patent_recent"] = patents.get("recent") or []
+    out["patent_variants"] = patents.get("variants") or []
     out["patent_searched_for"] = int(patents.get("searched_for") or 0)
     out["patent_gap"] = None if out["patents"] else (
         "patent_only_searched_not_recorded" if out["patent_searched_for"]

@@ -300,7 +300,8 @@ def _norm(raw: Any) -> str | None:
 
 
 # ------------------------------------------------------------------------ queries
-def patents_for_assignee(reference, name: str, *, limit: int = 10) -> dict[str, Any]:
+def patents_for_assignee(reference, name: str, *, limit: int = 10,
+                         include_variants: bool = False) -> dict[str, Any]:
     """Patents whose recorded applicant is this organisation.
 
     The distinction that matters: a row written by a search for this name is not the same fact as a
@@ -310,31 +311,57 @@ def patents_for_assignee(reference, name: str, *, limit: int = 10) -> dict[str, 
 
     So ``applicant`` rows are the answer. Rows that only exist because this name was *searched for*
     are counted separately and returned under ``searched_for`` - visible, never mixed in.
+
+    ``include_variants`` matters because the same applicant is written more than one way in the
+    documents: the first real fill produced both ``MEDACTA`` (14 patents) and
+    ``MEDACTA INTERNATIONAL S A`` (12). An exact match answers a device question correctly and a
+    company question badly, so the wider lookup is opt-in and reports which spellings it merged.
     """
     ensure_tables(reference)
     key = _norm(name)
     if not key:
         return {"organization": name, "patents": 0, "recent": [], "searched_for": 0,
-                "method": "none"}
+                "variants": [], "method": "none"}
+
+    wanted = [key]
+    variants: list[str] = []
+    if include_variants:
+        try:
+            # Word boundary, not prefix: "MEDACTA INTERNATIONAL S A" is the same applicant written
+            # out, "MEDACTAX" is a different company that merely starts the same way.
+            rows = reference.conn.execute(
+                "SELECT DISTINCT organization_norm FROM bulk_patent_assignee "
+                "WHERE organization_norm <> ? "
+                "AND (organization_norm LIKE ? OR ? LIKE organization_norm || ' %') "
+                "AND COALESCE(assignee_type, 'applicant') <> 'query_matched' LIMIT 8",
+                (key, f"{key} %", key)).fetchall()
+        except Exception:  # noqa: BLE001 - a store without the table is handled above
+            rows = []
+        variants = [str(row[0]) for row in rows if row[0]]
+        wanted.extend(variants)
+
+    placeholders = ",".join("?" for _ in wanted)
     total = reference.conn.execute(
         "SELECT COUNT(DISTINCT patent_id) FROM bulk_patent_assignee "
-        "WHERE organization_norm = ? AND COALESCE(assignee_type, 'applicant') <> 'query_matched'",
-        (key,)).fetchone()[0]
+        f"WHERE organization_norm IN ({placeholders}) "
+        "AND COALESCE(assignee_type, 'applicant') <> 'query_matched'",
+        wanted).fetchone()[0]
     recent = [
         {"patent_id": row[0], "title": row[1], "patent_date": row[2]}
         for row in reference.conn.execute(
             "SELECT p.patent_id, p.title, p.patent_date "
             "FROM bulk_patent_assignee a JOIN bulk_patent p ON p.patent_id = a.patent_id "
-            "WHERE a.organization_norm = ? "
+            f"WHERE a.organization_norm IN ({placeholders}) "
             "AND COALESCE(a.assignee_type, 'applicant') <> 'query_matched' "
-            "ORDER BY p.patent_date DESC LIMIT ?", (key, limit))
+            "ORDER BY p.patent_date DESC LIMIT ?", (*wanted, limit))
     ]
     searched = reference.conn.execute(
         "SELECT COUNT(DISTINCT patent_id) FROM bulk_patent_assignee "
         "WHERE organization_norm = ? AND assignee_type = 'query_matched'", (key,)).fetchone()[0]
     return {"organization": name, "patents": int(total), "recent": recent,
-            "searched_for": int(searched),
-            "method": "disambiguated_assignee" if total else "no_applicant_row"}
+            "searched_for": int(searched), "variants": variants,
+            "method": ("applicant_with_variants" if variants
+                       else "disambiguated_assignee" if total else "no_applicant_row")}
 
 
 def organisation_patents(reference, organization: str, *, limit: int = 10) -> dict[str, Any]:

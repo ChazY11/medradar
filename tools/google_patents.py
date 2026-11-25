@@ -33,8 +33,29 @@ GOOGLE_POLICY = HostPolicy(requests_per_second=0.5, timeout_seconds=45.0, max_at
 
 
 def top_assignees(reference, limit: int) -> list[str]:
+    """Companies worth spending a patent request on, ranked by clearances then devices.
+
+    Device count alone is the wrong ranking. The three largest UDI labelers on this store are
+    distributors and repackagers - Cardinal Health 200 at 383,755 devices holds one clearance,
+    MEDLINE at 252,243 holds nine - so "top by devices" spends the whole budget on companies that do
+    not file patents about products they did not develop. A clearance count is a proxy for actually
+    putting devices through the regulator, which is what a patent portfolio follows.
+
+    Falls back to devices for companies with no premarket record at all, so a labeler that only
+    registers still gets a chance.
+    """
     rows = reference.conn.execute(
-        "SELECT company_name FROM udi_company ORDER BY device_count DESC LIMIT ?",
+        """
+        SELECT c.company_name,
+               COALESCE(p.clearances, 0) AS clearances,
+               c.device_count
+          FROM udi_company c
+          LEFT JOIN (SELECT labeler_duns, COUNT(DISTINCT submission_number) AS clearances
+                       FROM udi_premarket GROUP BY labeler_duns) p
+                 ON p.labeler_duns = c.labeler_duns
+         ORDER BY clearances DESC, c.device_count DESC
+         LIMIT ?
+        """,
         (max(1, limit),)).fetchall()
     return [str(row[0]) for row in rows if row[0]]
 

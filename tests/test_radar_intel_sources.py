@@ -2812,6 +2812,36 @@ def test_a_download_filename_cannot_escape_its_header(tmp_path):
     assert len(_slug("x" * 200)) <= 60
 
 
+def test_the_same_applicant_written_two_ways_is_merged_only_when_asked(tmp_path):
+    """The first real fill produced both MEDACTA (14) and MEDACTA INTERNATIONAL S A (12)."""
+    from medradar.radar.patents_bulk import ensure_tables, patents_for_assignee
+    from medradar.radar.reference import UdiReference
+
+    store = UdiReference(tmp_path / "reference.db")
+    ensure_tables(store)
+    rows = [("US1", "Short form patent", "2024-01-01", "MEDACTA"),
+            ("US2", "Long form patent", "2024-02-01", "MEDACTA INTERNATIONAL S A"),
+            ("US3", "Another firm", "2024-03-01", "MEDACTAX")]
+    for patent_id, title, date, _org in rows:
+        store.conn.execute("INSERT INTO bulk_patent VALUES (?,?,?,?)",
+                           (patent_id, title, date, "grant"))
+    for patent_id, _title, _date, org in rows:
+        store.conn.execute("INSERT INTO bulk_patent_assignee VALUES (?,?,?,?,?)",
+                           (patent_id, f"a-{patent_id}", org, org, "applicant"))
+    store.conn.commit()
+
+    strict = patents_for_assignee(store, "Medacta")
+    assert strict["patents"] == 1, "an exact match must not silently absorb other spellings"
+
+    wide = patents_for_assignee(store, "Medacta", include_variants=True)
+    assert wide["patents"] == 2
+    assert "MEDACTA INTERNATIONAL S A" in wide["variants"]
+    # A different company whose name merely starts the same is not a spelling variant.
+    assert wide["variants"] == ["MEDACTA INTERNATIONAL S A"]
+    assert wide["method"] == "applicant_with_variants"
+    store.close()
+
+
 def test_a_pre_digitisation_filing_is_never_requested(tmp_path):
     """Measured: 0 of 60 sampled filings from 1998-2009 have a PDF at any path shape.
 
