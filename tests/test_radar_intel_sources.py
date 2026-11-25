@@ -3091,6 +3091,51 @@ def test_an_unswept_product_code_is_not_the_same_as_no_product_code(tmp_path):
     store.close()
 
 
+def test_product_codes_become_technology_areas_for_every_company(tmp_path):
+    """The technology map covers three companies because the radar tracks three; this covers all."""
+    from medradar.radar.pages import _company_data, company_page
+    from medradar.radar.product_codes import store_classes
+    from medradar.radar.reference import UdiReference
+
+    store = UdiReference(tmp_path / "reference.db")
+    rows = [{
+        "identifiers": [{"id": f"08800{i:04d}00", "type": "Primary", "issuing_agency": "GS1"}],
+        "brand_name": "ARUM NB 1 SA Fixture", "company_name": "ARUM DENTISTRY Co., Ltd.",
+        "labeler_duns_number": "557821945", "version_or_model_number": f"NB{i}",
+        "device_description": "d", "product_codes": [{"code": "DZE"}, {"code": "NHA"}],
+        "catalog_number": "", "publish_date": "2024-01-01"} for i in range(2)]
+    store.write_udi_rows(rows)
+    store_classes(store, [
+        {"product_code": "DZE", "device_name": "Endosseous Dental Implant",
+         "medical_specialty": "Dental", "regulation_number": "872.3640", "device_class": "2"},
+        {"product_code": "NHA", "device_name": "Abutment, Implant, Dental",
+         "medical_specialty": "Dental", "regulation_number": "872.3630", "device_class": "2"},
+    ], at="2026-11-26T00:00:00Z")
+
+    data = _company_data(store, "ARUM", snapshot={})
+    assert data["found"] is True
+    assert data["specialties"] == [{"specialty": "Dental", "codes": 2}]
+    assert "Endosseous Dental Implant" in (data["specialty_examples"]["Dental"] or [])
+
+    page = company_page(data=data)
+    # The two sections must not be confused with each other.
+    assert "它在哪些技术领域注册了产品" in page
+    assert "注册了什么" in page and "发表了什么" in page
+    assert "Endosseous Dental Implant" in page
+    store.close()
+
+
+def test_an_unclassified_company_says_why_rather_than_showing_nothing(tmp_path):
+    from medradar.radar.pages import company_page
+
+    page = company_page(data={
+        "found": True, "company_name": "Nobody Ltd", "query": "Nobody", "labeler_duns": "1",
+        "devices": 1, "clearances": 0, "failures": 0, "trials": 0, "patents": 0, "papers": 0,
+        "matched_by": "公司名精确匹配", "product_codes": ["ZZZ"], "brands": [], "topics": [],
+        "specialties": [], "area_gap": "no_classified_product_code"})
+    assert "no_classified_product_code" in page
+
+
 def test_a_pre_digitisation_filing_is_never_requested(tmp_path):
     """Measured: 0 of 60 sampled filings from 1998-2009 have a PDF at any path shape.
 

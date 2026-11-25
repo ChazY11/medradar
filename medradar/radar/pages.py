@@ -641,6 +641,24 @@ def company_page(*, data: Mapping[str, Any]) -> str:
         f'<p class="muted small">{esc(t.get("description") or "")}</p></div>'
         for t in topics) or gap_note(data.get("topic_gap") or "no_topic_evidence")
 
+    specialties = data.get("specialties") or []
+    examples = data.get("specialty_examples") or {}
+    area_rows = "".join(
+        f'<tr><td>{esc(item["specialty"])}</td>'
+        f'<td class="num">{n(item["codes"])}</td>'
+        f'<td class="muted small">{esc("；".join(examples.get(item["specialty"], []))[:110])}</td></tr>'
+        for item in specialties)
+    used, total = data.get("area_codes_used"), data.get("area_codes_total")
+    area_note = ""
+    if used is not None and total and used < total:
+        # Say which slice the percentages are over, rather than implying the full set.
+        area_note = (f'<p class="muted small">按该公司最常见的 {n(used)} 个产品码统计'
+                     f'（共 {n(total)} 个），所以这是分布，不是完整清单。</p>')
+    area_html = ((f'<div class="card">{area_note}<table><thead><tr><th>技术领域</th>'
+                  f'<th>产品码数</th><th>代表性分类</th></tr></thead><tbody>{area_rows}</tbody>'
+                  f'</table></div>') if area_rows
+                 else gap_note(data.get("area_gap") or "no_classified_product_code"))
+
     trial_rows = "".join(
         f'<tr><td>{esc((item.get("start_date") or "—")[:10])}</td>'
         f'<td>{esc(item.get("nct_id") or "")}</td>'
@@ -700,6 +718,11 @@ def company_page(*, data: Mapping[str, Any]) -> str:
 <h2>2 · 它在哪些技术方向上有公开证据</h2>
 <p class="muted small">来自科技地图：每个方向一条，点进去看具体出处。</p>
 {topic_html}
+
+<h2>2b · 它在哪些技术领域注册了产品</h2>
+<p class="muted small">按 FDA 产品码分类统计——<b>这是"注册了什么"，不是"发表了什么"</b>，
+和上面那段（科技地图）回答的是不同的问题，不能混用。</p>
+{area_html}
 
 <h2>3 · 在研试验</h2>
 {trial_html}
@@ -830,6 +853,33 @@ def _company_data(store: Any, query: str, *, snapshot: Mapping[str, Any]) -> dic
     # "This company is not in the graph" and "the graph has no evidence" are different statements.
     out["topic_gap"] = None if topics else (
         "company_not_in_technology_map" if (snapshot.get("topics")) else "no_topic_evidence")
+
+    # Technology areas from the FDA product-code classification: this answers for every labeler in
+    # the register, not only the three the radar graph tracks. It is a different claim from the map -
+    # the map is what a company published about, this is what it registered.
+    from .product_codes import classes_for_codes, specialty_counts
+
+    code_cap = 400
+    codes_for_areas = codes[:code_cap]
+    out["area_codes_used"] = len(codes_for_areas)
+    out["area_codes_total"] = len(codes)
+    out["specialties"] = specialty_counts(store, codes_for_areas)
+    classes = classes_for_codes(store, codes_for_areas)
+    examples: dict[str, list[str]] = {}
+    for code in codes_for_areas:
+        meta = classes.get(code)
+        if not meta:
+            continue
+        name = str(meta.get("medical_specialty") or "").strip() or "Unclassified"
+        label = str(meta.get("device_name") or "").strip()
+        if label and label not in examples.setdefault(name, []):
+            examples[name].append(label)
+    out["specialty_examples"] = {k: v[:3] for k, v in examples.items()}
+    from .product_codes import table_present as classification_present
+
+    out["area_gap"] = None if out["specialties"] else (
+        "product_classification_absent" if not classification_present(store)
+        else "no_classified_product_code")
     return out
 
 
