@@ -83,7 +83,9 @@ background:var(--card)}
 min-width:0}
 .stat b{display:block;font-size:20px;font-variant-numeric:tabular-nums;letter-spacing:-.01em;
 overflow-wrap:anywhere}
-.stat span{color:var(--muted);font-size:12px}
+.stat span{color:var(--muted);font-size:12px;display:block}
+.stat i{display:block;margin-top:3px;font-size:11px;font-style:normal;color:var(--warn);
+letter-spacing:.02em}
 .card{border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin:0 0 14px;
 background:var(--card)}
 .card h4{margin:0 0 6px;font-size:15px}
@@ -301,13 +303,29 @@ def device_dossier(timeline: Any, *, query: str) -> str:
     failures = (timeline.failures or {}).get(first_key)
     spec_count = sum(int((b or {}).get("count") or 0) for b in (timeline.specs or {}).values())
 
+    # The summary must not say more than the sections below it. Measured on X1209255: the cards read
+    # "200 在研试验" and "2 相关论文" while the sections said 按集团名匹配 and 公司级匹配（不等于这台设备）.
+    # A reader skimming the top takes those numbers as facts about this device, which is exactly the
+    # overstatement the rest of the page refuses to make.
+    def card(value: Any, label: str, note: str = "") -> str:
+        # A qualifier on a zero is noise: "0 失效记录 · 品牌族匹配" describes a match that returned
+        # nothing, and the reader learns nothing from which method found nothing.
+        qualifier = f'<i>{esc(note)}</i>' if note and n(value) != "0" else ""
+        return (f'<div class="stat"><b>{n(value)}</b><span>{esc(label)}</span>'
+                f'{qualifier}</div>')
+
+    failure_note = ("品牌族匹配" if getattr(failures, "method", "") == "brand_exact" else "")
+    trial_note = ("集团级" if getattr(trials, "method", "") == "sponsor_group" else "")
+    paper_note = ("公司级" if getattr(papers, "level", "") == "company" else "")
+    patent_note = "含其他写法" if (patents and getattr(patents, "variants", None)) else ""
+
     summary_cards = "".join([
-        f'<div class="stat"><b>{n(len(timeline.clearances))}</b><span>批文</span></div>',
-        f'<div class="stat"><b>{n(spec_count)}</b><span>规格条目</span></div>',
-        f'<div class="stat"><b>{n(getattr(failures, "total", 0))}</b><span>失效记录</span></div>',
-        f'<div class="stat"><b>{n(getattr(trials, "trials", 0))}</b><span>在研试验</span></div>',
-        f'<div class="stat"><b>{n(getattr(patents, "patents", 0))}</b><span>专利</span></div>',
-        f'<div class="stat"><b>{n(getattr(papers, "papers", 0))}</b><span>相关论文</span></div>',
+        card(len(timeline.clearances), "批文"),
+        card(spec_count, "规格条目"),
+        card(getattr(failures, "total", 0), "失效记录", failure_note),
+        card(getattr(trials, "trials", 0), "在研试验", trial_note),
+        card(getattr(patents, "patents", 0), "专利", patent_note),
+        card(getattr(papers, "papers", 0), "相关论文", paper_note),
     ])
 
     others = ""
@@ -587,13 +605,23 @@ def company_page(*, data: Mapping[str, Any]) -> str:
             active="company")
 
     codes = data.get("product_codes") or []
+
+    def _card(value: Any, label: str, note: str = "") -> str:
+        qualifier = f'<i>{esc(note)}</i>' if note and n(value) != "0" else ""
+        return (f'<div class="stat"><b>{n(value)}</b><span>{esc(label)}</span>'
+                f'{qualifier}</div>')
+
+    # Same rule as the dossier: a company page whose top row says 200 trials must say 集团级 there,
+    # not only in the section three screens down.
     stats = "".join([
-        f'<div class="stat"><b>{n(data.get("devices"))}</b><span>注册设备</span></div>',
-        f'<div class="stat"><b>{n(data.get("clearances"))}</b><span>批文</span></div>',
-        f'<div class="stat"><b>{n(data.get("failures"))}</b><span>失效记录</span></div>',
-        f'<div class="stat"><b>{n(data.get("trials"))}</b><span>在研试验</span></div>',
-        f'<div class="stat"><b>{n(data.get("patents"))}</b><span>专利</span></div>',
-        f'<div class="stat"><b>{n(data.get("papers"))}</b><span>相关论文</span></div>',
+        _card(data.get("devices"), "注册设备"),
+        _card(data.get("clearances"), "批文"),
+        _card(data.get("failures"), "失效记录"),
+        _card(data.get("trials"), "在研试验",
+              "集团级" if data.get("trial_method") == "group" else ""),
+        _card(data.get("patents"), "专利",
+              "含其他写法" if data.get("patent_variants") else ""),
+        _card(data.get("papers"), "相关论文", "公司级" if data.get("papers") else ""),
     ])
 
     brands = data.get("brands") or []

@@ -2998,6 +2998,48 @@ def test_every_reason_code_the_code_can_emit_has_a_sentence():
     assert export.GAP_TEXT is GAP_TEXT
 
 
+def test_the_summary_never_claims_more_than_the_sections_admit(tmp_path):
+    """Measured: cards read "200 在研试验" and "2 相关论文" while the sections said 集团级 and 公司级."""
+    from medradar.radar.device_view import build
+    from medradar.radar.pages import company_page, device_dossier
+
+    store = _view_store(tmp_path)
+    timeline = build(store, "K250063", corpus_root=_corpus(tmp_path))
+    first = timeline.refs[0].device_key
+
+    # Force the weaker match kinds the pages have to label.
+    trials = timeline.trials.get(first)
+    papers = timeline.papers.get(first)
+    if trials is not None:
+        trials.method = "sponsor_group"
+        trials.trials = 41
+    if papers is not None:
+        papers.level = "company"
+        papers.papers = 7
+
+    page = device_dossier(timeline, query="K250063")
+    if trials is not None:
+        card = page[page.index("41"):page.index("41") + 160]
+        assert "集团级" in card, "the trial count is shown without its group-level qualifier"
+    if papers is not None:
+        card = page[page.index(">7<"):page.index(">7<") + 160]
+        assert "公司级" in card, "the paper count is shown without its company-level qualifier"
+    store.close()
+
+
+def test_a_company_row_labels_the_group_level_trial_count():
+    from medradar.radar.pages import company_page
+
+    page = company_page(data={
+        "found": True, "company_name": "MEDTRONIC SOFAMOR DANEK, INC.", "query": "Medtronic",
+        "labeler_duns": "830350380", "devices": 10, "clearances": 1, "failures": 2,
+        "trials": 200, "patents": 0, "papers": 117, "matched_by": "公司名包含匹配",
+        "trial_method": "group", "product_codes": [], "brands": [], "topics": []})
+    row = page[page.index("200"):page.index("200") + 160]
+    assert "集团级" in row
+    assert "公司级" in page[page.index(">117<"):page.index(">117<") + 160]
+
+
 def test_a_pre_digitisation_filing_is_never_requested(tmp_path):
     """Measured: 0 of 60 sampled filings from 1998-2009 have a PDF at any path shape.
 
