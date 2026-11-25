@@ -3510,6 +3510,41 @@ def test_a_frozen_graph_is_announced_instead_of_looking_alive():
     assert "OperationalError" in broken
 
 
+def test_the_health_probe_survives_a_deploy_but_still_reports_a_real_outage():
+    """Measured: every deploy restarted the web service and one 5-minute sample marked the unit failed."""
+    import importlib.util
+    import threading
+    import http.server
+
+    path = Path(__file__).resolve().parents[1] / "docs/release_gate/001/health/radar_health.py"
+    spec = importlib.util.spec_from_file_location("radar_health_probe", path)
+    probe = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(probe)
+
+    # Nothing listening: it retries, then reports the connection failure with its attempt count.
+    failed = probe._http("http://127.0.0.1:59999/healthz", timeout=1, attempts=3, delay=0.05)
+    assert failed["ok"] is False
+    assert failed["attempts"] == 3
+    assert "URLError" in failed["error"] or "Connection" in failed["error"]
+
+    # A served error is an answer, not something to retry five times.
+    class Handler(http.server.BaseHTTPRequestHandler):
+        def do_GET(self):  # noqa: N802 - stdlib naming
+            self.send_error(501)
+
+        def log_message(self, *args):  # silence the test output
+            pass
+
+    server = http.server.HTTPServer(("127.0.0.1", 59998), Handler)
+    threading.Thread(target=server.serve_forever, daemon=True).start()
+    try:
+        served = probe._http("http://127.0.0.1:59998/", attempts=5, delay=0.01)
+        assert served["ok"] is False and served["attempts"] == 1
+        assert "HTTP 501" in served["error"]
+    finally:
+        server.shutdown()
+
+
 def test_a_pre_digitisation_filing_is_never_requested(tmp_path):
     """Measured: 0 of 60 sampled filings from 1998-2009 have a PDF at any path shape.
 

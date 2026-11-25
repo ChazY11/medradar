@@ -24,21 +24,36 @@ import argparse, base64, json, os, socket, sys, time, urllib.error, urllib.reque
 BT = chr(96)
 
 
-def _http(url, timeout=10, headers=None):
+def _http(url, timeout=10, headers=None, *, attempts=1, delay=0.0):
+    """One HTTP check, optionally retried.
+
+    The probe runs from a five-minute timer, so a single sample decides the light. Measured: every
+    deploy restarted the web service for ~18 s and whichever sample landed inside that window marked
+    the unit failed - 03:43:17 failed, 03:38 and 03:48 finished - with nothing wrong to report. A
+    deployment is not an outage, so availability checks retry across a window wide enough to cover a
+    restart; the retry counts are reported so a reader can still see it was not first-try.
+    """
     started = time.time()
-    try:
-        request = urllib.request.Request(url, headers=headers or {})
-        with urllib.request.urlopen(request, timeout=timeout) as response:
-            body = response.read()
-            return {"ok": True, "status": response.status,
-                    "ms": round((time.time() - started) * 1000, 1), "bytes": len(body),
-                    "body": body}
-    except urllib.error.HTTPError as error:
-        return {"ok": False, "status": error.code, "error": "HTTP " + str(error.code),
-                "ms": round((time.time() - started) * 1000, 1)}
-    except Exception as error:
-        return {"ok": False, "status": None, "error": type(error).__name__ + ": " + str(error)[:160],
-                "ms": round((time.time() - started) * 1000, 1)}
+    last = None
+    for attempt in range(1, max(1, attempts) + 1):
+        try:
+            request = urllib.request.Request(url, headers=headers or {})
+            with urllib.request.urlopen(request, timeout=timeout) as response:
+                body = response.read()
+                return {"ok": True, "status": response.status,
+                        "ms": round((time.time() - started) * 1000, 1), "bytes": len(body),
+                        "attempts": attempt, "body": body}
+        except urllib.error.HTTPError as error:
+            # A served error is an answer: retrying a 500 five times only delays the report.
+            return {"ok": False, "status": error.code, "error": "HTTP " + str(error.code),
+                    "ms": round((time.time() - started) * 1000, 1), "attempts": attempt}
+        except Exception as error:
+            last = {"ok": False, "status": None,
+                    "error": type(error).__name__ + ": " + str(error)[:160],
+                    "ms": round((time.time() - started) * 1000, 1), "attempts": attempt}
+            if attempt < attempts and delay:
+                time.sleep(delay)
+    return last
 
 
 def _port_open(host, port):
@@ -62,11 +77,18 @@ def _worst(checks):
 
 def layer_availability(args):
     checks = []
+    # A deploy restarts the web service for about eighteen seconds. Retrying across thirty covers
+    # that without hiding a genuine outage: an app that is really down still fails all five attempts
+    # and the recorded error names the connection failure.
+    attempts = int(getattr(args, "retry_attempts", 5) or 1)
+    delay = float(getattr(args, "retry_delay", 6.0) or 0.0)
     checks.append({"id": "port", "ok": _port_open("127.0.0.1", args.port),
                    "detail": "127.0.0.1:" + str(args.port)})
-    healthz = _http(args.healthz_url)
+    healthz = _http(args.healthz_url, attempts=attempts, delay=delay)
     checks.append({"id": "healthz", "ok": healthz["ok"] and healthz.get("status") == 200,
-                   "detail": healthz.get("error") or ("200 in " + str(healthz["ms"]) + " ms")})
+                   "detail": (healthz.get("error") or ("200 in " + str(healthz["ms"]) + " ms"))
+                             + (" (after " + str(healthz.get("attempts")) + " attempts)"
+                                if (healthz.get("attempts") or 1) > 1 else "")})
     # The alpha gate protects the API on loopback too, and it counts every unauthenticated call as
     # a failed credential: a probe that calls the gated API every few minutes eventually locks the
     # loopback address out (measured: HTTP 429 after a handful of runs), which then looks exactly
@@ -97,6 +119,9 @@ def main():
     parser.add_argument("--port", type=int, default=8792)
     parser.add_argument("--base-url", default="http://127.0.0.1:8792")
     parser.add_argument("--healthz-url", default="http://127.0.0.1:8792/healthz")
+    parser.add_argument("--retry-attempts", type=int, default=5,
+                        help="availability attempts; 5 x 6 s covers a service restart on deploy")
+    parser.add_argument("--retry-delay", type=float, default=6.0)
     parser.add_argument("--web-dir", default=None)
     parser.add_argument("--api-probe", default=None,
                         help="user:password for an authenticated API probe (manual runs only)")
