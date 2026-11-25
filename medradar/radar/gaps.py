@@ -22,11 +22,13 @@ GAP_TEXT: dict[str, str] = {
     "document_present_but_unreadable": "文件在，但正文不可读",
     "section_absent_from_document": "这份文件里没有这一章节——不是我们没提取，是原文就没有",
     # --- field experience
-    "product_code_not_swept": "这个产品码还没扫过失效记录",
+    "product_code_not_swept": "这台设备的产品码还没有扫过失效记录（是我们的进度，不是它没有失效）",
+    "device_has_no_product_code": "这台设备在注册表里没有产品码，无法确定该扫哪个类别",
     "no_failure_in_swept_window": "已扫过的窗口里没有这台设备的失效记录",
     # --- patents
     "patent_bulk_tables_absent": "专利表还没有导入过数据",
     "patent_source_needs_credential": "专利源需要凭据（EPO 账号审核中）",
+    "patent_assignee_not_fetched": "专利库里还没有这家受让人的记录——是还没抓过，不是它没有专利",
     "no_patent_for_this_assignee": "专利表里没有匹配到这个受让人",
     "patent_only_searched_not_recorded": "专利库里有按这个名字搜到、但申请人字段并非本公司的记录；"
                                          "这类不算本公司的专利，所以这里不展示",

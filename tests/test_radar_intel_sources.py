@@ -1594,8 +1594,9 @@ def test_without_bulk_tables_the_patent_gap_names_the_absent_source(tmp_path):
     store.close()
 
 
-def test_patents_present_but_unmatched_says_so_rather_than_zero(tmp_path):
-    from medradar.radar.device_view import GAP_NO_PATENT_MATCH, build
+def test_a_company_we_never_fetched_is_not_reported_as_holding_no_patents(tmp_path):
+    """253 patents over 92 assignees is a sample; "absent from our table" must not read as "has none"."""
+    from medradar.radar.device_view import GAP_NO_PATENT_MATCH, GAP_PATENT_NOT_FETCHED, build
     from medradar.radar.patents_bulk import import_tables
 
     store = _view_store(tmp_path)
@@ -1609,8 +1610,33 @@ def test_patents_present_but_unmatched_says_so_rather_than_zero(tmp_path):
     timeline = build(store, "K250063", corpus_root=_corpus(tmp_path))
     history = timeline.patents[timeline.refs[0].device_key]
     assert history.available is True and history.patents == 0
+    # Nothing about this company was ever fetched, so the honest answer is our backlog.
+    assert history.gap == GAP_PATENT_NOT_FETCHED
+    assert GAP_PATENT_NOT_FETCHED in timeline.gaps
+    assert GAP_NO_PATENT_MATCH not in timeline.gaps
+    store.close()
+
+
+def test_a_company_we_searched_but_found_no_applicant_row_for_says_exactly_that(tmp_path):
+    from medradar.radar.device_view import GAP_NO_PATENT_MATCH, build
+    from medradar.radar.patents_bulk import import_tables
+
+    store = _view_store(tmp_path)
+    patents = _bulk_file(tmp_path, "h_patent.tsv", ["patent_id", "patent_title", "patent_date"],
+                         [["patent/9", "Search artefact", "2020-01-01"]])
+    # The row exists only because this name was searched for: the applicant was somebody else.
+    assignees = _bulk_file(tmp_path, "h_assignee_disambiguated.tsv",
+                           ["patent_id", "assignee_id", "disambig_assignee_organization"],
+                           [["patent/9", "org9", "ARUM DENTISTRY Co., Ltd."]])
+    import_tables(store, patents, assignees)
+    store.conn.execute("UPDATE bulk_patent_assignee SET assignee_type = 'query_matched'")
+    store.conn.commit()
+
+    timeline = build(store, "K250063", corpus_root=_corpus(tmp_path))
+    history = timeline.patents[timeline.refs[0].device_key]
+    assert history.patents == 0
+    # We did look, and the documents do not name this company as applicant.
     assert history.gap == GAP_NO_PATENT_MATCH
-    assert GAP_NO_PATENT_MATCH in timeline.gaps
     store.close()
 
 
@@ -3038,6 +3064,31 @@ def test_a_company_row_labels_the_group_level_trial_count():
     row = page[page.index("200"):page.index("200") + 160]
     assert "集团级" in row
     assert "公司级" in page[page.index(">117<"):page.index(">117<") + 160]
+
+
+def test_an_unswept_product_code_is_not_the_same_as_no_product_code(tmp_path):
+    """Two different facts shared one code: the register row has no code, versus our own backlog."""
+    from medradar.radar.device_view import (GAP_NO_FAILURE_INDEX, GAP_NO_PRODUCT_CODE,
+                                            failure_history, resolve)
+    from medradar.radar.failure_index import ensure_schema
+
+    store = _view_store(tmp_path)
+    ensure_schema(store)
+
+    # A device with no product code at all: a property of the register row.
+    row = _udi_row("K250063", "M1")
+    row["product_codes"] = []
+    store.write_udi_rows([row])
+    ref = resolve(store, "M1")[0]
+    assert failure_history(store, ref).gap == GAP_NO_PRODUCT_CODE
+
+    # A device whose codes exist but were never swept: our backlog, and waiting would fix it.
+    row2 = _udi_row("K250064", "M2")
+    row2["product_codes"] = [{"code": "ZZZ"}]
+    store.write_udi_rows([row2])
+    ref2 = resolve(store, "M2")[0]
+    assert failure_history(store, ref2).gap == GAP_NO_FAILURE_INDEX
+    store.close()
 
 
 def test_a_pre_digitisation_filing_is_never_requested(tmp_path):

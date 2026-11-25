@@ -41,10 +41,12 @@ GAP_DOCUMENT_UNREADABLE = "document_present_but_unreadable"
 GAP_SECTION_ABSENT = "section_absent_from_document"
 GAP_NOT_IN_INDEX = "device_not_in_udi_register"
 GAP_NO_FAILURE_INDEX = "product_code_not_swept"
+GAP_NO_PRODUCT_CODE = "device_has_no_product_code"
 GAP_NO_FAILURE_MATCH = "no_failure_in_swept_window"
 GAP_PATENT_CREDENTIAL = "patent_source_needs_credential"
 GAP_NO_PATENT_SOURCE = "patent_bulk_tables_absent"
 GAP_NO_PATENT_MATCH = "no_patent_for_this_assignee"
+GAP_PATENT_NOT_FETCHED = "patent_assignee_not_fetched"
 GAP_NO_TRIAL_SOURCE = "trials_table_absent"
 GAP_NO_TRIAL_MATCH = "no_trial_for_this_sponsor"
 GAP_NO_PAPER_SOURCE = "paper_index_absent"
@@ -393,6 +395,14 @@ def failure_history(reference, ref: DeviceRef) -> FailureHistory:
             return FailureHistory(method="model_exact", events=result["events"],
                                   by_type=result["by_type"], matched_on=str(candidate))
     if not ref.product_codes:
+        # "This device has no product code" is not "we have not swept this product code". The first
+        # is a property of the register row; the second is our own backlog. Reported as one thing,
+        # the reader cannot tell whether waiting would fix it.
+        return FailureHistory(gap=GAP_NO_PRODUCT_CODE)
+    from .code_census import swept_codes
+
+    swept = swept_codes(reference)
+    if not swept.intersection(ref.product_codes or []):
         return FailureHistory(gap=GAP_NO_FAILURE_INDEX)
     brand = failures_for_brand(reference, ref.brand_name or "",
                                product_codes=ref.product_codes or None)
@@ -413,6 +423,7 @@ def patent_history(reference, ref: DeviceRef, *, limit: int = 5) -> PatentHistor
 
     if not tables_present(reference):
         return PatentHistory(available=False, gap=GAP_NO_PATENT_SOURCE)
+    searched_for_any = 0
     for candidate in (ref.company_name, ref.brand_name):
         if not candidate:
             continue
@@ -421,7 +432,13 @@ def patent_history(reference, ref: DeviceRef, *, limit: int = 5) -> PatentHistor
             return PatentHistory(available=True, organization=str(candidate),
                                  patents=int(result["patents"]), recent=result["recent"],
                                  method=str(result["method"]))
-    return PatentHistory(available=True, gap=GAP_NO_PATENT_MATCH)
+        searched_for_any += int(result.get("searched_for") or 0)
+    # The table has rows but no applicant row for this company. If we did search for the name and
+    # the documents name somebody else as applicant, that is a finding. If we never searched, it is
+    # our backlog - 263 patents over 92 assignees is a sample of the register, and "absent from our
+    # table" must not read as "this company holds no patents".
+    gap = GAP_NO_PATENT_MATCH if searched_for_any else GAP_PATENT_NOT_FETCHED
+    return PatentHistory(available=True, gap=gap)
 
 
 # ---------------------------------------------------------------------- trials
