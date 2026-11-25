@@ -910,12 +910,28 @@ def _company_data(store: Any, query: str, *, snapshot: Mapping[str, Any]) -> dic
         "SELECT COUNT(DISTINCT submission_number) FROM udi_premarket WHERE labeler_duns = ?",
         (duns,))
     try:
-        codes = [str(r[0]) for r in store.conn.execute(
+        # The list is capped for display, and the cap is recorded rather than hidden: reporting
+        # "共 200 个产品码" for a labeler that has 500 is a completeness claim the data does not
+        # support. `product_code_total` is the true count; the cap only shortens the list.
+        code_rows = [str(r[0]) for r in store.conn.execute(
             "SELECT DISTINCT j.value FROM udi_device d, json_each(d.product_codes) j "
-            "WHERE d.labeler_duns = ? LIMIT 200", (duns,))]
+            "WHERE d.labeler_duns = ? LIMIT 201", (duns,))]
+        capped = len(code_rows) > 200
+        codes = code_rows[:200]
+        if capped:
+            try:
+                out["product_code_total"] = int(store.conn.execute(
+                    "SELECT COUNT(DISTINCT j.value) FROM udi_device d, json_each(d.product_codes) j "
+                    "WHERE d.labeler_duns = ?", (duns,)).fetchone()[0] or 0)
+            except Exception:  # noqa: BLE001 - the cap note falls back to "more than 200"
+                out["product_code_total"] = None
+        else:
+            out["product_code_total"] = len(codes)
     except Exception:  # noqa: BLE001 - a store without JSON1 still renders the rest
         codes = []
+        out["product_code_total"] = None
     out["product_codes"] = codes
+    out["product_codes_capped"] = bool(codes) and out.get("product_code_total") not in (None, len(codes))
     if codes:
         placeholders = ",".join("?" for _ in codes)
         out["failures"] = scalar(
@@ -996,7 +1012,9 @@ def _company_data(store: Any, query: str, *, snapshot: Mapping[str, Any]) -> dic
     code_cap = 400
     codes_for_areas = codes[:code_cap]
     out["area_codes_used"] = len(codes_for_areas)
-    out["area_codes_total"] = len(codes)
+    # The true number of codes, not the length of the display list: a company with 500 codes
+    # must not be described as having 200.
+    out["area_codes_total"] = out.get("product_code_total") or len(codes)
     out["specialties"] = specialty_counts(store, codes_for_areas)
     classes = classes_for_codes(store, codes_for_areas)
     examples: dict[str, list[str]] = {}

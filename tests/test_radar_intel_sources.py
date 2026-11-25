@@ -3667,6 +3667,29 @@ def test_a_company_can_be_sent_onward_with_its_qualifiers_attached(tmp_path):
     store.close()
 
 
+def test_a_capped_product_code_list_never_claims_to_be_the_whole_set(tmp_path):
+    """Measured: Medline reported "共 200 个" because the display cap was also the total."""
+    from medradar.radar.pages import _company_data
+    from medradar.radar.reference import UdiReference
+
+    store = UdiReference(tmp_path / "reference.db")
+    codes = [f"{chr(65 + i % 26)}{chr(65 + (i // 26) % 26)}{chr(65 + i // 676)}" for i in range(240)]
+    rows = [{
+        "identifiers": [{"id": f"08800{i:04d}00", "type": "Primary", "issuing_agency": "GS1"}],
+        "brand_name": f"B{i % 5}", "company_name": "Big Codes Ltd.",
+        "labeler_duns_number": "123456789", "version_or_model_number": f"M{i}",
+        "device_description": "d", "product_codes": [{"code": code}],
+        "catalog_number": "", "publish_date": "2024-01-01"} for i, code in enumerate(codes)]
+    store.write_udi_rows(rows)
+
+    data = _company_data(store, "Big Codes", snapshot={})
+    assert data["product_codes_capped"] is True
+    assert len(data["product_codes"]) == 200            # display stays bounded
+    assert data["area_codes_total"] == 240              # the truth is not the cap
+    assert data["product_code_total"] == 240
+    store.close()
+
+
 def test_a_pre_digitisation_filing_is_never_requested(tmp_path):
     """Measured: 0 of 60 sampled filings from 1998-2009 have a PDF at any path shape.
 
