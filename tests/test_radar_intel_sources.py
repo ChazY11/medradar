@@ -2530,7 +2530,7 @@ def test_the_pages_router_mounts_at_the_site_root():
 
     paths = [route.path for route in pages_router(_Svc()).routes]
     assert paths == ["/", "/device", "/sources", "/topic", "/company", "/compare",
-                     "/download", "/map"]
+                     "/download", "/paper", "/map"]
 
 
 def test_the_alpha_gate_lets_the_new_pages_through_and_nothing_else():
@@ -2889,6 +2889,51 @@ def test_a_word_in_thousands_of_brands_cannot_identify_one_device(tmp_path):
 
     distinctive = papers_for_tokens(store, ["arum", "fixture"])
     assert distinctive["papers"] == 1
+    store.close()
+
+
+def test_a_paper_can_be_turned_back_into_a_lead_but_not_a_conclusion(tmp_path):
+    """A reader arrives with a paper and asks who makes the thing; the index only ran the other way."""
+    from medradar.radar.pages import paper_page
+    from medradar.radar.papers_index import (brands_for_terms, index_corpus, rebuild_brand_token_df,
+                                             ensure_tables, paper_record, paper_terms)
+    from medradar.radar.reference import UdiReference
+
+    store = UdiReference(tmp_path / "reference.db")
+    rows = [{
+        "identifiers": [{"id": f"08800{i:04d}00", "type": "Primary", "issuing_agency": "GS1"}],
+        "brand_name": "ARUM NB 1 SA Fixture", "company_name": "ARUM",
+        "labeler_duns_number": "557821945", "version_or_model_number": f"NB{i}",
+        "device_description": "d", "product_codes": [{"code": "EIA"}],
+        "catalog_number": "", "publish_date": "2024-01-01"} for i in range(2)]
+    store.write_udi_rows(rows)
+    ensure_tables(store)
+    rebuild_brand_token_df(store)
+
+    corpus = tmp_path / "corpus"
+    corpus.mkdir()
+    (corpus / "paper_PMC1.json").write_text(json.dumps({
+        "identifier": "PMC1", "status": "text", "text_source": "text", "text_chars": 100,
+        "sections": {"body": "An ARUM abutment study with a control group."}}), encoding="utf-8")
+    index_corpus(store, corpus, vocab={"arum", "abutment", "study", "control", "group"})
+
+    record = paper_record(store, "PMC1")
+    assert record["title"] or record["paper_id"] == "PMC1"
+    terms = [t["term"] for t in paper_terms(store, "PMC1")]
+    assert "arum" in terms
+
+    brands = brands_for_terms(store, ["arum"])
+    assert brands and brands[0]["brand_name"] == "ARUM NB 1 SA Fixture"
+
+    page = paper_page(record=record, terms=[{"term": "arum", "hits": 3}], brands=brands,
+                      paper_id="PMC1")
+    # The caveat has to come before the list, not after it.
+    assert page.index("不代表") < page.index("ARUM NB 1 SA Fixture")
+    assert "/device?query=ARUM NB 1 SA Fixture" in page
+
+    missing = paper_page(record=None, terms=[], brands=[], paper_id="PMC404",
+                         suggestions=["PMC1"])
+    assert "paper_not_in_index" in missing and "/paper?id=PMC1" in missing
     store.close()
 
 

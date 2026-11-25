@@ -139,6 +139,9 @@ GAP_TEXT = {
     "no_brand_for_this_company": "这家公司名下没有任何登记了品牌的设备",
     "patent_only_searched_not_recorded": "专利库里有按这个名字搜到、但申请人字段并非本公司的记录；"
                                          "这类不算本公司的专利，所以这里不展示",
+    "paper_not_in_index": "这篇论文不在索引里（只收录已归档全文，摘要和付费墙后的正文不在内）",
+    "no_registered_brand_shares_these_terms": "没有任何已注册品牌名共用这篇论文的识别性词",
+    "device_index_absent": "这台部署没有设备库",
 }
 
 
@@ -968,6 +971,57 @@ def warmup(service: Any) -> dict[str, Any]:
     return report
 
 
+def paper_page(*, record: Mapping[str, Any] | None, terms: Sequence[Mapping[str, Any]],
+               brands: Sequence[Mapping[str, Any]], paper_id: str,
+               suggestions: Sequence[str] = ()) -> str:
+    """The reverse of the device dossier: a reader arrives with a paper and asks who makes the thing.
+
+    Every other page here starts from a device. An engineer reading a paper has the opposite problem,
+    and the honest answer is narrow: the index can say which registered brand names share the words
+    this paper was indexed under. That is a lead to check, not a claim that the paper studies that
+    product, and the page says so before the list rather than after it.
+    """
+    if record is None:
+        return layout(
+            title="论文 · MedRadar",
+            body=(f'<h1>索引里没有这篇论文：{esc(paper_id)}</h1>'
+                  '<p class="lede">只收录已归档全文的论文；摘要或付费墙后的正文不在索引里。</p>'
+                  + gap_note("paper_not_in_index")
+                  + (f'<p class="small muted">例如：'
+                     + " · ".join(f'<a href="/paper?id={esc(s)}">{esc(s)}</a>' for s in suggestions[:4])
+                     + "</p>" if suggestions else "")),
+            active="device")
+
+    term_rows = "".join(
+        f'<span class="chip">{esc(item["term"])} · {n(item["hits"])}</span>'
+        for item in terms[:24])
+    brand_rows = "".join(
+        f'<tr><td><a href="/device?query={esc(item["brand_name"])}">'
+        f'{esc(item["brand_name"])}</a></td>'
+        f'<td class="num">{n(item.get("shared"))}</td>'
+        f'<td class="muted small">{esc("、".join(item.get("shared_terms") or []))}</td></tr>'
+        for item in brands)
+    brand_html = (f'<div class="card"><table><thead><tr><th>已注册品牌</th><th>共同词</th>'
+                  f'<th>是哪些词</th></tr></thead><tbody>{brand_rows}</tbody></table></div>'
+                  if brand_rows else gap_note("no_registered_brand_shares_these_terms"))
+
+    body = f"""
+<p class="small muted"><a href="/">← 重新查询</a></p>
+<h1>{esc(record.get("title") or paper_id)}</h1>
+<p class="lede">{esc(paper_id)}{(" · " + esc(str(record.get("year"))[:10])) if record.get("year") else ""}</p>
+
+<h2>这篇论文被索引到的词</h2>
+<p class="muted small">只索引了注册表里出现过的名称，所以这张词表本身就是"这篇论文提到了哪些已知产品名"。</p>
+<div class="chips">{term_rows or '<span class="muted">没有索引词</span>'}</div>
+
+<h2>这些词指向哪些已注册产品</h2>
+<div class="gap"><b>先看清楚这是什么：</b>下面是<b>共用这些词</b>的已注册品牌名，
+<b>不代表</b>这篇论文研究的就是这些产品。它是一条线索，判断还得打开原文核对。</div>
+{brand_html}
+"""
+    return layout(title=f"{record.get('title') or paper_id} · MedRadar", body=body, active="device")
+
+
 def pages_router(service: Any, *, endpoints: Mapping[str, Any] | None = None) -> Any:
     """Reader-facing routes, mounted at the site root rather than under /api/radar.
 
@@ -1234,6 +1288,42 @@ def pages_router(service: Any, *, endpoints: Mapping[str, Any] | None = None) ->
             headers={"Content-Disposition": f'attachment; filename="{stem}.{suffix}"',
                      "X-Robots-Tag": "noindex, nofollow"},
         )
+
+    @router.get("/paper", response_class=HTMLResponse)
+    def paper_view(id: str | None = Query(None, max_length=80)) -> Any:
+        if not id:
+            return HTMLResponse(layout(
+                title="论文 · MedRadar",
+                body=('<h1>论文反查</h1><p class="lede">输入论文编号，例如 '
+                      '<a href="/paper?id=PMC13713206">PMC13713206</a>。</p>'
+                      '<form class="search" method="get" action="/paper">'
+                      '<input type="search" name="id" placeholder="PMC13713206" aria-label="论文编号">'
+                      '<button type="submit">反查</button></form>'),
+                active="device"))
+
+        def render() -> str:
+            from .papers_index import (brands_for_terms, distinctive_terms, paper_record,
+                                       paper_terms)
+
+            store = _store()
+            if store is None:
+                return layout(title="设备库不存在 · MedRadar",
+                              body=gap_note("device_index_absent"), active="device")
+            try:
+                record = paper_record(store, id)
+                terms = paper_terms(store, id, limit=60)
+                # Only words that can name a product: a paper is indexed under "with" and "the" too,
+                # and every brand would share those.
+                kept, _generic = distinctive_terms(store, [t["term"] for t in terms])
+                brands = brands_for_terms(store, kept, limit=30)
+                suggestions = [str(r[0]) for r in store.conn.execute(
+                    "SELECT DISTINCT paper_id FROM paper_term ORDER BY paper_id LIMIT 4")]
+            finally:
+                store.close()
+            return paper_page(record=record, terms=terms, brands=brands, paper_id=id,
+                              suggestions=suggestions)
+
+        return HTMLResponse(cached(f"paper:{id}", 300.0, render))
 
     @router.get("/map", response_class=HTMLResponse)
     def map_view() -> Any:

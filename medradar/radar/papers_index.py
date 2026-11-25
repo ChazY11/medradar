@@ -50,6 +50,18 @@ CREATE TABLE IF NOT EXISTS brand_token_df (
   term   TEXT PRIMARY KEY,
   brands INTEGER NOT NULL
 );
+
+-- The reverse direction: which registered brand names carry this word.
+--
+-- A reader who arrives with a paper needs to know who makes the thing it studies, and there was no
+-- way to ask that - the index only ran device -> paper. Distinct brands number about 200,000, so
+-- their tokens fit in a small table, while indexing tokens for all 5.2M device rows would not.
+CREATE TABLE IF NOT EXISTS brand_token (
+  term       TEXT NOT NULL,
+  brand_name TEXT NOT NULL,
+  PRIMARY KEY (term, brand_name)
+);
+CREATE INDEX IF NOT EXISTS idx_brand_token_term ON brand_token(term);
 """
 
 #: Shortest token worth indexing. Three letters match too much ("aaa", "inc"), five misses real
@@ -125,30 +137,108 @@ def compact(value: str) -> str:
     return re.sub(r"[^a-z0-9]", "", str(value or "").lower())
 
 
-def brand_token_frequencies(reference, *, limit: int = 200_000) -> dict[str, int]:
+def brand_token_frequencies(reference, *, limit: int = 200_000,
+                            with_pairs: bool = False):
     """Register-side document frequency: how many distinct brand names contain each word."""
     counts: dict[str, int] = {}
+    pairs: list[tuple[str, str]] = []
     try:
         rows = reference.conn.execute(
             "SELECT DISTINCT brand_name FROM udi_device "
             "WHERE brand_name IS NOT NULL AND brand_name <> '' LIMIT ?", (limit,)).fetchall()
     except Exception:  # noqa: BLE001 - a store without the device table simply has no signal
-        return {}
+        return (counts, pairs) if with_pairs else counts
     for row in rows:
-        for token in set(tokens(str(row[0] or ""))):
+        brand = str(row[0] or "")
+        for token in set(tokens(brand)):
             counts[token] = counts.get(token, 0) + 1
-    return counts
+            if with_pairs:
+                pairs.append((token, brand))
+    return (counts, pairs) if with_pairs else counts
 
 
 def rebuild_brand_token_df(reference, *, limit: int = 200_000) -> int:
-    """Persist the register-side frequency so a page does not recompute it per request."""
+    """Persist the register-side frequency and the term -> brand reverse map.
+
+    Both come from the same pass over distinct brand names, so building them together costs one scan.
+    """
     ensure_tables(reference)
-    counts = brand_token_frequencies(reference, limit=limit)
+    counts, pairs = brand_token_frequencies(reference, limit=limit, with_pairs=True)
     reference.conn.execute("DELETE FROM brand_token_df")
     reference.conn.executemany("INSERT OR REPLACE INTO brand_token_df (term, brands) VALUES (?,?)",
                                list(counts.items()))
+    reference.conn.execute("DELETE FROM brand_token")
+    reference.conn.executemany(
+        "INSERT OR REPLACE INTO brand_token (term, brand_name) VALUES (?,?)", pairs)
     reference.conn.commit()
     return len(counts)
+
+
+def brands_for_terms(reference, terms: Sequence[str], *, limit: int = 30,
+                     max_shared_brand_df: int = 5) -> list[dict[str, Any]]:
+    """Brand names sharing a *very* specific term with these terms, with the terms they share.
+
+    Sharing any word is not a lead. Measured on a paper about machined implant abutments: the loose
+    version returned thirty brands of "bite registration" material and "standardized probe", because
+    those words pass a 50-brand threshold - while the one genuinely relevant hit, "Angled MU abutment
+    - Machining", shared the word "machining", which appears in exactly one brand name in the entire
+    register.
+
+    So a brand qualifies only when it shares a term carried by ``max_shared_brand_df`` brands or
+    fewer. The caller is told which term qualified, because that term is the whole reason to look.
+    """
+    usable = [t for t in dict.fromkeys(terms) if t]
+    if not usable:
+        return []
+    rare = []
+    for term in usable:
+        # A four-digit number is a year in this corpus, not a model: "2018" pulled three PROPHYflex
+        # sets into a paper about abutment machining.
+        if len(term) == 4 and term.isdigit():
+            continue
+        brands = _brand_df(reference, term)
+        if brands is not None and brands <= max_shared_brand_df:
+            rare.append(term)
+        elif any(ch.isdigit() for ch in term):
+            rare.append(term)
+    if not rare:
+        return []
+    placeholders = ",".join("?" for _ in rare)
+    try:
+        rows = reference.conn.execute(
+            f"SELECT brand_name, GROUP_CONCAT(term) AS shared, COUNT(*) AS n "
+            f"FROM brand_token WHERE term IN ({placeholders}) "
+            f"GROUP BY brand_name ORDER BY n DESC, brand_name LIMIT ?",
+            (*rare, limit)).fetchall()
+    except Exception:  # noqa: BLE001 - an unbuilt reverse map is an absent answer, not a crash
+        return []
+    out = []
+    for row in rows:
+        shared = sorted(set(str(row[1] or "").split(",")) - {""})
+        out.append({"brand_name": str(row[0]), "shared_terms": shared, "shared": int(row[2] or 0)})
+    return out
+
+
+def paper_terms(reference, paper_id: str, *, limit: int = 40) -> list[dict[str, Any]]:
+    """The terms a paper was indexed under, most frequent first."""
+    try:
+        rows = reference.conn.execute(
+            "SELECT term, hits FROM paper_term WHERE paper_id = ? ORDER BY hits DESC LIMIT ?",
+            (paper_id, limit)).fetchall()
+    except Exception:  # noqa: BLE001
+        return []
+    return [{"term": str(r[0]), "hits": int(r[1] or 0)} for r in rows]
+
+
+def paper_record(reference, paper_id: str) -> dict[str, Any] | None:
+    try:
+        row = reference.conn.execute(
+            "SELECT title, year FROM paper_term WHERE paper_id = ? LIMIT 1", (paper_id,)).fetchone()
+    except Exception:  # noqa: BLE001
+        return None
+    if not row:
+        return None
+    return {"paper_id": paper_id, "title": str(row[0] or ""), "year": str(row[1] or "")}
 
 
 def _brand_df(reference, term: str) -> int | None:
