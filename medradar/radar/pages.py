@@ -477,49 +477,81 @@ def device_dossier(timeline: Any, *, query: str) -> str:
     return layout(title=f"{head.brand_name or query} · MedRadar", body=body, active="device")
 
 
-def sources_page(*, meta: Mapping[str, Any]) -> str:
-    capabilities = (meta.get("capabilities") or {}).get("device_view") or {}
+def sources_page(*, meta: Mapping[str, Any], coverage: Mapping[str, Any] | None = None) -> str:
+    """What this deployment holds, how wide each set reaches, and what is still missing.
+
+    Rewritten after the first audit found the page printing raw JSON, an empty source table, and a
+    paper count that disagreed with the landing page by five - on the one page whose job is to state
+    the truth about coverage.
+    """
+    data = coverage or {}
+    datasets = data.get("datasets") or []
+    shape = data.get("shape") or {}
+    gaps = data.get("gaps") or []
+
+    def row(label: str, value: Any, note: str = "") -> str:
+        return (f'<tr><td>{esc(label)}</td><td class="num">{n(value)}</td>'
+                f'<td class="muted small">{esc(note)}</td></tr>')
+
+    dataset_rows = "".join(
+        row(item["label"], item["count"], item.get("note") or "") for item in datasets)
+    # The shape of each set matters more than its size: 348k records over how many codes, how many
+    # models? A big table with narrow coverage is a small answer.
+    shape_rows = "".join([
+        row("失效记录覆盖的产品码", shape.get("failure_codes"), "注册表里的产品码见下方缺口"),
+        row("失效记录涉及的型号", shape.get("failure_models"), "型号归一后去重"),
+        row("失效记录涉及的品牌", shape.get("failure_brands"), ""),
+        row("试验涉及的申办方", shape.get("trial_sponsors"), "按申办方名称去重"),
+        row("专利涉及的受让人", shape.get("patent_assignees"), "只算申请人字段真实的记录"),
+        row("产品码分类的专科数", shape.get("specialties"), ""),
+        row("注册表里的产品码", shape.get("register_codes"), ""),
+    ])
+    gap_items = "".join(
+        f'<li><b>{esc(item.get("title"))}</b>——{esc(item.get("detail"))}</li>' for item in gaps)
+
     sources = meta.get("sources") or []
-    rows = "".join(
+    source_rows = "".join(
         f'<tr><td>{esc(item.get("display_name") or item.get("source_id"))}</td>'
         f'<td>{esc(item.get("kind") or "")}</td>'
-        f'<td>{esc(item.get("cadence_hours") or "—")}</td>'
+        f'<td class="num">{esc(item.get("cadence_hours") or "—")}</td>'
         f'<td>{"启用" if item.get("enabled") else "停用"}</td>'
         f'<td class="muted small">{esc(item.get("licence") or "—")}</td></tr>'
         for item in sources)
+    # An empty table with headers and no rows looks like a rendering bug; say why instead.
+    sources_block = (f'<div class="card"><table><thead><tr><th>来源</th><th>类型</th><th>周期(h)</th>'
+                     f'<th>状态</th><th>许可</th></tr></thead><tbody>{source_rows}</tbody>'
+                     f'</table></div>' if source_rows
+                     else gap_note("radar_sources_absent"))
 
-    def block(name: str, payload: Any, note: str) -> str:
-        if payload is None:
-            return (f'<div class="card"><h4>{esc(name)}</h4>'
-                    f'<p class="muted small">尚未导入。{esc(note)}</p></div>')
-        return (f'<div class="card"><h4>{esc(name)}</h4><pre class="small" '
-                f'style="margin:0;white-space:pre-wrap">'
-                f'{esc(__import__("json").dumps(payload, ensure_ascii=False, indent=2))}</pre></div>')
+    stamp = (f'<p class="small muted">库存计数更新于 {esc(str(data.get("updated_at"))[:16])}，'
+             f'与首页同一份，所以两边不会互相矛盾。</p>'
+             if data.get("updated_at") else
+             '<p class="small muted">库存计数还没有物化，本次为实时统计。</p>')
 
     body = f"""
 <h1>数据覆盖</h1>
-<p class="lede">这个工具知道什么、不知道什么，以及每个"不知道"的原因。
-下面这些数字是直接读库得到的，不是写死的。</p>
-<div class="grid">
-  <div class="stat"><b>{n((capabilities.get('failures') or {}).get('rows'))}</b><span>失效记录</span></div>
-  <div class="stat"><b>{n((capabilities.get('trials') or {}).get('trials'))}</b><span>临床试验</span></div>
-  <div class="stat"><b>{n((capabilities.get('papers') or {}).get('papers'))}</b><span>论文索引</span></div>
-  <div class="stat"><b>{n((capabilities.get('patents') or {}).get('patents'))}</b><span>专利</span></div>
-</div>
+<p class="lede">这个工具知道什么、不知道什么，以及每个"不知道"的原因。下面的数字读自库，
+与首页用的是同一份物化计数。</p>
+{stamp}
+<h2>各数据集规模</h2>
+<div class="card"><table><thead><tr><th>数据集</th><th>规模</th><th>说明</th></tr></thead>
+<tbody>{dataset_rows}</tbody></table></div>
+<h2>各数据集覆盖到的范围</h2>
+<p class="muted small">规模大不等于覆盖全——34 万条失效记录只覆盖了部分产品码，
+这个区别在结果页会以不同的缺口字样体现。</p>
+<div class="card"><table><thead><tr><th>维度</th><th>数量</th><th>说明</th></tr></thead>
+<tbody>{shape_rows}</tbody></table></div>
+<h2>还没做到的</h2>
+<div class="card"><ul class="small">{gap_items}</ul></div>
 <h2>雷达源</h2>
-<div class="card"><table><thead><tr><th>来源</th><th>类型</th><th>周期(h)</th>
-<th>状态</th><th>许可</th></tr></thead><tbody>{rows}</tbody></table></div>
-<h2>各段的实际库存</h2>
-{block("失效索引", capabilities.get("failures"), "运行 failure index 导入。")}
-{block("临床试验", capabilities.get("trials"), "运行 trials 导入。")}
-{block("专利", capabilities.get("patents"), "EPO 账号审核中（受理号 51279），或等 Google 解封。")}
-{block("论文索引", capabilities.get("papers"), "运行 papers_index 构建。")}
+{sources_block}
 <h2>明确不做的事</h2>
 <div class="card"><p class="muted small">
-· 不把"没有数据"写成"没有"——两者在结果页用不同的字样。<br>
+· 不把"没有数据"写成"没有"——两者在结果页用不同的字样，且都带原因。<br>
 · 不猜测匹配：型号精确匹配与品牌族匹配分开标注。<br>
 · 不冒充集团证据：子公司/集团的匹配会注明"集团级"。<br>
-· 不编造规格：物理上不可能的数值直接丢弃并计数。
+· 不编造规格：物理上不可能的数值直接丢弃并计数。<br>
+· 不把"我们没抓"写成"它没有"：专利与失效都区分这两种情况。
 </p></div>
 """
     return layout(title="数据覆盖 · MedRadar", body=body, active="sources")
@@ -1398,33 +1430,27 @@ def pages_router(service: Any, *, endpoints: Mapping[str, Any] | None = None) ->
 
     @router.get("/sources", response_class=HTMLResponse)
     def sources_view() -> Any:
-        store = _store()
-        capabilities: dict[str, Any] = {"device_view": {}}
-        try:
-            if store is not None:
-                from .failure_index import index_summary
-                from .papers_index import summary as papers_summary
-                from .patents_bulk import bulk_summary, tables_present as patents_present
-                from .trials import tables_present as trials_present
-                from .trials import trials_summary
+        def render() -> str:
+            store = _store()
+            data: dict[str, Any] = {}
+            try:
+                if store is not None:
+                    from .coverage import coverage as build_coverage
 
-                capabilities["device_view"]["failures"] = index_summary(store)
-                capabilities["device_view"]["trials"] = (
-                    trials_summary(store) if trials_present(store) else None)
-                capabilities["device_view"]["patents"] = (
-                    bulk_summary(store) if patents_present(store) else None)
-                capabilities["device_view"]["papers"] = papers_summary(store)
-        finally:
-            if store is not None:
-                store.close()
-        meta: dict[str, Any] = {"capabilities": capabilities, "sources": []}
-        try:
-            payload = service.meta() if hasattr(service, "meta") else None
-            if isinstance(payload, Mapping):
-                meta["sources"] = payload.get("sources") or []
-        except Exception:  # noqa: BLE001 - the coverage page must render even if meta fails
-            meta["sources"] = []
-        return HTMLResponse(sources_page(meta=meta))
+                    data = build_coverage(store, corpus_dir=service.paths.corpus)
+            finally:
+                if store is not None:
+                    store.close()
+            meta: dict[str, Any] = {"sources": []}
+            try:
+                payload = service.meta() if hasattr(service, "meta") else None
+                if isinstance(payload, Mapping):
+                    meta["sources"] = payload.get("sources") or []
+            except Exception:  # noqa: BLE001 - the coverage page must render even if meta fails
+                meta["sources"] = []
+            return sources_page(meta=meta, coverage=data)
+
+        return HTMLResponse(cached("sources", 300.0, render))
 
     def _snapshot() -> Mapping[str, Any]:
         path = Path(str(getattr(service.paths, "root", ""))) / "map_page.json"

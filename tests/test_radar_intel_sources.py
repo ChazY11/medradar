@@ -2529,18 +2529,41 @@ def test_a_missing_device_page_offers_the_examples_instead_of_a_dead_end():
     assert "/device?query=X1209255" in page
 
 
-def test_the_coverage_page_reads_its_numbers_from_the_stores(tmp_path):
-    from medradar.radar.pages import sources_page
+def test_the_coverage_page_reports_size_shape_and_gaps_from_the_store(tmp_path):
+    """The page whose job is to state coverage cannot itself be approximate.
 
-    page = sources_page(meta={"capabilities": {"device_view": {
-        "failures": {"rows": 348742}, "trials": {"trials": 2967},
-        "papers": {"papers": 2552}, "patents": None}},
-        "sources": [{"source_id": "openfda_device", "display_name": "openFDA",
-                     "enabled": True, "cadence_hours": 24, "licence": "CC0"}]})
-    assert "348,742" in page and "2,967" in page and "2,552" in page
+    It previously printed raw JSON blobs, an empty source table, and a paper count that disagreed
+    with the landing page by five because each counted at a different moment.
+    """
+    from medradar.radar.coverage import coverage
+    from medradar.radar.pages import sources_page
+    from medradar.radar.reference import UdiReference
+    from medradar.radar.store_stats import refresh
+
+    store = UdiReference(tmp_path / "reference.db")
+    store.write_udi_rows([_udi_row("K250063", "M1"), _udi_row("K250064", "M2")])
+    refresh(store, corpus_dir=None)
+    data = coverage(store, corpus_dir=None)
+    assert data["available"] is True
+
+    page = sources_page(meta={"sources": [{"source_id": "openfda", "display_name": "openFDA",
+                                           "enabled": True, "cadence_hours": 24,
+                                           "licence": "CC0"}]},
+                        coverage=data)
+    labels = [item["label"] for item in data["datasets"]]
+    assert "UDI 设备注册" in labels and "FDA 产品码分类" in labels
     assert "openFDA" in page
-    # An absent import is described, not rendered as zero-with-no-explanation.
-    assert "尚未导入" in page
+    # Size alone is not coverage: the page must show the shape of each set.
+    assert "各数据集覆盖到的范围" in page
+    assert "规模大不等于覆盖全" in page
+    # And the gaps are computed rather than remembered.
+    assert any("预印本" in item["title"] for item in data["gaps"])
+    assert "还没做到的" in page
+
+    # No configured sources is a gap with a reason, not an empty table under headers.
+    empty = sources_page(meta={"sources": []}, coverage=data)
+    assert "radar_sources_absent" in empty
+    store.close()
 
 
 def test_the_pages_router_mounts_at_the_site_root():

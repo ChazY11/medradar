@@ -32,13 +32,28 @@ CREATE TABLE IF NOT EXISTS store_stats (
 """
 
 #: key -> SQL. Every entry is a count of rows the landing page shows.
+#:
+#: Two of these are slow enough to matter and are the reason the whole set is materialised:
+#: `register_codes` expands the JSON product codes of 5.2M rows (6.7 s warm, far worse cold) and
+#: `labelers` is a distinct over the same table (0.7 s). Measured on the coverage page: reading them
+#: live made /sources take 21.5 s.
 COUNTS: dict[str, str] = {
     "devices": "SELECT COUNT(*) FROM udi_device",
+    "labelers": "SELECT COUNT(DISTINCT labeler_duns) FROM udi_device",
+    "register_codes": "SELECT COUNT(DISTINCT j.value) FROM udi_device d, "
+                      "json_each(d.product_codes) j",
     "failures": "SELECT COUNT(*) FROM maude_failure_index",
+    "failure_codes": "SELECT COUNT(DISTINCT product_code) FROM maude_failure_index",
+    "failure_models": "SELECT COUNT(DISTINCT model_norm) FROM maude_failure_index",
+    "failure_brands": "SELECT COUNT(DISTINCT brand_norm) FROM maude_failure_index",
     "trials": "SELECT COUNT(*) FROM trial",
+    "trial_sponsors": "SELECT COUNT(DISTINCT lead_sponsor) FROM trial",
     "patents": "SELECT COUNT(*) FROM bulk_patent",
+    "patent_assignees": "SELECT COUNT(DISTINCT organization_norm) FROM bulk_patent_assignee "
+                        "WHERE COALESCE(assignee_type,'applicant') <> 'query_matched'",
     "papers": "SELECT COUNT(DISTINCT paper_id) FROM paper_term",
     "codes": "SELECT COUNT(*) FROM product_code_class",
+    "specialties": "SELECT COUNT(DISTINCT medical_specialty) FROM product_code_class",
 }
 
 
