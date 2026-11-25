@@ -176,10 +176,42 @@ def layout(*, title: str, body: str, active: str = "") -> str:
     )
 
 
-def landing(*, stats: Mapping[str, Any], examples: Sequence[tuple[str, str]]) -> str:
+def _stored_counts(store: Any) -> dict[str, Any] | None:
+    try:
+        from .store_stats import read
+
+        return read(store)
+    except Exception:  # noqa: BLE001 - fall back to counting live
+        return None
+
+
+def _relative_age(stored: Mapping[str, Any]) -> str | None:
+    """A human age for the materialised counts, or None when the stamp is unreadable."""
+    from datetime import datetime, timezone
+
+    at = stored.get("updated_at")
+    if not at:
+        return None
+    try:
+        stamp = datetime.fromisoformat(str(at).replace("Z", "+00:00"))
+    except ValueError:
+        return None
+    seconds = max(0.0, (datetime.now(timezone.utc) - stamp).total_seconds())
+    if seconds < 3600:
+        return f"{int(seconds // 60)} 分钟前"
+    if seconds < 86400:
+        return f"{int(seconds // 3600)} 小时前"
+    return f"{int(seconds // 86400)} 天前"
+
+
+def landing(*, stats: Mapping[str, Any], examples: Sequence[tuple[str, str]],
+            counts_at: str | None = None) -> str:
     cards = "".join(
         f'<div class="stat"><b>{n(value)}</b><span>{esc(label)}</span></div>'
         for label, value in stats.items())
+    # A cached number is a claim about the past; say when it was taken.
+    stamp = (f'<p class="small muted" style="margin:6px 0 0">库存计数更新于 {esc(counts_at)}，'
+             f'不是每一次请求都重算。</p>' if counts_at else "")
     chips = "".join(
         f'<a href="/device?query={esc(q)}">{esc(q)}<span class="muted"> · {esc(what)}</span></a>'
         for q, what in examples)
@@ -203,6 +235,7 @@ def landing(*, stats: Mapping[str, Any], examples: Sequence[tuple[str, str]]) ->
   <a href="/map">科技地图</a>。</p>
 </div>
 <div class="grid">{cards}</div>
+{stamp}
 <h2>这个工具能回答什么</h2>
 <div class="card"><h4>1 · 这台器械凭什么上市</h4>
 <p class="muted small">批文号、510(k) 摘要正文、产品码，以及厂家在文件里自己写下的尺寸、压力、温度等规格——
@@ -1148,29 +1181,46 @@ def pages_router(service: Any, *, endpoints: Mapping[str, Any] | None = None) ->
     @router.get("/", response_class=HTMLResponse)
     def home() -> Any:
         def render() -> str:
+            examples = [("X1209255", "按 DI"), ("K213506", "按 K 号"),
+                        ("Medtronic", "按公司"), ("Clydesdale", "按品牌")]
             store = _store()
             try:
+                # Prefer the materialised counts: the paper count alone is a 360 ms scan over 785k
+                # rows, and none of these numbers changes between two visits. The timestamp goes on
+                # the page, because a cached number is a claim about the past.
+                stored = _stored_counts(store) if store is not None else None
+                if stored and stored.get("available"):
+                    counts = stored["counts"]
+                    stats = {
+                        "设备注册": counts.get("devices", 0),
+                        "批文语料": counts.get("corpus", 0),
+                        "失效记录": counts.get("failures", 0),
+                        "在研试验": counts.get("trials", 0),
+                        "专利": counts.get("patents", 0),
+                        "论文索引": counts.get("papers", 0),
+                    }
+                    return landing(stats=stats, examples=examples,
+                                   counts_at=_relative_age(stored))
                 counts = _counts(store)
+                corpus_docs = 0
+                try:
+                    corpus = service.paths.corpus
+                    if corpus.is_dir():
+                        corpus_docs = len(list(corpus.glob("*.json")))
+                except Exception:  # noqa: BLE001
+                    corpus_docs = 0
+                stats = {
+                    "设备注册": counts["devices"],
+                    "批文语料": corpus_docs,
+                    "失效记录": counts["failures"],
+                    "在研试验": counts["trials"],
+                    "专利": counts["patents"],
+                    "论文索引": counts["papers"],
+                }
             finally:
                 if store is not None:
                     store.close()
-            corpus_docs = 0
-            try:
-                corpus = service.paths.corpus
-                if corpus.is_dir():
-                    corpus_docs = len(list(corpus.glob("*.json")))
-            except Exception:  # noqa: BLE001
-                corpus_docs = 0
-            stats = {
-                "设备注册": counts["devices"],
-                "批文语料": corpus_docs,
-                "失效记录": counts["failures"],
-                "在研试验": counts["trials"],
-                "专利": counts["patents"],
-                "论文索引": counts["papers"],
-            }
-            examples = [("X1209255", "按 DI"), ("K213506", "按 K 号"),
-                        ("Medtronic", "按公司"), ("Clydesdale", "按品牌")]
+            # No timestamp: these were counted just now.
             return landing(stats=stats, examples=examples)
 
         return HTMLResponse(cached("home", 300.0, render))

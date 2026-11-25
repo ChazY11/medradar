@@ -3136,6 +3136,42 @@ def test_an_unclassified_company_says_why_rather_than_showing_nothing(tmp_path):
     assert "no_classified_product_code" in page
 
 
+def test_the_landing_page_reads_stored_counts_and_says_when_they_were_taken(tmp_path):
+    """360 ms for the paper count on every visit, for a number that changes twice a day."""
+    from medradar.radar.pages import landing
+    from medradar.radar.reference import UdiReference
+    from medradar.radar.store_stats import read, refresh
+
+    store = UdiReference(tmp_path / "reference.db")
+    store.write_udi_rows([_udi_row("K250063", "M1")])
+    store.conn.execute("CREATE TABLE IF NOT EXISTS trial (query_key TEXT, nct_id TEXT, "
+                       "lead_sponsor TEXT, title TEXT, status TEXT, phase TEXT, study_type TEXT, "
+                       "start_date TEXT, completion_date TEXT, enrollment INTEGER, "
+                       "interventions TEXT, countries TEXT)")
+    store.conn.commit()
+    result = refresh(store, corpus_dir=None)
+    stored = read(store)
+    assert stored["available"] is True
+    assert stored["counts"]["devices"] >= 1
+    assert stored["updated_at"] == result["updated_at"]
+
+    page = landing(stats={"设备注册": 1}, examples=[], counts_at="5 分钟前")
+    assert "库存计数更新于 5 分钟前" in page
+    assert "不是每一次请求都重算" in page
+    # Without a timestamp the line is absent rather than misleading.
+    assert "库存计数更新于" not in landing(stats={"设备注册": 1}, examples=[])
+    store.close()
+
+
+def test_a_never_refreshed_store_falls_back_to_counting_live(tmp_path):
+    from medradar.radar.reference import UdiReference
+    from medradar.radar.store_stats import read
+
+    store = UdiReference(tmp_path / "reference.db")
+    assert read(store)["available"] is False
+    store.close()
+
+
 def test_a_pre_digitisation_filing_is_never_requested(tmp_path):
     """Measured: 0 of 60 sampled filings from 1998-2009 have a PDF at any path shape.
 

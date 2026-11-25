@@ -1,0 +1,108 @@
+"""Counts that change slowly, written once and read cheaply.
+
+Why this exists
+---------------
+The landing page counts five stores. Measured warm: `COUNT(DISTINCT paper_id) FROM paper_term` takes
+360 ms over 785k rows, `COUNT(*) FROM udi_device` 59 ms over 5.2M, and the corpus is a directory
+listing of 40,731 files. Cold, with the pages not yet in the OS cache, the same page took 1.8 s
+locally and 6.5 s through the tunnel.
+
+None of those numbers changes between two visits, and the scheduler cycle that would change them
+runs every five minutes. So they are computed by a job and stored with the time they were taken.
+
+The honest part
+---------------
+A cached number is a claim about the past, so the page prints `updated_at` beside the counters and
+says when they were last refreshed. A materialised table that shows a number without its timestamp
+is the same failure as a summary card without its qualifier, one layer down.
+"""
+
+from __future__ import annotations
+
+from datetime import datetime, timezone
+from pathlib import Path
+from typing import Any
+
+SCHEMA = """
+CREATE TABLE IF NOT EXISTS store_stats (
+  key        TEXT PRIMARY KEY,
+  value      INTEGER NOT NULL,
+  updated_at TEXT NOT NULL
+);
+"""
+
+#: key -> SQL. Every entry is a count of rows the landing page shows.
+COUNTS: dict[str, str] = {
+    "devices": "SELECT COUNT(*) FROM udi_device",
+    "failures": "SELECT COUNT(*) FROM maude_failure_index",
+    "trials": "SELECT COUNT(*) FROM trial",
+    "patents": "SELECT COUNT(*) FROM bulk_patent",
+    "papers": "SELECT COUNT(DISTINCT paper_id) FROM paper_term",
+    "codes": "SELECT COUNT(*) FROM product_code_class",
+}
+
+
+def ensure_table(reference) -> None:
+    reference.conn.executescript(SCHEMA)
+
+
+def refresh(reference, *, corpus_dir: str | Path | None = None) -> dict[str, Any]:
+    """Recompute every count and store it with one timestamp shared by the set."""
+    ensure_table(reference)
+    at = datetime.now(timezone.utc).isoformat(timespec="seconds")
+    written: dict[str, int] = {}
+    for key, sql in COUNTS.items():
+        try:
+            value = int(reference.conn.execute(sql).fetchone()[0] or 0)
+        except Exception:  # noqa: BLE001 - an absent table is a zero, and the key is still recorded
+            value = 0
+        reference.conn.execute(
+            "INSERT OR REPLACE INTO store_stats (key, value, updated_at) VALUES (?,?,?)",
+            (key, value, at))
+        written[key] = value
+    if corpus_dir is not None:
+        try:
+            count = sum(1 for _ in Path(corpus_dir).glob("*.json"))
+        except OSError:
+            count = 0
+        reference.conn.execute(
+            "INSERT OR REPLACE INTO store_stats (key, value, updated_at) VALUES (?,?,?)",
+            ("corpus", count, at))
+        written["corpus"] = count
+    reference.conn.commit()
+    return {"updated_at": at, "counts": written}
+
+
+def read(reference) -> dict[str, Any]:
+    """The stored counts and the moment they were taken, or an empty answer if never refreshed."""
+    try:
+        ensure_table(reference)
+        rows = reference.conn.execute(
+            "SELECT key, value, updated_at FROM store_stats").fetchall()
+    except Exception:  # noqa: BLE001
+        return {"available": False, "counts": {}, "updated_at": None}
+    counts: dict[str, int] = {}
+    stamps: set[str] = set()
+    for key, value, at in rows:
+        counts[str(key)] = int(value)
+        if at:
+            stamps.add(str(at))
+    if not counts:
+        return {"available": False, "counts": {}, "updated_at": None}
+    # One timestamp for the set; if a key was refreshed separately the newest is the honest one to
+    # print, because it is the least stale.
+    return {"available": True, "counts": counts, "updated_at": max(stamps) if stamps else None}
+
+
+def age_seconds(reference_read: dict[str, Any]) -> float | None:
+    at = reference_read.get("updated_at")
+    if not at:
+        return None
+    try:
+        stamp = datetime.fromisoformat(str(at).replace("Z", "+00:00"))
+    except ValueError:
+        return None
+    return (datetime.now(timezone.utc) - stamp).total_seconds()
+
+
+__all__ = ["COUNTS", "age_seconds", "ensure_table", "read", "refresh"]

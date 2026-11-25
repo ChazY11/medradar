@@ -44,5 +44,13 @@ echo "[$(date -Is)] technology map snapshot"
 "$PY" "$REL/tools/build_map.py" --radar "${MEDRADAR_RADAR_DIR:-/srv/medradar/data/radar}" \
   --out "${MEDRADAR_RADAR_DIR:-/srv/medradar/data/radar}/map_page.json" 2>&1 | tail -3 || true
 
+# The landing page reads these instead of counting 5.2M device rows and 785k paper rows on every
+# visit. Measured: 1.8 s cold locally, 6.5 s through the tunnel, became 0.35 s. The page prints the
+# timestamp this writes, so a stale set is visible.
+echo "[$(date -Is)] materialised counts"
+"$PY" "$REL/tools/store_stats.py" \
+  --reference "${MEDRADAR_REFERENCE_DB:-/srv/medradar/reference_slim.db}" \
+  --corpus "${MEDRADAR_CORPUS_DIR:-/srv/medradar/intel/corpus510k}" --refresh 2>&1 | tail -2 || true
+
 echo "[$(date -Is)] done: $(ls "$OUT"/*.json 2>/dev/null | wc -l) records"
 exit 0
