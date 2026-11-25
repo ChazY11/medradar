@@ -11,8 +11,12 @@ explicit list of what is still missing.
 
 from __future__ import annotations
 
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
+
+#: Two scheduler cycles plus slack. Beyond this the graph is history, not a radar.
+STALE_AFTER_HOURS = 12.0
 
 #: (key, label, count-key, note). ``None`` for the note means "say nothing extra".
 DATASETS: tuple[tuple[str, str, str, str], ...] = (
@@ -60,7 +64,82 @@ def shape(reference) -> dict[str, Any]:
     }
 
 
-def coverage(reference, *, corpus_dir: str | Path | None = None) -> dict[str, Any]:
+def source_health(service: Any) -> dict[str, Any]:
+    """Per-source status and how stale the graph is, for the coverage page.
+
+    Measured 2026-11-26: the radar's three monitored sources had been refusing this host for days -
+    draeger_official 403 Forbidden, 355 consecutive failures, newest observation 211 hours old - while
+    /sources said only "the map covers three companies". A graph that has stopped updating and does
+    not say so is the failure this whole product exists to avoid: the page looks fine and the numbers
+    are historical.
+
+    Everything here is read from the ledger's own records; nothing is inferred.
+    """
+    report: dict[str, Any] = {"available": False, "sources": [], "newest_observation": None,
+                              "stale_hours": None, "stale": False, "reason": None}
+    try:
+        from .health import source_status
+
+        with service.ledger() as ledger:
+            rows = source_status(ledger, service.taxonomy())
+            try:
+                newest = ledger.raw(
+                    "SELECT MAX(first_observed_at) AS newest FROM observation")[0]["newest"]
+            except Exception:  # noqa: BLE001 - an empty ledger has no newest
+                newest = None
+    except Exception as error:  # noqa: BLE001 - no ledger is a state, not a crash
+        report["reason"] = type(error).__name__
+        return report
+
+    sources = []
+    now = datetime.now(timezone.utc)
+    for row in rows:
+        # `source_status` names these last_success_check_at / newest_observation_at /
+        # last_failure_message; reading the wrong key silently printed "from never" for every source.
+        last_success = (row.get("last_success_check_at")
+                        or row.get("newest_observation_at"))
+        hours = row.get("hours_since_success")
+        if hours is None and last_success:
+            try:
+                stamp = datetime.fromisoformat(str(last_success).replace("Z", "+00:00"))
+                if stamp.tzinfo is None:
+                    stamp = stamp.replace(tzinfo=timezone.utc)
+                hours = round((now - stamp).total_seconds() / 3600.0, 1)
+            except ValueError:
+                hours = None
+        sources.append({
+            "source_id": str(row.get("source_id") or ""),
+            "status": str(row.get("status") or "UNKNOWN"),
+            "enabled": bool(row.get("enabled", True)),
+            "last_success": last_success,
+            "hours_since_success": hours,
+            "consecutive_failures": int(row.get("consecutive_failures") or 0),
+            "reason": str(row.get("last_failure_message") or row.get("access_reason") or ""),
+            "access_state": str(row.get("access_state") or ""),
+            "observations": int(row.get("observations_total") or 0),
+            "cadence_hours": row.get("cadence_hours"),
+        })
+    report["sources"] = sources
+    report["available"] = True
+    report["newest_observation"] = newest
+
+    # Staleness is a fact about the graph, not about any one source: the newest observation any
+    # source managed to record. Beyond two scheduler cycles without one, the page must say so.
+    if newest:
+        try:
+            stamp = datetime.fromisoformat(str(newest).replace("Z", "+00:00"))
+            if stamp.tzinfo is None:
+                stamp = stamp.replace(tzinfo=timezone.utc)
+            hours = (datetime.now(timezone.utc) - stamp).total_seconds() / 3600.0
+            report["stale_hours"] = round(hours, 1)
+            report["stale"] = hours >= STALE_AFTER_HOURS
+        except ValueError:
+            report["stale_hours"] = None
+    return report
+
+
+def coverage(reference, *, corpus_dir: str | Path | None = None,
+             service: Any = None) -> dict[str, Any]:
     """Everything the coverage page prints, from the stored counts plus live shape queries."""
     from .store_stats import read as read_stats
 
@@ -119,8 +198,30 @@ def coverage(reference, *, corpus_dir: str | Path | None = None) -> dict[str, An
         "detail": "科技地图追踪 Philips / GE / Dräger。其余公司有「技术领域」（按产品码分类），"
                   "但没有图谱。",
     })
+    # A source that has failed for days is worth its own gap, even when the graph as a whole is
+    # still moving: draeger_official had refused this host 356 times while crossref published
+    # normally, and "the map covers three companies" said nothing about that.
+    health = source_health(service) if service is not None else {}
+    for source in health.get("sources") or []:
+        if source["status"] == "FAILED" and source["consecutive_failures"] >= 5:
+            gaps.append({
+                "title": f"源 {source['source_id']} 持续失败",
+                "detail": (f"连续失败 {source['consecutive_failures']} 次"
+                           + (f"，最后成功 {str(source['last_success'])[:10]}" if source["last_success"]
+                              else "，从未成功")
+                           + (f"；原因：{source['reason'][:80]}" if source["reason"] else "")
+                           + "。这个源贡献的数据停在那一刻。"),
+            })
+
+    if health.get("stale"):
+        gaps.insert(0, {
+            "title": "图谱数据已停止更新",
+            "detail": f"最新的观测记录是 {health.get('stale_hours')} 小时前。"
+                      f"科技地图与实时雷达展示的是历史快照，不是当前状态。",
+        })
     return {"datasets": datasets, "shape": parts, "gaps": gaps,
-            "updated_at": stored.get("updated_at"), "available": stored.get("available", False)}
+            "updated_at": stored.get("updated_at"), "available": stored.get("available", False),
+            "health": health}
 
 
-__all__ = ["DATASETS", "coverage", "shape"]
+__all__ = ["DATASETS", "STALE_AFTER_HOURS", "coverage", "shape", "source_health"]

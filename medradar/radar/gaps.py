@@ -55,6 +55,7 @@ GAP_TEXT: dict[str, str] = {
     "product_classification_absent": "产品码分类表还没有导入（运行 tools/product_classes.py）",
     "no_classified_product_code": "这家公司的产品码都还没分类，无法归入技术领域",
     "no_company_in_this_specialty": "这个技术领域里没有登记了设备数的公司",
+    "radar_health_unavailable": "读不到雷达源状态：台账缺失或没有源记录",
     "radar_sources_absent": "雷达源清单为空：这台部署没有配置任何追踪源",
     "specialty_stats_absent": "技术领域分布表还没有生成（运行 tools/specialty_stats.py --refresh）",
     # --- should never appear

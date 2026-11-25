@@ -3473,6 +3473,43 @@ def test_the_field_map_and_a_specialty_can_be_taken_away(tmp_path):
         specialty="Orthopedic", summary=summary, companies=companies)
 
 
+def test_a_frozen_graph_is_announced_instead_of_looking_alive():
+    """Measured: three sources refusing this host for days, newest observation 211 h old, no warning."""
+    from medradar.radar.pages import sources_page
+
+    stale_health = {
+        "available": True, "stale": True, "stale_hours": 211.1,
+        "newest_observation": "2026-11-17T08:00:00+00:00",
+        "sources": [
+            {"source_id": "draeger_official", "status": "FAILED", "consecutive_failures": 355,
+             "hours_since_success": 211.09, "last_success": "2026-11-17T08:00:00+00:00",
+             "reason": "403 Forbidden: the source refused automated access"},
+            {"source_id": "pubmed", "status": "OK", "consecutive_failures": 0,
+             "hours_since_success": 0.4, "last_success": "2026-11-26T02:00:00+00:00", "reason": ""},
+        ],
+    }
+    page = sources_page(meta={"sources": []},
+                        coverage={"datasets": [], "shape": {}, "gaps": [], "health": stale_health})
+    # The banner must come before the tables, not after them.
+    assert "图谱数据已停止更新" in page
+    assert page.index("图谱数据已停止更新") < page.index("各数据集规模")
+    assert "211.1" in page
+    # Per-source detail: who failed, how often, and why.
+    assert "draeger_official" in page and "403 Forbidden" in page
+    assert ">355<" in page or "355" in page
+
+    fresh = dict(stale_health, stale=False, stale_hours=0.4)
+    quiet = sources_page(meta={"sources": []}, coverage={"datasets": [], "shape": {}, "gaps": [],
+                                                        "health": fresh})
+    assert "图谱数据已停止更新" not in quiet
+
+    broken = sources_page(meta={"sources": []}, coverage={"datasets": [], "shape": {}, "gaps": [],
+                                                         "health": {"available": False,
+                                                                    "reason": "OperationalError"}})
+    assert "读不到雷达源状态" in broken
+    assert "OperationalError" in broken
+
+
 def test_a_pre_digitisation_filing_is_never_requested(tmp_path):
     """Measured: 0 of 60 sampled filings from 1998-2009 have a PDF at any path shape.
 

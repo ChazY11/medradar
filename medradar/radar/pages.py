@@ -539,6 +539,38 @@ def sources_page(*, meta: Mapping[str, Any], coverage: Mapping[str, Any] | None 
         f'<li><b>{esc(item.get("title"))}</b>——{esc(item.get("detail"))}</li>' for item in gaps)
 
     sources = meta.get("sources") or []
+    health = data.get("health") or {}
+    health_rows = health.get("sources") or []
+
+    def _status_chip(status: str) -> str:
+        colour = {"OK": "var(--accent)", "WARN": "var(--warn)", "STALE": "var(--warn)"}.get(
+            status, "var(--bad)") if status in {"OK", "WARN", "STALE"} else "var(--bad)"
+        return f'<span style="color:{colour};font-weight:600">{esc(status)}</span>'
+
+    health_table = "".join(
+        f'<tr><td>{esc(item.get("source_id"))}</td><td>{_status_chip(str(item.get("status")))}</td>'
+        f'<td class="num">{n(item.get("consecutive_failures"))}</td>'
+        f'<td class="num">{esc(str(item.get("hours_since_success") or "—")[:6])}</td>'
+        f'<td>{esc(str(item.get("last_success") or "从未成功")[:19])}</td>'
+        f'<td class="muted small">{esc(str(item.get("reason") or "")[:70])}</td></tr>'
+        for item in health_rows)
+    # The banner is the whole point: a frozen graph that looks alive is the failure mode here.
+    if health.get("stale"):
+        banner = (f'<div class="gap" style="border-color:var(--bad)">'
+                  f'<b>图谱数据已停止更新：最新观测在 {esc(str(health.get("stale_hours")))} 小时前。</b>'
+                  f'科技地图与实时雷达展示的是历史快照，不是当前状态。'
+                  f'下面「雷达源」一栏列出了每个源最后成功的时间与失败原因。</div>')
+    elif health.get("available"):
+        banner = ""
+    else:
+        banner = ('<div class="gap"><b>读不到雷达源状态。</b>'
+                  f'台账打不开（{esc(str(health.get("reason") or "原因未记录"))}），'
+                  f'所以无法判断图谱数据是否新鲜。</div>')
+    health_block = (f'<div class="card"><table><thead><tr><th>源</th><th>状态</th>'
+                    f'<th>连续失败</th><th>距上次成功(h)</th><th>最后成功</th><th>原因</th>'
+                    f'</tr></thead><tbody>{health_table}</tbody></table></div>'
+                    if health_table else gap_note("radar_health_unavailable"))
+
     source_rows = "".join(
         f'<tr><td>{esc(item.get("display_name") or item.get("source_id"))}</td>'
         f'<td>{esc(item.get("kind") or "")}</td>'
@@ -546,11 +578,12 @@ def sources_page(*, meta: Mapping[str, Any], coverage: Mapping[str, Any] | None 
         f'<td>{"启用" if item.get("enabled") else "停用"}</td>'
         f'<td class="muted small">{esc(item.get("licence") or "—")}</td></tr>'
         for item in sources)
-    # An empty table with headers and no rows looks like a rendering bug; say why instead.
+    # An empty table with headers and no rows looks like a rendering bug; say why instead - but only
+    # when the health table above has not already listed the real sources.
     sources_block = (f'<div class="card"><table><thead><tr><th>来源</th><th>类型</th><th>周期(h)</th>'
                      f'<th>状态</th><th>许可</th></tr></thead><tbody>{source_rows}</tbody>'
-                     f'</table></div>' if source_rows
-                     else gap_note("radar_sources_absent"))
+                     f'</table></div>' if source_rows else
+                     ("" if health_rows else gap_note("radar_sources_absent")))
 
     stamp = (f'<p class="small muted">库存计数更新于 {esc(str(data.get("updated_at"))[:16])}，'
              f'与首页同一份，所以两边不会互相矛盾。</p>'
@@ -561,6 +594,7 @@ def sources_page(*, meta: Mapping[str, Any], coverage: Mapping[str, Any] | None 
 <h1>数据覆盖</h1>
 <p class="lede">这个工具知道什么、不知道什么，以及每个"不知道"的原因。下面的数字读自库，
 与首页用的是同一份物化计数。</p>
+{banner}
 {stamp}
 <h2>各数据集规模</h2>
 <div class="card"><table><thead><tr><th>数据集</th><th>规模</th><th>说明</th></tr></thead>
@@ -573,6 +607,8 @@ def sources_page(*, meta: Mapping[str, Any], coverage: Mapping[str, Any] | None 
 <h2>还没做到的</h2>
 <div class="card"><ul class="small">{gap_items}</ul></div>
 <h2>雷达源</h2>
+<p class="muted small">每个源的最近一次成功、连续失败次数与失败原因。状态读自台账，不推断。</p>
+{health_block}
 {sources_block}
 <h2>明确不做的事</h2>
 <div class="card"><p class="muted small">
@@ -1471,7 +1507,7 @@ def pages_router(service: Any, *, endpoints: Mapping[str, Any] | None = None) ->
                 if store is not None:
                     from .coverage import coverage as build_coverage
 
-                    data = build_coverage(store, corpus_dir=service.paths.corpus)
+                    data = build_coverage(store, corpus_dir=service.paths.corpus, service=service)
             finally:
                 if store is not None:
                     store.close()
