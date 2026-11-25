@@ -259,7 +259,15 @@ def resolve(reference, query: str, *, limit: int = 25) -> list[DeviceRef]:
         add(_query(reference,
                    "SELECT * FROM udi_device WHERE catalog_number = ? LIMIT ?",
                    (text, limit)), "catalog_number")
-    if not refs:
+    # Identifier-shaped queries ("X1209255") get the case-insensitive model/catalog fallback before
+    # the name paths: for those it is a plausible place to look. A letter-only query ("Clydesdale")
+    # does not, because no model number is a brand name, and the fallback is the most expensive thing
+    # in this function: `COLLATE NOCASE` cannot use idx_udi_model, so it scans 5.2M rows. Measured on
+    # "Clydesdale": 705.7 ms for the model scan plus 864.4 ms for the catalog scan, every call, to
+    # return nothing - 1.57 s of a 1.6 s resolve. For a letter-only query it now runs at the end,
+    # only if nothing else matched, so recall is unchanged and the common case costs nothing.
+    identifier_shaped = any(ch.isdigit() for ch in text)
+    if not refs and identifier_shaped:
         add(_query(reference,
                    "SELECT * FROM udi_device WHERE version_or_model = ? COLLATE NOCASE LIMIT ?",
                    (text, limit)), "version_or_model")
@@ -322,6 +330,17 @@ def resolve(reference, query: str, *, limit: int = 25) -> list[DeviceRef]:
                 add(_query(reference,
                            "SELECT * FROM udi_device WHERE company_name LIKE ? LIMIT ?",
                            (f"%{text}%", limit)), "company_name")
+
+    if not refs:
+        # Last resort for a letter-only query: a model or catalog number written in a different case
+        # from the stored one. It is the same two full scans described above, paid only when nothing
+        # else matched, so recall is unchanged while the common path stays off it.
+        add(_query(reference,
+                   "SELECT * FROM udi_device WHERE version_or_model = ? COLLATE NOCASE LIMIT ?",
+                   (text, limit)), "version_or_model")
+        add(_query(reference,
+                   "SELECT * FROM udi_device WHERE catalog_number = ? COLLATE NOCASE LIMIT ?",
+                   (text, limit)), "catalog_number")
 
     seen: set[str] = set()
     unique: list[DeviceRef] = []
