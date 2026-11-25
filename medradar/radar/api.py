@@ -225,6 +225,15 @@ def build_router(service: RadarService | None = None) -> APIRouter:
     svc = service or RadarService()
     router = APIRouter(prefix="/api/radar", tags=["radar"])
 
+    #: The module-level view cache is shared by every service in the process, so its keys carry this
+    #: service's graph location. Without that, two services - a test fixture and the real store, or
+    #: two test fixtures - answered each other's questions. Measured as four tests failing only
+    #: under a particular random ordering, and passing whenever they ran alone.
+    view_scope = ("store", str(getattr(svc.paths, "root", "")))
+
+    def view(key: tuple, compute, *, ttl: float | None = None):
+        return _cached_view(view_scope + tuple(key), compute, ttl=ttl)
+
     # ------------------------------------------------------------------ meta
     @router.get("/meta")
     def meta() -> dict[str, Any]:
@@ -330,7 +339,7 @@ def build_router(service: RadarService | None = None) -> APIRouter:
         # The status view is the most expensive read on the feed page (source state, latency
         # distribution, graph summary, resources). It only changes when a cycle or a source check
         # finishes, so a short TTL keeps the first paint off a two-second query.
-        payload = dict(_cached_view(("health",), compute, ttl=15.0))
+        payload = dict(view(("health",), compute, ttl=15.0))
         payload["schema"] = SCHEMA
         payload["available"] = True
         payload["cache_ttl_seconds"] = 15
@@ -918,7 +927,7 @@ def build_router(service: RadarService | None = None) -> APIRouter:
 
         # Shallow copy: the handler annotates the payload per request, and a cached dict must
         # never carry one caller's annotations into another caller's response.
-        payload = dict(_cached_view(
+        payload = dict(view(
             ("technology-map", company_key, topic_key, branch_topic_key, known_at, valid_at,
              max_products, max_evidence, product_offset, evidence_offset), compute))
         payload["requested_mode"] = label
@@ -951,7 +960,7 @@ def build_router(service: RadarService | None = None) -> APIRouter:
                 return graph.company_compare(companies=_csv(companies), topics=_csv(topics),
                                              known_at=known_at, valid_at=valid_at)
 
-        payload = dict(_cached_view(("compare", company_key, topic_key, known_at, valid_at),
+        payload = dict(view(("compare", company_key, topic_key, known_at, valid_at),
                                     compute))
         payload["requested_mode"] = label
         payload["organizations"] = [org.public() for org in svc.taxonomy().organizations]
@@ -981,7 +990,7 @@ def build_router(service: RadarService | None = None) -> APIRouter:
         # The diff can answer with every assertion in the graph. Serving the whole list is a
         # multi-megabyte response and a CPU-heavy serialisation for a screen that shows counts
         # and a short list; the totals below keep the truncation explicit.
-        payload = dict(_cached_view(("changes", earlier, later), compute, ttl=30.0))
+        payload = dict(view(("changes", earlier, later), compute, ttl=30.0))
         totals = {key: len(payload.get(key) or []) for key in ("added", "removed", "changed")}
         for key in ("added", "removed", "changed"):
             payload[key] = (payload.get(key) or [])[offset:offset + limit]

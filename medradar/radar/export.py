@@ -25,29 +25,7 @@ import json
 from datetime import datetime, timezone
 from typing import Any, Mapping, Sequence
 
-GAP_TEXT = {
-    "device_not_in_udi_register": "这个标识不在设备注册表里",
-    "no_clearance_linked_to_this_device": "注册表没有把任何批文关联到这台设备",
-    "no_readable_summary_for_any_clearance": "批文存在，但存储的文本读不出内容",
-    "document_not_published_by_fda": "FDA 没有公布这份文件的正文",
-    "document_present_but_unreadable": "文件在，但正文不可读",
-    "product_code_not_swept": "这个产品码还没扫过失效记录",
-    "no_failure_in_swept_window": "已扫过的窗口里没有这台设备的失效记录",
-    "patent_bulk_tables_absent": "专利表还没有导入过数据",
-    "patent_only_searched_not_recorded": "只有按名字搜到、申请人并非本公司的专利记录",
-    "patent_source_needs_credential": "专利源需要凭据（EPO 账号审核中）",
-    "no_patent_for_this_assignee": "专利表里没有匹配到这个受让人",
-    "trials_table_absent": "试验表还没有导入过数据",
-    "no_trial_for_this_sponsor": "试验库里没有匹配到这个申办方",
-    "paper_index_absent": "论文索引还没有构建",
-    "no_paper_mentions_this_device": "已入库的论文里没有提到这个名称",
-    "only_generic_words_in_this_name": "这个名称里只有通用词，无法定位到具体论文",
-    "company_not_in_technology_map": "这家公司不在科技地图覆盖范围内",
-    "company_not_in_register": "设备注册表里没有匹配到这家公司",
-    "no_brand_for_this_company": "这家公司名下没有登记了品牌的设备",
-    "no_topic_evidence": "图谱里还没有任何主题证据",
-    "no_data": "这一项没有数据，而且没有记录原因（不该发生）",
-}
+from .gaps import GAP_TEXT
 
 SOURCE_LINE = ("来源：FDA UDI 设备注册表、FDA 510(k) 摘要正文、MAUDE 失效记录、"
                "ClinicalTrials.gov、公开文献全文。")

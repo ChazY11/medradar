@@ -122,33 +122,7 @@ table{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch}
 
 _CSS = f"<style>{CSS}</style>"
 
-GAP_TEXT = {
-    "device_not_in_udi_register": "这个标识不在设备注册表里（K 号、DI、DUNS、型号、品牌、公司都试过了）",
-    "no_clearance_linked_to_this_device": "注册表没有把任何批文关联到这台设备",
-    "no_readable_summary_for_any_clearance": "批文存在，但存储的文本读不出内容",
-    "document_not_published_by_fda": "FDA 没有公布这份文件的正文",
-    "document_present_but_unreadable": "文件在，但正文不可读",
-    "product_code_not_swept": "这个产品码还没扫过失效记录",
-    "no_failure_in_swept_window": "已扫过的窗口里没有这台设备的失效记录",
-    "patent_bulk_tables_absent": "专利表还没有导入过数据",
-    "patent_source_needs_credential": "专利源需要凭据（EPO 账号审核中）",
-    "no_patent_for_this_assignee": "专利表里没有匹配到这个受让人",
-    "trials_table_absent": "试验表还没有导入过数据",
-    "no_trial_for_this_sponsor": "试验库里没有匹配到这个申办方",
-    "paper_index_absent": "论文索引还没有构建",
-    "no_paper_mentions_this_device": "已入库的论文里没有提到这个名称",
-    "only_generic_words_in_this_name": "这个名称里只有通用词（如 spinal、system），无法定位到具体论文",
-    "technology_map_unavailable": "科技地图接口没有挂载，或图谱库为空",
-    "no_topic_evidence": "图谱里还没有任何主题证据",
-    "company_not_in_register": "设备注册表里没有匹配到这家公司",
-    "company_not_in_technology_map": "这家公司不在科技地图覆盖的 3 家公司之内（图谱目前只覆盖 Philips / GE / Dräger）",
-    "no_brand_for_this_company": "这家公司名下没有任何登记了品牌的设备",
-    "patent_only_searched_not_recorded": "专利库里有按这个名字搜到、但申请人字段并非本公司的记录；"
-                                         "这类不算本公司的专利，所以这里不展示",
-    "paper_not_in_index": "这篇论文不在索引里（只收录已归档全文，摘要和付费墙后的正文不在内）",
-    "no_registered_brand_shares_these_terms": "没有任何已注册品牌名共用这篇论文的识别性词",
-    "device_index_absent": "这台部署没有设备库",
-}
+from .gaps import GAP_TEXT
 
 
 def esc(value: Any) -> str:

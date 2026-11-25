@@ -2952,6 +2952,52 @@ def test_every_built_page_is_reachable_from_the_navigation():
     assert 'action="/paper"' in page
 
 
+def test_two_services_never_answer_each_others_questions(tmp_path):
+    """The view cache is module-level; without a store scope, one graph's answer served another's.
+
+    Symptom was four tests failing only under a particular random ordering and passing alone.
+    """
+    from medradar.radar.api import RadarService, build_router
+
+    first = tmp_path / "first"
+    second = tmp_path / "second"
+    for root in (first, second):
+        root.mkdir(parents=True, exist_ok=True)
+
+    routers = [build_router(RadarService(str(root))) for root in (first, second)]
+    health = []
+    for router in routers:
+        endpoint = {route.path: route.endpoint for route in router.routes}["/api/radar/health"]
+        health.append(endpoint())
+    # Both answer, and the second is not a copy of the first's cached object.
+    assert all(item for item in health)
+    assert health[0] is not health[1]
+
+
+def test_every_reason_code_the_code_can_emit_has_a_sentence():
+    """A bare code is not an explanation, and the two tables had already drifted apart."""
+    import re
+    from pathlib import Path
+
+    from medradar.radar.gaps import GAP_TEXT
+
+    emitted: set[str] = set()
+    for path in Path("medradar/radar").glob("*.py"):
+        source = path.read_text(encoding="utf-8")
+        emitted |= set(re.findall(r'gap_note\(\s*"([a-z_]+)"', source))
+        emitted |= set(re.findall(r'gap\s*=\s*"([a-z_]+)"', source))
+        emitted |= set(re.findall(r'"gap":\s*"([a-z_]+)"', source))
+        emitted |= set(re.findall(r'GAP_[A-Z_]+\s*=\s*"([a-z_]+)"', source))
+    missing = sorted(code for code in emitted if code not in GAP_TEXT and code != "none")
+    assert missing == [], f"these codes would render with no explanation: {missing}"
+
+    # One table, imported by both renderers, so the exported file cannot say less than the page.
+    from medradar.radar import export, pages
+
+    assert pages.GAP_TEXT is GAP_TEXT
+    assert export.GAP_TEXT is GAP_TEXT
+
+
 def test_a_pre_digitisation_filing_is_never_requested(tmp_path):
     """Measured: 0 of 60 sampled filings from 1998-2009 have a PDF at any path shape.
 
