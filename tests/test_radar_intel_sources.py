@@ -3437,6 +3437,42 @@ def test_an_unclassified_product_code_is_a_stated_gap(tmp_path):
     store.close()
 
 
+def test_the_field_map_and_a_specialty_can_be_taken_away(tmp_path):
+    """Audit 02 listed /areas and /area as the pages a reader could look at but not leave with."""
+    from medradar.radar.export import area_csv, area_markdown, areas_csv, areas_markdown
+    from medradar.radar.pages import area_page, areas_page
+
+    items = [{"specialty": "Orthopedic", "codes": 239, "devices": 1435239, "companies": 1069,
+              "top_companies": [{"company": "GLOBUS MEDICAL, INC.", "devices": 132778}]},
+             {"specialty": "Dental", "codes": 295, "devices": 906341, "companies": 1568,
+              "top_companies": [{"company": "M.D.T.", "devices": 37537}]}]
+    markdown = areas_markdown(items, updated_at="2026-11-26T02:00:00Z")
+    assert "技术领域分布" in markdown
+    # The caveat has to travel with the file; a screenshot without it is what this replaces.
+    assert "不说明技术领先" in markdown
+    assert "各行相加大于总设备数" in markdown
+    assert "GLOBUS MEDICAL, INC. 132,778" in markdown
+
+    csv_text = areas_csv(items)
+    assert csv_text.splitlines()[0] == ("specialty,product_codes,devices,companies,"
+                                        "top_company,top_company_devices")
+    assert "Orthopedic,239," in csv_text
+
+    summary = {"specialty": "Orthopedic", "codes": 239, "devices": 1435239, "companies": 1069}
+    companies = [{"rank": 1, "company_name": "GLOBUS MEDICAL, INC.", "devices": 132778}]
+    one_md = area_markdown("Orthopedic", summary, companies)
+    assert "| 1 | GLOBUS MEDICAL, INC. | 132,778 |" in one_md
+    # The sampling caveat is part of the file, not only the page.
+    assert "没上榜不等于规模为零" in one_md
+    # csv quotes a field containing a comma, which is correct rather than incidental.
+    assert area_csv(companies).splitlines()[1] == '1,"GLOBUS MEDICAL, INC.",132778'
+
+    # And the pages offer the links.
+    assert 'kind=areas&format=md' in areas_page(data={"available": True, "items": items})
+    assert 'kind=area&format=csv&name=Orthopedic' in area_page(
+        specialty="Orthopedic", summary=summary, companies=companies)
+
+
 def test_a_pre_digitisation_filing_is_never_requested(tmp_path):
     """Measured: 0 of 60 sampled filings from 1998-2009 have a PDF at any path shape.
 

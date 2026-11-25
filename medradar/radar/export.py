@@ -161,6 +161,84 @@ def device_csv(timeline: Any, *, query: str) -> str:
     return buffer.getvalue()
 
 
+def areas_markdown(items: Sequence[Mapping[str, Any]], *, updated_at: str | None = None) -> str:
+    """The whole-register split by specialty, with the caveats the page prints.
+
+    An export that loses the caveat is worse than no export: the file travels alone, so the reader
+    has nothing to correct it against.
+    """
+    lines = ["# 技术领域分布", "", f"> 导出于 {_stamp()}。{SOURCE_LINE}", ""]
+    if updated_at:
+        lines.append(f"> 数据更新于 {str(updated_at)[:16]}，全库聚合由夜间任务重算。")
+        lines.append("")
+    lines.append("> 数的是「注册了什么」——产品码来自厂商登记，不是论文、不是专利。设备多说明铺得广，"
+                 "不说明技术领先。一台设备带多个产品码时会在各领域分别计入，所以各行相加大于总设备数。")
+    lines.append("")
+    if not items:
+        lines.append(_gap("specialty_stats_absent"))
+        return "\n".join(lines)
+    lines.append("| 技术领域 | 产品码 | 设备数 | 公司数 | 设备最多的公司 |")
+    lines.append("| --- | ---: | ---: | ---: | --- |")
+    for item in items:
+        leaders = item.get("top_companies") or []
+        names = "；".join(f"{lead.get('company')} {int(lead.get('devices') or 0):,}"
+                          for lead in leaders[:4])
+        lines.append(f"| {item.get('specialty')} | {int(item.get('codes') or 0):,} | "
+                     f"{int(item.get('devices') or 0):,} | {int(item.get('companies') or 0):,} | "
+                     f"{names or '—'} |")
+    return "\n".join(lines)
+
+
+def areas_csv(items: Sequence[Mapping[str, Any]]) -> str:
+    buffer = io.StringIO()
+    writer = csv.writer(buffer, lineterminator="\n")
+    writer.writerow(["specialty", "product_codes", "devices", "companies", "top_company",
+                     "top_company_devices"])
+    for item in items:
+        leaders = item.get("top_companies") or []
+        lead = leaders[0] if leaders else {}
+        writer.writerow([item.get("specialty"), int(item.get("codes") or 0),
+                         int(item.get("devices") or 0), int(item.get("companies") or 0),
+                         lead.get("company") or "", int(lead.get("devices") or 0)])
+    return buffer.getvalue()
+
+
+def area_markdown(specialty: str, summary: Mapping[str, Any],
+                  companies: Sequence[Mapping[str, Any]]) -> str:
+    """One specialty's leaders, with the sampling caveat kept."""
+    lines = [f"# {specialty}", "", f"> 导出于 {_stamp()}。{SOURCE_LINE}", ""]
+    lines.append(f"> {int(summary.get('devices') or 0):,} 台设备 · "
+                 f"{int(summary.get('codes') or 0):,} 个产品码 · "
+                 f"{int(summary.get('companies') or 0):,} 家公司。"
+                 f"数字按注册条目计，一台设备带多个产品码时会在各领域分别计入。")
+    lines.append("")
+    kept = len(companies)
+    total = int(summary.get("companies") or 0)
+    if total and kept < total:
+        lines.append(f"> 下面是设备数最多的 {kept} 家（全领域共 {total:,} 家）。"
+                     f"没上榜不等于规模为零。")
+        lines.append("")
+    if not companies:
+        lines.append(_gap("no_company_in_this_specialty"))
+        return "\n".join(lines)
+    lines.append("| # | 公司 | 该领域设备数 |")
+    lines.append("| ---: | --- | ---: |")
+    for item in companies:
+        lines.append(f"| {item.get('rank')} | {item.get('company_name')} | "
+                     f"{int(item.get('devices') or 0):,} |")
+    return "\n".join(lines)
+
+
+def area_csv(companies: Sequence[Mapping[str, Any]]) -> str:
+    buffer = io.StringIO()
+    writer = csv.writer(buffer, lineterminator="\n")
+    writer.writerow(["rank", "company", "devices_in_specialty"])
+    for item in companies:
+        writer.writerow([item.get("rank"), item.get("company_name"),
+                         int(item.get("devices") or 0)])
+    return buffer.getvalue()
+
+
 def compare_markdown(companies: Sequence[Mapping[str, Any]]) -> str:
     found = [c for c in companies if c.get("found")]
     lines = ["# 公司对比", "", f"> 导出于 {_stamp()}。{SOURCE_LINE}", ""]
@@ -235,4 +313,5 @@ def device_json(timeline: Any, *, query: str) -> str:
     return json.dumps(payload, ensure_ascii=False, indent=2)
 
 
-__all__ = ["compare_csv", "compare_markdown", "device_csv", "device_json", "device_markdown"]
+__all__ = ["area_csv", "area_markdown", "areas_csv", "areas_markdown", "compare_csv",
+           "compare_markdown", "device_csv", "device_json", "device_markdown"]

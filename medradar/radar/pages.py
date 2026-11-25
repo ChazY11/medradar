@@ -1248,6 +1248,8 @@ def areas_page(*, data: Mapping[str, Any]) -> str:
 <h1>技术领域分布</h1>
 <p class="lede">按 FDA 产品码分类，全库 {n(len(items))} 个技术领域里，各自有多少设备、多少家公司，
 以及设备数最多的那几家。点公司名直接进档案。</p>
+<p class="small muted">导出：<a href="/download?kind=areas&format=md">Markdown</a>
+ · <a href="/download?kind=areas&format=csv">CSV</a></p>
 <div class="gap"><b>这张表说明什么：</b>它数的是<b>注册了什么</b>——产品码来自厂商登记，
 不是论文、不是专利。一家公司在某领域设备多，说明它在那里铺得广，不说明它技术领先。
 「设备数」按注册条目计，同一台设备有多个产品码时会分别计入各领域，所以各行相加会大于总设备数。</div>
@@ -1300,6 +1302,9 @@ def area_page(*, specialty: str, summary: Mapping[str, Any] | None,
 <h1>{esc(specialty)}</h1>
 <p class="lede">{n(summary.get("devices"))} 台设备 · {n(summary.get("codes"))} 个产品码 ·
 {n(summary.get("companies"))} 家公司</p>
+<p class="small muted">导出：
+<a href="/download?kind=area&format=md&name={esc(specialty)}">Markdown</a>
+ · <a href="/download?kind=area&format=csv&name={esc(specialty)}">CSV</a></p>
 <div class="gap"><b>这张表数的是注册，不是技术。</b>设备数按注册条目计，一台设备带多个产品码时
 会在各领域分别计入；一家公司在这里设备多，说明它铺得广，不说明它领先。</div>
 {coverage}
@@ -1550,19 +1555,30 @@ def pages_router(service: Any, *, endpoints: Mapping[str, Any] | None = None) ->
         return HTMLResponse(cached(f"compare:{key}", 300.0, render))
 
     @router.get("/download")
-    def download(q: str = Query(..., min_length=1, max_length=240),
-                 kind: str = Query("device", pattern="^(device|compare)$"),
+    def download(q: str = Query("", max_length=240),
+                 name: str = Query("", max_length=120),
+                 kind: str = Query("device", pattern="^(device|compare|areas|area)$"),
                  format: str = Query("md", pattern="^(md|csv|json)$")) -> Any:
-        """One dossier or one comparison as a file, with its provenance intact.
+        """One dossier, one comparison, the whole field map, or one specialty - as a file.
 
         A reader who has to send the answer onward was previously limited to a screenshot, which
         carries no source and cannot be checked. The exporters live in export.py and follow the same
         rules as the pages: every section names its source, every absence carries its reason code,
-        and a weaker match keeps its label.
+        and a weaker match keeps its label. /areas and /area were view-only until audit 02 listed
+        them; the caveats travel with them for the same reason.
         """
         from fastapi.responses import Response
 
         from . import export as export_mod
+
+        if kind in {"device", "compare"} and not q:
+            return HTMLResponse(layout(title="缺少查询词 · MedRadar",
+                                       body=gap_note("no_data"), active="device"),
+                                status_code=400)
+        if kind == "area" and not name:
+            return HTMLResponse(layout(title="缺少技术领域 · MedRadar",
+                                       body=gap_note("no_data"), active="areas"),
+                                status_code=400)
 
         store = _store()
         if store is None:
@@ -1570,7 +1586,31 @@ def pages_router(service: Any, *, endpoints: Mapping[str, Any] | None = None) ->
                                        body=gap_note("device_not_in_udi_register"),
                                        active="device"), status_code=503)
         try:
-            if kind == "device":
+            if kind == "areas":
+                from .specialty import read as read_specialties
+
+                data = read_specialties(store)
+                items = data.get("items") or []
+                if format == "csv":
+                    body = export_mod.areas_csv(items)
+                    media, suffix = "text/csv; charset=utf-8", "csv"
+                else:
+                    body = export_mod.areas_markdown(items, updated_at=data.get("updated_at"))
+                    media, suffix = "text/markdown; charset=utf-8", "md"
+                stem = "medradar-areas"
+            elif kind == "area":
+                from .specialty import companies_in_specialty, one
+
+                summary = one(store, name) or {}
+                companies = companies_in_specialty(store, name)
+                if format == "csv":
+                    body = export_mod.area_csv(companies)
+                    media, suffix = "text/csv; charset=utf-8", "csv"
+                else:
+                    body = export_mod.area_markdown(name, summary, companies)
+                    media, suffix = "text/markdown; charset=utf-8", "md"
+                stem = f"medradar-area-{_slug(name)}"
+            elif kind == "device":
                 corpus = service.paths.corpus
                 timeline = build_view(store, q, limit=25,
                                       corpus_root=corpus if corpus.is_dir() else None)
@@ -1587,7 +1627,8 @@ def pages_router(service: Any, *, endpoints: Mapping[str, Any] | None = None) ->
             else:
                 names = [part.strip() for part in q.split(",") if part.strip()][:4]
                 snapshot = _snapshot()
-                data = [_company_data(store, name, snapshot=snapshot) for name in names]
+                data = [_company_data(store, company_name, snapshot=snapshot)
+                        for company_name in names]
                 if format == "md":
                     body = export_mod.compare_markdown(data)
                     media, suffix = "text/markdown; charset=utf-8", "md"
