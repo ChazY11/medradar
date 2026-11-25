@@ -1049,8 +1049,16 @@ def test_a_credential_can_come_from_a_file_when_the_shell_cannot_see_the_variabl
 def _udi_row(k_number, model, duns="557821945", company="ARUM DENTISTRY Co., Ltd."):
     # The device identifier must differ per device: two rows sharing a DI collapse into one
     # device record, which is correct behaviour and would silently halve a test fixture.
+    #
+    # Deterministic on purpose. This used `abs(hash(model)) % 100`, and Python randomises string
+    # hashing per process: the same fixture produced different device sets in different runs, which
+    # is why a test could pass alone and fail in a batch. A digest over the whole key removes both
+    # the process dependence and the collisions the two-digit suffix allowed.
+    import hashlib
+
+    digest = hashlib.sha1(f"{k_number}|{model}".encode()).hexdigest()[:9]
     return {
-        "identifiers": [{"id": f"08800{k_number[-4:]}{abs(hash(model)) % 100:02d}",
+        "identifiers": [{"id": f"08800{int(digest, 16) % 10**9:09d}",
                          "type": "Primary", "issuing_agency": "GS1"}],
         "brand_name": "Galaxy Star",
         "company_name": company,
@@ -3068,10 +3076,11 @@ def test_the_summary_never_claims_more_than_the_sections_admit(tmp_path):
 
     page = device_dossier(timeline, query="K250063")
     if trials is not None:
-        card = page[page.index("41"):page.index("41") + 160]
+        # Anchor on the card markup: "41" alone now appears earlier, in an identifier or a code.
+        card = page[page.index("<b>41</b>"):page.index("<b>41</b>") + 160]
         assert "集团级" in card, "the trial count is shown without its group-level qualifier"
     if papers is not None:
-        card = page[page.index(">7<"):page.index(">7<") + 160]
+        card = page[page.index("<b>7</b>"):page.index("<b>7</b>") + 160]
         assert "公司级" in card, "the paper count is shown without its company-level qualifier"
     store.close()
 
