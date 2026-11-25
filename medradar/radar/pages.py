@@ -89,6 +89,7 @@ table{width:100%;border-collapse:collapse;font-size:13.5px}
 th,td{text-align:left;padding:7px 10px;border-bottom:1px solid var(--line);vertical-align:top}
 th{color:var(--muted);font-weight:600;font-size:12.5px;white-space:nowrap}
 td.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+td.num.lead{font-weight:700;color:var(--accent)}
 td.nw{white-space:nowrap}
 details{margin:8px 0;border:1px solid var(--line);border-radius:9px;padding:8px 12px}
 summary{cursor:pointer;font-size:13.5px;color:var(--muted);font-weight:600}
@@ -647,12 +648,11 @@ def company_page(*, data: Mapping[str, Any]) -> str:
 
     body = f"""
 <p class="small muted"><a href="/">← 重新查询</a></p>
-<h1>{esc(name)}</h1>
-<p class="lede">{esc(data.get("matched_by") or "")} · DUNS {esc(data.get("labeler_duns") or "—")}</p>
+<h1>{esc(name)}</h1><p class="lede">{esc(data.get("matched_by") or "")} · DUNS {esc(data.get("labeler_duns") or "—")}
+ · <a href="/compare?q={esc(name)}">与其他公司对比</a></p>
 <div class="grid">{stats}</div>
 
-<h2>1 · 它注册了哪些器械</h2>
-<p class="muted small">来源：FDA UDI 设备注册表。点击品牌进入设备档案。</p>
+<h2>1 · 它注册了哪些器械</h2><p class="muted small">来源：FDA UDI 设备注册表。点击品牌进入设备档案。</p>
 {brand_html}
 <p class="muted small">产品码（{n(len(codes))} 个，前 20）：
 {esc("、".join(codes[:20]) or "—")}</p>
@@ -790,6 +790,91 @@ def _company_data(store: Any, query: str, *, snapshot: Mapping[str, Any]) -> dic
     out["topic_gap"] = None if topics else (
         "company_not_in_technology_map" if (snapshot.get("topics")) else "no_topic_evidence")
     return out
+
+
+def compare_page(*, companies: Sequence[Mapping[str, Any]]) -> str:
+    """Two to four companies side by side.
+
+    Built on the same per-company lookups the dossier uses, not on /api/radar/compare: that endpoint
+    walks the whole graph and took longer than forty seconds to answer for two companies, which is
+    useless behind a page. These numbers come from the register and the indexes and answer in about
+    a second for four companies.
+    """
+    found = [item for item in companies if item.get("found")]
+    if not found:
+        return layout(
+            title="公司对比 · MedRadar",
+            body=('<h1>没有可比的公司</h1>'
+                  + gap_note("company_not_in_register")
+                  + '<p class="small muted"><a href="/">← 重新查询</a></p>'),
+            active="company")
+
+    def cell(value: Any) -> str:
+        return f'<td class="num">{n(value)}</td>'
+
+    metrics = [
+        ("注册设备", "devices"), ("批文", "clearances"), ("失效记录", "failures"),
+        ("在研试验", "trials"), ("专利", "patents"), ("相关论文", "papers"),
+    ]
+    header = "".join(
+        f'<th><a href="/company?q={esc(item.get("company_name"))}">'
+        f'{esc(item.get("company_name"))}</a></th>'
+        for item in found)
+
+    rows = []
+    for label, key in metrics:
+        values = [item.get(key) or 0 for item in found]
+        top = max(values) if values and max(values) > 0 else None
+        cells = "".join(
+            f'<td class="num{" lead" if top is not None and value == top else ""}">{n(value)}</td>'
+            for value in values)
+        rows.append(f"<tr><td>{esc(label)}</td>{cells}</tr>")
+    table = (f'<div class="card"><table><thead><tr><th>指标</th>{header}</tr></thead>'
+             f'<tbody>{"".join(rows)}</tbody></table></div>')
+
+    # Product-code overlap: the codes two companies both hold are where they actually compete.
+    codes = [set(item.get("product_codes") or []) for item in found]
+    shared = set.intersection(*codes) if codes else set()
+    union = set.union(*codes) if codes else set()
+    overlap = (f'<div class="card"><h4>共同覆盖的产品码 {n(len(shared))} 个'
+               f'（合计 {n(len(union))} 个，重合度 '
+               f'{(100.0 * len(shared) / len(union)):.0f}%）</h4>'
+               + (f'<p class="muted small">{esc("、".join(sorted(shared)[:40]))}</p>'
+                  if shared else '<p class="muted small">没有共同的产品码。</p>')
+               + "</div>")
+
+    brands = []
+    for item in found:
+        items = item.get("brands") or []
+        listing = "".join(
+            f'<tr><td><a href="/device?query={esc(b["brand"])}">{esc(b["brand"])}</a></td>'
+            f'<td class="num">{n(b["devices"])}</td></tr>'
+            for b in items[:5])
+        brands.append(
+            f'<div class="card"><h4><a href="/company?q={esc(item.get("company_name"))}">'
+            f'{esc(item.get("company_name"))}</a></h4>'
+            f'<table><tbody>{listing or "<tr><td class=muted>无品牌记录</td></tr>"}</tbody>'
+            f'</table></div>')
+
+    missing = [item for item in companies if not item.get("found")]
+    missing_html = "".join(
+        f'<p class="small muted">「{esc(item.get("query"))}」没有匹配到公司，未参与对比。</p>'
+        for item in missing)
+
+    body = f"""
+<p class="small muted"><a href="/">← 重新查询</a></p>
+<h1>公司对比</h1>
+<p class="lede">{n(len(found))} 家公司并列。数字大的标出来，但"大"不等于"强"——
+注册设备多是铺货广，批文多才是产品线深。</p>
+{missing_html}
+<h2>规模与产出</h2>
+{table}
+<h2>竞争面</h2>
+{overlap}
+<h2>各自的品牌</h2>
+{''.join(brands)}
+"""
+    return layout(title="公司对比 · MedRadar", body=body, active="company")
 
 
 def pages_router(service: Any, *, endpoints: Mapping[str, Any] | None = None) -> Any:
@@ -967,6 +1052,34 @@ def pages_router(service: Any, *, endpoints: Mapping[str, Any] | None = None) ->
             return company_page(data=data)
 
         return HTMLResponse(cached(f"company:{q}", 300.0, render))
+
+    @router.get("/compare", response_class=HTMLResponse)
+    def compare_view(q: str | None = Query(None, max_length=240)) -> Any:
+        if not q:
+            return HTMLResponse(layout(
+                title="公司对比 · MedRadar",
+                body=('<h1>公司对比</h1>'
+                      '<p class="lede">用逗号分隔两到四家公司，例如 '
+                      '<a href="/compare?q=Medtronic,Bauerfeind">Medtronic,Bauerfeind</a>。</p>'
+                      '<form class="search" method="get" action="/compare">'
+                      '<input type="search" name="q" placeholder="公司A, 公司B" aria-label="对比">'
+                      '<button type="submit">对比</button></form>'),
+                active="company"))
+        names = [part.strip() for part in q.split(",") if part.strip()][:4]
+
+        def render() -> str:
+            store = _store()
+            if store is None:
+                return layout(title="设备库不存在 · MedRadar",
+                              body=gap_note("device_not_in_udi_register"), active="company")
+            snapshot = _snapshot()
+            try:
+                data = [_company_data(store, name, snapshot=snapshot) for name in names]
+            finally:
+                store.close()
+            return compare_page(companies=data)
+
+        return HTMLResponse(cached(f"compare:{','.join(names)}", 300.0, render))
 
     @router.get("/map", response_class=HTMLResponse)
     def map_view() -> Any:

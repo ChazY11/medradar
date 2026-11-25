@@ -43,6 +43,7 @@ DEFAULT_ITERATIONS = 240_000
 #: Pages the alpha exposes. React Router renders these; the document is the SPA index.
 PUBLIC_PAGES = frozenset({"/", "/device", "/device/", "/map", "/map/",
                           "/topic", "/topic/", "/company", "/company/",
+                          "/compare", "/compare/",
                           "/sources", "/sources/",
                           "/radar", "/radar/", "/radar/technology-map",
                           "/radar/technology-map/"})

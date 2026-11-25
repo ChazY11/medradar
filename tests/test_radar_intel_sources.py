@@ -2529,7 +2529,7 @@ def test_the_pages_router_mounts_at_the_site_root():
             corpus = Path("/nonexistent/corpus")
 
     paths = [route.path for route in pages_router(_Svc()).routes]
-    assert paths == ["/", "/device", "/sources", "/topic", "/company", "/map"]
+    assert paths == ["/", "/device", "/sources", "/topic", "/company", "/compare", "/map"]
 
 
 def test_the_alpha_gate_lets_the_new_pages_through_and_nothing_else():
@@ -2677,7 +2677,7 @@ def test_the_corpus_count_is_read_once_not_once_per_device(tmp_path):
     store.conn.execute("INSERT INTO paper_term VALUES ('medtronic','P1','t','2024',1)")
     store.conn.execute("INSERT INTO paper_term VALUES ('catheter','P2','t','2024',2)")
     store.conn.commit()
-    papers_index.invalidate_cache()
+    papers_index.invalidate_cache(store)
 
     statements: list[str] = []
     # sqlite3.Connection.execute is read-only, so record through SQLite's own tracer instead.
@@ -2713,6 +2713,40 @@ def test_an_unknown_identifier_does_not_scan_the_whole_register(tmp_path):
     store.conn.set_trace_callback(None)
     assert any("LIKE '%Clydesdale%'" in s for s in statements)
     store.close()
+
+
+def test_the_compare_page_ranks_by_number_and_names_the_overlap():
+    from medradar.radar.pages import compare_page
+
+    page = compare_page(companies=[
+        {"found": True, "query": "A", "company_name": "Alpha Medical", "devices": 100,
+         "clearances": 5, "failures": 20, "trials": 3, "patents": 2, "papers": 9,
+         "product_codes": ["AAA", "BBB"], "brands": [{"brand": "Alpha One", "devices": 60}]},
+        {"found": True, "query": "B", "company_name": "Beta Devices", "devices": 50,
+         "clearances": 9, "failures": 5, "trials": 0, "patents": 0, "papers": 1,
+         "product_codes": ["BBB", "CCC"], "brands": [{"brand": "Beta X", "devices": 40}]}])
+    assert "公司对比" in page
+    assert "/company?q=Alpha Medical" in page and "/company?q=Beta Devices" in page
+    # The shared code is the only overlap; it is stated as a count, not left for the reader to diff.
+    assert "共同覆盖的产品码 1 个" in page
+    assert "BBB" in page
+    # The leader in a row is marked, so "which number is bigger" needs no arithmetic.
+    assert 'class="num lead"' in page
+    assert "/device?query=Alpha One" in page
+
+
+def test_a_compare_request_with_no_resolvable_company_is_a_named_dead_end():
+    from medradar.radar.pages import compare_page
+
+    page = compare_page(companies=[{"query": "NoSuch", "found": False}])
+    assert "没有可比的公司" in page and "company_not_in_register" in page
+
+
+def test_the_gate_allows_compare():
+    from medradar.radar.alpha_gate import path_allowed
+
+    assert path_allowed("/compare") is True
+    assert path_allowed("/compare/") is True
 
 
 def test_a_pre_digitisation_filing_is_never_requested(tmp_path):

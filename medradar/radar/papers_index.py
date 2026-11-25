@@ -42,8 +42,8 @@ CREATE INDEX IF NOT EXISTS idx_paper_term_term ON paper_term(term);
 #: model numbers ("X120"), so four.
 MIN_TOKEN = 4
 
-#: Counters that stay valid until the index is rebuilt, keyed by the store object's identity.
-_COUNTERS: dict[int, dict[str, Any]] = {}
+#: Marker attribute name for the per-store counter cache.
+_COUNTER_ATTR = "_papers_index_counters"
 _TOKEN = re.compile(r"[a-z0-9][a-z0-9\-]{2,}", re.IGNORECASE)
 
 
@@ -159,7 +159,7 @@ def index_corpus(reference, corpus_root: str | Path, *, vocab: set[str] | None =
             [(term, paper_id, title, year, n) for term, n in counts.items()])
         rows += len(counts)
     reference.conn.commit()
-    invalidate_cache()  # the counts just changed; anything cached describes the old index
+    invalidate_cache(reference)  # the counts just changed; anything cached describes the old index
     return {"papers_indexed": papers, "term_rows": rows, "vocabulary": len(vocab),
             "files_seen": len(files)}
 
@@ -171,18 +171,29 @@ def _cache_for(reference) -> dict[str, Any]:
     took ~0.5 s. It was called once per device, so a company query resolving 25 devices spent 13 s
     of a 15 s page repeating the same count. The index only changes when index_corpus() runs, and
     that clears this cache.
+
+    The cache hangs off the store object rather than a module-level dict keyed by id(): CPython
+    reuses ids after garbage collection, so a new store could inherit a closed one's counts -
+    measured as two order-dependent test failures before the change.
     """
-    key = id(reference)
-    cached = _COUNTERS.get(key)
+    cached = getattr(reference, _COUNTER_ATTR, None)
     if cached is None:
         cached = {"total": None, "df": {}}
-        _COUNTERS[key] = cached
+        try:
+            setattr(reference, _COUNTER_ATTR, cached)
+        except AttributeError:  # a slotted or immutable stand-in: fall back to uncached behaviour
+            return {"total": None, "df": {}} | {"_no_cache": True}
     return cached
 
 
-def invalidate_cache() -> None:
+def invalidate_cache(reference=None) -> None:
     """Forget cached document frequencies. Call after rebuilding the index."""
-    _COUNTERS.clear()
+    if reference is None:
+        return
+    try:
+        delattr(reference, _COUNTER_ATTR)
+    except AttributeError:
+        pass
 
 
 def _document_frequency(reference, term: str) -> int:
