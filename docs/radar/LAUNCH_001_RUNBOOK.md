@@ -222,6 +222,33 @@ systemctl list-timers medradar-preprint.timer
 journalctl -u medradar-preprint -n 40 --no-pager
 ```
 
+## 7.3 Public HTTPS without a firewall change
+
+`deploy/public_tunnel.sh` runs as `medradar-public-tunnel.service` and puts the site on the public
+internet over an **outbound** ssh connection, because inbound 80/443 cannot be used on this host.
+
+Measured 2026-11-24:
+
+| Check | Result |
+| --- | --- |
+| Third-party datacentre fetching `http://IP:8791`, `http://IP/`, `https://IP/`, `http://IP:8787` | Timeout on all four |
+| `ssh` to port 22 | Answers |
+| Cloudflare quick tunnel from the operator's network in China | Unreachable |
+| `localhost.run` reverse tunnel from the operator's network | 401 in 0.67 s |
+| Same URL from a third-party datacentre | 401 |
+| Same URL with credentials | 200, correct `<title>` |
+
+The alpha gate is still in front: the tunnel is transport only. Read the current address with
+
+```bash
+cat /srv/medradar/data/radar/public_url.txt
+```
+
+**The subdomain rotates.** The free tier reissues it periodically, so a bookmarked URL eventually
+dies and this file is the source of truth. A stable address needs one of: a custom-domain plan, a
+named Cloudflare tunnel plus a domain, or Lighthouse inbound 443 enabled — all operator actions.
+`Restart=always` on the unit means a dropped connection re-establishes itself and rewrites the file.
+
 ## 8. Resource envelope (measured on this host)
 
 `systemd` cgroup limits in the unit files are set from measurements on the 2 vCPU / 3.6 GiB
