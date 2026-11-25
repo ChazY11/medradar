@@ -1206,6 +1206,39 @@ def warmup(service: Any) -> dict[str, Any]:
                 report[key] = True
             except Exception as error:  # noqa: BLE001 - an absent table is normal on a fresh deploy
                 report["errors"].append(f"{key}: {type(error).__name__}")
+
+        # Every page in the navigation, not just the landing page. Measured: /paper took 4.71 s for
+        # the first reader after a restart and 0.29 s for the second - the whole cost was a cold
+        # index, paid by whoever happened to open the second-most-prominent link in the nav. This
+        # runs the same queries the pages run, so the pages' own caches are primed too.
+        warmed: dict[str, Any] = {}
+        try:
+            from .papers_index import brands_for_terms, distinctive_terms, paper_record, paper_terms
+
+            row = store.conn.execute(
+                "SELECT paper_id FROM paper_term GROUP BY paper_id "
+                "ORDER BY COUNT(*) DESC LIMIT 1").fetchone()
+            sample = str(row[0]) if row and row[0] else None
+            if sample:
+                paper_record(store, sample)
+                terms = [str(item["term"]) for item in paper_terms(store, sample, limit=60)]
+                kept, _dropped = distinctive_terms(store, terms)
+                brands_for_terms(store, kept, limit=30)
+                warmed["paper"] = sample
+        except Exception as error:  # noqa: BLE001
+            report["errors"].append(f"paper: {type(error).__name__}")
+
+        for name, builder in (("company", lambda: _company_data(store, "Medtronic", snapshot={})),
+                              ("areas", lambda: __import__(
+                                  "medradar.radar.specialty", fromlist=["read"]).read(store)),
+                              ("sources", lambda: __import__(
+                                  "medradar.radar.coverage", fromlist=["coverage"]).coverage(store))):
+            try:
+                builder()
+                warmed[name] = True
+            except Exception as error:  # noqa: BLE001 - a page that cannot warm still serves
+                report["errors"].append(f"{name}: {type(error).__name__}")
+        report["warmed"] = warmed
     except Exception as error:  # noqa: BLE001
         report["errors"].append(f"{type(error).__name__}: {error}")
     finally:
