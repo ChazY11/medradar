@@ -22,11 +22,21 @@ OUT=${MEDRADAR_PAPERS:-/srv/medradar/intel/papers}
 echo "[$(date -Is)] preprint pass"
 "$PY" "$REL/tools/fulltext.py" --source preprints --days 21 --limit 200 --out "$OUT" 2>&1 | tail -12
 
+# Patents: Google Patents answers in bursts - 12 companies filled 263 patents at 0.5 req/s, and the
+# next batch thirty minutes later returned 503 to every company (measured 2026-11-25). So the job
+# advances by a handful of NEW companies per night (--skip-covered) instead of retrying the same
+# twelve forever. EPO OPS is still waiting on an administrator (reference 51279).
+echo "[$(date -Is)] patent batch (google, skip covered)"
+"$PY" "$REL/tools/google_patents.py" --top-companies 8 --pages 2 --skip-covered 2>&1 | tail -12 || true
+
+# europepmc answered 200 while the preprint host and Google were both refusing this address, so it
+# is the lane that actually adds papers on a blocked night: 20 candidates stored 9 new full texts.
+echo "[$(date -Is)] paper pass (europepmc)"
+"$PY" "$REL/tools/fulltext.py" --source europepmc --query 'orthopedic implant AND open access' \
+  --limit 120 --out "$OUT" 2>&1 | tail -8 || true
+
 echo "[$(date -Is)] re-index papers"
 "$PY" "$REL/tools/papers_index.py" --corpus "$OUT" 2>&1 | tail -4
-
-echo "[$(date -Is)] patent probe (google)"
-"$PY" "$REL/tools/google_patents.py" --top-companies 12 --pages 1 2>&1 | tail -6 || true
 
 # The technology-map page is served from this snapshot. Measured: computing it live over 122k nodes
 # took longer than two minutes, and the answer cannot change faster than the 300 s scheduler cycle.

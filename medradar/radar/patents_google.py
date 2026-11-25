@@ -51,6 +51,18 @@ Both rows are therefore written, distinguished by ``assignee_type``:
 
 ``patents_for_assignee`` counts distinct patent ids, so a caller sees the combined number and can
 audit the split from the table without guessing.
+Rate behaviour, measured 2026-11-25
+-----------------------------------
+This endpoint is bursty rather than steadily rate-limited, which matters for how it is scheduled:
+
+- 11:02  a batch of 12 companies x 4 pages (48 requests, 0.5 req/s) succeeded, filling 263 patents.
+- 11:54  the very next batch, same pace, returned 503 for every one of 24 companies.
+- 11:56  the plain search page was still 200 to a single manual request.
+
+So the block is per-burst, not per-address-forever: one batch pays off, then the source wants a
+long quiet period. The nightly job therefore advances by a small number of companies with
+``--skip-covered`` instead of retrying the same twelve, which is why the table grows by a few
+hundred rows a night rather than by thousands an hour.
 """
 
 from __future__ import annotations

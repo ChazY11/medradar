@@ -18,6 +18,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from medradar.radar.http import HostPolicy, PoliteFetcher
+from medradar.radar.patents_bulk import _norm as _norm_name
 from medradar.radar.patents_bulk import bulk_summary
 from medradar.radar.patents_google import (MAX_PAGES, GooglePatentsClient,
                                            GooglePatentsError, import_assignee, parse)
@@ -30,6 +31,22 @@ USER_AGENT = ("Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like G
 #: seconds is slower than a person clicking through the same pages.
 GOOGLE_POLICY = HostPolicy(requests_per_second=0.5, timeout_seconds=45.0, max_attempts=2,
                            backoff_base_seconds=5.0)
+
+
+def covered_assignees(reference) -> set[str]:
+    """Normalised applicant names that already have at least one row.
+
+    Without this, every run of --top-companies re-fetches the same twelve companies and the table
+    stops growing at whatever one batch produced. Measured: 12 companies filled 263 patents; the
+    store has 12,537 labelers, so progress means skipping what is done.
+    """
+    try:
+        rows = reference.conn.execute(
+            "SELECT DISTINCT organization_norm FROM bulk_patent_assignee "
+            "WHERE COALESCE(assignee_type, 'applicant') <> 'query_matched'").fetchall()
+    except Exception:  # noqa: BLE001 - an absent table means nothing is covered yet
+        return set()
+    return {str(row[0]) for row in rows if row[0]}
 
 
 def top_assignees(reference, limit: int) -> list[str]:
@@ -71,6 +88,8 @@ def main() -> int:
     parser.add_argument("--probe", action="store_true",
                         help="issue one request for --assignee and print the parsed shape")
     parser.add_argument("--summary", action="store_true")
+    parser.add_argument("--skip-covered", action="store_true",
+                        help="skip companies that already have applicant rows, so a batch advances")
     args = parser.parse_args()
 
     fetcher = PoliteFetcher(user_agent=USER_AGENT,
@@ -99,8 +118,17 @@ def main() -> int:
     try:
         assignees = list(args.assignee)
         if args.top_companies:
-            assignees.extend(top_assignees(store, args.top_companies))
+            # Ask for more than the batch size so that skipping already-covered names still leaves
+            # a full batch of new work.
+            wanted = args.top_companies * (4 if args.skip_covered else 1)
+            assignees.extend(top_assignees(store, wanted))
         assignees = list(dict.fromkeys(a for a in assignees if a.strip()))
+        if args.skip_covered:
+            covered = covered_assignees(store)
+            before = len(assignees)
+            assignees = [a for a in assignees if _norm_name(a) not in covered]
+            print(f"skipped {before - len(assignees)} covered companies", file=sys.stderr)
+            assignees = assignees[:max(1, args.top_companies or len(assignees))]
         for name in assignees:
             try:
                 result = import_assignee(store, name, client=client, pages=args.pages,
