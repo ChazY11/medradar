@@ -347,13 +347,28 @@ def health_checks(ledger: ObservationLedger, sources: list[dict[str, Any]],
             lead_days = max(lead_days, (moment.date() - today).days)
     if unbacked or (future and lead_days > WATERMARK_FUTURE_GRACE_DAYS):
         critical_hit = bool(set(affected) & V1_CRITICAL_SOURCES)
+        # Name the sources and the values. Measured while auditing this: the detail said "at least
+        # one source" and an operator had to open three layers of JSON to learn which one and what
+        # date - which is the difference between an alert and a puzzle.
+        detail_rows = []
+        for row in sources:
+            source_id = str(row.get("source_id"))
+            if source_id not in affected:
+                continue
+            moment = parse_moment(row.get("watermark"))
+            lead = None if moment is None else (moment.date() - today).days
+            detail_rows.append(
+                f"{source_id}: watermark={row.get('watermark') or 'none'}"
+                f" last_success={str(row.get('last_success_check_at') or 'never')[:19]}"
+                + (f" lead={lead}d" if lead is not None else ""))
         checks.append(_check(
             "watermark_legal", FAIL,
             SEVERITY_CRITICAL if critical_hit else SEVERITY_MAJOR,
             "At least one source states a coverage watermark it cannot have covered by more than"
             f" {WATERMARK_FUTURE_GRACE_DAYS} day(s), or holds a watermark with no successful run"
             " behind it. Discovery on that source cannot be trusted even though its checks still"
-            " succeed.",
+            " succeed. "
+            + ("; ".join(detail_rows[:4]) if detail_rows else ""),
             problems=watermark, sources=affected, max_lead_days=lead_days,
             critical_sources=sorted(set(affected) & V1_CRITICAL_SOURCES)))
     elif future:
