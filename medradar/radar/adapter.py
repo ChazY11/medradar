@@ -304,6 +304,8 @@ def run_source(adapter: SourceAdapter, ctx: CollectContext, *, resume: bool = Tr
     counters = _zero_counters()
     errors: list[dict[str, Any]] = []
     scope_watermarks: dict[str, str] = {}
+    #: scope_id -> whether that scope's watermark is an inclusive record date.
+    scope_inclusive: dict[str, bool] = {}
     started = time.perf_counter()
     interrupted = False
 
@@ -423,6 +425,10 @@ def run_source(adapter: SourceAdapter, ctx: CollectContext, *, resume: bool = Tr
             cursor = page.next_cursor
             if page.watermark:
                 scope_watermarks[scope.scope_id] = page.watermark
+                # Whether this scope's value is an inclusive record date or an exclusive window end.
+                # The difference is normalised once, at the write, so stored watermarks all mean the
+                # same thing - see medradar/radar/watermark.py.
+                scope_inclusive[scope.scope_id] = bool(page.watermark_inclusive)
             if not ctx.dry_run:
                 ledger.save_checkpoint(source, ctx.run_id, scope.scope_id, cursor, seen_in_scope)
             if cursor is None:
@@ -433,6 +439,7 @@ def run_source(adapter: SourceAdapter, ctx: CollectContext, *, resume: bool = Tr
         else:
             counters["scopes_failed"] += 1
             scope_watermarks.pop(scope.scope_id, None)
+            scope_inclusive.pop(scope.scope_id, None)
         if interrupted:
             break
 
@@ -459,7 +466,12 @@ def run_source(adapter: SourceAdapter, ctx: CollectContext, *, resume: bool = Tr
         merged = _max_moment([watermark_before, *scope_watermarks.values()]) if scope_watermarks else watermark_before
         persisted_state = dict(ctx.adapter_state or {})
         if merged != watermark_before or persisted_state:
-            ledger.set_watermark(source, merged, {"scopes": scope_watermarks, **persisted_state})
+            # Only an all-inclusive merge is shifted: a window end already means the exclusive
+            # bound, and mixing the two would silently move coverage by a day.
+            inclusive = bool(scope_inclusive) and all(scope_inclusive.values())
+            ledger.set_watermark(source, merged,
+                                 {"scopes": scope_watermarks, **persisted_state},
+                                 inclusive_observation=inclusive)
             watermark_after = merged
 
     outcome = _outcome_for(status, counters)

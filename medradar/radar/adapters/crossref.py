@@ -19,6 +19,7 @@ Crossref asks clients to identify themselves; the registry's contact address is 
 """
 
 from __future__ import annotations
+from ..watermark import utc_today
 
 from datetime import date, timedelta
 from typing import Any, Iterable, Mapping
@@ -83,7 +84,7 @@ class CrossrefAdapter:
             raise ValueError(f"unknown Crossref query {query_id!r}")
         page_number = int(cursor or 0)
         if page_number >= self.max_pages:
-            return Page(records=[], next_cursor=None, watermark=date.today().isoformat(),
+            return Page(records=[], next_cursor=None, watermark=utc_today().isoformat(), watermark_inclusive=True,
                         note=f"query {query_id}: page cap reached")
         since = self._since(ctx)
         # Relevance ranking (the default when a query is supplied) is used deliberately:
@@ -105,11 +106,11 @@ class CrossrefAdapter:
         # The watermark is the window's upper bound (what we have covered), not the newest
         # publication date: journals routinely deposit issues dated in the future, and a future
         # watermark would silently skip every subsequent deposit.
-        watermark = date.today().isoformat()
+        watermark = utc_today().isoformat()
         return Page(
             records=records,
             next_cursor=next_cursor,
-            watermark=watermark,
+            watermark=watermark, watermark_inclusive=True,
             note=f"query {query_id}: {len(records)} of {total} (created since {since}, relevance cut)",
         )
 

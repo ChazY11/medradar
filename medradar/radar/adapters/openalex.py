@@ -24,6 +24,7 @@ rate would misrepresent who is making the requests.
 """
 
 from __future__ import annotations
+from ..watermark import utc_today
 
 import os
 import re
@@ -96,7 +97,7 @@ class OpenAlexAdapter:
         return [Scope(f"query:{query['id']}") for query in self.queries]
 
     def _window(self, ctx: CollectContext) -> tuple[str, str]:
-        end = date.today()
+        end = utc_today()
         start = end - timedelta(days=90)
         if ctx.watermark:
             normalized = normalize_moment(ctx.watermark)[0]

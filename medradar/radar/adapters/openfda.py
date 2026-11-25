@@ -27,6 +27,7 @@ Time semantics, stated because getting this wrong is how a system invents freshn
 """
 
 from __future__ import annotations
+from ..watermark import utc_today
 
 from datetime import date, timedelta
 from typing import Any, Mapping, Sequence
@@ -164,9 +165,9 @@ class OpenFDAAdapter:
             )
             if all_done:
                 state["swept_version"] = state.get("official_version") or state.get("observed_version")
-                state["last_full_sweep_at"] = date.today().isoformat()
+                state["last_full_sweep_at"] = utc_today().isoformat()
         ctx.adapter_state["openfda"] = state
-        return Page(records=records, next_cursor=next_cursor, watermark=watermark,
+        return Page(records=records, next_cursor=next_cursor, watermark=watermark, watermark_inclusive=True,
                     note=f"product_code {code}: {len(rows)} of {total} rows")
 
     def _window_page(self, ctx: CollectContext, cursor: str | None) -> Page:
@@ -175,7 +176,7 @@ class OpenFDAAdapter:
         code_clause = " OR ".join(f'product_code:"{code}"' for code in self.product_codes)
         search = f"({code_clause})"
         if since:
-            search += f" AND decision_date:[{since} TO {(date.today() + timedelta(days=1)).isoformat()}]"
+            search += f" AND decision_date:[{since} TO {(utc_today() + timedelta(days=1)).isoformat()}]"
         params = {"search": search, "limit": self.page_size, "skip": skip,
                   "sort": "decision_date:asc"}
         data = ctx.fetcher.get_json(
@@ -185,7 +186,7 @@ class OpenFDAAdapter:
         total = _total(data)
         records = [self._record_510k(row) for row in rows]
         next_cursor = str(skip + len(rows)) if len(rows) >= self.page_size and skip + len(rows) < total else None
-        return Page(records=records, next_cursor=next_cursor, watermark=_max_date(rows),
+        return Page(records=records, next_cursor=next_cursor, watermark=_max_date(rows), watermark_inclusive=True,
                     note=f"incremental window since {since or 'unbounded'}: {len(rows)} of {total} rows")
 
     def _pma_page(self, ctx: CollectContext, cursor: str | None) -> Page:
@@ -211,9 +212,9 @@ class OpenFDAAdapter:
             completed = {str(value) for value in (state.get("completed_codes") or [])}
             if all(value in completed for value in self.product_codes):
                 state["swept_version"] = state.get("official_version") or state.get("observed_version")
-                state["last_full_sweep_at"] = date.today().isoformat()
+                state["last_full_sweep_at"] = utc_today().isoformat()
             ctx.adapter_state["openfda"] = state
-        return Page(records=records, next_cursor=next_cursor, watermark=_max_date(rows),
+        return Page(records=records, next_cursor=next_cursor, watermark=_max_date(rows), watermark_inclusive=True,
                     note=f"PMA sweep: {len(rows)} of {total} rows")
 
     # ------------------------------------------------------------------- record

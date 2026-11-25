@@ -24,6 +24,7 @@ lane knows which records it may fetch instead of guessing from the publisher.
 """
 
 from __future__ import annotations
+from ..watermark import utc_today
 
 import re
 from datetime import date, timedelta
@@ -109,7 +110,7 @@ class EuropePmcAdapter:
         return [Scope(f"query:{query['id']}") for query in self.queries]
 
     def _window(self, ctx: CollectContext) -> tuple[str, str]:
-        end = date.today()
+        end = utc_today()
         start = end - timedelta(days=60)
         if ctx.watermark:
             normalized = normalize_moment(ctx.watermark)[0]

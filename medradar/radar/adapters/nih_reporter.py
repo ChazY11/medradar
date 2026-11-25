@@ -1,4 +1,5 @@
-﻿"""NIH RePORTER adapter - what American labs are being paid to build, years before a product.
+"""NIH RePORTER adapter - what American labs are being paid to build, years before a product.
+
 
 Why this layer was empty everywhere else
 ----------------------------------------
@@ -32,6 +33,7 @@ Transport note: RePORTER v2 is POST-only. See :meth:`medradar.radar.http.PoliteF
 """
 
 from __future__ import annotations
+from ..watermark import utc_today
 
 from datetime import date
 from typing import Any, Iterable, Mapping, Sequence
@@ -71,7 +73,7 @@ class NihReporterAdapter:
                  page_size: int = PAGE_SIZE, max_rows: int = MAX_ROWS_PER_SCOPE) -> None:
         self.taxonomy = taxonomy
         self.terms = tuple(terms or TERMS)
-        today = date.today()
+        today = utc_today()
         # A fiscal year runs Oct 1 - Sep 30. Two years back is enough to catch a newly noticed
         # award; older awards enter through an explicit backfill, not a scheduled cycle.
         self.fiscal_years = tuple(fiscal_years or (today.year - 1, today.year))
@@ -102,7 +104,7 @@ class NihReporterAdapter:
             raise ValueError(f"unknown NIH RePORTER term {parts[2]!r}")
         offset = int(cursor or 0)
         if offset >= self.max_rows:
-            return Page(records=[], next_cursor=None, watermark=date.today().isoformat(),
+            return Page(records=[], next_cursor=None, watermark=utc_today().isoformat(), watermark_inclusive=True,
                         note=f"{scope.scope_id}: row cap {self.max_rows} reached")
 
         payload = {
@@ -130,7 +132,7 @@ class NihReporterAdapter:
         return Page(
             records=records,
             next_cursor=next_cursor,
-            watermark=date.today().isoformat(),
+            watermark=utc_today().isoformat(), watermark_inclusive=True,
             note=f"{scope.scope_id}: {len(rows)} of {total} projects",
         )
 

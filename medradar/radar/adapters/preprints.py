@@ -19,6 +19,7 @@ inventing a publication date for it today would be a fabrication.
 """
 
 from __future__ import annotations
+from ..watermark import utc_today
 
 from datetime import date, timedelta
 from typing import Any, Iterable, Mapping
@@ -88,7 +89,7 @@ class PreprintAdapter:
         return [Scope(f"server:{server}") for server in self.servers]
 
     def _window(self, ctx: CollectContext) -> tuple[str, str]:
-        end = date.today()
+        end = utc_today()
         start = end - timedelta(days=30)
         if ctx.watermark:
             normalized = normalize_moment(ctx.watermark)[0]

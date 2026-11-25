@@ -929,11 +929,22 @@ class ObservationLedger:
             row["cursor"] = _parse_json(row.pop("cursor_json", None), {})
         return rows
 
-    def set_watermark(self, source_id: str, watermark: Any, cursor: Mapping[str, Any] | None = None) -> None:
+    def set_watermark(self, source_id: str, watermark: Any, cursor: Mapping[str, Any] | None = None,
+                      *, inclusive_observation: bool = False) -> None:
+        """Record an adapter's coverage watermark, normalised to the exclusive-end convention.
+
+        Measured on the live ledger: crossref stored today, europepmc stored tomorrow (its window
+        end), openfda stored the date of its newest record - three meanings under one column. Adding
+        a day to record-derived values is done here, at the only place a watermark is written, so
+        every reader can rely on "everything strictly before this moment has been looked at".
+        """
+        from .watermark import as_exclusive
+
+        normalised = as_exclusive(watermark, inclusive_observation=inclusive_observation)
         with self._transaction():
             self.con.execute(
                 "UPDATE source_state SET watermark=?, cursor_json=?, updated_at=? WHERE source_id=?",
-                (None if watermark is None else str(watermark),
+                (normalised,
                  None if cursor is None else _json(dict(cursor)), utc_now_iso(), source_id),
             )
 

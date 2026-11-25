@@ -37,6 +37,7 @@ Collection scopes
 """
 
 from __future__ import annotations
+from ..watermark import utc_today
 
 from datetime import date, timedelta
 from typing import Any, Mapping, Sequence
@@ -166,15 +167,15 @@ class OpenFDARecallAdapter:
             state["completed_codes"] = sorted(completed)
             if all(value in completed for value in self.product_codes):
                 state["swept_version"] = state.get("official_version") or state.get("observed_version")
-                state["last_full_sweep_at"] = date.today().isoformat()
+                state["last_full_sweep_at"] = utc_today().isoformat()
         ctx.adapter_state["openfda_recall"] = state
-        return Page(records=records, next_cursor=next_cursor, watermark=_max_posted(rows),
+        return Page(records=records, next_cursor=next_cursor, watermark=_max_posted(rows), watermark_inclusive=True,
                     note="product_code " + code + ": " + str(len(rows)) + " of " + str(total) + " rows")
 
     def _window_page(self, ctx: CollectContext, cursor: str | None) -> Page:
         skip = int(cursor or 0)
         since = _window_start(ctx.watermark, backfill=_is_backfill(ctx))
-        today = date.today().isoformat()
+        today = utc_today().isoformat()
         params = {
             "search": "event_date_posted:[" + since + " TO " + today + "]",
             "limit": self.page_size,
@@ -189,7 +190,7 @@ class OpenFDARecallAdapter:
         total = _total(data)
         records = [record for row in rows if (record := self._record(row))]
         next_cursor = _next_cursor(skip, len(rows), total, self.page_size)
-        return Page(records=records, next_cursor=next_cursor, watermark=_max_posted(rows),
+        return Page(records=records, next_cursor=next_cursor, watermark=_max_posted(rows), watermark_inclusive=True,
                     note="all-code window since " + since + ": " + str(len(rows)) + " of "
                          + str(total) + " rows")
 
@@ -312,7 +313,7 @@ def _window_start(watermark: str | None, *, backfill: bool) -> str:
     BACKFILL_START, an ordinary first run only looks back RECENT_DAYS. The distinction is what
     keeps a backfill from being reported as newly discovered news.
     """
-    today = date.today()
+    today = utc_today()
     if watermark:
         normalized = normalize_moment(watermark)[0]
         if normalized:

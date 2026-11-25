@@ -21,6 +21,7 @@ may only use for ``DOCUMENT_MENTIONS_COMPANY``.
 """
 
 from __future__ import annotations
+from ..watermark import utc_today
 
 import xml.etree.ElementTree as ET
 from datetime import date, timedelta
@@ -119,7 +120,7 @@ class PubMedAdapter:
         return [Scope(f"query:{query['id']}") for query in self.queries]
 
     def _window(self, ctx: CollectContext) -> tuple[str, str]:
-        end = date.today()
+        end = utc_today()
         start = end - timedelta(days=60)
         if ctx.watermark:
             normalized = normalize_moment(ctx.watermark)[0]
@@ -141,7 +142,7 @@ class PubMedAdapter:
             raise ValueError(f"unknown PubMed query {query_id!r}")
         retstart = int(cursor or 0)
         if retstart >= self.max_results:
-            return Page(records=[], next_cursor=None, watermark=date.today().isoformat(),
+            return Page(records=[], next_cursor=None, watermark=utc_today().isoformat(),
                         note=f"query {query_id}: page cap reached")
         start, end = self._window(ctx)
         search = ctx.fetcher.get_json(ESEARCH, params={

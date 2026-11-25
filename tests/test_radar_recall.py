@@ -201,7 +201,11 @@ def test_a_row_without_an_official_number_is_not_recorded():
 
 
 def test_the_window_without_a_watermark_depends_on_the_declared_intent():
-    today = date.today()
+    # UTC, because the adapters use utc_today(): this host is UTC+8, and between midnight and 08:00
+    # local the two dates differ by a day.
+    from medradar.radar.watermark import utc_today
+
+    today = utc_today()
     assert _window_start(None, backfill=True) == BACKFILL_START
     assert _window_start(None, backfill=False) == (today - timedelta(days=90)).isoformat()
     assert _window_start("2026-06-10", backfill=False) == "2026-05-11"
@@ -229,7 +233,10 @@ def test_a_first_run_collects_the_inventory_and_the_window(tmp_path: Path):
         assert result["counters"]["records_new"] == 1
         assert ledger.counts().observations == 1
         state = ledger.get_source_state("openfda_recall")
-        assert state["watermark"] == "2026-10-01"
+        # The recall adapter derives its watermark from the newest record date, which is inclusive:
+        # a record dated 10-01 covers that day, so the stored exclusive bound is 10-02. See
+        # medradar/radar/watermark.py for why every watermark now means the same thing.
+        assert state["watermark"] == "2026-10-02"
         assert state["enabled"] == 1
     finally:
         ledger.close()

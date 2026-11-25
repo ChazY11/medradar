@@ -521,6 +521,10 @@ class Page:
     records: list[RawRecord] = field(default_factory=list)
     next_cursor: str | None = None
     watermark: str | None = None
+    #: True when the watermark is the *inclusive* date of the newest record seen rather than the
+    #: exclusive end of a query window. The two kinds are normalised when they are written, so a
+    #: reader of the stored value never has to guess which convention produced it.
+    watermark_inclusive: bool = False
     #: Identifiers the source no longer serves (only set when that is provable).
     removed_ids: list[str] = field(default_factory=list)
     failed_ids: list[str] = field(default_factory=list)

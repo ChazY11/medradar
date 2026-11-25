@@ -3545,6 +3545,46 @@ def test_the_health_probe_survives_a_deploy_but_still_reports_a_real_outage():
         server.shutdown()
 
 
+def test_a_watermark_means_one_thing_wherever_it_is_written(tmp_path):
+    """Measured on the live ledger: crossref stored today, europepmc tomorrow, openfda a record date."""
+    import datetime as dt
+
+    from medradar.radar.ledger import ObservationLedger
+    from medradar.radar.watermark import as_exclusive, covered_through, lead_days, parse
+
+    # A bare date stays a date: midnight is a moment, not a day, and the difference decides whether a
+    # watermark gets shifted.
+    assert parse("2026-11-26") == dt.date(2026, 11, 26)
+    assert isinstance(parse("2026-11-26T00:00:00"), dt.datetime)
+
+    # Window ends are already exclusive and are stored unchanged.
+    assert as_exclusive("2026-11-26") == "2026-11-26"
+    # A record date covers that day, so its exclusive bound is the next one.
+    assert as_exclusive("2026-11-09", inclusive_observation=True) == "2026-11-10"
+    # A datetime names a moment; shifting it would invent coverage.
+    assert as_exclusive("2026-11-09T12:41:36+00:00",
+                        inclusive_observation=True) == "2026-11-09T12:41:36+00:00"
+
+    # What a human is told: 2026-11-26 as a watermark means covered through the 25th.
+    assert covered_through("2026-11-26") == "2026-11-25"
+    assert lead_days("2026-11-26", today=dt.date(2026, 11, 25)) == 1
+    assert lead_days("2026-11-09", today=dt.date(2026, 11, 25)) == -16
+
+    # The write path is the one place the shift happens.
+    ledger = ObservationLedger(str(tmp_path / "radar.db"))
+    try:
+        ledger.ensure_source("record_derived", label="Record derived", adapter_version="test-1",
+                             cadence_hours=24)
+        ledger.set_watermark("record_derived", "2026-11-09", inclusive_observation=True)
+        stored = {row["source_id"]: row for row in ledger.list_sources()}["record_derived"]
+        assert stored["watermark"] == "2026-11-10"
+        ledger.set_watermark("record_derived", "2026-11-26")
+        stored = {row["source_id"]: row for row in ledger.list_sources()}["record_derived"]
+        assert stored["watermark"] == "2026-11-26"
+    finally:
+        ledger.close()
+
+
 def test_a_pre_digitisation_filing_is_never_requested(tmp_path):
     """Measured: 0 of 60 sampled filings from 1998-2009 have a PDF at any path shape.
 

@@ -22,6 +22,7 @@ Time semantics, stated because a safety record is the easiest place to invent fr
 """
 
 from __future__ import annotations
+from ..watermark import utc_today
 
 from datetime import date, timedelta
 from typing import Any, Mapping, Sequence
@@ -99,7 +100,7 @@ class MaudeAdapter:
             return Page(records=[], next_cursor=None, watermark=ctx.watermark,
                         note=f"row cap {self.max_rows} reached; resume in a later cycle")
         since = _window_start(ctx.watermark)
-        end = date.today().isoformat()
+        end = utc_today().isoformat()
         clause = f"date_received:[{since} TO {end}]" if since else f"date_received:[* TO {end}]"
         if self.product_codes:
             codes = " OR ".join(f'device.device_report_product_code:"{code}"'
@@ -122,6 +123,7 @@ class MaudeAdapter:
             records=records,
             next_cursor=next_cursor,
             watermark=_max_received(rows) or ctx.watermark,
+                watermark_inclusive=bool(_max_received(rows)),
             note=f"MAUDE date_received window since {since or 'unbounded'}: "
                  f"{len(rows)} of {total} rows",
         )
