@@ -70,6 +70,12 @@ button:hover{filter:brightness(1.08)}
 .examples{font-size:13.5px;color:var(--muted);margin-bottom:34px}
 .examples a{display:inline-block;margin:4px 8px 4px 0;padding:3px 10px;border:1px solid var(--line);
 border-radius:999px;color:var(--fg)}
+.second{margin:0 0 30px;padding:14px 16px;border:1px solid var(--line);border-radius:11px;
+background:var(--card)}
+.second form{margin:8px 0 0}
+.second input{padding:10px 13px}
+.second button{padding:10px 16px}
+.second .hint{font-size:13px;color:var(--muted);margin:0}
 .grid{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;margin:0 0 8px}
 @media(max-width:900px){.grid{grid-template-columns:repeat(3,1fr)}}
 @media(max-width:560px){.grid{grid-template-columns:repeat(2,1fr)}}
@@ -180,9 +186,11 @@ def layout(*, title: str, body: str, active: str = "") -> str:
         '<header><div class="wrap"><div class="brand">MedRadar'
         '<span>医疗器械情报</span></div><nav>'
         + link("/", "设备查询", "device")
+        + link("/paper", "论文反查", "paper")
         + link("/map", "科技地图", "map")
-        + link("/radar", "实时雷达", "feed")
+        + link("/compare", "公司对比", "compare")
         + link("/sources", "数据覆盖", "sources")
+        + link("/radar", "实时雷达", "feed")
         + "</nav></div></header>"
         f'<main class="wrap">{body}</main>'
         '<footer><div class="wrap">'
@@ -209,6 +217,15 @@ def landing(*, stats: Mapping[str, Any], examples: Sequence[tuple[str, str]]) ->
   <button type="submit">查询</button>
 </form>
 <div class="examples">试试：{chips}</div>
+<div class="second">
+  <p class="hint">手上是一篇论文，想知道做这东西的是谁？</p>
+  <form class="search" method="get" action="/paper">
+    <input type="search" name="id" placeholder="论文编号，例如 PMC12568234" aria-label="论文编号">
+    <button type="submit">反查产品</button>
+  </form>
+  <p class="hint">也有 <a href="/compare?q=Medtronic,Bauerfeind">公司对比</a> 与
+  <a href="/map">科技地图</a>。</p>
+</div>
 <div class="grid">{cards}</div>
 <h2>这个工具能回答什么</h2>
 <div class="card"><h4>1 · 这台器械凭什么上市</h4>

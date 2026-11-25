@@ -2937,6 +2937,21 @@ def test_a_paper_can_be_turned_back_into_a_lead_but_not_a_conclusion(tmp_path):
     store.close()
 
 
+def test_every_built_page_is_reachable_from_the_navigation():
+    """A page nobody can click is a page that does not exist. /compare and /paper were unreachable."""
+    import re
+
+    from medradar.radar.pages import landing
+
+    page = landing(stats={"设备注册": 1}, examples=[])
+    linked = set(re.findall(r'href="(/[a-z]*)"', page))
+    # Reachable in one click from the landing page, because each link is in the header nav.
+    for path in ("/", "/paper", "/map", "/compare", "/sources", "/radar"):
+        assert path in linked, f"{path} is not in the navigation"
+    # And the landing page offers the paper entry directly rather than only in the header.
+    assert 'action="/paper"' in page
+
+
 def test_a_pre_digitisation_filing_is_never_requested(tmp_path):
     """Measured: 0 of 60 sampled filings from 1998-2009 have a PDF at any path shape.
 
