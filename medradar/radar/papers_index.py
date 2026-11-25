@@ -36,11 +36,39 @@ CREATE TABLE IF NOT EXISTS paper_term (
     PRIMARY KEY (term, paper_id)
 );
 CREATE INDEX IF NOT EXISTS idx_paper_term_term ON paper_term(term);
+
+-- How many *distinct brands* in the register contain this word.
+--
+-- The corpus-side document frequency is not enough to decide whether a word identifies a device.
+-- Measured 2026-11-25: a "1.5MM SYSTEM TWIST DRILL" matched fifteen papers through the words
+-- "twist" and "drill", which are ordinary instrument nouns, because they are rare in a 3,287-paper
+-- corpus while being useless for identification. The register is the right judge: "drill" appears
+-- in 2,906 distinct brand names, "system" in 5,198, "screw" in 6,392 - while "arum" appears in 4
+-- and "arumnb1safixture" in none. A word that names thousands of different products cannot name one.
+CREATE TABLE IF NOT EXISTS brand_token_df (
+  term   TEXT PRIMARY KEY,
+  brands INTEGER NOT NULL
+);
 """
 
 #: Shortest token worth indexing. Three letters match too much ("aaa", "inc"), five misses real
 #: model numbers ("X120"), so four.
 MIN_TOKEN = 4
+
+#: Words that label a field in the register rather than name a product. They appear in brand strings
+#: because registrants paste structured text into them - "Alphatec (Manufacturer:Tsunami)" - and
+#: matching on them measured 349 papers for one device. Never identifying, at any frequency.
+STRUCTURAL_WORDS = frozenset({
+    "manufacturer", "manufacturers", "model", "models", "part", "parts", "number", "numbers",
+    "ref", "reference", "reorder", "catalog", "catalogue", "item", "items", "product", "products",
+    "device", "devices", "with", "without", "and", "the", "for", "from", "per", "pro",
+    "set", "sets", "kit", "kits", "pack", "packs", "box", "boxes", "case", "cases",
+    "size", "sizes", "length", "width", "diameter", "series", "line", "type", "types",
+    "plus", "basic", "standard", "premium", "universal", "complete", "sterile", "single", "double",
+    "left", "right", "small", "medium", "large", "extra", "mini", "micro", "nano",
+    "made", "inc", "llc", "ltd", "gmbh", "corp", "corporation", "company", "co",
+    "mm", "cm", "inch", "inches", "pcs", "pc", "unit", "units", "package",
+})
 
 #: Marker attribute name for the per-store counter cache.
 _COUNTER_ATTR = "_papers_index_counters"
@@ -78,6 +106,57 @@ def compact(value: str) -> str:
     vocabulary built only from space-separated tokens indexed nothing at all.
     """
     return re.sub(r"[^a-z0-9]", "", str(value or "").lower())
+
+
+def brand_token_frequencies(reference, *, limit: int = 200_000) -> dict[str, int]:
+    """Register-side document frequency: how many distinct brand names contain each word."""
+    counts: dict[str, int] = {}
+    try:
+        rows = reference.conn.execute(
+            "SELECT DISTINCT brand_name FROM udi_device "
+            "WHERE brand_name IS NOT NULL AND brand_name <> '' LIMIT ?", (limit,)).fetchall()
+    except Exception:  # noqa: BLE001 - a store without the device table simply has no signal
+        return {}
+    for row in rows:
+        for token in set(tokens(str(row[0] or ""))):
+            counts[token] = counts.get(token, 0) + 1
+    return counts
+
+
+def rebuild_brand_token_df(reference, *, limit: int = 200_000) -> int:
+    """Persist the register-side frequency so a page does not recompute it per request."""
+    ensure_tables(reference)
+    counts = brand_token_frequencies(reference, limit=limit)
+    reference.conn.execute("DELETE FROM brand_token_df")
+    reference.conn.executemany("INSERT OR REPLACE INTO brand_token_df (term, brands) VALUES (?,?)",
+                               list(counts.items()))
+    reference.conn.commit()
+    return len(counts)
+
+
+def _brand_df(reference, term: str) -> int | None:
+    """Brands containing this term, or ``None`` when the table has never been built."""
+    cached = _cache_for(reference)["df"]
+    key = f"brand:{term}"
+    if key in cached:
+        value = cached[key]
+        return None if value is None else int(value)
+    try:
+        row = reference.conn.execute(
+            "SELECT brands FROM brand_token_df WHERE term = ?", (term,)).fetchone()
+        value = int(row[0]) if row else None
+    except Exception:  # noqa: BLE001
+        value = None
+    cached[key] = value
+    return value
+
+
+def brand_df_available(reference) -> bool:
+    try:
+        ensure_tables(reference)
+        return bool(reference.conn.execute("SELECT COUNT(*) FROM brand_token_df").fetchone()[0])
+    except Exception:  # noqa: BLE001
+        return False
 
 
 def vocabulary(reference, *, limit: int = 200_000) -> set[str]:
@@ -160,8 +239,10 @@ def index_corpus(reference, corpus_root: str | Path, *, vocab: set[str] | None =
         rows += len(counts)
     reference.conn.commit()
     invalidate_cache(reference)  # the counts just changed; anything cached describes the old index
+    brand_df_rows = rebuild_brand_token_df(reference)
+    invalidate_cache(reference)  # the brand frequencies are cached too
     return {"papers_indexed": papers, "term_rows": rows, "vocabulary": len(vocab),
-            "files_seen": len(files)}
+            "files_seen": len(files), "brand_terms": brand_df_rows}
 
 
 def _cache_for(reference) -> dict[str, Any]:
@@ -218,14 +299,21 @@ def _total_papers(reference) -> int:
     return value
 
 
-def distinctive_terms(reference, terms: Sequence[str], *, max_df_ratio: float = 0.02
-                      ) -> tuple[list[str], list[str]]:
+def distinctive_terms(reference, terms: Sequence[str], *, max_df_ratio: float = 0.02,
+                      max_brand_df: int = 50) -> tuple[list[str], list[str]]:
     """Split terms into those that can identify a device and those that cannot.
 
-    Measured failure: querying the index for a spinal implant returned 1,759 of 2,552 papers,
-    because "spinal" and "system" are in the register as brand words and in most clinical text as
-    ordinary vocabulary. A term is kept when it is rare enough to discriminate, or when it carries a
-    digit (a model number), or when it is long enough to be a run-together product name.
+    Two independent filters, because each catches what the other misses.
+
+    1. Corpus frequency (measured failure: a spinal implant returned 1,759 of 2,552 papers, because
+       "spinal" and "system" are ordinary clinical vocabulary).
+    2. Register frequency (measured failure: "1.5MM SYSTEM TWIST DRILL" matched fifteen papers
+       through "twist" and "drill", which are rare in a small corpus and still name thousands of
+       different products). A word carried by more than ``max_brand_df`` distinct brand names in the
+       register cannot identify one product, however rare it is in the papers.
+
+    A term carrying a digit is a model or catalog number and is always kept: "nb13810sp" occurs in
+    no brand name at all and is exactly the kind of string that identifies a device when it appears.
     """
     total = _total_papers(reference)
     if not total:
@@ -234,8 +322,17 @@ def distinctive_terms(reference, terms: Sequence[str], *, max_df_ratio: float = 
     kept: list[str] = []
     generic: list[str] = []
     for term in terms:
+        # Order matters. A structural word is rejected first: "manufacturer" is twelve characters,
+        # so the length shortcut below would keep it and it measured 349 papers for one device.
+        if term in STRUCTURAL_WORDS:
+            generic.append(term)
+            continue
         if any(ch.isdigit() for ch in term) or len(term) >= 12:
             kept.append(term)
+            continue
+        brands = _brand_df(reference, term)
+        if brands is not None and brands > max_brand_df:
+            generic.append(term)
             continue
         if _document_frequency(reference, term) <= ceiling:
             kept.append(term)

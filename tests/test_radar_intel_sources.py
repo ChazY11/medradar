@@ -2842,6 +2842,56 @@ def test_the_same_applicant_written_two_ways_is_merged_only_when_asked(tmp_path)
     store.close()
 
 
+def test_a_word_in_thousands_of_brands_cannot_identify_one_device(tmp_path):
+    """Measured: "1.5MM SYSTEM TWIST DRILL" matched 15 papers through "twist" and "drill"."""
+    from medradar.radar.papers_index import (distinctive_terms, ensure_tables, index_corpus,
+                                             papers_for_tokens, rebuild_brand_token_df)
+    from medradar.radar.reference import UdiReference
+
+    store = UdiReference(tmp_path / "reference.db")
+    # Sixty different brands containing "twist": the register says the word names many products.
+    # Identifiers are written explicitly: _udi_row derives its DI from hash(model) % 100, and sixty
+    # models collide there, collapsing device rows until the frequency never crosses the threshold.
+    rows = []
+    for i in range(60):
+        rows.append({
+            "identifiers": [{"id": f"08800{i:04d}00", "type": "Primary", "issuing_agency": "GS1"}],
+            "brand_name": f"Twist Drill Set {i}", "company_name": "ACME",
+            "labeler_duns_number": "557821945", "version_or_model_number": f"M{i}",
+            "device_description": "d", "product_codes": [{"code": "EIA"}],
+            "catalog_number": "", "publish_date": "2024-01-01"})
+    rows.append({
+        "identifiers": [{"id": "08800999900", "type": "Primary", "issuing_agency": "GS1"}],
+        "brand_name": "ARUM NB 1 SA Fixture", "company_name": "ARUM",
+        "labeler_duns_number": "557821946", "version_or_model_number": "M99",
+        "device_description": "d", "product_codes": [{"code": "EIA"}],
+        "catalog_number": "", "publish_date": "2024-01-01"})
+    store.write_udi_rows(rows)
+    ensure_tables(store)
+    assert rebuild_brand_token_df(store) > 0
+
+    corpus = tmp_path / "corpus"
+    corpus.mkdir()
+    (corpus / "paper_P1.json").write_text(json.dumps({
+        "identifier": "P1", "status": "text", "text_source": "text", "text_chars": 100,
+        "sections": {"body": "A twist drill study. An ARUM fixture study."}}), encoding="utf-8")
+    index_corpus(store, corpus, vocab={"twist", "drill", "arum", "fixture"})
+
+    kept, generic = distinctive_terms(store, ["twist", "drill", "arum"])
+    assert "twist" not in kept and "drill" not in kept, "ordinary instrument nouns survived"
+    assert "twist" in generic
+    assert "arum" in kept, "a word carried by four brands is still a discriminator"
+
+    # A device whose entire name is ordinary vocabulary must not be dressed up as evidence.
+    ordinary = papers_for_tokens(store, ["twist", "drill"])
+    assert ordinary["papers"] == 0
+    assert set(ordinary["generic_terms"]) >= {"twist", "drill"}
+
+    distinctive = papers_for_tokens(store, ["arum", "fixture"])
+    assert distinctive["papers"] == 1
+    store.close()
+
+
 def test_a_pre_digitisation_filing_is_never_requested(tmp_path):
     """Measured: 0 of 60 sampled filings from 1998-2009 have a PDF at any path shape.
 
