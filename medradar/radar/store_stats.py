@@ -88,6 +88,31 @@ def refresh(reference, *, corpus_dir: str | Path | None = None) -> dict[str, Any
     return {"updated_at": at, "counts": written}
 
 
+def peek(reference) -> dict[str, Any]:
+    """The stored counts, without creating the table.
+
+    `read` calls `ensure_table`, which is a write. On a read-only connection that raises, so a read
+    path fell through to the expensive scan every time - and on a writable connection the write
+    changed the file's mtime, which invalidated the paper counter cache that is keyed on it.
+    """
+    try:
+        rows = reference.conn.execute(
+            "SELECT key, value, updated_at FROM store_stats").fetchall()
+    except Exception:  # noqa: BLE001 - no table yet is an answer, not an error
+        return {"available": False, "counts": {}, "updated_at": None}
+    counts: dict[str, int] = {}
+    stamps: set[str] = set()
+    for key, value, at in rows:
+        counts[str(key)] = int(value)
+        if at:
+            stamps.add(str(at))
+    if not counts:
+        return {"available": False, "counts": {}, "updated_at": None}
+    return {"available": True, "counts": counts,
+            "updated_at": max(stamps) if stamps else None,
+            "mixed_stamps": len(stamps) > 1}
+
+
 def read(reference) -> dict[str, Any]:
     """The stored counts and the moment they were taken, or an empty answer if never refreshed."""
     try:

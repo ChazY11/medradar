@@ -401,6 +401,18 @@ def _total_papers(reference) -> int:
     cached = _cache_for(reference)
     if cached["total"] is not None:
         return int(cached["total"])
+    # The nightly job already materialises this exact count, from this exact SQL. Measured: the scan
+    # is 367 ms of a 1.55 s company page, for a number that changes once a night. The stored value is
+    # used when present and the scan stays as the answer for a store that has never been refreshed.
+    try:
+        from .store_stats import peek as peek_stats
+
+        stored = peek_stats(reference)
+        if stored.get("available") and "papers" in (stored.get("counts") or {}):
+            cached["total"] = int(stored["counts"]["papers"])
+            return int(cached["total"])
+    except Exception:  # noqa: BLE001 - a store without the materialised table scans instead
+        pass
     row = reference.conn.execute(
         "SELECT COUNT(DISTINCT paper_id) FROM paper_term").fetchone()
     value = int(row[0]) if row and row[0] is not None else 0
