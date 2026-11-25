@@ -146,6 +146,12 @@ def esc(value: Any) -> str:
     return html.escape(str(value if value is not None else ""), quote=True)
 
 
+def _slug(text: str) -> str:
+    """A filename fragment: readable, no shell or header metacharacters."""
+    cleaned = "".join(ch if (ch.isalnum() or ch in "-_") else "-" for ch in str(text or ""))
+    return (cleaned.strip("-")[:60] or "query").lower()
+
+
 def n(value: Any) -> str:
     try:
         return f"{int(value):,}"
@@ -393,6 +399,10 @@ def device_dossier(timeline: Any, *, query: str) -> str:
 <div class="grid" style="margin-top:22px">{summary_cards}</div>
 
 <h2>1 · 批文与规格</h2>
+<p class="small muted">导出：<a href="/download?kind=device&format=md&q={esc(query)}">Markdown</a>
+ · <a href="/download?kind=device&format=csv&q={esc(query)}">CSV</a>
+ · <a href="/download?kind=device&format=json&q={esc(query)}">JSON</a>
+ —— 每个空缺都带原因码，可直接发给同事核对。</p>
 <p class="muted small">来源：FDA 510(k) 数据库与已归档的摘要正文。<b>规格是厂家在文件里自己写的</b>，
 不是第三方测得，引用前请对照原件。</p>
 {clearance_html}
@@ -866,6 +876,8 @@ def compare_page(*, companies: Sequence[Mapping[str, Any]]) -> str:
 <h1>公司对比</h1>
 <p class="lede">{n(len(found))} 家公司并列。数字大的标出来，但"大"不等于"强"——
 注册设备多是铺货广，批文多才是产品线深。</p>
+<p class="small muted">导出：<a href="/download?kind=compare&format=md&q={esc(','.join(str(c.get('company_name') or c.get('query')) for c in found))}">Markdown</a>
+ · <a href="/download?kind=compare&format=csv&q={esc(','.join(str(c.get('company_name') or c.get('query')) for c in found))}">CSV</a></p>
 {missing_html}
 <h2>规模与产出</h2>
 {table}
@@ -1080,6 +1092,64 @@ def pages_router(service: Any, *, endpoints: Mapping[str, Any] | None = None) ->
             return compare_page(companies=data)
 
         return HTMLResponse(cached(f"compare:{','.join(names)}", 300.0, render))
+
+    @router.get("/download")
+    def download(q: str = Query(..., min_length=1, max_length=240),
+                 kind: str = Query("device", pattern="^(device|compare)$"),
+                 format: str = Query("md", pattern="^(md|csv|json)$")) -> Any:
+        """One dossier or one comparison as a file, with its provenance intact.
+
+        A reader who has to send the answer onward was previously limited to a screenshot, which
+        carries no source and cannot be checked. The exporters live in export.py and follow the same
+        rules as the pages: every section names its source, every absence carries its reason code,
+        and a weaker match keeps its label.
+        """
+        from fastapi.responses import Response
+
+        from . import export as export_mod
+
+        store = _store()
+        if store is None:
+            return HTMLResponse(layout(title="设备库不存在 · MedRadar",
+                                       body=gap_note("device_not_in_udi_register"),
+                                       active="device"), status_code=503)
+        try:
+            if kind == "device":
+                corpus = service.paths.corpus
+                timeline = build_view(store, q, limit=25,
+                                      corpus_root=corpus if corpus.is_dir() else None)
+                if format == "md":
+                    body = export_mod.device_markdown(timeline, query=q)
+                    media, suffix = "text/markdown; charset=utf-8", "md"
+                elif format == "csv":
+                    body = export_mod.device_csv(timeline, query=q)
+                    media, suffix = "text/csv; charset=utf-8", "csv"
+                else:
+                    body = export_mod.device_json(timeline, query=q)
+                    media, suffix = "application/json; charset=utf-8", "json"
+                stem = f"medradar-device-{_slug(q)}"
+            else:
+                names = [part.strip() for part in q.split(",") if part.strip()][:4]
+                snapshot = _snapshot()
+                data = [_company_data(store, name, snapshot=snapshot) for name in names]
+                if format == "md":
+                    body = export_mod.compare_markdown(data)
+                    media, suffix = "text/markdown; charset=utf-8", "md"
+                elif format == "csv":
+                    body = export_mod.compare_csv(data)
+                    media, suffix = "text/csv; charset=utf-8", "csv"
+                else:
+                    body = json.dumps(data, ensure_ascii=False, indent=2)
+                    media, suffix = "application/json; charset=utf-8", "json"
+                stem = f"medradar-compare-{_slug('-'.join(names))}"
+        finally:
+            store.close()
+        return Response(
+            content=body,
+            media_type=media,
+            headers={"Content-Disposition": f'attachment; filename="{stem}.{suffix}"',
+                     "X-Robots-Tag": "noindex, nofollow"},
+        )
 
     @router.get("/map", response_class=HTMLResponse)
     def map_view() -> Any:

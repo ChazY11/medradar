@@ -2529,7 +2529,8 @@ def test_the_pages_router_mounts_at_the_site_root():
             corpus = Path("/nonexistent/corpus")
 
     paths = [route.path for route in pages_router(_Svc()).routes]
-    assert paths == ["/", "/device", "/sources", "/topic", "/company", "/compare", "/map"]
+    assert paths == ["/", "/device", "/sources", "/topic", "/company", "/compare",
+                     "/download", "/map"]
 
 
 def test_the_alpha_gate_lets_the_new_pages_through_and_nothing_else():
@@ -2747,6 +2748,68 @@ def test_the_gate_allows_compare():
 
     assert path_allowed("/compare") is True
     assert path_allowed("/compare/") is True
+
+
+def test_an_export_carries_its_sources_and_its_reasons(tmp_path):
+    """A file outlives the page: a number without an origin becomes an assertion once downloaded."""
+    from medradar.radar.device_view import build
+    from medradar.radar.export import device_csv, device_json, device_markdown
+
+    store = _view_store(tmp_path)
+    timeline = build(store, "K250063", corpus_root=_corpus(tmp_path))
+    markdown = device_markdown(timeline, query="K250063")
+
+    assert markdown.startswith("# ")
+    assert "来源：FDA UDI" in markdown
+    assert "导出于" in markdown
+    # Every absence is written with its reason code and its sentence, exactly as the page does -
+    # and the set is whatever the timeline actually reported, not a guess about this fixture.
+    from medradar.radar.export import GAP_TEXT
+
+    assert timeline.gaps, "the fixture must leave something unanswered"
+    for code in timeline.gaps:
+        assert code in markdown, code
+        assert GAP_TEXT.get(code, ""), f"{code} has no explanation text"
+
+    rows = device_csv(timeline, query="K250063").strip().split("\n")
+    assert rows[0].startswith("query,device_key,brand")
+    assert "gaps" in rows[0]
+    assert len(rows) == 1 + len(timeline.refs)
+
+    payload = __import__("json").loads(device_json(timeline, query="K250063"))
+    assert payload["schema"] == "medradar.radar.device.export.v1"
+    # The code alone is not an explanation; the export ships the sentence too.
+    assert payload["gaps_explained"]["patent_bulk_tables_absent"]
+    store.close()
+
+
+def test_a_compare_export_states_the_overlap_and_the_caveat():
+    from medradar.radar.export import compare_csv, compare_markdown
+
+    companies = [
+        {"found": True, "company_name": "Alpha", "devices": 100, "clearances": 5, "failures": 20,
+         "trials": 3, "patents": 2, "papers": 9, "product_codes": ["AAA", "BBB"]},
+        {"found": True, "company_name": "Beta", "devices": 50, "clearances": 9, "failures": 5,
+         "trials": 0, "patents": 0, "papers": 1, "product_codes": ["BBB", "CCC"]},
+    ]
+    markdown = compare_markdown(companies)
+    assert "共同覆盖的产品码 1 个" in markdown
+    assert "注册设备多表示铺货广" in markdown
+    assert "来源：FDA UDI" in markdown
+    rows = compare_csv(companies).strip().split("\n")
+    assert rows[0].startswith("company,duns,devices")
+    assert len(rows) == 3
+    # A company that did not resolve is dropped from the table, not exported as zeros.
+    assert "NoSuch" not in compare_csv([{"found": False, "query": "NoSuch"}])
+
+
+def test_a_download_filename_cannot_escape_its_header(tmp_path):
+    from medradar.radar.pages import _slug
+
+    # Quotes and newlines in a query must not reach Content-Disposition.
+    assert _slug('a"b\nc/d') == "a-b-c-d"
+    assert _slug("") == "query"
+    assert len(_slug("x" * 200)) <= 60
 
 
 def test_a_pre_digitisation_filing_is_never_requested(tmp_path):
