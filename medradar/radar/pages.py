@@ -1200,6 +1200,72 @@ def areas_page(*, data: Mapping[str, Any]) -> str:
     return layout(title="技术领域分布 · MedRadar", body=body, active="areas")
 
 
+def area_page(*, specialty: str, summary: Mapping[str, Any] | None,
+              companies: Sequence[Mapping[str, Any]]) -> str:
+    """One specialty: its leaders, and a way to put any of them side by side.
+
+    The link from /areas used to lead nowhere; the chain is 领域 -> 公司 -> 对比, and this is the
+    middle. The checkboxes submit several `q` values to /compare, which joins them, so the comparison
+    page is reachable without typing a comma-separated URL.
+    """
+    if summary is None:
+        return layout(
+            title=f"{specialty} · MedRadar",
+            body=(f'<h1>{esc(specialty)}</h1>' + gap_note("specialty_stats_absent")
+                  + '<p class="small muted"><a href="/areas">← 全部技术领域</a></p>'),
+            active="areas")
+
+    kept = len(companies)
+    total = int(summary.get("companies") or 0)
+    rows = "".join(
+        f'<tr><td class="num">{n(item.get("rank"))}</td>'
+        f'<td><label><input type="checkbox" name="q" value="{esc(item.get("company_name"))}"> '
+        f'<a href="/company?q={esc(item.get("company_name"))}">'
+        f'{esc(item.get("company_name"))}</a></label></td>'
+        f'<td class="num">{n(item.get("devices"))}</td></tr>'
+        for item in companies)
+    table = (f'<form method="get" action="/compare">'
+             f'<div class="card"><table><thead><tr><th>#</th><th>公司（勾选后一起对比）</th>'
+             f'<th>该领域设备数</th></tr></thead><tbody>{rows}</tbody></table>'
+             f'<p><button type="submit">对比勾选的公司（最多 4 家）</button></p></div></form>'
+             if rows else gap_note("no_company_in_this_specialty"))
+    # A list of fifty is a sample of the field, and saying which sample matters.
+    coverage = (f'<p class="small muted">下面是该领域设备数最多的 {n(kept)} 家'
+                f'（全领域共 {n(total)} 家）。没上榜不等于规模为零，只表示排在这 {n(kept)} 家之后。'
+                f'</p>' if kept < total else
+                f'<p class="small muted">该领域全部 {n(total)} 家公司都在下面。</p>')
+    body = f"""
+<p class="small muted"><a href="/areas">← 全部技术领域</a></p>
+<h1>{esc(specialty)}</h1>
+<p class="lede">{n(summary.get("devices"))} 台设备 · {n(summary.get("codes"))} 个产品码 ·
+{n(summary.get("companies"))} 家公司</p>
+<div class="gap"><b>这张表数的是注册，不是技术。</b>设备数按注册条目计，一台设备带多个产品码时
+会在各领域分别计入；一家公司在这里设备多，说明它铺得广，不说明它领先。</div>
+{coverage}
+{table}
+<p class="small muted">数据更新于 {esc(str(summary.get("updated_at") or "未知")[:16])}。</p>
+"""
+    return layout(title=f"{specialty} · MedRadar", body=body, active="areas")
+
+
+def _compare_names(store: Any, raw: Sequence[str], snapshot: Mapping[str, Any]) -> list[str]:
+    """Which companies the URL asked for.
+
+    Repeated `q` values (what /area's checkboxes send) are literal names - splitting them on commas
+    broke every company whose registered name contains one, and "GLOBUS MEDICAL, INC." became two
+    companies plus a fragment. A single comma string (what a person types) is still split, but only
+    after the whole string fails to resolve as one company.
+    """
+    values = [str(value).strip() for value in raw if str(value).strip()]
+    if len(values) == 1 and "," in values[0]:
+        whole = values[0]
+        if _company_data(store, whole, snapshot=snapshot).get("found"):
+            return [whole]
+        parts = [part.strip() for part in whole.split(",") if part.strip()]
+        return list(dict.fromkeys(parts))[:4]
+    return list(dict.fromkeys(values))[:4]
+
+
 def pages_router(service: Any, *, endpoints: Mapping[str, Any] | None = None) -> Any:
     """Reader-facing routes, mounted at the site root rather than under /api/radar.
 
@@ -1399,8 +1465,9 @@ def pages_router(service: Any, *, endpoints: Mapping[str, Any] | None = None) ->
         return HTMLResponse(cached(f"company:{q}", 300.0, render))
 
     @router.get("/compare", response_class=HTMLResponse)
-    def compare_view(q: str | None = Query(None, max_length=240)) -> Any:
-        if not q:
+    def compare_view(q: list[str] | None = Query(None)) -> Any:
+        raw = [str(value) for value in (q or []) if str(value).strip()]
+        if not raw:
             return HTMLResponse(layout(
                 title="公司对比 · MedRadar",
                 body=('<h1>公司对比</h1>'
@@ -1410,7 +1477,7 @@ def pages_router(service: Any, *, endpoints: Mapping[str, Any] | None = None) ->
                       '<input type="search" name="q" placeholder="公司A, 公司B" aria-label="对比">'
                       '<button type="submit">对比</button></form>'),
                 active="company"))
-        names = [part.strip() for part in q.split(",") if part.strip()][:4]
+        key = "|".join(raw)
 
         def render() -> str:
             store = _store()
@@ -1419,12 +1486,13 @@ def pages_router(service: Any, *, endpoints: Mapping[str, Any] | None = None) ->
                               body=gap_note("device_not_in_udi_register"), active="company")
             snapshot = _snapshot()
             try:
+                names = _compare_names(store, raw, snapshot)
                 data = [_company_data(store, name, snapshot=snapshot) for name in names]
             finally:
                 store.close()
             return compare_page(companies=data)
 
-        return HTMLResponse(cached(f"compare:{','.join(names)}", 300.0, render))
+        return HTMLResponse(cached(f"compare:{key}", 300.0, render))
 
     @router.get("/download")
     def download(q: str = Query(..., min_length=1, max_length=240),
@@ -1541,6 +1609,31 @@ def pages_router(service: Any, *, endpoints: Mapping[str, Any] | None = None) ->
             return areas_page(data=data)
 
         return HTMLResponse(cached("areas", 300.0, render))
+
+    @router.get("/area", response_class=HTMLResponse)
+    def area_view(name: str | None = Query(None, max_length=120)) -> Any:
+        if not name:
+            return HTMLResponse(layout(
+                title="技术领域 · MedRadar",
+                body=('<h1>技术领域</h1><p class="lede">从 '
+                      '<a href="/areas">全部技术领域</a> 选一个。</p>'),
+                active="areas"))
+
+        def render() -> str:
+            store = _store()
+            if store is None:
+                return layout(title="设备库不存在 · MedRadar",
+                              body=gap_note("device_index_absent"), active="areas")
+            try:
+                from .specialty import companies_in_specialty, one
+
+                summary = one(store, name)
+                companies = companies_in_specialty(store, name) if summary else []
+            finally:
+                store.close()
+            return area_page(specialty=name, summary=summary, companies=companies)
+
+        return HTMLResponse(cached(f"area:{name}", 300.0, render))
 
     @router.get("/map", response_class=HTMLResponse)
     def map_view() -> Any:

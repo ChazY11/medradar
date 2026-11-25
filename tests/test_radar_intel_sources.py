@@ -2556,7 +2556,7 @@ def test_the_pages_router_mounts_at_the_site_root():
 
     paths = [route.path for route in pages_router(_Svc()).routes]
     assert paths == ["/", "/device", "/sources", "/topic", "/company", "/compare",
-                     "/download", "/paper", "/areas", "/map"]
+                     "/download", "/paper", "/areas", "/area", "/map"]
 
 
 def test_the_alpha_gate_lets_the_new_pages_through_and_nothing_else():
@@ -3278,6 +3278,84 @@ def test_comparison_shows_the_areas_side_by_side_and_exports_them(tmp_path):
     assert "specialties" in header
     arum_row = next(line for line in csv_text.splitlines() if line.startswith("ARUM"))
     assert "Dental:2" in arum_row
+    store.close()
+
+
+def test_one_specialty_lists_its_leaders_and_can_send_them_to_the_comparison(tmp_path):
+    """The chain is 领域 -> 公司 -> 对比; without this page the first arrow led nowhere."""
+    from medradar.radar.pages import area_page, compare_page, _company_data
+    from medradar.radar.product_codes import store_classes
+    from medradar.radar.reference import UdiReference
+    from medradar.radar.specialty import companies_in_specialty, one, refresh
+
+    store = UdiReference(tmp_path / "reference.db")
+    rows = []
+    for index in range(5):
+        company = "BIG SPINE" if index < 3 else "SMALL SPINE"
+        rows.append({
+            "identifiers": [{"id": f"08800{index:04d}00", "type": "Primary",
+                             "issuing_agency": "GS1"}],
+            "brand_name": f"Cage {index}", "company_name": company,
+            "labeler_duns_number": "7770" if company == "BIG SPINE" else "7771",
+            "version_or_model_number": f"M{index}",
+            "device_description": "d", "product_codes": [{"code": "NKB"}],
+            "catalog_number": "", "publish_date": "2024-01-01"})
+    store.write_udi_rows(rows)
+    store_classes(store, [{"product_code": "NKB", "device_name": "Pedicle Screw System",
+                           "medical_specialty": "Orthopedic", "regulation_number": "888.3070",
+                           "device_class": "2"}], at="2026-11-26T00:00:00Z")
+    refresh(store, leaders=5)
+
+    summary = one(store, "Orthopedic")
+    assert summary is not None and summary["companies"] == 2
+    leaders = companies_in_specialty(store, "Orthopedic")
+    assert [item["company_name"] for item in leaders] == ["BIG SPINE", "SMALL SPINE"]
+    assert leaders[0]["rank"] == 1 and leaders[0]["devices"] == 3
+
+    page = area_page(specialty="Orthopedic", summary=summary, companies=leaders)
+    # The checkboxes must submit several q values to /compare, not one comma-joined string.
+    assert 'action="/compare"' in page and 'name="q" value="BIG SPINE"' in page
+    assert "对比勾选的公司" in page
+    assert "数的是注册，不是技术" in page
+    # Both companies fit, so the page says the list is complete rather than caveating it.
+    assert "全部 2 家公司都在下面" in page
+
+    # When the list is a slice of a bigger field it must say so, not present fifty as the market.
+    truncated = area_page(specialty="Orthopedic",
+                          summary={**summary, "companies": 900}, companies=leaders)
+    assert "没上榜不等于规模为零" in truncated
+
+    missing = area_page(specialty="Nonesuch", summary=None, companies=[])
+    assert "specialty_stats_absent" in missing
+
+    # And the comparison page accepts the repeated values the form produces.
+    data = [_company_data(store, "BIG SPINE", snapshot={}),
+            _company_data(store, "SMALL SPINE", snapshot={})]
+    assert "公司对比" in compare_page(companies=data)
+    store.close()
+
+
+def test_a_company_name_with_a_comma_is_not_two_companies(tmp_path):
+    """Measured: "GLOBUS MEDICAL, INC." compared as two names and dragged MEDLINE in as a fragment."""
+    from medradar.radar.pages import _compare_names
+    from medradar.radar.reference import UdiReference
+
+    store = UdiReference(tmp_path / "reference.db")
+    rows = [{
+        "identifiers": [{"id": "08800000000001", "type": "Primary", "issuing_agency": "GS1"}],
+        "brand_name": "Cage", "company_name": "GLOBUS MEDICAL, INC.",
+        "labeler_duns_number": "9001", "version_or_model_number": "M1",
+        "device_description": "d", "product_codes": [{"code": "NKB"}],
+        "catalog_number": "", "publish_date": "2024-01-01"}]
+    store.write_udi_rows(rows)
+
+    # The whole string is a registered company, so it is one company.
+    assert _compare_names(store, ["GLOBUS MEDICAL, INC."], {}) == ["GLOBUS MEDICAL, INC."]
+    # A comma string that is not one company is split, which is what a typed URL means.
+    assert _compare_names(store, ["Medtronic,Bauerfeind"], {}) == ["Medtronic", "Bauerfeind"]
+    # Repeated values are literal names and are never split.
+    assert _compare_names(store, ["GLOBUS MEDICAL, INC.", "Nuvasive, Inc."], {}) == [
+        "GLOBUS MEDICAL, INC.", "Nuvasive, Inc."]
     store.close()
 
 

@@ -29,7 +29,22 @@ CREATE TABLE IF NOT EXISTS specialty_stats (
   top_companies TEXT,
   updated_at    TEXT NOT NULL
 );
+
+-- Who is in one specialty, ranked. Kept as rows rather than JSON in the row above so a single
+-- specialty page can page through its own leaders without reading nineteen others.
+CREATE TABLE IF NOT EXISTS specialty_company (
+  specialty    TEXT NOT NULL,
+  company_name TEXT NOT NULL,
+  devices      INTEGER NOT NULL,
+  rank         INTEGER NOT NULL,
+  updated_at   TEXT NOT NULL,
+  PRIMARY KEY (specialty, company_name)
+);
+CREATE INDEX IF NOT EXISTS idx_spec_company ON specialty_company(specialty, rank);
 """
+
+#: Leaders kept per specialty. Deeper than the five shown on /areas, and enough to fill a page.
+LEADERS_KEPT = 50
 
 BY_SPECIALTY = """
 SELECT pcc.medical_specialty AS sp,
@@ -65,17 +80,59 @@ def refresh(reference, *, leaders: int = 5) -> dict[str, Any]:
         grouped.setdefault(str(specialty), []).append(
             {"company": str(company), "devices": int(devices)})
     rows = []
+    ranking_rows = []
     for specialty, data in totals.items():
-        top = sorted(grouped.get(specialty, []), key=lambda item: -int(item["devices"]))[:leaders]
+        ordered = sorted(grouped.get(specialty, []), key=lambda item: -int(item["devices"]))
+        top = ordered[:leaders]
         rows.append((specialty, data["codes"], data["devices"], data["companies"],
                      json.dumps(top, ensure_ascii=False), at))
+        for position, item in enumerate(ordered[:LEADERS_KEPT], start=1):
+            ranking_rows.append((specialty, item["company"], int(item["devices"]), position, at))
     reference.conn.execute("DELETE FROM specialty_stats")
     reference.conn.executemany(
         "INSERT OR REPLACE INTO specialty_stats "
         "(specialty, codes, devices, companies, top_companies, updated_at) VALUES (?,?,?,?,?,?)",
         rows)
+    reference.conn.execute("DELETE FROM specialty_company")
+    reference.conn.executemany(
+        "INSERT OR REPLACE INTO specialty_company "
+        "(specialty, company_name, devices, rank, updated_at) VALUES (?,?,?,?,?)",
+        ranking_rows)
     reference.conn.commit()
-    return {"updated_at": at, "specialties": len(rows)}
+    return {"updated_at": at, "specialties": len(rows), "ranked_rows": len(ranking_rows)}
+
+
+def companies_in_specialty(reference, specialty: str, *, limit: int = LEADERS_KEPT
+                           ) -> list[dict[str, Any]]:
+    """The leaders of one specialty, in order, with how many devices each holds there."""
+    try:
+        ensure_table(reference)
+        rows = reference.conn.execute(
+            "SELECT company_name, devices, rank FROM specialty_company "
+            "WHERE specialty = ? ORDER BY rank LIMIT ?", (specialty, limit)).fetchall()
+    except Exception:  # noqa: BLE001 - an unbuilt table is an absent answer, not a crash
+        return []
+    return [{"company_name": str(row[0]), "devices": int(row[1]), "rank": int(row[2])}
+            for row in rows]
+
+
+def one(reference, specialty: str) -> dict[str, Any] | None:
+    """The summary row for one specialty."""
+    try:
+        ensure_table(reference)
+        row = reference.conn.execute(
+            "SELECT specialty, codes, devices, companies, top_companies, updated_at "
+            "FROM specialty_stats WHERE specialty = ?", (specialty,)).fetchone()
+    except Exception:  # noqa: BLE001
+        return None
+    if not row:
+        return None
+    try:
+        top = json.loads(row[4] or "[]")
+    except ValueError:
+        top = []
+    return {"specialty": str(row[0]), "codes": int(row[1]), "devices": int(row[2]),
+            "companies": int(row[3]), "top_companies": top, "updated_at": str(row[5] or "")}
 
 
 def read(reference) -> dict[str, Any]:
@@ -101,4 +158,5 @@ def read(reference) -> dict[str, Any]:
             "updated_at": max(stamps) if stamps else None}
 
 
-__all__ = ["SCHEMA", "ensure_table", "read", "refresh"]
+__all__ = ["LEADERS_KEPT", "SCHEMA", "companies_in_specialty", "ensure_table", "one", "read",
+           "refresh"]
