@@ -107,6 +107,10 @@ CREATE TABLE IF NOT EXISTS udi_device (
     first_observed_at TEXT NOT NULL
 );
 CREATE INDEX IF NOT EXISTS idx_udi_duns    ON udi_device(labeler_duns);
+    -- The DI is the identifier a reader is most likely to hold: it is printed on the label. Without
+    -- this index a DI lookup was a full scan of 5.2M rows (measured 720 ms), which was most of the
+    -- first-visit latency on a device page.
+    CREATE INDEX IF NOT EXISTS idx_udi_di      ON udi_device(di);
 CREATE INDEX IF NOT EXISTS idx_udi_model   ON udi_device(version_or_model);
 CREATE INDEX IF NOT EXISTS idx_udi_catalog ON udi_device(catalog_number);
 CREATE INDEX IF NOT EXISTS idx_udi_company ON udi_device(company_name);

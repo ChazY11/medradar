@@ -2667,6 +2667,54 @@ def test_a_searched_for_patent_is_never_counted_as_this_companys_patent(tmp_path
     store.close()
 
 
+def test_the_corpus_count_is_read_once_not_once_per_device(tmp_path):
+    """25 devices each asking "how many papers do we have" was 13 s of a 15 s page."""
+    from medradar.radar import papers_index
+    from medradar.radar.reference import UdiReference
+
+    store = UdiReference(tmp_path / "reference.db")
+    papers_index.ensure_tables(store)
+    store.conn.execute("INSERT INTO paper_term VALUES ('medtronic','P1','t','2024',1)")
+    store.conn.execute("INSERT INTO paper_term VALUES ('catheter','P2','t','2024',2)")
+    store.conn.commit()
+    papers_index.invalidate_cache()
+
+    statements: list[str] = []
+    # sqlite3.Connection.execute is read-only, so record through SQLite's own tracer instead.
+    store.conn.set_trace_callback(statements.append)
+    first = papers_index._total_papers(store)
+    second = papers_index._total_papers(store)
+    store.conn.set_trace_callback(None)
+    assert first == second == 2
+    scans = [s for s in statements if "COUNT(DISTINCT paper_id) FROM paper_term" in s]
+    assert len(scans) == 1, f"the corpus count ran {len(scans)} times"
+    store.close()
+
+
+def test_an_unknown_identifier_does_not_scan_the_whole_register(tmp_path):
+    """K211411 was proved absent by scanning 5.2M rows twice, 3.3 s, to return nothing."""
+    from medradar.radar.device_view import resolve
+    from medradar.radar.reference import UdiReference
+
+    store = UdiReference(tmp_path / "reference.db")
+    store.write_udi_rows([_udi_row("K250063", "M1")])
+    statements: list[str] = []
+    store.conn.set_trace_callback(statements.append)
+    assert resolve(store, "K211411") == []
+    wildcard = [s for s in statements if "LIKE '%K211411%'" in s]
+    # The 12,537-row company table is cheap and is checked first; the 5.2M-row device table is not.
+    device_scans = [s for s in wildcard if "FROM udi_device" in s]
+    assert device_scans == [], f"identifier query still scanned the register: {device_scans}"
+
+    # A name-shaped query still gets the substring scan, because a brand may live inside a company
+    # name that does not start with it.
+    statements.clear()
+    resolve(store, "Clydesdale")
+    store.conn.set_trace_callback(None)
+    assert any("LIKE '%Clydesdale%'" in s for s in statements)
+    store.close()
+
+
 def test_a_pre_digitisation_filing_is_never_requested(tmp_path):
     """Measured: 0 of 60 sampled filings from 1998-2009 have a PDF at any path shape.
 

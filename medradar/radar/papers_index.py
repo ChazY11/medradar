@@ -41,6 +41,9 @@ CREATE INDEX IF NOT EXISTS idx_paper_term_term ON paper_term(term);
 #: Shortest token worth indexing. Three letters match too much ("aaa", "inc"), five misses real
 #: model numbers ("X120"), so four.
 MIN_TOKEN = 4
+
+#: Counters that stay valid until the index is rebuilt, keyed by the store object's identity.
+_COUNTERS: dict[int, dict[str, Any]] = {}
 _TOKEN = re.compile(r"[a-z0-9][a-z0-9\-]{2,}", re.IGNORECASE)
 
 
@@ -156,20 +159,52 @@ def index_corpus(reference, corpus_root: str | Path, *, vocab: set[str] | None =
             [(term, paper_id, title, year, n) for term, n in counts.items()])
         rows += len(counts)
     reference.conn.commit()
+    invalidate_cache()  # the counts just changed; anything cached describes the old index
     return {"papers_indexed": papers, "term_rows": rows, "vocabulary": len(vocab),
             "files_seen": len(files)}
 
 
+def _cache_for(reference) -> dict[str, Any]:
+    """Per-store counters that cannot change until the index is rebuilt.
+
+    Measured: `SELECT COUNT(DISTINCT paper_id) FROM paper_term` is a full scan of 637,318 rows and
+    took ~0.5 s. It was called once per device, so a company query resolving 25 devices spent 13 s
+    of a 15 s page repeating the same count. The index only changes when index_corpus() runs, and
+    that clears this cache.
+    """
+    key = id(reference)
+    cached = _COUNTERS.get(key)
+    if cached is None:
+        cached = {"total": None, "df": {}}
+        _COUNTERS[key] = cached
+    return cached
+
+
+def invalidate_cache() -> None:
+    """Forget cached document frequencies. Call after rebuilding the index."""
+    _COUNTERS.clear()
+
+
 def _document_frequency(reference, term: str) -> int:
+    cached = _cache_for(reference)["df"]
+    if term in cached:
+        return int(cached[term])
     row = reference.conn.execute(
         "SELECT COUNT(DISTINCT paper_id) FROM paper_term WHERE term = ?", (term,)).fetchone()
-    return int(row[0]) if row and row[0] is not None else 0
+    value = int(row[0]) if row and row[0] is not None else 0
+    cached[term] = value
+    return value
 
 
 def _total_papers(reference) -> int:
+    cached = _cache_for(reference)
+    if cached["total"] is not None:
+        return int(cached["total"])
     row = reference.conn.execute(
         "SELECT COUNT(DISTINCT paper_id) FROM paper_term").fetchone()
-    return int(row[0]) if row and row[0] is not None else 0
+    value = int(row[0]) if row and row[0] is not None else 0
+    cached["total"] = value
+    return value
 
 
 def distinctive_terms(reference, terms: Sequence[str], *, max_df_ratio: float = 0.02

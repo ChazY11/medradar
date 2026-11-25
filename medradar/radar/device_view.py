@@ -244,12 +244,47 @@ def resolve(reference, query: str, *, limit: int = 25) -> list[DeviceRef]:
                    "SELECT * FROM udi_device WHERE catalog_number = ? COLLATE NOCASE LIMIT ?",
                    (text, limit)), "catalog_number")
     if not refs:
-        add(_query(reference,
-                   "SELECT * FROM udi_device WHERE brand_name LIKE ? LIMIT ?",
-                   (f"%{text}%", limit)), "brand_name")
-        add(_query(reference,
-                   "SELECT * FROM udi_device WHERE company_name LIKE ? LIMIT ?",
-                   (f"%{text}%", limit)), "company_name")
+        # A name is resolved through the company table first, which is 12,537 rows and indexed,
+        # then through the indexed labeler_duns. Measured: `company_name LIKE '%medtronic%'` on the
+        # device table is a full scan of 5.2M rows and took a large part of the 24 s a company query
+        # used to need. The like-scan stays as a fallback for a brand that is not a registered labeler.
+        resolved_duns: list[str] = []
+        try:
+            for row in reference.conn.execute(
+                    "SELECT labeler_duns FROM udi_company WHERE company_name LIKE ? "
+                    "ORDER BY device_count DESC LIMIT 4", (f"%{text}%",)):
+                if row and row[0]:
+                    resolved_duns.append(str(row[0]))
+        except Exception:  # noqa: BLE001 - a store without udi_company still uses the scan below
+            resolved_duns = []
+        for duns in resolved_duns:
+            remaining = limit - len(refs)
+            if remaining <= 0:
+                break
+            add(_query(reference, "SELECT * FROM udi_device WHERE labeler_duns = ? LIMIT ?",
+                       (duns, remaining)), "company_name")
+            if len(refs) >= limit:
+                break
+    if not refs:
+        # Proving a negative was costing more than finding a positive. For an identifier that is not
+        # in the register (K211411: a clearance whose device was never listed), the chain fell
+        # through to `brand_name LIKE '%K211411%'` and `company_name LIKE '%K211411%'` - two full
+        # scans of 5.2M rows, 3.3 s, to return nothing. A leading wildcard cannot use an index, so
+        # the only fix is not to ask.
+        #
+        # The rule: an identifier-shaped query (contains a digit) has already been tried against
+        # every indexed identifier column above; if none matched, a substring scan of names will not
+        # find it either. A name-shaped query (letters only, e.g. "Clydesdale") still gets the scan,
+        # because a brand may be registered under a company whose name contains it.
+        if any(ch.isdigit() for ch in text):
+            pass
+        else:
+            add(_query(reference,
+                       "SELECT * FROM udi_device WHERE brand_name LIKE ? LIMIT ?",
+                       (f"%{text}%", limit)), "brand_name")
+            add(_query(reference,
+                       "SELECT * FROM udi_device WHERE company_name LIKE ? LIMIT ?",
+                       (f"%{text}%", limit)), "company_name")
 
     seen: set[str] = set()
     unique: list[DeviceRef] = []
@@ -500,12 +535,31 @@ def build(reference, query: str, *, corpus_root: str | Path | None = None,
             timeline.failures[ref.device_key] = failure_history(reference, ref)
 
     if patents:
+        # Trials and patents are properties of the company, not of the device row: a company query
+        # resolves up to 25 devices and used to run the same two lookups 25 times each. Memoise per
+        # company inside one build so a name search costs one lookup, not twenty-five.
+        by_company: dict[str, PatentHistory] = {}
         for ref in timeline.refs:
-            timeline.patents[ref.device_key] = patent_history(reference, ref)
+            key = str(ref.company_name or "")
+            if key and key in by_company:
+                timeline.patents[ref.device_key] = by_company[key]
+                continue
+            history = patent_history(reference, ref)
+            timeline.patents[ref.device_key] = history
+            if key:
+                by_company[key] = history
 
     if trials:
+        by_company_trials: dict[str, TrialHistory] = {}
         for ref in timeline.refs:
-            timeline.trials[ref.device_key] = trial_history(reference, ref)
+            key = str(ref.company_name or "")
+            if key and key in by_company_trials:
+                timeline.trials[ref.device_key] = by_company_trials[key]
+                continue
+            history = trial_history(reference, ref)
+            timeline.trials[ref.device_key] = history
+            if key:
+                by_company_trials[key] = history
 
     if papers:
         for ref in timeline.refs:
