@@ -3229,6 +3229,58 @@ def test_every_page_route_passes_the_gate_allowlist():
     assert missing == [], f"these pages would 404 for everyone: {missing}"
 
 
+def test_comparison_shows_the_areas_side_by_side_and_exports_them(tmp_path):
+    """Where two companies both register devices is where they compete - on the page and in the file."""
+    from medradar.radar.export import compare_csv, compare_markdown
+    from medradar.radar.pages import compare_page
+    from medradar.radar.product_codes import store_classes
+    from medradar.radar.reference import UdiReference
+    from medradar.radar.pages import _company_data
+
+    store = UdiReference(tmp_path / "reference.db")
+    rows = []
+    # The two ARUM rows must share a DUNS: a company query resolves the name to one labeler and
+    # then reads that labeler's devices, which is the behaviour being compared here.
+    for index, (company, code, duns) in enumerate([("ARUM DENTISTRY", "DZE", "5550"),
+                                                   ("ARUM DENTISTRY", "NHA", "5550"),
+                                                   ("ACME SPINE", "NKB", "5551")]):
+        rows.append({
+            "identifiers": [{"id": f"08800{index:04d}00", "type": "Primary",
+                             "issuing_agency": "GS1"}],
+            "brand_name": f"Brand {index}", "company_name": company,
+            "labeler_duns_number": duns, "version_or_model_number": f"M{index}",
+            "device_description": "d", "product_codes": [{"code": code}],
+            "catalog_number": "", "publish_date": "2024-01-01"})
+    store.write_udi_rows(rows)
+    store_classes(store, [
+        {"product_code": "DZE", "device_name": "Endosseous Dental Implant",
+         "medical_specialty": "Dental", "regulation_number": "872.3640", "device_class": "2"},
+        {"product_code": "NHA", "device_name": "Abutment, Implant",
+         "medical_specialty": "Dental", "regulation_number": "872.3630", "device_class": "2"},
+        {"product_code": "NKB", "device_name": "Pedicle Screw System",
+         "medical_specialty": "Orthopedic", "regulation_number": "888.3070", "device_class": "2"},
+    ], at="2026-11-26T00:00:00Z")
+
+    data = [_company_data(store, "ARUM", snapshot={}),
+            _company_data(store, "ACME SPINE", snapshot={})]
+    page = compare_page(companies=data)
+    assert "技术领域对比" in page
+    assert "这是\"注册了什么\"，不是\"发表了什么\"" in page.replace("「", '"').replace("」", '"')
+    # A specialty one company does not hold shows an em dash, not a zero that reads as "none made".
+    assert "—" in page
+
+    markdown = compare_markdown(data)
+    assert "## 技术领域（按 FDA 产品码分类）" in markdown
+    assert "| Dental | 2 |  |" in markdown or "| Dental | 2 |" in markdown
+
+    csv_text = compare_csv(data)
+    header = csv_text.splitlines()[0]
+    assert "specialties" in header
+    arum_row = next(line for line in csv_text.splitlines() if line.startswith("ARUM"))
+    assert "Dental:2" in arum_row
+    store.close()
+
+
 def test_a_pre_digitisation_filing_is_never_requested(tmp_path):
     """Measured: 0 of 60 sampled filings from 1998-2009 have a PDF at any path shape.
 

@@ -176,6 +176,26 @@ def compare_markdown(companies: Sequence[Mapping[str, Any]]) -> str:
     codes = [set(c.get("product_codes") or []) for c in found]
     shared = set.intersection(*codes) if codes else set()
     union = set.union(*codes) if codes else set()
+    # Technology areas, so the exported file says what the page says.
+    areas = [{item["specialty"]: int(item["codes"])
+              for item in (c.get("specialties") or [])} for c in found]
+    names: dict[str, int] = {}
+    for mapping in areas:
+        for name, count in mapping.items():
+            names[name] = names.get(name, 0) + count
+    if names:
+        lines.append("")
+        lines.append("## 技术领域（按 FDA 产品码分类）")
+        lines.append("")
+        lines.append("> 数字是落在该领域的产品码数量，空表示没有。这是「注册了什么」，"
+                     "不是「发表了什么」，也不代表技术领先。")
+        lines.append("")
+        lines.append("| 技术领域 | " + " | ".join(str(c.get("company_name")) for c in found) + " |")
+        lines.append("| --- |" + " ---: |" * len(found))
+        for name in sorted(names, key=lambda key: -names[key])[:12]:
+            cells = " | ".join(f"{mapping.get(name):,}" if mapping.get(name) else ""
+                               for mapping in areas)
+            lines.append(f"| {name} | {cells} |")
     lines.append("")
     lines.append(f"共同覆盖的产品码 {len(shared)} 个（合计 {len(union)} 个，"
                  f"重合度 {(100.0 * len(shared) / len(union)) if union else 0:.0f}%）："
@@ -189,7 +209,7 @@ def compare_csv(companies: Sequence[Mapping[str, Any]]) -> str:
     buffer = io.StringIO()
     writer = csv.writer(buffer, lineterminator="\n")
     writer.writerow(["company", "duns", "devices", "clearances", "failures", "trials",
-                     "patents", "papers", "product_codes", "topic_gap"])
+                     "patents", "papers", "product_codes", "specialties", "topic_gap"])
     for item in companies:
         if not item.get("found"):
             continue
@@ -197,7 +217,11 @@ def compare_csv(companies: Sequence[Mapping[str, Any]]) -> str:
             item.get("company_name") or item.get("query"), item.get("labeler_duns") or "",
             item.get("devices") or 0, item.get("clearances") or 0, item.get("failures") or 0,
             item.get("trials") or 0, item.get("patents") or 0, item.get("papers") or 0,
-            ";".join(item.get("product_codes") or []), item.get("topic_gap") or "",
+            ";".join(item.get("product_codes") or []),
+            # "Dental:8;Orthopedic:2" - the count matters, not only the name.
+            ";".join(f"{row['specialty']}:{row['codes']}"
+                     for row in (item.get("specialties") or [])),
+            item.get("topic_gap") or "",
         ])
     return buffer.getvalue()
 

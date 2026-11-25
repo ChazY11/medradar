@@ -958,6 +958,29 @@ def compare_page(*, companies: Sequence[Mapping[str, Any]]) -> str:
     table = (f'<div class="card"><table><thead><tr><th>指标</th>{header}</tr></thead>'
              f'<tbody>{"".join(rows)}</tbody></table></div>')
 
+    # Technology areas side by side: where two companies both register devices is where they compete.
+    # A row is a specialty, a cell is how many of that company's product codes fall in it. This uses
+    # the FDA classification, so it is "registered in", not "leads in" - the note says so.
+    specialty_sets = [{item["specialty"]: int(item["codes"])
+                       for item in (company.get("specialties") or [])} for company in found]
+    area_names: dict[str, int] = {}
+    for mapping in specialty_sets:
+        for name, count in mapping.items():
+            area_names[name] = area_names.get(name, 0) + count
+    area_rows = []
+    for name in sorted(area_names, key=lambda key: -area_names[key])[:12]:
+        cells = "".join(
+            f'<td class="num{" lead" if mapping.get(name) else ""}">'
+            f'{n(mapping.get(name)) if mapping.get(name) else "—"}</td>'
+            for mapping in specialty_sets)
+        area_rows.append(f"<tr><td>{esc(name)}</td>{cells}</tr>")
+    area_table = (f'<div class="card"><h4>技术领域（按 FDA 产品码分类）</h4>'
+                  f'<p class="muted small">数字是该公司落在该领域的产品码数量；— 表示没有产品码落在那里。'
+                  f'这是"注册了什么"，不是"发表了什么"，也不代表技术领先。</p>'
+                  f'<table><thead><tr><th>技术领域</th>{header}</tr></thead>'
+                  f'<tbody>{"".join(area_rows)}</tbody></table></div>'
+                  if area_rows else gap_note("no_classified_product_code"))
+
     # Product-code overlap: the codes two companies both hold are where they actually compete.
     codes = [set(item.get("product_codes") or []) for item in found]
     shared = set.intersection(*codes) if codes else set()
@@ -997,6 +1020,8 @@ def compare_page(*, companies: Sequence[Mapping[str, Any]]) -> str:
 {missing_html}
 <h2>规模与产出</h2>
 {table}
+<h2>技术领域对比</h2>
+{area_table}
 <h2>竞争面</h2>
 {overlap}
 <h2>各自的品牌</h2>
