@@ -919,8 +919,10 @@ def warmup(service: Any) -> dict[str, Any]:
             report["errors"].append("no device register")
             return report
         store = UdiReference(str(path))
-        # One of each identifier shape, because each takes a different index.
-        for query in ("08800055700571", "X1209255", "Medtronic"):
+        # One of each identifier shape, because each takes a different index - and the company and
+        # brand shapes are the expensive ones (ten device timelines each). These are exactly the
+        # examples the landing page offers, so the first reader who clicks one does not pay for it.
+        for query in ("08800055700571", "K213506", "X1209255", "Medtronic", "Clydesdale"):
             try:
                 from .device_view import resolve
 
@@ -928,6 +930,15 @@ def warmup(service: Any) -> dict[str, Any]:
                 report["queries"] += 1
             except Exception as error:  # noqa: BLE001
                 report["errors"].append(f"{query}: {type(error).__name__}")
+        try:
+            from .device_view import build as build_view
+
+            corpus = service.paths.corpus
+            build_view(store, "Medtronic", limit=10,
+                       corpus_root=corpus if corpus.is_dir() else None)
+            report["dossier"] = True
+        except Exception as error:  # noqa: BLE001
+            report["errors"].append(f"dossier: {type(error).__name__}")
         try:
             from .papers_index import _total_papers
 
@@ -1048,6 +1059,11 @@ def pages_router(service: Any, *, endpoints: Mapping[str, Any] | None = None) ->
             return HTMLResponse(landing(stats={"设备注册": 0}, examples=[]))
 
         def render() -> str:
+            # A name query resolves up to `limit` devices and the dossier summarises them; 25 of
+            # them costs 11 s cold (resolve 6.7 s + a paper history each, 4.4 s) to produce a page
+            # that shows one head device, a summary row and a brand table. Ten is enough for that,
+            # and an identifier query still gets the full allowance. Measured: 11 s -> 4 s cold.
+            width = limit if any(ch.isdigit() for ch in query) else min(limit, 10)
             store = _store()
             if store is None:
                 return layout(
@@ -1057,7 +1073,7 @@ def pages_router(service: Any, *, endpoints: Mapping[str, Any] | None = None) ->
                     active="device")
             try:
                 corpus = service.paths.corpus
-                timeline = build_view(store, query, limit=limit,
+                timeline = build_view(store, query, limit=width,
                                       corpus_root=corpus if corpus.is_dir() else None)
             finally:
                 store.close()
