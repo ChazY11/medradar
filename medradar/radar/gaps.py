@@ -51,6 +51,7 @@ GAP_TEXT: dict[str, str] = {
     "no_topic_evidence": "图谱里还没有任何主题证据",
     # --- deployment
     "device_index_absent": "这台部署没有设备库",
+    "product_code_not_classified": "这个产品码在 FDA 分类库里没有记录（可能是已退市或区域性代码）",
     "product_classification_absent": "产品码分类表还没有导入（运行 tools/product_classes.py）",
     "no_classified_product_code": "这家公司的产品码都还没分类，无法归入技术领域",
     "no_company_in_this_specialty": "这个技术领域里没有登记了设备数的公司",

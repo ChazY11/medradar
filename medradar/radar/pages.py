@@ -315,6 +315,34 @@ def _clearance_block(number: str, summary: Any, specs: Mapping[str, Any] | None)
 </div>"""
 
 
+def _area_line(timeline: Any) -> str:
+    """One sentence saying what kind of device this is, in FDA's own classification.
+
+    Every other section describes what happened to the device. This one says what it is, which a
+    reader needs first and which the page did not have.
+    """
+    areas = getattr(timeline, "areas", None) or {}
+    if not areas:
+        return ""
+    parts = []
+    seen: set[str] = set()
+    for code, meta in areas.items():
+        specialty = str(meta.get("medical_specialty") or "").strip() or "未分类"
+        name = str(meta.get("device_name") or "").strip()
+        regulation = str(meta.get("regulation_number") or "").strip()
+        detail = " · ".join(piece for piece in (name, ("21 CFR " + regulation) if regulation else "")
+                            if piece)
+        label = f'<a href="/area?name={esc(specialty)}">{esc(specialty)}</a>'
+        if name:
+            label += f'<span class="muted small"> · {esc(detail)}</span>'
+        if specialty in seen:
+            label += f'<span class="muted small">（{esc(code)}）</span>'
+        seen.add(specialty)
+        parts.append(f'<li>{label}</li>')
+    return ('<p class="small"><b>器械类别（FDA 产品码分类）：</b></p>'
+            f'<ul class="small" style="margin:4px 0 0 18px">{"".join(parts)}</ul>')
+
+
 def device_dossier(timeline: Any, *, query: str) -> str:
     refs = timeline.refs
     if not refs:
@@ -443,6 +471,7 @@ def device_dossier(timeline: Any, *, query: str) -> str:
 <p class="lede"><a href="/company?q={esc(head.company_name or '')}">{esc(head.company_name or "厂商未知")}</a>
 {('· 型号 ' + esc(head.version_or_model)) if head.version_or_model else ''}</p>
 <div class="chips">{_identifier_chips(head)}</div>
+{_area_line(timeline)}
 <div class="grid" style="margin-top:22px">{summary_cards}</div>
 
 <h2>1 · 批文与规格</h2>

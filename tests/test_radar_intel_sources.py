@@ -3382,6 +3382,52 @@ def test_a_company_name_with_a_comma_is_not_two_companies(tmp_path):
     store.close()
 
 
+def test_the_dossier_says_what_kind_of_device_it_is(tmp_path):
+    """Clearances, failures, trials and papers - and nowhere did it say what the thing is."""
+    from medradar.radar.device_view import build
+    from medradar.radar.pages import device_dossier
+    from medradar.radar.product_codes import store_classes
+
+    store = _view_store(tmp_path)
+    row = _udi_row("K250063", "M1")
+    row["product_codes"] = [{"code": "NKB"}, {"code": "MAX"}]
+    store.write_udi_rows([row])
+    store_classes(store, [
+        {"product_code": "NKB", "device_name": "Thoracolumbosacral Pedicle Screw System",
+         "medical_specialty": "Orthopedic", "regulation_number": "888.3070", "device_class": "2"},
+        {"product_code": "MAX", "device_name": "Intervertebral Fusion Device With Bone Graft",
+         "medical_specialty": "Orthopedic", "regulation_number": "888.3080", "device_class": "2"},
+    ], at="2026-11-26T00:00:00Z")
+
+    timeline = build(store, "M1", corpus_root=_corpus(tmp_path))
+    assert timeline.areas, "the classification was not attached to the timeline"
+    assert timeline.areas["NKB"]["medical_specialty"] == "Orthopedic"
+
+    page = device_dossier(timeline, query="M1")
+    assert "器械类别（FDA 产品码分类）" in page
+    assert "Thoracolumbosacral Pedicle Screw System" in page
+    assert "21 CFR 888.3070" in page
+    # The specialty links through to the field it belongs to.
+    assert 'href="/area?name=Orthopedic"' in page
+    store.close()
+
+
+def test_an_unclassified_product_code_is_a_stated_gap(tmp_path):
+    from medradar.radar.device_view import build
+    from medradar.radar.product_codes import store_classes
+
+    store = _view_store(tmp_path)
+    row = _udi_row("K250063", "M1")
+    row["product_codes"] = [{"code": "ZZZ"}]
+    store.write_udi_rows([row])
+    store_classes(store, [{"product_code": "QAA", "device_name": "Something else",
+                           "medical_specialty": "Dental", "regulation_number": "872.1",
+                           "device_class": "1"}], at="2026-11-26T00:00:00Z")
+    timeline = build(store, "M1", corpus_root=_corpus(tmp_path))
+    assert "product_code_not_classified" in timeline.gaps
+    store.close()
+
+
 def test_a_pre_digitisation_filing_is_never_requested(tmp_path):
     """Measured: 0 of 60 sampled filings from 1998-2009 have a PDF at any path shape.
 

@@ -195,6 +195,10 @@ class DeviceTimeline:
     trials: dict[str, TrialHistory] = field(default_factory=dict)
     papers: dict[str, PaperHistory] = field(default_factory=dict)
     specs: dict[str, dict[str, Any]] = field(default_factory=dict)
+    #: Product code -> FDA classification for this device, and the specialties those codes fall in.
+    #: A dossier could describe clearances, failures, trials and papers without ever saying what kind
+    #: of device it is looking at; this is that missing sentence.
+    areas: dict[str, dict[str, str]] = field(default_factory=dict)
     gaps: list[str] = field(default_factory=list)
 
     def to_dict(self) -> dict[str, Any]:
@@ -207,6 +211,7 @@ class DeviceTimeline:
             "trials": {key: value.to_dict() for key, value in self.trials.items()},
             "papers": {key: value.to_dict() for key, value in self.papers.items()},
             "specs": self.specs,
+            "areas": self.areas,
             "gaps": self.gaps,
         }
 
@@ -597,6 +602,21 @@ def build(reference, query: str, *, corpus_root: str | Path | None = None,
         timeline.gaps.append("no_clearance_linked_to_this_device")
     if not any(summary.sections for summary in timeline.clearances.values()):
         timeline.gaps.append("no_readable_summary_for_any_clearance")
+
+    # What kind of device this is, in FDA's own classification. An area is a claim about the
+    # register, not about the literature, so an unclassified code is a stated gap rather than a
+    # silent omission.
+    codes = [str(code).upper() for ref in timeline.refs[:1] for code in (ref.product_codes or [])]
+    if codes:
+        from .product_codes import classes_for_codes, table_present as classification_present
+
+        if classification_present(reference):
+            timeline.areas = classes_for_codes(reference, codes)
+            missing = [code for code in codes if code not in timeline.areas]
+            if missing:
+                timeline.gaps.append("product_code_not_classified")
+        else:
+            timeline.gaps.append("product_classification_absent")
     # The patent and trial gaps are reported from the data, not asserted: a deployment with the
     # tables imported has answers, and one without them says which source is missing.
     if patents and timeline.patents:
