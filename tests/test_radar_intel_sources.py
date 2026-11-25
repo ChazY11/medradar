@@ -3622,6 +3622,51 @@ def test_the_radar_page_is_readable_without_javascript_and_marks_backfill_as_his
     assert "还没有任何变化记录" in empty
 
 
+def test_a_company_can_be_sent_onward_with_its_qualifiers_attached(tmp_path):
+    """The company page is the thing people forward, and it could only be screenshotted."""
+    from medradar.radar.export import company_csv, company_markdown
+    from medradar.radar.pages import _company_data, company_page
+    from medradar.radar.product_codes import store_classes
+    from medradar.radar.reference import UdiReference
+
+    store = UdiReference(tmp_path / "reference.db")
+    rows = [{
+        "identifiers": [{"id": f"08800{i:04d}00", "type": "Primary", "issuing_agency": "GS1"}],
+        "brand_name": f"ARUM NB {i}", "company_name": "ARUM DENTISTRY Co., Ltd.",
+        "labeler_duns_number": "557821945", "version_or_model_number": f"M{i}",
+        "device_description": "d", "product_codes": [{"code": "DZE"}],
+        "catalog_number": "", "publish_date": "2024-01-01"} for i in range(2)]
+    store.write_udi_rows(rows)
+    store_classes(store, [{"product_code": "DZE", "device_name": "Endosseous Dental Implant",
+                           "medical_specialty": "Dental", "regulation_number": "872.3640",
+                           "device_class": "2"}], at="2026-11-26T00:00:00Z")
+
+    data = _company_data(store, "ARUM", snapshot={})
+    markdown = company_markdown(data)
+    assert "ARUM DENTISTRY" in markdown
+    # Every weaker claim keeps its label in the file, not only on the page.
+    assert "这是「注册了什么」，不是「发表了什么」" in markdown
+    assert "| 相关论文 |" in markdown
+    assert "## 技术领域（按 FDA 产品码分类）" in markdown
+    assert "| Dental |" in markdown
+    assert "FDA UDI 注册表" in markdown
+
+    # With papers present the label is the company-level one, never a bare count.
+    with_papers = dict(data, papers=2)
+    assert "公司级匹配" in company_markdown(with_papers)
+    # And a group-level trial match says so.
+    assert "按集团名匹配" in company_markdown(dict(data, trials=3, trial_method="group"))
+
+    csv_text = company_csv(data)
+    header = csv_text.splitlines()[0]
+    assert "specialties" in header and "trial_method" in header
+    assert "Dental:1" in csv_text.splitlines()[1]
+
+    page = company_page(data=data)
+    assert f'kind=company&format=md&q=' in page
+    store.close()
+
+
 def test_a_pre_digitisation_filing_is_never_requested(tmp_path):
     """Measured: 0 of 60 sampled filings from 1998-2009 have a PDF at any path shape.
 

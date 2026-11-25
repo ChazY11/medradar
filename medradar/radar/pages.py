@@ -840,6 +840,8 @@ def company_page(*, data: Mapping[str, Any]) -> str:
 <p class="small muted"><a href="/">← 重新查询</a></p>
 <h1>{esc(name)}</h1><p class="lede">{esc(data.get("matched_by") or "")} · DUNS {esc(data.get("labeler_duns") or "—")}
  · <a href="/compare?q={esc(name)}">与其他公司对比</a></p>
+<p class="small muted">导出：<a href="/download?kind=company&format=md&q={esc(name)}">Markdown</a>
+ · <a href="/download?kind=company&format=csv&q={esc(name)}">CSV</a></p>
 <div class="grid">{stats}</div>
 
 <h2>1 · 它注册了哪些器械</h2><p class="muted small">来源：FDA UDI 设备注册表。点击品牌进入设备档案。</p>
@@ -1652,7 +1654,7 @@ def pages_router(service: Any, *, endpoints: Mapping[str, Any] | None = None) ->
     @router.get("/download")
     def download(q: str = Query("", max_length=240),
                  name: str = Query("", max_length=120),
-                 kind: str = Query("device", pattern="^(device|compare|areas|area)$"),
+                 kind: str = Query("device", pattern="^(device|compare|areas|area|company)$"),
                  format: str = Query("md", pattern="^(md|csv|json)$")) -> Any:
         """One dossier, one comparison, the whole field map, or one specialty - as a file.
 
@@ -1666,7 +1668,7 @@ def pages_router(service: Any, *, endpoints: Mapping[str, Any] | None = None) ->
 
         from . import export as export_mod
 
-        if kind in {"device", "compare"} and not q:
+        if kind in {"device", "compare", "company"} and not q:
             return HTMLResponse(layout(title="缺少查询词 · MedRadar",
                                        body=gap_note("no_data"), active="device"),
                                 status_code=400)
@@ -1705,6 +1707,16 @@ def pages_router(service: Any, *, endpoints: Mapping[str, Any] | None = None) ->
                     body = export_mod.area_markdown(name, summary, companies)
                     media, suffix = "text/markdown; charset=utf-8", "md"
                 stem = f"medradar-area-{_slug(name)}"
+            elif kind == "company":
+                snapshot = _snapshot()
+                data = _company_data(store, q, snapshot=snapshot)
+                if format == "csv":
+                    body = export_mod.company_csv(data)
+                    media, suffix = "text/csv; charset=utf-8", "csv"
+                else:
+                    body = export_mod.company_markdown(data)
+                    media, suffix = "text/markdown; charset=utf-8", "md"
+                stem = f"medradar-company-{_slug(str(data.get('company_name') or q))}"
             elif kind == "device":
                 corpus = service.paths.corpus
                 timeline = build_view(store, q, limit=25,

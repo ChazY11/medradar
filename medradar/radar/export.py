@@ -161,6 +161,118 @@ def device_csv(timeline: Any, *, query: str) -> str:
     return buffer.getvalue()
 
 
+def company_markdown(data: Mapping[str, Any]) -> str:
+    """One company as a file: what it holds, where it works, and which claims are weaker.
+
+    A company page is the thing people forward — "what does this company look like" — and until now it
+    could only be screenshotted, which carries no source and cannot be checked.
+    """
+    name = str(data.get("company_name") or data.get("query") or "")
+    lines = [f"# {name}", "", f"> 导出于 {_stamp()}。{SOURCE_LINE}", ""]
+    if not data.get("found"):
+        lines.append(_gap("company_not_in_register"))
+        return "\n".join(lines)
+
+    lines.append(f"- 查询词：{data.get('query')}")
+    lines.append(f"- 匹配方式：{data.get('matched_by')}")
+    if data.get("labeler_duns"):
+        lines.append(f"- DUNS：{data.get('labeler_duns')}")
+    lines.append("")
+
+    lines.append("## 规模与产出")
+    lines.append("")
+    lines.append("| 指标 | 数量 | 说明 |")
+    lines.append("| --- | ---: | --- |")
+    lines.append(f"| 注册设备 | {int(data.get('devices') or 0):,} | FDA UDI 注册表 |")
+    lines.append(f"| 批文 | {int(data.get('clearances') or 0):,} | 已关联的 510(k) |")
+    failures = int(data.get("failures") or 0)
+    lines.append(f"| 失效记录 | {failures:,} | MAUDE，按产品码与品牌匹配 |")
+    trials = int(data.get("trials") or 0)
+    trial_note = ("按集团名匹配，不等于这个法人实体" if data.get("trial_method") == "group"
+                  else "按申办方精确匹配")
+    lines.append(f"| 在研试验 | {trials:,} | {trial_note} |")
+    patents = int(data.get("patents") or 0)
+    patent_note = ("含同一申请人的其他写法" if data.get("patent_variants")
+                   else "申请人字段精确匹配")
+    lines.append(f"| 专利 | {patents:,} | {patent_note} |")
+    papers = int(data.get("papers") or 0)
+    lines.append(f"| 相关论文 | {papers:,} | "
+                 f"{'公司级匹配：论文提到公司，不等于研究某台设备' if papers else '无匹配'} |")
+    lines.append("")
+
+    specialties = data.get("specialties") or []
+    if specialties:
+        lines.append("## 技术领域（按 FDA 产品码分类）")
+        lines.append("")
+        lines.append("> 这是「注册了什么」，不是「发表了什么」，也不代表技术领先。")
+        lines.append("")
+        lines.append("| 技术领域 | 产品码数 | 代表性分类 |")
+        lines.append("| --- | ---: | --- |")
+        examples = data.get("specialty_examples") or {}
+        for item in specialties:
+            names = "；".join(examples.get(item["specialty"], [])[:3])
+            lines.append(f"| {item['specialty']} | {int(item.get('codes') or 0):,} | {names} |")
+        used, total = data.get("area_codes_used"), data.get("area_codes_total")
+        if used is not None and total and used < total:
+            lines.append("")
+            lines.append(f"> 按该公司最常见的 {used:,} 个产品码统计（共 {total:,} 个），"
+                         f"这是分布，不是完整清单。")
+        lines.append("")
+    elif data.get("area_gap"):
+        lines.append(f"> {_gap(data.get('area_gap'))}")
+        lines.append("")
+
+    brands = data.get("brands") or []
+    if brands:
+        lines.append("## 品牌")
+        lines.append("")
+        lines.append("| 品牌 | 型号数 |")
+        lines.append("| --- | ---: |")
+        for item in brands[:40]:
+            lines.append(f"| {item.get('brand')} | {int(item.get('models') or 0):,} |")
+        if len(brands) > 40:
+            lines.append(f"| … | 共 {len(brands):,} 个品牌 |")
+        lines.append("")
+
+    topics = data.get("topics") or []
+    if topics:
+        lines.append("## 科技地图里的方向")
+        lines.append("")
+        for item in topics:
+            evidence = item.get("evidence_count")
+            lines.append(f"- {item.get('topic')}"
+                         + (f"（{evidence} 条证据）" if evidence else "")
+                         + f" · {item.get('confirmation') or 'TOPIC_RELATED'}")
+        lines.append("")
+    elif data.get("topic_gap"):
+        lines.append(f"> {_gap(data.get('topic_gap'))}")
+        lines.append("")
+
+    return "\n".join(lines)
+
+
+def company_csv(data: Mapping[str, Any]) -> str:
+    """One row per company, with the areas flattened so a spreadsheet can pivot on them."""
+    buffer = io.StringIO()
+    writer = csv.writer(buffer, lineterminator="\n")
+    writer.writerow(["company", "duns", "matched_by", "devices", "clearances", "failures",
+                     "trials", "trial_method", "patents", "papers", "brands", "specialties",
+                     "topic_gap"])
+    if not data.get("found"):
+        return buffer.getvalue()
+    writer.writerow([
+        data.get("company_name") or data.get("query"), data.get("labeler_duns") or "",
+        data.get("matched_by") or "", int(data.get("devices") or 0),
+        int(data.get("clearances") or 0), int(data.get("failures") or 0),
+        int(data.get("trials") or 0), data.get("trial_method") or "",
+        int(data.get("patents") or 0), int(data.get("papers") or 0),
+        ";".join(str(item.get("brand")) for item in (data.get("brands") or [])[:50]),
+        ";".join(f"{item['specialty']}:{item['codes']}" for item in (data.get("specialties") or [])),
+        data.get("topic_gap") or "",
+    ])
+    return buffer.getvalue()
+
+
 def areas_markdown(items: Sequence[Mapping[str, Any]], *, updated_at: str | None = None) -> str:
     """The whole-register split by specialty, with the caveats the page prints.
 
@@ -313,5 +425,6 @@ def device_json(timeline: Any, *, query: str) -> str:
     return json.dumps(payload, ensure_ascii=False, indent=2)
 
 
-__all__ = ["area_csv", "area_markdown", "areas_csv", "areas_markdown", "compare_csv",
-           "compare_markdown", "device_csv", "device_json", "device_markdown"]
+__all__ = ["area_csv", "area_markdown", "areas_csv", "areas_markdown", "company_csv",
+           "company_markdown", "compare_csv", "compare_markdown", "device_csv", "device_json",
+           "device_markdown"]
