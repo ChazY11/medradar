@@ -22,6 +22,7 @@ can check, and an absent index is reported as `paper_index_absent` - never as "n
 from __future__ import annotations
 
 import json
+import os
 import re
 from pathlib import Path
 from typing import Any, Iterable, Mapping, Sequence
@@ -70,8 +71,24 @@ STRUCTURAL_WORDS = frozenset({
     "mm", "cm", "inch", "inches", "pcs", "pc", "unit", "units", "package",
 })
 
-#: Marker attribute name for the per-store counter cache.
-_COUNTER_ATTR = "_papers_index_counters"
+#: Counters that stay valid until the index is rebuilt, keyed by (database path, mtime).
+#:
+#: Not keyed by id(reference): CPython reuses ids after garbage collection, which made a fresh store
+#: inherit a closed one's counts. Not attached to the store object either: the web app builds a new
+#: store per request, so an object-attached cache is recomputed on every page - measured as a 19 s
+#: first device page whose paper section alone cost 4 s. A path plus its mtime is stable across
+#: requests and changes the moment index_corpus writes.
+_COUNTERS: dict[tuple[str, float], dict[str, Any]] = {}
+
+
+def _store_key(reference) -> tuple[str, float] | None:
+    try:
+        path = getattr(getattr(reference, "path", None), "__str__", lambda: "")()
+        if not path:
+            return None
+        return (str(path), float(os.stat(path).st_mtime))
+    except (OSError, AttributeError, TypeError):
+        return None
 _TOKEN = re.compile(r"[a-z0-9][a-z0-9\-]{2,}", re.IGNORECASE)
 
 
@@ -246,35 +263,37 @@ def index_corpus(reference, corpus_root: str | Path, *, vocab: set[str] | None =
 
 
 def _cache_for(reference) -> dict[str, Any]:
-    """Per-store counters that cannot change until the index is rebuilt.
+    """Per-database counters that cannot change until the index is rebuilt.
 
-    Measured: `SELECT COUNT(DISTINCT paper_id) FROM paper_term` is a full scan of 637,318 rows and
-    took ~0.5 s. It was called once per device, so a company query resolving 25 devices spent 13 s
-    of a 15 s page repeating the same count. The index only changes when index_corpus() runs, and
-    that clears this cache.
-
-    The cache hangs off the store object rather than a module-level dict keyed by id(): CPython
-    reuses ids after garbage collection, so a new store could inherit a closed one's counts -
-    measured as two order-dependent test failures before the change.
+    Measured: `SELECT COUNT(DISTINCT paper_id) FROM paper_term` is a full scan of 785,612 rows. It
+    was called once per device, so a company query resolving 25 devices spent 13 s of a 15 s page
+    repeating the same count. The index only changes when index_corpus() runs, which rewrites the
+    file and therefore changes the mtime this cache is keyed on.
     """
-    cached = getattr(reference, _COUNTER_ATTR, None)
+    key = _store_key(reference)
+    if key is None:
+        return {"total": None, "df": {}}
+    cached = _COUNTERS.get(key)
     if cached is None:
         cached = {"total": None, "df": {}}
-        try:
-            setattr(reference, _COUNTER_ATTR, cached)
-        except AttributeError:  # a slotted or immutable stand-in: fall back to uncached behaviour
-            return {"total": None, "df": {}} | {"_no_cache": True}
+        _COUNTERS[key] = cached
+        # A rebuilt index leaves older entries behind; keep the map from growing without bound.
+        if len(_COUNTERS) > 8:
+            for stale in list(_COUNTERS)[:-8]:
+                _COUNTERS.pop(stale, None)
     return cached
 
 
 def invalidate_cache(reference=None) -> None:
     """Forget cached document frequencies. Call after rebuilding the index."""
     if reference is None:
+        _COUNTERS.clear()
         return
-    try:
-        delattr(reference, _COUNTER_ATTR)
-    except AttributeError:
-        pass
+    key = _store_key(reference)
+    if key is not None:
+        _COUNTERS.pop(key, None)
+    else:
+        _COUNTERS.clear()
 
 
 def _document_frequency(reference, term: str) -> int:

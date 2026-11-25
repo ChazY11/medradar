@@ -237,6 +237,17 @@ def resolve(reference, query: str, *, limit: int = 25) -> list[DeviceRef]:
             add(_query(reference, "SELECT * FROM udi_device WHERE labeler_duns = ? LIMIT ?",
                        (text, limit)), "labeler_duns")
     if not refs:
+        # Exact match first, because it uses idx_udi_model. The COLLATE NOCASE form cannot use a
+        # BINARY index and measured 834 ms against 2 ms for the same row: a full scan of 5.2M rows
+        # to answer a case difference. Case-insensitivity stays, as a fallback paid only when the
+        # exact lookup found nothing.
+        add(_query(reference,
+                   "SELECT * FROM udi_device WHERE version_or_model = ? LIMIT ?",
+                   (text, limit)), "version_or_model")
+        add(_query(reference,
+                   "SELECT * FROM udi_device WHERE catalog_number = ? LIMIT ?",
+                   (text, limit)), "catalog_number")
+    if not refs:
         add(_query(reference,
                    "SELECT * FROM udi_device WHERE version_or_model = ? COLLATE NOCASE LIMIT ?",
                    (text, limit)), "version_or_model")

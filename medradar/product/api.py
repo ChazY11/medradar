@@ -1451,6 +1451,19 @@ def create_app(
             endpoints = {route.path: route.endpoint for route in radar_router.routes}
             app.include_router(pages_router(radar_service, endpoints=endpoints))
             app.state.radar_dir = str(resolved_radar)
+
+            # Touch the stores once, off the request path. Measured: a freshly restarted process
+            # answered its first device page in 15 s because the index pages for a 5.2M-row table
+            # had never been read; every request after that took 0.3 s.
+            def _warm() -> None:
+                try:
+                    from ..radar.pages import warmup
+
+                    warmup(radar_service)
+                except Exception:  # noqa: BLE001 - a warm-up must never take the app down
+                    pass
+
+            threading.Thread(target=_warm, name="medradar-warmup", daemon=True).start()
         except Exception as error:  # pragma: no cover - the workbench must still start
             app.state.radar_error = f"{type(error).__name__}: {error}"
     if setup is not None:

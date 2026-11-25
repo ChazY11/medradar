@@ -898,6 +898,65 @@ def compare_page(*, companies: Sequence[Mapping[str, Any]]) -> str:
     return layout(title="公司对比 · MedRadar", body=body, active="company")
 
 
+def warmup(service: Any) -> dict[str, Any]:
+    """Touch the stores before a reader does.
+
+    Measured on a freshly restarted process: the first `/device?query=X1209255` took 15 s, of which
+    `resolve` was 6.8 s and the paper history 4.1 s - for queries that answer in milliseconds once
+    the pages are in memory. Nothing was slow; everything was cold. Index pages for a 5.2M-row table
+    and the 785k-row paper index have to come off disk the first time.
+
+    So the process reads them at startup, in a daemon thread, while nobody is waiting. Every step is
+    allowed to fail: a deployment without a device register must still serve its pages.
+    """
+    report: dict[str, Any] = {"queries": 0, "papers": False, "errors": []}
+    store = None
+    try:
+        from .reference import UdiReference
+
+        path = service.paths.reference
+        if not path.is_file():
+            report["errors"].append("no device register")
+            return report
+        store = UdiReference(str(path))
+        # One of each identifier shape, because each takes a different index.
+        for query in ("08800055700571", "X1209255", "Medtronic"):
+            try:
+                from .device_view import resolve
+
+                resolve(store, query)
+                report["queries"] += 1
+            except Exception as error:  # noqa: BLE001
+                report["errors"].append(f"{query}: {type(error).__name__}")
+        try:
+            from .papers_index import _total_papers
+
+            _total_papers(store)
+            report["papers"] = True
+        except Exception as error:  # noqa: BLE001
+            report["errors"].append(f"papers: {type(error).__name__}")
+        # The landing page counts four stores; on a cold process those counts read millions of
+        # index pages off disk and the first visitor paid for it (measured 8 s for "/").
+        for key, sql in (("devices", "SELECT COUNT(*) FROM udi_device"),
+                         ("failures", "SELECT COUNT(*) FROM maude_failure_index"),
+                         ("trials", "SELECT COUNT(*) FROM trial"),
+                         ("patents", "SELECT COUNT(*) FROM bulk_patent")):
+            try:
+                store.conn.execute(sql).fetchone()
+                report[key] = True
+            except Exception as error:  # noqa: BLE001 - an absent table is normal on a fresh deploy
+                report["errors"].append(f"{key}: {type(error).__name__}")
+    except Exception as error:  # noqa: BLE001
+        report["errors"].append(f"{type(error).__name__}: {error}")
+    finally:
+        if store is not None:
+            try:
+                store.close()
+            except Exception:  # noqa: BLE001
+                pass
+    return report
+
+
 def pages_router(service: Any, *, endpoints: Mapping[str, Any] | None = None) -> Any:
     """Reader-facing routes, mounted at the site root rather than under /api/radar.
 
