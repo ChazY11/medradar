@@ -1569,7 +1569,7 @@ def pages_router(service: Any, *, endpoints: Mapping[str, Any] | None = None) ->
                     active="device")
             try:
                 corpus = service.paths.corpus
-                timeline = build_view(store, query, limit=width,
+                timeline = build_view(store, query, limit=width, detail_for=1,
                                       corpus_root=corpus if corpus.is_dir() else None)
             finally:
                 store.close()

@@ -199,6 +199,10 @@ class DeviceTimeline:
     #: A dossier could describe clearances, failures, trials and papers without ever saying what kind
     #: of device it is looking at; this is that missing sentence.
     areas: dict[str, dict[str, str]] = field(default_factory=dict)
+    #: "all" or "first:N" - which devices got their per-device sections computed. A page that reads
+    #: only one device must not have paid for twenty-five, and a caller must not read an uncomputed
+    #: section as an empty one.
+    detail_scope: str = "all"
     gaps: list[str] = field(default_factory=list)
 
     def to_dict(self) -> dict[str, Any]:
@@ -212,6 +216,7 @@ class DeviceTimeline:
             "papers": {key: value.to_dict() for key, value in self.papers.items()},
             "specs": self.specs,
             "areas": self.areas,
+            "detail_scope": self.detail_scope,
             "gaps": self.gaps,
         }
 
@@ -557,8 +562,17 @@ def paper_history(reference, ref: DeviceRef, *, limit: int = 5) -> PaperHistory:
 # ---------------------------------------------------------------------- build
 def build(reference, query: str, *, corpus_root: str | Path | None = None,
           limit: int = 25, failures: bool = True, patents: bool = True,
-          trials: bool = True, papers: bool = True, specs: bool = True) -> DeviceTimeline:
+          trials: bool = True, papers: bool = True, specs: bool = True,
+          detail_for: int | None = None) -> DeviceTimeline:
+    """One device, its whole public life.
+
+    ``detail_for`` limits the per-device sections (failures, papers) to the first N devices. The
+    dossier page reads only ``refs[0]``'s sections - it computed ten to twenty-five of them and threw
+    all but one away, which was most of a five-second cold page. The scope is recorded on the result
+    so a caller can never mistake an uncomputed section for an empty one.
+    """
     timeline = DeviceTimeline(query=query)
+    timeline.detail_scope = "all" if detail_for is None else f"first:{int(detail_for)}"
     timeline.refs = resolve(reference, query, limit=limit)
     if not timeline.refs:
         timeline.gaps.append(GAP_NOT_IN_INDEX)
@@ -592,8 +606,11 @@ def build(reference, query: str, *, corpus_root: str | Path | None = None,
             if found.get("count") or found.get("rejected_implausible"):
                 timeline.specs[number] = found
 
+    # Only the devices whose sections someone will read. See `detail_for`.
+    detailed = timeline.refs if detail_for is None else timeline.refs[:max(0, int(detail_for))]
+
     if failures:
-        for ref in timeline.refs:
+        for ref in detailed:
             timeline.failures[ref.device_key] = failure_history(reference, ref)
 
     if patents:
@@ -624,7 +641,7 @@ def build(reference, query: str, *, corpus_root: str | Path | None = None,
                 by_company_trials[key] = history
 
     if papers:
-        for ref in timeline.refs:
+        for ref in detailed:
             timeline.papers[ref.device_key] = paper_history(reference, ref)
 
     if not submissions:

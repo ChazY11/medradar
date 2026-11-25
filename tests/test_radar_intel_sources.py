@@ -3690,6 +3690,31 @@ def test_a_capped_product_code_list_never_claims_to_be_the_whole_set(tmp_path):
     store.close()
 
 
+def test_the_page_does_not_pay_for_sections_it_will_not_show(tmp_path):
+    """Measured: a ten-device name query computed ten failure histories and ten paper histories, and
+    the page read exactly one of each. That was most of a five-second cold page."""
+    from medradar.radar.device_view import build
+
+    store = _view_store(tmp_path)
+    rows = [_udi_row("K250063", f"M{i}") for i in range(6)]
+    store.write_udi_rows(rows)
+
+    full = build(store, "Galaxy", corpus_root=_corpus(tmp_path))
+    assert full.detail_scope == "all"
+    assert len(full.refs) >= 6
+    assert len(full.failures) == len(full.refs)   # every device, when asked for every device
+
+    narrow = build(store, "Galaxy", corpus_root=_corpus(tmp_path), detail_for=1)
+    assert narrow.detail_scope == "first:1"
+    assert len(narrow.refs) == len(full.refs)     # the list is still complete
+    assert len(narrow.failures) == 1              # the work is not
+    # An uncomputed section must be distinguishable from an empty one.
+    assert narrow.to_dict()["detail_scope"] == "first:1"
+    assert narrow.failures and not all(k in narrow.failures for k in
+                                       [r.device_key for r in narrow.refs])
+    store.close()
+
+
 def test_a_pre_digitisation_filing_is_never_requested(tmp_path):
     """Measured: 0 of 60 sampled filings from 1998-2009 have a PDF at any path shape.
 
