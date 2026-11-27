@@ -3882,6 +3882,12 @@ def test_a_field_nobody_crawled_is_not_a_field_with_no_research():
     assert "已缓存" not in dental and "未纳入轮转" not in dental
     assert "已缓存" in ophthal and "未纳入轮转" not in ophthal
     assert "未纳入轮转" in neuro
+    # FDA's catch-all has no query and never will; the label must not imply a backlog.
+    unknown_page = areas_page(data={"available": True, "items": [
+        {"specialty": "Unknown", "codes": 420, "devices": 1000, "companies": 10,
+         "top_companies": []}], "literature": {}, "sort": "devices"})
+    assert "FDA 未分类，不做文献轮转" in unknown_page
+    assert "未纳入轮转" not in unknown_page
 
 
 def test_a_field_page_says_what_its_papers_talk_about_and_what_that_is_not(tmp_path):
@@ -4240,6 +4246,19 @@ def test_the_front_door_shows_the_product_moving_and_says_what_it_is_not():
     # A deployment with no literature renders the page it always did.
     plain = landing(stats={"设备注册": 1}, examples=[])
     assert "最近发表" not in plain
+
+    # Full coverage must not promise a queue that no longer exists.
+    rows = [{"paper_id": "PMC1", "title": "T", "journal": "",
+             "published_at": "2026-11-23", "specialty": "Dental"}]
+    complete = landing(stats={"a": 1}, examples=[],
+                       data={"recent_papers": rows, "fields_with_papers": 20,
+                             "fields_total": 20})
+    assert "20 个技术领域全部抓过" in complete
+    assert "还没抓的排在这里" not in complete
+    partial = landing(stats={"a": 1}, examples=[],
+                      data={"recent_papers": rows, "fields_with_papers": 13,
+                            "fields_total": 20})
+    assert "还没抓的排在这里" in partial
 
 
 def test_a_fields_recent_papers_can_leave_the_page_with_their_caveat(tmp_path):

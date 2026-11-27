@@ -260,9 +260,17 @@ def landing(*, stats: Mapping[str, Any], examples: Sequence[tuple[str, str]],
             f'{esc(str(item.get("specialty") or ""))}">{esc(str(item.get("specialty") or ""))}</a>'
             f'</td></tr>'
             for item in recent)
-        scope = (f'文献线已覆盖 {fields_held} / {fields_total} 个技术领域，'
-                 f'<a href="/areas?sort=pending">还没抓的排在这里</a>。'
-                 if fields_total else "")
+        if fields_total and fields_held >= fields_total:
+            # The tail of this sentence used to promise a queue that no longer exists: "还没抓的排在
+            # 这里" next to "20 / 20" reads as a contradiction, and the reader is told to click a link
+            # that has nothing to show.
+            scope = (f'{fields_total} 个技术领域全部抓过；此后按"最久未跑优先"轮转刷新，'
+                     f'<a href="/areas?sort=papers">按已抓论文数看各领域</a>。')
+        elif fields_total:
+            scope = (f'文献线已覆盖 {fields_held} / {fields_total} 个技术领域，'
+                     f'<a href="/areas?sort=pending">还没抓的排在这里</a>。')
+        else:
+            scope = ""
         recent_block = (
             '<h2>最近发表</h2>'
             f'<p class="muted small">所跟踪领域里发表日期最新的 {n(len(recent))} 篇。'
@@ -1530,6 +1538,11 @@ def areas_page(*, data: Mapping[str, Any]) -> str:
         states; printing a dash for both would make the second look like an absence of research.
         """
         entry = literature.get(specialty)
+        if not entry and specialty == "Unknown":
+            # FDA's own catch-all: 420 product codes the classification table files under no specialty.
+            # It has no query because there is nothing to query - saying "未纳入轮转" would imply a
+            # backlog that does not exist.
+            return '<span class="muted small">FDA 未分类，不做文献轮转</span>'
         if not entry:
             # Not the same as "no research exists": the first papers were fetched for weeks by one
             # fixed query that was not recorded per field, so a well-covered field can legitimately be
