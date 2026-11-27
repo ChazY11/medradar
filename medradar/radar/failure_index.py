@@ -103,6 +103,52 @@ class FailureIndexStats:
         }
 
 
+SWEEP_SCHEMA = """
+CREATE TABLE IF NOT EXISTS failure_sweep (
+    product_code  TEXT PRIMARY KEY,
+    swept_at      TEXT NOT NULL,
+    events_seen   INTEGER NOT NULL DEFAULT 0,
+    rows_written  INTEGER NOT NULL DEFAULT 0
+);
+"""
+
+
+def ensure_sweep_table(reference) -> None:
+    reference.conn.executescript(SWEEP_SCHEMA)
+
+
+def record_sweep(reference, code: str, *, events: int, rows: int, at: str | None = None) -> None:
+    """Remember that a code was looked at, even when it had nothing in it.
+
+    Measured on a real sweep of three codes: two events seen, zero rows written, and the code stayed
+    in the pending list because `swept_codes` was derived from the index rows. A product code that
+    genuinely has no failure reports is then indistinguishable from one nobody has checked, and the
+    published coverage can never reach the register's total. The sweep record separates "we looked and
+    found nothing" from "we have not looked".
+    """
+    from .records import utc_now_iso
+
+    ensure_sweep_table(reference)
+    reference.conn.execute(
+        "INSERT OR REPLACE INTO failure_sweep (product_code, swept_at, events_seen, rows_written)"
+        " VALUES (?,?,?,?)",
+        (str(code), at or utc_now_iso(), int(events), int(rows)))
+    reference.conn.commit()
+
+
+def sweep_state(reference) -> dict[str, Any]:
+    """How many codes have been checked, and how many of those were empty."""
+    try:
+        ensure_sweep_table(reference)
+        row = reference.conn.execute(
+            "SELECT COUNT(*), SUM(CASE WHEN rows_written = 0 THEN 1 ELSE 0 END), MAX(swept_at)"
+            " FROM failure_sweep").fetchone()
+    except Exception:  # noqa: BLE001 - no table yet
+        return {"swept": 0, "empty": 0, "last_swept_at": None}
+    return {"swept": int(row[0] or 0), "empty": int(row[1] or 0),
+            "last_swept_at": row[2]}
+
+
 def build_failure_index(fetcher, reference, product_codes: Sequence[str], *,
                         since: str = DEFAULT_SINCE,
                         max_pages_per_code: int = DEFAULT_MAX_PAGES_PER_CODE,
@@ -122,6 +168,7 @@ def build_failure_index(fetcher, reference, product_codes: Sequence[str], *,
         search = (f'device.device_report_product_code:"{code}" '
                   f"AND date_received:[{since} TO 9999-12-31]")
         written_before = stats.rows_written
+        events_before = stats.events_seen
         skip = 0
         pages_for_code = 0
         while pages_for_code < max_pages_per_code:
@@ -167,6 +214,14 @@ def build_failure_index(fetcher, reference, product_codes: Sequence[str], *,
             if len(rows) < limit:
                 break
         stats.per_code[str(code)] = stats.rows_written - written_before
+        # Record the check itself, not only its yield: a code with no reports is a real answer and
+        # must leave the pending list, or the coverage number can never reach the register's total.
+        try:
+            record_sweep(reference, str(code),
+                         events=stats.events_seen - events_before,
+                         rows=stats.rows_written - written_before)
+        except Exception:  # noqa: BLE001 - a sweep that cannot record still returns its rows
+            pass
         if progress:
             progress(stats)
         if pages_for_code >= max_pages_per_code:

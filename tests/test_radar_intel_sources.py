@@ -3715,6 +3715,31 @@ def test_the_page_does_not_pay_for_sections_it_will_not_show(tmp_path):
     store.close()
 
 
+def test_a_code_checked_and_found_empty_leaves_the_pending_queue(tmp_path):
+    """Measured: three codes swept, 2 events seen, 0 rows written - and all three stayed pending, so
+    the published coverage could never reach the register's total."""
+    from medradar.radar.code_census import pending_codes, swept_codes
+    from medradar.radar.failure_index import record_sweep, sweep_state
+    from medradar.radar.reference import UdiReference
+
+    store = UdiReference(tmp_path / "reference.db")
+    store.write_udi_rows([_udi_row("K250063", f"M{i}") for i in range(3)])
+
+    _census, pending_before = pending_codes(store)
+    assert "EIA" in pending_before
+
+    # The sweep ran and found nothing. That is an answer, not an absence.
+    record_sweep(store, "EIA", events=0, rows=0)
+    assert "EIA" in swept_codes(store)
+    _census, pending_after = pending_codes(store)
+    assert "EIA" not in pending_after
+
+    state = sweep_state(store)
+    assert state["swept"] == 1 and state["empty"] == 1
+    assert state["last_swept_at"]
+    store.close()
+
+
 def test_a_pre_digitisation_filing_is_never_requested(tmp_path):
     """Measured: 0 of 60 sampled filings from 1998-2009 have a PDF at any path shape.
 

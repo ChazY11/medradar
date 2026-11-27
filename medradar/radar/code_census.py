@@ -44,12 +44,20 @@ def swept_codes(reference) -> set[str]:
     an untouched store legitimately has no such table. "No table" and "nothing swept" mean the
     same thing to a caller and must not raise.
     """
+    seen: set[str] = set()
     try:
-        rows = reference.conn.execute(
-            "SELECT DISTINCT product_code FROM maude_failure_index")
+        seen = {str(row[0]) for row in reference.conn.execute(
+            "SELECT DISTINCT product_code FROM maude_failure_index")}
     except Exception:  # noqa: BLE001 - sqlite3.OperationalError for a missing table
-        return set()
-    return {str(row[0]) for row in rows}
+        seen = set()
+    # Codes that were checked and turned out empty are not in the index, and without the sweep
+    # record they would be re-swept forever and the published coverage could never reach the total.
+    try:
+        seen |= {str(row[0]) for row in reference.conn.execute(
+            "SELECT product_code FROM failure_sweep")}
+    except Exception:  # noqa: BLE001 - a store that has never run the new sweep
+        pass
+    return seen
 
 
 def pending_codes(reference, *, max_codes: int | None = None) -> tuple[dict[str, int], list[str]]:

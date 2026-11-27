@@ -53,4 +53,12 @@ echo "[$(date -Is)] materialised counts"
   --corpus "${MEDRADAR_CORPUS_DIR:-/srv/medradar/intel/corpus510k}" --refresh 2>&1 | tail -2 || true
 
 echo "[$(date -Is)] done: $(ls "$OUT"/*.json 2>/dev/null | wc -l) records"
+# Coverage has to advance or the caveat on /sources becomes a standing apology: the failure
+# index covered 838 of 5,229 product codes and nothing in the deployment moved that number.
+# Forty codes a night, lowest volume first by device count order, at 2 req/s.
+echo "$(date -Is) failure sweep"
+/srv/medradar/radar-venv/bin/python /srv/medradar/ops/sweep_failures.py \
+  --db /srv/medradar/reference_slim.db --codes 40 --pages-per-code 2 --rate 2 \
+  || echo "$(date -Is) failure sweep failed"
+
 exit 0

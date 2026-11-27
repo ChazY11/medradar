@@ -169,13 +169,42 @@ def coverage(reference, *, corpus_dir: str | Path | None = None,
 
     # Gaps are computed, not remembered: each one names what is missing and why.
     gaps: list[dict[str, str]] = []
-    swept = parts.get("failure_codes") or 0
+    with_rows = parts.get("failure_codes") or 0
     register_codes = parts.get("register_codes") or 0
-    if register_codes and swept < register_codes:
+    # "Checked" and "had records" are different numbers, and printing one where the other belongs is
+    # how this page claimed 838 of 5,229 forever: 838 counted codes that produced rows, so a code that
+    # was swept and found empty could never be counted as covered. The sweep record fixes the count;
+    # this sentence reports both halves of it.
+    try:
+        from .code_census import product_code_census, swept_codes
+        from .failure_index import sweep_state
+
+        checked_state = sweep_state(reference)
+        # The union, not the maximum: the codes that produced rows and the codes that were checked
+        # and found empty are disjoint sets, and taking either alone undercounts the work done.
+        checked = len(swept_codes(reference))
+        # The sweep can only reach codes that sit on a device with a clearance; the register holds
+        # more codes than that. Reporting progress against the larger number would make complete
+        # coverage of everything reachable look like partial coverage forever.
+        sweeper_census = len(product_code_census(reference))
+    except Exception:  # noqa: BLE001 - no sweep table yet
+        checked_state = {"swept": 0, "empty": 0, "last_swept_at": None}
+        checked, sweeper_census = 0, 0
+    empty = int(checked_state.get("empty") or 0)
+    denominator = sweeper_census or register_codes
+    if denominator and checked < denominator:
+        detail = (f"已检查 {checked:,} 个产品码（其中 {empty:,} 个查了没有任何可连接的失效记录）。"
+                  f"可扫的码是那些出现在某台有批文设备上的码，共 {denominator:,} 个；"
+                  f"寄存器里还有 {max(0, register_codes - denominator):,} 个码没有和任何批文关联，"
+                  f"扫不到。没查到的码下，设备会显示「产品码还没扫过」，而不是「没有失效」。")
+        if checked_state.get("last_swept_at"):
+            detail += f"最近一次扫描：{str(checked_state['last_swept_at'])[:16]}。"
+        gaps.append({"title": "失效记录只扫了部分产品码", "detail": detail})
+    elif denominator:
         gaps.append({
-            "title": "失效记录只扫了部分产品码",
-            "detail": f"已扫 {swept:,} 个产品码，注册表里共有 {register_codes:,} 个。"
-                      f"没扫到的码下，设备会显示「产品码还没扫过」，而不是「没有失效」。",
+            "title": "失效记录已覆盖全部可扫产品码",
+            "detail": (f"已检查 {denominator:,} 个可扫的产品码，其中 {empty:,} 个查了没有可连接的"
+                       f"失效记录。「没有失效」是查过的结论，不是空白。"),
         })
     covered_assignees = parts.get("patent_assignees") or 0
     labelers = int(counts.get("labelers") or _scalar(
