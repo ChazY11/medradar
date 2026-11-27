@@ -91,4 +91,14 @@ def next_queries(reference, *, count: int = 2) -> list[tuple[str, str]]:
     return ranked[:count]
 
 
-__all__ = ["QUERIES", "ensure_table", "next_queries", "read_passes", "record_pass"]
+def by_specialty(reference) -> dict[str, dict[str, Any]]:
+    """Field name -> what its literature pass last produced, for the pages to read.
+
+    The number this returns is *how many papers that field's query brought in*, not how many papers
+    exist about the field. The distinction has to survive into the page: a field that has never been
+    crawled and a field with nothing to find are different states, and only one of them is our fault.
+    """
+    return {row["specialty"]: row for row in read_passes(reference)}
+
+
+__all__ = ["QUERIES", "by_specialty", "ensure_table", "next_queries", "read_passes", "record_pass"]

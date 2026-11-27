@@ -3845,6 +3845,39 @@ def test_the_paper_crawl_moves_to_a_field_nobody_has_covered(tmp_path):
     store.close()
 
 
+def test_a_field_nobody_crawled_is_not_a_field_with_no_research():
+    """The literature column must distinguish "未抓取" from "crawled and found nothing new"."""
+    from medradar.radar.pages import areas_page
+
+    data = {
+        "available": True,
+        "items": [
+            {"specialty": "Dental", "codes": 295, "devices": 906341, "companies": 1568,
+             "top_companies": []},
+            {"specialty": "Ophthalmic", "codes": 239, "devices": 270746, "companies": 783,
+             "top_companies": []},
+            {"specialty": "Neurology", "codes": 120, "devices": 9000, "companies": 40,
+             "top_companies": []},
+        ],
+        "literature": {
+            "Dental": {"specialty": "Dental", "candidates": 120, "stored": 66, "skipped": 52},
+            "Ophthalmic": {"specialty": "Ophthalmic", "candidates": 120, "stored": 0,
+                           "skipped": 118},
+        },
+    }
+    page = areas_page(data=data)
+    assert "66" in page and "候选 120" in page          # crawled and productive
+    assert "其中 118 篇已缓存" in page                    # crawled, nothing new - not a dash
+    assert "未纳入轮转" in page                          # not in the rotation - its own state
+    # The three states are distinguishable in the same table.
+    dental = page[page.index("Dental"):page.index("Ophthalmic")]
+    ophthal = page[page.index("Ophthalmic"):page.index("Neurology")]
+    neuro = page[page.index("Neurology"):]
+    assert "已缓存" not in dental and "未纳入轮转" not in dental
+    assert "已缓存" in ophthal and "未纳入轮转" not in ophthal
+    assert "未纳入轮转" in neuro
+
+
 def test_a_pre_digitisation_filing_is_never_requested(tmp_path):
     """Measured: 0 of 60 sampled filings from 1998-2009 have a PDF at any path shape.
 

@@ -1323,6 +1323,28 @@ def areas_page(*, data: Mapping[str, Any]) -> str:
             active="areas")
 
     largest = max((int(item.get("devices") or 0) for item in items), default=0) or 1
+    literature = data.get("literature") or {}
+
+    def lit_cell(specialty: str) -> str:
+        """What the literature lane has done for this field - and nothing it has not.
+
+        A field that has never been crawled and a field whose query found nothing are different
+        states; printing a dash for both would make the second look like an absence of research.
+        """
+        entry = literature.get(specialty)
+        if not entry:
+            # Not the same as "no research exists": the first papers were fetched for weeks by one
+            # fixed query that was not recorded per field, so a well-covered field can legitimately be
+            # absent from the rotation table. "未抓取" would understate orthopaedics.
+            return '<span class="muted small">未纳入轮转</span>'
+        stored = int(entry.get("stored") or 0)
+        candidates = int(entry.get("candidates") or 0)
+        if stored:
+            return (f'<span class="num">{n(stored)}</span>'
+                    f'<span class="muted small"> / 候选 {n(candidates)}</span>')
+        return (f'<span class="muted small">候选 {n(candidates)}，'
+                f'其中 {n(entry.get("skipped") or 0)} 篇已缓存</span>')
+
     rows = []
     for item in items:
         leaders = item.get("top_companies") or []
@@ -1338,6 +1360,7 @@ def areas_page(*, data: Mapping[str, Any]) -> str:
             f'<td class="num">{n(item.get("devices"))}</td>'
             f'<td class="num">{n(item.get("companies"))}</td>'
             f'<td>{company_list or "<span class=\'muted\'>—</span>"}</td>'
+            f'<td>{lit_cell(str(item.get("specialty")))}</td>'
             f'<td><span class="bar" style="width:{share}%"></span></td></tr>')
     body = f"""
 <h1>技术领域分布</h1>
@@ -1349,7 +1372,7 @@ def areas_page(*, data: Mapping[str, Any]) -> str:
 不是论文、不是专利。一家公司在某领域设备多，说明它在那里铺得广，不说明它技术领先。
 「设备数」按注册条目计，同一台设备有多个产品码时会分别计入各领域，所以各行相加会大于总设备数。</div>
 <div class="card"><table>
-<thead><tr><th>技术领域</th><th>产品码</th><th>设备数</th><th>公司数</th><th>设备最多的公司</th>
+<thead><tr><th>技术领域</th><th>产品码</th><th>设备数</th><th>公司数</th><th>设备最多的公司</th><th>文献抓取</th>
 <th>规模</th></tr></thead>
 <tbody>{''.join(rows)}</tbody></table></div>
 <p class="small muted">数据更新于 {esc(str(data.get("updated_at") or "未知")[:16])}，
@@ -1861,6 +1884,14 @@ def pages_router(service: Any, *, endpoints: Mapping[str, Any] | None = None) ->
                 data = dict(read_specialties(store))
                 if not data.get("available"):
                     data["gap"] = "specialty_stats_absent"
+                # What the literature lane has actually done per field. Empty is a legitimate answer
+                # and the page distinguishes "never crawled" from "crawled, nothing new".
+                try:
+                    from .paper_passes import by_specialty
+
+                    data["literature"] = by_specialty(store)
+                except Exception:  # noqa: BLE001 - no paper_pass table yet
+                    data["literature"] = {}
             except Exception:  # noqa: BLE001 - an absent table is a gap, not a crash
                 data = {"available": False, "items": [], "updated_at": None,
                         "gap": "specialty_stats_absent"}
