@@ -4352,6 +4352,40 @@ def test_a_company_page_leads_to_the_research_around_its_products():
     assert "这些产品所在的领域在谈什么" not in company_page(data=empty)
 
 
+def test_a_technology_topic_shows_what_is_published_about_it_and_what_that_is_not():
+    """The topic page said who is in a space and stopped; a reader also wants the literature."""
+    from medradar.radar.pages import topic_page
+
+    payload = {"topics": [{"topic_id": "arrhythmia_detection", "label_zh": "心律失常检测",
+                           "label_en": "Arrhythmia detection",
+                           "description": "Automated detection of arrhythmia and its alarm logic.",
+                           "product_codes": ["DQK"], "companies": []}]}
+    page = topic_page(
+        payload=payload, topic_id="arrhythmia_detection",
+        data={"terms": ["arrhythmia", "detection"],
+              "papers": [{"paper_id": "PMC7", "title": "Alarm fatigue in telemetry",
+                          "journal": "J Clin Monit", "published_at": "2026-11-21"}]})
+    assert "这个方向最近发表的" in page
+    assert "arrhythmia" in page and "2026-11-21" in page
+    assert "/paper?id=PMC7" in page
+    # A term match is a lead, and the page says so before the table.
+    assert "不等于" in page and "研究的是这个主题" in page
+
+    # Three empty states, three different sentences - and "not computed" must not borrow the reason
+    # that belongs to "computed and all words were generic".
+    bare = topic_page(payload=payload, topic_id="arrhythmia_detection", data={})
+    assert "这个方向最近发表的" not in bare
+    nothing_matched = topic_page(payload=payload, topic_id="arrhythmia_detection",
+                                 data={"terms": ["arrhythmia"], "papers": []})
+    assert "没有命中不等于没有研究" in nothing_matched
+    all_generic = topic_page(payload=payload, topic_id="arrhythmia_detection",
+                             data={"terms": [], "papers": []})
+    assert "都太常见" in all_generic
+    # The page still works when the topic does not exist.
+    missing = topic_page(payload=payload, topic_id="nope", data={})
+    assert "没有这个技术主题" in missing
+
+
 def test_a_pre_digitisation_filing_is_never_requested(tmp_path):
     """Measured: 0 of 60 sampled filings from 1998-2009 have a PDF at any path shape.
 

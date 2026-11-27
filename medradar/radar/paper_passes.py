@@ -246,6 +246,25 @@ def recent_for(reference, specialty: str, *, limit: int = 10,
              "published_at": str(row[3] or "")[:10]} for row in rows]
 
 
+def dates_for(reference, paper_ids: Sequence[str]) -> dict[str, str]:
+    """Publication date per paper id, for matches that came from the term index.
+
+    Measured on /topic?id=central_station_telemetry: the table listed five papers with an empty date
+    column, because the term index returns identifiers and titles and knows nothing about dates.
+    """
+    ids = [str(item) for item in paper_ids if str(item or "").strip()]
+    if not ids:
+        return {}
+    placeholders = ",".join("?" for _ in ids[:900])
+    try:
+        rows = reference.conn.execute(
+            f"SELECT paper_id, published_at FROM paper_meta WHERE paper_id IN ({placeholders})",
+            tuple(ids[:900])).fetchall()
+    except Exception:  # noqa: BLE001 - no meta table yet
+        return {}
+    return {str(row[0]): str(row[1] or "")[:10] for row in rows}
+
+
 def recent_any(reference, *, limit: int = 8, today: str | None = None) -> list[dict[str, Any]]:
     """The newest papers across every field we track, with the field attached.
 
@@ -270,5 +289,5 @@ def recent_any(reference, *, limit: int = 8, today: str | None = None) -> list[d
              "published_at": str(row[3] or "")[:10], "specialty": row[4] or ""} for row in rows]
 
 
-__all__ = ["QUERIES", "by_specialty", "recent_any", "ensure_table", "field_topics", "next_queries", "papers_for",
+__all__ = ["QUERIES", "by_specialty", "dates_for", "recent_any", "ensure_table", "field_topics", "next_queries", "papers_for",
            "read_passes", "record_field", "record_pass", "recent_for"]

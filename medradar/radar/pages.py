@@ -820,8 +820,15 @@ def map_page(*, payload: Mapping[str, Any]) -> str:
     return layout(title="科技地图 · MedRadar", body=body, active="map")
 
 
-def topic_page(*, payload: Mapping[str, Any], topic_id: str) -> str:
-    """One technology topic, with every company in it and the citations behind each claim."""
+def topic_page(*, payload: Mapping[str, Any], topic_id: str,
+               data: Mapping[str, Any] | None = None) -> str:
+    """One technology topic, with every company in it and the citations behind each claim.
+
+    The topic page answered "who is in this space" and stopped there. A reader looking at a technology
+    direction also wants to know what is being published about it, so the page now carries the papers
+    whose indexed terms match the topic's own words - a lead, labelled as one.
+    """
+    data = data or {}
     topics = payload.get("topics") or []
     topic = next((t for t in topics if str(t.get("topic_id")) == topic_id), None)
     if topic is None:
@@ -858,6 +865,41 @@ def topic_page(*, payload: Mapping[str, Any], topic_id: str) -> str:
   {note}
 </div>""")
 
+    papers = data.get("papers") or []
+    terms = data.get("terms") or []
+    if papers:
+        rows = "".join(
+            f'<tr><td class="muted small">{esc(str(item.get("published_at") or ""))}</td>'
+            f'<td><a href="/paper?id={esc(str(item.get("paper_id")))}">'
+            f'{esc(str(item.get("title") or "")[:100])}</a>'
+            f'<div class="muted small">{esc(str(item.get("journal") or "")[:70])}</div></td></tr>'
+            for item in papers)
+        literature_block = (
+            '<h2>这个方向最近发表的</h2>'
+            f'<p class="muted small">用这个主题自己的词（{esc("、".join(terms[:6]))}）'
+            f'在已归档论文里检索，命中的最新 {n(len(papers))} 篇。'
+            '命中只说明论文里出现了这些词，<b>不等于</b>这篇论文研究的是这个主题。</p>'
+            f'<div class="card"><table><thead><tr><th>发表日期</th><th>标题</th></tr></thead>'
+            f'<tbody>{rows}</tbody></table></div>')
+    elif terms:
+        # Terms existed but nothing matched. Measured on the live map: 3 of 16 topics have hits, so this
+        # is the common case and it has to explain itself - a missing block is indistinguishable from a
+        # feature that was never built.
+        literature_block = (
+            '<h2>这个方向最近发表的</h2>'
+            f'<p class="muted small">用这个主题自己的词（{esc("、".join(terms[:6]))}）检索已归档论文，'
+            '没有命中。语料是器械注册相关的开放全文，监护与软件类主题覆盖得少；'
+            '<b>没有命中不等于没有研究</b>。</p>')
+    elif "terms" in data:
+        literature_block = (
+            '<h2>这个方向最近发表的</h2>'
+            '<p class="muted small">这个主题的词在论文语料里都太常见（属于通用词），'
+            '无法用它们定位具体论文。</p>')
+    else:
+        # Nothing was computed. Saying "the words are too common" here would be an invented reason -
+        # the reader would be told why, and the why would be false.
+        literature_block = ""
+
     body = f"""
 <p class="small muted"><a href="/map">← 科技地图</a></p>
 <h1>{esc(topic.get("label_zh") or topic.get("label_en"))}</h1>
@@ -868,6 +910,7 @@ def topic_page(*, payload: Mapping[str, Any], topic_id: str) -> str:
 <p class="muted small">每条都挂着公开出处，可直接点开核对。
 <code>TOPIC_RELATED</code> 是按文本规则关联的，比 <code>CONFIRMED</code> 弱。</p>
 {''.join(blocks) or gap_note("no_topic_evidence")}
+{literature_block}
 """
     return layout(title=f"{topic.get('label_zh') or topic_id} · MedRadar", body=body, active="map")
 
@@ -2054,7 +2097,39 @@ def pages_router(service: Any, *, endpoints: Mapping[str, Any] | None = None) ->
             return HTMLResponse(layout(
                 title="科技地图 · MedRadar",
                 body='<h1>缺少主题 id</h1><p><a href="/map">← 科技地图</a></p>', active="map"))
-        return HTMLResponse(topic_page(payload=_snapshot(), topic_id=id))
+
+        def render() -> str:
+            payload = _snapshot()
+            topic = next((t for t in (payload.get("topics") or [])
+                          if str(t.get("topic_id")) == id), None)
+            literature: dict[str, Any] = {}
+            store = _store()
+            if topic is not None and store is not None:
+                try:
+                    from .papers_index import distinctive_terms, papers_for_tokens, tokens
+
+                    # The topic's own words, filtered for distinctiveness exactly like the device page
+                    # does: a word shared by thousands of papers points at nothing.
+                    words = tokens(" ".join([str(topic.get("label_en") or ""),
+                                             str(topic.get("description") or "")]))
+                    kept, _dropped = distinctive_terms(store, words)
+                    found = papers_for_tokens(store, kept[:8], limit=5) or {}
+                    recent = [dict(item) for item in (found.get("recent") or [])]
+                    from .paper_passes import dates_for
+
+                    dates = dates_for(store, [str(item.get("paper_id") or "") for item in recent])
+                    for item in recent:
+                        item.setdefault("published_at", dates.get(str(item.get("paper_id") or ""), ""))
+                    literature = {"terms": kept[:8], "papers": recent}
+                except Exception:  # noqa: BLE001 - no literature is a stated gap, not a failure
+                    literature = {}
+                finally:
+                    store.close()
+            elif store is not None:
+                store.close()
+            return topic_page(payload=payload, topic_id=id, data=literature)
+
+        return HTMLResponse(cached(f"topic:{id}", 300.0, render))
 
     @router.get("/company", response_class=HTMLResponse)
     def company_view(q: str | None = Query(None, max_length=120)) -> Any:
