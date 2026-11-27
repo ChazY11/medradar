@@ -87,6 +87,9 @@ def main() -> int:
     parser.add_argument("--country", default="", help="optional country filter, e.g. US")
     parser.add_argument("--probe", action="store_true",
                         help="issue one request for --assignee and print the parsed shape")
+    parser.add_argument("--stop-after-failures", type=int, default=0,
+                        help="abort the batch after this many consecutive source failures; "
+                             "measured: 8 companies 503'd in 60 s while the source was closed")
     parser.add_argument("--summary", action="store_true")
     parser.add_argument("--skip-covered", action="store_true",
                         help="skip companies that already have applicant rows, so a batch advances")
@@ -137,6 +140,13 @@ def main() -> int:
             except Exception as error:  # noqa: BLE001 - one bad name must not stop a batch
                 failures.append(f"{type(error).__name__}: {error}")
                 print(f"  {name}: {type(error).__name__}: {error}", file=sys.stderr)
+                # A closed window refuses every company alike. Measured: four consecutive rounds of
+                # three companies failed 12/12 while the window was shut, and the batch spent a
+                # minute on each round to learn the same thing once per name.
+                if args.stop_after_failures and len(failures) >= args.stop_after_failures:
+                    print(f"  stopping after {len(failures)} consecutive source failures",
+                          file=sys.stderr)
+                    break
                 continue
             print(json.dumps(result, ensure_ascii=False), file=sys.stderr)
         # Record the attempt even when every company failed. Measured: eight companies returned 503

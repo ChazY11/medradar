@@ -26,8 +26,17 @@ echo "[$(date -Is)] preprint pass"
 # next batch thirty minutes later returned 503 to every company (measured 2026-11-25). So the job
 # advances by a handful of NEW companies per night (--skip-covered) instead of retrying the same
 # twelve forever. EPO OPS is still waiting on an administrator (reference 51279).
-echo "[$(date -Is)] patent batch (google, skip covered)"
-"$PY" "$REL/tools/google_patents.py" --top-companies 8 --pages 2 --skip-covered 2>&1 | tail -12 || true
+# Google Patents answers in windows rather than at a rate: measured one window where 2 of 3 companies
+# answered and wrote 20 rows each, and then four consecutive rounds where 12 of 12 returned 503. One
+# attempt a night therefore catches a window only by luck. Three attempts spread over half an hour,
+# each aborting after two consecutive refusals, costs about a minute in total when the window is shut
+# and seizes it when it is open.
+for attempt in 1 2 3; do
+  echo "[$(date -Is)] patent batch (google, skip covered) attempt $attempt"
+  "$PY" "$REL/tools/google_patents.py" --top-companies 6 --pages 2 --skip-covered \
+    --stop-after-failures 2 2>&1 | tail -8 || true
+  [ "$attempt" -lt 3 ] && sleep 600
+done
 
 # europepmc answered 200 while the preprint host and Google were both refusing this address, so it
 # is the lane that actually adds papers on a blocked night: 20 candidates stored 9 new full texts.

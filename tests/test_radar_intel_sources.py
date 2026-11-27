@@ -3776,6 +3776,45 @@ def test_a_source_that_refuses_us_says_so_instead_of_looking_behind(tmp_path):
     store.close()
 
 
+def test_a_closed_patent_window_does_not_cost_one_request_per_company(monkeypatch, tmp_path):
+    """Measured: 6 companies 503'd in 48 s to learn the same fact six times; the window is either
+    open or shut, so two consecutive refusals are enough evidence."""
+    import importlib.util
+
+    from medradar.radar.reference import UdiReference
+
+    path = Path(__file__).resolve().parents[1] / "tools/google_patents.py"
+    spec = importlib.util.spec_from_file_location("google_patents_tool", path)
+    tool = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(tool)
+
+    store = UdiReference(tmp_path / "reference.db")
+    store.write_udi_rows([_udi_row("K250063", f"M{i}") for i in range(3)])
+    store.close()
+
+    calls: list[str] = []
+
+    def refuse(*_args, **_kwargs):
+        calls.append("x")
+        raise RuntimeError("TransientHttpError: 503 Service Unavailable")
+
+    monkeypatch.setattr(tool, "import_assignee", refuse)
+    monkeypatch.setattr(tool, "PoliteFetcher", lambda **_: object())
+    monkeypatch.setattr(tool, "GooglePatentsClient", lambda *_: object())
+    monkeypatch.setattr("sys.argv", ["google_patents.py", "--reference", str(tmp_path / "reference.db"),
+                                     "--assignee", "A", "--assignee", "B", "--assignee", "C",
+                                     "--assignee", "D", "--stop-after-failures", "2"])
+    assert tool.main() == 0
+    assert len(calls) == 2, f"tried {len(calls)} companies while the source refused every one"
+
+    # Without the flag the batch keeps going: the operator asked for every name.
+    calls.clear()
+    monkeypatch.setattr("sys.argv", ["google_patents.py", "--reference", str(tmp_path / "reference.db"),
+                                     "--assignee", "A", "--assignee", "B", "--assignee", "C"])
+    tool.main()
+    assert len(calls) == 3
+
+
 def test_a_pre_digitisation_filing_is_never_requested(tmp_path):
     """Measured: 0 of 60 sampled filings from 1998-2009 have a PDF at any path shape.
 
