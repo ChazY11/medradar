@@ -987,6 +987,32 @@ def company_page(*, data: Mapping[str, Any]) -> str:
                    f'<th>标题</th></tr></thead><tbody>{patent_rows}</tbody></table></div>'
                    if patent_rows else gap_note(data.get("patent_gap") or "patent_bulk_tables_absent"))
 
+    primary = str(data.get("primary_specialty") or "")
+    topics = data.get("field_topics") or []
+    field_recent = data.get("field_recent") or []
+    if primary and (topics or field_recent):
+        chips = "".join(
+            f'<span class="chip">{esc(str(item.get("term")))}'
+            f'<span class="muted small"> {n(item.get("count"))}</span></span>'
+            for item in topics)
+        rows = "".join(
+            f'<tr><td class="muted small">{esc(str(item.get("published_at") or ""))}</td>'
+            f'<td><a href="/paper?id={esc(str(item.get("paper_id")))}">'
+            f'{esc(str(item.get("title") or "")[:96])}</a></td></tr>'
+            for item in field_recent)
+        field_block = (
+            '<h2>2c · 这些产品所在的领域在谈什么</h2>'
+            f'<p class="muted small">它的产品码里 <b>{esc(primary)}</b> 最多'
+            f'（{n(data.get("primary_specialty_count"))} 个）。下面是该领域已归档论文的词频与'
+            f'最新几篇（<a href="/area?name={esc(primary)}">进该领域</a>）。'
+            '这是"论文里出现的词"，不是我们的技术判断。</p>'
+            + (f'<div class="chips">{chips}</div>' if chips else '')
+            + (f'<div class="card" style="margin-top:10px"><table><thead><tr><th>发表日期</th>'
+               f'<th>标题</th></tr></thead><tbody>{rows}</tbody></table></div>'
+               if rows else gap_note("no_papers_for_this_specialty")))
+    else:
+        field_block = ""
+
     body = f"""
 <p class="small muted"><a href="/">← 重新查询</a></p>
 <h1>{esc(name)}</h1><p class="lede">{esc(data.get("matched_by") or "")} · DUNS {esc(data.get("labeler_duns") or "—")}
@@ -1009,6 +1035,7 @@ def company_page(*, data: Mapping[str, Any]) -> str:
 和上面那段（科技地图）回答的是不同的问题，不能混用。</p>
 {area_html}
 
+{field_block}
 <h2>3 · 在研试验</h2>
 {trial_html}
 
@@ -1178,6 +1205,31 @@ def _company_data(store: Any, query: str, *, snapshot: Mapping[str, Any]) -> dic
         if label and label not in examples.setdefault(name, []):
             examples[name].append(label)
     out["specialty_examples"] = {k: v[:3] for k, v in examples.items()}
+    # The field this company mostly registers in, and what that field's literature says. A reader
+    # looking up a manufacturer is one hop away from "what is being published around their products",
+    # which is the question this product exists for.
+    try:
+        # specialty_counts returns a list of {"specialty", "codes"} dicts, not a mapping - reading it as
+        # a mapping raised inside the try and silently produced an empty block for every company.
+        ranked = sorted((row for row in (out["specialties"] or []) if isinstance(row, dict)),
+                        key=lambda row: -int(row.get("codes") or 0))
+        primary, primary_codes = "", 0
+        for row in ranked:
+            name = str(row.get("specialty") or "")
+            if name and name != "Unknown" and int(row.get("codes") or 0):
+                primary, primary_codes = name, int(row.get("codes") or 0)
+                break
+        if primary:
+            from .paper_passes import field_topics, recent_for
+
+            out["primary_specialty"] = primary
+            out["primary_specialty_count"] = primary_codes
+            out["field_topics"] = field_topics(store, primary, limit=8)
+            out["field_recent"] = recent_for(store, primary, limit=5)
+    except Exception:  # noqa: BLE001 - no literature yet is a stated gap
+        out["primary_specialty"] = ""
+        out["field_topics"] = []
+        out["field_recent"] = []
     from .product_codes import table_present as classification_present
 
     out["area_gap"] = None if out["specialties"] else (

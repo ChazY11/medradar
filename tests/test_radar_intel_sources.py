@@ -3909,10 +3909,16 @@ def test_a_field_page_says_what_its_papers_talk_about_and_what_that_is_not(tmp_p
     record_field(store, "Dental", ["P1", "P2"])
     assert papers_for(store, "Dental") == ["P1", "P2"]
 
+    # A function word survives the register-vocabulary filter (brand names contain them), so the field
+    # chips must use the same list the paper page does.
+    store.conn.execute("INSERT INTO paper_term VALUES (?,?,?,?,?)", ("which", "P1", "t", "2024", 9))
+    store.conn.commit()
+
     topics = field_topics(store, "Dental")
     terms = [item["term"] for item in topics]
     assert terms[0] == "osseointegration"        # appears in both papers
     assert "device" not in terms                 # a structural word, filtered by the word list
+    assert "which" not in terms                  # a function word, filtered by the same list
 
     summary = {"specialty": "Dental", "codes": 295, "devices": 906341, "companies": 1568,
                "updated_at": "2026-11-27T17:00:00Z"}
@@ -4318,6 +4324,32 @@ def test_the_query_audit_notices_a_scan_and_stays_quiet_when_there_is_none(tmp_p
     finally:
         tool.BIG_TABLE_ROWS = original
     store.close()
+
+
+def test_a_company_page_leads_to_the_research_around_its_products():
+    """One hop from a manufacturer to what is being published around their products."""
+    from medradar.radar.pages import company_page
+
+    base = {
+        "found": True, "company_name": "ACME ORTHOPEDICS, INC.", "query": "Acme", "devices": 1000,
+        "clearances": 12, "failures": 30, "trials": 2, "patents": 0, "papers": 1, "brands": [],
+        "product_codes": ["KTT"], "topics": {},
+        "specialties": [{"specialty": "Orthopedic", "codes": 3}], "specialty_examples": {},
+        "primary_specialty": "Orthopedic", "primary_specialty_count": 3,
+        "field_topics": [{"term": "osseointegration", "count": 412}],
+        "field_recent": [{"paper_id": "PMC9", "title": "A retrieval study", "journal": "J",
+                          "published_at": "2026-11-20"}],
+    }
+    page = company_page(data=base)
+    assert "这些产品所在的领域在谈什么" in page
+    assert "Orthopedic" in page and "3 个" in page
+    assert "osseointegration" in page
+    assert "/paper?id=PMC9" in page
+    assert "不是我们的技术判断" in page          # same bound as the field page
+
+    # A company whose field has no literature gets no block, not an empty table.
+    empty = dict(base, field_topics=[], field_recent=[])
+    assert "这些产品所在的领域在谈什么" not in company_page(data=empty)
 
 
 def test_a_pre_digitisation_filing_is_never_requested(tmp_path):

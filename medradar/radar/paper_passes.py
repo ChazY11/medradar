@@ -182,7 +182,7 @@ def field_topics(reference, specialty: str, *, limit: int = 12) -> list[dict[str
     not about the corpus. Words that appear in most fields are filtered out: "implant" says nothing
     when every field's papers say it.
     """
-    from .papers_index import STRUCTURAL_WORDS, tokens
+    from .papers_index import FUNCTION_WORDS, tokens
 
     ids = papers_for(reference, specialty)
     if not ids:
@@ -198,7 +198,10 @@ def field_topics(reference, specialty: str, *, limit: int = 12) -> list[dict[str
     kept: list[dict[str, Any]] = []
     for term, count in rows:
         text = str(term or "")
-        if len(text) < MIN_TOPIC_LENGTH or text in STRUCTURAL_WORDS:
+        # The same word list the paper page uses. It was STRUCTURAL_WORDS here and FUNCTION_WORDS
+        # there, so a field's topic chips still led with "which 1,704" while the paper page had been
+        # cleaned - one question, two standards.
+        if len(text) < MIN_TOPIC_LENGTH or text in FUNCTION_WORDS:
             continue
         share = 100.0 * int(count or 0) / total
         if share < 0.4:
