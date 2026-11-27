@@ -4061,6 +4061,60 @@ def test_the_coverage_page_shows_what_the_nightly_run_actually_did():
         directory.rmdir()
 
 
+def test_the_field_list_can_be_ordered_by_what_you_want_to_ask():
+    """21 fields with one order answers "which is biggest", not "which is unread"."""
+    from medradar.radar.pages import areas_page
+
+    items = [
+        {"specialty": "Dental", "codes": 295, "devices": 906341, "companies": 1568,
+         "top_companies": []},
+        {"specialty": "Orthopedic", "codes": 239, "devices": 1435239, "companies": 1069,
+         "top_companies": []},
+        {"specialty": "Radiology", "codes": 147, "devices": 5000, "companies": 3,
+         "top_companies": []},
+    ]
+    literature = {"Dental": {"candidates": 120, "stored": 66, "skipped": 52},
+                  "Orthopedic": {"candidates": 120, "stored": 0, "skipped": 118}}
+
+    def order(sort):
+        page = areas_page(data={"available": True, "items": items,
+                                "literature": literature, "sort": sort})
+        names = []
+        for chunk in page.split("<tr><td>")[1:]:
+            names.append(chunk.split("</td>")[0])
+        return names
+
+    assert order("devices") == ["Orthopedic", "Dental", "Radiology"]     # biggest register
+    assert order("papers")[0] == "Dental"                                # most papers stored
+    # The work queue: never-crawled first, then the rest - Radiology has no pass at all.
+    assert order("pending")[0] == "Radiology"
+    assert order("companies")[0] == "Dental"
+
+    # Each order says what it means, and the tabs let a reader switch without reading a URL.
+    page = areas_page(data={"available": True, "items": items, "literature": literature,
+                            "sort": "pending"})
+    assert "还没被文献线抓到过的领域排在最前" in page
+    assert 'href="/areas?sort=papers"' in page and 'class="tab on"' in page
+
+
+def test_a_second_pass_that_finds_nothing_cached_does_not_erase_the_field(tmp_path):
+    """Measured: re-running Dental to link its cached papers recorded stored 0 and overwrote 66."""
+    from medradar.radar.paper_passes import by_specialty, record_field, record_pass
+    from medradar.radar.reference import UdiReference
+
+    store = UdiReference(tmp_path / "reference.db")
+    record_pass(store, "Dental", "q", {"candidates": 120, "stored": 66, "skipped_cached": 52})
+    record_field(store, "Dental", ["P1", "P2", "P3"])
+    assert by_specialty(store)["Dental"]["papers"] == 3
+
+    # The re-run downloads nothing because everything is already here.
+    record_pass(store, "Dental", "q", {"candidates": 120, "stored": 0, "skipped_cached": 120})
+    entry = by_specialty(store)["Dental"]
+    assert entry["stored"] == 0          # what the last run did, kept as such
+    assert entry["papers"] == 3          # what the field holds, unaffected by the re-run
+    store.close()
+
+
 def test_a_pre_digitisation_filing_is_never_requested(tmp_path):
     """Measured: 0 of 60 sampled filings from 1998-2009 have a PDF at any path shape.
 

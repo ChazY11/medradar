@@ -94,6 +94,10 @@ background:var(--card)}
 .chip{font-size:12px;padding:2px 9px;border:1px solid var(--line);border-radius:999px;
 color:var(--muted);white-space:nowrap}
 .chip.k{color:var(--fg);font-weight:600}
+.tab{display:inline-block;font-size:12.5px;padding:3px 10px;margin:0 6px 0 0;border:1px solid var(--line);
+border-radius:6px;color:var(--muted);text-decoration:none}
+.tab.on{color:var(--fg);border-color:var(--fg);font-weight:600}
+.tab:hover{text-decoration:none;border-color:var(--fg)}
 table{width:100%;border-collapse:collapse;font-size:13.5px}
 th,td{text-align:left;padding:7px 10px;border-bottom:1px solid var(--line);vertical-align:top}
 th{color:var(--muted);font-weight:600;font-size:12.5px;white-space:nowrap}
@@ -1426,6 +1430,37 @@ def areas_page(*, data: Mapping[str, Any]) -> str:
     largest = max((int(item.get("devices") or 0) for item in items), default=0) or 1
     literature = data.get("literature") or {}
 
+    def _paper_count(specialty: str) -> int:
+        # The linked total, not the last run's yield: a re-run that finds everything cached reports
+        # stored 0 and used to make a well-covered field look empty.
+        entry = literature.get(specialty) or {}
+        return int(entry.get("papers") or entry.get("stored") or 0)
+
+    order = str(data.get("sort") or "devices")
+    if order == "papers":
+        items = sorted(items, key=lambda item: (-_paper_count(str(item.get("specialty"))),
+                                               -int(item.get("devices") or 0)))
+    elif order == "pending":
+        # Fields the literature lane has not reached at all come first, largest register first:
+        # that is the work queue, not the reading list.
+        items = sorted(items, key=lambda item: (str(item.get("specialty")) in literature,
+                                               -int(item.get("devices") or 0)))
+    elif order == "companies":
+        items = sorted(items, key=lambda item: -int(item.get("companies") or 0))
+    else:
+        items = sorted(items, key=lambda item: -int(item.get("devices") or 0))
+
+    tabs = "".join(
+        f'<a class="tab{" on" if key == order else ""}" href="/areas?sort={key}">{esc(label)}</a>'
+        for key, label in (("devices", "按设备数"), ("companies", "按公司数"),
+                           ("papers", "按已抓论文"), ("pending", "按未抓取优先")))
+    order_note = {
+        "devices": "按注册设备数排序：市场铺得最广的领域在前。",
+        "companies": "按公司数排序：挤进来的厂商最多的领域在前。",
+        "papers": "按已归档论文数排序：文献线目前投得最多的领域在前。",
+        "pending": "还没被文献线抓到过的领域排在最前，再按设备数——这是待办队列，不是阅读顺序。",
+    }.get(order, "")
+
     def lit_cell(specialty: str) -> str:
         """What the literature lane has done for this field - and nothing it has not.
 
@@ -1438,11 +1473,11 @@ def areas_page(*, data: Mapping[str, Any]) -> str:
             # fixed query that was not recorded per field, so a well-covered field can legitimately be
             # absent from the rotation table. "未抓取" would understate orthopaedics.
             return '<span class="muted small">未纳入轮转</span>'
-        stored = int(entry.get("stored") or 0)
+        stored = int(entry.get("papers") or entry.get("stored") or 0)
         candidates = int(entry.get("candidates") or 0)
         if stored:
             return (f'<span class="num">{n(stored)}</span>'
-                    f'<span class="muted small"> / 候选 {n(candidates)}</span>')
+                    f'<span class="muted small"> 篇已归档 / 上次候选 {n(candidates)}</span>')
         return (f'<span class="muted small">候选 {n(candidates)}，'
                 f'其中 {n(entry.get("skipped") or 0)} 篇已缓存</span>')
 
@@ -1467,6 +1502,8 @@ def areas_page(*, data: Mapping[str, Any]) -> str:
 <h1>技术领域分布</h1>
 <p class="lede">按 FDA 产品码分类，全库 {n(len(items))} 个技术领域里，各自有多少设备、多少家公司，
 以及设备数最多的那几家。点公司名直接进档案。</p>
+<p class="small">{tabs}</p>
+<p class="muted small">{esc(order_note)}</p>
 <p class="small muted">导出：<a href="/download?kind=areas&format=md">Markdown</a>
  · <a href="/download?kind=areas&format=csv">CSV</a></p>
 <div class="gap"><b>这张表说明什么：</b>它数的是<b>注册了什么</b>——产品码来自厂商登记，
@@ -2055,7 +2092,11 @@ def pages_router(service: Any, *, endpoints: Mapping[str, Any] | None = None) ->
         return HTMLResponse(cached(f"paper:{id}", 300.0, render))
 
     @router.get("/areas", response_class=HTMLResponse)
-    def areas_view() -> Any:
+    def areas_view(sort: str = Query("devices", max_length=16)) -> Any:
+        # Sorting is the answer to "which field do I look at first", and the three orders answer three
+        # different questions: biggest, most researched, and not researched at all.
+        order = sort if sort in ("devices", "papers", "pending", "companies") else "devices"
+
         def render() -> str:
             store = _store()
             if store is None:
@@ -2080,9 +2121,10 @@ def pages_router(service: Any, *, endpoints: Mapping[str, Any] | None = None) ->
                         "gap": "specialty_stats_absent"}
             finally:
                 store.close()
+            data["sort"] = order
             return areas_page(data=data)
 
-        return HTMLResponse(cached("areas", 300.0, render))
+        return HTMLResponse(cached(f"areas:{order}", 300.0, render))
 
     @router.get("/area", response_class=HTMLResponse)
     def area_view(name: str | None = Query(None, max_length=120)) -> Any:

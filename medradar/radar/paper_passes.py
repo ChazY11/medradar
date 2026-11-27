@@ -134,13 +134,26 @@ def next_queries(reference, *, count: int = 2) -> list[tuple[str, str]]:
 
 
 def by_specialty(reference) -> dict[str, dict[str, Any]]:
-    """Field name -> what its literature pass last produced, for the pages to read.
+    """Field name -> what its literature lane holds now, plus what its last pass did.
 
-    The number this returns is *how many papers that field's query brought in*, not how many papers
-    exist about the field. The distinction has to survive into the page: a field that has never been
-    crawled and a field with nothing to find are different states, and only one of them is our fault.
+    Two numbers, because one overwrote the other: `stored` is the last run's yield, and a re-run that
+    found everything already cached wrote 0 over the 66 the field had actually produced. The page now
+    reports the linked total from paper_field, and keeps the pass record as "what the last run did".
     """
-    return {row["specialty"]: row for row in read_passes(reference)}
+    passes = {row["specialty"]: row for row in read_passes(reference)}
+    linked: dict[str, int] = {}
+    try:
+        ensure_table(reference)
+        for specialty, count in reference.conn.execute(
+                "SELECT specialty, COUNT(*) FROM paper_field GROUP BY specialty"):
+            linked[str(specialty)] = int(count or 0)
+    except Exception:  # noqa: BLE001 - no table yet
+        linked = {}
+    for specialty, row in passes.items():
+        # `papers` is the stable answer to "how much of this field's literature do we hold"; `stored`
+        # stays as the last pass's yield and is labelled as such where it is printed.
+        row["papers"] = linked.get(specialty, 0)
+    return passes
 
 
 def field_topics(reference, specialty: str, *, limit: int = 12) -> list[dict[str, Any]]:
