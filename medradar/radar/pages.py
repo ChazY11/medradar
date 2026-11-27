@@ -1382,13 +1382,19 @@ def areas_page(*, data: Mapping[str, Any]) -> str:
 
 
 def area_page(*, specialty: str, summary: Mapping[str, Any] | None,
-              companies: Sequence[Mapping[str, Any]]) -> str:
-    """One specialty: its leaders, and a way to put any of them side by side.
+              companies: Sequence[Mapping[str, Any]],
+              data: Mapping[str, Any] | None = None) -> str:
+    """One specialty: its leaders, what its literature talks about, and a way to compare them.
 
     The link from /areas used to lead nowhere; the chain is 领域 -> 公司 -> 对比, and this is the
     middle. The checkboxes submit several `q` values to /compare, which joins them, so the comparison
     page is reachable without typing a comma-separated URL.
+
+    The literature block answers the question this product exists for - what is being researched in
+    this field now - and is careful about what it claims: term frequency in the papers this field's own
+    query fetched, with structural words removed, not a judgement about technology direction.
     """
+    data = data or {}
     if summary is None:
         return layout(
             title=f"{specialty} · MedRadar",
@@ -1415,6 +1421,23 @@ def area_page(*, specialty: str, summary: Mapping[str, Any] | None,
                 f'（全领域共 {n(total)} 家）。没上榜不等于规模为零，只表示排在这 {n(kept)} 家之后。'
                 f'</p>' if kept < total else
                 f'<p class="small muted">该领域全部 {n(total)} 家公司都在下面。</p>')
+    # What the field's own papers talk about. Restricted to the papers this field's query brought in,
+    # so the answer is about the field rather than about the corpus as a whole.
+    topics = data.get("field_topics") or []
+    field_papers = data.get("field_papers") or []
+    if topics:
+        chips = "".join(
+            f'<span class="chip">{esc(str(item["term"]))}'
+            f'<span class="muted small"> {n(item["count"])}</span></span>'
+            for item in topics)
+        topics_block = (
+            '<h2>这个领域的文献在谈什么</h2>'
+            f'<p class="muted small">从本领域查询抓进来的 {n(len(field_papers))} 篇全文中统计词频。'
+            '这是「论文里出现的词」，不是我们的技术判断；领域通用的结构性词已按词表滤掉。</p>'
+            f'<div class="chips">{chips}</div>')
+    else:
+        topics_block = ('<h2>这个领域的文献在谈什么</h2>'
+                        + gap_note("no_papers_for_this_specialty"))
     body = f"""
 <p class="small muted"><a href="/areas">← 全部技术领域</a></p>
 <h1>{esc(specialty)}</h1>
@@ -1425,6 +1448,7 @@ def area_page(*, specialty: str, summary: Mapping[str, Any] | None,
  · <a href="/download?kind=area&format=csv&name={esc(specialty)}">CSV</a></p>
 <div class="gap"><b>这张表数的是注册，不是技术。</b>设备数按注册条目计，一台设备带多个产品码时
 会在各领域分别计入；一家公司在这里设备多，说明它铺得广，不说明它领先。</div>
+{topics_block}
 {coverage}
 {table}
 <p class="small muted">数据更新于 {esc(str(summary.get("updated_at") or "未知")[:16])}。</p>
@@ -1920,9 +1944,20 @@ def pages_router(service: Any, *, endpoints: Mapping[str, Any] | None = None) ->
 
                 summary = one(store, name)
                 companies = companies_in_specialty(store, name) if summary else []
+                field_topics: list[dict[str, Any]] = []
+                field_papers: list[str] = []
+                if summary:
+                    try:
+                        from .paper_passes import field_topics as read_topics, papers_for
+
+                        field_papers = papers_for(store, name)
+                        field_topics = read_topics(store, name, limit=12)
+                    except Exception:  # noqa: BLE001 - no literature yet is a stated gap
+                        field_topics, field_papers = [], []
             finally:
                 store.close()
-            return area_page(specialty=name, summary=summary, companies=companies)
+            return area_page(specialty=name, summary=summary, companies=companies,
+                             data={"field_topics": field_topics, "field_papers": field_papers})
 
         return HTMLResponse(cached(f"area:{name}", 300.0, render))
 

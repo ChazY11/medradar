@@ -3878,6 +3878,46 @@ def test_a_field_nobody_crawled_is_not_a_field_with_no_research():
     assert "未纳入轮转" in neuro
 
 
+def test_a_field_page_says_what_its_papers_talk_about_and_what_that_is_not(tmp_path):
+    """The product's promise is "what is being researched"; the page must not dress term counts as
+    judgement, and must state the gap when there are no papers yet."""
+    from medradar.radar.pages import area_page
+    from medradar.radar.paper_passes import field_topics, papers_for, record_field
+    from medradar.radar.papers_index import ensure_tables
+    from medradar.radar.reference import UdiReference
+
+    store = UdiReference(tmp_path / "reference.db")
+    ensure_tables(store)
+    for paper, term in (("P1", "osseointegration"), ("P1", "zirconia"),
+                        ("P2", "osseointegration"), ("P2", "device")):
+        store.conn.execute("INSERT INTO paper_term VALUES (?,?,?,?,?)",
+                           (term, paper, "t", "2024", 1))
+    store.conn.commit()
+
+    record_field(store, "Dental", ["P1", "P2"])
+    assert papers_for(store, "Dental") == ["P1", "P2"]
+
+    topics = field_topics(store, "Dental")
+    terms = [item["term"] for item in topics]
+    assert terms[0] == "osseointegration"        # appears in both papers
+    assert "device" not in terms                 # a structural word, filtered by the word list
+
+    summary = {"specialty": "Dental", "codes": 295, "devices": 906341, "companies": 1568,
+               "updated_at": "2026-11-27T17:00:00Z"}
+    page = area_page(specialty="Dental", summary=summary, companies=[],
+                     data={"field_topics": topics, "field_papers": ["P1", "P2"]})
+    assert "这个领域的文献在谈什么" in page
+    assert "osseointegration" in page
+    # The claim is bounded in the page itself.
+    assert "不是我们的技术判断" in page
+    assert "结构性词已按词表滤掉" in page
+
+    empty = area_page(specialty="Ophthalmic", summary=summary, companies=[],
+                      data={"field_topics": [], "field_papers": []})
+    assert "这个领域还一篇论文都没抓进来" in empty
+    store.close()
+
+
 def test_a_pre_digitisation_filing_is_never_requested(tmp_path):
     """Measured: 0 of 60 sampled filings from 1998-2009 have a PDF at any path shape.
 

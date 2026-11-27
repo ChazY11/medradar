@@ -57,6 +57,7 @@ GAP_TEXT: dict[str, str] = {
     "no_company_in_this_specialty": "这个技术领域里没有登记了设备数的公司",
     "radar_health_unavailable": "读不到雷达源状态：台账缺失或没有源记录",
     "radar_sources_absent": "雷达源清单为空：这台部署没有配置任何追踪源",
+    "no_papers_for_this_specialty": "这个领域还一篇论文都没抓进来：它的查询还没轮到，或者抓到了但没有全文",
     "specialty_stats_absent": "技术领域分布表还没有生成（运行 tools/specialty_stats.py --refresh）",
     # --- should never appear
     "no_data": "这一项没有数据，而且没有记录原因（不该发生）",

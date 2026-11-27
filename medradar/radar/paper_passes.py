@@ -10,7 +10,7 @@ can be reported per field instead of as one number that means "some papers about
 
 from __future__ import annotations
 
-from typing import Any
+from typing import Any, Sequence
 
 #: One query per specialty the classification table uses. Deliberately narrow: a broad query returns
 #: the same famous papers for every field and adds nothing after the first night.
@@ -38,11 +38,53 @@ CREATE TABLE IF NOT EXISTS paper_pass (
     stored      INTEGER NOT NULL DEFAULT 0,
     skipped     INTEGER NOT NULL DEFAULT 0
 );
+
+CREATE TABLE IF NOT EXISTS paper_field (
+    paper_id   TEXT NOT NULL,
+    specialty  TEXT NOT NULL,
+    added_at   TEXT NOT NULL,
+    PRIMARY KEY (paper_id, specialty)
+);
 """
 
 
 def ensure_table(reference) -> None:
     reference.conn.executescript(PASS_SCHEMA)
+
+
+def record_field(reference, specialty: str, paper_ids: Sequence[str],
+                 *, at: str | None = None) -> int:
+    """Tie the papers a field's query actually brought in to that field.
+
+    Without this, /area can say how many papers a field's crawl produced but not what they are
+    about - the number would be a claim with no substance behind it.
+    """
+    from .records import utc_now_iso
+
+    ensure_table(reference)
+    stamp = at or utc_now_iso()
+    written = 0
+    for paper_id in paper_ids:
+        text = str(paper_id).strip()
+        if not text:
+            continue
+        reference.conn.execute(
+            "INSERT OR REPLACE INTO paper_field (paper_id, specialty, added_at) VALUES (?,?,?)",
+            (text, specialty, stamp))
+        written += 1
+    reference.conn.commit()
+    return written
+
+
+def papers_for(reference, specialty: str, *, limit: int = 5000) -> list[str]:
+    try:
+        ensure_table(reference)
+        rows = reference.conn.execute(
+            "SELECT paper_id FROM paper_field WHERE specialty = ? LIMIT ?",
+            (specialty, int(limit))).fetchall()
+    except Exception:  # noqa: BLE001 - no table yet
+        return []
+    return [str(row[0]) for row in rows]
 
 
 def record_pass(reference, specialty: str, query: str, stats: dict[str, Any],
@@ -101,4 +143,42 @@ def by_specialty(reference) -> dict[str, dict[str, Any]]:
     return {row["specialty"]: row for row in read_passes(reference)}
 
 
-__all__ = ["QUERIES", "by_specialty", "ensure_table", "next_queries", "read_passes", "record_pass"]
+def field_topics(reference, specialty: str, *, limit: int = 12) -> list[dict[str, Any]]:
+    """What the papers fetched for a field talk about, by term frequency inside that field.
+
+    Restricted to the papers this field's own query brought in, so the answer is about the field and
+    not about the corpus. Words that appear in most fields are filtered out: "implant" says nothing
+    when every field's papers say it.
+    """
+    from .papers_index import STRUCTURAL_WORDS, tokens
+
+    ids = papers_for(reference, specialty)
+    if not ids:
+        return []
+    placeholders = ",".join("?" for _ in ids[:900])
+    try:
+        rows = reference.conn.execute(
+            f"SELECT term, SUM(hits) AS n FROM paper_term WHERE paper_id IN ({placeholders})"
+            f" GROUP BY term ORDER BY n DESC LIMIT 400", tuple(ids[:900])).fetchall()
+    except Exception:  # noqa: BLE001 - no term table yet
+        return []
+    total = sum(int(row[1] or 0) for row in rows) or 1
+    kept: list[dict[str, Any]] = []
+    for term, count in rows:
+        text = str(term or "")
+        if len(text) < MIN_TOPIC_LENGTH or text in STRUCTURAL_WORDS:
+            continue
+        share = 100.0 * int(count or 0) / total
+        if share < 0.4:
+            continue
+        kept.append({"term": text, "count": int(count or 0), "share": round(share, 1)})
+        if len(kept) >= limit:
+            break
+    return kept
+
+
+MIN_TOPIC_LENGTH = 5
+
+
+__all__ = ["QUERIES", "by_specialty", "ensure_table", "field_topics", "next_queries", "papers_for",
+           "read_passes", "record_field", "record_pass"]

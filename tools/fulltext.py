@@ -155,7 +155,8 @@ def _store_failure(out_dir: Path, identifier: str, *, url: str, status: str, rea
 
 
 def fetch_europepmc(fetcher: PoliteFetcher, out_dir: Path, query: str, limit: int) -> dict[str, int]:
-    stats = {"candidates": 0, "stored": 0, "skipped_cached": 0, "no_fulltext": 0, "failed": 0}
+    stats = {"candidates": 0, "stored": 0, "skipped_cached": 0, "no_fulltext": 0,
+             "failed": 0, "matched_ids": []}
     cursor = "*"
     while stats["candidates"] < limit:
         term = f"({query}) AND OPEN_ACCESS:y AND IN_PMC:y"
@@ -176,6 +177,10 @@ def fetch_europepmc(fetcher: PoliteFetcher, out_dir: Path, query: str, limit: in
             identifier = pmcid
             if _out_path(out_dir, identifier).exists():
                 stats["skipped_cached"] += 1
+                # Already here, but this field's query is what matched it - which is the association
+                # /area needs. Without this, re-running a field after its papers are cached links
+                # nothing, and the field looks empty forever.
+                stats.setdefault("matched_ids", []).append(identifier)
                 continue
             url = PMC_OA_BUCKET.format(pmcid=pmcid)
             body = b""
@@ -228,6 +233,9 @@ def fetch_europepmc(fetcher: PoliteFetcher, out_dir: Path, query: str, limit: in
                    document=document,
                    extra={"bytes": len(body)})
             stats["stored"] += 1
+            # Which papers this field's query actually brought in, so /area can show what the
+            # literature for that field is about instead of showing nothing.
+            stats.setdefault("matched_ids", []).append(identifier)
         cursor = data.get("nextCursorMark")
         if not cursor or cursor == "*":
             break
@@ -323,6 +331,9 @@ def fetch_preprints(fetcher: PoliteFetcher, out_dir: Path, days: int, limit: int
                        published_at=str(row.get("date") or ""),
                        document=document, extra={"bytes": len(body)})
                 stats["stored"] += 1
+            # Which papers this field's query actually brought in, so /area can show what the
+            # literature for that field is about instead of showing nothing.
+            stats.setdefault("matched_ids", []).append(identifier)
             offset += len(rows)
             total = int(((data.get("messages") or [{}])[0]).get("total") or 0)
             if offset >= total:
@@ -377,12 +388,14 @@ def main() -> int:
     # coverage page can report papers per field instead of one number about orthopaedics.
     if args.reference and args.specialty:
         try:
-            from medradar.radar.paper_passes import record_pass
+            from medradar.radar.paper_passes import record_field, record_pass
             from medradar.radar.reference import UdiReference
 
             store = UdiReference(args.reference)
             try:
                 record_pass(store, args.specialty, args.query, stats)
+                fields = record_field(store, args.specialty, stats.get("matched_ids") or [])
+                print(f"linked {fields} papers to {args.specialty}")
             finally:
                 store.close()
             print(f"recorded pass for {args.specialty}")
