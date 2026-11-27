@@ -2120,6 +2120,10 @@ def pages_router(service: Any, *, endpoints: Mapping[str, Any] | None = None) ->
                     dates = dates_for(store, [str(item.get("paper_id") or "") for item in recent])
                     for item in recent:
                         item.setdefault("published_at", dates.get(str(item.get("paper_id") or ""), ""))
+                    # The heading promises "最近发表的" and the index returns matches by mention count.
+                    # Measured: the table read 2026-11-18, 2026-05-10, 2026-08-01 under a heading that
+                    # said newest first. Sort the claim to match the word.
+                    recent.sort(key=lambda item: str(item.get("published_at") or ""), reverse=True)
                     literature = {"terms": kept[:8], "papers": recent}
                 except Exception:  # noqa: BLE001 - no literature is a stated gap, not a failure
                     literature = {}
