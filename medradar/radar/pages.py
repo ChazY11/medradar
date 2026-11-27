@@ -572,6 +572,28 @@ def sources_page(*, meta: Mapping[str, Any], coverage: Mapping[str, Any] | None 
     datasets = data.get("datasets") or []
     shape = data.get("shape") or {}
     gaps = data.get("gaps") or []
+    # The nightly steps all swallow their own failures, on purpose. This is where a reader can see that
+    # "no new papers" meant "the step returned 503" rather than "nothing was published".
+    night = data.get("nightly") or {}
+    if night.get("available"):
+        night_rows = "".join(
+            f'<tr><td>{esc(str(step.get("step")))}</td>'
+            f'<td>{"✓" if step.get("ok") else "✗"}</td>'
+            f'<td class="muted small">{esc(str(step.get("note") or ""))}</td>'
+            f'<td class="muted small">{esc(str(step.get("at") or ""))}</td></tr>'
+            for step in (night.get("steps") or []))
+        night_block = ('<h2>最近一次夜间任务</h2>'
+                       f'<p class="muted small">开始于 {esc(str(night.get("run")))}，'
+                       f'共 {n(night.get("count"))} 步。每一步都故意吞掉自己的失败——'
+                       '抓不到源是正常的一夜，不是故障——所以这里列出每一步到底做了什么。</p>'
+                       '<div class="card"><table><thead><tr><th>步骤</th><th>结果</th>'
+                       f'<th>产出</th><th>时间</th></tr></thead><tbody>{night_rows}</tbody></table></div>')
+    elif night:
+        night_block = ('<h2>最近一次夜间任务</h2>'
+                       '<p class="muted small">还没有记录过夜间任务。'
+                       '第一次记录会在下一个 04:20 之后出现。</p>')
+    else:
+        night_block = ""
 
     def row(label: str, value: Any, note: str = "") -> str:
         return (f'<tr><td>{esc(label)}</td><td class="num">{n(value)}</td>'
@@ -657,6 +679,7 @@ def sources_page(*, meta: Mapping[str, Any], coverage: Mapping[str, Any] | None 
 与首页用的是同一份物化计数。</p>
 {banner}
 {stamp}
+{night_block}
 <h2>各数据集规模</h2>
 <div class="card"><table><thead><tr><th>数据集</th><th>规模</th><th>说明</th></tr></thead>
 <tbody>{dataset_rows}</tbody></table></div>
@@ -1810,6 +1833,14 @@ def pages_router(service: Any, *, endpoints: Mapping[str, Any] | None = None) ->
                     meta["sources"] = payload.get("sources") or []
             except Exception:  # noqa: BLE001 - the coverage page must render even if meta fails
                 meta["sources"] = []
+            # What the last nightly run did, so a step that silently did nothing is visible here.
+            try:
+                from .nightly import summary_for_page
+
+                data = dict(data or {})
+                data["nightly"] = summary_for_page(getattr(service.paths, "radar", None))
+            except Exception:  # noqa: BLE001 - a missing ledger is not a page failure
+                pass
             return sources_page(meta=meta, coverage=data)
 
         return HTMLResponse(cached("sources", 300.0, render))

@@ -4017,6 +4017,50 @@ def test_a_comparison_with_no_product_codes_says_so_instead_of_dividing_by_zero(
     assert "%）" not in page          # no computed percentage when there is nothing to divide
 
 
+def test_the_coverage_page_shows_what_the_nightly_run_actually_did():
+    """Every nightly step swallows its failure, so this table is the only place a no-op is visible."""
+    import json
+
+    from medradar.radar.nightly import summary_for_page
+    from medradar.radar.pages import sources_page
+
+    directory = Path(__file__).parent / "_nightly_tmp"
+    directory.mkdir(exist_ok=True)
+    ledger = directory / "nightly.jsonl"
+    try:
+        rows = [
+            {"run": "R1", "step": "_start", "ok": True, "at": "2026-11-28T04:20:00Z"},
+            {"run": "R1", "step": "preprints", "ok": True, "at": "2026-11-28T04:21:00Z",
+             "note": "stored 0"},
+            {"run": "R1", "step": "patents:1", "ok": True, "at": "2026-11-28T04:22:00Z",
+             "note": "rows 0, 503 x2"},
+        ]
+        # A torn final line is what a killed night leaves behind; it must not break the page.
+        ledger.write_text("\n".join(json.dumps(r) for r in rows) + '\n{"run": "R1", "step":',
+                          encoding="utf-8")
+
+        summary = summary_for_page(directory)
+        assert summary["available"] is True
+        assert summary["count"] == 2
+        assert [step["step"] for step in summary["steps"]] == ["preprints", "patents:1"]
+
+        page = sources_page(meta={"sources": []},
+                            coverage={"datasets": [], "shape": {}, "gaps": [],
+                                      "nightly": summary})
+        assert "最近一次夜间任务" in page
+        assert "503 x2" in page                      # the failure the step swallowed is on the page
+        assert "故意吞掉自己的失败" in page
+
+        empty = sources_page(meta={"sources": []},
+                             coverage={"datasets": [], "shape": {}, "gaps": [],
+                                       "nightly": summary_for_page(Path("/nonexistent"))})
+        assert "还没有记录过夜间任务" in empty
+    finally:
+        for item in directory.glob("*"):
+            item.unlink()
+        directory.rmdir()
+
+
 def test_a_pre_digitisation_filing_is_never_requested(tmp_path):
     """Measured: 0 of 60 sampled filings from 1998-2009 have a PDF at any path shape.
 

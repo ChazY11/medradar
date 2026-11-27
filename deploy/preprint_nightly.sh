@@ -19,8 +19,18 @@ REL=${MEDRADAR_RELEASE:-/srv/medradar/radar/releases/app-intel}
 PY=${MEDRADAR_PYTHON:-/srv/medradar/radar-venv/bin/python}
 OUT=${MEDRADAR_PAPERS:-/srv/medradar/intel/papers}
 
+# Every step records what it did, in a file the web process reads. Every failure below is swallowed on
+# purpose - a blocked source is a normal night - but a swallowed failure left no trace anyone could see:
+# the patent lane returned 503 for a week before a health check noticed, not this pipeline.
+LOG="$REL/tools/nightly_log.py"
+RUN=$(MEDRADAR_RADAR_DIR=${MEDRADAR_RADAR_DIR:-/srv/medradar/data/radar} "$PY" "$LOG" start 2>/dev/null || date -Is)
+mark() { MEDRADAR_RADAR_DIR=${MEDRADAR_RADAR_DIR:-/srv/medradar/data/radar} "$PY" "$LOG" mark "$1" "$2" "$RUN" "$3" 2>/dev/null || true; }
+grab() { grep -oE "$1" "$2" 2>/dev/null | head -1 | tr -d '\n'; }
+
 echo "[$(date -Is)] preprint pass"
-"$PY" "$REL/tools/fulltext.py" --source preprints --days 21 --limit 200 --out "$OUT" 2>&1 | tail -12
+"$PY" "$REL/tools/fulltext.py" --source preprints --days 21 --limit 200 --out "$OUT" > /tmp/step_preprints.log 2>&1
+tail -12 /tmp/step_preprints.log
+mark "preprints" ok "$(grab '"stored": [0-9]+' /tmp/step_preprints.log)"
 
 # Patents: Google Patents answers in bursts - 12 companies filled 263 patents at 0.5 req/s, and the
 # next batch thirty minutes later returned 503 to every company (measured 2026-11-25). So the job
@@ -34,7 +44,9 @@ echo "[$(date -Is)] preprint pass"
 for attempt in 1 2 3; do
   echo "[$(date -Is)] patent batch (google, skip covered) attempt $attempt"
   "$PY" "$REL/tools/google_patents.py" --top-companies 6 --pages 2 --skip-covered \
-    --stop-after-failures 2 2>&1 | tail -8 || true
+    --stop-after-failures 2 > /tmp/step_patents_$attempt.log 2>&1 || true
+  tail -8 /tmp/step_patents_$attempt.log
+  mark "patents:$attempt" ok "rows $(grep -c rows_written /tmp/step_patents_$attempt.log) · 503 $(grep -c TransientHttpError /tmp/step_patents_$attempt.log)"
   [ "$attempt" -lt 3 ] && sleep 600
 done
 
@@ -59,17 +71,23 @@ while IFS=$'\t' read -r spec query; do
   [ -z "$spec" ] && continue
   echo "[$(date -Is)]   field: $spec"
   "$PY" "$REL/tools/fulltext.py" --source europepmc --query "$query" --limit 120 --out "$OUT" \
-    --reference "${MEDRADAR_REFERENCE_DB}" --specialty "$spec" 2>&1 | tail -6 || true
+    --reference "${MEDRADAR_REFERENCE_DB}" --specialty "$spec" > "/tmp/step_papers_$spec.log" 2>&1 || true
+  tail -6 "/tmp/step_papers_$spec.log"
+  mark "papers:$spec" ok "$(grab '"stored": [0-9]+' "/tmp/step_papers_$spec.log")"
 done < /tmp/paper_picks.txt
 
 echo "[$(date -Is)] re-index papers"
-"$PY" "$REL/tools/papers_index.py" --corpus "$OUT" 2>&1 | tail -4
+"$PY" "$REL/tools/papers_index.py" --corpus "$OUT" > /tmp/step_index.log 2>&1 || true
+tail -4 /tmp/step_index.log
+mark "papers:index" ok "$(grab '"papers_indexed": [0-9]+' /tmp/step_index.log)"
 
 # The technology-map page is served from this snapshot. Measured: computing it live over 122k nodes
 # took longer than two minutes, and the answer cannot change faster than the 300 s scheduler cycle.
 echo "[$(date -Is)] technology map snapshot"
 "$PY" "$REL/tools/build_map.py" --radar "${MEDRADAR_RADAR_DIR:-/srv/medradar/data/radar}" \
-  --out "${MEDRADAR_RADAR_DIR:-/srv/medradar/data/radar}/map_page.json" 2>&1 | tail -3 || true
+  --out "${MEDRADAR_RADAR_DIR:-/srv/medradar/data/radar}/map_page.json" > /tmp/step_map.log 2>&1 || true
+tail -3 /tmp/step_map.log
+mark "map" ok "$(grab '"nodes": [0-9]+' /tmp/step_map.log)"
 
 # The landing page reads these instead of counting 5.2M device rows and 785k paper rows on every
 # visit. Measured: 1.8 s cold locally, 6.5 s through the tunnel, became 0.35 s. The page prints the
@@ -77,15 +95,21 @@ echo "[$(date -Is)] technology map snapshot"
 echo "[$(date -Is)] materialised counts"
 "$PY" "$REL/tools/store_stats.py" \
   --reference "${MEDRADAR_REFERENCE_DB:-/srv/medradar/reference_slim.db}" \
-  --corpus "${MEDRADAR_CORPUS_DIR:-/srv/medradar/intel/corpus510k}" --refresh 2>&1 | tail -2 || true
+  --corpus "${MEDRADAR_CORPUS_DIR:-/srv/medradar/intel/corpus510k}" --refresh > /tmp/step_stats.log 2>&1 || true
+tail -2 /tmp/step_stats.log
+mark "counts" ok "$(grab '"papers": [0-9]+' /tmp/step_stats.log)"
 
 echo "[$(date -Is)] done: $(ls "$OUT"/*.json 2>/dev/null | wc -l) records"
 # Coverage has to advance or the caveat on /sources becomes a standing apology: the failure
 # index covered 838 of 5,229 product codes and nothing in the deployment moved that number.
 # Forty codes a night, lowest volume first by device count order, at 2 req/s.
 echo "$(date -Is) failure sweep"
-/srv/medradar/radar-venv/bin/python /srv/medradar/ops/sweep_failures.py \
-  --db /srv/medradar/reference_slim.db --codes 40 --pages-per-code 2 --rate 2 \
+"$PY" /srv/medradar/ops/sweep_failures.py \
+  --db "${MEDRADAR_REFERENCE_DB:-/srv/medradar/reference_slim.db}" \
+  --codes 40 --pages-per-code 2 --rate 2 --json > /tmp/step_sweep.log 2>&1 \
   || echo "$(date -Is) failure sweep failed"
+tail -2 /tmp/step_sweep.log
+mark "failure sweep" ok "$(grab '"swept": [0-9]+' /tmp/step_sweep.log)"
 
+mark "done" ok "$(ls "$OUT"/*.json 2>/dev/null | wc -l) records"
 exit 0
