@@ -527,7 +527,13 @@ def sources_page(*, meta: Mapping[str, Any], coverage: Mapping[str, Any] | None 
     # The shape of each set matters more than its size: 348k records over how many codes, how many
     # models? A big table with narrow coverage is a small answer.
     shape_rows = "".join([
-        row("失效记录覆盖的产品码", shape.get("failure_codes"), "注册表里的产品码见下方缺口"),
+        # Two numbers, because they answer two questions: how many codes were checked, and how many
+        # of those produced a record. Showing one under the other's label is how this page claimed
+        # 838 of 5,229 forever.
+        row("已检查的产品码", shape.get("failure_codes_checked"),
+            f"其中 {n(shape.get('failure_codes_empty'))} 个查了没有可连接的失效记录" if
+            shape.get("failure_codes_empty") else "扫过的都算，含空结果"),
+        row("有失效记录的产品码", shape.get("failure_codes"), "注册表里的产品码见下方缺口"),
         row("失效记录涉及的型号", shape.get("failure_models"), "型号归一后去重"),
         row("失效记录涉及的品牌", shape.get("failure_brands"), ""),
         row("试验涉及的申办方", shape.get("trial_sponsors"), "按申办方名称去重"),

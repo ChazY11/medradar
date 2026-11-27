@@ -191,6 +191,8 @@ def coverage(reference, *, corpus_dir: str | Path | None = None,
         checked_state = {"swept": 0, "empty": 0, "last_swept_at": None}
         checked, sweeper_census = 0, 0
     empty = int(checked_state.get("empty") or 0)
+    parts["failure_codes_checked"] = checked
+    parts["failure_codes_empty"] = empty
     denominator = sweeper_census or register_codes
     if denominator and checked < denominator:
         detail = (f"已检查 {checked:,} 个产品码（其中 {empty:,} 个查了没有任何可连接的失效记录）。"
