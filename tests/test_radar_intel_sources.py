@@ -3918,6 +3918,35 @@ def test_a_field_page_says_what_its_papers_talk_about_and_what_that_is_not(tmp_p
     store.close()
 
 
+def test_a_chinese_company_name_is_not_a_dead_end_and_not_an_invalid_identifier():
+    """Measured in the browser: 「美敦力」 answered "这个标识不在设备注册表里" - which blames the reader."""
+    from medradar.radar.aliases import has_cjk, lookup
+    from medradar.radar.pages import company_page, device_dossier
+    from medradar.radar.device_view import DeviceTimeline
+
+    assert has_cjk("美敦力") and not has_cjk("Medtronic")
+    hits = lookup("美敦力")
+    assert hits and hits[0]["search_as"] == "Medtronic"
+
+    # The device page for a Chinese query explains the real reason and offers the English name.
+    timeline = DeviceTimeline(query="美敦力")
+    page = device_dossier(timeline, query="美敦力")
+    assert "英文法定名称" in page
+    assert 'href="/device?q=Medtronic"' in page
+    assert "中文名对照只是方便输入，不是注册表内容" in page
+
+    # A company query does the same, and an unknown Chinese name still gets the honest advice.
+    company = company_page(data={"found": False, "query": "美敦力"})
+    assert "英文法定名称" in company
+    unknown = company_page(data={"found": False, "query": "某某医疗器械"})
+    assert "注册表用的是英文法定名称" in unknown
+    assert "试试：" not in unknown          # no invented translation for a name we do not hold
+
+    # An English query that fails keeps its ordinary reason - no Chinese-specific noise.
+    english = device_dossier(DeviceTimeline(query="ZZZ999"), query="ZZZ999")
+    assert "英文法定名称" not in english
+
+
 def test_a_pre_digitisation_filing_is_never_requested(tmp_path):
     """Measured: 0 of 60 sampled filings from 1998-2009 have a PDF at any path shape.
 

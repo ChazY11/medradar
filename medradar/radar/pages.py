@@ -260,6 +260,36 @@ def _chip(text: str, *, strong: bool = False) -> str:
     return f'<span class="{cls}">{esc(text)}</span>'
 
 
+def _looks_chinese(text: str) -> bool:
+    from .aliases import has_cjk
+
+    return has_cjk(text)
+
+
+def _cjk_hint(query: str, *, action: str) -> str:
+    """What to say when a Chinese name found nothing.
+
+    Measured in the browser: 「美敦力」 answered "这个标识不在设备注册表里", which reads as "we have never
+    heard of Medtronic". The register stores English legal names as filed with the FDA, so a Chinese
+    name cannot match - that is the reason, and the page should give the reader a way forward instead
+    of blaming the identifier.
+    """
+    from .aliases import lookup
+
+    hits = lookup(query)
+    if hits:
+        first = hits[0]
+        links = "、".join(
+            f'<a href="{action}?q={esc(item["search_as"])}">{esc(item["search_as"])}</a>'
+            for item in hits[:3])
+        return (f'<div class="gap"><b>「{esc(first["chinese"])}」在注册表里是英文法定名称。</b>'
+                f'FDA 登记的是厂商申报的英文名，中文名不会命中。试试：{links}'
+                f'<span class="muted small">（中文名对照只是方便输入，不是注册表内容）</span></div>')
+    return ('<div class="gap"><b>注册表用的是英文法定名称。</b>'
+            '设备与公司都按 FDA 登记的名称存，所以中文名（如「美敦力」）不会命中。'
+            '请试用厂商的英文名，或从 <a href="/areas">技术领域</a> 进入。</div>')
+
+
 def _identifier_chips(ref: Any) -> str:
     parts = []
     if ref.di:
@@ -369,6 +399,9 @@ def device_dossier(timeline: Any, *, query: str) -> str:
     if not refs:
         body = (f'<h1>没有找到「{esc(query)}」</h1>'
                 '<p class="lede">可以输入 K 号、DI、DUNS、型号、品牌或公司名。</p>'
+                # A Chinese name cannot match an English legal name, and saying only "not in the
+                # register" leaves the reader thinking the product has never heard of the company.
+                + (_cjk_hint(query, action="/device") if _looks_chinese(query) else "")
                 + gap_note("device_not_in_udi_register")
                 + '<form class="search" method="get" action="/device">'
                   '<input type="search" name="query" value="" aria-label="查询">'
@@ -756,10 +789,13 @@ def company_page(*, data: Mapping[str, Any]) -> str:
     """One company: how much it has registered, filed, failed, is trialling, owns, and publishes."""
     name = data.get("company_name") or data.get("query") or ""
     if not data.get("found"):
+        # `name` is the Chinese query when nothing matched, so the hint speaks about that string.
+        missing = str(data.get("query") or name)
         return layout(
             title="没有这家公司 · MedRadar",
-            body=(f'<h1>没有找到「{esc(name)}」</h1>'
+            body=(f'<h1>没有找到「{esc(missing)}」</h1>'
                   '<p class="lede">在设备注册表里按公司名匹配（先精确、后包含）。</p>'
+                  + (_cjk_hint(missing, action="/company") if _looks_chinese(missing) else "")
                   + gap_note("company_not_in_register")
                   + '<p class="small muted"><a href="/">← 回到查询</a></p>'),
             active="company")
