@@ -193,5 +193,36 @@ def field_topics(reference, specialty: str, *, limit: int = 12) -> list[dict[str
 MIN_TOPIC_LENGTH = 5
 
 
+def recent_for(reference, specialty: str, *, limit: int = 10,
+               today: str | None = None) -> list[dict[str, Any]]:
+    """The newest papers this field's lane holds, with the date each was published.
+
+    Only papers actually linked to the field are eligible, so this answers "what has been published in
+    this field among what we hold" - not "everything published in this field". The page says which.
+    """
+    # Forward-dated records are excluded. Measured in the live corpus: 14 of 3,366 carry a date after
+    # today (three at 2027-01-01, eleven at 2026-12-01) because journals pre-fill an upcoming issue. A
+    # list headed "recently published" that opens with next January is wrong in the one way this
+    # product cannot afford.
+    from .watermark import utc_today
+
+    cutoff = str(today or utc_today())
+    ids = papers_for(reference, specialty, limit=5000)
+    if not ids:
+        return []
+    placeholders = ",".join("?" for _ in ids[:900])
+    try:
+        rows = reference.conn.execute(
+            f"SELECT paper_id, title, journal, published_at FROM paper_meta"
+            f" WHERE paper_id IN ({placeholders}) AND COALESCE(published_at,'') <> ''"
+            f"   AND published_at <= ?"
+            f" ORDER BY published_at DESC LIMIT ?",
+            tuple(ids[:900]) + (cutoff, int(limit))).fetchall()
+    except Exception:  # noqa: BLE001 - no meta table yet
+        return []
+    return [{"paper_id": row[0], "title": row[1] or "", "journal": row[2] or "",
+             "published_at": str(row[3] or "")[:10]} for row in rows]
+
+
 __all__ = ["QUERIES", "by_specialty", "ensure_table", "field_topics", "next_queries", "papers_for",
-           "read_passes", "record_field", "record_pass"]
+           "read_passes", "record_field", "record_pass", "recent_for"]

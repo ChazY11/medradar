@@ -1596,6 +1596,25 @@ def area_page(*, specialty: str, summary: Mapping[str, Any] | None,
     else:
         topics_block = ('<h2>这个领域的文献在谈什么</h2>'
                         + gap_note("no_papers_for_this_specialty"))
+    # What has been published lately among what we hold. Bounded in the sentence itself: this is the
+    # newest of the papers this field's lane fetched, not everything published in the field.
+    recent = data.get("field_recent") or []
+    if recent:
+        recent_rows = "".join(
+            f'<tr><td class="muted small">{esc(str(item.get("published_at") or ""))}</td>'
+            f'<td><a href="/paper?id={esc(str(item.get("paper_id")))}">'
+            f'{esc(str(item.get("title") or "")[:110])}</a>'
+            f'<div class="muted small">{esc(str(item.get("journal") or ""))[:70]}</div></td></tr>'
+            for item in recent)
+        recent_block = (
+            '<h2>这个领域最近发表的</h2>'
+            f'<p class="muted small">本领域已归档论文中发表日期最新的 {n(len(recent))} 篇。'
+            '这是"我们手上的这些论文里最新的"，不是"这个领域全部新论文"；'
+            '出版日期在未来的期刊预填记录已排除。</p>'
+            f'<div class="card"><table><thead><tr><th>发表日期</th><th>标题</th></tr></thead>'
+            f'<tbody>{recent_rows}</tbody></table></div>')
+    else:
+        recent_block = ""
     body = f"""
 <p class="small muted"><a href="/areas">← 全部技术领域</a></p>
 <h1>{esc(specialty)}</h1>
@@ -1608,6 +1627,7 @@ def area_page(*, specialty: str, summary: Mapping[str, Any] | None,
 <div class="gap"><b>这张表数的是注册，不是技术。</b>设备数按注册条目计，一台设备带多个产品码时
 会在各领域分别计入；一家公司在这里设备多，说明它铺得广，不说明它领先。</div>
 {topics_block}
+{recent_block}
 {coverage}
 {table}
 <p class="small muted">数据更新于 {esc(str(summary.get("updated_at") or "未知")[:16])}。</p>
@@ -2163,19 +2183,23 @@ def pages_router(service: Any, *, endpoints: Mapping[str, Any] | None = None) ->
                 companies = companies_in_specialty(store, resolved_name) if summary else []
                 field_topics: list[dict[str, Any]] = []
                 field_papers: list[str] = []
+                field_recent: list[dict[str, Any]] = []
                 if summary:
                     try:
                         from .paper_passes import field_topics as read_topics, papers_for
 
                         field_papers = papers_for(store, resolved_name)
                         field_topics = read_topics(store, resolved_name, limit=12)
+                        from .paper_passes import recent_for
+
+                        field_recent = recent_for(store, resolved_name, limit=10)
                     except Exception:  # noqa: BLE001 - no literature yet is a stated gap
                         field_topics, field_papers = [], []
             finally:
                 store.close()
             return area_page(specialty=resolved_name, summary=summary, companies=companies,
                              data={"field_topics": field_topics, "field_papers": field_papers,
-                                   "resolved_from": resolved_from})
+                                   "field_recent": field_recent, "resolved_from": resolved_from})
 
         return HTMLResponse(cached(f"area:{name}", 300.0, render))
 

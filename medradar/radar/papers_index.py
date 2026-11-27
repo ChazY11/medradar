@@ -38,6 +38,19 @@ CREATE TABLE IF NOT EXISTS paper_term (
 );
 CREATE INDEX IF NOT EXISTS idx_paper_term_term ON paper_term(term);
 
+-- Title, journal and publication date per paper.
+--
+-- The date lived only inside the corpus JSON, so a field page could not answer "what has been published
+-- here lately" without opening 3,500 files. Papers are indexed per field, which makes recency the one
+-- question the index could not answer about its own contents.
+CREATE TABLE IF NOT EXISTS paper_meta (
+    paper_id     TEXT PRIMARY KEY,
+    title        TEXT,
+    journal      TEXT,
+    published_at TEXT
+);
+CREATE INDEX IF NOT EXISTS idx_paper_meta_date ON paper_meta(published_at);
+
 -- How many *distinct brands* in the register contain this word.
 --
 -- The corpus-side document frequency is not enough to decide whether a word identifies a device.
@@ -339,6 +352,15 @@ def index_corpus(reference, corpus_root: str | Path, *, vocab: set[str] | None =
         if not counts:
             continue
         papers += 1
+        try:
+            reference.conn.execute(
+                "INSERT OR REPLACE INTO paper_meta (paper_id, title, journal, published_at)"
+                " VALUES (?,?,?,?)",
+                (paper_id, title,
+                 str(payload.get("journal") or "")[:200],
+                 str(payload.get("published_at") or year or "")[:10]))
+        except Exception:  # noqa: BLE001 - metadata must never stop the index
+            pass
         reference.conn.executemany(
             "INSERT OR REPLACE INTO paper_term (term, paper_id, title, year, hits) "
             "VALUES (?,?,?,?,?)",

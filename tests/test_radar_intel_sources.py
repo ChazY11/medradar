@@ -4115,6 +4115,57 @@ def test_a_second_pass_that_finds_nothing_cached_does_not_erase_the_field(tmp_pa
     store.close()
 
 
+def test_a_field_can_say_what_was_published_lately_among_what_it_holds(tmp_path):
+    """The index recorded terms per paper but no date, so recency was the one question it could not
+    answer about its own contents."""
+    import json
+
+    from medradar.radar.paper_passes import recent_for, record_field
+    from medradar.radar.papers_index import ensure_tables, index_corpus
+    from medradar.radar.reference import UdiReference
+
+    corpus = tmp_path / "papers"
+    corpus.mkdir()
+    for pid, title, date in (("PMC1", "Dental implant osseointegration", "2025-05-01"),
+                             ("PMC2", "Older dental work", "2019-01-01"),
+                             ("PMC3", "Zirconia surfaces", "2024-11-20")):
+        (corpus / f"paper_{pid}.json").write_text(json.dumps({
+            "kind": "paper", "identifier": pid, "title": title, "journal": "J Test",
+            "published_at": date,
+            "abstract": "dental implant implant zirconia osseointegration",
+            "sections": {"body": "dental implant surface"}, "status": "text"}), encoding="utf-8")
+
+    store = UdiReference(tmp_path / "ref.db")
+    ensure_tables(store)
+    index_corpus(store, corpus, vocab={"dental", "implant", "zirconia", "osseointegration",
+                                       "surface"})
+
+    dates = dict(store.conn.execute("SELECT paper_id, published_at FROM paper_meta").fetchall())
+    assert dates == {"PMC1": "2025-05-01", "PMC2": "2019-01-01", "PMC3": "2024-11-20"}
+
+    record_field(store, "Dental", ["PMC1", "PMC2", "PMC3"])
+    newest = recent_for(store, "Dental", limit=2)
+    assert [item["paper_id"] for item in newest] == ["PMC1", "PMC3"]      # newest first
+    assert newest[0]["published_at"] == "2025-05-01"
+    assert newest[0]["journal"] == "J Test"
+
+    # Forward-dated records are excluded: measured in the live corpus, 14 of 3,366 carry a date after
+    # today because journals pre-fill an upcoming issue, and one of them would head this list.
+    (corpus / "paper_PMC4.json").write_text(json.dumps({
+        "kind": "paper", "identifier": "PMC4", "title": "Next January", "journal": "J Test",
+        "published_at": "2027-01-01", "abstract": "dental implant",
+        "sections": {"body": "implant"}, "status": "text"}), encoding="utf-8")
+    index_corpus(store, corpus, vocab={"dental", "implant", "zirconia", "osseointegration",
+                                       "surface"})
+    record_field(store, "Dental", ["PMC1", "PMC2", "PMC3", "PMC4"])
+    ids = [item["paper_id"] for item in recent_for(store, "Dental", limit=5, today="2026-11-28")]
+    assert "PMC4" not in ids and ids[0] == "PMC1"
+
+    # A field with nothing linked has no recency to report - not an empty table presented as one.
+    assert recent_for(store, "Ophthalmic") == []
+    store.close()
+
+
 def test_a_pre_digitisation_filing_is_never_requested(tmp_path):
     """Measured: 0 of 60 sampled filings from 1998-2009 have a PDF at any path shape.
 
