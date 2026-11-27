@@ -66,4 +66,44 @@ def lookup(text: str) -> list[dict[str, Any]]:
     return sorted(hits, key=lambda item: -item["length"])
 
 
-__all__ = ["ALIASES", "has_cjk", "lookup"]
+#: Chinese names for the twenty-one medical specialties FDA classifies devices into. The English
+#: side is the value stored in product_code_class, so a link built from it lands on a real page.
+SPECIALTY_ALIASES: tuple[tuple[str, str], ...] = (
+    ("骨科", "Orthopedic"),
+    ("牙科", "Dental"),
+    ("口腔", "Dental"),
+    ("心血管", "Cardiovascular"),
+    ("眼科", "Ophthalmic"),
+    ("神经", "Neurology"),
+    ("麻醉", "Anesthesiology"),
+    ("耳鼻喉", "Ear, Nose, Throat"),
+    ("放射", "Radiology"),
+    ("影像", "Radiology"),
+    ("妇产", "Obstetrics/Gynecology"),
+    ("消化", "Gastroenterology, Urology"),
+    ("泌尿", "Gastroenterology, Urology"),
+    ("普外", "General, Plastic Surgery"),
+    ("整形", "General, Plastic Surgery"),
+    ("综合医院", "General Hospital"),
+    ("血液", "Hematology"),
+    ("免疫", "Immunology"),
+    ("微生物", "Microbiology"),
+    ("临床化学", "Clinical Chemistry"),
+    ("病理", "Pathology"),
+    ("毒理", "Clinical Toxicology"),
+    ("康复", "Physical Medicine"),
+    ("物理医学", "Physical Medicine"),
+    ("遗传", "Medical Genetics"),
+)
+
+
+def lookup_specialty(text: str) -> list[dict[str, str]]:
+    """Specialties whose Chinese name appears in the query, longest match first."""
+    query = str(text or "")
+    hits = [{"chinese": chinese, "specialty": specialty}
+            for chinese, specialty in SPECIALTY_ALIASES
+            if chinese and chinese in query]
+    return sorted(hits, key=lambda item: -len(item["chinese"]))
+
+
+__all__ = ["ALIASES", "SPECIALTY_ALIASES", "has_cjk", "lookup", "lookup_specialty"]

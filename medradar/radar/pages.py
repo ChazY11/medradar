@@ -1454,9 +1454,25 @@ def area_page(*, specialty: str, summary: Mapping[str, Any] | None,
     """
     data = data or {}
     if summary is None:
+        # The field exists under its English name. Saying only "统计表缺失" would report our vocabulary
+        # as missing data - the same mistake as answering 美敦力 with "不在注册表里".
+        from .aliases import lookup_specialty
+
+        hits = lookup_specialty(specialty)
+        if hits:
+            links = "、".join(
+                f'<a href="/area?name={esc(item["specialty"])}">{esc(item["specialty"])}</a>'
+                for item in hits[:3])
+            hint = (f'<div class="gap"><b>技术领域用的是 FDA 的英文分类名。</b>'
+                    f'「{esc(hits[0]["chinese"])}」在库里叫 {links}'
+                    f'<span class="muted small">（中文名对照只是方便输入，不是库里的字段）</span></div>')
+        else:
+            hint = ('<div class="gap"><b>技术领域用的是 FDA 的英文分类名。</b>'
+                    '可以用 Orthopedic、Dental、Cardiovascular 这样的英文名，'
+                    '或从 <a href="/areas">技术领域总表</a> 里点进去。</div>')
         return layout(
             title=f"{specialty} · MedRadar",
-            body=(f'<h1>{esc(specialty)}</h1>' + gap_note("specialty_stats_absent")
+            body=(f'<h1>{esc(specialty)}</h1>' + hint
                   + '<p class="small muted"><a href="/areas">← 全部技术领域</a></p>'),
             active="areas")
 
@@ -1481,6 +1497,10 @@ def area_page(*, specialty: str, summary: Mapping[str, Any] | None,
                 f'<p class="small muted">该领域全部 {n(total)} 家公司都在下面。</p>')
     # What the field's own papers talk about. Restricted to the papers this field's query brought in,
     # so the answer is about the field rather than about the corpus as a whole.
+    resolved_from = str(data.get("resolved_from") or "")
+    # Never swap a field silently: say which name was used for the lookup.
+    resolved_note = (f'<p class="small muted">「{esc(resolved_from)}」按英文分类名 '
+                     f'「{esc(specialty)}」查询。</p>' if resolved_from else "")
     topics = data.get("field_topics") or []
     field_papers = data.get("field_papers") or []
     if topics:
@@ -1501,6 +1521,7 @@ def area_page(*, specialty: str, summary: Mapping[str, Any] | None,
 <h1>{esc(specialty)}</h1>
 <p class="lede">{n(summary.get("devices"))} 台设备 · {n(summary.get("codes"))} 个产品码 ·
 {n(summary.get("companies"))} 家公司</p>
+{resolved_note}
 <p class="small muted">导出：
 <a href="/download?kind=area&format=md&name={esc(specialty)}">Markdown</a>
  · <a href="/download?kind=area&format=csv&name={esc(specialty)}">CSV</a></p>
@@ -2001,21 +2022,38 @@ def pages_router(service: Any, *, endpoints: Mapping[str, Any] | None = None) ->
                 from .specialty import companies_in_specialty, one
 
                 summary = one(store, name)
-                companies = companies_in_specialty(store, name) if summary else []
+                # `name` comes from the query string and must stay read-only here: assigning to it
+                # inside this closure made it a local and raised UnboundLocalError on the first read.
+                resolved_name = name
+                resolved_from = ""
+                if summary is None:
+                    # A Chinese field name is a different spelling of a field we hold, not a missing
+                    # field. Resolve it explicitly rather than only telling the reader to retype - and
+                    # say on the page which name was used, so nothing changes silently.
+                    from .aliases import lookup_specialty
+
+                    hits = lookup_specialty(name)
+                    if hits:
+                        mapped = hits[0]["specialty"]
+                        candidate = one(store, mapped)
+                        if candidate is not None:
+                            summary, resolved_from, resolved_name = candidate, str(name), mapped
+                companies = companies_in_specialty(store, resolved_name) if summary else []
                 field_topics: list[dict[str, Any]] = []
                 field_papers: list[str] = []
                 if summary:
                     try:
                         from .paper_passes import field_topics as read_topics, papers_for
 
-                        field_papers = papers_for(store, name)
-                        field_topics = read_topics(store, name, limit=12)
+                        field_papers = papers_for(store, resolved_name)
+                        field_topics = read_topics(store, resolved_name, limit=12)
                     except Exception:  # noqa: BLE001 - no literature yet is a stated gap
                         field_topics, field_papers = [], []
             finally:
                 store.close()
-            return area_page(specialty=name, summary=summary, companies=companies,
-                             data={"field_topics": field_topics, "field_papers": field_papers})
+            return area_page(specialty=resolved_name, summary=summary, companies=companies,
+                             data={"field_topics": field_topics, "field_papers": field_papers,
+                                   "resolved_from": resolved_from})
 
         return HTMLResponse(cached(f"area:{name}", 300.0, render))
 

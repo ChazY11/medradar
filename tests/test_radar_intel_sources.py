@@ -3357,8 +3357,10 @@ def test_one_specialty_lists_its_leaders_and_can_send_them_to_the_comparison(tmp
                           summary={**summary, "companies": 900}, companies=leaders)
     assert "没上榜不等于规模为零" in truncated
 
+    # An unknown field now says which vocabulary the register uses, rather than reporting a missing
+    # table - the same correction as the Chinese-name hint on device and company pages.
     missing = area_page(specialty="Nonesuch", summary=None, companies=[])
-    assert "specialty_stats_absent" in missing
+    assert "英文分类名" in missing and "/areas" in missing
 
     # And the comparison page accepts the repeated values the form produces.
     data = [_company_data(store, "BIG SPINE", snapshot={}),
@@ -3945,6 +3947,27 @@ def test_a_chinese_company_name_is_not_a_dead_end_and_not_an_invalid_identifier(
     # An English query that fails keeps its ordinary reason - no Chinese-specific noise.
     english = device_dossier(DeviceTimeline(query="ZZZ999"), query="ZZZ999")
     assert "英文法定名称" not in english
+
+
+def test_a_chinese_field_name_opens_the_field_instead_of_a_hint_to_retype():
+    """Measured: /area?name=牙科 answered "统计表缺失" - our vocabulary reported as missing data."""
+    from medradar.radar.aliases import lookup_specialty
+    from medradar.radar.pages import area_page
+
+    assert lookup_specialty("牙科")[0]["specialty"] == "Dental"
+    assert lookup_specialty("骨科植入物")[0]["specialty"] == "Orthopedic"
+    assert lookup_specialty("某某科") == []
+
+    summary = {"specialty": "Dental", "codes": 295, "devices": 906341, "companies": 1568,
+               "updated_at": "2026-11-27T00:00:00Z"}
+    # The route resolves the alias and passes what it used, so the page can say so.
+    page = area_page(specialty="Dental", summary=summary, companies=[],
+                     data={"resolved_from": "牙科"})
+    assert "「牙科」按英文分类名" in page
+    assert "906,341" in page                     # the real field page, not a hint
+    # Nothing changes silently.
+    plain = area_page(specialty="Dental", summary=summary, companies=[], data={})
+    assert "按英文分类名" not in plain
 
 
 def test_a_pre_digitisation_filing_is_never_requested(tmp_path):
