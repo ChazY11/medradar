@@ -4105,7 +4105,18 @@ def test_a_second_pass_that_finds_nothing_cached_does_not_erase_the_field(tmp_pa
     store = UdiReference(tmp_path / "reference.db")
     record_pass(store, "Dental", "q", {"candidates": 120, "stored": 66, "skipped_cached": 52})
     record_field(store, "Dental", ["P1", "P2", "P3"])
+    # `papers` counts what is actually archived, so the three linked ids need metadata rows. The live
+    # store showed why: Dental matched 120 and archived 117, and the column says 篇已归档.
+    from medradar.radar.papers_index import ensure_tables
+
+    ensure_tables(store)
+    store.conn.executemany(
+        "INSERT OR REPLACE INTO paper_meta (paper_id, title, journal, published_at)"
+        " VALUES (?,?,?,?)", [("P1", "t", "j", "2024-01-01"), ("P2", "t", "j", "2024-01-01"),
+                              ("P3", "t", "j", "2024-01-01")])
+    store.conn.commit()
     assert by_specialty(store)["Dental"]["papers"] == 3
+    assert by_specialty(store)["Dental"]["matched"] == 3
 
     # The re-run downloads nothing because everything is already here.
     record_pass(store, "Dental", "q", {"candidates": 120, "stored": 0, "skipped_cached": 120})

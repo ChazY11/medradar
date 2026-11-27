@@ -142,17 +142,26 @@ def by_specialty(reference) -> dict[str, dict[str, Any]]:
     """
     passes = {row["specialty"]: row for row in read_passes(reference)}
     linked: dict[str, int] = {}
+    archived: dict[str, int] = {}
     try:
         ensure_table(reference)
         for specialty, count in reference.conn.execute(
                 "SELECT specialty, COUNT(*) FROM paper_field GROUP BY specialty"):
             linked[str(specialty)] = int(count or 0)
+        # A query matches more papers than we end up holding: measured on the live store, Dental
+        # matched 120 and archived 117, Cardiovascular 117 and 115. The page says "篇已归档", so the
+        # number next to that word must be the archived count, not the match count.
+        for specialty, count in reference.conn.execute(
+                "SELECT f.specialty, COUNT(*) FROM paper_field f"
+                " JOIN paper_meta m ON m.paper_id = f.paper_id GROUP BY f.specialty"):
+            archived[str(specialty)] = int(count or 0)
     except Exception:  # noqa: BLE001 - no table yet
-        linked = {}
+        linked, archived = {}, {}
     for specialty, row in passes.items():
-        # `papers` is the stable answer to "how much of this field's literature do we hold"; `stored`
-        # stays as the last pass's yield and is labelled as such where it is printed.
-        row["papers"] = linked.get(specialty, 0)
+        # `papers` is the stable answer to "how many of this field's papers do we actually hold";
+        # `matched` is what its query returned; `stored` stays the last pass's yield.
+        row["papers"] = archived.get(specialty, 0)
+        row["matched"] = linked.get(specialty, 0)
     return passes
 
 

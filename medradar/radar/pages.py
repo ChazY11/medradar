@@ -1536,11 +1536,13 @@ def areas_page(*, data: Mapping[str, Any]) -> str:
             # absent from the rotation table. "未抓取" would understate orthopaedics.
             return '<span class="muted small">未纳入轮转</span>'
         stored = int(entry.get("papers") or entry.get("stored") or 0)
-        candidates = int(entry.get("candidates") or 0)
+        matched = int(entry.get("matched") or 0)
+        gap = max(0, matched - stored)
         if stored:
+            extra = f'（查询命中 {n(matched)}，其中 {n(gap)} 篇没有全文）' if gap else ''
             return (f'<span class="num">{n(stored)}</span>'
-                    f'<span class="muted small"> 篇已归档 / 上次候选 {n(candidates)}</span>')
-        return (f'<span class="muted small">候选 {n(candidates)}，'
+                    f'<span class="muted small"> 篇已归档{extra}</span>')
+        return (f'<span class="muted small">候选 {n(entry.get("candidates") or 0)}，'
                 f'其中 {n(entry.get("skipped") or 0)} 篇已缓存</span>')
 
     rows = []

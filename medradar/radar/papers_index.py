@@ -38,6 +38,13 @@ CREATE TABLE IF NOT EXISTS paper_term (
 );
 CREATE INDEX IF NOT EXISTS idx_paper_term_term ON paper_term(term);
 
+-- Terms are also read by paper, and that direction had no index.
+--
+-- Measured after adding field topics to /area and /device: the query "terms of these 120 papers"
+-- planned as SCAN paper_term USING INDEX idx_paper_term_term over 982k rows and took 2.7 s, twice
+-- per field page, which turned two of the most-used pages into five-second pages.
+CREATE INDEX IF NOT EXISTS idx_paper_term_paper ON paper_term(paper_id);
+
 -- Title, journal and publication date per paper.
 --
 -- The date lived only inside the corpus JSON, so a field page could not answer "what has been published
