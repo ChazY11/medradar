@@ -343,6 +343,27 @@ def _area_line(timeline: Any) -> str:
             f'<ul class="small" style="margin:4px 0 0 18px">{"".join(parts)}</ul>')
 
 
+def _field_topics_line(timeline: Any) -> str:
+    """What the device's field is talking about, so one product leads to the research around it.
+
+    The terms are the field's own papers' words, filtered for structural vocabulary; the sentence says
+    so, because a term list read as a technology verdict is exactly the overstatement to avoid.
+    """
+    topics = getattr(timeline, "field_topics", None) or []
+    specialty = str(getattr(timeline, "field_specialty", "") or "")
+    if not topics or not specialty:
+        return ""
+    chips = "".join(
+        f'<span class="chip">{esc(str(item.get("term")))}'
+        f'<span class="muted small"> {n(item.get("count"))}</span></span>'
+        for item in topics)
+    return (f'<p class="small" style="margin:10px 0 0">'
+            f'<b>{esc(specialty)}</b> 这个领域的文献在谈什么'
+            f'（<a href="/area?name={esc(specialty)}">看该领域</a>）'
+            f'<span class="muted small"> · 本领域已归档论文的词频，不是技术判断</span></p>'
+            f'<div class="chips">{chips}</div>')
+
+
 def device_dossier(timeline: Any, *, query: str) -> str:
     refs = timeline.refs
     if not refs:
@@ -472,6 +493,7 @@ def device_dossier(timeline: Any, *, query: str) -> str:
 {('· 型号 ' + esc(head.version_or_model)) if head.version_or_model else ''}</p>
 <div class="chips">{_identifier_chips(head)}</div>
 {_area_line(timeline)}
+{_field_topics_line(timeline)}
 <div class="grid" style="margin-top:22px">{summary_cards}</div>
 
 <h2>1 · 批文与规格</h2>

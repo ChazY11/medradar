@@ -199,6 +199,9 @@ class DeviceTimeline:
     #: A dossier could describe clearances, failures, trials and papers without ever saying what kind
     #: of device it is looking at; this is that missing sentence.
     areas: dict[str, dict[str, str]] = field(default_factory=dict)
+    #: The field this device is classified into, and what that field's papers talk about.
+    field_specialty: str = ""
+    field_topics: list[dict[str, Any]] = field(default_factory=list)
     #: "all" or "first:N" - which devices got their per-device sections computed. A page that reads
     #: only one device must not have paid for twenty-five, and a caller must not read an uncomputed
     #: section as an empty one.
@@ -216,6 +219,8 @@ class DeviceTimeline:
             "papers": {key: value.to_dict() for key, value in self.papers.items()},
             "specs": self.specs,
             "areas": self.areas,
+            "field_specialty": self.field_specialty,
+            "field_topics": self.field_topics,
             "detail_scope": self.detail_scope,
             "gaps": self.gaps,
         }
@@ -680,6 +685,20 @@ def build(reference, query: str, *, corpus_root: str | Path | None = None,
             missing = [code for code in codes if code not in timeline.areas]
             if missing:
                 timeline.gaps.append("product_code_not_classified")
+            # What this device's field is talking about, so a reader can step from one product to the
+            # research around it. The field comes from the classification, not from a guess about the
+            # brand, and the terms are the ones the field's own papers use.
+            try:
+                from .paper_passes import field_topics
+
+                specialties = [str(meta.get("medical_specialty") or "")
+                               for meta in timeline.areas.values()]
+                primary = next((s for s in specialties if s), "")
+                if primary:
+                    timeline.field_specialty = primary
+                    timeline.field_topics = field_topics(reference, primary, limit=8)
+            except Exception:  # noqa: BLE001 - no literature yet is a stated gap
+                timeline.field_topics = []
         else:
             timeline.gaps.append("product_classification_absent")
     # The patent and trial gaps are reported from the data, not asserted: a deployment with the
