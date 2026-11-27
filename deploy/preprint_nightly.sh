@@ -112,6 +112,16 @@ echo "[$(date -Is)] done: $(ls "$OUT"/*.json 2>/dev/null | wc -l) records"
 # Coverage has to advance or the caveat on /sources becomes a standing apology: the failure
 # index covered 838 of 5,229 product codes and nothing in the deployment moved that number.
 # Forty codes a night, lowest volume first by device count order, at 2 req/s.
+# Two performance defects so far were a query keyed on a column without an index, both found by a page
+# feeling slow. This asks SQLite for the plan of every statement the pages run and records how many scan
+# a big table, so the next one is visible the night it appears instead of the month someone notices.
+echo "[$(date -Is)] query audit"
+"$PY" "$REL/tools/query_audit.py" \
+  --db "${MEDRADAR_REFERENCE_DB:-/srv/medradar/reference_slim.db}" \
+  --json > "$WORK/step_query.json" 2>&1 || true
+FINDINGS=$("$PY" -c 'import json,sys;print(len(json.load(open(sys.argv[1])).get("findings",[])))' "$WORK/step_query.json" 2>/dev/null || echo "?")
+mark "query audit" ok "findings $FINDINGS"
+
 echo "$(date -Is) failure sweep"
 "$PY" /srv/medradar/ops/sweep_failures.py \
   --db "${MEDRADAR_REFERENCE_DB:-/srv/medradar/reference_slim.db}" \

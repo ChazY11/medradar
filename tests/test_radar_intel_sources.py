@@ -4266,6 +4266,37 @@ def test_a_fields_recent_papers_can_leave_the_page_with_their_caveat(tmp_path):
     assert "no_papers_for_this_specialty" in field_papers_markdown("X", [], held=0)
 
 
+def test_the_query_audit_notices_a_scan_and_stays_quiet_when_there_is_none(tmp_path):
+    """An instrument that reports zero findings must be shown able to report one."""
+    import importlib.util
+
+    from medradar.radar.reference import UdiReference
+
+    path = Path(__file__).resolve().parents[1] / "tools/query_audit.py"
+    spec = importlib.util.spec_from_file_location("query_audit_tool", path)
+    tool = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(tool)
+
+    store = UdiReference(tmp_path / "ref.db")
+    store.write_udi_rows([_udi_row("K250063", f"M{i}") for i in range(4)])
+    rows = tool._row_counts(store.conn)
+    assert rows["udi_device"] == 4
+
+    # Below the threshold nothing is reported: a scan of four rows is not a defect.
+    assert rows["udi_device"] < tool.BIG_TABLE_ROWS
+
+    # Force the threshold down and the same plan is reported, which proves the detector reads plans
+    # rather than guessed at table names.
+    original = tool.BIG_TABLE_ROWS
+    try:
+        tool.BIG_TABLE_ROWS = 1
+        plan = tool._plan(store.conn, "SELECT COUNT(*) FROM udi_device WHERE brand_name LIKE '%z%'")
+        assert any("SCAN" in line.upper() for line in plan), plan
+    finally:
+        tool.BIG_TABLE_ROWS = original
+    store.close()
+
+
 def test_a_pre_digitisation_filing_is_never_requested(tmp_path):
     """Measured: 0 of 60 sampled filings from 1998-2009 have a PDF at any path shape.
 
