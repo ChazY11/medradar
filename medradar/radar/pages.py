@@ -1673,6 +1673,11 @@ def area_page(*, specialty: str, summary: Mapping[str, Any] | None,
             f'<p class="muted small">本领域已归档论文中发表日期最新的 {n(len(recent))} 篇。'
             '这是"我们手上的这些论文里最新的"，不是"这个领域全部新论文"；'
             '出版日期在未来的期刊预填记录已排除。</p>'
+            f'<p class="small muted">导出：'
+            f'<a href="/download?kind=papers&format=md&name={esc(specialty)}">Markdown</a>'
+            f' · <a href="/download?kind=papers&format=csv&name={esc(specialty)}">CSV</a>'
+            f'<span class="muted"> —— CSV 是纯数据表，上面那句边界说明不在文件里；'
+            f'要连说明一起转发，用 Markdown。</span></p>'
             f'<div class="card"><table><thead><tr><th>发表日期</th><th>标题</th></tr></thead>'
             f'<tbody>{recent_rows}</tbody></table></div>')
     else:
@@ -2038,7 +2043,8 @@ def pages_router(service: Any, *, endpoints: Mapping[str, Any] | None = None) ->
     @router.get("/download")
     def download(q: str = Query("", max_length=240),
                  name: str = Query("", max_length=120),
-                 kind: str = Query("device", pattern="^(device|compare|areas|area|company)$"),
+                 kind: str = Query("device",
+                          pattern="^(device|compare|areas|area|company|papers)$"),
                  format: str = Query("md", pattern="^(md|csv|json)$")) -> Any:
         """One dossier, one comparison, the whole field map, or one specialty - as a file.
 
@@ -2056,7 +2062,7 @@ def pages_router(service: Any, *, endpoints: Mapping[str, Any] | None = None) ->
             return HTMLResponse(layout(title="缺少查询词 · MedRadar",
                                        body=gap_note("no_data"), active="device"),
                                 status_code=400)
-        if kind == "area" and not name:
+        if kind in {"area", "papers"} and not name:
             return HTMLResponse(layout(title="缺少技术领域 · MedRadar",
                                        body=gap_note("no_data"), active="areas"),
                                 status_code=400)
@@ -2091,6 +2097,18 @@ def pages_router(service: Any, *, endpoints: Mapping[str, Any] | None = None) ->
                     body = export_mod.area_markdown(name, summary, companies)
                     media, suffix = "text/markdown; charset=utf-8", "md"
                 stem = f"medradar-area-{_slug(name)}"
+            elif kind == "papers":
+                from .paper_passes import papers_for, recent_for
+
+                held = len(papers_for(store, name))
+                items = recent_for(store, name, limit=60)
+                if format == "csv":
+                    body = export_mod.field_papers_csv(items)
+                    media, suffix = "text/csv; charset=utf-8", "csv"
+                else:
+                    body = export_mod.field_papers_markdown(name, items, held=held)
+                    media, suffix = "text/markdown; charset=utf-8", "md"
+                stem = f"medradar-papers-{_slug(name)}"
             elif kind == "company":
                 snapshot = _snapshot()
                 data = _company_data(store, q, snapshot=snapshot)

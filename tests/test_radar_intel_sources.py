@@ -4227,6 +4227,34 @@ def test_the_front_door_shows_the_product_moving_and_says_what_it_is_not():
     assert "最近发表" not in plain
 
 
+def test_a_fields_recent_papers_can_leave_the_page_with_their_caveat(tmp_path):
+    """A file travels further than a page and loses its context, so the bound must be inside it."""
+    from medradar.radar.export import field_papers_csv, field_papers_markdown
+
+    rows = [{"paper_id": "PMC1", "title": "A dental study", "journal": "J Dent",
+             "published_at": "2026-11-23"},
+            {"paper_id": "PMC2", "title": "Second | with pipe", "journal": "",
+             "published_at": "2026-11-19"}]
+
+    md = field_papers_markdown("Dental", rows, held=120)
+    assert "# Dental · 最近发表" in md
+    assert "不是该领域全部新论文" in md           # the same bound the page carries
+    assert "期刊预填记录已排除" in md
+    assert "120 篇" in md                        # how much the field holds
+    assert "PMC1" in md and "2026-11-23" in md
+    # A pipe in a title must not break the table.
+    assert "Second \\| with pipe" in md          # the pipe is escaped, the table survives
+
+    csv_text = field_papers_csv(rows)
+    assert csv_text.splitlines()[0] == "发表日期,标题,期刊,论文编号,链接"
+    assert "PMC2" in csv_text and "europepmc.org" in csv_text
+    # The identifier already carries its prefix; the link must not repeat it.
+    assert "PMC/PMC2" not in csv_text and "article/PMC/2" in csv_text
+
+    # No papers is a stated gap, not an empty file.
+    assert "no_papers_for_this_specialty" in field_papers_markdown("X", [], held=0)
+
+
 def test_a_pre_digitisation_filing_is_never_requested(tmp_path):
     """Measured: 0 of 60 sampled filings from 1998-2009 have a PDF at any path shape.
 

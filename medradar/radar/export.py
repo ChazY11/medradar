@@ -315,6 +315,51 @@ def areas_csv(items: Sequence[Mapping[str, Any]]) -> str:
     return buffer.getvalue()
 
 
+def field_papers_csv(papers: Sequence[Mapping[str, Any]]) -> str:
+    """One field's newest archived papers, so the list can be pasted into a report."""
+    import csv
+    import io
+
+    buffer = io.StringIO()
+    writer = csv.writer(buffer)
+    writer.writerow(["发表日期", "标题", "期刊", "论文编号", "链接"])
+    for item in papers:
+        # paper_id already carries the PMC prefix, so the URL path needs the bare number: measured on a
+        # real export, every link read .../article/PMC/PMC13788955 and went nowhere.
+        paper_id = str(item.get("paper_id") or "")
+        number = paper_id[3:] if paper_id.upper().startswith("PMC") else paper_id
+        writer.writerow([item.get("published_at") or "", item.get("title") or "",
+                         item.get("journal") or "", paper_id,
+                         f"https://europepmc.org/article/PMC/{number}"])
+    return buffer.getvalue()
+
+
+def field_papers_markdown(specialty: str, papers: Sequence[Mapping[str, Any]],
+                          *, held: int = 0) -> str:
+    """Same bound as the page: the newest of what we hold, not everything published in the field.
+
+    A file travels further than a page and loses its context on the way, so the caveat is in the
+    document rather than only in the HTML around it.
+    """
+    lines = [f"# {specialty} · 最近发表", "",
+             f"> 导出于 {_stamp()}。{SOURCE_LINE}", ""]
+    lines.append(f"> 本领域已归档论文 {held:,} 篇，下面按发表日期列出最新的 {len(papers)} 篇。"
+                 f"这是「我们手上的这些论文里最新的」，不是该领域全部新论文；"
+                 f"出版日期在未来的期刊预填记录已排除。")
+    lines.append("")
+    if not papers:
+        lines.append(_gap("no_papers_for_this_specialty"))
+        return "\n".join(lines)
+    lines.append("| 发表日期 | 标题 | 期刊 | 编号 |")
+    lines.append("| --- | --- | --- | --- |")
+    for item in papers:
+        title = str(item.get("title") or "").replace("|", "\\|")
+        journal = str(item.get("journal") or "").replace("|", "\\|")
+        lines.append(f"| {item.get('published_at') or ''} | {title} | {journal} | "
+                     f"{item.get('paper_id') or ''} |")
+    return "\n".join(lines)
+
+
 def area_markdown(specialty: str, summary: Mapping[str, Any],
                   companies: Sequence[Mapping[str, Any]]) -> str:
     """One specialty's leaders, with the sampling caveat kept."""
