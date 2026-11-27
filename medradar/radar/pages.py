@@ -1099,14 +1099,19 @@ def _company_data(store: Any, query: str, *, snapshot: Mapping[str, Any]) -> dic
     return out
 
 
-def compare_page(*, companies: Sequence[Mapping[str, Any]]) -> str:
+def compare_page(*, companies: Sequence[Mapping[str, Any]],
+                 substitutions: Mapping[str, str] | None = None) -> str:
     """Two to four companies side by side.
 
     Built on the same per-company lookups the dossier uses, not on /api/radar/compare: that endpoint
     walks the whole graph and took longer than forty seconds to answer for two companies, which is
     useless behind a page. These numbers come from the register and the indexes and answer in about
     a second for four companies.
+
+    ``substitutions`` maps a name the reader typed to the one that was looked up; it is printed so a
+    reader who typed 美敦力 knows they are looking at Medtronic and not at something else.
     """
+    swapped = dict(substitutions or {})
     found = [item for item in companies if item.get("found")]
     if not found:
         return layout(
@@ -1166,11 +1171,19 @@ def compare_page(*, companies: Sequence[Mapping[str, Any]]) -> str:
     codes = [set(item.get("product_codes") or []) for item in found]
     shared = set.intersection(*codes) if codes else set()
     union = set.union(*codes) if codes else set()
-    overlap = (f'<div class="card"><h4>共同覆盖的产品码 {n(len(shared))} 个'
-               f'（合计 {n(len(union))} 个，重合度 '
-               f'{(100.0 * len(shared) / len(union)):.0f}%）</h4>'
+    # A company with no classified product codes is a real state (its devices carry codes the
+    # classification table does not cover), and it made this line divide by zero. Say it instead.
+    if union:
+        overlap_head = (f'<h4>共同覆盖的产品码 {n(len(shared))} 个'
+                        f'（合计 {n(len(union))} 个，重合度 '
+                        f'{(100.0 * len(shared) / len(union)):.0f}%）</h4>')
+    else:
+        overlap_head = ('<h4>没有可比较的产品码</h4>'
+                        '<p class="muted small">这些公司在注册表里的产品码为空，'
+                        '或都还没被产品码分类表覆盖，所以算不出重合度。</p>')
+    overlap = (f'<div class="card">{overlap_head}'
                + (f'<p class="muted small">{esc("、".join(sorted(shared)[:40]))}</p>'
-                  if shared else '<p class="muted small">没有共同的产品码。</p>')
+                  if shared else ('<p class="muted small">没有共同的产品码。</p>' if union else ''))
                + "</div>")
 
     brands = []
@@ -1190,6 +1203,12 @@ def compare_page(*, companies: Sequence[Mapping[str, Any]]) -> str:
     missing_html = "".join(
         f'<p class="small muted">「{esc(item.get("query"))}」没有匹配到公司，未参与对比。</p>'
         for item in missing)
+    # A swapped name is printed, not hidden: a reader who typed 美敦力 must be able to see that the
+    # column is Medtronic and not a different company with a similar name.
+    swapped_html = "".join(
+        f'<p class="small muted">「{esc(typed)}」按英文法定名称「{esc(english)}」对比'
+        f'<span class="muted">（中文名对照只是方便输入，不是注册表内容）</span></p>'
+        for typed, english in swapped.items()) if swapped else ""
 
     body = f"""
 <p class="small muted"><a href="/">← 重新查询</a></p>
@@ -1198,6 +1217,7 @@ def compare_page(*, companies: Sequence[Mapping[str, Any]]) -> str:
 注册设备多是铺货广，批文多才是产品线深。</p>
 <p class="small muted">导出：<a href="/download?kind=compare&format=md&q={esc(','.join(str(c.get('company_name') or c.get('query')) for c in found))}">Markdown</a>
  · <a href="/download?kind=compare&format=csv&q={esc(','.join(str(c.get('company_name') or c.get('query')) for c in found))}">CSV</a></p>
+{swapped_html}
 {missing_html}
 <h2>规模与产出</h2>
 {table}
@@ -1553,6 +1573,34 @@ def _compare_names(store: Any, raw: Sequence[str], snapshot: Mapping[str, Any]) 
     return list(dict.fromkeys(values))[:4]
 
 
+def _resolve_compare_names(store: Any, names: Sequence[str],
+                           snapshot: Mapping[str, Any]) -> tuple[list[str], dict[str, str]]:
+    """Swap Chinese company names for the English name the register holds.
+
+    Measured: /compare?q=美敦力,捷迈 resolved neither, so a reader who typed two company names in
+    Chinese got two "not found" columns and no comparison. The mapping is explicit data, and every
+    substitution is reported back so the page can say which name it looked up - a silent swap would be
+    worse than the failure it fixes.
+    """
+    from .aliases import lookup
+
+    resolved: list[str] = []
+    substitutions: dict[str, str] = {}
+    for name in names:
+        candidate = name
+        if not _company_data(store, name, snapshot=snapshot).get("found"):
+            hits = lookup(name)
+            for hit in hits:
+                target = str(hit["search_as"])
+                if _company_data(store, target, snapshot=snapshot).get("found"):
+                    candidate = target
+                    substitutions[name] = target
+                    break
+        if candidate not in resolved:
+            resolved.append(candidate)
+    return resolved[:4], substitutions
+
+
 def radar_page(*, feed: Mapping[str, Any], stats: Mapping[str, Any]) -> str:
     """A server-rendered front door for the live radar.
 
@@ -1827,10 +1875,11 @@ def pages_router(service: Any, *, endpoints: Mapping[str, Any] | None = None) ->
             snapshot = _snapshot()
             try:
                 names = _compare_names(store, raw, snapshot)
+                names, substitutions = _resolve_compare_names(store, names, snapshot)
                 data = [_company_data(store, name, snapshot=snapshot) for name in names]
             finally:
                 store.close()
-            return compare_page(companies=data)
+            return compare_page(companies=data, substitutions=substitutions)
 
         return HTMLResponse(cached(f"compare:{key}", 300.0, render))
 

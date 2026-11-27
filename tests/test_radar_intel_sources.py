@@ -3970,6 +3970,53 @@ def test_a_chinese_field_name_opens_the_field_instead_of_a_hint_to_retype():
     assert "按英文分类名" not in plain
 
 
+def test_two_chinese_company_names_still_produce_a_comparison(tmp_path):
+    """Measured: /compare?q=美敦力,捷迈 resolved neither, so the reader got two empty columns."""
+    from medradar.radar.pages import _resolve_compare_names, compare_page
+    from medradar.radar.reference import UdiReference
+
+    store = UdiReference(tmp_path / "reference.db")
+    rows = [{
+        "identifiers": [{"id": f"08800{i:04d}00", "type": "Primary", "issuing_agency": "GS1"}],
+        "brand_name": f"B{i}", "company_name": name, "labeler_duns_number": duns,
+        "version_or_model_number": f"M{i}", "device_description": "d",
+        "product_codes": [{"code": "EIA"}], "catalog_number": "", "publish_date": "2024-01-01"}
+        for i, (name, duns) in enumerate((("MEDTRONIC SOFAMOR DANEK, INC.", "830350380"),
+                                          ("BIOMET ORTHOPEDICS, LLC", "129810000")))]
+    store.write_udi_rows(rows)
+
+    # 邦美 maps to Biomet, which the fixture holds as BIOMET ORTHOPEDICS - so both resolve.
+    names, swapped = _resolve_compare_names(store, ["美敦力", "邦美"], snapshot={})
+    assert names[0] == "Medtronic"
+    assert names[1] == "Biomet"
+    assert swapped["美敦力"] == "Medtronic" and swapped["邦美"] == "Biomet"
+
+    # The page says which name it used, next to the columns it produced.
+    data = [{"found": True, "company_name": "MEDTRONIC SOFAMOR DANEK, INC.", "query": "Medtronic",
+             "devices": 45433, "clearances": 121, "failures": 53128, "trials": 0, "patents": 0,
+             "papers": 2, "brands": [], "specialties": [], "area_codes_used": 1,
+             "area_codes_total": 1}]
+    page = compare_page(companies=data, substitutions={"美敦力": "Medtronic"})
+    assert "「美敦力」按英文法定名称「Medtronic」对比" in page
+    assert "不是注册表内容" in page
+    store.close()
+
+
+def test_a_comparison_with_no_product_codes_says_so_instead_of_dividing_by_zero():
+    """Found while writing the Chinese-name test: an empty union crashed the overlap line."""
+    from medradar.radar.pages import compare_page
+
+    data = [{"found": True, "company_name": "A LTD", "query": "A", "devices": 3, "clearances": 0,
+             "failures": 0, "trials": 0, "patents": 0, "papers": 0, "brands": [], "specialties": [],
+             "product_codes": [], "area_codes_used": 0, "area_codes_total": 0},
+            {"found": True, "company_name": "B LTD", "query": "B", "devices": 1, "clearances": 0,
+             "failures": 0, "trials": 0, "patents": 0, "papers": 0, "brands": [], "specialties": [],
+             "product_codes": [], "area_codes_used": 0, "area_codes_total": 0}]
+    page = compare_page(companies=data)
+    assert "没有可比较的产品码" in page
+    assert "%）" not in page          # no computed percentage when there is nothing to divide
+
+
 def test_a_pre_digitisation_filing_is_never_requested(tmp_path):
     """Measured: 0 of 60 sampled filings from 1998-2009 have a PDF at any path shape.
 
