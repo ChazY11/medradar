@@ -32,6 +32,38 @@ RUN=$(MEDRADAR_RADAR_DIR=${MEDRADAR_RADAR_DIR:-/srv/medradar/data/radar} "$PY" "
 mark() { MEDRADAR_RADAR_DIR=${MEDRADAR_RADAR_DIR:-/srv/medradar/data/radar} "$PY" "$LOG" mark "$1" "$2" "$RUN" "$3" 2>/dev/null || true; }
 grab() { grep -oE "$1" "$2" 2>/dev/null | head -1 | tr -d '\n'; }
 
+# Two crawls must never run at once.
+#
+# Measured 2026-11-28: a manual backfill was running when the 04:31 timer fired, both wrote paper_pass
+# and paper_field, and the ledger's scheduled run recorded one field instead of three because the manual
+# loop had already consumed the other two. Worse, when runs are left alive they each trap
+# `rm -rf "$WORK"` and delete work directories out from under the live one:
+#   cannot create /tmp/medradar-nightly.Jhd8F2/step_patents_1.log: Directory nonexistent
+#
+# An exclusive create, not flock: flock -n did not block inside this script even though the same lines
+# block when run by hand. This form is one syscall and was verified end to end before shipping - the
+# isolated block, then the block behind this script's own preamble (mktemp, trap, nightly_log start),
+# then this file with a live holder.
+#
+# No extra trap is installed: the cleanup trap above already owns EXIT, and a second one would replace
+# it. A lock left by a killed run is cleared by the pid check on the next start.
+LOCK="${MEDRADAR_RADAR_DIR:-/srv/medradar/data/radar}/preprint.lock"
+if [ -f "$LOCK" ]; then
+  HELD=$(cat "$LOCK" 2>/dev/null || echo "")
+  if [ -n "$HELD" ] && kill -0 "$HELD" 2>/dev/null; then
+    echo "[$(date -Is)] another run (pid $HELD) holds $LOCK - skipping"
+    mark "skipped" ok "another nightly run is in progress (pid $HELD)"
+    exit 0
+  fi
+  echo "[$(date -Is)] clearing stale lock (pid ${HELD:-unknown} is gone)"
+  rm -f "$LOCK"
+fi
+( set -C; echo "$$" > "$LOCK" ) 2>/dev/null || {
+  echo "[$(date -Is)] lost the race for $LOCK - skipping"
+  mark "skipped" ok "another nightly run won the lock"
+  exit 0
+}
+
 echo "[$(date -Is)] preprint pass"
 "$PY" "$REL/tools/fulltext.py" --source preprints --days 21 --limit 200 --out "$OUT" > $WORK/step_preprints.log 2>&1
 tail -12 $WORK/step_preprints.log

@@ -4419,6 +4419,29 @@ def test_an_interrupted_night_is_not_presented_as_the_night(tmp_path):
     assert "这次运行没有跑完" not in sources_page(meta=base, coverage={"nightly": complete})
 
 
+@pytest.mark.skipif(__import__("os").name != "posix",
+                    reason="runs tools/check_nightly_lock.sh, which drives a POSIX shell")
+def test_the_nightly_guard_blocks_a_live_run_and_clears_a_stale_one():
+    """The guard has to be checked on a POSIX shell; on Windows this is skipped, not faked.
+
+    round 57 shipped a lock that blocked when typed by hand and not inside the script, so the check is
+    a script of its own (tools/check_nightly_lock.sh) that extracts the guard from the file that runs at
+    04:31 and exercises all three states. Verified on the deployment: it prints PASS.
+    """
+    import subprocess
+    from pathlib import Path as _Path
+
+    root = _Path(__file__).resolve().parents[1]
+    checker = root / "tools/check_nightly_lock.sh"
+    script = root / "deploy/preprint_nightly.sh"
+    assert checker.is_file() and script.is_file()
+
+    result = subprocess.run(["sh", str(checker), str(script)],
+                            capture_output=True, text=True, timeout=120)
+    assert result.returncode == 0, result.stdout + result.stderr
+    assert "PASS" in result.stdout
+
+
 def test_a_pre_digitisation_filing_is_never_requested(tmp_path):
     """Measured: 0 of 60 sampled filings from 1998-2009 have a PDF at any path shape.
 
