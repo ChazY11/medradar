@@ -224,5 +224,29 @@ def recent_for(reference, specialty: str, *, limit: int = 10,
              "published_at": str(row[3] or "")[:10]} for row in rows]
 
 
-__all__ = ["QUERIES", "by_specialty", "ensure_table", "field_topics", "next_queries", "papers_for",
+def recent_any(reference, *, limit: int = 8, today: str | None = None) -> list[dict[str, Any]]:
+    """The newest papers across every field we track, with the field attached.
+
+    The landing page could describe the product but not show it moving. Forward-dated records are
+    excluded for the same reason as recent_for: journals pre-fill an upcoming issue and a "latest"
+    strip that opens with next January is wrong.
+    """
+    from .watermark import utc_today
+
+    cutoff = str(today or utc_today())
+    try:
+        ensure_table(reference)
+        rows = reference.conn.execute(
+            "SELECT m.paper_id, m.title, m.journal, m.published_at, f.specialty"
+            " FROM paper_meta m JOIN paper_field f ON f.paper_id = m.paper_id"
+            " WHERE COALESCE(m.published_at,'') <> '' AND m.published_at <= ?"
+            " GROUP BY m.paper_id"
+            " ORDER BY m.published_at DESC LIMIT ?", (cutoff, int(limit))).fetchall()
+    except Exception:  # noqa: BLE001 - no literature yet
+        return []
+    return [{"paper_id": row[0], "title": row[1] or "", "journal": row[2] or "",
+             "published_at": str(row[3] or "")[:10], "specialty": row[4] or ""} for row in rows]
+
+
+__all__ = ["QUERIES", "by_specialty", "recent_any", "ensure_table", "field_topics", "next_queries", "papers_for",
            "read_passes", "record_field", "record_pass", "recent_for"]

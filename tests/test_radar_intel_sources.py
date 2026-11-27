@@ -4203,6 +4203,30 @@ def test_a_paper_term_list_does_not_lead_with_function_words(tmp_path):
     store.close()
 
 
+def test_the_front_door_shows_the_product_moving_and_says_what_it_is_not():
+    """The landing page described the product but showed nothing being tracked."""
+    from medradar.radar.pages import landing
+
+    page = landing(
+        stats={"设备注册": 5258159, "论文索引": 3594},
+        examples=[("K213506", "按 K 号")],
+        data={"recent_papers": [
+                  {"paper_id": "PMC1", "title": "A dental study", "journal": "J Dent",
+                   "published_at": "2026-11-23", "specialty": "Dental"},
+                  {"paper_id": "PMC2", "title": "Vascular work", "journal": "",
+                   "published_at": "2026-11-19", "specialty": "Cardiovascular"}],
+              "fields_with_papers": 3, "fields_total": 12})
+    assert "最近发表" in page
+    assert "2026-11-23" in page and "/paper?id=PMC1" in page
+    assert "/area?name=Dental" in page                 # the field is a link, not decoration
+    assert "3 / 12" in page                             # how much of the lane has run
+    assert "期刊预填记录已排除" in page                    # the same bound as the field page
+
+    # A deployment with no literature renders the page it always did.
+    plain = landing(stats={"设备注册": 1}, examples=[])
+    assert "最近发表" not in plain
+
+
 def test_a_pre_digitisation_filing_is_never_requested(tmp_path):
     """Measured: 0 of 60 sampled filings from 1998-2009 have a PDF at any path shape.
 

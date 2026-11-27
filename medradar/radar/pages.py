@@ -182,6 +182,26 @@ def layout(*, title: str, body: str, active: str = "") -> str:
     )
 
 
+def _landing_literature(store: Any) -> dict[str, Any]:
+    """Newest papers across tracked fields, plus how many fields the lane has reached.
+
+    Wrapped: the landing page must render even when the literature tables do not exist yet.
+    """
+    if store is None:
+        return {}
+    try:
+        from .paper_passes import QUERIES, by_specialty, recent_any
+
+        held = by_specialty(store)
+        return {
+            "recent_papers": recent_any(store, limit=8),
+            "fields_with_papers": len(held),
+            "fields_total": len(QUERIES),
+        }
+    except Exception:  # noqa: BLE001 - no literature yet is a stated gap, not a failure
+        return {}
+
+
 def _stored_counts(store: Any) -> dict[str, Any] | None:
     try:
         from .store_stats import read
@@ -211,7 +231,17 @@ def _relative_age(stored: Mapping[str, Any]) -> str | None:
 
 
 def landing(*, stats: Mapping[str, Any], examples: Sequence[tuple[str, str]],
-            counts_at: str | None = None) -> str:
+            counts_at: str | None = None, data: Mapping[str, Any] | None = None) -> str:
+    """The front door. It used to describe the product; the newest publications are now on it.
+
+    A reader arriving here had no way to see that anything is being tracked - the numbers said what the
+    deployment holds, not that it moves. The strip below is the newest papers across every field we
+    track, and the line under it says how many fields that is out of how many exist.
+    """
+    data = data or {}
+    recent = data.get("recent_papers") or []
+    fields_held = int(data.get("fields_with_papers") or 0)
+    fields_total = int(data.get("fields_total") or 0)
     cards = "".join(
         f'<div class="stat"><b>{n(value)}</b><span>{esc(label)}</span></div>'
         for label, value in stats.items())
@@ -221,6 +251,27 @@ def landing(*, stats: Mapping[str, Any], examples: Sequence[tuple[str, str]],
     chips = "".join(
         f'<a href="/device?query={esc(q)}">{esc(q)}<span class="muted"> · {esc(what)}</span></a>'
         for q, what in examples)
+    if recent:
+        rows = "".join(
+            f'<tr><td class="muted small">{esc(str(item.get("published_at") or ""))}</td>'
+            f'<td><a href="/paper?id={esc(str(item.get("paper_id")))}">'
+            f'{esc(str(item.get("title") or "")[:96])}</a></td>'
+            f'<td class="muted small"><a href="/area?name='
+            f'{esc(str(item.get("specialty") or ""))}">{esc(str(item.get("specialty") or ""))}</a>'
+            f'</td></tr>'
+            for item in recent)
+        scope = (f'文献线已覆盖 {fields_held} / {fields_total} 个技术领域，'
+                 f'<a href="/areas?sort=pending">还没抓的排在这里</a>。'
+                 if fields_total else "")
+        recent_block = (
+            '<h2>最近发表</h2>'
+            f'<p class="muted small">所跟踪领域里发表日期最新的 {n(len(recent))} 篇。'
+            f'这是"我们手上的论文里最新的"，不是全部新论文；出版日期在未来的期刊预填记录已排除。'
+            f'{scope}</p>'
+            f'<div class="card"><table><thead><tr><th>发表日期</th><th>标题</th>'
+            f'<th>领域</th></tr></thead><tbody>{rows}</tbody></table></div>')
+    else:
+        recent_block = ""
     body = f"""
 <h1>查一台器械，看完它整个公开生命</h1>
 <p class="lede">输入 K 号、DI、DUNS、型号、品牌或公司名。批文正文、厂家自己写的规格、现场失效、
@@ -242,6 +293,7 @@ def landing(*, stats: Mapping[str, Any], examples: Sequence[tuple[str, str]],
 </div>
 <div class="grid">{cards}</div>
 {stamp}
+{recent_block}
 <h2>这个工具能回答什么</h2>
 <div class="card"><h4>1 · 这台器械凭什么上市</h4>
 <p class="muted small">批文号、510(k) 摘要正文、产品码，以及厂家在文件里自己写下的尺寸、压力、温度等规格——
@@ -1826,7 +1878,8 @@ def pages_router(service: Any, *, endpoints: Mapping[str, Any] | None = None) ->
                         "论文索引": counts.get("papers", 0),
                     }
                     return landing(stats=stats, examples=examples,
-                                   counts_at=_relative_age(stored))
+                                   counts_at=_relative_age(stored),
+                                   data=_landing_literature(store))
                 counts = _counts(store)
                 corpus_docs = 0
                 try:
@@ -1847,7 +1900,8 @@ def pages_router(service: Any, *, endpoints: Mapping[str, Any] | None = None) ->
                 if store is not None:
                     store.close()
             # No timestamp: these were counted just now.
-            return landing(stats=stats, examples=examples)
+            return landing(stats=stats, examples=examples,
+                           data=_landing_literature(store))
 
         return HTMLResponse(cached("home", 300.0, render))
 
