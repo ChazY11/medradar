@@ -164,8 +164,18 @@ def coverage(reference, *, corpus_dir: str | Path | None = None,
 
     datasets = []
     for key, label, count_key, note in DATASETS:
-        datasets.append({"key": key, "label": label, "count": int(counts.get(count_key) or 0),
-                         "note": note})
+        item = {"key": key, "label": label, "count": int(counts.get(count_key) or 0),
+                "note": note}
+        if key == "papers":
+            # Files beside the index that are not in it. Measured 2026-11-28: 5,755 corpus files, 5,485
+            # indexed, and 270 that produced no vocabulary term - invisible until the indexer counted
+            # them, so the page called 5,485 the whole literature lane.
+            files = int(counts.get("paper_files") or 0)
+            indexed = int(counts.get("paper_indexed") or item["count"] or 0)
+            if files and files > indexed:
+                item["beside"] = (f'语料目录里还有 {files - indexed} 个文件没有被索引：'
+                                  f'它们没有命中注册表词表的词，无法检索。')
+        datasets.append(item)
 
     # Gaps are computed, not remembered: each one names what is missing and why.
     gaps: list[dict[str, str]] = []

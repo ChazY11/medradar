@@ -61,7 +61,8 @@ def ensure_table(reference) -> None:
     reference.conn.executescript(SCHEMA)
 
 
-def refresh(reference, *, corpus_dir: str | Path | None = None) -> dict[str, Any]:
+def refresh(reference, *, corpus_dir: str | Path | None = None,
+            papers_dir: str | Path | None = None) -> dict[str, Any]:
     """Recompute every count and store it with one timestamp shared by the set."""
     ensure_table(reference)
     at = datetime.now(timezone.utc).isoformat(timespec="seconds")
@@ -84,6 +85,24 @@ def refresh(reference, *, corpus_dir: str | Path | None = None) -> dict[str, Any
             "INSERT OR REPLACE INTO store_stats (key, value, updated_at) VALUES (?,?,?)",
             ("corpus", count, at))
         written["corpus"] = count
+    if papers_dir is not None:
+        # A corpus file that yields no vocabulary term is not searchable, and the count alone hid that:
+        # measured 2026-11-28, 5,755 files produced 5,485 indexed papers and nothing on the page said
+        # where the other 270 went.
+        try:
+            files = sum(1 for _ in Path(papers_dir).glob("*.json"))
+        except OSError:
+            files = 0
+        try:
+            indexed = int(reference.conn.execute(
+                "SELECT COUNT(*) FROM paper_meta").fetchone()[0] or 0)
+        except Exception:  # noqa: BLE001 - no index yet
+            indexed = 0
+        for key, value in (("paper_files", files), ("paper_indexed", indexed)):
+            reference.conn.execute(
+                "INSERT OR REPLACE INTO store_stats (key, value, updated_at) VALUES (?,?,?)",
+                (key, value, at))
+            written[key] = value
     reference.conn.commit()
     return {"updated_at": at, "counts": written}
 

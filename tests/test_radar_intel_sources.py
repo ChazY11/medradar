@@ -4475,6 +4475,41 @@ def test_a_rehearsal_is_not_presented_as_the_nights_work(tmp_path):
     assert "这次是手动试跑" not in sources_page(meta=base, coverage={"nightly": real})
 
 
+def test_the_index_reports_the_files_it_could_not_index(tmp_path):
+    """270 of 5,755 corpus files had no title; the count alone made that invisible."""
+    import json
+
+    from medradar.radar.papers_index import index_corpus
+    from medradar.radar.reference import UdiReference
+
+    corpus = tmp_path / "papers"
+    corpus.mkdir()
+    (corpus / "paper_A.json").write_text(json.dumps({
+        "identifier": "A", "title": "Bone screw fixation", "abstract": "bone screw bone",
+    }), encoding="utf-8")
+    (corpus / "paper_B.json").write_text(json.dumps({
+        "identifier": "B", "title": "", "abstract": "bone screw",
+    }), encoding="utf-8")
+    (corpus / "paper_C.json").write_text(json.dumps({
+        "identifier": "C", "title": "Ceramic", "abstract": "zzz",
+    }), encoding="utf-8")
+    (corpus / "paper_D.json").write_text("{not json", encoding="utf-8")
+
+    store = UdiReference(tmp_path / "ref.db")
+    stats = index_corpus(store, corpus, vocab={"bone", "screw"})
+    store.close()
+
+    assert stats["files_seen"] == 4
+    # A file is searchable when it yields a vocabulary term; a missing title is not by itself a skip.
+    assert stats["papers_indexed"] == 2          # A, and B (has terms, no title)
+    assert stats["skipped_no_terms"] == 1        # C: a title, but no vocabulary term
+    assert stats["skipped_no_title"] == 0        # nothing skipped for title alone
+    assert stats["unreadable"] == 1              # D: not JSON
+    # Every file is accounted for: indexed + skipped + unreadable.
+    assert (stats["papers_indexed"] + stats["skipped_no_terms"]
+            + stats["unreadable"]) == stats["files_seen"]
+
+
 def test_a_pre_digitisation_filing_is_never_requested(tmp_path):
     """Measured: 0 of 60 sampled filings from 1998-2009 have a PDF at any path shape.
 

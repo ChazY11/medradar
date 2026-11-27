@@ -675,8 +675,14 @@ def sources_page(*, meta: Mapping[str, Any], coverage: Mapping[str, Any] | None 
         return (f'<tr><td>{esc(label)}</td><td class="num">{n(value)}</td>'
                 f'<td class="muted small">{esc(note)}</td></tr>')
 
-    dataset_rows = "".join(
-        row(item["label"], item["count"], item.get("note") or "") for item in datasets)
+    def data_row(item: Mapping[str, Any]) -> str:
+        note = str(item.get("note") or "")
+        beside = str(item.get("beside") or "")
+        if beside:
+            note = f'{note}；{beside}' if note else beside
+        return row(str(item["label"]), item["count"], note)
+
+    dataset_rows = "".join(data_row(item) for item in datasets)
     # The shape of each set matters more than its size: 348k records over how many codes, how many
     # models? A big table with narrow coverage is a small answer.
     shape_rows = "".join([
@@ -1505,6 +1511,25 @@ def warmup(service: Any) -> dict[str, Any]:
                 warmed["paper"] = sample
         except Exception as error:  # noqa: BLE001
             report["errors"].append(f"paper: {type(error).__name__}")
+
+        # /radar was not warmed at all and cost the first reader 3.8 s (measured cold, twice):
+        # the feed reads the whole observation table. /compare likewise - 1.8 s cold, 0.29 s warm.
+        try:
+            from .health import change_stream
+
+            with service.ledger() as ledger:
+                change_stream(ledger, limit=40)
+                ledger.raw("SELECT COUNT(*) AS n FROM observation")
+            warmed["radar"] = True
+        except Exception as error:  # noqa: BLE001 - no ledger is a normal first deployment
+            report["errors"].append(f"radar: {type(error).__name__}")
+        try:
+            names, _substitutions = _resolve_compare_names(store, ["Medtronic", "Stryker"], {})
+            for name in names[:2]:
+                _company_data(store, name, snapshot={})
+            warmed["compare"] = len(names)
+        except Exception as error:  # noqa: BLE001
+            report["errors"].append(f"compare: {type(error).__name__}")
 
         for name, builder in (("company", lambda: _company_data(store, "Medtronic", snapshot={})),
                               ("areas", lambda: __import__(

@@ -24,6 +24,7 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--reference", default=DEFAULT_REFERENCE)
     parser.add_argument("--corpus", default=DEFAULT_CORPUS)
+    parser.add_argument("--papers", default="/srv/medradar/intel/papers")
     parser.add_argument("--refresh", action="store_true")
     parser.add_argument("--show", action="store_true")
     args = parser.parse_args()
@@ -38,7 +39,8 @@ def main() -> int:
     store = UdiReference(str(path))
     try:
         if args.refresh:
-            print(json.dumps(refresh(store, corpus_dir=args.corpus), ensure_ascii=False))
+            print(json.dumps(refresh(store, corpus_dir=args.corpus, papers_dir=args.papers),
+                             ensure_ascii=False))
         if args.show or not args.refresh:
             current = read(store)
             current["age_seconds"] = age_seconds(current)

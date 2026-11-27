@@ -124,7 +124,8 @@ done < "$WORK/paper_picks.txt"
 echo "[$(date -Is)] re-index papers"
 "$PY" "$REL/tools/papers_index.py" --corpus "$OUT" > $WORK/step_index.log 2>&1 || true
 tail -4 $WORK/step_index.log
-mark "papers:index" ok "$(grab '"papers_indexed": [0-9]+' $WORK/step_index.log)"
+# The count alone hid 270 files that could not be indexed; the note now carries why.
+mark "papers:index" ok "$(grab '"papers_indexed": [0-9]+' $WORK/step_index.log) / files $(grab '"files_seen": [0-9]+' $WORK/step_index.log) / no-title $(grab '"skipped_no_title": [0-9]+' $WORK/step_index.log)"
 
 # The technology-map page is served from this snapshot. Measured: computing it live over 122k nodes
 # took longer than two minutes, and the answer cannot change faster than the 300 s scheduler cycle.

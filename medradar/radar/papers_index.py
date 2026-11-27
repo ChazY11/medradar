@@ -376,10 +376,21 @@ def index_corpus(reference, corpus_root: str | Path, *, vocab: set[str] | None =
         files = files[:limit]
     papers = 0
     rows = 0
+    # Why a file in the corpus is not searchable. Measured 2026-11-28: 270 of 5,755 files (4.7%) are
+    # absent from the index and nothing anywhere said so - the page said 论文索引 5,485 and a reader had
+    # no way to tell that 270 files were sitting beside it.
+    # A file is searchable only if it yields a vocabulary term; measured on the live corpus, the 270
+    # files that are missing from paper_meta were missing for exactly that reason, and all of them also
+    # carried no title. So the skip reason is "no term", and "no title" is an attribute of the skipped
+    # ones - reported separately rather than as the cause.
+    skipped_no_title = 0
+    skipped_no_terms = 0
+    unreadable = 0
     for path in files:
         try:
             payload = json.loads(path.read_text(encoding="utf-8"))
         except (OSError, ValueError):
+            unreadable += 1
             continue
         paper_id = str(payload.get("identifier") or path.stem)
         title = str(payload.get("title") or "")[:400]
@@ -395,6 +406,9 @@ def index_corpus(reference, corpus_root: str | Path, *, vocab: set[str] | None =
             if lowered in vocab:
                 counts[lowered] = counts.get(lowered, 0) + 1
         if not counts:
+            skipped_no_terms += 1
+            if not title.strip():
+                skipped_no_title += 1
             continue
         papers += 1
         try:
@@ -416,7 +430,9 @@ def index_corpus(reference, corpus_root: str | Path, *, vocab: set[str] | None =
     brand_df_rows = rebuild_brand_token_df(reference)
     invalidate_cache(reference)  # the brand frequencies are cached too
     return {"papers_indexed": papers, "term_rows": rows, "vocabulary": len(vocab),
-            "files_seen": len(files), "brand_terms": brand_df_rows}
+            "files_seen": len(files), "brand_terms": brand_df_rows,
+            "skipped_no_title": skipped_no_title, "skipped_no_terms": skipped_no_terms,
+            "unreadable": unreadable}
 
 
 def _cache_for(reference) -> dict[str, Any]:
