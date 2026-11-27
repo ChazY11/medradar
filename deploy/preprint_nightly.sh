@@ -58,8 +58,9 @@ done
 # europepmc answered 200 while the preprint host and Google were both refusing this address, so it
 # is the lane that actually adds papers on a blocked night: 20 candidates stored 9 new full texts.
 # One fixed query saturated: on 2026-11-27 it drew 120 candidates of which 112 were cached, and it only
-# ever covered orthopaedics while the register holds devices in twenty-one fields. Two fields a night,
+# ever covered orthopaedics while the register holds devices in twenty-one fields. Three fields a night,
 # chosen by paper_passes.next_queries() - never-run fields first, then the ones yielding least.
+# Measured: one field costs about two minutes at 120 candidates, so three keeps the night short.
 echo "[$(date -Is)] paper pass (europepmc, rotating)"
 "$PY" - <<'PICK' > "$WORK/paper_picks.txt" 2>/dev/null || true
 from medradar.radar.paper_passes import next_queries
@@ -67,7 +68,7 @@ from medradar.radar.reference import UdiReference
 import os
 store = UdiReference(os.environ["MEDRADAR_REFERENCE_DB"])
 try:
-    for specialty, query in next_queries(store, count=2):
+    for specialty, query in next_queries(store, count=3):
         print(f"{specialty}\t{query}")
 finally:
     store.close()

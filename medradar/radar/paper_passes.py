@@ -27,6 +27,17 @@ QUERIES: tuple[tuple[str, str], ...] = (
     ("Neurology", 'deep brain stimulation OR neurostimulation'),
     ("General Hospital", 'infusion pump OR patient monitoring device'),
     ("Immunology", 'immunoassay OR in vitro diagnostic device'),
+    # Fields the register classifies devices into that the first twelve missed. They are not all
+    # implant-shaped - clinical chemistry and microbiology are IVD - but an engineer looking up a
+    # reagent device lands in one of them, and a field with no literature is a hole in the product.
+    ("Microbiology", 'culture medium OR microbial identification device'),
+    ("Clinical Chemistry", 'point-of-care assay OR clinical chemistry analyser'),
+    ("Hematology", 'blood cell analyser OR coagulation test'),
+    ("Pathology", 'histopathology OR tissue processing device'),
+    ("Clinical Toxicology", 'drug screening assay OR toxicology analyser'),
+    ("Obstetrics/Gynecology", 'obstetric device OR gynaecological surgical device'),
+    ("Physical Medicine", 'rehabilitation device OR prosthetic limb'),
+    ("Medical Genetics", 'genetic sequencing assay OR molecular diagnostic test'),
 )
 
 PASS_SCHEMA = """
@@ -113,23 +124,22 @@ def read_passes(reference) -> list[dict[str, Any]]:
 
 
 def next_queries(reference, *, count: int = 2) -> list[tuple[str, str]]:
-    """The specialties due a pass: never-run first, then the ones whose last pass yielded least.
+    """The specialties due a pass: never-run first, then the ones that ran longest ago.
 
-    Yield is the honest signal for "is this field exhausted" - a specialty that returns 120
-    candidates with 112 cached is done, and one that has never run is not.
+    This used to prefer the field whose last pass *yielded least*, on the theory that a thin field
+    deserves another chance. Measured on the live store, that is a trap: a field whose papers are all
+    cached stores 0 every time, so it becomes the permanent lowest yield and gets picked forever.
+    Backfilling the remaining fields ran Dental five times in a row and never reached the fields that
+    had never run at all - the opposite of a rotation.
+
+    Oldest-first is a round robin: every field is refreshed, none starves, and an exhausted field comes
+    back only when its turn comes again.
     """
     done = {row["specialty"]: row for row in read_passes(reference)}
     never = [(name, query) for name, query in QUERIES if name not in done]
     if never:
         return never[:count]
-    # Everything has run at least once: prefer the lowest yield per candidate last time.
-    ranked = sorted(
-        QUERIES,
-        key=lambda item: (
-            (done[item[0]]["stored"] / done[item[0]]["candidates"])
-            if done[item[0]]["candidates"] else 1.0,
-            done[item[0]]["ran_at"],
-        ))
+    ranked = sorted(QUERIES, key=lambda item: str(done[item[0]]["ran_at"]))
     return ranked[:count]
 
 

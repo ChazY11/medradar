@@ -3828,9 +3828,11 @@ def test_the_paper_crawl_moves_to_a_field_nobody_has_covered(tmp_path):
     assert read_passes(store) == []
 
     record_pass(store, QUERIES[0][0], QUERIES[0][1],
-                {"candidates": 120, "stored": 7, "skipped_cached": 112})
+                {"candidates": 120, "stored": 7, "skipped_cached": 112},
+                at="2026-11-26T00:00:00+00:00")
     record_pass(store, QUERIES[1][0], QUERIES[1][1],
-                {"candidates": 120, "stored": 60, "skipped_cached": 40})
+                {"candidates": 120, "stored": 60, "skipped_cached": 40},
+                at="2026-11-26T01:00:00+00:00")
 
     passes = read_passes(store)
     assert {row["specialty"] for row in passes} == {QUERIES[0][0], QUERIES[1][0]}
@@ -3838,12 +3840,14 @@ def test_the_paper_crawl_moves_to_a_field_nobody_has_covered(tmp_path):
     third = [name for name, _q in next_queries(store, count=2)]
     assert third == [QUERIES[2][0], QUERIES[3][0]]
 
-    # Once every field has run, the ones yielding least go first - an exhausted query is not retried
-    # ahead of one that still finds papers.
-    for name, query in QUERIES[2:]:
-        record_pass(store, name, query, {"candidates": 120, "stored": 50, "skipped_cached": 70})
-    ranked = [name for name, _q in next_queries(store, count=1)]
-    assert ranked == [QUERIES[0][0]]      # 7/120 is the lowest yield on record
+    # Once every field has run, the stalest goes first. Ranking by yield instead was measured to be a
+    # trap: a field whose papers are all cached stores 0 every time and becomes the permanent lowest.
+    for index, (name, query) in enumerate(QUERIES[2:]):
+        record_pass(store, name, query, {"candidates": 120, "stored": 50, "skipped_cached": 70},
+                    at=f"2026-11-27T{index:02d}:00:00+00:00")
+    ranked = [name for name, _q in next_queries(store, count=2)]
+    assert ranked[0] == QUERIES[0][0]      # ran earliest of all, so its turn comes first
+    assert len(set(ranked)) == 2           # and never twice in one batch
     store.close()
 
 
