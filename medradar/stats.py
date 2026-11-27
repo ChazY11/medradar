@@ -612,8 +612,8 @@ def block_bootstrap_p_value(
         for _ in range(m):
             sample.extend(groups[ordered[rng.randrange(m)]])
         draws.append(float(fn(sample)))
-    left = sum(1 for draw in draws if draw <= 0.0) / len(draws)
-    right = sum(1 for draw in draws if draw >= 0.0) / len(draws)
+    left = (sum(1 for draw in draws if draw <= 0.0) + 1) / (len(draws) + 1)
+    right = (sum(1 for draw in draws if draw >= 0.0) + 1) / (len(draws) + 1)
     p_value = min(1.0, 2.0 * min(left, right))
     return {
         "p": round(p_value, 6),
