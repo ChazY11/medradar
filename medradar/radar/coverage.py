@@ -211,7 +211,26 @@ def coverage(reference, *, corpus_dir: str | Path | None = None,
     covered_assignees = parts.get("patent_assignees") or 0
     labelers = int(counts.get("labelers") or _scalar(
         reference, "SELECT COUNT(DISTINCT labeler_duns) FROM udi_device"))
-    if covered_assignees and labelers and covered_assignees < labelers:
+    # "Behind" and "refused" are different facts. Measured: eight companies returned HTTP 503 every
+    # night for a week; the page said only that 92 of 12,537 had patents, which reads as "the job is
+    # catching up" when in reality the source had stopped answering this host.
+    try:
+        from .patent_status import read as read_patent_status
+
+        patent_state = read_patent_status(reference)
+    except Exception:  # noqa: BLE001 - no status table yet
+        patent_state = {"available": False}
+    if patent_state.get("available") and patent_state.get("refused"):
+        gaps.append({
+            "title": "专利源拒绝本机",
+            "detail": (f"Google Patents 对自动化请求返回 503（拦截页），最近一次尝试 "
+                       f"{str(patent_state.get('attempted_at'))[:16]}："
+                       f"{patent_state.get('failed')}/{patent_state.get('attempted')} 家公司全部失败。"
+                       f"这不是抓得慢，是抓不到；专利数停在 {int(counts.get('patents') or 0):,} 条，"
+                       f"覆盖 {covered_assignees:,} 个受让人。EPO OPS 的账号仍在审核，"
+                       f"换源需要 key，不是改几行代码能解决的。"),
+        })
+    elif covered_assignees and labelers and covered_assignees < labelers:
         gaps.append({
             "title": "专利只覆盖了部分受让人",
             "detail": f"{covered_assignees:,} 个受让人有专利数据，注册表里有 {labelers:,} 个 labeler。"

@@ -3740,6 +3740,42 @@ def test_a_code_checked_and_found_empty_leaves_the_pending_queue(tmp_path):
     store.close()
 
 
+def test_a_source_that_refuses_us_says_so_instead_of_looking_behind(tmp_path):
+    """Measured: eight patent companies 503'd every night for a week and no page said so."""
+    from medradar.radar.coverage import coverage
+    from medradar.radar.patent_status import read, record_attempt
+    from medradar.radar.reference import UdiReference
+    from medradar.radar.store_stats import refresh
+
+    store = UdiReference(tmp_path / "reference.db")
+    store.write_udi_rows([_udi_row("K250063", f"M{i}") for i in range(3)])
+    refresh(store)
+
+    assert read(store)["available"] is False
+
+    record_attempt(store, attempted=8, failed=8,
+                   detail="TransientHttpError: 503 Service Unavailable",
+                   at="2026-11-27T04:23:22+00:00")
+    state = read(store)
+    assert state["refused"] is True
+
+    data = coverage(store)
+    titles = [gap["title"] for gap in data["gaps"]]
+    assert "专利源拒绝本机" in titles
+    refusal = next(gap for gap in data["gaps"] if gap["title"] == "专利源拒绝本机")
+    assert "503" in refusal["detail"]
+    assert "2026-11-27T04:23" in refusal["detail"]
+    # A refused source is not described as merely behind.
+    assert "专利只覆盖了部分受让人" not in titles
+
+    # A partial batch is not a refusal, and falls back to the ordinary coverage sentence.
+    record_attempt(store, attempted=8, failed=2, detail="503")
+    assert read(store)["refused"] is False
+    titles = [gap["title"] for gap in coverage(store)["gaps"]]
+    assert "专利源拒绝本机" not in titles
+    store.close()
+
+
 def test_a_pre_digitisation_filing_is_never_requested(tmp_path):
     """Measured: 0 of 60 sampled filings from 1998-2009 have a PDF at any path shape.
 

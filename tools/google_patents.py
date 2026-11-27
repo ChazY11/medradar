@@ -129,14 +129,26 @@ def main() -> int:
             assignees = [a for a in assignees if _norm_name(a) not in covered]
             print(f"skipped {before - len(assignees)} covered companies", file=sys.stderr)
             assignees = assignees[:max(1, args.top_companies or len(assignees))]
+        failures: list[str] = []
         for name in assignees:
             try:
                 result = import_assignee(store, name, client=client, pages=args.pages,
                                         country=args.country)
             except Exception as error:  # noqa: BLE001 - one bad name must not stop a batch
+                failures.append(f"{type(error).__name__}: {error}")
                 print(f"  {name}: {type(error).__name__}: {error}", file=sys.stderr)
                 continue
             print(json.dumps(result, ensure_ascii=False), file=sys.stderr)
+        # Record the attempt even when every company failed. Measured: eight companies returned 503
+        # every night for a week and nothing anywhere said so - the only evidence was a journal line
+        # nobody reads, while /sources kept showing a coverage number that could not move.
+        try:
+            from medradar.radar.patent_status import record_attempt
+
+            record_attempt(store, attempted=len(assignees), failed=len(failures),
+                           detail=(failures[0] if failures else ""))
+        except Exception:  # noqa: BLE001 - recording must never fail the batch
+            pass
         if args.summary or not assignees:
             print("tables:", json.dumps(bulk_summary(store), ensure_ascii=False))
     finally:
