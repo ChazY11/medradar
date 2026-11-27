@@ -1,0 +1,34 @@
+{
+  "source_id": "eu_ctis",
+  "workstream": "scholarly",
+  "experiment": "EXP-H1 / EXP-H3 (fixed anchor sample)",
+  "selection_rule": "experiments/scholarly/EXP_H1_SELECTION_RULE.md",
+  "contact": "medradar-research@proton.me",
+  "generated_at": "2026-11-09T23:24:42Z",
+  "raw_files": [
+    {
+      "path": "DATASETS/scholarly/eu_ctis/raw/probe_01_search.json",
+      "note": "anonymous search - expected 403 AWS authorizer"
+    },
+    {
+      "path": "DATASETS/scholarly/eu_ctis/raw/probe_02_search_with_dummy_key.json",
+      "note": "same route, different params, plus a dummy X-API-KEY header: tests whether the gate is a shared static key"
+    },
+    {
+      "path": "DATASETS/scholarly/eu_ctis/raw/probe_03_retrieve.json",
+      "note": "detail route - tests whether a 200 means data"
+    }
+  ],
+  "endpoint": "https://euclinicaltrials.eu/ctis-public-api",
+  "access_state": "BLOCKED_TECHNICAL",
+  "auth_required": true,
+  "licence_status": "unknown",
+  "licence_note": "No reuse licence could be established: the public API returned 403 before any content was served, and the site's api-docs path serves the application shell rather than a contract. Recorded as unknown rather than assumed permissive.",
+  "blockers": [
+    "AWS API Gateway authorizer rejects anonymous requests with HTTP 403 {'message':'Missing Authentication Token'}"
+  ],
+  "unlock_route": "Register for CTIS public-API access with EMA: the CTIS public website (https://euclinicaltrials.eu/) documents a public API whose search route is behind an AWS API Gateway authorizer. Request credentials through the EMA CTIS service desk / the 'CTIS for sponsors and authorities' contact route at https://euclinicaltrials.eu/contact/ ; there is no anonymous tier. Alternative with no credential: ClinicalTrials.gov API v2 (already used) and the EU CTR results summary on the CTIS public web pages.",
+  "records_file": "DATASETS/scholarly/eu_ctis/records.jsonl",
+  "record_count": 0,
+  "negative_result": "Zero records by design: the API gate returned 403 before serving any content, and the retrieve route returns HTTP 200 with an empty {} body. Emitting nothing is the correct outcome."
+}

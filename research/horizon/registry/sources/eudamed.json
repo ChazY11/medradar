@@ -1,0 +1,36 @@
+{
+  "access_evidence": "PROBES.json reg_eudamed_001: HTTP 429 with JSON body {'error':'Too many requests. Please try again later.','message':'For automated/machine-to-machine access, please use the official EUDAMED data API instead of scraping the public endpoints.','machineToMachineApi':'https://developer.datalake.sante.service.ec.europa.eu/api-details#api=94b9e658-d721-4b58-8d96-022c490f7a17'}. The public application root returns HTTP 200 HTML (48,323 bytes) but carries no data without the JS app.",
+  "access_state": "REQUIRES_REGISTRATION",
+  "auth_required": true,
+  "blockers": [
+    "Public API paths return HTTP 429 with an explicit anti-scraping instruction.",
+    "The official data API requires EU Login + subscription key."
+  ],
+  "bulk_available": true,
+  "domain": "ec.europa.eu/tools/eudamed",
+  "entity_types": [
+    "regulatory_listing",
+    "product_identifier"
+  ],
+  "first_verified_at": "2026-11-10T07:30:00Z",
+  "historical_depth": "Unknown (no authorised access).",
+  "id_schemes": [
+    "eudamed_sru",
+    "basic_udi_di"
+  ],
+  "licence_note": "EUDAMED's own 429 body directs machine users to the official data API instead of the public endpoints, which places reuse under the developer-portal terms rather than an open licence.",
+  "licence_status": "terms_restricted",
+  "licence_url": "https://developer.datalake.sante.service.ec.europa.eu/api-details",
+  "machine_interface": "Official EUDAMED data API on the EU Health Data Lake developer portal; requires an EU Login identity and a subscription key.",
+  "name": "EUDAMED — European Database on Medical Devices",
+  "notes": "",
+  "operator": "European Commission, DG SANTE",
+  "probe_suite": "regulatory",
+  "rate_policy": "Public web endpoints are rate-limited (429 observed on first automated call).",
+  "registration_url": "https://developer.datalake.sante.service.ec.europa.eu/api-details",
+  "robots_summary": "HTTP 200, 10,827 bytes returned; the content was not parsed for this workstream, so no rule is asserted here.",
+  "robots_url": "https://ec.europa.eu/robots.txt",
+  "source_id": "eudamed",
+  "unlock_route": "Register at the EU Health Data Lake developer portal (https://developer.datalake.sante.service.ec.europa.eu/api-details), subscribe to the EUDAMED data API, then call it with the subscription key.",
+  "what_is_new": "Nothing obtained. Establishes that EUDAMED is registration-gated for machine access and names the exact official route to unblock it."
+}

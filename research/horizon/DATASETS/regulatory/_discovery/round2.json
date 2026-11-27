@@ -1,0 +1,146 @@
+{
+  "generated_at": "2026-11-09T22:59:10Z",
+  "budget": {
+    "client": "regulatory-discovery-2",
+    "requests_made": 12,
+    "max_requests": 20,
+    "bytes_received": 531644,
+    "max_total_bytes": 20000000,
+    "retries": 0,
+    "errors": []
+  },
+  "targets": [
+    {
+      "name": "agudid_v3_lookup_doc",
+      "url": "https://accessgudid.nlm.nih.gov/resources/developers/v3/device_lookup_api",
+      "status": 200,
+      "outcome": "OK",
+      "bytes": 52448,
+      "sha256": "9777a67fa2a88dff27e602aeded6c03aaf7c7a8cdd5dd45102bd867243a212ce",
+      "content_type": "text/html; charset=utf-8",
+      "final_url": "https://accessgudid.nlm.nih.gov/resources/developers/v3/device_lookup_api",
+      "saved": "D:\\DEPPSKK\\worktrees\\horizon-001\\research\\horizon\\DATASETS\\regulatory\\_discovery\\agudid_v3_lookup_doc.html"
+    },
+    {
+      "name": "agudid_v3_history_doc",
+      "url": "https://accessgudid.nlm.nih.gov/resources/developers/v3/device_history_api",
+      "status": 200,
+      "outcome": "OK",
+      "bytes": 49045,
+      "sha256": "7d52b6611e92d61e6389537ba78c7995e52ea8724974400e66195f75a75cda79",
+      "content_type": "text/html; charset=utf-8",
+      "final_url": "https://accessgudid.nlm.nih.gov/resources/developers/v3/device_history_api",
+      "saved": "D:\\DEPPSKK\\worktrees\\horizon-001\\research\\horizon\\DATASETS\\regulatory\\_discovery\\agudid_v3_history_doc.html"
+    },
+    {
+      "name": "agudid_v3_implant_download_doc",
+      "url": "https://accessgudid.nlm.nih.gov/resources/developers/v3/implant_list_download",
+      "status": 200,
+      "outcome": "OK",
+      "bytes": 38786,
+      "sha256": "d7165423622ff1c9dafbe783c5dedeff02c4e0194948028aafa59cbbc9a82f4e",
+      "content_type": "text/html; charset=utf-8",
+      "final_url": "https://accessgudid.nlm.nih.gov/resources/developers/v3/implant_list_download",
+      "saved": "D:\\DEPPSKK\\worktrees\\horizon-001\\research\\horizon\\DATASETS\\regulatory\\_discovery\\agudid_v3_implant_download_doc.html"
+    },
+    {
+      "name": "hc_api_root",
+      "url": "https://health-products.canada.ca/api/",
+      "status": 403,
+      "outcome": "HTTP_ERROR",
+      "bytes": 146,
+      "sha256": "32f2fa940d4b4fe19aca1e53a24e5aac29c57b7c5ee78588325b87f1b649c864",
+      "content_type": "text/html",
+      "final_url": "https://health-products.canada.ca/api/",
+      "saved": "D:\\DEPPSKK\\worktrees\\horizon-001\\research\\horizon\\DATASETS\\regulatory\\_discovery\\hc_api_root.html"
+    },
+    {
+      "name": "hc_mdall_root",
+      "url": "https://health-products.canada.ca/mdall-limh/",
+      "status": 200,
+      "outcome": "OK",
+      "bytes": 16974,
+      "sha256": "a9947fd0b798c423df4a939f2f7b3520118dbd31daaafbbe9ddb259897fe72d4",
+      "content_type": "text/html;charset=UTF-8",
+      "final_url": "https://health-products.canada.ca/mdall-limh/",
+      "saved": "D:\\DEPPSKK\\worktrees\\horizon-001\\research\\horizon\\DATASETS\\regulatory\\_discovery\\hc_mdall_root.html"
+    },
+    {
+      "name": "hc_open_gov",
+      "url": "https://open.canada.ca/data/en/dataset?q=medical+device",
+      "status": 400,
+      "outcome": "HTTP_ERROR",
+      "bytes": 59527,
+      "sha256": "3c87855e9026bead554a36a812dba733d6f653abd4ac266088ec57459573db52",
+      "content_type": "text/html; charset=utf-8",
+      "final_url": "https://search.open.canada.ca/opendata/?q=medical+device",
+      "saved": "D:\\DEPPSKK\\worktrees\\horizon-001\\research\\horizon\\DATASETS\\regulatory\\_discovery\\hc_open_gov.html"
+    },
+    {
+      "name": "datagov_devices",
+      "url": "https://data.gov.au/data/api/3/action/package_search?q=medical+device&rows=10",
+      "status": 200,
+      "outcome": "OK",
+      "bytes": 110329,
+      "sha256": "3deb7d83e0a17c2510e38bdb67b577a80e316b398b369fcdae8f46ddb01702ac",
+      "content_type": "application/json;charset=utf-8",
+      "final_url": "https://data.gov.au/data/api/3/action/package_search?q=medical+device&rows=10",
+      "saved": "D:\\DEPPSKK\\worktrees\\horizon-001\\research\\horizon\\DATASETS\\regulatory\\_discovery\\datagov_devices.json"
+    },
+    {
+      "name": "datagov_artg2",
+      "url": "https://data.gov.au/data/api/3/action/package_search?q=therapeutic+goods&rows=10",
+      "status": 200,
+      "outcome": "OK",
+      "bytes": 37049,
+      "sha256": "99eccd14f648433d782178363d5b5f900cd4ac114a0ddd277766358d0360c8cd",
+      "content_type": "application/json;charset=utf-8",
+      "final_url": "https://data.gov.au/data/api/3/action/package_search?q=therapeutic+goods&rows=10",
+      "saved": "D:\\DEPPSKK\\worktrees\\horizon-001\\research\\horizon\\DATASETS\\regulatory\\_discovery\\datagov_artg2.json"
+    },
+    {
+      "name": "eudamed_api_portal",
+      "url": "https://developer.datalake.sante.service.ec.europa.eu/api-details",
+      "status": 200,
+      "outcome": "OK",
+      "bytes": 9981,
+      "sha256": "91fffe3df4f090f96bcb42b42131a89309f4b4a86663d4c99fa549e4aead32cf",
+      "content_type": "text/html",
+      "final_url": "https://developer.datalake.sante.service.ec.europa.eu/api-details",
+      "saved": "D:\\DEPPSKK\\worktrees\\horizon-001\\research\\horizon\\DATASETS\\regulatory\\_discovery\\eudamed_api_portal.html"
+    },
+    {
+      "name": "anvisa_dados_index",
+      "url": "https://dados.anvisa.gov.br/dados/",
+      "status": 200,
+      "outcome": "OK",
+      "bytes": 46453,
+      "sha256": "55c94321cb2d5c42d300eebc19bf65a1ffeccd4f07bb9d94fd159885f451fb7d",
+      "content_type": "text/html;charset=utf-8",
+      "final_url": "https://dados.anvisa.gov.br/dados/",
+      "saved": "D:\\DEPPSKK\\worktrees\\horizon-001\\research\\horizon\\DATASETS\\regulatory\\_discovery\\anvisa_dados_index.html"
+    },
+    {
+      "name": "pmda_english_data",
+      "url": "https://www.pmda.go.jp/english/review-services/reviews/0001.html",
+      "status": 200,
+      "outcome": "OK",
+      "bytes": 58415,
+      "sha256": "45825a1bc166bb068b6c56bb1087ec4e41408e5765269b06037f82383e2eb158",
+      "content_type": "text/html",
+      "final_url": "https://www.pmda.go.jp/english/review-services/reviews/0001.html",
+      "saved": "D:\\DEPPSKK\\worktrees\\horizon-001\\research\\horizon\\DATASETS\\regulatory\\_discovery\\pmda_english_data.html"
+    },
+    {
+      "name": "mhra_devices",
+      "url": "https://www.gov.uk/government/publications/medical-devices-great-britain-market-surveillance",
+      "status": 404,
+      "outcome": "HTTP_ERROR",
+      "bytes": 52491,
+      "sha256": "a6bcd6cd22a3e9aaac1d18b9622361641aea483b0ebd2c57c9961bb3859e7f32",
+      "content_type": "text/html; charset=utf-8",
+      "final_url": "https://www.gov.uk/government/publications/medical-devices-great-britain-market-surveillance",
+      "saved": "D:\\DEPPSKK\\worktrees\\horizon-001\\research\\horizon\\DATASETS\\regulatory\\_discovery\\mhra_devices.html"
+    }
+  ]
+}

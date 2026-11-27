@@ -1,0 +1,31 @@
+{
+  "access_evidence": "PROBES.json reg_mhra_001: HTTP 200 application/json 13,426 bytes from the GOV.UK search API for 'medical device register'. The results are GOV.UK guidance and publication pages; no per-device registration dataset is published.",
+  "access_state": "MANUAL_ONLY",
+  "auth_required": false,
+  "blockers": [
+    "No public per-device UK registration register exists as open data."
+  ],
+  "bulk_available": false,
+  "domain": "www.gov.uk",
+  "entity_types": [
+    "regulatory_listing"
+  ],
+  "first_verified_at": "2026-11-10T07:30:00Z",
+  "historical_depth": "Guidance/alerts pages only.",
+  "id_schemes": [],
+  "licence_note": "GOV.UK content is published under the Open Government Licence v3.0. No licence sentence was quoted for a device register because no device register was found.",
+  "licence_status": "open_licence",
+  "licence_url": "https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/",
+  "machine_interface": "GOV.UK content API (guidance/alerts pages), not a device register.",
+  "name": "MHRA — UK medical device register / market surveillance",
+  "notes": "",
+  "operator": "Medicines and Healthcare products Regulatory Agency, UK",
+  "probe_suite": "regulatory",
+  "rate_policy": "GOV.UK search API is public; no quota exercised.",
+  "registration_url": null,
+  "robots_summary": "Not fetched in this workstream; no assertion made.",
+  "robots_url": "https://www.gov.uk/robots.txt",
+  "source_id": "uk_mhra_device",
+  "unlock_route": "MHRA device alerts/guidance are on GOV.UK. Company-level registration data is not open; access would require an FOI request to MHRA.",
+  "what_is_new": "Nothing obtained. Records that the UK has no open per-device register, which is itself a coverage boundary for the frontier map."
+}

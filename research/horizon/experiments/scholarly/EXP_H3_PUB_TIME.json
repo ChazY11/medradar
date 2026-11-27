@@ -1,0 +1,1902 @@
+{
+  "experiment": "EXP-H3",
+  "title": "Publication-time observability: explicit public dates, cross-database date disagreement, and current-snapshot-only dates",
+  "selection_rule": "experiments/scholarly/EXP_H1_SELECTION_RULE.md",
+  "generated_at": "2026-11-09T23:21:19Z",
+  "anchor_count": 60,
+  "sources": [
+    "openalex",
+    "crossref",
+    "europepmc",
+    "pubmed_eutils",
+    "semantic_scholar",
+    "openaire"
+  ],
+  "date_availability": {
+    "openalex": {
+      "source_label": "OpenAlex",
+      "records": 60,
+      "explicit_public_visible_date": 60,
+      "share_with_explicit_public_date": 1.0,
+      "creation_or_index_date": 60,
+      "share_with_creation_date": 1.0,
+      "mutable_snapshot_date": 60,
+      "current_snapshot_only": 0,
+      "share_current_snapshot_only": 0.0,
+      "field_inventory": {
+        "public_visible_date": [
+          "publication_date"
+        ],
+        "creation_or_index_date": [
+          "created_date"
+        ],
+        "mutable_snapshot_date": [
+          "updated_date"
+        ],
+        "source_of_creation_date": "the API returns created_date per work"
+      }
+    },
+    "crossref": {
+      "source_label": "Crossref",
+      "records": 59,
+      "explicit_public_visible_date": 59,
+      "share_with_explicit_public_date": 1.0,
+      "creation_or_index_date": 59,
+      "share_with_creation_date": 1.0,
+      "mutable_snapshot_date": 59,
+      "current_snapshot_only": 0,
+      "share_current_snapshot_only": 0.0,
+      "field_inventory": {
+        "public_visible_date": [
+          "issued",
+          "published",
+          "published_online",
+          "published_print"
+        ],
+        "creation_or_index_date": [
+          "created"
+        ],
+        "mutable_snapshot_date": [
+          "deposited",
+          "indexed"
+        ],
+        "source_of_creation_date": "message.created is the DOI registration timestamp with a full UTC date-time"
+      }
+    },
+    "europepmc": {
+      "source_label": "Europe PMC",
+      "records": 37,
+      "explicit_public_visible_date": 37,
+      "share_with_explicit_public_date": 1.0,
+      "creation_or_index_date": 37,
+      "share_with_creation_date": 1.0,
+      "mutable_snapshot_date": 37,
+      "current_snapshot_only": 0,
+      "share_current_snapshot_only": 0.0,
+      "field_inventory": {
+        "public_visible_date": [
+          "firstPublicationDate",
+          "electronicPublicationDate",
+          "publicationDate"
+        ],
+        "creation_or_index_date": [
+          "firstIndexDate",
+          "dateOfCreation",
+          "fullTextReceivedDate"
+        ],
+        "mutable_snapshot_date": [
+          "dateOfRevision"
+        ],
+        "source_of_creation_date": "firstIndexDate / dateOfCreation are indexing-history fields, distinct from the publication date"
+      }
+    },
+    "pubmed_eutils": {
+      "source_label": "PubMed (E-utilities)",
+      "records": 37,
+      "explicit_public_visible_date": 37,
+      "share_with_explicit_public_date": 1.0,
+      "creation_or_index_date": 0,
+      "share_with_creation_date": 0.0,
+      "mutable_snapshot_date": 0,
+      "current_snapshot_only": 37,
+      "share_current_snapshot_only": 1.0,
+      "field_inventory": {
+        "public_visible_date": [
+          "pub_date",
+          "article_date_electronic"
+        ],
+        "creation_or_index_date": [],
+        "mutable_snapshot_date": [],
+        "source_of_creation_date": "NONE - efetch output carries no record-creation or index timestamp, which is why first_observed_at is left None on PubMed records"
+      }
+    },
+    "semantic_scholar": {
+      "source_label": "Semantic Scholar",
+      "records": 56,
+      "explicit_public_visible_date": 55,
+      "share_with_explicit_public_date": 0.9821,
+      "creation_or_index_date": 0,
+      "share_with_creation_date": 0.0,
+      "mutable_snapshot_date": 0,
+      "current_snapshot_only": 55,
+      "share_current_snapshot_only": 0.9821,
+      "field_inventory": {
+        "public_visible_date": [
+          "publicationDate"
+        ],
+        "creation_or_index_date": [],
+        "mutable_snapshot_date": [],
+        "source_of_creation_date": "NONE - the Graph API exposes no creation timestamp"
+      }
+    },
+    "openaire": {
+      "source_label": "OpenAIRE Graph",
+      "records": 59,
+      "explicit_public_visible_date": 59,
+      "share_with_explicit_public_date": 1.0,
+      "creation_or_index_date": 0,
+      "share_with_creation_date": 0.0,
+      "mutable_snapshot_date": 0,
+      "current_snapshot_only": 59,
+      "share_current_snapshot_only": 1.0,
+      "field_inventory": {
+        "public_visible_date": [
+          "publicationDate",
+          "instances[].publicationDate"
+        ],
+        "creation_or_index_date": [],
+        "mutable_snapshot_date": [
+          "lastUpdateTimeStamp"
+        ],
+        "source_of_creation_date": "NONE - lastUpdateTimeStamp is a mutable marker, not a creation date"
+      }
+    }
+  },
+  "cross_source_date_disagreement": {
+    "anchors_with_at_least_two_dates": 60,
+    "anchors_disagreeing": 36,
+    "share_disagreeing": 0.6,
+    "spread_buckets": {
+      "1-7_days": 5,
+      "181-730_days": 6,
+      "31-180_days": 15,
+      "8-30_days": 9,
+      "over_730_days": 1,
+      "same_day": 24
+    },
+    "pairwise": {
+      "crossref|europepmc": {
+        "source_a": "Crossref",
+        "source_b": "Europe PMC",
+        "anchors_compared": 36,
+        "anchors_disagreeing": 17,
+        "disagreement_rate": 0.4722
+      },
+      "crossref|openaire": {
+        "source_a": "Crossref",
+        "source_b": "OpenAIRE Graph",
+        "anchors_compared": 59,
+        "anchors_disagreeing": 4,
+        "disagreement_rate": 0.0678
+      },
+      "crossref|openalex": {
+        "source_a": "Crossref",
+        "source_b": "OpenAlex",
+        "anchors_compared": 59,
+        "anchors_disagreeing": 21,
+        "disagreement_rate": 0.3559
+      },
+      "crossref|pubmed_eutils": {
+        "source_a": "Crossref",
+        "source_b": "PubMed (E-utilities)",
+        "anchors_compared": 36,
+        "anchors_disagreeing": 18,
+        "disagreement_rate": 0.5
+      },
+      "crossref|semantic_scholar": {
+        "source_a": "Crossref",
+        "source_b": "Semantic Scholar",
+        "anchors_compared": 54,
+        "anchors_disagreeing": 18,
+        "disagreement_rate": 0.3333
+      },
+      "europepmc|openaire": {
+        "source_a": "Europe PMC",
+        "source_b": "OpenAIRE Graph",
+        "anchors_compared": 36,
+        "anchors_disagreeing": 18,
+        "disagreement_rate": 0.5
+      },
+      "europepmc|openalex": {
+        "source_a": "Europe PMC",
+        "source_b": "OpenAlex",
+        "anchors_compared": 37,
+        "anchors_disagreeing": 19,
+        "disagreement_rate": 0.5135
+      },
+      "europepmc|pubmed_eutils": {
+        "source_a": "Europe PMC",
+        "source_b": "PubMed (E-utilities)",
+        "anchors_compared": 37,
+        "anchors_disagreeing": 3,
+        "disagreement_rate": 0.0811
+      },
+      "europepmc|semantic_scholar": {
+        "source_a": "Europe PMC",
+        "source_b": "Semantic Scholar",
+        "anchors_compared": 37,
+        "anchors_disagreeing": 21,
+        "disagreement_rate": 0.5676
+      },
+      "openaire|openalex": {
+        "source_a": "OpenAIRE Graph",
+        "source_b": "OpenAlex",
+        "anchors_compared": 59,
+        "anchors_disagreeing": 23,
+        "disagreement_rate": 0.3898
+      },
+      "openaire|pubmed_eutils": {
+        "source_a": "OpenAIRE Graph",
+        "source_b": "PubMed (E-utilities)",
+        "anchors_compared": 36,
+        "anchors_disagreeing": 19,
+        "disagreement_rate": 0.5278
+      },
+      "openaire|semantic_scholar": {
+        "source_a": "OpenAIRE Graph",
+        "source_b": "Semantic Scholar",
+        "anchors_compared": 54,
+        "anchors_disagreeing": 17,
+        "disagreement_rate": 0.3148
+      },
+      "openalex|pubmed_eutils": {
+        "source_a": "OpenAlex",
+        "source_b": "PubMed (E-utilities)",
+        "anchors_compared": 37,
+        "anchors_disagreeing": 18,
+        "disagreement_rate": 0.4865
+      },
+      "openalex|semantic_scholar": {
+        "source_a": "OpenAlex",
+        "source_b": "Semantic Scholar",
+        "anchors_compared": 55,
+        "anchors_disagreeing": 14,
+        "disagreement_rate": 0.2545
+      },
+      "pubmed_eutils|semantic_scholar": {
+        "source_a": "PubMed (E-utilities)",
+        "source_b": "Semantic Scholar",
+        "anchors_compared": 37,
+        "anchors_disagreeing": 21,
+        "disagreement_rate": 0.5676
+      }
+    },
+    "pairwise_examples": [
+      {
+        "anchor_doi": "10.1016/j.yrtph.2021.104987",
+        "source_a": "crossref",
+        "source_b": "europepmc",
+        "date_a": "2021-10-01",
+        "date_b": "2021-07-03",
+        "delta_days": 90
+      },
+      {
+        "anchor_doi": "10.1016/j.yrtph.2021.104987",
+        "source_a": "crossref",
+        "source_b": "openalex",
+        "date_a": "2021-10-01",
+        "date_b": "2021-07-03",
+        "delta_days": 90
+      },
+      {
+        "anchor_doi": "10.1016/j.yrtph.2021.104987",
+        "source_a": "crossref",
+        "source_b": "pubmed_eutils",
+        "date_a": "2021-10-01",
+        "date_b": "2021-07-03",
+        "delta_days": 90
+      },
+      {
+        "anchor_doi": "10.1016/j.yrtph.2021.104987",
+        "source_a": "crossref",
+        "source_b": "semantic_scholar",
+        "date_a": "2021-10-01",
+        "date_b": "2021-07-03",
+        "delta_days": 90
+      },
+      {
+        "anchor_doi": "10.1016/j.yrtph.2021.104987",
+        "source_a": "europepmc",
+        "source_b": "openaire",
+        "date_a": "2021-07-03",
+        "date_b": "2021-10-01",
+        "delta_days": 90
+      },
+      {
+        "anchor_doi": "10.1016/j.yrtph.2021.104987",
+        "source_a": "openaire",
+        "source_b": "openalex",
+        "date_a": "2021-10-01",
+        "date_b": "2021-07-03",
+        "delta_days": 90
+      },
+      {
+        "anchor_doi": "10.1016/j.yrtph.2021.104987",
+        "source_a": "openaire",
+        "source_b": "pubmed_eutils",
+        "date_a": "2021-10-01",
+        "date_b": "2021-07-03",
+        "delta_days": 90
+      },
+      {
+        "anchor_doi": "10.1016/j.yrtph.2021.104987",
+        "source_a": "openaire",
+        "source_b": "semantic_scholar",
+        "date_a": "2021-10-01",
+        "date_b": "2021-07-03",
+        "delta_days": 90
+      },
+      {
+        "anchor_doi": "10.1016/j.yrtph.2021.105004",
+        "source_a": "crossref",
+        "source_b": "europepmc",
+        "date_a": "2021-10-01",
+        "date_b": "2021-07-10",
+        "delta_days": 83
+      },
+      {
+        "anchor_doi": "10.1016/j.yrtph.2021.105004",
+        "source_a": "crossref",
+        "source_b": "openalex",
+        "date_a": "2021-10-01",
+        "date_b": "2021-07-10",
+        "delta_days": 83
+      },
+      {
+        "anchor_doi": "10.1016/j.yrtph.2021.105004",
+        "source_a": "crossref",
+        "source_b": "pubmed_eutils",
+        "date_a": "2021-10-01",
+        "date_b": "2021-07-10",
+        "delta_days": 83
+      },
+      {
+        "anchor_doi": "10.1016/j.yrtph.2021.105004",
+        "source_a": "crossref",
+        "source_b": "semantic_scholar",
+        "date_a": "2021-10-01",
+        "date_b": "2021-07-10",
+        "delta_days": 83
+      },
+      {
+        "anchor_doi": "10.1016/j.yrtph.2021.105004",
+        "source_a": "europepmc",
+        "source_b": "openaire",
+        "date_a": "2021-07-10",
+        "date_b": "2021-10-01",
+        "delta_days": 83
+      },
+      {
+        "anchor_doi": "10.1016/j.yrtph.2021.105004",
+        "source_a": "openaire",
+        "source_b": "openalex",
+        "date_a": "2021-10-01",
+        "date_b": "2021-07-10",
+        "delta_days": 83
+      },
+      {
+        "anchor_doi": "10.1016/j.yrtph.2021.105004",
+        "source_a": "openaire",
+        "source_b": "pubmed_eutils",
+        "date_a": "2021-10-01",
+        "date_b": "2021-07-10",
+        "delta_days": 83
+      },
+      {
+        "anchor_doi": "10.1016/j.yrtph.2021.105004",
+        "source_a": "openaire",
+        "source_b": "semantic_scholar",
+        "date_a": "2021-10-01",
+        "date_b": "2021-07-10",
+        "delta_days": 83
+      },
+      {
+        "anchor_doi": "10.1111/jace.18041",
+        "source_a": "crossref",
+        "source_b": "openalex",
+        "date_a": "2021-07-28",
+        "date_b": "2021-07-19",
+        "delta_days": 9
+      },
+      {
+        "anchor_doi": "10.1111/jace.18041",
+        "source_a": "openaire",
+        "source_b": "openalex",
+        "date_a": "2021-07-28",
+        "date_b": "2021-07-19",
+        "delta_days": 9
+      },
+      {
+        "anchor_doi": "10.1111/jace.18041",
+        "source_a": "openalex",
+        "source_b": "semantic_scholar",
+        "date_a": "2021-07-19",
+        "date_b": "2021-07-28",
+        "delta_days": 9
+      },
+      {
+        "anchor_doi": "10.1016/j.mpmed.2021.08.009",
+        "source_a": "crossref",
+        "source_b": "openaire",
+        "date_a": "2021-11-01",
+        "date_b": "2013-12-01",
+        "delta_days": 2892
+      },
+      {
+        "anchor_doi": "10.1016/j.mpmed.2021.08.009",
+        "source_a": "crossref",
+        "source_b": "openalex",
+        "date_a": "2021-11-01",
+        "date_b": "2021-09-27",
+        "delta_days": 35
+      },
+      {
+        "anchor_doi": "10.1016/j.mpmed.2021.08.009",
+        "source_a": "openaire",
+        "source_b": "openalex",
+        "date_a": "2013-12-01",
+        "date_b": "2021-09-27",
+        "delta_days": 2857
+      },
+      {
+        "anchor_doi": "10.1253/circj.cj-21-0491",
+        "source_a": "crossref",
+        "source_b": "europepmc",
+        "date_a": "2021-11-25",
+        "date_b": "2021-10-06",
+        "delta_days": 50
+      },
+      {
+        "anchor_doi": "10.1253/circj.cj-21-0491",
+        "source_a": "crossref",
+        "source_b": "openalex",
+        "date_a": "2021-11-25",
+        "date_b": "2021-10-05",
+        "delta_days": 51
+      },
+      {
+        "anchor_doi": "10.1253/circj.cj-21-0491",
+        "source_a": "crossref",
+        "source_b": "pubmed_eutils",
+        "date_a": "2021-11-25",
+        "date_b": "2021-10-06",
+        "delta_days": 50
+      },
+      {
+        "anchor_doi": "10.1253/circj.cj-21-0491",
+        "source_a": "crossref",
+        "source_b": "semantic_scholar",
+        "date_a": "2021-11-25",
+        "date_b": "2021-10-06",
+        "delta_days": 50
+      },
+      {
+        "anchor_doi": "10.1253/circj.cj-21-0491",
+        "source_a": "europepmc",
+        "source_b": "openaire",
+        "date_a": "2021-10-06",
+        "date_b": "2021-11-25",
+        "delta_days": 50
+      },
+      {
+        "anchor_doi": "10.1253/circj.cj-21-0491",
+        "source_a": "europepmc",
+        "source_b": "openalex",
+        "date_a": "2021-10-06",
+        "date_b": "2021-10-05",
+        "delta_days": 1
+      },
+      {
+        "anchor_doi": "10.1253/circj.cj-21-0491",
+        "source_a": "openaire",
+        "source_b": "openalex",
+        "date_a": "2021-11-25",
+        "date_b": "2021-10-05",
+        "delta_days": 51
+      },
+      {
+        "anchor_doi": "10.1253/circj.cj-21-0491",
+        "source_a": "openaire",
+        "source_b": "pubmed_eutils",
+        "date_a": "2021-11-25",
+        "date_b": "2021-10-06",
+        "delta_days": 50
+      },
+      {
+        "anchor_doi": "10.1253/circj.cj-21-0491",
+        "source_a": "openaire",
+        "source_b": "semantic_scholar",
+        "date_a": "2021-11-25",
+        "date_b": "2021-10-06",
+        "delta_days": 50
+      },
+      {
+        "anchor_doi": "10.1253/circj.cj-21-0491",
+        "source_a": "openalex",
+        "source_b": "pubmed_eutils",
+        "date_a": "2021-10-05",
+        "date_b": "2021-10-06",
+        "delta_days": 1
+      },
+      {
+        "anchor_doi": "10.1253/circj.cj-21-0491",
+        "source_a": "openalex",
+        "source_b": "semantic_scholar",
+        "date_a": "2021-10-05",
+        "date_b": "2021-10-06",
+        "delta_days": 1
+      },
+      {
+        "anchor_doi": "10.1016/j.yrtph.2021.105096",
+        "source_a": "crossref",
+        "source_b": "europepmc",
+        "date_a": "2022-03-01",
+        "date_b": "2021-12-10",
+        "delta_days": 81
+      },
+      {
+        "anchor_doi": "10.1016/j.yrtph.2021.105096",
+        "source_a": "crossref",
+        "source_b": "openalex",
+        "date_a": "2022-03-01",
+        "date_b": "2021-12-09",
+        "delta_days": 82
+      },
+      {
+        "anchor_doi": "10.1016/j.yrtph.2021.105096",
+        "source_a": "crossref",
+        "source_b": "pubmed_eutils",
+        "date_a": "2022-03-01",
+        "date_b": "2021-12-10",
+        "delta_days": 81
+      },
+      {
+        "anchor_doi": "10.1016/j.yrtph.2021.105096",
+        "source_a": "crossref",
+        "source_b": "semantic_scholar",
+        "date_a": "2022-03-01",
+        "date_b": "2021-12-01",
+        "delta_days": 90
+      },
+      {
+        "anchor_doi": "10.1016/j.yrtph.2021.105096",
+        "source_a": "europepmc",
+        "source_b": "openaire",
+        "date_a": "2021-12-10",
+        "date_b": "2022-03-01",
+        "delta_days": 81
+      },
+      {
+        "anchor_doi": "10.1016/j.yrtph.2021.105096",
+        "source_a": "europepmc",
+        "source_b": "openalex",
+        "date_a": "2021-12-10",
+        "date_b": "2021-12-09",
+        "delta_days": 1
+      },
+      {
+        "anchor_doi": "10.1016/j.yrtph.2021.105096",
+        "source_a": "europepmc",
+        "source_b": "semantic_scholar",
+        "date_a": "2021-12-10",
+        "date_b": "2021-12-01",
+        "delta_days": 9
+      }
+    ],
+    "per_anchor": [
+      {
+        "anchor_doi": "10.1016/j.mpmed.2021.08.009",
+        "sources_with_date": [
+          "crossref",
+          "openaire",
+          "openalex"
+        ],
+        "dates": {
+          "openalex": "2021-09-27",
+          "crossref": "2021-11-01",
+          "openaire": "2013-12-01"
+        },
+        "spread_days": 2892,
+        "bucket": "over_730_days"
+      },
+      {
+        "anchor_doi": "10.1007/978-3-662-59715-6_42",
+        "sources_with_date": [
+          "crossref",
+          "openaire",
+          "openalex"
+        ],
+        "dates": {
+          "openalex": "2020-01-01",
+          "crossref": "2020-01-01",
+          "openaire": "2018-01-01"
+        },
+        "spread_days": 730,
+        "bucket": "181-730_days"
+      },
+      {
+        "anchor_doi": "10.3389/fped.2021.722497",
+        "sources_with_date": [
+          "crossref",
+          "europepmc",
+          "openaire",
+          "openalex",
+          "pubmed_eutils",
+          "semantic_scholar"
+        ],
+        "dates": {
+          "openalex": "2021-09-28",
+          "crossref": "2021-09-28",
+          "europepmc": "2021-09-28",
+          "pubmed_eutils": "2021-09-28",
+          "semantic_scholar": "2020-11-24",
+          "openaire": "2020-11-24"
+        },
+        "spread_days": 308,
+        "bucket": "181-730_days"
+      },
+      {
+        "anchor_doi": "10.21037/atm-22-3767",
+        "sources_with_date": [
+          "crossref",
+          "europepmc",
+          "openaire",
+          "openalex",
+          "pubmed_eutils",
+          "semantic_scholar"
+        ],
+        "dates": {
+          "openalex": "2022-09-15",
+          "crossref": "2022-10-01",
+          "europepmc": "2022-10-01",
+          "pubmed_eutils": "2022-10-01",
+          "semantic_scholar": "2022-01-01",
+          "openaire": "2022-10-01"
+        },
+        "spread_days": 273,
+        "bucket": "181-730_days"
+      },
+      {
+        "anchor_doi": "10.1016/j.arbres.2020.05.032",
+        "sources_with_date": [
+          "crossref",
+          "europepmc",
+          "openaire",
+          "openalex",
+          "pubmed_eutils",
+          "semantic_scholar"
+        ],
+        "dates": {
+          "openalex": "2020-07-06",
+          "crossref": "2021-04-01",
+          "europepmc": "2020-07-06",
+          "pubmed_eutils": "2020-07-06",
+          "semantic_scholar": "2020-07-06",
+          "openaire": "2021-04-01"
+        },
+        "spread_days": 269,
+        "bucket": "181-730_days"
+      },
+      {
+        "anchor_doi": "10.1115/1.4053565",
+        "sources_with_date": [
+          "crossref",
+          "openaire",
+          "openalex"
+        ],
+        "dates": {
+          "openalex": "2022-01-18",
+          "crossref": "2022-02-09",
+          "openaire": "2021-05-19"
+        },
+        "spread_days": 266,
+        "bucket": "181-730_days"
+      },
+      {
+        "anchor_doi": "10.21037/atm-22-3491",
+        "sources_with_date": [
+          "crossref",
+          "europepmc",
+          "openaire",
+          "openalex",
+          "pubmed_eutils",
+          "semantic_scholar"
+        ],
+        "dates": {
+          "openalex": "2022-08-01",
+          "crossref": "2022-08-01",
+          "europepmc": "2022-08-01",
+          "pubmed_eutils": "2022-08-01",
+          "semantic_scholar": "2022-01-01",
+          "openaire": "2022-08-01"
+        },
+        "spread_days": 212,
+        "bucket": "181-730_days"
+      },
+      {
+        "anchor_doi": "10.1148/radiol.212257",
+        "sources_with_date": [
+          "crossref",
+          "europepmc",
+          "openaire",
+          "openalex",
+          "pubmed_eutils",
+          "semantic_scholar"
+        ],
+        "dates": {
+          "openalex": "2022-08-23",
+          "crossref": "2023-01-01",
+          "europepmc": "2022-08-23",
+          "pubmed_eutils": "2022-08-23",
+          "semantic_scholar": "2022-08-23",
+          "openaire": "2023-01-01"
+        },
+        "spread_days": 131,
+        "bucket": "31-180_days"
+      },
+      {
+        "anchor_doi": "10.1097/ccm.0000000000004892",
+        "sources_with_date": [
+          "crossref",
+          "europepmc",
+          "openaire",
+          "openalex",
+          "pubmed_eutils",
+          "semantic_scholar"
+        ],
+        "dates": {
+          "openalex": "2021-02-17",
+          "crossref": "2021-02-17",
+          "europepmc": "2021-06-01",
+          "pubmed_eutils": "2021-06-01",
+          "semantic_scholar": "2021-02-17",
+          "openaire": "2021-02-17"
+        },
+        "spread_days": 104,
+        "bucket": "31-180_days"
+      },
+      {
+        "anchor_doi": "10.1016/j.yrtph.2021.104987",
+        "sources_with_date": [
+          "crossref",
+          "europepmc",
+          "openaire",
+          "openalex",
+          "pubmed_eutils",
+          "semantic_scholar"
+        ],
+        "dates": {
+          "openalex": "2021-07-03",
+          "crossref": "2021-10-01",
+          "europepmc": "2021-07-03",
+          "pubmed_eutils": "2021-07-03",
+          "semantic_scholar": "2021-07-03",
+          "openaire": "2021-10-01"
+        },
+        "spread_days": 90,
+        "bucket": "31-180_days"
+      },
+      {
+        "anchor_doi": "10.1016/j.yrtph.2021.105096",
+        "sources_with_date": [
+          "crossref",
+          "europepmc",
+          "openaire",
+          "openalex",
+          "pubmed_eutils",
+          "semantic_scholar"
+        ],
+        "dates": {
+          "openalex": "2021-12-09",
+          "crossref": "2022-03-01",
+          "europepmc": "2021-12-10",
+          "pubmed_eutils": "2021-12-10",
+          "semantic_scholar": "2021-12-01",
+          "openaire": "2022-03-01"
+        },
+        "spread_days": 90,
+        "bucket": "31-180_days"
+      },
+      {
+        "anchor_doi": "10.2196/43905",
+        "sources_with_date": [
+          "crossref",
+          "europepmc",
+          "openaire",
+          "openalex",
+          "pubmed_eutils",
+          "semantic_scholar"
+        ],
+        "dates": {
+          "openalex": "2022-12-19",
+          "crossref": "2023-01-23",
+          "europepmc": "2023-01-23",
+          "pubmed_eutils": "2023-01-23",
+          "semantic_scholar": "2022-10-28",
+          "openaire": "2023-01-23"
+        },
+        "spread_days": 87,
+        "bucket": "31-180_days"
+      },
+      {
+        "anchor_doi": "10.1016/j.yrtph.2021.105004",
+        "sources_with_date": [
+          "crossref",
+          "europepmc",
+          "openaire",
+          "openalex",
+          "pubmed_eutils",
+          "semantic_scholar"
+        ],
+        "dates": {
+          "openalex": "2021-07-10",
+          "crossref": "2021-10-01",
+          "europepmc": "2021-07-10",
+          "pubmed_eutils": "2021-07-10",
+          "semantic_scholar": "2021-07-10",
+          "openaire": "2021-10-01"
+        },
+        "spread_days": 83,
+        "bucket": "31-180_days"
+      },
+      {
+        "anchor_doi": "10.1002/mp.14881",
+        "sources_with_date": [
+          "crossref",
+          "europepmc",
+          "openaire",
+          "openalex",
+          "pubmed_eutils",
+          "semantic_scholar"
+        ],
+        "dates": {
+          "openalex": "2021-04-12",
+          "crossref": "2021-06-28",
+          "europepmc": "2021-06-28",
+          "pubmed_eutils": "2021-06-28",
+          "semantic_scholar": "2021-04-12",
+          "openaire": "2021-06-28"
+        },
+        "spread_days": 77,
+        "bucket": "31-180_days"
+      },
+      {
+        "anchor_doi": "10.1093/jbi/wbaa070",
+        "sources_with_date": [
+          "crossref",
+          "europepmc",
+          "openaire",
+          "openalex",
+          "pubmed_eutils",
+          "semantic_scholar"
+        ],
+        "dates": {
+          "openalex": "2020-09-08",
+          "crossref": "2020-09-08",
+          "europepmc": "2020-11-01",
+          "pubmed_eutils": "2020-11-21",
+          "semantic_scholar": "2020-09-08",
+          "openaire": "2020-09-08"
+        },
+        "spread_days": 74,
+        "bucket": "31-180_days"
+      },
+      {
+        "anchor_doi": "10.1007/978-3-030-54403-4",
+        "sources_with_date": [
+          "crossref",
+          "openaire",
+          "openalex"
+        ],
+        "dates": {
+          "openalex": "2020-10-20",
+          "crossref": "2021-01-01",
+          "openaire": "2021-01-01"
+        },
+        "spread_days": 73,
+        "bucket": "31-180_days"
+      },
+      {
+        "anchor_doi": "10.1016/j.ejvs.2021.11.001",
+        "sources_with_date": [
+          "crossref",
+          "europepmc",
+          "openaire",
+          "openalex",
+          "pubmed_eutils",
+          "semantic_scholar"
+        ],
+        "dates": {
+          "openalex": "2022-01-11",
+          "crossref": "2022-03-01",
+          "europepmc": "2022-01-11",
+          "pubmed_eutils": "2022-01-11",
+          "semantic_scholar": "2022-01-01",
+          "openaire": "2022-03-01"
+        },
+        "spread_days": 59,
+        "bucket": "31-180_days"
+      },
+      {
+        "anchor_doi": "10.1093/ageing/afab278",
+        "sources_with_date": [
+          "crossref",
+          "europepmc",
+          "openaire",
+          "openalex",
+          "pubmed_eutils",
+          "semantic_scholar"
+        ],
+        "dates": {
+          "openalex": "2021-12-09",
+          "crossref": "2022-02-01",
+          "europepmc": "2022-02-01",
+          "pubmed_eutils": "2022-02-02",
+          "semantic_scholar": "2022-02-01",
+          "openaire": "2022-02-01"
+        },
+        "spread_days": 55,
+        "bucket": "31-180_days"
+      },
+      {
+        "anchor_doi": "10.1253/circj.cj-21-0491",
+        "sources_with_date": [
+          "crossref",
+          "europepmc",
+          "openaire",
+          "openalex",
+          "pubmed_eutils",
+          "semantic_scholar"
+        ],
+        "dates": {
+          "openalex": "2021-10-05",
+          "crossref": "2021-11-25",
+          "europepmc": "2021-10-06",
+          "pubmed_eutils": "2021-10-06",
+          "semantic_scholar": "2021-10-06",
+          "openaire": "2021-11-25"
+        },
+        "spread_days": 51,
+        "bucket": "31-180_days"
+      },
+      {
+        "anchor_doi": "10.1097/sla.0000000000003958",
+        "sources_with_date": [
+          "crossref",
+          "europepmc",
+          "openaire",
+          "openalex",
+          "pubmed_eutils",
+          "semantic_scholar"
+        ],
+        "dates": {
+          "openalex": "2020-05-19",
+          "crossref": "2020-05-19",
+          "europepmc": "2020-07-01",
+          "pubmed_eutils": "2020-07-01",
+          "semantic_scholar": "2020-05-19",
+          "openaire": "2020-05-19"
+        },
+        "spread_days": 43,
+        "bucket": "31-180_days"
+      },
+      {
+        "anchor_doi": "10.1016/j.arbr.2021.02.001",
+        "sources_with_date": [
+          "crossref",
+          "openaire",
+          "openalex",
+          "semantic_scholar"
+        ],
+        "dates": {
+          "openalex": "2021-02-21",
+          "crossref": "2021-04-01",
+          "semantic_scholar": "2021-02-19",
+          "openaire": "2021-04-01"
+        },
+        "spread_days": 41,
+        "bucket": "31-180_days"
+      },
+      {
+        "anchor_doi": "10.1097/rli.0000000000000673",
+        "sources_with_date": [
+          "crossref",
+          "europepmc",
+          "openaire",
+          "openalex",
+          "pubmed_eutils",
+          "semantic_scholar"
+        ],
+        "dates": {
+          "openalex": "2020-07-29",
+          "crossref": "2020-07-29",
+          "europepmc": "2020-09-01",
+          "pubmed_eutils": "2020-09-01",
+          "semantic_scholar": "2020-07-29",
+          "openaire": "2020-07-29"
+        },
+        "spread_days": 34,
+        "bucket": "31-180_days"
+      },
+      {
+        "anchor_doi": "10.3969/j.issn.1671-7104.2022.04.023",
+        "sources_with_date": [
+          "europepmc",
+          "openalex",
+          "pubmed_eutils",
+          "semantic_scholar"
+        ],
+        "dates": {
+          "openalex": "2022-07-30",
+          "europepmc": "2022-07-01",
+          "pubmed_eutils": "2022-07-30",
+          "semantic_scholar": "2022-07-30"
+        },
+        "spread_days": 29,
+        "bucket": "8-30_days"
+      },
+      {
+        "anchor_doi": "10.1002/bit.27335",
+        "sources_with_date": [
+          "crossref",
+          "europepmc",
+          "openaire",
+          "openalex",
+          "pubmed_eutils",
+          "semantic_scholar"
+        ],
+        "dates": {
+          "openalex": "2020-03-17",
+          "crossref": "2020-04-08",
+          "europepmc": "2020-04-08",
+          "pubmed_eutils": "2020-04-08",
+          "semantic_scholar": "2020-03-17",
+          "openaire": "2020-04-08"
+        },
+        "spread_days": 22,
+        "bucket": "8-30_days"
+      },
+      {
+        "anchor_doi": "10.1021/acssensors.0c00712",
+        "sources_with_date": [
+          "crossref",
+          "europepmc",
+          "openaire",
+          "openalex",
+          "pubmed_eutils",
+          "semantic_scholar"
+        ],
+        "dates": {
+          "openalex": "2020-07-06",
+          "crossref": "2020-07-06",
+          "europepmc": "2020-07-23",
+          "pubmed_eutils": "2020-07-23",
+          "semantic_scholar": "2020-07-06",
+          "openaire": "2020-07-06"
+        },
+        "spread_days": 17,
+        "bucket": "8-30_days"
+      },
+      {
+        "anchor_doi": "10.1021/acsami.9b21808",
+        "sources_with_date": [
+          "crossref",
+          "europepmc",
+          "openaire",
+          "openalex",
+          "pubmed_eutils",
+          "semantic_scholar"
+        ],
+        "dates": {
+          "openalex": "2020-02-10",
+          "crossref": "2020-02-10",
+          "europepmc": "2020-02-25",
+          "pubmed_eutils": "2020-02-25",
+          "semantic_scholar": "2020-02-10",
+          "openaire": "2020-02-10"
+        },
+        "spread_days": 15,
+        "bucket": "8-30_days"
+      },
+      {
+        "anchor_doi": "10.1136/bmjopen-2022-064581",
+        "sources_with_date": [
+          "crossref",
+          "europepmc",
+          "openaire",
+          "openalex",
+          "pubmed_eutils",
+          "semantic_scholar"
+        ],
+        "dates": {
+          "openalex": "2022-11-01",
+          "crossref": "2022-11-01",
+          "europepmc": "2022-11-16",
+          "pubmed_eutils": "2022-11-16",
+          "semantic_scholar": "2022-11-01",
+          "openaire": "2022-11-01"
+        },
+        "spread_days": 15,
+        "bucket": "8-30_days"
+      },
+      {
+        "anchor_doi": "10.1080/17434440.2022.2054334",
+        "sources_with_date": [
+          "crossref",
+          "europepmc",
+          "openaire",
+          "openalex",
+          "pubmed_eutils",
+          "semantic_scholar"
+        ],
+        "dates": {
+          "openalex": "2022-03-04",
+          "crossref": "2022-03-04",
+          "europepmc": "2022-03-17",
+          "pubmed_eutils": "2022-03-17",
+          "semantic_scholar": "2022-03-04",
+          "openaire": "2022-03-04"
+        },
+        "spread_days": 13,
+        "bucket": "8-30_days"
+      },
+      {
+        "anchor_doi": "10.1161/jaha.121.023848",
+        "sources_with_date": [
+          "crossref",
+          "europepmc",
+          "openaire",
+          "openalex",
+          "pubmed_eutils",
+          "semantic_scholar"
+        ],
+        "dates": {
+          "openalex": "2022-03-04",
+          "crossref": "2022-03-15",
+          "europepmc": "2022-03-04",
+          "pubmed_eutils": "2022-03-04",
+          "semantic_scholar": "2022-03-04",
+          "openaire": "2022-03-15"
+        },
+        "spread_days": 11,
+        "bucket": "8-30_days"
+      },
+      {
+        "anchor_doi": "10.1364/boe.469747",
+        "sources_with_date": [
+          "crossref",
+          "europepmc",
+          "openaire",
+          "openalex",
+          "pubmed_eutils",
+          "semantic_scholar"
+        ],
+        "dates": {
+          "openalex": "2022-09-19",
+          "crossref": "2022-09-30",
+          "europepmc": "2022-09-30",
+          "pubmed_eutils": "2022-09-30",
+          "semantic_scholar": "2022-09-19",
+          "openaire": "2022-09-30"
+        },
+        "spread_days": 11,
+        "bucket": "8-30_days"
+      },
+      {
+        "anchor_doi": "10.1111/jace.18041",
+        "sources_with_date": [
+          "crossref",
+          "openaire",
+          "openalex",
+          "semantic_scholar"
+        ],
+        "dates": {
+          "openalex": "2021-07-19",
+          "crossref": "2021-07-28",
+          "semantic_scholar": "2021-07-28",
+          "openaire": "2021-07-28"
+        },
+        "spread_days": 9,
+        "bucket": "8-30_days"
+      },
+      {
+        "anchor_doi": "10.31478/202201b",
+        "sources_with_date": [
+          "crossref",
+          "europepmc",
+          "openaire",
+          "openalex",
+          "pubmed_eutils",
+          "semantic_scholar"
+        ],
+        "dates": {
+          "openalex": "2022-01-14",
+          "crossref": "2022-01-18",
+          "europepmc": "2022-01-18",
+          "pubmed_eutils": "2022-01-18",
+          "semantic_scholar": "2022-01-18",
+          "openaire": "2022-01-18"
+        },
+        "spread_days": 4,
+        "bucket": "1-7_days"
+      },
+      {
+        "anchor_doi": "10.1111/jch.13851",
+        "sources_with_date": [
+          "crossref",
+          "europepmc",
+          "openaire",
+          "openalex",
+          "pubmed_eutils",
+          "semantic_scholar"
+        ],
+        "dates": {
+          "openalex": "2020-04-01",
+          "crossref": "2020-04-01",
+          "europepmc": "2020-04-05",
+          "pubmed_eutils": "2020-04-05",
+          "semantic_scholar": "2020-04-01",
+          "openaire": "2020-04-01"
+        },
+        "spread_days": 4,
+        "bucket": "1-7_days"
+      },
+      {
+        "anchor_doi": "10.4414/smw.2021.20515",
+        "sources_with_date": [
+          "crossref",
+          "europepmc",
+          "openaire",
+          "openalex",
+          "pubmed_eutils",
+          "semantic_scholar"
+        ],
+        "dates": {
+          "openalex": "2021-06-23",
+          "crossref": "2021-06-23",
+          "europepmc": "2021-06-23",
+          "pubmed_eutils": "2021-06-23",
+          "semantic_scholar": "2021-06-21",
+          "openaire": "2021-06-23"
+        },
+        "spread_days": 2,
+        "bucket": "1-7_days"
+      },
+      {
+        "anchor_doi": "10.1007/978-3-030-83864-5_33",
+        "sources_with_date": [
+          "crossref",
+          "openaire",
+          "openalex",
+          "semantic_scholar"
+        ],
+        "dates": {
+          "openalex": "2021-11-22",
+          "crossref": "2021-11-23",
+          "semantic_scholar": "2021-11-23",
+          "openaire": "2021-11-23"
+        },
+        "spread_days": 1,
+        "bucket": "1-7_days"
+      },
+      {
+        "anchor_doi": "10.3390/polym12051033",
+        "sources_with_date": [
+          "crossref",
+          "europepmc",
+          "openaire",
+          "openalex",
+          "pubmed_eutils",
+          "semantic_scholar"
+        ],
+        "dates": {
+          "openalex": "2020-05-02",
+          "crossref": "2020-05-02",
+          "europepmc": "2020-05-02",
+          "pubmed_eutils": "2020-05-02",
+          "semantic_scholar": "2020-05-01",
+          "openaire": "2020-05-02"
+        },
+        "spread_days": 1,
+        "bucket": "1-7_days"
+      },
+      {
+        "anchor_doi": "10.1016/s0378-4274(21)00463-x",
+        "sources_with_date": [
+          "crossref",
+          "openaire",
+          "openalex",
+          "semantic_scholar"
+        ],
+        "dates": {
+          "openalex": "2021-09-01",
+          "crossref": "2021-09-01",
+          "semantic_scholar": "2021-09-01",
+          "openaire": "2021-09-01"
+        },
+        "spread_days": 0,
+        "bucket": "same_day"
+      },
+      {
+        "anchor_doi": "10.33564/ijeast.2021.v06i07.046",
+        "sources_with_date": [
+          "crossref",
+          "openaire",
+          "openalex",
+          "semantic_scholar"
+        ],
+        "dates": {
+          "openalex": "2021-11-01",
+          "crossref": "2021-11-01",
+          "semantic_scholar": "2021-11-01",
+          "openaire": "2021-11-01"
+        },
+        "spread_days": 0,
+        "bucket": "same_day"
+      },
+      {
+        "anchor_doi": "10.1161/circ.144.suppl_1.13385",
+        "sources_with_date": [
+          "crossref",
+          "openaire",
+          "openalex"
+        ],
+        "dates": {
+          "openalex": "2021-11-16",
+          "crossref": "2021-11-16",
+          "openaire": "2021-11-16"
+        },
+        "spread_days": 0,
+        "bucket": "same_day"
+      },
+      {
+        "anchor_doi": "10.2345/0899-8205-54.4.311",
+        "sources_with_date": [
+          "crossref",
+          "europepmc",
+          "openaire",
+          "openalex",
+          "pubmed_eutils",
+          "semantic_scholar"
+        ],
+        "dates": {
+          "openalex": "2020-07-01",
+          "crossref": "2020-07-01",
+          "europepmc": "2020-07-01",
+          "pubmed_eutils": "2020-07-01",
+          "semantic_scholar": "2020-07-01",
+          "openaire": "2020-07-01"
+        },
+        "spread_days": 0,
+        "bucket": "same_day"
+      },
+      {
+        "anchor_doi": "10.2345/0899-8205-54.4.291",
+        "sources_with_date": [
+          "crossref",
+          "europepmc",
+          "openaire",
+          "openalex",
+          "pubmed_eutils",
+          "semantic_scholar"
+        ],
+        "dates": {
+          "openalex": "2020-07-01",
+          "crossref": "2020-07-01",
+          "europepmc": "2020-07-01",
+          "pubmed_eutils": "2020-07-01",
+          "semantic_scholar": "2020-07-01",
+          "openaire": "2020-07-01"
+        },
+        "spread_days": 0,
+        "bucket": "same_day"
+      },
+      {
+        "anchor_doi": "10.1007/s00535-022-01932-1",
+        "sources_with_date": [
+          "crossref",
+          "europepmc",
+          "openaire",
+          "openalex",
+          "pubmed_eutils",
+          "semantic_scholar"
+        ],
+        "dates": {
+          "openalex": "2022-12-05",
+          "crossref": "2022-12-05",
+          "europepmc": "2022-12-05",
+          "pubmed_eutils": "2022-12-05",
+          "semantic_scholar": "2022-12-05",
+          "openaire": "2022-12-05"
+        },
+        "spread_days": 0,
+        "bucket": "same_day"
+      },
+      {
+        "anchor_doi": "10.1109/icoei48184.2020.9142931",
+        "sources_with_date": [
+          "crossref",
+          "openaire",
+          "openalex",
+          "semantic_scholar"
+        ],
+        "dates": {
+          "openalex": "2020-06-01",
+          "crossref": "2020-06-01",
+          "semantic_scholar": "2020-06-01",
+          "openaire": "2020-06-01"
+        },
+        "spread_days": 0,
+        "bucket": "same_day"
+      },
+      {
+        "anchor_doi": "10.1002/jmri.27492",
+        "sources_with_date": [
+          "crossref",
+          "europepmc",
+          "openaire",
+          "openalex",
+          "pubmed_eutils",
+          "semantic_scholar"
+        ],
+        "dates": {
+          "openalex": "2020-12-31",
+          "crossref": "2020-12-31",
+          "europepmc": "2020-12-31",
+          "pubmed_eutils": "2020-12-31",
+          "semantic_scholar": "2020-12-31",
+          "openaire": "2020-12-31"
+        },
+        "spread_days": 0,
+        "bucket": "same_day"
+      },
+      {
+        "anchor_doi": "10.2967/jnumed.120.261881",
+        "sources_with_date": [
+          "crossref",
+          "europepmc",
+          "openaire",
+          "openalex",
+          "pubmed_eutils",
+          "semantic_scholar"
+        ],
+        "dates": {
+          "openalex": "2021-07-22",
+          "crossref": "2021-07-22",
+          "europepmc": "2021-07-22",
+          "pubmed_eutils": "2021-07-22",
+          "semantic_scholar": "2021-07-22",
+          "openaire": "2021-07-22"
+        },
+        "spread_days": 0,
+        "bucket": "same_day"
+      },
+      {
+        "anchor_doi": "10.1145/3385032.3385047",
+        "sources_with_date": [
+          "crossref",
+          "openaire",
+          "openalex",
+          "semantic_scholar"
+        ],
+        "dates": {
+          "openalex": "2020-02-27",
+          "crossref": "2020-02-27",
+          "semantic_scholar": "2020-02-27",
+          "openaire": "2020-02-27"
+        },
+        "spread_days": 0,
+        "bucket": "same_day"
+      },
+      {
+        "anchor_doi": "10.1212/wnl.96.15_supplement.4100",
+        "sources_with_date": [
+          "crossref",
+          "openaire",
+          "openalex",
+          "semantic_scholar"
+        ],
+        "dates": {
+          "openalex": "2021-04-13",
+          "crossref": "2021-04-13",
+          "semantic_scholar": "2021-04-13",
+          "openaire": "2021-04-13"
+        },
+        "spread_days": 0,
+        "bucket": "same_day"
+      },
+      {
+        "anchor_doi": "10.1109/rams48097.2021.9605713",
+        "sources_with_date": [
+          "crossref",
+          "openaire",
+          "openalex",
+          "semantic_scholar"
+        ],
+        "dates": {
+          "openalex": "2021-05-24",
+          "crossref": "2021-05-24",
+          "semantic_scholar": "2021-05-24",
+          "openaire": "2021-05-24"
+        },
+        "spread_days": 0,
+        "bucket": "same_day"
+      },
+      {
+        "anchor_doi": "10.1109/ccta48906.2021.9659125",
+        "sources_with_date": [
+          "crossref",
+          "openaire",
+          "openalex",
+          "semantic_scholar"
+        ],
+        "dates": {
+          "openalex": "2021-08-09",
+          "crossref": "2021-08-09",
+          "semantic_scholar": "2021-08-09",
+          "openaire": "2021-08-09"
+        },
+        "spread_days": 0,
+        "bucket": "same_day"
+      },
+      {
+        "anchor_doi": "10.1109/ius52206.2021.9593683",
+        "sources_with_date": [
+          "crossref",
+          "openaire",
+          "openalex",
+          "semantic_scholar"
+        ],
+        "dates": {
+          "openalex": "2021-09-11",
+          "crossref": "2021-09-11",
+          "semantic_scholar": "2021-09-11",
+          "openaire": "2021-09-11"
+        },
+        "spread_days": 0,
+        "bucket": "same_day"
+      },
+      {
+        "anchor_doi": "10.1117/12.2618126",
+        "sources_with_date": [
+          "crossref",
+          "openaire",
+          "openalex",
+          "semantic_scholar"
+        ],
+        "dates": {
+          "openalex": "2022-05-30",
+          "crossref": "2022-05-30",
+          "semantic_scholar": "2022-05-30",
+          "openaire": "2022-05-30"
+        },
+        "spread_days": 0,
+        "bucket": "same_day"
+      },
+      {
+        "anchor_doi": "10.1515/9783110591026-005",
+        "sources_with_date": [
+          "crossref",
+          "openaire",
+          "openalex",
+          "semantic_scholar"
+        ],
+        "dates": {
+          "openalex": "2020-04-06",
+          "crossref": "2020-04-06",
+          "semantic_scholar": "2020-04-06",
+          "openaire": "2020-04-06"
+        },
+        "spread_days": 0,
+        "bucket": "same_day"
+      },
+      {
+        "anchor_doi": "10.25368/2021.11",
+        "sources_with_date": [
+          "crossref",
+          "openaire",
+          "openalex",
+          "semantic_scholar"
+        ],
+        "dates": {
+          "openalex": "2021-09-06",
+          "crossref": "2021-09-06",
+          "semantic_scholar": "2021-09-06",
+          "openaire": "2021-09-06"
+        },
+        "spread_days": 0,
+        "bucket": "same_day"
+      },
+      {
+        "anchor_doi": "10.12968/s2514-9768(22)90086-9",
+        "sources_with_date": [
+          "crossref",
+          "openaire",
+          "openalex",
+          "semantic_scholar"
+        ],
+        "dates": {
+          "openalex": "2021-11-01",
+          "crossref": "2021-11-01",
+          "semantic_scholar": "2021-11-01",
+          "openaire": "2021-11-01"
+        },
+        "spread_days": 0,
+        "bucket": "same_day"
+      },
+      {
+        "anchor_doi": "10.2991/artres.k.201209.041",
+        "sources_with_date": [
+          "crossref",
+          "openaire",
+          "openalex",
+          "semantic_scholar"
+        ],
+        "dates": {
+          "openalex": "2020-12-01",
+          "crossref": "2020-12-01",
+          "semantic_scholar": "2020-12-01",
+          "openaire": "2020-12-01"
+        },
+        "spread_days": 0,
+        "bucket": "same_day"
+      },
+      {
+        "anchor_doi": "10.1109/mems51670.2022.9699652",
+        "sources_with_date": [
+          "crossref",
+          "openaire",
+          "openalex",
+          "semantic_scholar"
+        ],
+        "dates": {
+          "openalex": "2022-01-09",
+          "crossref": "2022-01-09",
+          "semantic_scholar": "2022-01-09",
+          "openaire": "2022-01-09"
+        },
+        "spread_days": 0,
+        "bucket": "same_day"
+      },
+      {
+        "anchor_doi": "10.1186/s13244-022-01259-8",
+        "sources_with_date": [
+          "crossref",
+          "europepmc",
+          "openaire",
+          "openalex",
+          "pubmed_eutils",
+          "semantic_scholar"
+        ],
+        "dates": {
+          "openalex": "2022-07-28",
+          "crossref": "2022-07-28",
+          "europepmc": "2022-07-28",
+          "pubmed_eutils": "2022-07-28",
+          "semantic_scholar": "2022-07-28",
+          "openaire": "2022-07-28"
+        },
+        "spread_days": 0,
+        "bucket": "same_day"
+      },
+      {
+        "anchor_doi": "10.21595/jve.2022.22479",
+        "sources_with_date": [
+          "crossref",
+          "openaire",
+          "openalex",
+          "semantic_scholar"
+        ],
+        "dates": {
+          "openalex": "2022-08-06",
+          "crossref": "2022-08-06",
+          "semantic_scholar": "2022-08-06",
+          "openaire": "2022-08-06"
+        },
+        "spread_days": 0,
+        "bucket": "same_day"
+      },
+      {
+        "anchor_doi": "10.1177/1358863x221117608",
+        "sources_with_date": [
+          "crossref",
+          "europepmc",
+          "openaire",
+          "openalex",
+          "pubmed_eutils",
+          "semantic_scholar"
+        ],
+        "dates": {
+          "openalex": "2022-08-24",
+          "crossref": "2022-08-24",
+          "europepmc": "2022-08-24",
+          "pubmed_eutils": "2022-08-24",
+          "semantic_scholar": "2022-08-24",
+          "openaire": "2022-08-24"
+        },
+        "spread_days": 0,
+        "bucket": "same_day"
+      },
+      {
+        "anchor_doi": "10.21037/atm-22-4589",
+        "sources_with_date": [
+          "crossref",
+          "europepmc",
+          "openaire",
+          "openalex",
+          "pubmed_eutils",
+          "semantic_scholar"
+        ],
+        "dates": {
+          "openalex": "2022-10-01",
+          "crossref": "2022-10-01",
+          "europepmc": "2022-10-01",
+          "pubmed_eutils": "2022-10-01",
+          "semantic_scholar": "2022-10-01",
+          "openaire": "2022-10-01"
+        },
+        "spread_days": 0,
+        "bucket": "same_day"
+      }
+    ]
+  },
+  "index_lag": {
+    "openalex": {
+      "source_label": "OpenAlex",
+      "records_with_both_dates": 60,
+      "median_days_creation_minus_publication": 14,
+      "min_days": -266,
+      "max_days": 969,
+      "buckets": {
+        "1-7_days": 14,
+        "181-730_days": 5,
+        "31-180_days": 12,
+        "8-30_days": 22,
+        "creation_before_publication": 1,
+        "over_730_days": 3,
+        "same_day": 3
+      },
+      "note": "positive = the record became visible AFTER the nominal publication date, i.e. a measurable observability lag; negative = the 'publication date' is later than the record's creation (issue-date vs e-pub effects)"
+    },
+    "crossref": {
+      "source_label": "Crossref",
+      "records_with_both_dates": 59,
+      "median_days_creation_minus_publication": 0,
+      "min_days": -269,
+      "max_days": 968,
+      "buckets": {
+        "1-7_days": 4,
+        "181-730_days": 4,
+        "31-180_days": 5,
+        "8-30_days": 10,
+        "creation_before_publication": 21,
+        "over_730_days": 1,
+        "same_day": 14
+      },
+      "note": "positive = the record became visible AFTER the nominal publication date, i.e. a measurable observability lag; negative = the 'publication date' is later than the record's creation (issue-date vs e-pub effects)"
+    },
+    "europepmc": {
+      "source_label": "Europe PMC",
+      "records_with_both_dates": 37,
+      "median_days_creation_minus_publication": 2,
+      "min_days": -103,
+      "max_days": 1216,
+      "buckets": {
+        "1-7_days": 14,
+        "31-180_days": 8,
+        "8-30_days": 4,
+        "creation_before_publication": 8,
+        "over_730_days": 1,
+        "same_day": 2
+      },
+      "note": "positive = the record became visible AFTER the nominal publication date, i.e. a measurable observability lag; negative = the 'publication date' is later than the record's creation (issue-date vs e-pub effects)"
+    }
+  },
+  "trial_submission_to_posting_lag": {
+    "clinicaltrials_gov": {
+      "source_label": "ClinicalTrials.gov",
+      "records_with_both_dates": 164,
+      "median_days_posting_minus_submission": 8,
+      "min_days": 1,
+      "max_days": 892,
+      "buckets": {
+        "1-7_days": 78,
+        "181-730_days": 4,
+        "31-180_days": 16,
+        "8-30_days": 65,
+        "over_730_days": 1
+      },
+      "note": "This is NOT an indexing lag. It is the registry's own queue: the gap between a sponsor submitting the record and ClinicalTrials.gov first posting it. It is a genuine four-clock quantity because the event (the trial starting) is a third, earlier date again."
+    }
+  },
+  "non_publication_entity_clocks": {
+    "clinicaltrials_gov": {
+      "source_label": "ClinicalTrials.gov",
+      "records": 164,
+      "explicit_public_visible_date": 164,
+      "event_date": 94,
+      "creation_or_index_date": 164,
+      "field_inventory": {
+        "public_visible_date": [
+          "study_first_post_date"
+        ],
+        "creation_or_index_date": [
+          "study_first_submit_date",
+          "study_first_submit_qc_date"
+        ],
+        "mutable_snapshot_date": [
+          "last_update_submit_date",
+          "last_update_post_date"
+        ],
+        "source_of_creation_date": "submit date and QC date are recorded separately from the post date, so the submission->publication lag is measurable for trials"
+      }
+    },
+    "nih_reporter": {
+      "source_label": "NIH RePORTER",
+      "records": 64,
+      "explicit_public_visible_date": 64,
+      "event_date": 56,
+      "creation_or_index_date": 0,
+      "field_inventory": {
+        "public_visible_date": [
+          "award_notice_date"
+        ],
+        "creation_or_index_date": [],
+        "mutable_snapshot_date": [],
+        "source_of_creation_date": "award_notice_date is preserved; no separate record-creation timestamp in the projected fields"
+      }
+    },
+    "eu_cordis": {
+      "source_label": "CORDIS",
+      "records": 60,
+      "explicit_public_visible_date": 0,
+      "event_date": 0,
+      "creation_or_index_date": 0,
+      "field_inventory": {
+        "public_visible_date": [],
+        "creation_or_index_date": [],
+        "mutable_snapshot_date": [
+          "lastUpdateDate"
+        ],
+        "source_of_creation_date": "NONE usable - dates arrive as template strings such as '1 {{month_08}} 2014'"
+      }
+    },
+    "eu_ctis": {
+      "source_label": "EU CTIS",
+      "records": 0,
+      "explicit_public_visible_date": 0,
+      "event_date": 0,
+      "creation_or_index_date": 0,
+      "field_inventory": {
+        "public_visible_date": [],
+        "creation_or_index_date": [],
+        "mutable_snapshot_date": [],
+        "source_of_creation_date": "NONE - no record was ever served (HTTP 403)"
+      }
+    }
+  },
+  "headline": {
+    "share_anchors_with_cross_db_date_disagreement": 0.6,
+    "share_anchors_disagreeing_by_more_than_30_days": 0.3667,
+    "sources_with_creation_date": [
+      "openalex",
+      "crossref",
+      "europepmc"
+    ],
+    "sources_current_snapshot_only": [
+      "pubmed_eutils",
+      "semantic_scholar",
+      "openaire"
+    ]
+  }
+}

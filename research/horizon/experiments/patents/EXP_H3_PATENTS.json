@@ -1,0 +1,48 @@
+{
+  "experiment": "EXP-H3",
+  "scope": "are the new patent sources eligible for historical time research?",
+  "generated_at": "2026-11-09T23:35:42Z",
+  "epo": {
+    "share_with_recorded_public_date": 1.0,
+    "observability_gap_days": {
+      "n": 228,
+      "min": 114,
+      "median": 1738,
+      "max": 6881,
+      "buckets": {
+        "181-730_days": 57,
+        "31-180_days": 1,
+        "731-1826_days": 65,
+        "over_1826_days": 105
+      }
+    },
+    "two_clock_records": 228,
+    "historical_versions_available": false,
+    "why": "the publication server serves the document as published; there is no record-level version history, so we observe a fixed published artefact",
+    "date_confusion_checked": true,
+    "date_confusion_note": "INID 43 (application publication) and INID 45 (grant) are both present on granted documents and are separated by years; the connector records both and selects by kind"
+  },
+  "cipo": {
+    "records": 19702,
+    "share_with_recorded_public_date": 0.7862,
+    "share_snapshot_only": 1.0,
+    "observability_gap_days": {
+      "n": 6457,
+      "min": 14,
+      "median": 1588,
+      "max": 6861,
+      "buckets": {
+        "1-30_days": 2,
+        "181-730_days": 74,
+        "31-180_days": 15,
+        "731-1826_days": 3472,
+        "over_1826_days": 2894
+      }
+    },
+    "historical_versions_available": false,
+    "why": "single quarterly extract ending 2022-02-28; only Grant Date is a recorded public-availability date, pending applications have none",
+    "date_confusion_checked": true,
+    "date_confusion_note": "Filing Date must never be used as an observation date; the 18-month laid-open rule is a rule, not a recorded field, and is deliberately not applied"
+  },
+  "verdict": "EP publications are eligible for historical-observability work: every record has a recorded public date and a filing date, and the gap is measured per record. CIPO is eligible only for granted patents and is snapshot-limited; its ownership timeline is the more valuable feature and is dated."
+}

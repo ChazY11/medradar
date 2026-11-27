@@ -1,0 +1,2639 @@
+{
+  "source_id": "eu_cordis",
+  "generated_at": "2026-11-09T23:09:10Z",
+  "endpoint": "https://cordis.europa.eu/api/search/results",
+  "documented": false,
+  "budget": {
+    "client": "scholarly_cordis",
+    "requests_made": 6,
+    "max_requests": 7,
+    "bytes_received": 70104,
+    "max_total_bytes": 8000000,
+    "retries": 2,
+    "errors": []
+  },
+  "raw_files": [
+    {
+      "path": "DATASETS/scholarly/eu_cordis/raw/search_01.json",
+      "bytes": 24079,
+      "sha256": "dffe12fd3ca95c803cd583d03b64cc767547ce42d5da0df44c3bef8bf530307c",
+      "requested_url": "https://cordis.europa.eu/api/search/results?q=contenttype%3D%27project%27+AND+medical+device&num=20",
+      "final_url": "https://cordis.europa.eu/api/search/results?q=contenttype%3D%27project%27+AND+medical+device&num=20",
+      "status": 200,
+      "content_type": "application/json",
+      "fetched_at": "2026-11-09T23:09:04Z",
+      "note": "CORDIS project search q='medical device' (broad European project coverage for the device domain)",
+      "query": "medical device"
+    },
+    {
+      "path": "DATASETS/scholarly/eu_cordis/raw/search_02.json",
+      "bytes": 20907,
+      "sha256": "6842edd44596bb150612a3ebf4354f0184e759972781b07ef8d3deb1e2ebf919",
+      "requested_url": "https://cordis.europa.eu/api/search/results?q=contenttype%3D%27project%27+AND+pacemaker&num=20",
+      "final_url": "https://cordis.europa.eu/api/search/results?q=contenttype%3D%27project%27+AND+pacemaker&num=20",
+      "status": 200,
+      "content_type": "application/json",
+      "fetched_at": "2026-11-09T23:09:05Z",
+      "note": "CORDIS project search q='pacemaker' (implantable-device sub-domain)",
+      "query": "pacemaker"
+    },
+    {
+      "path": "DATASETS/scholarly/eu_cordis/raw/search_03.json",
+      "bytes": 23639,
+      "sha256": "13e1539c3a74ebd38d343bd24adc5e79aef82a429b8d4959b8eb8dfd63de42e8",
+      "requested_url": "https://cordis.europa.eu/api/search/results?q=contenttype%3D%27project%27+AND+ventilator&num=20",
+      "final_url": "https://cordis.europa.eu/api/search/results?q=contenttype%3D%27project%27+AND+ventilator&num=20",
+      "status": 200,
+      "content_type": "application/json",
+      "fetched_at": "2026-11-09T23:09:06Z",
+      "note": "CORDIS project search q='ventilator' (another device sub-domain, to check the query works generally)",
+      "query": "ventilator"
+    },
+    {
+      "path": "DATASETS/scholarly/eu_cordis/raw/search_04.json",
+      "bytes": 493,
+      "sha256": "37c7537b20b1871de98987ad722c2d742eb4d5082f922e26573cf02c4e3255a5",
+      "requested_url": "https://cordis.europa.eu/api/search/results?q=contenttype%3D%27project%27+AND+Horizon+2020+medical+device&num=20",
+      "final_url": "https://cordis.europa.eu/api/search/results?q=contenttype%3D%27project%27+AND+Horizon+2020+medical+device&num=20",
+      "status": 500,
+      "content_type": "application/json",
+      "fetched_at": "2026-11-09T23:09:10Z",
+      "note": "CORDIS project search q='Horizon 2020 medical device' (programme-scoped variant)",
+      "query": "Horizon 2020 medical device"
+    }
+  ],
+  "queries": [
+    {
+      "query": "medical device",
+      "why": "broad European project coverage for the device domain",
+      "status": 200,
+      "raw": "DATASETS/scholarly/eu_cordis/raw/search_01.json",
+      "total": 1528,
+      "returned": 20
+    },
+    {
+      "query": "pacemaker",
+      "why": "implantable-device sub-domain",
+      "status": 200,
+      "raw": "DATASETS/scholarly/eu_cordis/raw/search_02.json",
+      "total": 58,
+      "returned": 20
+    },
+    {
+      "query": "ventilator",
+      "why": "another device sub-domain, to check the query works generally",
+      "status": 200,
+      "raw": "DATASETS/scholarly/eu_cordis/raw/search_03.json",
+      "total": 177,
+      "returned": 20
+    },
+    {
+      "query": "Horizon 2020 medical device",
+      "why": "programme-scoped variant",
+      "status": 500,
+      "raw": "DATASETS/scholarly/eu_cordis/raw/search_04.json",
+      "total": null,
+      "returned": 0
+    }
+  ],
+  "project_count": 60,
+  "projects": [
+    {
+      "reference": "954905",
+      "id": "954905",
+      "acronym": "MobilityPlus",
+      "programme": [
+        {
+          "code": "H2020",
+          "id": "H2020-EU.3.",
+          "rcn": "664235",
+          "title": "PRIORITY 'Societal challenges"
+        },
+        {
+          "code": "H2020",
+          "id": "H2020-EU.2.3.",
+          "rcn": "664223",
+          "title": "INDUSTRIAL LEADERSHIP - Innovation In SMEs"
+        },
+        {
+          "code": "H2020",
+          "id": "H2020-EU.2.1.",
+          "rcn": "664145",
+          "title": "INDUSTRIAL LEADERSHIP - Leadership in enabling and industrial technologies"
+        }
+      ],
+      "startDate": "1 {{month_05}} 2020",
+      "endDate": "31 {{month_10}} 2022",
+      "thumb": {
+        "uri": "/assets/img/projects/icons/logo_h2020_big.jpg",
+        "type": null,
+        "language": null,
+        "copyright": null,
+        "alternativeText": null,
+        "itemContent": null
+      },
+      "coordinatedIn": "Ireland",
+      "teaser": "Mobility+ is the future of the enteral feeding healthcare. It is a solution that alleviates the burden on healthcare and addresses specific feeding needs of patients with Complex Chronic Conditions (CCCs). Mobility+ system will be enabled by major advances in wireless...",
+      "rcn": "229199",
+      "language": "en",
+      "availableLanguages": [
+        "en"
+      ],
+      "contentType": "project",
+      "pseudoContentType": "project",
+      "lastUpdateDate": "27 {{month_12}} 2023",
+      "archivedDate": "",
+      "title": "Commercialisation of the Connected Enteral Feeding Healthcare System for Integrated & Co-ordinated Care (Mobility+)",
+      "_query": "medical device"
+    },
+    {
+      "reference": "733515",
+      "id": "733515",
+      "acronym": "PLATINUM",
+      "programme": [
+        {
+          "code": "H2020",
+          "id": "H2020-EU.3.1.",
+          "rcn": "664237",
+          "title": "SOCIETAL CHALLENGES - Health, demographic change and well-being"
+        },
+        {
+          "code": "H2020",
+          "id": "H2020-EU.3.1.4.",
+          "rcn": "664261",
+          "title": "Active ageing and self-management of health"
+        },
+        {
+          "code": "H2020",
+          "id": "H2020-EU.2.1.1.",
+          "rcn": "664147",
+          "title": "INDUSTRIAL LEADERSHIP - Leadership in enabling and industrial technologies - Information and Communication Technologies (ICT)"
+        },
+        {
+          "code": "H2020",
+          "id": "H2020-EU.2.3.1.",
+          "rcn": "664225",
+          "title": " Mainstreaming SME support, especially through a dedicated instrument"
+        },
+        {
+          "code": "H2020",
+          "id": "H2020-EU.3.1.6.",
+          "rcn": "664275",
+          "title": "Health care provision and integrated care"
+        }
+      ],
+      "startDate": "1 {{month_08}} 2016",
+      "endDate": "31 {{month_03}} 2022",
+      "thumb": {
+        "uri": "/assets/img/projects/icons/logo_h2020_big.jpg",
+        "type": null,
+        "language": null,
+        "copyright": null,
+        "alternativeText": null,
+        "itemContent": null
+      },
+      "coordinatedIn": "Italy",
+      "teaser": "The project aims at developing, prototyping, validating and bringing to market a portable assay system for the pre-diabetes and diabetes diagnosis and control, consisting of a disposable medical device equipped with a Lab-on-Chip (LoC) used for Point of Care or Self-Monitoring...",
+      "rcn": "205020",
+      "language": "en",
+      "availableLanguages": [
+        "en"
+      ],
+      "contentType": "project",
+      "pseudoContentType": "project",
+      "lastUpdateDate": "31 {{month_07}} 2024",
+      "archivedDate": "",
+      "title": "Portable Diagnostic Medical Device Based on Lab-on-Chip for Detection of Protein Biomarkers of Medical Interest.",
+      "_query": "medical device"
+    },
+    {
+      "reference": "101126640",
+      "id": "101126640",
+      "acronym": "MedDevDoc",
+      "programme": [
+        {
+          "code": "HORIZON",
+          "id": "HORIZON.1.2",
+          "rcn": "705729",
+          "title": "Marie Skłodowska-Curie Actions (MSCA)"
+        }
+      ],
+      "startDate": "1 {{month_12}} 2023",
+      "endDate": "30 {{month_11}} 2029",
+      "thumb": {
+        "uri": "/assets/img/projects/icons/logo_horizon_big.jpg",
+        "type": null,
+        "language": null,
+        "copyright": null,
+        "alternativeText": null,
+        "itemContent": null
+      },
+      "coordinatedIn": "Ireland",
+      "teaser": "A major limitation for the introduction of novel medical devices to the market is the gap between research outputs and industry interactions. Innovations arising from academic institutions are rarely well aligned with commercial requirements (e.g. regulatory, pricing, patient...",
+      "rcn": "257797",
+      "language": "en",
+      "availableLanguages": [
+        "en"
+      ],
+      "contentType": "project",
+      "pseudoContentType": "project",
+      "lastUpdateDate": "18 {{month_12}} 2025",
+      "archivedDate": "",
+      "title": "Doctorate Career Development and Mobility Studentships in Medical Device Research and Advancements: Enhancing the CÚRAM Industry-Academia Training Initiative",
+      "_query": "medical device"
+    },
+    {
+      "reference": "763217",
+      "id": "763217",
+      "acronym": "LEXR Sterilizer",
+      "programme": [
+        {
+          "code": "H2020",
+          "id": "H2020-EU.2.1.5.",
+          "rcn": "664197",
+          "title": "INDUSTRIAL LEADERSHIP - Leadership in enabling and industrial technologies - Advanced manufacturing and processing"
+        },
+        {
+          "code": "H2020",
+          "id": "H2020-EU.2.1.3.",
+          "rcn": "664173",
+          "title": "INDUSTRIAL LEADERSHIP - Leadership in enabling and industrial technologies - Advanced materials"
+        },
+        {
+          "code": "H2020",
+          "id": "H2020-EU.2.3.1.",
+          "rcn": "664225",
+          "title": " Mainstreaming SME support, especially through a dedicated instrument"
+        },
+        {
+          "code": "H2020",
+          "id": "H2020-EU.2.1.2.",
+          "rcn": "664161",
+          "title": "INDUSTRIAL LEADERSHIP - Leadership in enabling and industrial technologies – Nanotechnologies"
+        }
+      ],
+      "startDate": "1 {{month_02}} 2017",
+      "endDate": "31 {{month_05}} 2017",
+      "thumb": {
+        "uri": "/assets/img/projects/icons/logo_h2020_big.jpg",
+        "type": null,
+        "language": null,
+        "copyright": null,
+        "alternativeText": null,
+        "itemContent": null
+      },
+      "coordinatedIn": "United Kingdom",
+      "teaser": "The sterilization of medical devices (such as implants, artificial joints, syringes, blood bags), as well as ‘tetrapacks’, food packaging, and even wine corks, is currently performed by third-parties. This adds time and costs to the final and critical part of the...",
+      "rcn": "208028",
+      "language": "en",
+      "availableLanguages": [
+        "en"
+      ],
+      "contentType": "project",
+      "pseudoContentType": "project",
+      "lastUpdateDate": "11 {{month_08}} 2022",
+      "archivedDate": "",
+      "title": "Low Energy X Ray Sterilizer – bringing OEM medical device sterilization in house and streamlining production",
+      "_query": "medical device"
+    },
+    {
+      "reference": "888653",
+      "id": "888653",
+      "acronym": "bio-T",
+      "programme": [
+        {
+          "code": "H2020",
+          "id": "H2020-EU.3.",
+          "rcn": "664235",
+          "title": "PRIORITY 'Societal challenges"
+        },
+        {
+          "code": "H2020",
+          "id": "H2020-EU.2.3.",
+          "rcn": "664223",
+          "title": "INDUSTRIAL LEADERSHIP - Innovation In SMEs"
+        },
+        {
+          "code": "H2020",
+          "id": "H2020-EU.2.1.",
+          "rcn": "664145",
+          "title": "INDUSTRIAL LEADERSHIP - Leadership in enabling and industrial technologies"
+        }
+      ],
+      "startDate": "1 {{month_12}} 2019",
+      "endDate": "29 {{month_02}} 2020",
+      "thumb": {
+        "uri": "/assets/img/projects/icons/logo_h2020_big.jpg",
+        "type": null,
+        "language": null,
+        "copyright": null,
+        "alternativeText": null,
+        "itemContent": null
+      },
+      "coordinatedIn": "Israel",
+      "teaser": "The Internet of Medical things (IoMT), a multi hundred billion Euro market by 2028, presents an opportunity to revolutionize healthcare by collecting and analysing real time patient data. The IoMT brings together the digital and physical worlds to improve the speed and...",
+      "rcn": "225785",
+      "language": "en",
+      "availableLanguages": [
+        "en"
+      ],
+      "contentType": "project",
+      "pseudoContentType": "project",
+      "lastUpdateDate": "16 {{month_08}} 2022",
+      "archivedDate": "",
+      "title": "Enabling medical device vendors to realize the potential of the data collectible by their devices",
+      "_query": "medical device"
+    },
+    {
+      "reference": "101188638",
+      "id": "101188638",
+      "acronym": "Bio2Skin",
+      "programme": [
+        {
+          "code": "HORIZON",
+          "id": "HORIZON.3.1",
+          "rcn": "705792",
+          "title": "The European Innovation Council (EIC)"
+        }
+      ],
+      "startDate": "1 {{month_11}} 2024",
+      "endDate": "31 {{month_10}} 2026",
+      "thumb": {
+        "uri": "/assets/img/projects/icons/logo_horizon_big.jpg",
+        "type": null,
+        "language": null,
+        "copyright": null,
+        "alternativeText": null,
+        "itemContent": null
+      },
+      "coordinatedIn": "Portugal",
+      "teaser": "External medical devices, such as ostomy pouches, wound dressings or wearable electronic devices, require the use of medical adhesives for their attachment to the skin. However, prolonged use of current medical adhesives is associated with serious adverse skin reactions, MARSI...",
+      "rcn": "267755",
+      "language": "en",
+      "availableLanguages": [
+        "en"
+      ],
+      "contentType": "project",
+      "pseudoContentType": "project",
+      "lastUpdateDate": "26 {{month_11}} 2025",
+      "archivedDate": "",
+      "title": "Bio2Skin, the first clinically skin-preserving biomaterial replacing silicones/acrylate as medical skin adhesives",
+      "_query": "medical device"
+    },
+    {
+      "reference": "868579",
+      "id": "868579",
+      "acronym": "FS-UNIT",
+      "programme": [
+        {
+          "code": "H2020",
+          "id": "H2020-EU.3.",
+          "rcn": "664235",
+          "title": "PRIORITY 'Societal challenges"
+        },
+        {
+          "code": "H2020",
+          "id": "H2020-EU.2.3.",
+          "rcn": "664223",
+          "title": "INDUSTRIAL LEADERSHIP - Innovation In SMEs"
+        },
+        {
+          "code": "H2020",
+          "id": "H2020-EU.2.1.",
+          "rcn": "664145",
+          "title": "INDUSTRIAL LEADERSHIP - Leadership in enabling and industrial technologies"
+        }
+      ],
+      "startDate": "1 {{month_05}} 2019",
+      "endDate": "31 {{month_08}} 2019",
+      "thumb": {
+        "uri": "/assets/img/projects/icons/logo_h2020_big.jpg",
+        "type": null,
+        "language": null,
+        "copyright": null,
+        "alternativeText": null,
+        "itemContent": null
+      },
+      "coordinatedIn": "Norway",
+      "teaser": "Excitus is an award-winning high-tech health start-up set to disrupt the pre-hospital emergency care market by providing a lightweight, easy-to-use, instantly functioning portable medical suction device. Sudden out-of-hospital cardiac arrests remain are highly lethal, with 9...",
+      "rcn": "223103",
+      "language": "en",
+      "availableLanguages": [
+        "en"
+      ],
+      "contentType": "project",
+      "pseudoContentType": "project",
+      "lastUpdateDate": "16 {{month_08}} 2022",
+      "archivedDate": "",
+      "title": "FS-UNIT: Light-weight, portable medical Field Suction Unit to disrupt the pre-hospital market",
+      "_query": "medical device"
+    },
+    {
+      "reference": "190156124",
+      "id": "190156124",
+      "acronym": "MPRD",
+      "programme": [
+        {
+          "code": "HORIZON",
+          "id": "HORIZON.3.1",
+          "rcn": "705792",
+          "title": "The European Innovation Council (EIC)"
+        }
+      ],
+      "startDate": "1 {{month_09}} 2023",
+      "endDate": "31 {{month_08}} 2025",
+      "thumb": {
+        "uri": "/assets/img/projects/icons/logo_horizon_big.jpg",
+        "type": null,
+        "language": null,
+        "copyright": null,
+        "alternativeText": null,
+        "itemContent": null
+      },
+      "coordinatedIn": "Israel",
+      "teaser": "Butterfly Medical, a medical-device start-up, is developing a fast, simple, and minimally invasive alternative treatment to medication and surgery used for Benign Prostate Hyperplasia (BPH) treatment. Butterflys innovative device transfers the procedure from the operating room...",
+      "rcn": "259632",
+      "language": "en",
+      "availableLanguages": [
+        "en"
+      ],
+      "contentType": "project",
+      "pseudoContentType": "project",
+      "lastUpdateDate": "6 {{month_09}} 2024",
+      "archivedDate": "",
+      "title": "Innovative, minimally invasive Medical Prostatic Retraction Device for the treatment of Benign Prostatic Hyperplasia (BPH) Patients in the office settings.",
+      "_query": "medical device"
+    },
+    {
+      "reference": "101120006",
+      "id": "101120006",
+      "acronym": "BIOMEND",
+      "programme": [
+        {
+          "code": "HORIZON",
+          "id": "HORIZON.1.2",
+          "rcn": "705729",
+          "title": "Marie Skłodowska-Curie Actions (MSCA)"
+        }
+      ],
+      "startDate": "1 {{month_01}} 2024",
+      "endDate": "31 {{month_12}} 2027",
+      "thumb": {
+        "uri": "/assets/img/projects/icons/logo_horizon_big.jpg",
+        "type": null,
+        "language": null,
+        "copyright": null,
+        "alternativeText": null,
+        "itemContent": null
+      },
+      "coordinatedIn": "Ireland",
+      "teaser": "BIOMEND is an Industrial Doctorate Network (DN) programme that will provide world-class interdisciplinary training to 15 high-achieving doctoral candidates (DCs) in the area of BIOabsorbable Metallic ENdovascular Medical Devices (BIOMEND). The consortium spans seven European...",
+      "rcn": "254472",
+      "language": "en",
+      "availableLanguages": [
+        "en"
+      ],
+      "contentType": "project",
+      "pseudoContentType": "project",
+      "lastUpdateDate": "19 {{month_11}} 2025",
+      "archivedDate": "",
+      "title": "BIOabsorbable Metallic ENDovascular Medical Devices (BIOMEND) Doctoral Network",
+      "_query": "medical device"
+    },
+    {
+      "reference": "836187",
+      "id": "836187",
+      "acronym": "VOIC",
+      "programme": [
+        {
+          "code": "H2020",
+          "id": "H2020-EU.3.",
+          "rcn": "664235",
+          "title": "PRIORITY 'Societal challenges"
+        },
+        {
+          "code": "H2020",
+          "id": "H2020-EU.2.3.",
+          "rcn": "664223",
+          "title": "INDUSTRIAL LEADERSHIP - Innovation In SMEs"
+        },
+        {
+          "code": "H2020",
+          "id": "H2020-EU.2.1.",
+          "rcn": "664145",
+          "title": "INDUSTRIAL LEADERSHIP - Leadership in enabling and industrial technologies"
+        }
+      ],
+      "startDate": "1 {{month_02}} 2019",
+      "endDate": "31 {{month_07}} 2019",
+      "thumb": {
+        "uri": "/assets/img/projects/icons/logo_h2020_big.jpg",
+        "type": null,
+        "language": null,
+        "copyright": null,
+        "alternativeText": null,
+        "itemContent": null
+      },
+      "coordinatedIn": "Poland",
+      "teaser": "Home therapy is the future of many available medical therapies. Home therapy does not require any additional medical staff support or hospital space, resulting in large savings for healthcare services. Aphasia therapy is one which could be potentially moved to the home...",
+      "rcn": "219856",
+      "language": "en",
+      "availableLanguages": [
+        "en"
+      ],
+      "contentType": "project",
+      "pseudoContentType": "project",
+      "lastUpdateDate": "16 {{month_08}} 2022",
+      "archivedDate": "",
+      "title": "REVOLUTIONARY THERAPY OF APHASIA",
+      "_query": "medical device"
+    },
+    {
+      "reference": "946140",
+      "id": "946140",
+      "acronym": "ESPREE",
+      "programme": [
+        {
+          "code": "H2020",
+          "id": "H2020-EU.3.",
+          "rcn": "664235",
+          "title": "PRIORITY 'Societal challenges"
+        },
+        {
+          "code": "H2020",
+          "id": "H2020-EU.2.3.",
+          "rcn": "664223",
+          "title": "INDUSTRIAL LEADERSHIP - Innovation In SMEs"
+        },
+        {
+          "code": "H2020",
+          "id": "H2020-EU.2.1.",
+          "rcn": "664145",
+          "title": "INDUSTRIAL LEADERSHIP - Leadership in enabling and industrial technologies"
+        }
+      ],
+      "startDate": "1 {{month_05}} 2020",
+      "endDate": "30 {{month_04}} 2023",
+      "thumb": {
+        "uri": "/assets/img/projects/icons/logo_h2020_big.jpg",
+        "type": null,
+        "language": null,
+        "copyright": null,
+        "alternativeText": null,
+        "itemContent": null
+      },
+      "coordinatedIn": "Switzerland",
+      "teaser": "All medical devices implanted into the human body are perceived as foreign objects resulting in an attempt by the body to reject them through a process called foreign body reaction. This can result in either the failure of the medical device and/or significant clinical...",
+      "rcn": "229089",
+      "language": "en",
+      "availableLanguages": [
+        "en"
+      ],
+      "contentType": "project",
+      "pseudoContentType": "project",
+      "lastUpdateDate": "27 {{month_12}} 2023",
+      "archivedDate": "",
+      "title": "Enabling Surgical Pocket REgeneration",
+      "_query": "medical device"
+    },
+    {
+      "reference": "101227596",
+      "id": "101227596",
+      "acronym": "MEDALLOY",
+      "programme": [
+        {
+          "code": "HORIZON",
+          "id": "HORIZON.1.2",
+          "rcn": "705729",
+          "title": "Marie Skłodowska-Curie Actions (MSCA)"
+        }
+      ],
+      "startDate": "1 {{month_01}} 2026",
+      "endDate": "31 {{month_12}} 2029",
+      "thumb": {
+        "uri": "/assets/img/projects/icons/logo_horizon_big.jpg",
+        "type": null,
+        "language": null,
+        "copyright": null,
+        "alternativeText": null,
+        "itemContent": null
+      },
+      "coordinatedIn": "Ireland",
+      "teaser": "MEDALLOY is an Industrial Doctoral Network that will provide world-class interdisciplinary and intersectoral training to 9 Doctoral Candidates (DCs) through an international consortium across 6 countries. Nitinol is a unique material with remarkable superelastic and shape...",
+      "rcn": "273272",
+      "language": "en",
+      "availableLanguages": [
+        "en"
+      ],
+      "contentType": "project",
+      "pseudoContentType": "project",
+      "lastUpdateDate": "12 {{month_10}} 2026",
+      "archivedDate": "",
+      "title": "Advanced Nickel-Titanium Alloys for Medical Device Applications",
+      "_query": "medical device"
+    },
+    {
+      "reference": "733543",
+      "id": "733543",
+      "acronym": "ScanZ",
+      "programme": [
+        {
+          "code": "H2020",
+          "id": "H2020-EU.3.1.",
+          "rcn": "664237",
+          "title": "SOCIETAL CHALLENGES - Health, demographic change and well-being"
+        },
+        {
+          "code": "H2020",
+          "id": "H2020-EU.3.1.4.",
+          "rcn": "664261",
+          "title": "Active ageing and self-management of health"
+        },
+        {
+          "code": "H2020",
+          "id": "H2020-EU.2.1.1.",
+          "rcn": "664147",
+          "title": "INDUSTRIAL LEADERSHIP - Leadership in enabling and industrial technologies - Information and Communication Technologies (ICT)"
+        },
+        {
+          "code": "H2020",
+          "id": "H2020-EU.2.3.1.",
+          "rcn": "664225",
+          "title": " Mainstreaming SME support, especially through a dedicated instrument"
+        },
+        {
+          "code": "H2020",
+          "id": "H2020-EU.3.1.6.",
+          "rcn": "664275",
+          "title": "Health care provision and integrated care"
+        }
+      ],
+      "startDate": "1 {{month_09}} 2016",
+      "endDate": "31 {{month_08}} 2019",
+      "thumb": {
+        "uri": "/assets/img/projects/icons/logo_h2020_big.jpg",
+        "type": null,
+        "language": null,
+        "copyright": null,
+        "alternativeText": null,
+        "itemContent": null
+      },
+      "coordinatedIn": "Serbia",
+      "teaser": "In the Healthcare industry, digital health-care solutions will become vital in order to ensure a sustainable and efficient health system in both a time and cost effective manner.  mySkin d.o.o, aims to significantly contribute in creating  innovative and sustainable principles...",
+      "rcn": "205021",
+      "language": "en",
+      "availableLanguages": [
+        "en"
+      ],
+      "contentType": "project",
+      "pseudoContentType": "project",
+      "lastUpdateDate": "2 {{month_04}} 2024",
+      "archivedDate": "",
+      "title": "Digital acne assessment tool enabling acne diagnosis in cost and time efficient way",
+      "_query": "medical device"
+    },
+    {
+      "reference": "738529",
+      "id": "738529",
+      "acronym": "SmartGuide",
+      "programme": [
+        {
+          "code": "H2020",
+          "id": "H2020-EU.3.1.",
+          "rcn": "664237",
+          "title": "SOCIETAL CHALLENGES - Health, demographic change and well-being"
+        },
+        {
+          "code": "H2020",
+          "id": "H2020-EU.3.1.3.",
+          "rcn": "664255",
+          "title": "Treating and managing disease"
+        }
+      ],
+      "startDate": "1 {{month_01}} 2017",
+      "endDate": "31 {{month_12}} 2018",
+      "thumb": {
+        "uri": "/assets/img/projects/icons/logo_h2020_big.jpg",
+        "type": null,
+        "language": null,
+        "copyright": null,
+        "alternativeText": null,
+        "itemContent": null
+      },
+      "coordinatedIn": "Israel",
+      "teaser": "The project will clinically validate a smart biopsy solution that provides real-time direct tissue characterization at the tip of the needle, which can be displayed on the biopsy system screen as well as on the screen of the imaging system used to guide the biopsy, based on...",
+      "rcn": "207685",
+      "language": "en",
+      "availableLanguages": [
+        "en"
+      ],
+      "contentType": "project",
+      "pseudoContentType": "project",
+      "lastUpdateDate": "11 {{month_08}} 2022",
+      "archivedDate": "",
+      "title": "Smart Biopsy Tool for Real-Time Cancerous Cell Characterization at the Tip of the Needle",
+      "_query": "medical device"
+    },
+    {
+      "reference": "888267",
+      "id": "888267",
+      "acronym": "In-Heal",
+      "programme": [
+        {
+          "code": "H2020",
+          "id": "H2020-EU.3.",
+          "rcn": "664235",
+          "title": "PRIORITY 'Societal challenges"
+        },
+        {
+          "code": "H2020",
+          "id": "H2020-EU.2.3.",
+          "rcn": "664223",
+          "title": "INDUSTRIAL LEADERSHIP - Innovation In SMEs"
+        },
+        {
+          "code": "H2020",
+          "id": "H2020-EU.2.1.",
+          "rcn": "664145",
+          "title": "INDUSTRIAL LEADERSHIP - Leadership in enabling and industrial technologies"
+        }
+      ],
+      "startDate": "1 {{month_11}} 2019",
+      "endDate": "30 {{month_04}} 2020",
+      "thumb": {
+        "uri": "/assets/img/projects/icons/logo_h2020_big.jpg",
+        "type": null,
+        "language": null,
+        "copyright": null,
+        "alternativeText": null,
+        "itemContent": null
+      },
+      "coordinatedIn": "Hungary",
+      "teaser": "In the recent years public interest towards natural medicine in particular to phytotherapy (herbal medicine) is increasing. However, the administration of medicinal herbs is not yet standardised and medically acceptable administration device is still not commercially...",
+      "rcn": "225949",
+      "language": "en",
+      "availableLanguages": [
+        "en"
+      ],
+      "contentType": "project",
+      "pseudoContentType": "project",
+      "lastUpdateDate": "28 {{month_01}} 2025",
+      "archivedDate": "",
+      "title": "Standardised administration device for raw medical herbs",
+      "_query": "medical device"
+    },
+    {
+      "reference": "665712",
+      "id": "665712",
+      "acronym": "MOPHIMPOC",
+      "programme": [
+        {
+          "code": "H2020",
+          "id": "H2020-EU.1.1.",
+          "rcn": "664099",
+          "title": "EXCELLENT SCIENCE - European Research Council (ERC)"
+        }
+      ],
+      "startDate": "1 {{month_08}} 2015",
+      "endDate": "31 {{month_01}} 2017",
+      "thumb": {
+        "uri": "/assets/img/projects/icons/logo_erc_big.jpg",
+        "type": null,
+        "language": null,
+        "copyright": null,
+        "alternativeText": null,
+        "itemContent": null
+      },
+      "coordinatedIn": "United Kingdom",
+      "teaser": "This European Research Council Proof of Concept grant is focused on translating a new medical device for interventional cardiology from a proven laboratory prototype to a commercial prototype. The core innovation in this medical device is a new type of ultrasound imaging probe...",
+      "rcn": "198207",
+      "language": "en",
+      "availableLanguages": [
+        "en"
+      ],
+      "contentType": "project",
+      "pseudoContentType": "project",
+      "lastUpdateDate": "11 {{month_08}} 2022",
+      "archivedDate": "",
+      "title": "Optical Ultrasound Imaging for Real-time Guidance of Intracardiac Procedures",
+      "_query": "medical device"
+    },
+    {
+      "reference": "101081457",
+      "id": "101081457",
+      "acronym": "MedTrainPlus",
+      "programme": [
+        {
+          "code": "HORIZON",
+          "id": "HORIZON.1.2",
+          "rcn": "705729",
+          "title": "Marie Skłodowska-Curie Actions (MSCA)"
+        }
+      ],
+      "startDate": "1 {{month_12}} 2022",
+      "endDate": "31 {{month_12}} 2028",
+      "thumb": {
+        "uri": "/assets/img/projects/icons/logo_horizon_big.jpg",
+        "type": null,
+        "language": null,
+        "copyright": null,
+        "alternativeText": null,
+        "itemContent": null
+      },
+      "coordinatedIn": "Ireland",
+      "teaser": "MedTrain+ is an advanced Industry-Academia Training, Career Development, and Mobility Fellowship Programme in Medical Device R&D at CÚRAM. The vision of this MedTrain+ career development programme is to recruit, supervise and train 50 postdoctoral fellows to meet Ireland’s...",
+      "rcn": "242538",
+      "language": "en",
+      "availableLanguages": [
+        "en"
+      ],
+      "contentType": "project",
+      "pseudoContentType": "project",
+      "lastUpdateDate": "20 {{month_04}} 2026",
+      "archivedDate": "",
+      "title": "MedTrain+: Postdoctoral Career Development and Mobility Fellowships in Medical Device Research Evolving the CÚRAM Industry-Academia Training Initiative",
+      "_query": "medical device"
+    },
+    {
+      "reference": "101095542",
+      "id": "101095542",
+      "acronym": "CYLCOMED",
+      "programme": [
+        {
+          "code": "HORIZON",
+          "id": "HORIZON.2.1",
+          "rcn": "705741",
+          "title": "Health"
+        },
+        {
+          "code": "HORIZON",
+          "id": "HORIZON.2.1.5",
+          "rcn": "705746",
+          "title": "Tools, Technologies and Digital Solutions for Health and Care, including personalised medicine"
+        }
+      ],
+      "startDate": "1 {{month_12}} 2022",
+      "endDate": "30 {{month_11}} 2025",
+      "thumb": {
+        "uri": "/assets/img/projects/icons/logo_horizon_big.jpg",
+        "type": null,
+        "language": null,
+        "copyright": null,
+        "alternativeText": null,
+        "itemContent": null
+      },
+      "coordinatedIn": "Germany",
+      "teaser": "Accelerated digitalisation in health sector brings opportunities for cost-effective and efficient delivery of personalised care, through medical devices (including software) connected to IT networks and increasingly combined with novel technologies (AI, cloud computing...",
+      "rcn": "243396",
+      "language": "en",
+      "availableLanguages": [
+        "en"
+      ],
+      "contentType": "project",
+      "pseudoContentType": "project",
+      "lastUpdateDate": "7 {{month_11}} 2026",
+      "archivedDate": "",
+      "title": "Cyber securitY tooLbox for COnnected MEdical Devices",
+      "_query": "medical device"
+    },
+    {
+      "reference": "101311759",
+      "id": "101311759",
+      "acronym": "Implant-to-Market",
+      "programme": [
+        {
+          "code": "HORIZON",
+          "id": "HORIZON.1.2",
+          "rcn": "705729",
+          "title": "Marie Skłodowska-Curie Actions (MSCA)"
+        }
+      ],
+      "startDate": "1 {{month_03}} 2027",
+      "endDate": "28 {{month_02}} 2031",
+      "thumb": {
+        "uri": "/assets/img/projects/icons/logo_horizon_big.jpg",
+        "type": null,
+        "language": null,
+        "copyright": null,
+        "alternativeText": null,
+        "itemContent": null
+      },
+      "coordinatedIn": "France",
+      "teaser": "Implant-to-Market will be a Doctoral Network (combining training and research) composed of 15 academic partners and 5 industrial partners (large companies and SMEs), focused on accelerating the translation of research into market-ready surgical implantable medical devices...",
+      "rcn": "291773",
+      "language": "en",
+      "availableLanguages": [
+        "en"
+      ],
+      "contentType": "project",
+      "pseudoContentType": "project",
+      "lastUpdateDate": "7 {{month_11}} 2026",
+      "archivedDate": "",
+      "title": "Initiatives to Accelerate the Translation of Research into Market-Ready Surgical Implantable Medical Devices by Strengthening Regulatory Science and Improved Regulatory Competencies Among Researchers",
+      "_query": "medical device"
+    },
+    {
+      "reference": "832358",
+      "id": "832358",
+      "acronym": "CFA",
+      "programme": [
+        {
+          "code": "H2020",
+          "id": "H2020-EU.3.",
+          "rcn": "664235",
+          "title": "PRIORITY 'Societal challenges"
+        },
+        {
+          "code": "H2020",
+          "id": "H2020-EU.2.3.",
+          "rcn": "664223",
+          "title": "INDUSTRIAL LEADERSHIP - Innovation In SMEs"
+        },
+        {
+          "code": "H2020",
+          "id": "H2020-EU.2.1.",
+          "rcn": "664145",
+          "title": "INDUSTRIAL LEADERSHIP - Leadership in enabling and industrial technologies"
+        }
+      ],
+      "startDate": "1 {{month_11}} 2018",
+      "endDate": "28 {{month_02}} 2019",
+      "thumb": {
+        "uri": "/assets/img/projects/icons/logo_h2020_big.jpg",
+        "type": null,
+        "language": null,
+        "copyright": null,
+        "alternativeText": null,
+        "itemContent": null
+      },
+      "coordinatedIn": "Austria",
+      "teaser": "Increasing population and rise in chronic diseases have led to an enormous demand for faster and better in-vitro diagnostic tests of parameters for improved detection and cure of diseases. However, there is significant fragmentation and separation in the IVD immunochemical...",
+      "rcn": "220235",
+      "language": "en",
+      "availableLanguages": [
+        "en"
+      ],
+      "contentType": "project",
+      "pseudoContentType": "project",
+      "lastUpdateDate": "28 {{month_01}} 2025",
+      "archivedDate": "",
+      "title": "The Clinical Flexible Analyzer- a new generation IVD testing device aimed to increase the competitiveness of local healthcare vs. large laboratories",
+      "_query": "medical device"
+    },
+    {
+      "reference": "101116688",
+      "id": "101116688",
+      "acronym": "Beat-to-Beat",
+      "programme": [
+        {
+          "code": "HORIZON",
+          "id": "HORIZON.1.1",
+          "rcn": "705727",
+          "title": "European Research Council (ERC)"
+        }
+      ],
+      "startDate": "1 {{month_05}} 2024",
+      "endDate": "30 {{month_04}} 2029",
+      "thumb": {
+        "uri": "/assets/img/projects/icons/logo_erc_big.jpg",
+        "type": null,
+        "language": null,
+        "copyright": null,
+        "alternativeText": null,
+        "itemContent": null
+      },
+      "coordinatedIn": "Netherlands",
+      "teaser": "The pacemaker cells of the sinoatrial node (SAN) trigger three billion heartbeats in an average human life span. At the start of each beat, the SAN must generate enough current to drive the surrounding atrial tissue, which contains 10,000 times as many cells as the SAN itself...",
+      "rcn": "261872",
+      "language": "en",
+      "availableLanguages": [
+        "en"
+      ],
+      "contentType": "project",
+      "pseudoContentType": "project",
+      "lastUpdateDate": "7 {{month_11}} 2026",
+      "archivedDate": "",
+      "title": "Unraveling pacemaker (dys)function using novel stem cell-derived human heart models",
+      "_query": "pacemaker"
+    },
+    {
+      "reference": "101099608",
+      "id": "101099608",
+      "acronym": "TRACTION",
+      "programme": [
+        {
+          "code": "HORIZON",
+          "id": "HORIZON.3.1",
+          "rcn": "705792",
+          "title": "The European Innovation Council (EIC)"
+        }
+      ],
+      "startDate": "1 {{month_01}} 2023",
+      "endDate": "31 {{month_12}} 2025",
+      "thumb": {
+        "uri": "/assets/img/projects/icons/logo_horizon_big.jpg",
+        "type": null,
+        "language": null,
+        "copyright": null,
+        "alternativeText": null,
+        "itemContent": null
+      },
+      "coordinatedIn": "Netherlands",
+      "teaser": "PacingCure has developed BradyTx-01: a novel gene therapy medicinal product (GTMP) to cure life-threatening cardiac pacing dysfunctions by reprogramming cardiomyocytes into pacemaker cells. BradyTx-01 is based on a novel method to optimally control transcription factor...",
+      "rcn": "244193",
+      "language": "en",
+      "availableLanguages": [
+        "en"
+      ],
+      "contentType": "project",
+      "pseudoContentType": "project",
+      "lastUpdateDate": "7 {{month_11}} 2026",
+      "archivedDate": "",
+      "title": "Transcription Factor Gene Therapy for Bradyarrhythmias",
+      "_query": "pacemaker"
+    },
+    {
+      "reference": "714866",
+      "id": "714866",
+      "acronym": "REJUVENATION",
+      "programme": [
+        {
+          "code": "H2020",
+          "id": "H2020-EU.1.1.",
+          "rcn": "664099",
+          "title": "EXCELLENT SCIENCE - European Research Council (ERC)"
+        }
+      ],
+      "startDate": "1 {{month_04}} 2017",
+      "endDate": "30 {{month_09}} 2022",
+      "thumb": {
+        "uri": "/assets/img/projects/icons/logo_erc_big.jpg",
+        "type": null,
+        "language": null,
+        "copyright": null,
+        "alternativeText": null,
+        "itemContent": null
+      },
+      "coordinatedIn": "Netherlands",
+      "teaser": "Background: To bypass hardware-related complication there have been substantial efforts to create biological pacemakers. Effective strategies have been identified and are now being refined for delivery of long-term function and clinical application. Yet, currently developed...",
+      "rcn": "208287",
+      "language": "en",
+      "availableLanguages": [
+        "en"
+      ],
+      "contentType": "project",
+      "pseudoContentType": "project",
+      "lastUpdateDate": "7 {{month_12}} 2023",
+      "archivedDate": "",
+      "title": "Repair of Junctional Atrioventricular Conduction and Impulse Formation",
+      "_query": "pacemaker"
+    },
+    {
+      "reference": "101088375",
+      "id": "101088375",
+      "acronym": "StarTicking",
+      "programme": [
+        {
+          "code": "HORIZON",
+          "id": "HORIZON.1.1",
+          "rcn": "705727",
+          "title": "European Research Council (ERC)"
+        }
+      ],
+      "startDate": "1 {{month_01}} 2024",
+      "endDate": "31 {{month_12}} 2028",
+      "thumb": {
+        "uri": "/assets/img/projects/icons/logo_erc_big.jpg",
+        "type": null,
+        "language": null,
+        "copyright": null,
+        "alternativeText": null,
+        "itemContent": null
+      },
+      "coordinatedIn": "Spain",
+      "teaser": "The 24-h (circadian) timing system develops during the perinatal period and rules our physiology later in life. It has the essential task of anticipating daily recurring changes in the environment (day/night) to find the best time for each molecular and cellular process. It is...",
+      "rcn": "252491",
+      "language": "en",
+      "availableLanguages": [
+        "en"
+      ],
+      "contentType": "project",
+      "pseudoContentType": "project",
+      "lastUpdateDate": "7 {{month_07}} 2023",
+      "archivedDate": "",
+      "title": "The early ticking of the central circadian pacemaker: when and how",
+      "_query": "pacemaker"
+    },
+    {
+      "reference": "727796",
+      "id": "727796",
+      "acronym": "RITMOCORE",
+      "programme": [
+        {
+          "code": "H2020",
+          "id": "H2020-EU.3.1.",
+          "rcn": "664237",
+          "title": "SOCIETAL CHALLENGES - Health, demographic change and well-being"
+        },
+        {
+          "code": "H2020",
+          "id": "H2020-EU.3.1.4.",
+          "rcn": "664261",
+          "title": "Active ageing and self-management of health"
+        }
+      ],
+      "startDate": "1 {{month_11}} 2016",
+      "endDate": "31 {{month_07}} 2022",
+      "thumb": {
+        "uri": "/assets/img/projects/icons/logo_h2020_big.jpg",
+        "type": null,
+        "language": null,
+        "copyright": null,
+        "alternativeText": null,
+        "itemContent": null
+      },
+      "coordinatedIn": "Spain",
+      "teaser": "RITMOCORE is addressing the evolution in the treatment of elderly patients with arrhythmias using or in need of a pacemaker. The proposed approach promotes a comprehensive model of care including: empowerment of general practitioners and integration of care pathways through...",
+      "rcn": "206004",
+      "language": "en",
+      "availableLanguages": [
+        "en"
+      ],
+      "contentType": "project",
+      "pseudoContentType": "project",
+      "lastUpdateDate": "6 {{month_11}} 2026",
+      "archivedDate": "",
+      "title": "Arrhythmias monitoring and comprehensive care",
+      "_query": "pacemaker"
+    },
+    {
+      "reference": "899422",
+      "id": "899422",
+      "acronym": "PACE",
+      "programme": [
+        {
+          "code": "H2020",
+          "id": "H2020-EU.1.1.",
+          "rcn": "664099",
+          "title": "EXCELLENT SCIENCE - European Research Council (ERC)"
+        }
+      ],
+      "startDate": "1 {{month_07}} 2020",
+      "endDate": "31 {{month_12}} 2021",
+      "thumb": {
+        "uri": "/assets/img/projects/icons/logo_erc_big.jpg",
+        "type": null,
+        "language": null,
+        "copyright": null,
+        "alternativeText": null,
+        "itemContent": null
+      },
+      "coordinatedIn": "Netherlands",
+      "teaser": "The problem: Ageing and age-related diseases cause degeneration of the cardiac conduction system (CCS) that creates and conducts the electrical impulse which drives the heart beat (pacing). The resulting slow heart rate (bradycardia) necessitates electronic pacemaker...",
+      "rcn": "230189",
+      "language": "en",
+      "availableLanguages": [
+        "en"
+      ],
+      "contentType": "project",
+      "pseudoContentType": "project",
+      "lastUpdateDate": "28 {{month_07}} 2022",
+      "archivedDate": "",
+      "title": "Transcriptional targeting of pacemaker and conduction system gene therapy",
+      "_query": "pacemaker"
+    },
+    {
+      "reference": "101043003",
+      "id": "101043003",
+      "acronym": "IMPACT",
+      "programme": [
+        {
+          "code": "HORIZON",
+          "id": "HORIZON.1.1",
+          "rcn": "705727",
+          "title": "European Research Council (ERC)"
+        }
+      ],
+      "startDate": "1 {{month_09}} 2022",
+      "endDate": "31 {{month_08}} 2027",
+      "thumb": {
+        "uri": "/assets/img/projects/icons/logo_erc_big.jpg",
+        "type": null,
+        "language": null,
+        "copyright": null,
+        "alternativeText": null,
+        "itemContent": null
+      },
+      "coordinatedIn": "Italy",
+      "teaser": "Spontaneous activity is a prominent feature of the immature brain. Even before birth and in absence of stimuli, neurons organize in networks and spontaneously generate correlated activity. While spontaneous dynamics in the cerebral cortex have long been overlooked and...",
+      "rcn": "238363",
+      "language": "en",
+      "availableLanguages": [
+        "en"
+      ],
+      "contentType": "project",
+      "pseudoContentType": "project",
+      "lastUpdateDate": "8 {{month_08}} 2025",
+      "archivedDate": "",
+      "title": "Investigating the Molecular identity of PAcemaker neurons in CorTical development",
+      "_query": "pacemaker"
+    },
+    {
+      "reference": "101040117",
+      "id": "101040117",
+      "acronym": "INFOPASS",
+      "programme": [
+        {
+          "code": "HORIZON",
+          "id": "HORIZON.1.1",
+          "rcn": "705727",
+          "title": "European Research Council (ERC)"
+        }
+      ],
+      "startDate": "1 {{month_06}} 2022",
+      "endDate": "31 {{month_05}} 2027",
+      "thumb": {
+        "uri": "/assets/img/projects/icons/logo_erc_big.jpg",
+        "type": null,
+        "language": null,
+        "copyright": null,
+        "alternativeText": null,
+        "itemContent": null
+      },
+      "coordinatedIn": "Netherlands",
+      "teaser": "Smart devices constantly monitor the environment and analyse the resulting stream of information, waiting for wake-up events ranging from a skipped heartbeat in a pacemaker to a verbal command in an intelligent speaker. In electronic devices, such constant workload requires...",
+      "rcn": "238117",
+      "language": "en",
+      "availableLanguages": [
+        "en"
+      ],
+      "contentType": "project",
+      "pseudoContentType": "project",
+      "lastUpdateDate": "22 {{month_07}} 2022",
+      "archivedDate": "",
+      "title": "Information processing in passive elastic structures",
+      "_query": "pacemaker"
+    },
+    {
+      "reference": "737817",
+      "id": "737817",
+      "acronym": "AXONE",
+      "programme": [
+        {
+          "code": "H2020",
+          "id": "H2020-EU.3.",
+          "rcn": "664235",
+          "title": "PRIORITY 'Societal challenges"
+        },
+        {
+          "code": "H2020",
+          "id": "H2020-EC",
+          "rcn": "664087",
+          "title": "Horizon 2020 Framework Programme"
+        },
+        {
+          "code": "H2020",
+          "id": "H2020-EU.2.",
+          "rcn": "664143",
+          "title": "PRIORITY 'Industrial leadership'"
+        }
+      ],
+      "startDate": "1 {{month_01}} 2017",
+      "endDate": "31 {{month_12}} 2020",
+      "thumb": {
+        "uri": "/assets/img/projects/icons/logo_h2020_big.jpg",
+        "type": null,
+        "language": null,
+        "copyright": null,
+        "alternativeText": null,
+        "itemContent": null
+      },
+      "coordinatedIn": "France",
+      "teaser": "Heart failure affects more than 14 million people in Europe, and is projected to affect about 30 million people by 2020. While the effects of Cardiac Resynchronization Therapy on the wider heart failure population are impressive, benefits at the individual level vary...",
+      "rcn": "207923",
+      "language": "en",
+      "availableLanguages": [
+        "en"
+      ],
+      "contentType": "project",
+      "pseudoContentType": "project",
+      "lastUpdateDate": "23 {{month_08}} 2022",
+      "archivedDate": "",
+      "title": "Commercial multiple electrode lead technology for cardiac disease",
+      "_query": "pacemaker"
+    },
+    {
+      "reference": "946899",
+      "id": "946899",
+      "acronym": "DefiPace-System",
+      "programme": [
+        {
+          "code": "H2020",
+          "id": "H2020-EU.3.",
+          "rcn": "664235",
+          "title": "PRIORITY 'Societal challenges"
+        },
+        {
+          "code": "H2020",
+          "id": "H2020-EU.2.3.",
+          "rcn": "664223",
+          "title": "INDUSTRIAL LEADERSHIP - Innovation In SMEs"
+        },
+        {
+          "code": "H2020",
+          "id": "H2020-EU.2.1.",
+          "rcn": "664145",
+          "title": "INDUSTRIAL LEADERSHIP - Leadership in enabling and industrial technologies"
+        }
+      ],
+      "startDate": "1 {{month_06}} 2020",
+      "endDate": "30 {{month_11}} 2023",
+      "thumb": {
+        "uri": "/assets/img/projects/icons/logo_h2020_big.jpg",
+        "type": null,
+        "language": null,
+        "copyright": null,
+        "alternativeText": null,
+        "itemContent": null
+      },
+      "coordinatedIn": "Germany",
+      "teaser": "The incidence of cardiac surgeries is increasing world-wide in view of the demographic change. Cardiac surgery carries asignificant amount of risk as on average 60% of patients develop postoperative atrial fibrillation, by far the most frequentlyoccurring complication after...",
+      "rcn": "229625",
+      "language": "en",
+      "availableLanguages": [
+        "en"
+      ],
+      "contentType": "project",
+      "pseudoContentType": "project",
+      "lastUpdateDate": "18 {{month_11}} 2024",
+      "archivedDate": "",
+      "title": "Market introduction of a revolutionary innovative cardiac stimulation system for the prevention and termination of post-operative atrial fibrillation",
+      "_query": "pacemaker"
+    },
+    {
+      "reference": "897910",
+      "id": "897910",
+      "acronym": "MATBFOB",
+      "programme": [
+        {
+          "code": "H2020",
+          "id": "H2020-EU.1.3.",
+          "rcn": "664109",
+          "title": "EXCELLENT SCIENCE - Marie Skłodowska-Curie Actions"
+        },
+        {
+          "code": "H2020",
+          "id": "H2020-EU.1.3.2.",
+          "rcn": "664113",
+          "title": "Nurturing excellence by means of cross-border and cross-sector mobility"
+        }
+      ],
+      "startDate": "1 {{month_09}} 2021",
+      "endDate": "31 {{month_08}} 2024",
+      "thumb": {
+        "uri": "/assets/img/projects/icons/logo_h2020_big.jpg",
+        "type": null,
+        "language": null,
+        "copyright": null,
+        "alternativeText": null,
+        "itemContent": null
+      },
+      "coordinatedIn": "United Kingdom",
+      "teaser": "Biofilms play a pivotal role in healthcare-associated infections, especially those related to indwelling medical devices, such as intra-vascular and urinary catheters, cardiac pacemakers and orthopaedic implants. Many mathematical models have been developed to simulate and...",
+      "rcn": "227977",
+      "language": "en",
+      "availableLanguages": [
+        "en"
+      ],
+      "contentType": "project",
+      "pseudoContentType": "project",
+      "lastUpdateDate": "23 {{month_06}} 2025",
+      "archivedDate": "",
+      "title": "MAThematical modelling of Biofilm FOrmation on Biomaterials",
+      "_query": "pacemaker"
+    },
+    {
+      "reference": "670325",
+      "id": "670325",
+      "acronym": "BRAVIUS",
+      "programme": [
+        {
+          "code": "H2020",
+          "id": "H2020-EU.1.1.",
+          "rcn": "664099",
+          "title": "EXCELLENT SCIENCE - European Research Council (ERC)"
+        }
+      ],
+      "startDate": "1 {{month_12}} 2015",
+      "endDate": "30 {{month_11}} 2021",
+      "thumb": {
+        "uri": "/assets/img/projects/icons/logo_erc_big.jpg",
+        "type": null,
+        "language": null,
+        "copyright": null,
+        "alternativeText": null,
+        "itemContent": null
+      },
+      "coordinatedIn": "France",
+      "teaser": "Subjectivity defines the subject who is perceiving, feeling, thinking, acting, and is essential to understand the conscious mind from the inside. However, subjectivity, or non-reflective first-person perspective, is not identified as a core concept in cognitive neuroscience...",
+      "rcn": "199781",
+      "language": "en",
+      "availableLanguages": [
+        "en"
+      ],
+      "contentType": "project",
+      "pseudoContentType": "project",
+      "lastUpdateDate": "5 {{month_04}} 2023",
+      "archivedDate": "",
+      "title": "Brain-viscera interactions underlie subjectivity",
+      "_query": "pacemaker"
+    },
+    {
+      "reference": "101214165",
+      "id": "101214165",
+      "acronym": "CResPulse",
+      "programme": [
+        {
+          "code": "HORIZON",
+          "id": "HORIZON.3.1",
+          "rcn": "705792",
+          "title": "The European Innovation Council (EIC)"
+        }
+      ],
+      "startDate": "1 {{month_06}} 2025",
+      "endDate": "31 {{month_05}} 2028",
+      "thumb": {
+        "uri": "/assets/img/projects/icons/logo_horizon_big.jpg",
+        "type": null,
+        "language": null,
+        "copyright": null,
+        "alternativeText": null,
+        "itemContent": null
+      },
+      "coordinatedIn": "United Kingdom",
+      "teaser": "Small neural networks known as central pattern generators (CPG) are now established as an effective therapy for unmet chronic cardiorespiratory disease such as heart failure.  This approach restores the natural heart rate variability driven by neuronal sympathic/parasympathic...",
+      "rcn": "272888",
+      "language": "en",
+      "availableLanguages": [
+        "en"
+      ],
+      "contentType": "project",
+      "pseudoContentType": "project",
+      "lastUpdateDate": "13 {{month_11}} 2025",
+      "archivedDate": "",
+      "title": "Pacing with Digital Twins of Brainstem Neuronal Circuits as an Effective Therapy for Chronic Cardiac Disease",
+      "_query": "pacemaker"
+    },
+    {
+      "reference": "744484",
+      "id": "744484",
+      "acronym": "INSTET",
+      "programme": [
+        {
+          "code": "H2020",
+          "id": "H2020-EU.3.7.",
+          "rcn": "664463",
+          "title": "Secure societies - Protecting freedom and security of Europe and its citizens"
+        },
+        {
+          "code": "H2020",
+          "id": "H2020-EU.2.3.1.",
+          "rcn": "664225",
+          "title": " Mainstreaming SME support, especially through a dedicated instrument"
+        }
+      ],
+      "startDate": "1 {{month_10}} 2016",
+      "endDate": "31 {{month_03}} 2017",
+      "thumb": {
+        "uri": "/assets/img/projects/icons/logo_h2020_big.jpg",
+        "type": null,
+        "language": null,
+        "copyright": null,
+        "alternativeText": null,
+        "itemContent": null
+      },
+      "coordinatedIn": "Netherlands",
+      "teaser": "Intrinsic-ID is a Dutch SME, spin-off from Philips Research, and a world leader in security solutions for chips, with 25+ patents. Intrinsic-ID has created a technology to uniquely identify and authenticate chips based on the inherent characteristics of their memory component...",
+      "rcn": "207692",
+      "language": "en",
+      "availableLanguages": [
+        "en"
+      ],
+      "contentType": "project",
+      "pseudoContentType": "project",
+      "lastUpdateDate": "11 {{month_08}} 2022",
+      "archivedDate": "",
+      "title": "Integral Security  Trust Element for the Internet of Things",
+      "_query": "pacemaker"
+    },
+    {
+      "reference": "101108620",
+      "id": "101108620",
+      "acronym": "VIMAD",
+      "programme": [
+        {
+          "code": "HORIZON",
+          "id": "HORIZON.1.2",
+          "rcn": "705729",
+          "title": "Marie Skłodowska-Curie Actions (MSCA)"
+        }
+      ],
+      "startDate": "1 {{month_09}} 2024",
+      "endDate": "31 {{month_08}} 2026",
+      "thumb": {
+        "uri": "/assets/img/projects/icons/logo_horizon_big.jpg",
+        "type": null,
+        "language": null,
+        "copyright": null,
+        "alternativeText": null,
+        "itemContent": null
+      },
+      "coordinatedIn": "Netherlands",
+      "teaser": "Life on earth has evolved in synchrony with the day-night cycle. Most species, from single-cell plants to humans, have a circadian system that operates as a pacemaker, modulating a multitude of biological processes across the 24h period. Given the ubiquitous involvement of the...",
+      "rcn": "253885",
+      "language": "en",
+      "availableLanguages": [
+        "en"
+      ],
+      "contentType": "project",
+      "pseudoContentType": "project",
+      "lastUpdateDate": "13 {{month_07}} 2023",
+      "archivedDate": "",
+      "title": "Variations In Motivation Across the Day - Understanding the How and Why of Daily Fluctuations",
+      "_query": "pacemaker"
+    },
+    {
+      "reference": "190186802",
+      "id": "190186802",
+      "acronym": "alphadbs",
+      "programme": [
+        {
+          "code": "HORIZON",
+          "id": "HORIZON.3.1",
+          "rcn": "705792",
+          "title": "The European Innovation Council (EIC)"
+        }
+      ],
+      "startDate": "1 {{month_03}} 2023",
+      "endDate": "28 {{month_02}} 2025",
+      "thumb": {
+        "uri": "/assets/img/projects/icons/logo_horizon_big.jpg",
+        "type": null,
+        "language": null,
+        "copyright": null,
+        "alternativeText": null,
+        "itemContent": null
+      },
+      "coordinatedIn": "Italy",
+      "teaser": "Differently from other DBS systems on the market, the AlphaDBS can be programmed with two different types of stimulation: conventional DBS, which is implemented also by other DBS systems, and adaptive DBS (aDBS) that automatically adjusts the energy delivered to patient using...",
+      "rcn": "254913",
+      "language": "en",
+      "availableLanguages": [
+        "en"
+      ],
+      "contentType": "project",
+      "pseudoContentType": "project",
+      "lastUpdateDate": "31 {{month_12}} 2024",
+      "archivedDate": "",
+      "title": "Adpative DBS",
+      "_query": "pacemaker"
+    },
+    {
+      "reference": "101248534",
+      "id": "101248534",
+      "acronym": "SUSTEG",
+      "programme": [
+        {
+          "code": "HORIZON",
+          "id": "HORIZON.1.1",
+          "rcn": "705727",
+          "title": "European Research Council (ERC)"
+        }
+      ],
+      "startDate": "1 {{month_02}} 2026",
+      "endDate": "31 {{month_07}} 2027",
+      "thumb": {
+        "uri": "/assets/img/projects/icons/logo_erc_big.jpg",
+        "type": null,
+        "language": null,
+        "copyright": null,
+        "alternativeText": null,
+        "itemContent": null
+      },
+      "coordinatedIn": "Belgium",
+      "teaser": "The Internet of Things (IoT), where everyday objects sense their environment and communicate with each other, is a key drive of digitalization expected to make our society safer, more sustainable, and more competitive. The full deployment of the IoT requires sustainable and...",
+      "rcn": "276446",
+      "language": "en",
+      "availableLanguages": [
+        "en"
+      ],
+      "contentType": "project",
+      "pseudoContentType": "project",
+      "lastUpdateDate": "7 {{month_01}} 2026",
+      "archivedDate": "",
+      "title": "Sustainable Thermoelectric Generators for Low-Power Applications",
+      "_query": "pacemaker"
+    },
+    {
+      "reference": "101029494",
+      "id": "101029494",
+      "acronym": "Certywhere",
+      "programme": [
+        {
+          "code": "H2020",
+          "id": "H2020-EU.1.3.",
+          "rcn": "664109",
+          "title": "EXCELLENT SCIENCE - Marie Skłodowska-Curie Actions"
+        },
+        {
+          "code": "H2020",
+          "id": "H2020-EU.1.3.2.",
+          "rcn": "664113",
+          "title": "Nurturing excellence by means of cross-border and cross-sector mobility"
+        }
+      ],
+      "startDate": "1 {{month_09}} 2022",
+      "endDate": "31 {{month_08}} 2024",
+      "thumb": {
+        "uri": "/assets/img/projects/icons/logo_h2020_big.jpg",
+        "type": null,
+        "language": null,
+        "copyright": null,
+        "alternativeText": null,
+        "itemContent": null
+      },
+      "coordinatedIn": "Denmark",
+      "teaser": "We trust computers with our lives: they steer our aircrafts, control cardiac pacemakers, insulin pumps, ventilators, and other medical devices, and will soon drive our cars.All these software systems are safety critical: an error in the software may lead to a catastrophe such...",
+      "rcn": "234422",
+      "language": "en",
+      "availableLanguages": [
+        "en"
+      ],
+      "contentType": "project",
+      "pseudoContentType": "project",
+      "lastUpdateDate": "24 {{month_07}} 2023",
+      "archivedDate": "",
+      "title": "Safe Real-Time Systems: Certification Everywhere",
+      "_query": "pacemaker"
+    },
+    {
+      "reference": "101142587",
+      "id": "101142587",
+      "acronym": "VulnerableInhibition",
+      "programme": [
+        {
+          "code": "HORIZON",
+          "id": "HORIZON.1.1",
+          "rcn": "705727",
+          "title": "European Research Council (ERC)"
+        }
+      ],
+      "startDate": "1 {{month_09}} 2024",
+      "endDate": "31 {{month_08}} 2028",
+      "thumb": {
+        "uri": "/assets/img/projects/icons/logo_erc_big.jpg",
+        "type": null,
+        "language": null,
+        "copyright": null,
+        "alternativeText": null,
+        "itemContent": null
+      },
+      "coordinatedIn": "Germany",
+      "teaser": "Septal GABAergic projection neurons are considered “pacemaker” cells as they enable the temporal organization of neuronal spike firing in hippocampal and entorhinal networks that support spatial- and object-coding. Accordingly, medial septum inactivation is associated with...",
+      "rcn": "263940",
+      "language": "en",
+      "availableLanguages": [
+        "en"
+      ],
+      "contentType": "project",
+      "pseudoContentType": "project",
+      "lastUpdateDate": "7 {{month_11}} 2026",
+      "archivedDate": "",
+      "title": "Cognitive deficits resulting from selective vulnerability of septal inhibitory neurons: mitochondrial dysfunction as a driver?",
+      "_query": "pacemaker"
+    },
+    {
+      "reference": "101053225",
+      "id": "101053225",
+      "acronym": "CLOCKrisk",
+      "programme": [
+        {
+          "code": "HORIZON",
+          "id": "HORIZON.1.1",
+          "rcn": "705727",
+          "title": "European Research Council (ERC)"
+        }
+      ],
+      "startDate": "1 {{month_10}} 2022",
+      "endDate": "30 {{month_09}} 2027",
+      "thumb": {
+        "uri": "/assets/img/projects/icons/logo_erc_big.jpg",
+        "type": null,
+        "language": null,
+        "copyright": null,
+        "alternativeText": null,
+        "itemContent": null
+      },
+      "coordinatedIn": "Austria",
+      "teaser": "Virtually every cell of our body follows the 24-hr ‘circadian’ rhythm of a hypothalamic master pacemaker that evolved in the natural light-dark cycle. Decoding this circadian clock culminated in the Nobel Prize in Physiology or Medicine 2017 for the discovery of molecular...",
+      "rcn": "242330",
+      "language": "en",
+      "availableLanguages": [
+        "en"
+      ],
+      "contentType": "project",
+      "pseudoContentType": "project",
+      "lastUpdateDate": "14 {{month_01}} 2026",
+      "archivedDate": "",
+      "title": "Targeting the circadian clock in personalized disease prevention",
+      "_query": "pacemaker"
+    },
+    {
+      "reference": "961787",
+      "id": "961787",
+      "acronym": "Jane",
+      "programme": [
+        {
+          "code": "H2020",
+          "id": "H2020-EU.3.",
+          "rcn": "664235",
+          "title": "PRIORITY 'Societal challenges"
+        },
+        {
+          "code": "H2020",
+          "id": "H2020-EU.2.3.",
+          "rcn": "664223",
+          "title": "INDUSTRIAL LEADERSHIP - Innovation In SMEs"
+        },
+        {
+          "code": "H2020",
+          "id": "H2020-EU.2.1.",
+          "rcn": "664145",
+          "title": "INDUSTRIAL LEADERSHIP - Leadership in enabling and industrial technologies"
+        }
+      ],
+      "startDate": "1 {{month_08}} 2020",
+      "endDate": "31 {{month_10}} 2022",
+      "thumb": {
+        "uri": "/assets/img/projects/icons/logo_h2020_big.jpg",
+        "type": null,
+        "language": null,
+        "copyright": null,
+        "alternativeText": null,
+        "itemContent": null
+      },
+      "coordinatedIn": "Netherlands",
+      "teaser": "The current outbreak of COVID-19 is incisively pointing towards the importance of optimal mechanical ventilation in Intensive Care. Improved mechanical ventilation saves lives. Last year, we have seen multiple cases in which our mechanical ventilator suited only for the...",
+      "rcn": "230598",
+      "language": "en",
+      "availableLanguages": [
+        "en"
+      ],
+      "contentType": "project",
+      "pseudoContentType": "project",
+      "lastUpdateDate": "28 {{month_12}} 2023",
+      "archivedDate": "",
+      "title": "Harmless Respiration for Intensive Care Patients decreasing mortality and shortening stays – including COVID-19 patients",
+      "_query": "ventilator"
+    },
+    {
+      "reference": "718938",
+      "id": "718938",
+      "acronym": "DiaMon",
+      "programme": [
+        {
+          "code": "H2020",
+          "id": "H2020-EU.3.1.",
+          "rcn": "664237",
+          "title": "SOCIETAL CHALLENGES - Health, demographic change and well-being"
+        },
+        {
+          "code": "H2020",
+          "id": "H2020-EU.3.1.3.",
+          "rcn": "664255",
+          "title": "Treating and managing disease"
+        }
+      ],
+      "startDate": "1 {{month_03}} 2016",
+      "endDate": "31 {{month_08}} 2016",
+      "thumb": {
+        "uri": "/assets/img/projects/icons/logo_h2020_big.jpg",
+        "type": null,
+        "language": null,
+        "copyright": null,
+        "alternativeText": null,
+        "itemContent": null
+      },
+      "coordinatedIn": "Norway",
+      "teaser": "Mechanical ventilation (MV) is one of the most common interventions implemented in the intensive care unit (ICU). MV is associated with a number of complications such as atrophy, muscle weakness, pneumonia, tracheal stenosis and baro/volutrauma. Complications increase in...",
+      "rcn": "200377",
+      "language": "en",
+      "availableLanguages": [
+        "en"
+      ],
+      "contentType": "project",
+      "pseudoContentType": "project",
+      "lastUpdateDate": "11 {{month_08}} 2022",
+      "archivedDate": "",
+      "title": "Continuous Diaphragm Monitoring for mechanically ventilated patients",
+      "_query": "ventilator"
+    },
+    {
+      "reference": "962483",
+      "id": "962483",
+      "acronym": "AIRMED",
+      "programme": [
+        {
+          "code": "H2020",
+          "id": "H2020-EU.3.",
+          "rcn": "664235",
+          "title": "PRIORITY 'Societal challenges"
+        },
+        {
+          "code": "H2020",
+          "id": "H2020-EU.2.3.",
+          "rcn": "664223",
+          "title": "INDUSTRIAL LEADERSHIP - Innovation In SMEs"
+        },
+        {
+          "code": "H2020",
+          "id": "H2020-EU.2.1.",
+          "rcn": "664145",
+          "title": "INDUSTRIAL LEADERSHIP - Leadership in enabling and industrial technologies"
+        }
+      ],
+      "startDate": "1 {{month_09}} 2020",
+      "endDate": "31 {{month_08}} 2023",
+      "thumb": {
+        "uri": "/assets/img/projects/icons/logo_h2020_big.jpg",
+        "type": null,
+        "language": null,
+        "copyright": null,
+        "alternativeText": null,
+        "itemContent": null
+      },
+      "coordinatedIn": "France",
+      "teaser": "The viral pandemic we are facing (COVID-19) has pointed out that in the wake of a virulent flu strain, patients with survivable illness will die from lack of resources unless more ventilators are made available.Hospitals have almost no reserve ventilators to respond to...",
+      "rcn": "230352",
+      "language": "en",
+      "availableLanguages": [
+        "en"
+      ],
+      "contentType": "project",
+      "pseudoContentType": "project",
+      "lastUpdateDate": "17 {{month_04}} 2024",
+      "archivedDate": "",
+      "title": "Mass Casualty Ventilation Monitoring",
+      "_query": "ventilator"
+    },
+    {
+      "reference": "101274162",
+      "id": "101274162",
+      "acronym": "QUIVER",
+      "programme": [
+        {
+          "code": "HORIZON",
+          "id": "HORIZON.1.2",
+          "rcn": "705729",
+          "title": "Marie Skłodowska-Curie Actions (MSCA)"
+        }
+      ],
+      "startDate": "1 {{month_10}} 2026",
+      "endDate": "30 {{month_09}} 2028",
+      "thumb": {
+        "uri": "/assets/img/projects/icons/logo_horizon_big.jpg",
+        "type": null,
+        "language": null,
+        "copyright": null,
+        "alternativeText": null,
+        "itemContent": null
+      },
+      "coordinatedIn": "Netherlands",
+      "teaser": "Diaphragm dysfunction is highly prevalent in mechanically ventilated patients on the intensive care unit (ICU) and is strongly associated with weaning failure, prolonged ICU stay, and increased mortality. Remarkably, diaphragm dysfunction can develop within 24 hours of ICU...",
+      "rcn": "288704",
+      "language": "en",
+      "availableLanguages": [
+        "en"
+      ],
+      "contentType": "project",
+      "pseudoContentType": "project",
+      "lastUpdateDate": "12 {{month_05}} 2026",
+      "archivedDate": "",
+      "title": "Elucidating the Impact of Mechanical Ventilation and Sepsis on Diaphragm blood flow: Insights from Contrast-Enhanced Ultrasound",
+      "_query": "ventilator"
+    },
+    {
+      "reference": "691519",
+      "id": "691519",
+      "acronym": "EVA",
+      "programme": [
+        {
+          "code": "H2020",
+          "id": "H2020-EU.3.",
+          "rcn": "664235",
+          "title": "PRIORITY 'Societal challenges"
+        },
+        {
+          "code": "H2020",
+          "id": "H2020-EC",
+          "rcn": "664087",
+          "title": "Horizon 2020 Framework Programme"
+        },
+        {
+          "code": "H2020",
+          "id": "H2020-EU.2.",
+          "rcn": "664143",
+          "title": "PRIORITY 'Industrial leadership'"
+        }
+      ],
+      "startDate": "1 {{month_11}} 2015",
+      "endDate": "31 {{month_10}} 2018",
+      "thumb": {
+        "uri": "/assets/img/projects/icons/logo_h2020_big.jpg",
+        "type": null,
+        "language": null,
+        "copyright": null,
+        "alternativeText": null,
+        "itemContent": null
+      },
+      "coordinatedIn": "Netherlands",
+      "teaser": "EVA - Expiratory Ventilation Assistance – , or expiration by suction, is an innovative method to mechanically ventilate patients and is a key step in ventilation towards less-invasive, tailored and improved patient care as it enables:1. full ventilation through a thin...",
+      "rcn": "199955",
+      "language": "en",
+      "availableLanguages": [
+        "en"
+      ],
+      "contentType": "project",
+      "pseudoContentType": "project",
+      "lastUpdateDate": "15 {{month_08}} 2022",
+      "archivedDate": "",
+      "title": "EVA - patient ventilation beyond limits",
+      "_query": "ventilator"
+    },
+    {
+      "reference": "755596",
+      "id": "755596",
+      "acronym": "ADVENT",
+      "programme": [
+        {
+          "code": "H2020",
+          "id": "H2020-EU.3.4.",
+          "rcn": "664357",
+          "title": "SOCIETAL CHALLENGES - Smart, Green And Integrated Transport"
+        },
+        {
+          "code": "H2020",
+          "id": "H2020-EU.3.4.5.6.",
+          "rcn": "665414",
+          "title": "ITD Systems"
+        }
+      ],
+      "startDate": "1 {{month_09}} 2017",
+      "endDate": "31 {{month_08}} 2022",
+      "thumb": {
+        "uri": "/assets/img/projects/icons/logo_h2020_big.jpg",
+        "type": null,
+        "language": null,
+        "copyright": null,
+        "alternativeText": null,
+        "itemContent": null
+      },
+      "coordinatedIn": "Germany",
+      "teaser": "Alternative or novel ventilation concepts with enhanced heat removal efficiency and local ventilation efficiency allow reconsidering the fresh air fraction of modern passenger aircraft cabins and thus help to save bleed air and energy in the future. In order to identify and...",
+      "rcn": "211047",
+      "language": "en",
+      "availableLanguages": [
+        "en"
+      ],
+      "contentType": "project",
+      "pseudoContentType": "project",
+      "lastUpdateDate": "6 {{month_02}} 2024",
+      "archivedDate": "",
+      "title": "Advanced ventilation techniques for modern long-range passenger aircraft to promote future energy management systems",
+      "_query": "ventilator"
+    },
+    {
+      "reference": "804955",
+      "id": "804955",
+      "acronym": "ICU-CARE",
+      "programme": [
+        {
+          "code": "H2020",
+          "id": "H2020-EU.3.1.",
+          "rcn": "664237",
+          "title": "SOCIETAL CHALLENGES - Health, demographic change and well-being"
+        },
+        {
+          "code": "H2020",
+          "id": "H2020-EU.3.1.4.",
+          "rcn": "664261",
+          "title": "Active ageing and self-management of health"
+        },
+        {
+          "code": "H2020",
+          "id": "H2020-EU.2.1.1.",
+          "rcn": "664147",
+          "title": "INDUSTRIAL LEADERSHIP - Leadership in enabling and industrial technologies - Information and Communication Technologies (ICT)"
+        },
+        {
+          "code": "H2020",
+          "id": "H2020-EU.2.3.1.",
+          "rcn": "664225",
+          "title": " Mainstreaming SME support, especially through a dedicated instrument"
+        },
+        {
+          "code": "H2020",
+          "id": "H2020-EU.3.1.6.",
+          "rcn": "664275",
+          "title": "Health care provision and integrated care"
+        }
+      ],
+      "startDate": "1 {{month_04}} 2018",
+      "endDate": "31 {{month_03}} 2020",
+      "thumb": {
+        "uri": "/assets/img/projects/icons/logo_h2020_big.jpg",
+        "type": null,
+        "language": null,
+        "copyright": null,
+        "alternativeText": null,
+        "itemContent": null
+      },
+      "coordinatedIn": "Denmark",
+      "teaser": "We are Mermaid Care - provider of leading ICT-based care systems for optimizing Ventilation Management within the Intensive Care Units (ICU) and anesthesia segment. ICUs are some of the most resource-demanding hospital units consuming 20% of all hospital costs. A major...",
+      "rcn": "215861",
+      "language": "en",
+      "availableLanguages": [
+        "en"
+      ],
+      "contentType": "project",
+      "pseudoContentType": "project",
+      "lastUpdateDate": "19 {{month_08}} 2022",
+      "archivedDate": "",
+      "title": "Delivering BEACON Caresystem – a ground-breaking ICT-enabled ICU bed-side assistant providing recommenda-tions for critical mechanical ventilation support for better care and reduced costs.",
+      "_query": "ventilator"
+    },
+    {
+      "reference": "101169952",
+      "id": "101169952",
+      "acronym": "REMIX-TUNE",
+      "programme": [
+        {
+          "code": "HORIZON",
+          "id": "HORIZON.1.1",
+          "rcn": "705727",
+          "title": "European Research Council (ERC)"
+        }
+      ],
+      "startDate": "1 {{month_05}} 2025",
+      "endDate": "30 {{month_04}} 2030",
+      "thumb": {
+        "uri": "/assets/img/projects/icons/logo_erc_big.jpg",
+        "type": null,
+        "language": null,
+        "copyright": null,
+        "alternativeText": null,
+        "itemContent": null
+      },
+      "coordinatedIn": "United Kingdom",
+      "teaser": "Turbulent mixing controls the pace of ocean ventilation, the rate at which the ocean interior is filled up with water, heat and chemicals from the ocean’s surface. This process governs the ocean's ability to store atmospheric heat and greenhouse gases, exerting a profound...",
+      "rcn": "269568",
+      "language": "en",
+      "availableLanguages": [
+        "en"
+      ],
+      "contentType": "project",
+      "pseudoContentType": "project",
+      "lastUpdateDate": "22 {{month_12}} 2025",
+      "archivedDate": "",
+      "title": "Redefining the role of mixing in ocean overturning and ventilation",
+      "_query": "ventilator"
+    },
+    {
+      "reference": "718222",
+      "id": "718222",
+      "acronym": "SmartCOMBI",
+      "programme": [
+        {
+          "code": "H2020",
+          "id": "H2020-EU.3.3.",
+          "rcn": "664321",
+          "title": "SOCIETAL CHALLENGES - Secure, clean and efficient energy"
+        },
+        {
+          "code": "H2020",
+          "id": "H2020-EU.2.3.1.",
+          "rcn": "664225",
+          "title": " Mainstreaming SME support, especially through a dedicated instrument"
+        }
+      ],
+      "startDate": "1 {{month_03}} 2016",
+      "endDate": "31 {{month_08}} 2016",
+      "thumb": {
+        "uri": "/assets/img/projects/icons/logo_h2020_big.jpg",
+        "type": null,
+        "language": null,
+        "copyright": null,
+        "alternativeText": null,
+        "itemContent": null
+      },
+      "coordinatedIn": "Denmark",
+      "teaser": "To improve energy efficiency, modern “zero-energy” homes are highly insulated. As a consequence homes can no longer ventilate resulting in poor indoor air quality. Thus, the use of efficient ventilation is becoming increasingly important. But ventilation causes significant...",
+      "rcn": "201737",
+      "language": "en",
+      "availableLanguages": [
+        "en"
+      ],
+      "contentType": "project",
+      "pseudoContentType": "project",
+      "lastUpdateDate": "1 {{month_09}} 2025",
+      "archivedDate": "",
+      "title": "Energy savings in residential buildings using a modular platform to control an all-in-one unit for water heating, climate control, and ventilation",
+      "_query": "ventilator"
+    },
+    {
+      "reference": "835709",
+      "id": "835709",
+      "acronym": "LEPIDO",
+      "programme": [
+        {
+          "code": "H2020",
+          "id": "H2020-EU.3.",
+          "rcn": "664235",
+          "title": "PRIORITY 'Societal challenges"
+        },
+        {
+          "code": "H2020",
+          "id": "H2020-EU.2.3.",
+          "rcn": "664223",
+          "title": "INDUSTRIAL LEADERSHIP - Innovation In SMEs"
+        },
+        {
+          "code": "H2020",
+          "id": "H2020-EU.2.1.",
+          "rcn": "664145",
+          "title": "INDUSTRIAL LEADERSHIP - Leadership in enabling and industrial technologies"
+        }
+      ],
+      "startDate": "1 {{month_12}} 2018",
+      "endDate": "31 {{month_05}} 2019",
+      "thumb": {
+        "uri": "/assets/img/projects/icons/logo_h2020_big.jpg",
+        "type": null,
+        "language": null,
+        "copyright": null,
+        "alternativeText": null,
+        "itemContent": null
+      },
+      "coordinatedIn": "Sweden",
+      "teaser": "Enjay’s product, Lepido, is the first energy recycler capable of extracting the energy from the hostile and greasy exhaust air in restaurants and converting it into useable energy to heat the actual property. Lepido is based on three revolutionary Swedish patents and offers...",
+      "rcn": "218890",
+      "language": "en",
+      "availableLanguages": [
+        "en"
+      ],
+      "contentType": "project",
+      "pseudoContentType": "project",
+      "lastUpdateDate": "19 {{month_08}} 2022",
+      "archivedDate": "",
+      "title": "COMMERCIALIZING THE FIRST ENERGY RECYCLER FOR RESTAURANT VENTILATION",
+      "_query": "ventilator"
+    },
+    {
+      "reference": "735869",
+      "id": "735869",
+      "acronym": "freescoo",
+      "programme": [
+        {
+          "code": "H2020",
+          "id": "H2020-EU.3.3.",
+          "rcn": "664321",
+          "title": "SOCIETAL CHALLENGES - Secure, clean and efficient energy"
+        },
+        {
+          "code": "H2020",
+          "id": "H2020-EU.2.1.1.",
+          "rcn": "664147",
+          "title": "INDUSTRIAL LEADERSHIP - Leadership in enabling and industrial technologies - Information and Communication Technologies (ICT)"
+        },
+        {
+          "code": "H2020",
+          "id": "H2020-EU.2.3.1.",
+          "rcn": "664225",
+          "title": " Mainstreaming SME support, especially through a dedicated instrument"
+        }
+      ],
+      "startDate": "1 {{month_09}} 2016",
+      "endDate": "31 {{month_12}} 2016",
+      "thumb": {
+        "uri": "/assets/img/projects/icons/logo_h2020_big.jpg",
+        "type": null,
+        "language": null,
+        "copyright": null,
+        "alternativeText": null,
+        "itemContent": null
+      },
+      "coordinatedIn": "Italy",
+      "teaser": "Freescoo is the first plug and play, economically viable mass product for small scale (residential and small tertiary) heat/solar driven air conditioning system providing: heating, cooling, dehumidification and ventilation in a single unit. It is based on patented heat driven...",
+      "rcn": "205111",
+      "language": "en",
+      "availableLanguages": [
+        "en"
+      ],
+      "contentType": "project",
+      "pseudoContentType": "project",
+      "lastUpdateDate": "12 {{month_08}} 2022",
+      "archivedDate": "",
+      "title": "Low temperature heat / solar driven air conditioning system for heating, cooling, dehumidification and ventilation of buildings",
+      "_query": "ventilator"
+    },
+    {
+      "reference": "825566",
+      "id": "825566",
+      "acronym": "MycoVAP",
+      "programme": [
+        {
+          "code": "H2020",
+          "id": "H2020-EU.1.1.",
+          "rcn": "664099",
+          "title": "EXCELLENT SCIENCE - European Research Council (ERC)"
+        }
+      ],
+      "startDate": "1 {{month_01}} 2019",
+      "endDate": "30 {{month_06}} 2020",
+      "thumb": {
+        "uri": "/assets/img/projects/icons/logo_erc_big.jpg",
+        "type": null,
+        "language": null,
+        "copyright": null,
+        "alternativeText": null,
+        "itemContent": null
+      },
+      "coordinatedIn": "Spain",
+      "teaser": "Among 65-80% of human infections are associated to biofilms, especially in respiratory infections or those associated with catheters. Endotracheal tube (ETT) biofilm is related to the development of ventilator-associated pneumonia (VAP), which occurs in 9–27% of all...",
+      "rcn": "220112",
+      "language": "en",
+      "availableLanguages": [
+        "en"
+      ],
+      "contentType": "project",
+      "pseudoContentType": "project",
+      "lastUpdateDate": "17 {{month_08}} 2022",
+      "archivedDate": "",
+      "title": "Bacterial chassis for treating ventilator-associated pneumonia (VAP)",
+      "_query": "ventilator"
+    },
+    {
+      "reference": "190172852",
+      "id": "190172852",
+      "acronym": "Luncolive",
+      "programme": [
+        {
+          "code": "HORIZON",
+          "id": "HORIZON.3.1",
+          "rcn": "705792",
+          "title": "The European Innovation Council (EIC)"
+        }
+      ],
+      "startDate": "1 {{month_05}} 2023",
+      "endDate": "30 {{month_04}} 2026",
+      "thumb": {
+        "uri": "/assets/img/projects/icons/logo_horizon_big.jpg",
+        "type": null,
+        "language": null,
+        "copyright": null,
+        "alternativeText": null,
+        "itemContent": null
+      },
+      "coordinatedIn": "France",
+      "teaser": "Orixha offers a major clinical breakthrough in Critical Care with its unique LUNg COnservative LIquid VEntilation (hence LuncoLive) technology. It powers the Vent2Cool medical device to induce ultra-rapid protective cooling of heart and brain of resuscitated cardiac arrest...",
+      "rcn": "243948",
+      "language": "en",
+      "availableLanguages": [
+        "en"
+      ],
+      "contentType": "project",
+      "pseudoContentType": "project",
+      "lastUpdateDate": "1 {{month_09}} 2025",
+      "archivedDate": "",
+      "title": "Saving Cardiac Arrest Patients with Hypothermic Lung Conservative Liquid Ventilation",
+      "_query": "ventilator"
+    },
+    {
+      "reference": "894619",
+      "id": "894619",
+      "acronym": "MV for radiotherapy",
+      "programme": [
+        {
+          "code": "H2020",
+          "id": "H2020-EU.1.3.",
+          "rcn": "664109",
+          "title": "EXCELLENT SCIENCE - Marie Skłodowska-Curie Actions"
+        },
+        {
+          "code": "H2020",
+          "id": "H2020-EU.1.3.2.",
+          "rcn": "664113",
+          "title": "Nurturing excellence by means of cross-border and cross-sector mobility"
+        }
+      ],
+      "startDate": "1 {{month_10}} 2020",
+      "endDate": "30 {{month_09}} 2022",
+      "thumb": {
+        "uri": "/assets/img/projects/icons/logo_h2020_big.jpg",
+        "type": null,
+        "language": null,
+        "copyright": null,
+        "alternativeText": null,
+        "itemContent": null
+      },
+      "coordinatedIn": "Netherlands",
+      "teaser": "One of the greatest challenges for modern radiotherapy is ventilation causing motion of tumours and surrounding healthy structures.  Technically, modern radiation delivery systems enable in principle very accurate radiation targeting of the tumour and avoiding radiation damage...",
+      "rcn": "228157",
+      "language": "en",
+      "availableLanguages": [
+        "en"
+      ],
+      "contentType": "project",
+      "pseudoContentType": "project",
+      "lastUpdateDate": "27 {{month_12}} 2023",
+      "archivedDate": "",
+      "title": "Mechanical ventilation for radiotherapy",
+      "_query": "ventilator"
+    },
+    {
+      "reference": "828185",
+      "id": "828185",
+      "acronym": "SALLY R",
+      "programme": [
+        {
+          "code": "H2020",
+          "id": "H2020-EU.3.",
+          "rcn": "664235",
+          "title": "PRIORITY 'Societal challenges"
+        },
+        {
+          "code": "H2020",
+          "id": "H2020-EU.2.3.",
+          "rcn": "664223",
+          "title": "INDUSTRIAL LEADERSHIP - Innovation In SMEs"
+        },
+        {
+          "code": "H2020",
+          "id": "H2020-EU.2.1.",
+          "rcn": "664145",
+          "title": "INDUSTRIAL LEADERSHIP - Leadership in enabling and industrial technologies"
+        }
+      ],
+      "startDate": "1 {{month_08}} 2018",
+      "endDate": "30 {{month_11}} 2018",
+      "thumb": {
+        "uri": "/assets/img/projects/icons/logo_h2020_big.jpg",
+        "type": null,
+        "language": null,
+        "copyright": null,
+        "alternativeText": null,
+        "itemContent": null
+      },
+      "coordinatedIn": "Sweden",
+      "teaser": "90% exposure to air pollution does occur indoors, causing almost 70% of the total burden of disease related to indoor air quality. With 90% of European citizens spending 90% time indoors, good environment inside buildings is a key public health issue, costing €1,273 B each...",
+      "rcn": "217165",
+      "language": "en",
+      "availableLanguages": [
+        "en"
+      ],
+      "contentType": "project",
+      "pseudoContentType": "project",
+      "lastUpdateDate": "11 {{month_08}} 2022",
+      "archivedDate": "",
+      "title": "Securing a healthy indoor air climate while saving energy in buildings with space technology",
+      "_query": "ventilator"
+    },
+    {
+      "reference": "959886",
+      "id": "959886",
+      "acronym": "COVID-19 ICU-CARE",
+      "programme": [
+        {
+          "code": "H2020",
+          "id": "H2020-EU.3.",
+          "rcn": "664235",
+          "title": "PRIORITY 'Societal challenges"
+        },
+        {
+          "code": "H2020",
+          "id": "H2020-EU.2.3.",
+          "rcn": "664223",
+          "title": "INDUSTRIAL LEADERSHIP - Innovation In SMEs"
+        },
+        {
+          "code": "H2020",
+          "id": "H2020-EU.2.1.",
+          "rcn": "664145",
+          "title": "INDUSTRIAL LEADERSHIP - Leadership in enabling and industrial technologies"
+        }
+      ],
+      "startDate": "1 {{month_08}} 2020",
+      "endDate": "31 {{month_07}} 2021",
+      "thumb": {
+        "uri": "/assets/img/projects/icons/logo_h2020_big.jpg",
+        "type": null,
+        "language": null,
+        "copyright": null,
+        "alternativeText": null,
+        "itemContent": null
+      },
+      "coordinatedIn": "Denmark",
+      "teaser": "When the severely ill COVID-19 patients are admitted to the Intensive Care Unit (ICU) for respiratory support (breathing with the support of a mechanical ventilator), it is crucial that the upper airways of these patients are being suctioned many times daily to remove...",
+      "rcn": "230610",
+      "language": "en",
+      "availableLanguages": [
+        "en"
+      ],
+      "contentType": "project",
+      "pseudoContentType": "project",
+      "lastUpdateDate": "24 {{month_08}} 2022",
+      "archivedDate": "",
+      "title": "COVID-19 ICU-CARE – A ground-breaking ICU bed-side COVID-19 trachea flushing system that can cut healthcare costs and reduce COVID-19 spread between ICU patients and staff",
+      "_query": "ventilator"
+    },
+    {
+      "reference": "831960",
+      "id": "831960",
+      "acronym": "COCOON",
+      "programme": [
+        {
+          "code": "H2020",
+          "id": "H2020-EU.3.4.5.4.",
+          "rcn": "665410",
+          "title": "ITD Airframe"
+        },
+        {
+          "code": "H2020",
+          "id": "H2020-EU.3.4.",
+          "rcn": "664357",
+          "title": "SOCIETAL CHALLENGES - Smart, Green And Integrated Transport"
+        }
+      ],
+      "startDate": "1 {{month_04}} 2019",
+      "endDate": "31 {{month_03}} 2021",
+      "thumb": {
+        "uri": "/assets/img/projects/icons/logo_h2020_big.jpg",
+        "type": null,
+        "language": null,
+        "copyright": null,
+        "alternativeText": null,
+        "itemContent": null
+      },
+      "coordinatedIn": "Ireland",
+      "teaser": "The COCOON project will develop and demonstrate integrated seat climatization, ventilation and air supply system, maturing the technology bricks to TRL6 for a standard economy 3-seat row with a target weight of ",
+      "rcn": "221228",
+      "language": "en",
+      "availableLanguages": [
+        "en"
+      ],
+      "contentType": "project",
+      "pseudoContentType": "project",
+      "lastUpdateDate": "25 {{month_08}} 2022",
+      "archivedDate": "",
+      "title": "In-Seat Ventillation and Supply for Personalised Comfort Control on board an Aircraft",
+      "_query": "ventilator"
+    },
+    {
+      "reference": "649160",
+      "id": "649160",
+      "acronym": "Pro-Staph-ID",
+      "programme": [
+        {
+          "code": "H2020",
+          "id": "H2020-EU.3.1.",
+          "rcn": "664237",
+          "title": "SOCIETAL CHALLENGES - Health, demographic change and well-being"
+        },
+        {
+          "code": "H2020",
+          "id": "H2020-EU.3.1.3.",
+          "rcn": "664255",
+          "title": "Treating and managing disease"
+        }
+      ],
+      "startDate": "1 {{month_10}} 2014",
+      "endDate": "31 {{month_12}} 2014",
+      "thumb": {
+        "uri": "/assets/img/projects/icons/logo_h2020_big.jpg",
+        "type": null,
+        "language": null,
+        "copyright": null,
+        "alternativeText": null,
+        "itemContent": null
+      },
+      "coordinatedIn": "Austria",
+      "teaser": "Hospital acquired infections such as ventilator associated pneumonia (VAP) are associated with unacceptably high mortality rates and spiraling healthcare costs.  Staphylococcus aureus (S. aureus) is a major human pathogen, and one of the leading causes of VAP and other...",
+      "rcn": "194560",
+      "language": "en",
+      "availableLanguages": [
+        "en"
+      ],
+      "contentType": "project",
+      "pseudoContentType": "project",
+      "lastUpdateDate": "8 {{month_08}} 2022",
+      "archivedDate": "",
+      "title": "Clinical biomarker and rapid diagnostic test for Staphylococcus aureus induced ventilator-associated pneumonia",
+      "_query": "ventilator"
+    },
+    {
+      "reference": "101007785",
+      "id": "101007785",
+      "acronym": "PALOMA",
+      "programme": [
+        {
+          "code": "H2020",
+          "id": "H2020-EU.3.4.",
+          "rcn": "664357",
+          "title": "SOCIETAL CHALLENGES - Smart, Green And Integrated Transport"
+        },
+        {
+          "code": "H2020",
+          "id": "H2020-EU.3.4.5.1.",
+          "rcn": "665404",
+          "title": "IADP Large Passenger Aircraft"
+        }
+      ],
+      "startDate": "1 {{month_01}} 2021",
+      "endDate": "31 {{month_10}} 2023",
+      "thumb": {
+        "uri": "/assets/img/projects/icons/logo_h2020_big.jpg",
+        "type": null,
+        "language": null,
+        "copyright": null,
+        "alternativeText": null,
+        "itemContent": null
+      },
+      "coordinatedIn": "France",
+      "teaser": "PALOMA will design and test a passively actuated opening system that will allow a volume of secondary air flow to be diverted into the engine core area for cooling purposes. Being entirely passive, no external electrical, hydraulic or pneumatic power will be required to run or...",
+      "rcn": "232505",
+      "language": "en",
+      "availableLanguages": [
+        "en"
+      ],
+      "contentType": "project",
+      "pseudoContentType": "project",
+      "lastUpdateDate": "22 {{month_07}} 2024",
+      "archivedDate": "",
+      "title": "Passive Actuated ventiLation Opening systeM for Aircraft",
+      "_query": "ventilator"
+    },
+    {
+      "reference": "961050",
+      "id": "961050",
+      "acronym": "Eyecontrol",
+      "programme": [
+        {
+          "code": "H2020",
+          "id": "H2020-EU.3.",
+          "rcn": "664235",
+          "title": "PRIORITY 'Societal challenges"
+        },
+        {
+          "code": "H2020",
+          "id": "H2020-EU.2.3.",
+          "rcn": "664223",
+          "title": "INDUSTRIAL LEADERSHIP - Innovation In SMEs"
+        },
+        {
+          "code": "H2020",
+          "id": "H2020-EU.2.1.",
+          "rcn": "664145",
+          "title": "INDUSTRIAL LEADERSHIP - Leadership in enabling and industrial technologies"
+        }
+      ],
+      "startDate": "1 {{month_08}} 2020",
+      "endDate": "31 {{month_07}} 2022",
+      "thumb": {
+        "uri": "/assets/img/projects/icons/logo_h2020_big.jpg",
+        "type": null,
+        "language": null,
+        "copyright": null,
+        "alternativeText": null,
+        "itemContent": null
+      },
+      "coordinatedIn": "Israel",
+      "teaser": "EyeFree Assisting Communication Ltd. developed the EyeControl, the first wearable, screenless assistive communication device. AI-powered eye-tracking technology enables communication between patients, medical staff and family, using only eye movements, without calibration or...",
+      "rcn": "230437",
+      "language": "en",
+      "availableLanguages": [
+        "en"
+      ],
+      "contentType": "project",
+      "pseudoContentType": "project",
+      "lastUpdateDate": "28 {{month_12}} 2023",
+      "archivedDate": "",
+      "title": "EyeControl: A Communication Solution for Ventilated ICU Patients and Locked-in Individuals",
+      "_query": "ventilator"
+    }
+  ],
+  "blockers": [
+    "no publication index: contenttype='publication' -> HTTP 500 index_not_found_exception: no such index [publication]",
+    "no published API contract: /api/, /api/v1/projects, /api/v1/search, /api/search all return the 404 SPA HTML shell",
+    "therefore EU grant -> publication linkage is NOT buildable from CORDIS"
+  ]
+}

@@ -1,0 +1,355 @@
+{
+  "source_id": "uk_hmrc_trade",
+  "workstream": "industry",
+  "generated_at": "2026-11-09T23:12:21Z",
+  "raw_files": [
+    {
+      "path": "DATASETS/industry/uk_hmrc_trade/raw/flowtype.json",
+      "bytes": 598,
+      "sha256": "04d556e350e08b09b1dedb9b3da0a2ae20e139c63388051dd0be2747fe58cad2",
+      "requested_url": "https://api.uktradeinfo.com/FlowType",
+      "final_url": "https://api.uktradeinfo.com/FlowType",
+      "status": 200,
+      "content_type": "application/json; odata.metadata=minimal",
+      "fetched_at": "2026-11-09T23:12:13Z",
+      "note": "flow code names"
+    },
+    {
+      "path": "DATASETS/industry/uk_hmrc_trade/raw/commodity_hs4_9018.json",
+      "bytes": 20560,
+      "sha256": "8248ce16c9166b48c07c359cb30dfac91c6b0afc881c0e82fd9388de94f4be96",
+      "requested_url": "https://api.uktradeinfo.com/Commodity?%24filter=Hs4Code+eq+%279018%27",
+      "final_url": "https://api.uktradeinfo.com/Commodity?%24filter=Hs4Code+eq+%279018%27",
+      "status": 200,
+      "content_type": "application/json; odata.metadata=minimal",
+      "fetched_at": "2026-11-09T23:12:13Z",
+      "note": "CN8 children of HS4 9018"
+    },
+    {
+      "path": "DATASETS/industry/uk_hmrc_trade/raw/ots_monthly_9018.json",
+      "bytes": 39936,
+      "sha256": "9a1990c590fea0362509ad7e1e6359110ba653f0673d52810015916d0cae3ed5",
+      "requested_url": "https://api.uktradeinfo.com/OTS?%24apply=filter%28%28CommodityId+eq+90181100+or+CommodityId+eq+90181200+or+CommodityId+eq+90181300+or+CommodityId+eq+90181400+or+CommodityId+eq+90181910+or+CommodityId+eq+90181990+or+CommodityId+eq+90182000+or+CommodityId+eq+90183110+or+CommodityId+eq+90183190+or+CommodityId+eq+90183210+or+CommodityId+eq+90183290+or+CommodityId+eq+90183900+or+CommodityId+eq+90184100+or+CommodityId+eq+90184910+or+CommodityId+eq+90184990+or+CommodityId+eq+90185010+or+CommodityId+eq+90185090+or+CommodityId+eq+90189010+or+CommodityId+eq+90189020+or+CommodityId+eq+90189030+or+CommodityId+eq+90189040+or+CommodityId+eq+90189041+or+CommodityId+eq+90189049+or+CommodityId+eq+90189050+or+CommodityId+eq+90189060+or+CommodityId+eq+90189070+or+CommodityId+eq+90189075+or+CommodityId+eq+90189084+or+CommodityId+eq+90189085%29+and+MonthId+ge+201501+and+MonthId+le+202512%29%2Fgroupby%28%28MonthId%2CFlowTypeId%29%2Caggregate%28Value+with+sum+as+TotalValue%29%29",
+      "final_url": "https://api.uktradeinfo.com/OTS?%24apply=filter%28%28CommodityId+eq+90181100+or+CommodityId+eq+90181200+or+CommodityId+eq+90181300+or+CommodityId+eq+90181400+or+CommodityId+eq+90181910+or+CommodityId+eq+90181990+or+CommodityId+eq+90182000+or+CommodityId+eq+90183110+or+CommodityId+eq+90183190+or+CommodityId+eq+90183210+or+CommodityId+eq+90183290+or+CommodityId+eq+90183900+or+CommodityId+eq+90184100+or+CommodityId+eq+90184910+or+CommodityId+eq+90184990+or+CommodityId+eq+90185010+or+CommodityId+eq+90185090+or+CommodityId+eq+90189010+or+CommodityId+eq+90189020+or+CommodityId+eq+90189030+or+CommodityId+eq+90189040+or+CommodityId+eq+90189041+or+CommodityId+eq+90189049+or+CommodityId+eq+90189050+or+CommodityId+eq+90189060+or+CommodityId+eq+90189070+or+CommodityId+eq+90189075+or+CommodityId+eq+90189084+or+CommodityId+eq+90189085%29+and+MonthId+ge+201501+and+MonthId+le+202512%29%2Fgroupby%28%28MonthId%2CFlowTypeId%29%2Caggregate%28Value+with+sum+as+TotalValue%29%29",
+      "status": 200,
+      "content_type": "application/json; odata.metadata=minimal",
+      "fetched_at": "2026-11-09T23:12:15Z",
+      "note": "OTS monthly totals for HS4 9018"
+    },
+    {
+      "path": "DATASETS/industry/uk_hmrc_trade/raw/commodity_hs4_9019.json",
+      "bytes": 4763,
+      "sha256": "ffa6d81ccfe0eb0235f0e5da4a3ec074e6ca6863b7c4746cb50fe56564749c0a",
+      "requested_url": "https://api.uktradeinfo.com/Commodity?%24filter=Hs4Code+eq+%279019%27",
+      "final_url": "https://api.uktradeinfo.com/Commodity?%24filter=Hs4Code+eq+%279019%27",
+      "status": 200,
+      "content_type": "application/json; odata.metadata=minimal",
+      "fetched_at": "2026-11-09T23:12:15Z",
+      "note": "CN8 children of HS4 9019"
+    },
+    {
+      "path": "DATASETS/industry/uk_hmrc_trade/raw/ots_monthly_9019.json",
+      "bytes": 39551,
+      "sha256": "9c4be91bbcbd6e64e9724f167b9f3a5029b8519a3fab6ddded6d7df6099c8466",
+      "requested_url": "https://api.uktradeinfo.com/OTS?%24apply=filter%28%28CommodityId+eq+90191010+or+CommodityId+eq+90191090+or+CommodityId+eq+90192000+or+CommodityId+eq+90192010+or+CommodityId+eq+90192020+or+CommodityId+eq+90192090%29+and+MonthId+ge+201501+and+MonthId+le+202512%29%2Fgroupby%28%28MonthId%2CFlowTypeId%29%2Caggregate%28Value+with+sum+as+TotalValue%29%29",
+      "final_url": "https://api.uktradeinfo.com/OTS?%24apply=filter%28%28CommodityId+eq+90191010+or+CommodityId+eq+90191090+or+CommodityId+eq+90192000+or+CommodityId+eq+90192010+or+CommodityId+eq+90192020+or+CommodityId+eq+90192090%29+and+MonthId+ge+201501+and+MonthId+le+202512%29%2Fgroupby%28%28MonthId%2CFlowTypeId%29%2Caggregate%28Value+with+sum+as+TotalValue%29%29",
+      "status": 200,
+      "content_type": "application/json; odata.metadata=minimal",
+      "fetched_at": "2026-11-09T23:12:16Z",
+      "note": "OTS monthly totals for HS4 9019"
+    },
+    {
+      "path": "DATASETS/industry/uk_hmrc_trade/raw/commodity_hs4_9020.json",
+      "bytes": 2838,
+      "sha256": "e1b3d95c0e4b7f1518e9e93fae16860fffd213b0ecd6ec5ec7c3d4e556150c98",
+      "requested_url": "https://api.uktradeinfo.com/Commodity?%24filter=Hs4Code+eq+%279020%27",
+      "final_url": "https://api.uktradeinfo.com/Commodity?%24filter=Hs4Code+eq+%279020%27",
+      "status": 200,
+      "content_type": "application/json; odata.metadata=minimal",
+      "fetched_at": "2026-11-09T23:12:16Z",
+      "note": "CN8 children of HS4 9020"
+    },
+    {
+      "path": "DATASETS/industry/uk_hmrc_trade/raw/ots_monthly_9020.json",
+      "bytes": 39224,
+      "sha256": "8e19159917fa36b68de8f3d087cc26d0bb758b621dc29d64ca1a115860325003",
+      "requested_url": "https://api.uktradeinfo.com/OTS?%24apply=filter%28%28CommodityId+eq+90200000+or+CommodityId+eq+90200010+or+CommodityId+eq+90200090%29+and+MonthId+ge+201501+and+MonthId+le+202512%29%2Fgroupby%28%28MonthId%2CFlowTypeId%29%2Caggregate%28Value+with+sum+as+TotalValue%29%29",
+      "final_url": "https://api.uktradeinfo.com/OTS?%24apply=filter%28%28CommodityId+eq+90200000+or+CommodityId+eq+90200010+or+CommodityId+eq+90200090%29+and+MonthId+ge+201501+and+MonthId+le+202512%29%2Fgroupby%28%28MonthId%2CFlowTypeId%29%2Caggregate%28Value+with+sum+as+TotalValue%29%29",
+      "status": 200,
+      "content_type": "application/json; odata.metadata=minimal",
+      "fetched_at": "2026-11-09T23:12:17Z",
+      "note": "OTS monthly totals for HS4 9020"
+    },
+    {
+      "path": "DATASETS/industry/uk_hmrc_trade/raw/commodity_hs4_9021.json",
+      "bytes": 12563,
+      "sha256": "0c9b66851961dc5c03685b6cab7c7b589d1638cde0155726963eec16daa0f13d",
+      "requested_url": "https://api.uktradeinfo.com/Commodity?%24filter=Hs4Code+eq+%279021%27",
+      "final_url": "https://api.uktradeinfo.com/Commodity?%24filter=Hs4Code+eq+%279021%27",
+      "status": 200,
+      "content_type": "application/json; odata.metadata=minimal",
+      "fetched_at": "2026-11-09T23:12:18Z",
+      "note": "CN8 children of HS4 9021"
+    },
+    {
+      "path": "DATASETS/industry/uk_hmrc_trade/raw/ots_monthly_9021.json",
+      "bytes": 39777,
+      "sha256": "bb56e15238a5bfd917813a28bcaffe5300dfbf43ff4536f7b26fe5cc6a0afa59",
+      "requested_url": "https://api.uktradeinfo.com/OTS?%24apply=filter%28%28CommodityId+eq+90211010+or+CommodityId+eq+90211090+or+CommodityId+eq+90211100+or+CommodityId+eq+90211910+or+CommodityId+eq+90211990+or+CommodityId+eq+90212110+or+CommodityId+eq+90212190+or+CommodityId+eq+90212900+or+CommodityId+eq+90213010+or+CommodityId+eq+90213090+or+CommodityId+eq+90213100+or+CommodityId+eq+90213910+or+CommodityId+eq+90213990+or+CommodityId+eq+90214000+or+CommodityId+eq+90215000+or+CommodityId+eq+90219010+or+CommodityId+eq+90219090%29+and+MonthId+ge+201501+and+MonthId+le+202512%29%2Fgroupby%28%28MonthId%2CFlowTypeId%29%2Caggregate%28Value+with+sum+as+TotalValue%29%29",
+      "final_url": "https://api.uktradeinfo.com/OTS?%24apply=filter%28%28CommodityId+eq+90211010+or+CommodityId+eq+90211090+or+CommodityId+eq+90211100+or+CommodityId+eq+90211910+or+CommodityId+eq+90211990+or+CommodityId+eq+90212110+or+CommodityId+eq+90212190+or+CommodityId+eq+90212900+or+CommodityId+eq+90213010+or+CommodityId+eq+90213090+or+CommodityId+eq+90213100+or+CommodityId+eq+90213910+or+CommodityId+eq+90213990+or+CommodityId+eq+90214000+or+CommodityId+eq+90215000+or+CommodityId+eq+90219010+or+CommodityId+eq+90219090%29+and+MonthId+ge+201501+and+MonthId+le+202512%29%2Fgroupby%28%28MonthId%2CFlowTypeId%29%2Caggregate%28Value+with+sum+as+TotalValue%29%29",
+      "status": 200,
+      "content_type": "application/json; odata.metadata=minimal",
+      "fetched_at": "2026-11-09T23:12:20Z",
+      "note": "OTS monthly totals for HS4 9021"
+    },
+    {
+      "path": "DATASETS/industry/uk_hmrc_trade/raw/commodity_hs4_9022.json",
+      "bytes": 10507,
+      "sha256": "92f8930e17e924130905585a212ab015a10033dc9345ba2142d28637cb406c65",
+      "requested_url": "https://api.uktradeinfo.com/Commodity?%24filter=Hs4Code+eq+%279022%27",
+      "final_url": "https://api.uktradeinfo.com/Commodity?%24filter=Hs4Code+eq+%279022%27",
+      "status": 200,
+      "content_type": "application/json; odata.metadata=minimal",
+      "fetched_at": "2026-11-09T23:12:20Z",
+      "note": "CN8 children of HS4 9022"
+    },
+    {
+      "path": "DATASETS/industry/uk_hmrc_trade/raw/ots_monthly_9022.json",
+      "bytes": 39698,
+      "sha256": "c939f600a7b4c3470809fa68387d1f0786fd59ee6954a7773463ca12421a4cee",
+      "requested_url": "https://api.uktradeinfo.com/OTS?%24apply=filter%28%28CommodityId+eq+90221200+or+CommodityId+eq+90221300+or+CommodityId+eq+90221400+or+CommodityId+eq+90221900+or+CommodityId+eq+90222100+or+CommodityId+eq+90222900+or+CommodityId+eq+90223000+or+CommodityId+eq+90229000+or+CommodityId+eq+90229010+or+CommodityId+eq+90229020+or+CommodityId+eq+90229080+or+CommodityId+eq+90229090%29+and+MonthId+ge+201501+and+MonthId+le+202512%29%2Fgroupby%28%28MonthId%2CFlowTypeId%29%2Caggregate%28Value+with+sum+as+TotalValue%29%29",
+      "final_url": "https://api.uktradeinfo.com/OTS?%24apply=filter%28%28CommodityId+eq+90221200+or+CommodityId+eq+90221300+or+CommodityId+eq+90221400+or+CommodityId+eq+90221900+or+CommodityId+eq+90222100+or+CommodityId+eq+90222900+or+CommodityId+eq+90223000+or+CommodityId+eq+90229000+or+CommodityId+eq+90229010+or+CommodityId+eq+90229020+or+CommodityId+eq+90229080+or+CommodityId+eq+90229090%29+and+MonthId+ge+201501+and+MonthId+le+202512%29%2Fgroupby%28%28MonthId%2CFlowTypeId%29%2Caggregate%28Value+with+sum+as+TotalValue%29%29",
+      "status": 200,
+      "content_type": "application/json; odata.metadata=minimal",
+      "fetched_at": "2026-11-09T23:12:21Z",
+      "note": "OTS monthly totals for HS4 9022"
+    }
+  ],
+  "aggregation_disclaimer": "Trade-flow records are national/regional aggregates. They carry no firm-level revenue, R&D or market-share attribution. Procurement records name a recipient as published by the awarding body; they do not identify the manufacturer of any device unless the award text names a concrete device or model.",
+  "licence_status": "open_licence",
+  "licence_note": "uktradeinfo.com footer: 'All content is available under the Open Government Licence v3.0, except where otherwise stated' (https://www.uktradeinfo.com/, stored at DATASETS/industry/uk_hmrc_trade/raw/portal_home.html).",
+  "hs_codes": [
+    "9018",
+    "9019",
+    "9020",
+    "9021",
+    "9022"
+  ],
+  "hs_scope_notes": {
+    "9018": "Medical/surgical/dental/veterinary instruments incl. scintigraphic and electro-medical apparatus; also dental chairs, veterinary and non-corrective ophthalmic instruments.",
+    "9019": "Oxygen therapy, artificial respiration and other breathing apparatus; also massage and psychological aptitude-testing apparatus.",
+    "9020": "Other breathing appliances and gas masks without mechanical parts or replaceable filters; excludes ventilators counted in 9019.",
+    "9021": "Orthopaedic appliances, splints, artificial body parts, hearing aids; prosthetics/orthotics/hearing aids are devices but a different commercial category.",
+    "9022": "X-ray and alpha/beta/gamma apparatus; also industrial/security radiography and non-destructive-testing equipment."
+  },
+  "flow_type_direction_map": {
+    "1": {
+      "label": "EU Imports",
+      "direction": "imports"
+    },
+    "2": {
+      "label": "EU Exports",
+      "direction": "exports"
+    },
+    "3": {
+      "label": "Non-EU Imports",
+      "direction": "imports"
+    },
+    "4": {
+      "label": "Non-EU Exports",
+      "direction": "exports"
+    }
+  },
+  "hs4_children": {
+    "9018": {
+      "cn8_ids": [
+        90181100,
+        90181200,
+        90181300,
+        90181400,
+        90181910,
+        90181990,
+        90182000,
+        90183110,
+        90183190,
+        90183210,
+        90183290,
+        90183900,
+        90184100,
+        90184910,
+        90184990,
+        90185010,
+        90185090,
+        90189010,
+        90189020,
+        90189030,
+        90189040,
+        90189041,
+        90189049,
+        90189050,
+        90189060,
+        90189070,
+        90189075,
+        90189084,
+        90189085
+      ],
+      "cn8_count": 29,
+      "descriptions": {
+        "90181100": "Electro-cardiographs",
+        "90181200": "Ultrasonic scanning apparatus",
+        "90181300": "Magnetic resonance imaging apparatus",
+        "90181400": "Scintigraphic apparatus",
+        "90181910": "Electro-diagnostic monitoring apparatus for simultaneous monitoring of two or more physiological parameters",
+        "90181990": "Electro-diagnostic apparatus, incl. apparatus for functional exploratory examination or for checking physiological parameters (excl. electro-cardiographs, ultrasonic scanning apparatus, magnetic resonance imaging apparatus, scintigraphic apparatus and monitoring apparatus for simultaneous monitoring of two or more physiological parameters)",
+        "90182000": "Ultraviolet or infra-red ray apparatus used in medical, surgical, dental or veterinary sciences",
+        "90183110": "Syringes of plastics, with or without needles, used in medical, surgical, dental or veterinary sciences",
+        "90183190": "Syringes, with or without needles, used in medical, surgical, dental or veterinary sciences (excl. of plastic)",
+        "90183210": "Tubular metal needles, used in medical, surgical, dental or veterinary sciences",
+        "90183290": "Needles for sutures, used in medical, surgical, dental or veterinary sciences",
+        "90183900": "Needles, catheters, cannulae and the like, used in medical, surgical, dental or veterinary sciences (excl. syringes, tubular metal needles and needles for sutures)",
+        "90184100": "Dental drill engines, whether or not combined on a single base with other dental equipment",
+        "90184910": "Burrs, discs, drills and brushes, for use in dental drills",
+        "90184990": "Instruments and appliances used in dental sciences, n.e.s.",
+        "90185010": "Ophthalmic instruments and appliances, non-optical, n.e.s.",
+        "90185090": "Ophthalmic instruments and appliances, optical, n.e.s.",
+        "90189010": "Instruments and apparatus for measuring blood-pressure",
+        "90189020": "Endoscopes used in medical, surgical or veterinary sciences",
+        "90189030": "Renal dialysis equipment \"artificial kidneys, kidney machines and dialysers\"",
+        "90189040": "Diathermic apparatus (excl. ultraviolet or infra-red apparatus)",
+        "90189041": "Ultrasonic diathermic apparatus",
+        "90189049": "Diathermic apparatus (excl. ultrasonic and ultraviolet or infrared apparatus)",
+        "90189050": "Transfusion and infusion apparatus used in medical sciences",
+        "90189060": "Anaesthetic apparatus and instruments",
+        "90189070": "Ultrasonic lithotripsy instruments",
+        "90189075": "Apparatus for nerve stimulation",
+        "90189084": "Instruments and appliances used in medical, surgical or veterinary sciences, n.e.s.",
+        "90189085": "Instruments and appliances used in medical, surgical or veterinary sciences, n.e.s."
+      },
+      "hs4_description": "Instruments and appliances used in medical, surgical, dental or veterinary sciences, incl. scintigraphic apparatus, other electro-medical apparatus and sight-testing instruments, n.e.s."
+    },
+    "9019": {
+      "cn8_ids": [
+        90191010,
+        90191090,
+        90192000,
+        90192010,
+        90192020,
+        90192090
+      ],
+      "cn8_count": 6,
+      "descriptions": {
+        "90191010": "Electrical vibratory-massage apparatus",
+        "90191090": "Mechano-therapy appliances; massage apparatus; psychological aptitude-testing apparatus (excl. electrical vibratory-massage apparatus)",
+        "90192000": "Ozone therapy, oxygen therapy, aerosol therapy, artificial respiration or other therapeutic respiration apparatus",
+        "90192010": "Mechanical ventilation apparatus, capable of providing invasive ventilation",
+        "90192020": "Mechanical ventilation apparatus, non-invasive",
+        "90192090": "Ozone therapy, oxygen therapy, aerosol therapy, artificial respiration or other therapeutic respiration apparatus, incl. parts and accessories (excl. mechanical ventilation apparatus)"
+      },
+      "hs4_description": "Mechano-therapy appliances; massage apparatus; psychological aptitude-testing apparatus; ozone therapy, oxygen therapy, aerosol therapy, artificial respiration or other therapeutic respiration apparatus"
+    },
+    "9020": {
+      "cn8_ids": [
+        90200000,
+        90200010,
+        90200090
+      ],
+      "cn8_count": 3,
+      "descriptions": {
+        "90200000": "Breathing appliances and gas masks (excl. protective masks having neither mechanical parts nor replaceable filters, and artificial respiration or other therapeutic respiration apparatus)",
+        "90200010": "Gas masks (excl. protective masks having neither mechanical parts nor replaceable filters)",
+        "90200090": "Breathing appliances, incl. parts and accessories (excl. artificial respiration or other therapeutic respiration apparatus)"
+      },
+      "hs4_description": "Breathing appliances and gas masks, incl. parts and accessories (excl. protective masks having neither mechanical parts nor replaceable filters, and artificial respiration or other therapeutic respiration apparatus)"
+    },
+    "9021": {
+      "cn8_ids": [
+        90211010,
+        90211090,
+        90211100,
+        90211910,
+        90211990,
+        90212110,
+        90212190,
+        90212900,
+        90213010,
+        90213090,
+        90213100,
+        90213910,
+        90213990,
+        90214000,
+        90215000,
+        90219010,
+        90219090
+      ],
+      "cn8_count": 17,
+      "descriptions": {
+        "90211010": "Orthopaedic appliances",
+        "90211090": "Splints and other fracture appliances",
+        "90211100": "Artificial joints",
+        "90211910": "Orthopaedic appliances",
+        "90211990": "Splints & other fracture appliances",
+        "90212110": "Artificial teeth of plastics",
+        "90212190": "Artificial teeth of materials other than plastics",
+        "90212900": "Dental fittings (excl. artificial teeth)",
+        "90213010": "Artificial eyes",
+        "90213090": "Artificial limbs & other artificial parts of the body nes in hdg 9021",
+        "90213100": "Artificial joints for orthopaedic purposes",
+        "90213910": "Ocular protheses",
+        "90213990": "Artificial parts of the body (excl. artificial teeth and dental fittings, artificial joints and ocular protheses)",
+        "90214000": "Hearing aids (excl. parts and accessories)",
+        "90215000": "Pacemakers for stimulating heart muscles (excl. parts and accessories)",
+        "90219010": "Parts and accessories of hearing aids, n.e.s.",
+        "90219090": "Articles and appliances, which are worn or carried, or implanted in the body, to compensate for a defect or disability (excl. artificial parts of the body, hearing aids, incl. parts and accessories, and complete pacemakers for stimulating heart muscles)"
+      },
+      "hs4_description": "Orthopaedic appliances, incl. crutches, surgical belts and trusses; splints and other fracture appliances; artificial parts of the body; hearing aids and other appliances which are worn or carried, or implanted in the body, to compensate for a defect"
+    },
+    "9022": {
+      "cn8_ids": [
+        90221200,
+        90221300,
+        90221400,
+        90221900,
+        90222100,
+        90222900,
+        90223000,
+        90229000,
+        90229010,
+        90229020,
+        90229080,
+        90229090
+      ],
+      "cn8_count": 12,
+      "descriptions": {
+        "90221200": "Computer tomography apparatus",
+        "90221300": "Apparatus based on the use of X-rays for dental uses",
+        "90221400": "Apparatus based on the use of X-rays, for medical, surgical or veterinary uses (excl. for dental purposes and computer tomography apparatus)",
+        "90221900": "Apparatus based on the use of X-rays (other than for medical, surgical, dental or veterinary uses)",
+        "90222100": "Apparatus based on the use of alpha, beta, gamma or other ionising radiation, for medical, surgical, dental or veterinary uses",
+        "90222900": "Apparatus based on the use of alpha, beta, gamma or other ionising radiation (other than for medical, surgical, dental or veterinary uses)",
+        "90223000": "X-ray tubes",
+        "90229000": "X-ray generators other than X-ray tubes, high tension generators, control panels and desks, screens, examination or treatment tables, chairs and the like, and general parts and accessories for apparatus of heading 9022, n.e.s.",
+        "90229010": "Xray fluorescent screens and Xray intensifying screens; antiscatter shields and grids",
+        "90229020": "Parts and accessories of apparatus based on the use of X-rays",
+        "90229080": "X-ray generators other than X-ray tubes, high tension generators, control panels and desks, screens, examination or treatment tables, chairs and the like, and general parts and accessories for apparatus of heading 9022, n.e.s.",
+        "90229090": "Xray generators other than Xray tubes, high tension generators, control panels and desks, examination or treatment tables, chairs and the like, and general parts and accessories for apparatus of heading 9022, n.e.s."
+      },
+      "hs4_description": "Apparatus based on the use of X-rays or of alpha, beta, gamma or other ionising radiation, whether or not for medical, surgical, dental or veterinary uses, incl. radiography or radiotherapy apparatus, X-ray tubes and other X-ray generators, high tens"
+    }
+  },
+  "budget": {
+    "client": "industry_uk_hmrc_trade",
+    "requests_made": 11,
+    "max_requests": 20,
+    "bytes_received": 250015,
+    "max_total_bytes": 12000000,
+    "retries": 0,
+    "errors": []
+  },
+  "aggregation_method": "Per HS4: one OData $apply=filter(...)/groupby((MonthId,FlowTypeId),aggregate(Value with sum as TotalValue)) call over all CN8 children of that HS4; then months are summed to years and EU + non-EU flows are added per direction. No row-level OTS dump was downloaded.",
+  "coverage_limits": [
+    "OTS has no world-total row: the total is our sum, so it inherits any suppression in the underlying cells.",
+    "Values are in GBP and are NOT deflated or converted.",
+    "FlowType 1/2 are EU flows, 3/4 non-EU: an import total is 1+3 and an export total is 2+4. Reading flow 1 as 'imports' understates UK imports by the non-EU share.",
+    "The UK left the EU customs union in 2021, so the EU/non-EU split is not stable across the 2015-2025 window."
+  ]
+}

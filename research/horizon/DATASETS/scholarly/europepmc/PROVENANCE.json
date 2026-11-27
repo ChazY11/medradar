@@ -1,0 +1,105 @@
+{
+  "source_id": "europepmc",
+  "workstream": "scholarly",
+  "experiment": "EXP-H1 / EXP-H3 (fixed anchor sample)",
+  "selection_rule": "experiments/scholarly/EXP_H1_SELECTION_RULE.md",
+  "contact": "medradar-research@proton.me",
+  "generated_at": "2026-11-09T23:14:15Z",
+  "raw_files": [
+    {
+      "path": "DATASETS/scholarly/europepmc/raw/search_batch_01.json",
+      "status": 200,
+      "batch": 1,
+      "dois_requested": [
+        "10.1016/j.yrtph.2021.104987",
+        "10.1016/j.yrtph.2021.105004",
+        "10.1111/jace.18041",
+        "10.1016/s0378-4274(21)00463-x",
+        "10.1016/j.mpmed.2021.08.009",
+        "10.1253/circj.cj-21-0491",
+        "10.33564/ijeast.2021.v06i07.046",
+        "10.1161/circ.144.suppl_1.13385",
+        "10.1016/j.yrtph.2021.105096",
+        "10.31478/202201b",
+        "10.1115/1.4053565",
+        "10.1161/jaha.121.023848",
+        "10.2345/0899-8205-54.4.311",
+        "10.2345/0899-8205-54.4.291",
+        "10.1097/rli.0000000000000673"
+      ]
+    },
+    {
+      "path": "DATASETS/scholarly/europepmc/raw/search_batch_02.json",
+      "status": 200,
+      "batch": 2,
+      "dois_requested": [
+        "10.1016/j.ejvs.2021.11.001",
+        "10.1007/s00535-022-01932-1",
+        "10.1002/bit.27335",
+        "10.1111/jch.13851",
+        "10.1097/sla.0000000000003958",
+        "10.1109/icoei48184.2020.9142931",
+        "10.1093/jbi/wbaa070",
+        "10.1002/jmri.27492",
+        "10.2967/jnumed.120.261881",
+        "10.1021/acsami.9b21808",
+        "10.1145/3385032.3385047",
+        "10.1016/j.arbres.2020.05.032",
+        "10.1007/978-3-030-54403-4",
+        "10.1016/j.arbr.2021.02.001",
+        "10.1002/mp.14881"
+      ]
+    },
+    {
+      "path": "DATASETS/scholarly/europepmc/raw/search_batch_03.json",
+      "status": 200,
+      "batch": 3,
+      "dois_requested": [
+        "10.1212/wnl.96.15_supplement.4100",
+        "10.1109/rams48097.2021.9605713",
+        "10.1109/ccta48906.2021.9659125",
+        "10.1109/ius52206.2021.9593683",
+        "10.1007/978-3-030-83864-5_33",
+        "10.1080/17434440.2022.2054334",
+        "10.2196/43905",
+        "10.1021/acssensors.0c00712",
+        "10.1117/12.2618126",
+        "10.1007/978-3-662-59715-6_42",
+        "10.1515/9783110591026-005",
+        "10.3390/polym12051033",
+        "10.1097/ccm.0000000000004892",
+        "10.4414/smw.2021.20515",
+        "10.25368/2021.11"
+      ]
+    },
+    {
+      "path": "DATASETS/scholarly/europepmc/raw/search_batch_04.json",
+      "status": 200,
+      "batch": 4,
+      "dois_requested": [
+        "10.3389/fped.2021.722497",
+        "10.12968/s2514-9768(22)90086-9",
+        "10.1093/ageing/afab278",
+        "10.1364/boe.469747",
+        "10.2991/artres.k.201209.041",
+        "10.1109/mems51670.2022.9699652",
+        "10.1136/bmjopen-2022-064581",
+        "10.1186/s13244-022-01259-8",
+        "10.3969/j.issn.1671-7104.2022.04.023",
+        "10.21037/atm-22-3491",
+        "10.21595/jve.2022.22479",
+        "10.1148/radiol.212257",
+        "10.1177/1358863x221117608",
+        "10.21037/atm-22-3767",
+        "10.21037/atm-22-4589"
+      ]
+    }
+  ],
+  "endpoint": "https://www.ebi.ac.uk/europepmc/webservices/rest/search",
+  "batch_size": 15,
+  "licence_status": "open_licence",
+  "licence_note": "Europe PMC content is available under the Europe PMC terms of use; the REST service is free and unrestricted. Individual records carry their own licence in `license` and full-text licence in `fullTextUrlList`. Metadata reuse is permitted with attribution (https://europepmc.org/help#termsandconditions, 'Europe PMC is an ELIXIR Core Data Resource ... content is available under the Creative Commons Attribution licence where the source permits'). Recorded as open_licence at the metadata level; per-record `license` kept.",
+  "records_file": "DATASETS/scholarly/europepmc/records.jsonl",
+  "record_count": 37,
+  "index_file": "DATASETS/scholarly/europepmc/EUROPEPMC_INDEX.json"
+}

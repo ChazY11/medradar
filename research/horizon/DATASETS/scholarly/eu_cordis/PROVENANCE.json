@@ -1,0 +1,72 @@
+{
+  "source_id": "eu_cordis",
+  "workstream": "scholarly",
+  "experiment": "EXP-H1 / EXP-H3 (fixed anchor sample)",
+  "selection_rule": "experiments/scholarly/EXP_H1_SELECTION_RULE.md",
+  "contact": "medradar-research@proton.me",
+  "generated_at": "2026-11-09T23:09:10Z",
+  "raw_files": [
+    {
+      "path": "DATASETS/scholarly/eu_cordis/raw/search_01.json",
+      "bytes": 24079,
+      "sha256": "dffe12fd3ca95c803cd583d03b64cc767547ce42d5da0df44c3bef8bf530307c",
+      "requested_url": "https://cordis.europa.eu/api/search/results?q=contenttype%3D%27project%27+AND+medical+device&num=20",
+      "final_url": "https://cordis.europa.eu/api/search/results?q=contenttype%3D%27project%27+AND+medical+device&num=20",
+      "status": 200,
+      "content_type": "application/json",
+      "fetched_at": "2026-11-09T23:09:04Z",
+      "note": "CORDIS project search q='medical device' (broad European project coverage for the device domain)",
+      "query": "medical device"
+    },
+    {
+      "path": "DATASETS/scholarly/eu_cordis/raw/search_02.json",
+      "bytes": 20907,
+      "sha256": "6842edd44596bb150612a3ebf4354f0184e759972781b07ef8d3deb1e2ebf919",
+      "requested_url": "https://cordis.europa.eu/api/search/results?q=contenttype%3D%27project%27+AND+pacemaker&num=20",
+      "final_url": "https://cordis.europa.eu/api/search/results?q=contenttype%3D%27project%27+AND+pacemaker&num=20",
+      "status": 200,
+      "content_type": "application/json",
+      "fetched_at": "2026-11-09T23:09:05Z",
+      "note": "CORDIS project search q='pacemaker' (implantable-device sub-domain)",
+      "query": "pacemaker"
+    },
+    {
+      "path": "DATASETS/scholarly/eu_cordis/raw/search_03.json",
+      "bytes": 23639,
+      "sha256": "13e1539c3a74ebd38d343bd24adc5e79aef82a429b8d4959b8eb8dfd63de42e8",
+      "requested_url": "https://cordis.europa.eu/api/search/results?q=contenttype%3D%27project%27+AND+ventilator&num=20",
+      "final_url": "https://cordis.europa.eu/api/search/results?q=contenttype%3D%27project%27+AND+ventilator&num=20",
+      "status": 200,
+      "content_type": "application/json",
+      "fetched_at": "2026-11-09T23:09:06Z",
+      "note": "CORDIS project search q='ventilator' (another device sub-domain, to check the query works generally)",
+      "query": "ventilator"
+    },
+    {
+      "path": "DATASETS/scholarly/eu_cordis/raw/search_04.json",
+      "bytes": 493,
+      "sha256": "37c7537b20b1871de98987ad722c2d742eb4d5082f922e26573cf02c4e3255a5",
+      "requested_url": "https://cordis.europa.eu/api/search/results?q=contenttype%3D%27project%27+AND+Horizon+2020+medical+device&num=20",
+      "final_url": "https://cordis.europa.eu/api/search/results?q=contenttype%3D%27project%27+AND+Horizon+2020+medical+device&num=20",
+      "status": 500,
+      "content_type": "application/json",
+      "fetched_at": "2026-11-09T23:09:10Z",
+      "note": "CORDIS project search q='Horizon 2020 medical device' (programme-scoped variant)",
+      "query": "Horizon 2020 medical device"
+    }
+  ],
+  "endpoint": "https://cordis.europa.eu/api/search/results",
+  "method": "GET",
+  "documented": false,
+  "licence_status": "open_no_explicit_licence",
+  "licence_note": "CORDIS content is published by the European Commission; the site legal notice permits reuse of Commission documents with attribution (https://commission.europa.eu/legal-notice_en) but the ``/api/search/results`` endpoint used here is UNDOCUMENTED -- no published API contract, no stated machine-interface licence. Recorded as open_no_explicit_licence, not open_licence.",
+  "records_file": "DATASETS/scholarly/eu_cordis/records.jsonl",
+  "record_count": 60,
+  "index_file": "DATASETS/scholarly/eu_cordis/CORDIS_INDEX.json",
+  "blockers": [
+    "no publication index: contenttype='publication' -> HTTP 500 index_not_found_exception: no such index [publication]",
+    "no published API contract: /api/, /api/v1/projects, /api/v1/search, /api/search all return the 404 SPA HTML shell",
+    "therefore EU grant -> publication linkage is NOT buildable from CORDIS"
+  ],
+  "access_state": "OPEN (undocumented endpoint)"
+}

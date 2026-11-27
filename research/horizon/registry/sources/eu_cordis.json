@@ -1,0 +1,36 @@
+{
+  "access_evidence": "probe cordis_search_results: HTTP 200 JSON at /api/search/results with payload.total and payload.results[] including rcn, reference (grant agreement id), acronym and programme; probe cordis_search_published_contract_absent: HTTP 404 SPA HTML at /api/v1/projects; probe cordis_no_publication_index: HTTP 500 index_not_found_exception. 4 domain queries -> 60 project records.",
+  "access_state": "OPEN",
+  "auth_required": false,
+  "blockers": [
+    "No publication index: contenttype='publication' -> HTTP 500 '[es/search] failed: [index_not_found_exception] no such index [publication]'. EU grant -> publication linkage therefore cannot be built from CORDIS.",
+    "The query parser rejects numeric-only tokens: q=685648 -> HTTP 500 'Error processing the request :Unknown filter type'; q=contenttype='project' AND 685648 -> HTTP 500 'Query is not valid'. The quoted form q=\"685648\" works (HTTP 200) and is what the connector uses.",
+    "Field queries such as title:'medical device' -> HTTP 500 'Query is not valid', and an rcn: filter -> HTTP 500. The query language is effectively free text plus contenttype."
+  ],
+  "bulk_available": false,
+  "domain": "cordis.europa.eu",
+  "entity_types": [
+    "grant"
+  ],
+  "first_verified_at": "2026-11-09T23:20:28Z",
+  "historical_depth": "Dates arrive as human strings with unfilled template tokens such as '1 {{month_08}} 2014', so no ISO date can be read off them.",
+  "id_schemes": [
+    "cordis_rcn",
+    "cordis_grant_agreement_id"
+  ],
+  "licence_note": "The Commission legal notice permits reuse of Commission documents with attribution, but /api/search/results is UNDOCUMENTED: no API contract and no stated machine-interface licence. Recorded as open_no_explicit_licence, not open_licence.",
+  "licence_status": "open_no_explicit_licence",
+  "licence_url": "https://commission.europa.eu/legal-notice_en",
+  "machine_interface": "Undocumented JSON search endpoint /api/search/results?q=&num=; no published API contract, no OpenAPI document",
+  "name": "CORDIS (EU research projects)",
+  "notes": "Because the endpoint is undocumented, every response is saved verbatim so the behaviour can be re-checked even if the route changes without notice.",
+  "operator": "European Commission",
+  "probe_suite": "scholarly",
+  "rate_policy": "Undocumented. Used at 1 req/s with num<=25.",
+  "registration_url": null,
+  "robots_summary": "Only the JSON API path is touched, never the HTML site.",
+  "robots_url": "https://cordis.europa.eu/robots.txt",
+  "source_id": "eu_cordis",
+  "unlock_route": "Use the quoted numeric form for grant-agreement lookup. For a supported contract, the Commission's open-data route is the CORDIS datasets published through the EU Open Data Portal (data.europa.eu); that is a bulk download, not this API, and was not used here.",
+  "what_is_new": "Supplies EU project identity (RCN + grant agreement id) and confirmed 1 of 2 declared EU grant numbers for a publication. It does NOT supply publications, so the reverse direction is impossible."
+}

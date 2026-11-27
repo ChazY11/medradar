@@ -1,0 +1,36 @@
+{
+  "access_evidence": "probe pubmed_eutils_esearch: HTTP 200, DOI resolves via the [doi] field tag; probe pubmed_eutils_efetch: HTTP 200 with ArticleIdList carrying doi/pubmed/pmc/mid IdTypes. 3 chunked esearch calls over 60 DOIs resolved 37 distinct PMIDs; one efetch returned all 37.",
+  "access_state": "OPEN_DOCUMENTED",
+  "auth_required": false,
+  "blockers": [
+    "DOIs must be double-quoted before the [doi] tag: an unquoted 60-DOI OR query silently returned 10 of 37 hits because PubMed's parser splits on the embedded '/' and '('."
+  ],
+  "bulk_available": true,
+  "domain": "eutils.ncbi.nlm.nih.gov",
+  "entity_types": [
+    "publication"
+  ],
+  "first_verified_at": "2026-11-09T23:20:28Z",
+  "historical_depth": "No record-creation or index timestamp is exposed, so PubMed can only ever supply a current-snapshot date.",
+  "id_schemes": [
+    "pmid",
+    "doi",
+    "pmcid",
+    "pubmed_mid"
+  ],
+  "licence_note": "NLM makes PubMed citation data available for public use and the E-utilities usage policy grants keyless access at <=3 req/s (https://www.ncbi.nlm.nih.gov/books/NBK25497/). No blanket content licence is attached to the citation metadata and abstract copyright stays with the publisher, so this is open_no_explicit_licence.",
+  "licence_status": "open_no_explicit_licence",
+  "licence_url": "https://www.ncbi.nlm.nih.gov/books/NBK25497/",
+  "machine_interface": "REST (esearch/efetch), JSON + XML",
+  "name": "PubMed E-utilities",
+  "notes": "PubMed is not a superset of Europe PMC and vice versa, but on this sample the two agree on 37 PMIDs exactly and disagree on publication date for only 3 of 37 pairs.",
+  "operator": "US National Library of Medicine",
+  "probe_suite": "scholarly",
+  "rate_policy": "NCBI policy: <=3 requests/second without an API key. Used at 1 req/s with tool= and email= set. A key raises the limit but is not required.",
+  "registration_url": null,
+  "robots_summary": "Not applicable: E-utilities only, no HTML scraping.",
+  "robots_url": "https://www.ncbi.nlm.nih.gov/robots.txt",
+  "source_id": "pubmed_eutils",
+  "unlock_route": "",
+  "what_is_new": "Provides the authoritative PMID<->DOI edge and the GrantList (7 of 37 records). Its PMID set matches OpenAlex's pmid field exactly (37 vs 37), which is a clean independent cross-check of the identifier links."
+}

@@ -1,0 +1,103 @@
+{
+  "experiment": "EXP-H4 (Priority 3)",
+  "title": "Grant <-> work linkage where the work declares the grant and an open registry resolves it",
+  "generated_at": "2026-11-09T23:19:06Z",
+  "output": "RELATIONS_GRANT_WORK.jsonl",
+  "rule": {
+    "confirmed": "the publication's own funding metadata (Europe PMC grantsList, PubMed GrantList, or Crossref funder[].award[]) declares a grant number, AND that number resolves in NIH RePORTER (core_project_num echoed by the registry) or in the CORDIS project index",
+    "candidate": "declared but not resolvable: the funder has no open registry in this source set, or the CORDIS lookup found nothing",
+    "rejected": "declared as an NIH-style number but RePORTER holds no project with that core",
+    "reverse_direction_blocked": "starting from a grant and listing its publications is NOT possible: NIH RePORTER does not carry publication identifiers in the v2 search response, and CORDIS has no publication index (probe cordis_no_publication_index: HTTP 500 'no such index [publication]')"
+  },
+  "stats": {
+    "declared_grant_rows": 108,
+    "distinct_declared_ids": 40,
+    "nih_cores_declared": 9,
+    "nih_projects_resolved": 9,
+    "eu_declared_ids": 2,
+    "eu_resolved_in_cordis": 1,
+    "eu_lookup_attempts": [
+      {
+        "grant": "685648",
+        "query": "685648",
+        "status": 500,
+        "bytes": 380,
+        "body_head": "{\"status\":false,\"payload\":{\"message\":\"Something went wrong. Please contact the administrator of the application! Error:Error processing the request :Unknown filter type\",\"id\":\"20261110-001851_0e5b813ab024b970151f\",\"error"
+      },
+      {
+        "grant": "685648",
+        "query": "contenttype='project' AND 685648",
+        "status": 500,
+        "bytes": 439,
+        "body_head": "{\"status\":false,\"payload\":{\"message\":\"Something went wrong. Please contact the administrator of the application! Error:Error processing the request :Unknown filter type\",\"id\":\"20261110-001856_a34d6d22f025e9301a43\",\"error"
+      },
+      {
+        "grant": "685648",
+        "query": "\"685648\"",
+        "status": 200,
+        "bytes": 14875,
+        "body_head": "{\"status\":true,\"payload\":{\"query\":\"\\u0022685648\\u0022\",\"total\":161,\"page\":1,\"nItems\":25,\"srt\":\"Relevance:decreasing\",\"searchAfter\":\"eyJzaXplIjoyNSwic2VhcmNoQWZ0ZXIiOlsxMC45NzU1NTEsIi9kYi9jb3JkaXMvcmVzdWx0L3Jjbi81NTc3OTlf"
+      },
+      {
+        "grant": "831644",
+        "query": "831644",
+        "status": 500,
+        "bytes": 380,
+        "body_head": "{\"status\":false,\"payload\":{\"message\":\"Something went wrong. Please contact the administrator of the application! Error:Error processing the request :Unknown filter type\",\"id\":\"20261110-001900_0a7c0ec72397985b5894\",\"error"
+      },
+      {
+        "grant": "831644",
+        "query": "contenttype='project' AND 831644",
+        "status": 500,
+        "bytes": 439,
+        "body_head": "{\"status\":false,\"payload\":{\"message\":\"Something went wrong. Please contact the administrator of the application! Error:Error processing the request :Unknown filter type\",\"id\":\"20261110-001905_3c9bacbd517625b6a561\",\"error"
+      },
+      {
+        "grant": "831644",
+        "query": "\"831644\"",
+        "status": 200,
+        "bytes": 16486,
+        "body_head": "{\"status\":true,\"payload\":{\"query\":\"\\u0022831644\\u0022\",\"total\":25,\"page\":1,\"nItems\":25,\"srt\":\"Relevance:decreasing\",\"searchAfter\":\"eyJzaXplIjoyNSwic2VhcmNoQWZ0ZXIiOlsyLjU2MDc0NTIsIi9kYi9jb3JkaXMvcmVzdWx0L3Jjbi80NzMzMDhfZ"
+      }
+    ],
+    "relations_total": 43,
+    "by_status": {
+      "CANDIDATE": 33,
+      "CONFIRMED": 10
+    },
+    "by_relation_type": {
+      "work_declares_other_grant": 32,
+      "work_declares_nih_grant": 9,
+      "work_declares_eu_grant": 2
+    },
+    "detail": {
+      "other_funder_candidate": 32,
+      "nih_confirmed": 9,
+      "declared_rows_skipped_no_work_or_id": 5,
+      "declared_rows_deduplicated": 60,
+      "eu_declared_but_not_found_in_cordis": 1,
+      "eu_confirmed": 1
+    }
+  },
+  "sources_used": {
+    "declaration_side": [
+      "europepmc",
+      "pubmed_eutils",
+      "crossref"
+    ],
+    "resolution_side": [
+      "nih_reporter",
+      "eu_cordis"
+    ],
+    "blocked": {
+      "eu_ctis": "HTTP 403 AWS authorizer - requires EMA credential"
+    }
+  },
+  "worked_example_of_why_confidence_matters": {
+    "work_doi": "10.1093/ageing/afab278",
+    "grant": "831644",
+    "declared_by": "Europe PMC grantsList, PubMed GrantList AND Crossref funder[].award[] - all three agree the paper declares H2020 grant 831644",
+    "resolved_to": "CORDIS RCN 221882, project title 'EOSCsecretariat.eu'",
+    "why_it_matters": "the number match is machine-verified, yet an ageing/ICU paper is improbably funded by the EOSC secretariat project. That is a publication-metadata error, and no amount of identifier matching fixes it. This is why every CONFIRMED here is scoped to 'the number matches', never to 'the grant funded this work'."
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "access_evidence": "probe europepmc_search_core: HTTP 200, resultType=core returns firstPublicationDate, electronicPublicationDate, grantsList, pmid, pmcid; probe europepmc_grant_field: GRANT_ID is an accepted query field; probe europepmc_nct_fulltext: NCT04494867 found as a literal string, so trial identifiers are searchable. 4 batched DOI queries covering 60 DOIs -> 37 hits.",
+  "access_state": "OPEN_DOCUMENTED",
+  "auth_required": false,
+  "blockers": [],
+  "bulk_available": true,
+  "domain": "www.ebi.ac.uk/europepmc",
+  "entity_types": [
+    "publication"
+  ],
+  "first_verified_at": "2026-11-09T23:20:28Z",
+  "historical_depth": "firstIndexDate and dateOfCreation give real indexing history in addition to firstPublicationDate.",
+  "id_schemes": [
+    "doi",
+    "pmid",
+    "pmcid"
+  ],
+  "licence_note": "Europe PMC describes itself as an ELIXIR Core Data Resource with content available for reuse with attribution, and the REST service is free and unrestricted (https://europepmc.org/help, terms of use). Per-record `license` is preserved. Recorded as open_licence at the metadata level.",
+  "licence_status": "open_licence",
+  "licence_url": "https://europepmc.org/help",
+  "machine_interface": "REST JSON, query-language search, resultType=lite|core",
+  "name": "Europe PMC REST",
+  "notes": "Coverage of an OpenAlex-defined device-technology sample is 37/60: Europe PMC is biomedical, so it misses physics/engineering venues. That is scope, not failure.",
+  "operator": "EMBL-EBI / Europe PMC",
+  "probe_suite": "scholarly",
+  "rate_policy": "No key; the search endpoint is used at ~1.5 req/s in batches of 15 DOIs.",
+  "registration_url": null,
+  "robots_summary": "Not applicable: REST API only.",
+  "robots_url": "https://europepmc.org/robots.txt",
+  "source_id": "europepmc",
+  "unlock_route": "",
+  "what_is_new": "The best single source for identifier convergence (doi+pmid+pmcid on the same record) and the richest grant surface: 13 of 37 records carry a grantsList, which is where 30 of the 108 declared grant rows come from."
+}

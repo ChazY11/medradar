@@ -1,0 +1,32 @@
+{
+  "access_evidence": "GET https://www.importyeti.com/ returned HTTP 200 (53,134 B). robots.txt (HTTP 200, 167 B) allows crawling of pages but disallows every data endpoint: 'Disallow: /search?q', 'Disallow: /api/addresses', 'Disallow: /api/ep', 'Disallow: /cdn-cgi/', 'Disallow: /mx/', 'Disallow: /us-export/', 'Disallow: /partnerships/'. The /policies page returned 200 but no automated-access prohibition could be extracted from it (the served HTML is largely stylesheet and script text).",
+  "access_state": "BLOCKED_LEGAL",
+  "auth_required": false,
+  "blockers": [
+    "ROBOTS_DISALLOWS_DATA_ENDPOINTS: /api/addresses and /api/ep are Disallow.",
+    "NO_PUBLISHED_API_LICENCE: no reusable dataset or API terms were found."
+  ],
+  "bulk_available": false,
+  "domain": "www.importyeti.com",
+  "entity_types": [
+    "trade_flow"
+  ],
+  "first_verified_at": "2026-11-09T23:18:28Z",
+  "historical_depth": "not assessed (no data acquired)",
+  "id_schemes": [],
+  "licence_note": "robots.txt is the operative published restriction: 'Allow: /' followed by 'Disallow: /api/addresses' and 'Disallow: /api/ep'. The shipment data is served through exactly those disallowed paths, so a compliant crawler cannot obtain it. No explicit written reuse licence was found.",
+  "licence_status": "terms_restricted",
+  "licence_url": "https://www.importyeti.com/policies",
+  "machine_interface": "web pages only; internal /api/* endpoints exist but are disallowed",
+  "name": "ImportYeti — US import bill-of-lading search",
+  "notes": "No page was crawled beyond the homepage, robots.txt and /policies.",
+  "operator": "ImportYeti LLC",
+  "probe_suite": "industry",
+  "rate_policy": "No published API; robots restricts the data endpoints.",
+  "registration_url": null,
+  "robots_summary": "Allow: / ; Disallow: /search?q, /api/addresses, /api/ep, /cdn-cgi/, /mx/, /us-export/, /partnerships/",
+  "robots_url": "https://www.importyeti.com/robots.txt",
+  "source_id": "importyeti",
+  "unlock_route": "Only with the operator's written permission or a commercial agreement. Absent that, company-level US customs shipment data must not be acquired from this vendor. For an aggregate alternative see un_comtrade / us_census_trade (country totals) — but those cannot substitute for company-level attribution.",
+  "what_is_new": "Nothing collected, and nothing may be collected: the operator's robots policy disallows the data endpoints. This is the correct conclusion, not a workaround."
+}

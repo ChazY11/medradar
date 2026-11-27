@@ -1,0 +1,34 @@
+{
+  "access_evidence": "SOURCE_PROBES/patents: record page 200 / 371596 B (read-only single record)",
+  "access_state": "MANUAL_ONLY",
+  "auth_required": true,
+  "blockers": [
+    "bulk access requires Google Cloud billing account",
+    "site scraping is contrary to the terms for bulk use — not attempted"
+  ],
+  "bulk_available": true,
+  "domain": "patents.google.com",
+  "entity_types": [
+    "patent_publication"
+  ],
+  "first_verified_at": "2026-11-10",
+  "historical_depth": "worldwide",
+  "id_schemes": [
+    "google_patents_id"
+  ],
+  "licence_note": "",
+  "licence_status": "terms_restricted",
+  "licence_url": "https://policies.google.com/terms",
+  "machine_interface": "no public bulk API outside BigQuery; site is not offered for bulk retrieval",
+  "name": "Google Patents",
+  "notes": "",
+  "operator": "Google",
+  "probe_suite": "patents",
+  "rate_policy": "",
+  "registration_url": null,
+  "robots_summary": "",
+  "robots_url": null,
+  "source_id": "google_patents",
+  "unlock_route": "Enable the Google Patents public dataset in BigQuery under a project owner's own GCP account.",
+  "what_is_new": "The BigQuery public dataset would be excellent, but it requires a Google Cloud project with billing enabled — a registration plus payment barrier."
+}

@@ -1,0 +1,32 @@
+{
+  "access_evidence": "GET https://panjiva.com/ returned HTTP 200 and redirected to https://panjiva.com/ (33,038 B), listing commercial products 'Panjiva Platform', 'S&P Capital IQ Pro', 'XpressFeed'. robots.txt HTTP 200 (7,228 B, disallow-heavy). The linked terms of use (https://www.spglobal.com/en/terms-of-use) returned HTTP 403 to the automated client (2,008 B), so the terms could not be quoted.",
+  "access_state": "REQUIRES_LICENCE",
+  "auth_required": true,
+  "blockers": [
+    "COMMERCIAL_SUBSCRIPTION: platform/feed products only.",
+    "TERMS_PAGE_403: https://www.spglobal.com/en/terms-of-use returned HTTP 403 (2,008 B) so the reuse terms are unverified, not permissive."
+  ],
+  "bulk_available": false,
+  "domain": "panjiva.com",
+  "entity_types": [
+    "trade_flow"
+  ],
+  "first_verified_at": "2026-11-09T23:18:28Z",
+  "historical_depth": "not assessed",
+  "id_schemes": [],
+  "licence_note": "The S&P Global terms of use could not be read: HTTP 403 to an automated client (2,008 B). Panjiva is sold as a subscription platform ('Panjiva Platform', 'XpressFeed'), so the licence status is recorded as requires_licence on the strength of the product structure, and the exact terms sentence is explicitly NOT quoted because it was not retrieved.",
+  "licence_status": "requires_licence",
+  "licence_url": "https://www.spglobal.com/en/terms-of-use",
+  "machine_interface": "commercial platform / data feed (XpressFeed)",
+  "name": "Panjiva (S&P Global Market Intelligence) — supply-chain trade data",
+  "notes": "Homepage and robots.txt only; no data page crawled.",
+  "operator": "S&P Global",
+  "probe_suite": "industry",
+  "rate_policy": "Per S&P Global subscription.",
+  "registration_url": null,
+  "robots_summary": "disallow-heavy; see DATASETS/industry/panjiva/raw/robots.txt",
+  "robots_url": "https://panjiva.com/robots.txt",
+  "source_id": "panjiva",
+  "unlock_route": "An S&P Global commercial licence. Because the terms page is not readable by an automated client, even the licence text must be obtained by a human before any use.",
+  "what_is_new": "Nothing collected. Panjiva is a licensed S&P Global product; the terms page itself is WAF-blocked to automated clients."
+}

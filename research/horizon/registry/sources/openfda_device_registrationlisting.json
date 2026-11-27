@@ -1,0 +1,33 @@
+{
+  "access_evidence": "PROBES.json reg_openfda_reglist_001: HTTP 200, 2,158 bytes, dotted path search=registration.owner_operator.firm_name:\"MEDTRONIC\"&limit=1. 5,205 MEDTRONIC / 2,392 PHILIPS matches.",
+  "access_state": "OPEN_DOCUMENTED",
+  "auth_required": false,
+  "blockers": [],
+  "bulk_available": true,
+  "domain": "api.fda.gov",
+  "entity_types": [
+    "regulatory_listing"
+  ],
+  "first_verified_at": "2026-11-10T07:30:00Z",
+  "historical_depth": "Current registration snapshot with reg_expiry_date_year per establishment; no superseded registration rows.",
+  "id_schemes": [
+    "fda_fei",
+    "fda_registration_number",
+    "fda_product_code"
+  ],
+  "licence_note": "openFDA licence page: '...unless otherwise noted, the content, data, documentation, code, and related materials on openFDA is public domain and made available with a Creative Commons CC0 1.0 Universal dedication.' Caveat recorded on the same page: 'GMDN(R) is a registered trademark of The GMDN Agency... which is used under license from The GMDN Agency', with conditions on extracting GMDN Content. openFDA device endpoints do not carry GMDN fields, so this does not affect the openFDA records.",
+  "licence_status": "public_domain",
+  "licence_url": "https://open.fda.gov/license/",
+  "machine_interface": "REST JSON: /device/registrationlisting.json",
+  "name": "openFDA — device establishment registration & device listing",
+  "notes": "Query field matters: bare owner_operator.firm_name returns NOT_FOUND; the working path is registration.owner_operator.firm_name. 'DRAGER' returns NOT_FOUND because the firm is indexed as Dräger — an honest tokenisation gap, not a bug.",
+  "operator": "U.S. Food and Drug Administration",
+  "probe_suite": "regulatory",
+  "rate_policy": "openFDA authentication page: 'With no API key: 240 requests per minute, per IP address. 1,000 requests per day, per IP address.' No X-RateLimit-* response headers are sent; observed: all keyless pulls returned 200 at ~1.2 req/s, no 429.",
+  "registration_url": null,
+  "robots_summary": "HTTP 404 with body 'Cannot GET /robots.txt' — no robots policy is served for the API host; access is governed by the published openFDA terms.",
+  "robots_url": "https://api.fda.gov/robots.txt",
+  "source_id": "openfda_device_registrationlisting",
+  "unlock_route": "",
+  "what_is_new": "Establishment-level FEI numbers and registration expiry years — the regulatory footprint behind a licence, not just the product approval."
+}

@@ -1,0 +1,60 @@
+{
+  "source_id": "accessgudid",
+  "generated_at": "2026-11-09T23:07:13Z",
+  "records_emitted": 320,
+  "devices_scanned": 59774,
+  "daily_release_files_scanned": 21,
+  "monthly_archives": [
+    "gudid_monthly_update_october_2026.zip"
+  ],
+  "per_target_firm": {
+    "Medtronic": 72,
+    "GE HealthCare": 70,
+    "Philips": 18,
+    "Draeger": 3,
+    "Mindray": 0
+  },
+  "per_product_family_slice": {
+    "monitoring": 46,
+    "respiratory_support": 42,
+    "imaging": 43,
+    "life_support": 36,
+    "neonatal": 35
+  },
+  "lookup_api_calls": [
+    {
+      "di": "00885074528007",
+      "status": 200,
+      "bytes": 2806
+    },
+    {
+      "di": "00195278985613",
+      "status": 200,
+      "bytes": 6294
+    },
+    {
+      "di": "00884838127746",
+      "status": 200,
+      "bytes": 2732
+    },
+    {
+      "di": "04048675436607",
+      "status": 200,
+      "bytes": 3093
+    },
+    {
+      "di": "00885074527994",
+      "status": 200,
+      "bytes": 2806
+    },
+    {
+      "di": "00195278011343",
+      "status": 200,
+      "bytes": 2763
+    }
+  ],
+  "records_with_udi_di": 320,
+  "records_with_source_public_at": 320,
+  "selection_rule": "Within the October 2026 GUDID monthly release (21 daily deltas, ~40k device records), keep every record whose companyName matches one of the five target firms (cap 70 records/firm) and every record whose brand or description matches a product-family keyword (monitoring / respiratory support / imaging / life support / neonatal), total cap 320.",
+  "coverage_limit": "This is a one-month delta of GUDID changes, not the full GUDID universe (which is published as a ~multi-hundred-MB full release, outside this budget). Row counts here are a sample, never a coverage statement."
+}

@@ -1,0 +1,50 @@
+{
+  "suite": "scholarly",
+  "kind": "POST-only endpoint probes",
+  "generated_at": "2026-11-09T23:09:58Z",
+  "why": "hz.probe.Probe is GET-only; these two endpoints are POST-only and are therefore probed here. Calls are routed through _util.post_json so they land in REQUEST_LOG_POST.jsonl with status, bytes and sha256.",
+  "post_log": "SOURCE_PROBES/scholarly/REQUEST_LOG_POST.jsonl",
+  "probes": [
+    {
+      "probe_id": "semanticscholar_batch_post",
+      "source_id": "semantic_scholar",
+      "url": "https://api.semanticscholar.org/graph/v1/paper/batch?fields=title,externalIds,publicationDate,venue",
+      "method": "POST",
+      "question": "Does the POST /paper/batch form return externalIds for a DOI list without an API key, given a bounded retry on 429?",
+      "request_body_shape": {
+        "ids": "['DOI:<doi>']"
+      },
+      "status": 200,
+      "bytes": 366,
+      "sha256": "fb99d44dc87df11605e13bfd62ee735173a4c8cfe8e59d7988076959d5f57aee",
+      "raw": "DATASETS/scholarly/semantic_scholar/raw/probe_batch_post.json",
+      "body_exact": "[{\"paperId\": \"024a2c03be8e468e7c4fdf9bda36cdc0eaae85fb\", \"externalIds\": {\"MAG\": \"3035965352\", \"DBLP\": \"journals/nature/HarrisMWGVCWTBS20\", \"PubMedCentral\": \"7759461\", \"ArXiv\": \"2006.10256\", \"DOI\": \"10.1038/s41586-020-2649-2\", \"CorpusId\": 219792763, \"PubMed\": \"32939066\"}, \"title\": \"Array programming ",
+      "expect_marker": "externalIds",
+      "marker_found": true,
+      "note": "The `fields` projection must be passed as a query parameter on the batch route; without it the response omits externalIds entirely. The anonymous tier returned 429 on the first attempt during collection and 200 after bounded backoff; both attempts are in REQUEST_LOG_POST.jsonl. That 429 is evidence about the rate policy, not a gap.",
+      "observed_at": "2026-11-09T23:09:57Z"
+    },
+    {
+      "probe_id": "nih_reporter_search_post",
+      "source_id": "nih_reporter",
+      "url": "https://api.reporter.nih.gov/v2/projects/search",
+      "method": "POST",
+      "question": "Does a JSON POST with criteria/include_fields/offset/limit return a meta block without a key, where GET returns 405?",
+      "request_body_shape": {
+        "criteria": "{fiscal_years, text_search_field, text_search_operators}",
+        "include_fields": "list[str]",
+        "offset": "int",
+        "limit": "int"
+      },
+      "status": 200,
+      "bytes": 395,
+      "sha256": "a31a1a3a99f5058e2f56125d10e601e6fdb173aa033a029f41f1680c9afe869a",
+      "raw": "DATASETS/scholarly/nih_reporter/raw/probe_search_post.json",
+      "body_exact": "{\"meta\":{\"search_id\":\"9_aXj7aZVUSskih9WQ8wyQ\",\"total\":83894,\"offset\":0,\"limit\":1,\"sort_field\":null,\"sort_order\":\"ASC\",\"sorted_by_relevance\":false,\"properties\":{\"URL\":\"https:/reporter.nih.gov/search/9_aXj7aZVUSskih9WQ8wyQ/projects\"}},\"results\":[{\"fiscal_year\":2022,\"project_num\":\"1F32DK132864-01\",\"pro",
+      "expect_marker": "\"meta\"",
+      "marker_found": true,
+      "note": "GET on the same URL returns 405 (see the nih_reporter_get_405 probe). criteria.project_nums accepts bare core project numbers such as R01EB026995 and echoes core_project_num, which is what the grant<->work linkage rests on.",
+      "observed_at": "2026-11-09T23:09:58Z"
+    }
+  ]
+}

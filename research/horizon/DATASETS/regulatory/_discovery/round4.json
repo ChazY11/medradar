@@ -1,0 +1,53 @@
+{
+  "generated_at": "2026-11-09T23:03:00Z",
+  "budget": {
+    "client": "regulatory-discovery-4",
+    "requests_made": 4,
+    "max_requests": 10,
+    "bytes_received": 126656,
+    "max_total_bytes": 10000000,
+    "retries": 0,
+    "errors": [
+      "https://health-products.canada.ca/api/medical-devices/licence/?state=active&lang=en&type=json: response exceeded cap 3000000 bytes (aborted)"
+    ]
+  },
+  "targets": [
+    {
+      "name": "hc_company_medtronic",
+      "url": "https://health-products.canada.ca/api/medical-devices/company/?company_name=medtronic&lang=en&type=json",
+      "status": 200,
+      "outcome": "OK",
+      "bytes": 6909,
+      "sha256": "c82d2ca51834c0f74e3e88620c9d731d5ae7b0617952986d394c99d17fad49f4",
+      "content_type": "application/json; charset=utf-8",
+      "final_url": "https://health-products.canada.ca/api/medical-devices/company/?company_name=medtronic&lang=en&type=json",
+      "saved": "D:\\DEPPSKK\\worktrees\\horizon-001\\research\\horizon\\DATASETS\\regulatory\\_discovery\\hc_company_medtronic.json"
+    },
+    {
+      "name": "openfda_auth_docs",
+      "url": "https://open.fda.gov/apis/authentication/",
+      "status": 200,
+      "outcome": "OK",
+      "bytes": 118723,
+      "sha256": "ecf761a790313637189576d6f3870ccbad6a618e9f91cf494f6d3ea7e49122a4",
+      "content_type": "text/html; charset=utf-8",
+      "final_url": "https://open.fda.gov/apis/authentication/",
+      "saved": "D:\\DEPPSKK\\worktrees\\horizon-001\\research\\horizon\\DATASETS\\regulatory\\_discovery\\openfda_auth_docs.html"
+    },
+    {
+      "name": "size_hc_active_licences",
+      "url": "https://health-products.canada.ca/api/medical-devices/licence/?state=active&lang=en&type=json",
+      "outcome": "ResponseTooLarge",
+      "error": "https://health-products.canada.ca/api/medical-devices/licence/?state=active&lang=en&type=json: response exceeded cap 3000000 bytes (aborted)"
+    },
+    {
+      "name": "size_gudid_weekly_zip",
+      "url": "https://accessgudid.nlm.nih.gov/release_files/download/gudid_weekly_update_20261026_20261030.zip",
+      "status": 206,
+      "bytes_read": 1024,
+      "content_range": "bytes 0-1023/1329874",
+      "total_bytes": 1329874,
+      "accept_ranges": "bytes"
+    }
+  ]
+}

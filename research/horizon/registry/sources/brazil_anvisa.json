@@ -1,0 +1,33 @@
+{
+  "access_evidence": "PROBES.json reg_anvisa_001 records the unbounded GET exceeding our 6 MB cap (TOO_LARGE) — the file is large. The bounded path succeeded: DATASETS/regulatory/brazil_anvisa/raw/TA_CONSULTA_PRODUTOS_SAUDE.csv.head256k is an HTTP 206 Range response, 262,144 bytes, parsed into 902 rows; the directory index /dados/CONSULTAS/PRODUTOS/ (HTTP 200, 5,539 bytes) lists 12 TA_CONSULTA_*.CSV files.",
+  "access_state": "OPEN",
+  "auth_required": false,
+  "blockers": [
+    "Server caps HTTP Range responses at 256 KiB, so only a 256 KiB prefix (902 rows) was sampled; the full file is outside budget."
+  ],
+  "bulk_available": true,
+  "domain": "dados.anvisa.gov.br",
+  "entity_types": [
+    "regulatory_listing"
+  ],
+  "first_verified_at": "2026-11-10T07:30:00Z",
+  "historical_depth": "One current-state consultation table per product category (medical devices, IVD, medicines, cosmetics...). Row-level dates present: DT_INICIO_VIGENCIA, DT_VENCIMENTO_REGISTRO, DT_CARGA_ETL (ETL load stamp). No version history.",
+  "id_schemes": [
+    "anvisa_registro"
+  ],
+  "licence_note": "ANVISA presents the files on its 'dados abertos' portal with no login and no key, and the directory index carries no licence statement. Recorded as open_no_explicit_licence rather than inventing a CC-BY grant.",
+  "licence_status": "open_no_explicit_licence",
+  "licence_url": "https://www.gov.br/anvisa/pt-br/acessoainformacao/dadosabertos",
+  "machine_interface": "Bulk CSV over HTTP (h5ai directory index). No REST API.",
+  "name": "ANVISA open data — health product consultation (Produtos para Saúde)",
+  "notes": "DT_CARGA_ETL is an ETL load timestamp, NOT a publication date; it is not used as source_public_at.",
+  "operator": "Agência Nacional de Vigilância Sanitária (ANVISA), Brazil",
+  "probe_suite": "regulatory",
+  "rate_policy": "No stated quota. One prefix request; no throttling observed.",
+  "registration_url": null,
+  "robots_summary": "HTTP 404 — no robots policy is served.",
+  "robots_url": "https://dados.anvisa.gov.br/robots.txt",
+  "source_id": "brazil_anvisa",
+  "unlock_route": "",
+  "what_is_new": "The one non-US/non-Canadian jurisdiction that yielded genuine keyless records: Brazilian device registrations with an official ANVISA registro number, risk class (SG_RISCO_PRODUTO) and registration validity dates."
+}

@@ -1,0 +1,31 @@
+{
+  "access_evidence": "GET https://dataweb.usitc.gov/ returned HTTP 200 (9,516 B) but the body is a JavaScript single-page-app shell with no data in it; GET /login returned the identical 9,516 B shell. No public API or JSON endpoint was found or is documented, so no machine interface could be demonstrated.",
+  "access_state": "BLOCKED_TECHNICAL",
+  "auth_required": true,
+  "blockers": [
+    "NO_MACHINE_INTERFACE_DEMONSTRATED: SPA shell only; /login returns the same shell, so even the account gate could not be observed as HTML."
+  ],
+  "bulk_available": false,
+  "domain": "dataweb.usitc.gov",
+  "entity_types": [
+    "trade_flow"
+  ],
+  "first_verified_at": "2026-11-09T23:18:28Z",
+  "historical_depth": "not verified",
+  "id_schemes": [],
+  "licence_note": "No licence or terms text was recoverable from the served HTML (the page is a JS shell). Recorded as unknown rather than guessed.",
+  "licence_status": "unknown",
+  "licence_url": null,
+  "machine_interface": "none demonstrated (browser SPA)",
+  "name": "USITC DataWeb — US trade statistics query tool",
+  "notes": "The account requirement is stated in USITC's own documentation, but that documentation was not fetched here, so the claim above is limited to what the HTTP responses show.",
+  "operator": "US International Trade Commission",
+  "probe_suite": "industry",
+  "rate_policy": "not applicable",
+  "registration_url": "https://dataweb.usitc.gov/",
+  "robots_summary": "",
+  "robots_url": null,
+  "source_id": "usitc_dataweb",
+  "unlock_route": "Create a DataWeb account at https://dataweb.usitc.gov/ and use its interactive export; or obtain the same data from the Census trade API (keyed) instead. Not pursued: no public API documentation found.",
+  "what_is_new": "Nothing collected. DataWeb is an interactive query tool with no keyless machine interface; the same underlying statistics are available from the Census trade API (keyed) and Comtrade."
+}

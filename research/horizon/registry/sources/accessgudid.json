@@ -1,0 +1,33 @@
+{
+  "access_evidence": "PROBES.json reg_accessgudid_001: HTTP 200 application/json 2,806 bytes for /api/v3/devices/lookup.json?di=00885074528007; reg_accessgudid_002: HTTP 200 text/html 44,748 bytes on /download listing gudid_full_release_*.zip. DATASETS/regulatory/accessgudid/raw/ holds the 7,002,352-byte monthly release ZIP (sha256 e9d6c8dbecbebce3...) and 10 lookup responses.",
+  "access_state": "OPEN_DOCUMENTED",
+  "auth_required": false,
+  "blockers": [],
+  "bulk_available": true,
+  "domain": "accessgudid.nlm.nih.gov",
+  "entity_types": [
+    "product_identifier"
+  ],
+  "first_verified_at": "2026-11-10T07:30:00Z",
+  "historical_depth": "Current full release plus dated daily/weekly/monthly delta archives (October 2026 monthly archive bundles 21 daily XML deltas, ~59,774 device records scanned). Superseded versions are not served as separate files; each record exposes publicVersionNumber/publicVersionDate and devicePublishDate instead.",
+  "id_schemes": [
+    "udi_di",
+    "gtin",
+    "fda_product_code"
+  ],
+  "licence_note": "US federal government dataset (FDA GUDID, redistributed by NLM). No reuse restriction and no login is stated on the download or API pages, and robots.txt disallows nothing. No explicit licence sentence is published on the release pages, so this is recorded as public_domain on the basis of US federal authorship rather than of an explicit licence statement. GMDN term names carried in GUDID are third-party content (see the openFDA licence caveat).",
+  "licence_status": "public_domain",
+  "licence_url": null,
+  "machine_interface": "REST JSON v3: /devices/lookup.json (by di | udi | record_key), /devices/history.json, /devices/snomed.json, /devices/parse_udi.json, /devices/implantable/list|download. Plus ZIP release files (full / monthly / weekly / daily) of GUDID XML.",
+  "name": "AccessGUDID (FDA Global Unique Device Identification Database)",
+  "notes": "There is NO description/keyword search in the public API: the guessed path /api/v3/devices/search.json returns HTTP 404 with body {'timestamp':...,'status':404,...}. Bulk sampling therefore uses the release ZIPs. COUNTS.json in DATASETS/regulatory/accessgudid/ records the selection rule.",
+  "operator": "U.S. National Library of Medicine / U.S. FDA",
+  "probe_suite": "regulatory",
+  "rate_policy": "No documented quota. Observed 10 lookups at ~1 req/s, all HTTP 200.",
+  "registration_url": null,
+  "robots_summary": "HTTP 200, 267 bytes. The 'User-agent: * / Disallow: /' block is commented out, so no path is disallowed. Declares Sitemap: https://accessgudid.nlm.nih.gov/sitemaps/sitemap.xml.gz",
+  "robots_url": "https://accessgudid.nlm.nih.gov/robots.txt",
+  "source_id": "accessgudid",
+  "unlock_route": "",
+  "what_is_new": "First GUDID-derived inventory in MedRadar that separates the public clock (devicePublishDate) from the event clock, and that keeps the full official UDI-DI plus model/catalogue numbers, so a device can be matched to other sources on an identifier rather than on a name."
+}

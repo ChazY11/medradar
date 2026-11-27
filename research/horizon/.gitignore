@@ -1,0 +1,28 @@
+# Raw bulk archives are reproducible from the URLs + SHA-256 committed in each
+# dataset's PROVENANCE.json, and are far too large for version control
+# (the CIPO patent tables alone are 337 MB, and one is 152 MB — above GitHub's
+# single-file limit). Provenance, not payload, is what makes them verifiable.
+DATASETS/**/raw/**/*.zip
+DATASETS/**/raw/**/*.part
+DATASETS/**/raw/**/*.gz
+
+# Completed TLS chain bundles. Rebuildable with hz.tls.complete_chain(); they add a
+# public intermediate CA certificate to the platform roots, nothing secret.
+DATASETS/_tls/
+
+# method-development scratch that is not evidence
+SOURCE_PROBES/_scratch/
+experiments/**/_scratch/
+
+__pycache__/
+*.pyc
+*.pyo
+
+# Full CIPO extract (65 MB). The export carries a bounded stratified sample and the
+# full file is regenerable from the committed connector + documented URLs.
+DATASETS/patents/cipo_canada/RECORDS.jsonl
+DATASETS/patents/cipo_canada/RECORDS.raw.jsonl
+
+# workstream scratch scripts, not deliverables
+_*.py
+experiments/**/_*.json

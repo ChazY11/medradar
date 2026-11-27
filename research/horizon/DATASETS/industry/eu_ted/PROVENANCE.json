@@ -1,0 +1,121 @@
+{
+  "source_id": "eu_ted",
+  "workstream": "industry",
+  "generated_at": "2026-11-09T23:19:38Z",
+  "raw_files": [
+    {
+      "path": "DATASETS/industry/eu_ted/raw/diag_division_33100000.json",
+      "bytes": 10221,
+      "sha256": "d28c8fc51483a8b449fa28c9582444febebdc4cc610dcd005e0c52e866ea70fb",
+      "requested_url": "https://api.ted.europa.eu/v3/notices/search",
+      "final_url": "https://api.ted.europa.eu/v3/notices/search",
+      "status": 200,
+      "content_type": "application/json",
+      "fetched_at": "2026-11-09T23:19:35Z",
+      "note": "CPV predicate diagnostic 33100000"
+    },
+    {
+      "path": "DATASETS/industry/eu_ted/raw/diag_subfamily_33140000.json",
+      "bytes": 13467,
+      "sha256": "dc212e130f3dfb0503ed67e5dd7aec106725914e5a905fa38fba046fbe42c90d",
+      "requested_url": "https://api.ted.europa.eu/v3/notices/search",
+      "final_url": "https://api.ted.europa.eu/v3/notices/search",
+      "status": 200,
+      "content_type": "application/json",
+      "fetched_at": "2026-11-09T23:19:35Z",
+      "note": "CPV predicate diagnostic 33140000"
+    },
+    {
+      "path": "DATASETS/industry/eu_ted/raw/search_can_medical_p1.json",
+      "bytes": 968172,
+      "sha256": "a9b7e09080eb5935d676c2f1a99b37c448c53f0f1c08c7d73dbd591f03b98de7",
+      "requested_url": "https://api.ted.europa.eu/v3/notices/search",
+      "final_url": "https://api.ted.europa.eu/v3/notices/search",
+      "status": 200,
+      "content_type": "application/json",
+      "fetched_at": "2026-11-09T23:19:37Z",
+      "note": "TED v3 expert search page 1"
+    },
+    {
+      "path": "DATASETS/industry/eu_ted/raw/search_can_medical_p2.json",
+      "bytes": 18068,
+      "sha256": "c1522b33546144b82028b6634266edd81e2ae6badd5840f278ea465cb476784b",
+      "requested_url": "https://api.ted.europa.eu/v3/notices/search",
+      "final_url": "https://api.ted.europa.eu/v3/notices/search",
+      "status": 200,
+      "content_type": "application/json",
+      "fetched_at": "2026-11-09T23:19:38Z",
+      "note": "TED v3 expert search page 2"
+    }
+  ],
+  "aggregation_disclaimer": "Trade-flow records are national/regional aggregates. They carry no firm-level revenue, R&D or market-share attribution. Procurement records name a recipient as published by the awarding body; they do not identify the manufacturer of any device unless the award text names a concrete device or model.",
+  "licence_status": "open_no_explicit_licence",
+  "licence_note": "TED API documentation describes 'reusers of TED Data' as an intended audience and states the API lets developers 'Retrieve published procurement notices from the TED website for analysis or reuse', but no formal reuse licence statement was found on the pages fetched (https://docs.ted.europa.eu/api/latest/index.html). Recorded as publicly readable without an explicit reuse licence rather than assumed permissive.",
+  "cpv_query_codes": [
+    "33100000",
+    "33110000",
+    "33140000",
+    "33150000",
+    "33170000",
+    "33190000",
+    "33192000",
+    "33195000"
+  ],
+  "window": "publication-date=today(-365)",
+  "query_used": "(classification-cpv=33100000 OR classification-cpv=33110000 OR classification-cpv=33140000 OR classification-cpv=33150000 OR classification-cpv=33170000 OR classification-cpv=33190000 OR classification-cpv=33192000 OR classification-cpv=33195000) AND notice-type=can-standard AND publication-date=today(-365)",
+  "cpv_diagnostics": {
+    "division_33100000": {
+      "query": "classification-cpv=33100000 AND notice-type=can-standard AND publication-date=today(-365)",
+      "status": 200,
+      "totalNoticeCount": 102,
+      "sample_cpv_codes": [
+        "19260000",
+        "33199000",
+        "98310000",
+        "98312000"
+      ]
+    },
+    "subfamily_33140000": {
+      "query": "classification-cpv=33140000 AND notice-type=can-standard AND publication-date=today(-365)",
+      "status": 200,
+      "totalNoticeCount": 33,
+      "sample_cpv_codes": [
+        "33141000",
+        "33141110"
+      ]
+    }
+  },
+  "cpv_diagnostic_interpretation": "If the division-level code 33100000 and the subfamily 33140000 return the same totalNoticeCount, the expert-search predicate matches descendants, so 'classification-cpv=33100000' is NOT a medical-device filter - it covers the whole medical / pharmaceutical / personal-care division.",
+  "post_endpoints": [
+    {
+      "url": "https://api.ted.europa.eu/v3/notices/search",
+      "method": "POST",
+      "note": "logged manually in SOURCE_PROBES/industry/REQUEST_LOG.jsonl with method=POST and request-body sha256"
+    },
+    {
+      "url": "https://api.ted.europa.eu/v3/notices/{pn}",
+      "method": "GET",
+      "status_observed": 400,
+      "error_body": "Missing Authorization header in request",
+      "route": "REQUIRES_REGISTRATION for full-notice retrieval"
+    },
+    {
+      "url": "https://ted.europa.eu/en/notice/{pn}/xml",
+      "method": "GET",
+      "status_observed": 405,
+      "error_body": "AWS WAF 'Human Verification' interstitial",
+      "route": "BLOCKED_TECHNICAL for automated per-notice retrieval"
+    }
+  ],
+  "winner_availability": {
+    "legacy_can_2016": "winner-name = null; winner-identifier = null; BT-768-Contract = [true]/[false] presence flag",
+    "eforms_can_2025_plus": "winner-name = multilingual map; winner-identifier = national registration numbers"
+  },
+  "coverage_limits": [
+    "Two pages of one query (<=200 notices): a bounded sample, not a census.",
+    "Only notice-type=can-standard; can-social/can-regional/can-desg and below-threshold national notices are out of scope.",
+    "Only the trailing 12 months; legacy notices do not expose supplier names through the search API at all.",
+    "Supplier names are legal names as published; no cross-language or corporate-group deduplication was performed.",
+    "Award values are notice/lot totals and may cover many devices."
+  ]
+}

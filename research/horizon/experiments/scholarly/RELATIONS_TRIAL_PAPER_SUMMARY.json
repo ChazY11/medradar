@@ -1,0 +1,51 @@
+{
+  "experiment": "EXP-H2 (Priority 2)",
+  "title": "Clinical trial <-> publication linkage from machine-checkable fields only",
+  "generated_at": "2026-11-09T23:15:12Z",
+  "output": "RELATIONS_TRIAL_PAPER.jsonl",
+  "rule": {
+    "confirmed": [
+      "(a) the trial record has a referencesModule reference naming a PMID with type in {RESULT, DERIVED} -> status CONFIRMED, scoped to the field-level claim that the trial record names that paper",
+      "(b) the paper's own abstract contains a literal NCT number AND that trial resolves in the ClinicalTrials.gov API v2 -> CONFIRMED"
+    ],
+    "candidate": [
+      "trial references a PMID as BACKGROUND (the trial mentions the paper)",
+      "trial references a PMID with no recognised reference type"
+    ],
+    "rejected": [
+      "a paper's abstract states an NCT number that does not resolve"
+    ],
+    "never_used_as_evidence": "subject similarity, shared device name, shared sponsor, journal, or co-mention. No relation in this file rests on those."
+  },
+  "stats": {
+    "trial_rows": 164,
+    "references_total": 185,
+    "references_with_pmid": 179,
+    "by_reference_type": {
+      "DERIVED": 46,
+      "RESULT": 20,
+      "BACKGROUND": 119
+    },
+    "nct_strings_found_in_abstracts": 3,
+    "nct_resolved": 2,
+    "nct_unresolved": 0,
+    "detail_lookups": 2,
+    "referenced_pmids_distinct": 179,
+    "referenced_pmids_resolved_in_pubmed": 179,
+    "result_refs_whose_abstract_names_the_trial_nct": 35,
+    "result_refs_rejected_pmid_does_not_resolve": 0,
+    "result_refs_not_corroborated_by_abstract": 31,
+    "relations_total": 182,
+    "by_status": {
+      "CONFIRMED": 69,
+      "CANDIDATE": 113
+    },
+    "by_relation_type": {
+      "trial_derived_publication": 46,
+      "trial_result_publication": 20,
+      "trial_background_citation": 113,
+      "paper_states_trial_id": 3
+    }
+  },
+  "caveat": "ClinicalTrials.gov reference `type` is submitter-asserted and is observably wrong for some records in this sample (an epidemiology paper labelled RESULT for a venous-ulcer device trial). CONFIRMED therefore means 'the field says so', not 'the paper is about this trial'."
+}

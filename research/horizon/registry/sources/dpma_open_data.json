@@ -1,0 +1,34 @@
+{
+  "access_evidence": "SOURCE_PROBES/patents_unlock: register search page 200 / 160771 B; the open-data landing path used returned 404, so the correct data URL still has to be found",
+  "access_state": "MANUAL_ONLY",
+  "auth_required": false,
+  "blockers": [
+    "open-data landing URL tried returned 404",
+    "no machine interface confirmed"
+  ],
+  "bulk_available": true,
+  "domain": "dpma.de / register.dpma.de",
+  "entity_types": [
+    "patent_publication"
+  ],
+  "first_verified_at": "2026-11-10",
+  "historical_depth": "DE patents",
+  "id_schemes": [
+    "de_application_number"
+  ],
+  "licence_note": "",
+  "licence_status": "unknown",
+  "licence_url": "https://www.dpma.de/english/service/opendata/index.html",
+  "machine_interface": "human search interface reachable; machine interface not established",
+  "name": "DPMA (Germany) open data / DPMAregister",
+  "notes": "",
+  "operator": "Deutsches Patent- und Markenamt",
+  "probe_suite": "patents_unlock",
+  "rate_policy": "",
+  "registration_url": null,
+  "robots_summary": "",
+  "robots_url": null,
+  "source_id": "dpma_open_data",
+  "unlock_route": "Confirm the current DPMA open-data URL from the DPMA site index, then probe; DPMA publishes free bulk datasets under its own terms.",
+  "what_is_new": "A fourth jurisdiction, but not yet turned into an asset: the register UI is reachable while the documented open-data path was not at the URL tried."
+}

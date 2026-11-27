@@ -1,0 +1,66 @@
+{
+  "generated_at": "2026-11-09T23:02:05Z",
+  "budget": {
+    "client": "regulatory-discovery-3",
+    "requests_made": 7,
+    "max_requests": 10,
+    "bytes_received": 144586,
+    "max_total_bytes": 16000000,
+    "retries": 2,
+    "errors": [
+      "https://www.tga.gov.au/resources/artg: ReadTimeout: HTTPSConnectionPool(host='www.tga.gov.au', port=443): Read timed out. (read timeout=30.0)"
+    ]
+  },
+  "targets": [
+    {
+      "name": "hc_mdall_api_doc",
+      "url": "https://health-products.canada.ca/api/documentation/mdall-documentation-en.html",
+      "status": 200,
+      "outcome": "OK",
+      "bytes": 72027,
+      "sha256": "848f35f63b8fa1af3a88c244ca7f76145f9496f7f091a6ae1bb82df22a5aa64b",
+      "content_type": "text/html",
+      "final_url": "https://health-products.canada.ca/api/documentation/mdall-documentation-en.html",
+      "saved": "D:\\DEPPSKK\\worktrees\\horizon-001\\research\\horizon\\DATASETS\\regulatory\\_discovery\\hc_mdall_api_doc.html"
+    },
+    {
+      "name": "hc_ckan_mdall",
+      "url": "https://open.canada.ca/data/api/3/action/package_show?id=c801a084-210b-4cd2-8513-26a00b66eb6f",
+      "status": 200,
+      "outcome": "OK",
+      "bytes": 27590,
+      "sha256": "aec468ec03e463fc79245d58b5ff614b97d481ae623385002e781df43c4e38df",
+      "content_type": "application/json;charset=utf-8",
+      "final_url": "https://open.canada.ca/data/api/3/action/package_show?id=c801a084-210b-4cd2-8513-26a00b66eb6f",
+      "saved": "D:\\DEPPSKK\\worktrees\\horizon-001\\research\\horizon\\DATASETS\\regulatory\\_discovery\\hc_ckan_mdall.json"
+    },
+    {
+      "name": "agudid_download_page",
+      "url": "https://accessgudid.nlm.nih.gov/download",
+      "status": 200,
+      "outcome": "OK",
+      "bytes": 44748,
+      "sha256": "f72c420d6653f709e6fa3d385700e8c1be455352cb159f465a2ad683a0bbe3d2",
+      "content_type": "text/html; charset=utf-8",
+      "final_url": "https://accessgudid.nlm.nih.gov/download",
+      "saved": "D:\\DEPPSKK\\worktrees\\horizon-001\\research\\horizon\\DATASETS\\regulatory\\_discovery\\agudid_download_page.html"
+    },
+    {
+      "name": "tga_apps_root",
+      "url": "https://apps.tga.gov.au/",
+      "status": 200,
+      "outcome": "OK",
+      "bytes": 221,
+      "sha256": "f6de002b199d9228fce34212965dfdc91ced15779eb72620529ea4ac10a611e2",
+      "content_type": "text/html",
+      "final_url": "https://apps.tga.gov.au/",
+      "saved": "D:\\DEPPSKK\\worktrees\\horizon-001\\research\\horizon\\DATASETS\\regulatory\\_discovery\\tga_apps_root.html"
+    },
+    {
+      "name": "tga_artg_html",
+      "url": "https://www.tga.gov.au/resources/artg",
+      "outcome": "TRANSPORT_ERROR",
+      "error": "ReadTimeout: HTTPSConnectionPool(host='www.tga.gov.au', port=443): Read timed out. (read timeout=30.0)"
+    }
+  ]
+}

@@ -1,0 +1,37 @@
+{
+  "access_evidence": "GET /public/v1/preview/C/A/HS answered HTTP 200 with 64 rows for 8 reporters x 4 HS4 x 2 flows (probe un_comtrade_preview_annual); monthly freqCode=M also 200. Reference files Reporters.json (81,177 B) and HS.json (1,952,940 B) answered 200.",
+  "access_state": "OPEN_DOCUMENTED",
+  "auth_required": false,
+  "blockers": [
+    "TERMS_PROHIBIT_AUTOMATED_DOWNLOAD: Usage Agreement §5 reserves all rights; written permission from UNSD is required for anything beyond this bounded research sample.",
+    "PREVIEW_ONE_PERIOD_PER_REQUEST: only one reference period per request.",
+    "NO_PUBLICATION_DATE: the API returns no release date, so no observation can be placed on an observability timeline.",
+    "REPORTER_GAPS: France (M49 250) returned zero rows for all four HS4 codes 2015-2024; only one of the two monthly reporters reports monthly."
+  ],
+  "bulk_available": false,
+  "domain": "comtradeapi.un.org",
+  "entity_types": [
+    "trade_flow"
+  ],
+  "first_verified_at": "2026-11-09T23:18:27Z",
+  "historical_depth": "annual from 1962, monthly from 2010 (subject to reporter practice)",
+  "id_schemes": [
+    "hs_code",
+    "comtrade_reporter_flow_cmd_period"
+  ],
+  "licence_note": "UN Comtrade Usage Agreement §5: 'any copying, automated browsing or downloading, redistribution, publication, or commercial exploitation of any material contained on or otherwise made available to you on United Nations COMTRADE is strictly prohibited without the prior written permission of the United Nations.' The keyless preview API is published for programmatic access, so the two instruments conflict; HORIZON-001 treats operational reuse as requiring written permission.",
+  "licence_status": "terms_restricted",
+  "licence_url": "https://comtradeplus.un.org/LicenseAgreement",
+  "machine_interface": "REST JSON; /public/v1/preview (keyless) and /data/v1/get (keyed)",
+  "name": "UN Comtrade — International Trade Statistics (public preview API)",
+  "notes": "Only the preview path was exercised. The keyed /data/v1/get path answered HTTP 401 on the probe (probe un_comtrade_public_data_path).",
+  "operator": "United Nations Statistics Division",
+  "probe_suite": "industry",
+  "rate_policy": "Observed: HTTP 429 on roughly every second call at 1.5 req/s; practical keyless ceiling ~1 req/s, recovered by bounded retry. Hard cap: exactly ONE reference period per preview request (HTTP 400 'Maximum number of periods for preview is 1').",
+  "registration_url": null,
+  "robots_summary": "not relied upon; the Usage Agreement governs",
+  "robots_url": "https://comtradeplus.un.org/robots.txt",
+  "source_id": "un_comtrade",
+  "unlock_route": "1) Written permission from the Director, UN Statistics Division (comtrade@un.org) as required by the Usage Agreement. 2) A licensed Comtrade subscription: https://comtradeplus.un.org (free registration tier exists and unlocks the non-preview path).",
+  "what_is_new": "608 country-total medical-HS4 trade observations (8 reporters x 9018/9019/9020/9022 x imports/exports x 2015-2024, plus a 2025 monthly slice) with HS descriptions and scope notes attached per record."
+}

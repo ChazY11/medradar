@@ -1,0 +1,37 @@
+{
+  "access_evidence": "GET api.uktradeinfo.com/ returned HTTP 200 with the OData entity list; $metadata 200 (15,406 B); OTS $apply aggregation 200; 11 requests produced 100 annual UK series rows.",
+  "access_state": "OPEN_DOCUMENTED",
+  "auth_required": false,
+  "blockers": [
+    "NO_WORLD_TOTAL_ROW: OTS is CN8 x country x port x flow x month; a UK annual total is a sum computed by the caller and inherits any suppression in the cells.",
+    "EU_NON_EU_FLOW_SPLIT: FlowType 1/2 are EU flows and 3/4 non-EU, so reading flow 1 as 'imports' understates UK imports. Imports = 1+3, exports = 2+4.",
+    "BREXIT_DISCONTINUITY: the EU/non-EU split is not stable across the 2015-2025 window.",
+    "NO_PUBLICATION_DATE: OTS exposes no release timestamp per cell."
+  ],
+  "bulk_available": true,
+  "domain": "api.uktradeinfo.com",
+  "entity_types": [
+    "trade_flow"
+  ],
+  "first_verified_at": "2026-11-09T23:18:27Z",
+  "historical_depth": "OTS monthly from 2000 (Date entity starts at 200001)",
+  "id_schemes": [
+    "hs_code",
+    "hmrc_ots_series"
+  ],
+  "licence_note": "'All content is available under the Open Government Licence v3.0, except where otherwise stated' (uktradeinfo.com site footer, stored at DATASETS/industry/uk_hmrc_trade/raw/portal_home.html).",
+  "licence_status": "open_licence",
+  "licence_url": "https://www.uktradeinfo.com/",
+  "machine_interface": "OData v4 (JSON), incl. $filter and $apply=filter()/groupby()",
+  "name": "HM Revenue & Customs — UK Trade Info (Overseas Trade Statistics, OData)",
+  "notes": "Values in GBP, not deflated.",
+  "operator": "HM Revenue & Customs",
+  "probe_suite": "industry",
+  "rate_policy": "No key, no documented quota; collection throttled to ~1.5 req/s.",
+  "registration_url": null,
+  "robots_summary": "not relied upon; OGL v3.0 explicitly permits reuse",
+  "robots_url": "https://www.uktradeinfo.com/robots.txt",
+  "source_id": "uk_hmrc_trade",
+  "unlock_route": "No blocker: fully open under OGL v3.0.",
+  "what_is_new": "100 UK annual aggregates in GBP for 9018/9019/9020/9021/9022 x imports/exports x 2015-2024, computed server-side from the CN8 microcube, plus the exact CN8 child list used for each HS4."
+}

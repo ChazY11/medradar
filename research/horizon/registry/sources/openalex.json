@@ -1,0 +1,35 @@
+{
+  "access_evidence": "probe openalex_works_search: HTTP 200 with a compound filter (raw_affiliation_strings.search + publication window + has_doi) and a field projection; probe openalex_select_contract: HTTP 400 with the closed list of selectable field names. 12 anchor-selection requests, 0 failures.",
+  "access_state": "OPEN_DOCUMENTED",
+  "auth_required": false,
+  "blockers": [],
+  "bulk_available": true,
+  "domain": "api.openalex.org",
+  "entity_types": [
+    "publication"
+  ],
+  "first_verified_at": "2026-11-09T23:20:28Z",
+  "historical_depth": "Works from the 1800s to present. `created_date` gives per-work index history; the publication date itself is a mutable current value.",
+  "id_schemes": [
+    "openalex_id",
+    "doi",
+    "pmid",
+    "pmcid",
+    "mag"
+  ],
+  "licence_note": "OpenAlex states its data is released under CC0 1.0 Universal (https://openalex.org/licenses, 'All data ... is licensed under CC0 1.0'). Quoted from the licence page surfaced by the API's own meta.notice.",
+  "licence_status": "open_licence",
+  "licence_url": "https://openalex.org/licenses",
+  "machine_interface": "REST JSON, cursor paging, `select` field projection",
+  "name": "OpenAlex",
+  "notes": "Anonymous daily budget is a real ceiling: the API's meta.notice states requests share a $0.10/day budget per IP without a key, and that mailto does not raise it. A free key exists (POST https://api.openalex.org/api-keys with an email, then the emailed link must be clicked) but the click-through is a human step and was not attempted.",
+  "operator": "OurResearch (non-profit)",
+  "probe_suite": "scholarly",
+  "rate_policy": "Documented: add `mailto` to join the polite pool. Observed in meta.notice: without an API key the request costs ~$0.001 against a $0.10/day shared budget per IP, so this workstream stayed at 12 requests and never paged deeply.",
+  "registration_url": null,
+  "robots_summary": "Not applicable: only the JSON API is touched, never HTML pages.",
+  "robots_url": "https://api.openalex.org/robots.txt",
+  "source_id": "openalex",
+  "unlock_route": "",
+  "what_is_new": "Definitional for the sample (60/60 anchors) and the only source here that exposes a per-work index-creation timestamp. Contributes the anchor universe, not de-duplication value."
+}

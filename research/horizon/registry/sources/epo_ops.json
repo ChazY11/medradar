@@ -1,0 +1,35 @@
+{
+  "access_evidence": "SOURCE_PROBES/patents: 403 / 208 B on both /rest-services/ and a biblio path, anonymously",
+  "access_state": "REQUIRES_REGISTRATION",
+  "auth_required": true,
+  "blockers": [
+    "403 anonymous; OAuth consumer key required",
+    "https://developers.epo.org/ returns a 403 WAF challenge to clients"
+  ],
+  "bulk_available": true,
+  "domain": "ops.epo.org",
+  "entity_types": [
+    "patent_publication"
+  ],
+  "first_verified_at": "2026-11-10",
+  "historical_depth": "full EP/DOCDB bibliographic coverage",
+  "id_schemes": [
+    "epo_publication_number",
+    "docdb_family_id"
+  ],
+  "licence_note": "Free but contract-gated: needs a registered OPS account and an OAuth consumer key.",
+  "licence_status": "terms_restricted",
+  "licence_url": "https://www.epo.org/en/legal",
+  "machine_interface": "REST + OAuth2 (client id / secret)",
+  "name": "EPO Open Patent Services (OPS)",
+  "notes": "",
+  "operator": "European Patent Office",
+  "probe_suite": "patents",
+  "rate_policy": "tiered free quota per registered app",
+  "registration_url": "https://developers.epo.org/",
+  "robots_summary": "",
+  "robots_url": null,
+  "source_id": "epo_ops",
+  "unlock_route": "Project owner registers once at https://developers.epo.org/ (free), creates an OPS consumer key, and exports it as an environment variable. HORIZON does not register accounts on the owner's behalf.",
+  "what_is_new": "Would add applicant/inventor search and citation data that the sitemap channel cannot query."
+}

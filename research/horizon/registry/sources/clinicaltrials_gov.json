@@ -1,0 +1,35 @@
+{
+  "access_evidence": "probe ctgov_studies_search: HTTP 200 with query.spons, pageSize and protocolSection payloads; probe ctgov_study_detail: HTTP 200 with statusModule posting dates; probe ctgov_fields_projection_rejected: HTTP 400 'invalid field name' for an unlisted leaf. 5 sponsor queries -> 164 study records.",
+  "access_state": "OPEN_DOCUMENTED",
+  "auth_required": false,
+  "blockers": [
+    "The `fields` projection is closed: HTTP 400 'Parameter `fields` contains invalid field name: ReferenceDOI'. Whole study objects are requested instead.",
+    "A sponsor query's `totalCount` is the server's count for the whole query (e.g. 1675 for Medtronic) and is NOT the number collected; only one page of 50 was taken per firm, and that truncation is recorded on every record."
+  ],
+  "bulk_available": true,
+  "domain": "clinicaltrials.gov",
+  "entity_types": [
+    "clinical_trial"
+  ],
+  "first_verified_at": "2026-11-09T23:20:28Z",
+  "historical_depth": "Exposes study first SUBMIT date, first POST date, last update submit and post dates separately, so the registry's own publication queue is measurable rather than assumed.",
+  "id_schemes": [
+    "nct",
+    "secondary:org_study_id"
+  ],
+  "licence_note": "ClinicalTrials.gov states the data is available for public use and is not subject to copyright restrictions in the United States (https://clinicaltrials.gov/about-site/terms-conditions). Recorded as public_domain.",
+  "licence_status": "public_domain",
+  "licence_url": "https://clinicaltrials.gov/about-site/terms-conditions",
+  "machine_interface": "REST JSON v2, query.* + filter.* parameters",
+  "name": "ClinicalTrials.gov API v2",
+  "notes": "Reference `type` is submitter-asserted and is observably wrong for some records: a venous-ulcer device trial labels epidemiology papers as RESULT. Only 35 of 66 RESULT/DERIVED references are corroborated by the paper's own abstract naming the trial's NCT number.",
+  "operator": "US National Library of Medicine",
+  "probe_suite": "scholarly",
+  "rate_policy": "Keyless. pageSize used at 50 throughout.",
+  "registration_url": null,
+  "robots_summary": "Not applicable: API v2 only.",
+  "robots_url": "https://clinicaltrials.gov/robots.txt",
+  "source_id": "clinicaltrials_gov",
+  "unlock_route": "",
+  "what_is_new": "The only trial-registry source that answered. Supplies referencesModule citations (185 references, 179 with a PMID, 66 labelled RESULT or DERIVED) and the four separate status dates. It is what makes a machine-checkable trial<->paper relation possible at all."
+}

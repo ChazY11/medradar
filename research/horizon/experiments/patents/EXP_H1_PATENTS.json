@@ -1,0 +1,110 @@
+{
+  "experiment": "EXP-H1",
+  "scope": "patent sources: what did the new channels actually add?",
+  "generated_at": "2026-11-09T23:35:41Z",
+  "epo_enumeration": {
+    "weekly_sitemaps_read": 10,
+    "publications_enumerated": 35989,
+    "medical_device_publications_enumerated": 3093,
+    "medtech_share_of_enumerated": 0.0859,
+    "front_pages_fetched": 228,
+    "share_of_enumerated_medtech_actually_fetched": 0.0737,
+    "note": "the sitemap gives publication reference + application reference + IPC for every publication without fetching documents; front pages are needed only for applicants, titles and abstracts"
+  },
+  "epo_records": {
+    "label": "epo_publication_server",
+    "records": 228,
+    "with_identifier": 228,
+    "with_public_date": 228,
+    "with_event_date": 228,
+    "with_priority_date": 184,
+    "two_clock": 228,
+    "share_public_date": 1.0,
+    "observability_gap_days": {
+      "n": 228,
+      "min": 114,
+      "median": 1738,
+      "max": 6881,
+      "buckets": {
+        "181-730_days": 57,
+        "31-180_days": 1,
+        "731-1826_days": 65,
+        "over_1826_days": 105
+      }
+    },
+    "top_quality_flags": {
+      "PARSED_FROM_HTML": 227,
+      "MISSING_PRIORITY_DATE": 43,
+      "DOCUMENT_IS_SEARCH_REPORT": 28,
+      "DOCUMENT_IS_CORRECTION": 3,
+      "MISSING_MANUFACTURER": 1,
+      "MISSING_TITLE": 1,
+      "SITEMAP_ONLY": 1
+    }
+  },
+  "epo_document_roles": {
+    "by_role": {
+      "application_publication": 58,
+      "application_publication_no_search_report": 22,
+      "corrected_title_page": 3,
+      "granted_specification": 115,
+      "granted_specification_amended": 1,
+      "granted_specification_limited": 1,
+      "search_report": 28
+    },
+    "independent_technical_disclosures": 197,
+    "non_independent_share": 0.136,
+    "note": "A3 search reports and B8 corrected title pages are not new technical disclosures; counting them would inflate the corpus"
+  },
+  "cipo_records": {
+    "label": "cipo_canada",
+    "records": 19702,
+    "with_identifier": 19702,
+    "with_public_date": 15490,
+    "with_event_date": 10669,
+    "with_priority_date": 10405,
+    "two_clock": 6457,
+    "share_public_date": 0.7862,
+    "observability_gap_days": {
+      "n": 6457,
+      "min": 14,
+      "median": 1588,
+      "max": 6861,
+      "buckets": {
+        "1-30_days": 2,
+        "181-730_days": 74,
+        "31-180_days": 15,
+        "731-1826_days": 3472,
+        "over_1826_days": 2894
+      }
+    },
+    "top_quality_flags": {
+      "MISSING_CLASSIFICATION": 19702,
+      "NAME_MATCH_ONLY": 19702,
+      "NOT_MEDTECH_ON_FRONT_PAGE": 19702,
+      "SNAPSHOT_ONLY": 19702,
+      "MISSING_PRIORITY_DATE": 9297,
+      "MISSING_FILING_DATE": 9033,
+      "MISSING_PUBLICATION_DATE": 4212
+    }
+  },
+  "cross_source_independence": {
+    "method": "normalise priority numbers to digits; join CIPO EP-origin priority claims against the EP application numbers held in this sample",
+    "normalisation_note": "raw string matching yields 0 matches purely because EPO omits separators and CIPO includes them, e.g. '124163' vs '569,842' — that 0 would have been an artefact, not a finding",
+    "epo_records_with_priority": 184,
+    "epo_application_numbers_available": 228,
+    "cipo_records_with_priority": 10405,
+    "cipo_ep_origin_priority_claims": 805,
+    "matches_found": 0,
+    "overlap_verdict": "INSUFFICIENT_POWER",
+    "why": "the intersection is computed against 228 EP applications only. Even if every CA patent had an EP counterpart, the chance that the counterpart is inside a 228-application sample is ~1e-5 per record. A null result here says nothing about whether the corpora overlap; it says the sample is too small to test.",
+    "expected_matches_if_fully_overlapping": 0.09177,
+    "what_would_be_needed": "to measure real EPO/CIPO overlap, enumerate all EP application numbers in the relevant filing window from the sitemap (free) and intersect — that is a tier-1 operation costing sitemap requests only, not document fetches",
+    "examples": []
+  },
+  "unique_dedupe_keys": {
+    "epo": 228,
+    "cipo": 19702,
+    "combined": 19930
+  }
+}

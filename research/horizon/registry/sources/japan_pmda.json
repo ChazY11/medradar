@@ -1,0 +1,34 @@
+{
+  "access_evidence": "PROBES.json reg_pmda_001: HTTP 200 text/html 58,415 bytes on the English review-services index. The page is an HTML/PDF index of review information; no JSON, CSV or bulk endpoint was found. robots.txt returns HTTP 404 (HTML error page).",
+  "access_state": "MANUAL_ONLY",
+  "auth_required": false,
+  "blockers": [
+    "No machine-readable endpoint; HTML/PDF only.",
+    "Japanese-language content."
+  ],
+  "bulk_available": false,
+  "domain": "www.pmda.go.jp",
+  "entity_types": [
+    "regulatory_clearance"
+  ],
+  "first_verified_at": "2026-11-10T07:30:00Z",
+  "historical_depth": "HTML/PDF approval listings; no machine-readable history.",
+  "id_schemes": [
+    "pmda_approval_number"
+  ],
+  "licence_note": "No licence statement was read for PMDA content in this workstream, so it is recorded as unknown rather than assumed open.",
+  "licence_status": "unknown",
+  "licence_url": null,
+  "machine_interface": "HTML indexes and PDFs only.",
+  "name": "PMDA — Pharmaceuticals and Medical Devices Agency (Japan) device approvals",
+  "notes": "",
+  "operator": "Pharmaceuticals and Medical Devices Agency, Japan",
+  "probe_suite": "regulatory",
+  "rate_policy": "No stated quota; nothing automated was attempted beyond the index pages.",
+  "registration_url": null,
+  "robots_summary": "HTTP 404 returning an HTML page (70,060 bytes) — no robots policy is served.",
+  "robots_url": "https://www.pmda.go.jp/robots.txt",
+  "source_id": "japan_pmda",
+  "unlock_route": "PMDA publishes approval information as HTML/PDF; there is no keyless API to request. Machine use would require scraping those indexes or a commercial data agreement.",
+  "what_is_new": "Nothing obtained. Documents that Japan's device approvals are not a keyless machine source."
+}

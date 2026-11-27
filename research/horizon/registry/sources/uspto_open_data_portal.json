@@ -1,0 +1,35 @@
+{
+  "access_evidence": "SOURCE_PROBES/patents: api.uspto.gov/api/v1/datasets/products/search -> 401 / 26 B; bulk file path -> 403 / 42 B",
+  "access_state": "REQUIRES_REGISTRATION",
+  "auth_required": true,
+  "blockers": [
+    "every api.uspto.gov path returns 401/403 without a key",
+    "legacy keyless hosts are gone or WAF-challenged"
+  ],
+  "bulk_available": true,
+  "domain": "api.uspto.gov / data.uspto.gov",
+  "entity_types": [
+    "patent_publication"
+  ],
+  "first_verified_at": "2026-11-10",
+  "historical_depth": "US patents from 1790; bulk XML by week",
+  "id_schemes": [
+    "uspto_patent_number",
+    "uspto_application_number"
+  ],
+  "licence_note": "US Government work; USPTO terms quoted: 'Bulk data products may be separately obtained from the USPTO, either for free ...' and 'USPTO's online databases are not designed or intended to be a source for bulk downloads ... generating unusually high numbers of database accesses ... may be denied access'.",
+  "licence_status": "public_domain",
+  "licence_url": "https://www.uspto.gov/terms-use-uspto-websites",
+  "machine_interface": "REST JSON, API key required; bulk products also keyed",
+  "name": "USPTO Open Data Portal (ODP) API and bulk files",
+  "notes": "",
+  "operator": "United States Patent and Trademark Office",
+  "probe_suite": "patents_unlock",
+  "rate_policy": "per-key rate limits published in ODP docs",
+  "registration_url": "https://data.uspto.gov/apis/getting-started",
+  "robots_summary": "",
+  "robots_url": null,
+  "source_id": "uspto_open_data_portal",
+  "unlock_route": "Project owner creates a free USPTO ODP account and API key at https://data.uspto.gov/apis/getting-started; bulk products are then downloadable per dataset. This matches USPTO's own stated route for bulk use.",
+  "what_is_new": "The authoritative US patent corpus, including assignee and citation tables."
+}

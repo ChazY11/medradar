@@ -1,0 +1,88 @@
+{
+  "source_id": "openfda_device_pma",
+  "workstream": "regulatory",
+  "generated_at": "2026-11-09T23:09:53Z",
+  "raw_files": [
+    {
+      "path": "DATASETS/regulatory/openfda_device_pma/raw/pma__firm_medtronic.json",
+      "bytes": 146944,
+      "sha256": "3a0579b1b026f7695157870ec21635828fefe8e1e6920ad757c35b61acdab5ff",
+      "requested_url": "https://api.fda.gov/device/pma.json?search=applicant%3A%22MEDTRONIC%22&limit=50",
+      "final_url": "https://api.fda.gov/device/pma.json?search=applicant%3A%22MEDTRONIC%22&limit=50",
+      "status": 200,
+      "content_type": null,
+      "fetched_at": "2026-11-09T23:09:50Z",
+      "note": "openFDA pma pull: applicant:\"MEDTRONIC\" [loaded from disk; original fetch is in REQUEST_LOG.jsonl]",
+      "from_disk": true
+    },
+    {
+      "path": "DATASETS/regulatory/openfda_device_pma/raw/pma__firm_philips.json",
+      "bytes": 161707,
+      "sha256": "be64c1552c637b6a99d1c55ede6eba52dbb32e0fce77fcd21796667369e360c0",
+      "requested_url": "https://api.fda.gov/device/pma.json?search=applicant%3A%22PHILIPS%22&limit=50",
+      "final_url": "https://api.fda.gov/device/pma.json?search=applicant%3A%22PHILIPS%22&limit=50",
+      "status": 200,
+      "content_type": null,
+      "fetched_at": "2026-11-09T23:09:50Z",
+      "note": "openFDA pma pull: applicant:\"PHILIPS\" [loaded from disk; original fetch is in REQUEST_LOG.jsonl]",
+      "from_disk": true
+    },
+    {
+      "path": "DATASETS/regulatory/openfda_device_pma/raw/pma__product_neonatal.json",
+      "bytes": 2535,
+      "sha256": "d40c7f16a9921cb7f33f3d7b3f5f2c7a150f53bc434db7dac7d3c0ff8ed3c361",
+      "requested_url": "https://api.fda.gov/device/pma.json?search=trade_name%3A%22neonatal%22&limit=50",
+      "final_url": "https://api.fda.gov/device/pma.json?search=trade_name%3A%22neonatal%22&limit=50",
+      "status": 200,
+      "content_type": null,
+      "fetched_at": "2026-11-09T23:09:50Z",
+      "note": "openFDA pma pull: trade_name:\"neonatal\" [loaded from disk; original fetch is in REQUEST_LOG.jsonl]",
+      "from_disk": true
+    }
+  ],
+  "counts": {
+    "records_emitted": 60,
+    "records_with_identifier": 60,
+    "records_with_event_at": 60,
+    "records_with_source_public_at": 0,
+    "unique_official_ids": 60
+  },
+  "pulls": [
+    {
+      "source_id": "openfda_device_pma",
+      "slice": "firm_medtronic",
+      "search": "applicant:\"MEDTRONIC\"",
+      "status": 200,
+      "bytes": 146944,
+      "sha256": "3a0579b1b026f769",
+      "raw": "DATASETS/regulatory/openfda_device_pma/raw/pma__firm_medtronic.json",
+      "from_disk": true,
+      "results": 50,
+      "total_available": 12900
+    },
+    {
+      "source_id": "openfda_device_pma",
+      "slice": "firm_philips",
+      "search": "applicant:\"PHILIPS\"",
+      "status": 200,
+      "bytes": 161707,
+      "sha256": "be64c1552c637b6a",
+      "raw": "DATASETS/regulatory/openfda_device_pma/raw/pma__firm_philips.json",
+      "from_disk": true,
+      "results": 50,
+      "total_available": 169
+    },
+    {
+      "source_id": "openfda_device_pma",
+      "slice": "product_neonatal",
+      "search": "trade_name:\"neonatal\"",
+      "status": 200,
+      "bytes": 2535,
+      "sha256": "d40c7f16a9921cb7",
+      "raw": "DATASETS/regulatory/openfda_device_pma/raw/pma__product_neonatal.json",
+      "from_disk": true,
+      "results": 1,
+      "total_available": 1
+    }
+  ]
+}

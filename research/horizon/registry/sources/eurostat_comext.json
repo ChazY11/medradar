@@ -1,0 +1,37 @@
+{
+  "access_evidence": "GET /api/comext/dissemination/statistics/1.0/data/DS-045409 returned HTTP 200 with JSON-stat values for 7 of 8 requested reporters, 5 HS4 codes x 2 flows x 2015-2024, in 8 requests.",
+  "access_state": "OPEN_DOCUMENTED",
+  "auth_required": false,
+  "blockers": [
+    "NO_BULK_TSV: format=TSV and format=CSV are rejected (HTTP 400 'Invalid value for wsOutputFormat parameter'); only JSON-stat was usable.",
+    "NO_CATALOGUE_ENDPOINT: /api/comext/dissemination/catalogue/datasets/ returns 404, so the current DS code list had to be known in advance.",
+    "EU_AGGREGATE_ABSENT: reporter=EU27_2020 and reporter=EU returned no values for these products; the aggregate must be computed by the caller.",
+    "NO_PER_OBSERVATION_RELEASE_DATE: only a dataset-level 'updated' timestamp is exposed."
+  ],
+  "bulk_available": false,
+  "domain": "ec.europa.eu/eurostat",
+  "entity_types": [
+    "trade_flow"
+  ],
+  "first_verified_at": "2026-11-09T23:18:27Z",
+  "historical_depth": "annual from 1988 (dataset label: 'EU trade since 1988 by HS2-4-6 and CN8')",
+  "id_schemes": [
+    "hs_code",
+    "eurostat_comext_cell"
+  ],
+  "licence_note": "'Reuse of statistical data, metadata, publications, and other dissemination tools published on this website for commercial or non-commercial purposes is authorised provided the source is acknowledged.' (Eurostat copyright notice; Commission Decision of 12 December 2011 on the reuse of Commission documents.)",
+  "licence_status": "open_licence",
+  "licence_url": "https://ec.europa.eu/eurostat/help/copyright-notice",
+  "machine_interface": "REST JSON-stat 2.0 (dissemination API); browser UI at /comext/newxtweb/",
+  "name": "Eurostat Comext — DS-045409 EU trade by HS2-4-6 and CN8",
+  "notes": "Value in EUR; mass in 100 kg. No deflation, no FX conversion.",
+  "operator": "European Commission (Eurostat)",
+  "probe_suite": "industry",
+  "rate_policy": "No key, no documented quota; collection throttled to ~1.5 req/s by the client.",
+  "registration_url": null,
+  "robots_summary": "not relied upon; reuse is explicitly authorised by the copyright notice",
+  "robots_url": "https://ec.europa.eu/robots.txt",
+  "source_id": "eurostat_comext",
+  "unlock_route": "Comext bulk download exists only through the interactive https://ec.europa.eu/eurostat/comext/newxtweb/ application (a JS UI with no documented machine bulk URL found), so the dissemination API is the legitimate machine route.",
+  "what_is_new": "1400 Comext observations (value in EUR and net mass) for 7 EU reporters x 9018/9019/9020/9021/9022 x imports/exports x 2015-2024 — fills the Comtrade France gap and gives an independent second compilation of the same customs declarations."
+}

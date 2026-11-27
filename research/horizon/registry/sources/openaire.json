@@ -1,0 +1,36 @@
+{
+  "access_evidence": "probe openaire_researchproducts_pid: HTTP 200 with numFound/pids/instances when the DOI is passed as a BARE `pid` value; probe openaire_projects_search: HTTP 200 with grant codes on the project side. 60 per-DOI pid lookups -> 59 records.",
+  "access_state": "OPEN_DOCUMENTED",
+  "auth_required": false,
+  "blockers": [
+    "`pid=doi:<doi>` and `pid=doi|<doi>` both return numFound=0; only the bare DOI resolves. Verified by matrix in method-development and recorded in the probe note."
+  ],
+  "bulk_available": true,
+  "domain": "api.openaire.eu",
+  "entity_types": [
+    "publication"
+  ],
+  "first_verified_at": "2026-11-09T23:20:28Z",
+  "historical_depth": "publicationDate plus lastUpdateTimeStamp; no creation timestamp, so records are SNAPSHOT_ONLY.",
+  "id_schemes": [
+    "doi",
+    "pmid",
+    "pmcid",
+    "handle"
+  ],
+  "licence_note": "OpenAIRE publishes the Graph as open data under CC-BY 4.0 and the Graph API is free to query (https://graph.openaire.eu/docs/). Per-record bestAccessRight and instances[].license are preserved because the publication rights differ from the metadata rights.",
+  "licence_status": "open_licence",
+  "licence_url": "https://graph.openaire.eu/docs/",
+  "machine_interface": "REST JSON, Graph API v1 (researchProducts, projects)",
+  "name": "OpenAIRE Graph API",
+  "notes": "A pid query can return a record whose `pids` hold no DOI but whose `originalIds` do. The queried DOI is therefore recorded as primary and all others are listed, rather than silently taking the first DOI in the array.",
+  "operator": "OpenAIRE (EU)",
+  "probe_suite": "scholarly",
+  "rate_policy": "No key; used at 1.5 req/s.",
+  "registration_url": null,
+  "robots_summary": "Not applicable: Graph API only.",
+  "robots_url": "https://api.openaire.eu/robots.txt",
+  "source_id": "openaire",
+  "unlock_route": "",
+  "what_is_new": "It is the only source here that de-duplicates works across repositories, and the only one that surfaced multiple DOIs for a single work (9 of 59 records). That is directly relevant to de-duplication, and it is also a trap: a naive 'first DOI' reader mis-assigns those records."
+}

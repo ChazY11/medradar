@@ -1,0 +1,52 @@
+{
+  "source_id": "eu_ctis",
+  "generated_at": "2026-11-09T23:24:40Z",
+  "endpoint": "https://euclinicaltrials.eu/ctis-public-api",
+  "access_state": "BLOCKED_TECHNICAL",
+  "reason": "AWS API Gateway authorizer rejects anonymous requests with HTTP 403 {'message':'Missing Authentication Token'}",
+  "auth_required": true,
+  "licence_status": "unknown",
+  "licence_note": "No reuse licence could be established: the public API returned 403 before any content was served, and the site's api-docs path serves the application shell rather than a contract. Recorded as unknown rather than assumed permissive.",
+  "attempts": [
+    {
+      "name": "search",
+      "why": "anonymous search - expected 403 AWS authorizer",
+      "url": "https://euclinicaltrials.eu/ctis-public-api/search?pagination.page=1&pagination.size=5",
+      "status": 403,
+      "bytes": 42,
+      "body_exact": "{\"message\":\"Missing Authentication Token\"}",
+      "raw": "DATASETS/scholarly/eu_ctis/raw/probe_01_search.json",
+      "sha256": "f249b63cb2fcb66b47e86f906c98f8fd912e82dd035b4e53d7e72fc1960cfd16"
+    },
+    {
+      "name": "search_with_dummy_key",
+      "why": "same route, different params, plus a dummy X-API-KEY header: tests whether the gate is a shared static key",
+      "url": "https://euclinicaltrials.eu/ctis-public-api/search?pagination.page=2&pagination.size=6",
+      "status": 403,
+      "bytes": 42,
+      "body_exact": "{\"message\":\"Missing Authentication Token\"}",
+      "raw": "DATASETS/scholarly/eu_ctis/raw/probe_02_search_with_dummy_key.json",
+      "sha256": "f249b63cb2fcb66b47e86f906c98f8fd912e82dd035b4e53d7e72fc1960cfd16"
+    },
+    {
+      "name": "retrieve",
+      "why": "detail route - tests whether a 200 means data",
+      "url": "https://euclinicaltrials.eu/ctis-public-api/retrieve/2024-511234-12-00",
+      "status": 200,
+      "bytes": 2,
+      "body_exact": "{}",
+      "raw": "DATASETS/scholarly/eu_ctis/raw/probe_03_retrieve.json",
+      "sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a"
+    }
+  ],
+  "budget": {
+    "client": "scholarly_ctis",
+    "requests_made": 3,
+    "max_requests": 4,
+    "bytes_received": 86,
+    "max_total_bytes": 3000000,
+    "retries": 0,
+    "errors": []
+  },
+  "unlock_route": "Register for CTIS public-API access with EMA: the CTIS public website (https://euclinicaltrials.eu/) documents a public API whose search route is behind an AWS API Gateway authorizer. Request credentials through the EMA CTIS service desk / the 'CTIS for sponsors and authorities' contact route at https://euclinicaltrials.eu/contact/ ; there is no anonymous tier. Alternative with no credential: ClinicalTrials.gov API v2 (already used) and the EU CTR results summary on the CTIS public web pages."
+}

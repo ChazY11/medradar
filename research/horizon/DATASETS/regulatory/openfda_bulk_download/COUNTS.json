@@ -1,0 +1,80 @@
+{
+  "source_id": "openfda_bulk_download",
+  "generated_at": "2026-11-09T23:09:53Z",
+  "catalogue_url": "https://api.fda.gov/download.json",
+  "device_exports": {
+    "510k": {
+      "export_date": "2026-11-02",
+      "total_records": 176529,
+      "partitions": 1,
+      "total_bytes": 238550000,
+      "first_partition_file": "https://download.open.fda.gov/device/510k/device-510k-0001-of-0001.json.zip",
+      "size_mb_sum": 238.55
+    },
+    "classification": {
+      "export_date": "2026-11-02",
+      "total_records": 7097,
+      "partitions": 1,
+      "total_bytes": 3130000,
+      "first_partition_file": "https://download.open.fda.gov/device/classification/device-classification-0001-of-0001.json.zip",
+      "size_mb_sum": 3.13
+    },
+    "covid19serology": {
+      "export_date": "2026-11-06",
+      "total_records": 13420,
+      "partitions": 1,
+      "total_bytes": 330000,
+      "first_partition_file": "https://download.open.fda.gov/device/covid19serology/device-covid19serology-0001-of-0001.json.zip",
+      "size_mb_sum": 0.33
+    },
+    "enforcement": {
+      "export_date": "2026-11-03",
+      "total_records": 40450,
+      "partitions": 1,
+      "total_bytes": 90780000,
+      "first_partition_file": "https://download.open.fda.gov/device/enforcement/device-enforcement-0001-of-0001.json.zip",
+      "size_mb_sum": 90.78
+    },
+    "event": {
+      "export_date": "2026-11-03",
+      "total_records": 26557775,
+      "partitions": 375,
+      "total_bytes": 18694390000,
+      "first_partition_file": "https://download.open.fda.gov/device/event/2004q3/device-event-0001-of-0001.json.zip",
+      "size_mb_sum": 18694.39
+    },
+    "pma": {
+      "export_date": "2026-11-02",
+      "total_records": 57421,
+      "partitions": 1,
+      "total_bytes": 21230000,
+      "first_partition_file": "https://download.open.fda.gov/device/pma/device-pma-0001-of-0001.json.zip",
+      "size_mb_sum": 21.23
+    },
+    "recall": {
+      "export_date": "2026-11-06",
+      "total_records": 59703,
+      "partitions": 1,
+      "total_bytes": 276570000,
+      "first_partition_file": "https://download.open.fda.gov/device/recall/device-recall-0001-of-0001.json.zip",
+      "size_mb_sum": 276.57
+    },
+    "registrationlisting": {
+      "export_date": "2026-11-02",
+      "total_records": 337116,
+      "partitions": 2,
+      "total_bytes": 82770000,
+      "first_partition_file": "https://download.open.fda.gov/device/registrationlisting/device-registrationlisting-0001-of-0002.json.zip",
+      "size_mb_sum": 82.77
+    },
+    "udi": {
+      "export_date": "2026-11-03",
+      "total_records": 5182695,
+      "partitions": 52,
+      "total_bytes": 1898200000,
+      "first_partition_file": "https://download.open.fda.gov/device/udi/device-udi-0001-of-0052.json.zip",
+      "size_mb_sum": 1898.2
+    }
+  },
+  "note": "Catalogue only. The device.udi export alone is far outside this workstream's byte budget, so no bulk file was downloaded; the per-endpoint API pulls are the collection path actually used."
+}

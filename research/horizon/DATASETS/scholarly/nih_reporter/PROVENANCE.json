@@ -1,0 +1,130 @@
+{
+  "source_id": "nih_reporter",
+  "workstream": "scholarly",
+  "experiment": "EXP-H1 / EXP-H3 (fixed anchor sample)",
+  "selection_rule": "experiments/scholarly/EXP_H1_SELECTION_RULE.md",
+  "contact": "medradar-research@proton.me",
+  "generated_at": "2026-11-09T23:08:33Z",
+  "raw_files": [
+    {
+      "path": "DATASETS/scholarly/nih_reporter/raw/discovery_medical_device.json",
+      "bytes": 15842,
+      "sha256": "e7bf583467f0a76ce9763717f621389ef0773ef181fb636249f45dc3d4131f85",
+      "requested_url": "https://api.reporter.nih.gov/v2/projects/search",
+      "final_url": "https://api.reporter.nih.gov/v2/projects/search",
+      "status": 200,
+      "content_type": "application/json; charset=utf-8",
+      "fetched_at": "2026-11-09T23:08:28Z",
+      "note": "bounded discovery search, limit=10"
+    },
+    {
+      "path": "DATASETS/scholarly/nih_reporter/raw/project_nums_01_p1.json",
+      "bytes": 74688,
+      "sha256": "f0a28509ff86e77589ea03ff6c578148b99a12ea3c136fbfbe8525f7ba94d31a",
+      "requested_url": "https://api.reporter.nih.gov/v2/projects/search",
+      "final_url": "https://api.reporter.nih.gov/v2/projects/search",
+      "status": 200,
+      "content_type": "application/json; charset=utf-8",
+      "fetched_at": "2026-11-09T23:08:29Z",
+      "note": "declared-core lookup batch 1, page 1, offset 0, 9 cores",
+      "cores_requested": [
+        "F32EB030411",
+        "P41EB015891",
+        "P41EB017183",
+        "R01CA212148",
+        "R01CA218187",
+        "R01CA249893",
+        "R01EB009055",
+        "R01EB026995",
+        "U01EB029826"
+      ]
+    },
+    {
+      "path": "DATASETS/scholarly/nih_reporter/raw/project_nums_01_p2.json",
+      "bytes": 72242,
+      "sha256": "d59fe03f8399afe8d44be0972866cc8d0749dd3066716e1fc7a20883b6753297",
+      "requested_url": "https://api.reporter.nih.gov/v2/projects/search",
+      "final_url": "https://api.reporter.nih.gov/v2/projects/search",
+      "status": 200,
+      "content_type": "application/json; charset=utf-8",
+      "fetched_at": "2026-11-09T23:08:30Z",
+      "note": "declared-core lookup batch 1, page 2, offset 50, 9 cores",
+      "cores_requested": [
+        "F32EB030411",
+        "P41EB015891",
+        "P41EB017183",
+        "R01CA212148",
+        "R01CA218187",
+        "R01CA249893",
+        "R01EB009055",
+        "R01EB026995",
+        "U01EB029826"
+      ]
+    },
+    {
+      "path": "DATASETS/scholarly/nih_reporter/raw/project_nums_01_p3.json",
+      "bytes": 70927,
+      "sha256": "f227c260da7f7eadbc62567eda448eee80e024f77eb86412d9f8efe539014221",
+      "requested_url": "https://api.reporter.nih.gov/v2/projects/search",
+      "final_url": "https://api.reporter.nih.gov/v2/projects/search",
+      "status": 200,
+      "content_type": "application/json; charset=utf-8",
+      "fetched_at": "2026-11-09T23:08:32Z",
+      "note": "declared-core lookup batch 1, page 3, offset 100, 9 cores",
+      "cores_requested": [
+        "F32EB030411",
+        "P41EB015891",
+        "P41EB017183",
+        "R01CA212148",
+        "R01CA218187",
+        "R01CA249893",
+        "R01EB009055",
+        "R01EB026995",
+        "U01EB029826"
+      ]
+    },
+    {
+      "path": "DATASETS/scholarly/nih_reporter/raw/project_nums_01_p4.json",
+      "bytes": 29488,
+      "sha256": "467de9c5a5b0bfa7964bc122fd78f82c486b30db48b56aaee58d7ed838e0c1a6",
+      "requested_url": "https://api.reporter.nih.gov/v2/projects/search",
+      "final_url": "https://api.reporter.nih.gov/v2/projects/search",
+      "status": 200,
+      "content_type": "application/json; charset=utf-8",
+      "fetched_at": "2026-11-09T23:08:33Z",
+      "note": "declared-core lookup batch 1, page 4, offset 150, 9 cores",
+      "cores_requested": [
+        "F32EB030411",
+        "P41EB015891",
+        "P41EB017183",
+        "R01CA212148",
+        "R01CA218187",
+        "R01CA249893",
+        "R01EB009055",
+        "R01EB026995",
+        "U01EB029826"
+      ]
+    }
+  ],
+  "endpoint": "https://api.reporter.nih.gov/v2/projects/search",
+  "method": "POST",
+  "get_outcome": "405 Method Not Allowed (recorded in PROBES.json)",
+  "licence_status": "public_domain",
+  "licence_note": "NIH RePORTER is a US federal government database; the data is in the public domain and free of copyright restrictions in the United States (https://reporter.nih.gov/faq, 'Is the data copyrighted?' -> No). Recorded as public_domain.",
+  "records_file": "DATASETS/scholarly/nih_reporter/records.jsonl",
+  "record_count": 64,
+  "index_file": "DATASETS/scholarly/nih_reporter/REPORTER_INDEX.json",
+  "post_call_log": "SOURCE_PROBES/scholarly/REQUEST_LOG_POST.jsonl",
+  "declared_nih_cores": [
+    "F32EB030411",
+    "P41EB015891",
+    "P41EB017183",
+    "R01CA212148",
+    "R01CA218187",
+    "R01CA249893",
+    "R01EB009055",
+    "R01EB026995",
+    "U01EB029826"
+  ],
+  "declared_grant_row_count": 108
+}

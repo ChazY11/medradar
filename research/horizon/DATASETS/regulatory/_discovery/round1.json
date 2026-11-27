@@ -1,0 +1,342 @@
+{
+  "generated_at": "2026-11-09T22:58:21Z",
+  "budget": {
+    "client": "regulatory-discovery-1",
+    "requests_made": 35,
+    "max_requests": 40,
+    "bytes_received": 319273,
+    "max_total_bytes": 25000000,
+    "retries": 6,
+    "errors": [
+      "https://www.tga.gov.au: ConnectionError: ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))",
+      "https://www.tga.gov.au/robots.txt: ReadTimeout: HTTPSConnectionPool(host='www.tga.gov.au', port=443): Read timed out. (read timeout=30.0)"
+    ]
+  },
+  "targets": [
+    {
+      "name": "agudid_docs",
+      "url": "https://accessgudid.nlm.nih.gov/resources/developers",
+      "status": 404,
+      "outcome": "HTTP_ERROR",
+      "bytes": 21,
+      "sha256": "e28bf7d9fcc22cdfde0c7c8f31e3648a4847e7bda9cb69f309f24257eee3dd41",
+      "content_type": "application/json; charset=utf-8",
+      "final_url": "https://accessgudid.nlm.nih.gov/resources/developers",
+      "saved": "D:\\DEPPSKK\\worktrees\\horizon-001\\research\\horizon\\DATASETS\\regulatory\\_discovery\\agudid_docs.txt",
+      "rate_limit_headers": {
+        "x-request-id": "b8f47b7a-a74a-45f4-a75d-7108c67606d6"
+      }
+    },
+    {
+      "name": "agudid_search_api_doc",
+      "url": "https://accessgudid.nlm.nih.gov/resources/developers/search_api",
+      "status": 404,
+      "outcome": "HTTP_ERROR",
+      "bytes": 21,
+      "sha256": "e28bf7d9fcc22cdfde0c7c8f31e3648a4847e7bda9cb69f309f24257eee3dd41",
+      "content_type": "application/json; charset=utf-8",
+      "final_url": "https://accessgudid.nlm.nih.gov/resources/developers/search_api",
+      "saved": "D:\\DEPPSKK\\worktrees\\horizon-001\\research\\horizon\\DATASETS\\regulatory\\_discovery\\agudid_search_api_doc.txt",
+      "rate_limit_headers": {
+        "x-request-id": "1d193837-2502-4fd1-abec-a2137c3e5325"
+      }
+    },
+    {
+      "name": "agudid_parse_api_doc",
+      "url": "https://accessgudid.nlm.nih.gov/resources/developers/parse_udi_api",
+      "status": 200,
+      "outcome": "OK",
+      "bytes": 36533,
+      "sha256": "4a2282069357dc1ecadd41fa9bfabbfd340448d4e0c5ed3eb8b8d31dd2491b23",
+      "content_type": "text/html; charset=utf-8",
+      "final_url": "https://accessgudid.nlm.nih.gov/resources/developers/parse_udi_api",
+      "saved": "D:\\DEPPSKK\\worktrees\\horizon-001\\research\\horizon\\DATASETS\\regulatory\\_discovery\\agudid_parse_api_doc.html",
+      "rate_limit_headers": {
+        "x-request-id": "456a2054-8902-48b5-a2c8-28d1403eacc7"
+      }
+    },
+    {
+      "name": "agudid_lookup_udi",
+      "url": "https://accessgudid.nlm.nih.gov/api/v3/devices/lookup.json?udi=(01)00643169718425(17)270331(10)9A12345",
+      "status": 200,
+      "outcome": "OK",
+      "bytes": 3266,
+      "sha256": "b4a856a7653ca0967a7caeaa84cae7787f53ee29802788e2038b5c5156f694e1",
+      "content_type": "application/json;charset=UTF-8",
+      "final_url": "https://accessgudid.nlm.nih.gov/api/v3/devices/lookup.json?udi=(01)00643169718425(17)270331(10)9A12345",
+      "saved": "D:\\DEPPSKK\\worktrees\\horizon-001\\research\\horizon\\DATASETS\\regulatory\\_discovery\\agudid_lookup_udi.txt",
+      "rate_limit_headers": {
+        "x-request-id": "c1ddd4b8-ae07-4e76-8a7e-cba105bde663"
+      }
+    },
+    {
+      "name": "agudid_lookup_di",
+      "url": "https://accessgudid.nlm.nih.gov/api/v3/devices/lookup.json?di=00643169718425",
+      "status": 200,
+      "outcome": "OK",
+      "bytes": 2987,
+      "sha256": "253ad04311b0c8daf0eaf9988ae213a604cbffbf7df71c2b2bcae7aaa1d55336",
+      "content_type": "application/json;charset=UTF-8",
+      "final_url": "https://accessgudid.nlm.nih.gov/api/v3/devices/lookup.json?di=00643169718425",
+      "saved": "D:\\DEPPSKK\\worktrees\\horizon-001\\research\\horizon\\DATASETS\\regulatory\\_discovery\\agudid_lookup_di.txt",
+      "rate_limit_headers": {
+        "x-request-id": "b7a3dafc-16d3-41d6-bdb0-dc15404210fe"
+      }
+    },
+    {
+      "name": "agudid_search_desc",
+      "url": "https://accessgudid.nlm.nih.gov/api/v3/devices/search.json?deviceDescription=infusion%20pump",
+      "status": 404,
+      "outcome": "HTTP_ERROR",
+      "bytes": 21,
+      "sha256": "e28bf7d9fcc22cdfde0c7c8f31e3648a4847e7bda9cb69f309f24257eee3dd41",
+      "content_type": "application/json; charset=utf-8",
+      "final_url": "https://accessgudid.nlm.nih.gov/api/v3/devices/search.json?deviceDescription=infusion%20pump",
+      "saved": "D:\\DEPPSKK\\worktrees\\horizon-001\\research\\horizon\\DATASETS\\regulatory\\_discovery\\agudid_search_desc.txt",
+      "rate_limit_headers": {
+        "x-request-id": "5d08ac2e-00bb-40be-bd01-2398a54d91b6"
+      }
+    },
+    {
+      "name": "agudid_search_desc_hits",
+      "url": "https://accessgudid.nlm.nih.gov/api/v3/devices/search.json?deviceDescription=infusion&pageSize=5",
+      "status": 404,
+      "outcome": "HTTP_ERROR",
+      "bytes": 21,
+      "sha256": "e28bf7d9fcc22cdfde0c7c8f31e3648a4847e7bda9cb69f309f24257eee3dd41",
+      "content_type": "application/json; charset=utf-8",
+      "final_url": "https://accessgudid.nlm.nih.gov/api/v3/devices/search.json?deviceDescription=infusion&pageSize=5",
+      "saved": "D:\\DEPPSKK\\worktrees\\horizon-001\\research\\horizon\\DATASETS\\regulatory\\_discovery\\agudid_search_desc_hits.txt",
+      "rate_limit_headers": {
+        "x-request-id": "50e8c4cb-1b0e-4671-801d-701e099d1eb1"
+      }
+    },
+    {
+      "name": "fda_510k",
+      "url": "https://api.fda.gov/device/510k.json?limit=1",
+      "status": 200,
+      "outcome": "OK",
+      "bytes": 14339,
+      "sha256": "53926cf4ee4a8fc10fcf4028e16f44860ed90573daf5c1b2ff11f810b2967bc5",
+      "content_type": "application/json; charset=utf-8",
+      "final_url": "https://api.fda.gov/device/510k.json?limit=1"
+    },
+    {
+      "name": "fda_pma",
+      "url": "https://api.fda.gov/device/pma.json?limit=1",
+      "status": 200,
+      "outcome": "OK",
+      "bytes": 4444,
+      "sha256": "7443d163901de5ae170bab8a87a14b17a724a697bb6356738e34b83f230e4842",
+      "content_type": "application/json; charset=utf-8",
+      "final_url": "https://api.fda.gov/device/pma.json?limit=1"
+    },
+    {
+      "name": "fda_reglist",
+      "url": "https://api.fda.gov/device/registrationlisting.json?limit=1",
+      "status": 200,
+      "outcome": "OK",
+      "bytes": 4802,
+      "sha256": "c2d40378a7517b3fa0fb30aa0fed607a2c169d220a4f2562bde8d44206517371",
+      "content_type": "application/json; charset=utf-8",
+      "final_url": "https://api.fda.gov/device/registrationlisting.json?limit=1"
+    },
+    {
+      "name": "fda_classification",
+      "url": "https://api.fda.gov/device/classification.json?limit=1",
+      "status": 200,
+      "outcome": "OK",
+      "bytes": 5376,
+      "sha256": "435ea972c8cffd399d321f9784c057d7d7a7a3539678af72541fae36a52e3327",
+      "content_type": "application/json; charset=utf-8",
+      "final_url": "https://api.fda.gov/device/classification.json?limit=1"
+    },
+    {
+      "name": "fda_udi",
+      "url": "https://api.fda.gov/device/udi.json?limit=1",
+      "status": 200,
+      "outcome": "OK",
+      "bytes": 3692,
+      "sha256": "0860cf409ff789d8c991b82083b362ed1e0b11a22e9e3343a81f92636be772fb",
+      "content_type": "application/json; charset=utf-8",
+      "final_url": "https://api.fda.gov/device/udi.json?limit=1",
+      "saved": "D:\\DEPPSKK\\worktrees\\horizon-001\\research\\horizon\\DATASETS\\regulatory\\_discovery\\fda_udi.txt"
+    },
+    {
+      "name": "hc_device_json",
+      "url": "https://health-products.canada.ca/api/medical-device/device/?lang=en&type=json",
+      "status": 404,
+      "outcome": "HTTP_ERROR",
+      "bytes": 1245,
+      "sha256": "dc1d54dab6ec8c00f70137927504e4f222c8395f10760b6beecfcfa94e08249f",
+      "content_type": "text/html",
+      "final_url": "https://health-products.canada.ca/api/medical-device/device/?lang=en&type=json",
+      "saved": "D:\\DEPPSKK\\worktrees\\horizon-001\\research\\horizon\\DATASETS\\regulatory\\_discovery\\hc_device_json.txt"
+    },
+    {
+      "name": "hc_licence_json",
+      "url": "https://health-products.canada.ca/api/medical-device/licence/?lang=en&type=json",
+      "status": 404,
+      "outcome": "HTTP_ERROR",
+      "bytes": 1245,
+      "sha256": "dc1d54dab6ec8c00f70137927504e4f222c8395f10760b6beecfcfa94e08249f",
+      "content_type": "text/html",
+      "final_url": "https://health-products.canada.ca/api/medical-device/licence/?lang=en&type=json",
+      "saved": "D:\\DEPPSKK\\worktrees\\horizon-001\\research\\horizon\\DATASETS\\regulatory\\_discovery\\hc_licence_json.txt"
+    },
+    {
+      "name": "hc_licence_compact",
+      "url": "https://health-products.canada.ca/api/medical-device/licence/?lang=en&type=json&id=1",
+      "status": 404,
+      "outcome": "HTTP_ERROR",
+      "bytes": 1245,
+      "sha256": "dc1d54dab6ec8c00f70137927504e4f222c8395f10760b6beecfcfa94e08249f",
+      "content_type": "text/html",
+      "final_url": "https://health-products.canada.ca/api/medical-device/licence/?lang=en&type=json&id=1",
+      "saved": "D:\\DEPPSKK\\worktrees\\horizon-001\\research\\horizon\\DATASETS\\regulatory\\_discovery\\hc_licence_compact.txt"
+    },
+    {
+      "name": "tga_home",
+      "url": "https://www.tga.gov.au",
+      "outcome": "TRANSPORT_ERROR",
+      "error": "ConnectionError: ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))"
+    },
+    {
+      "name": "datagov_artg_search",
+      "url": "https://data.gov.au/data/api/3/action/package_search?q=ARTG&rows=5",
+      "status": 200,
+      "outcome": "OK",
+      "bytes": 3805,
+      "sha256": "ac7d011472c78d1e7eb6e377cc97816bc6723180c8d3b3ce91b9318215af0185",
+      "content_type": "application/json;charset=utf-8",
+      "final_url": "https://data.gov.au/data/api/3/action/package_search?q=ARTG&rows=5",
+      "saved": "D:\\DEPPSKK\\worktrees\\horizon-001\\research\\horizon\\DATASETS\\regulatory\\_discovery\\datagov_artg_search.txt"
+    },
+    {
+      "name": "eudamed_root",
+      "url": "https://ec.europa.eu/tools/eudamed/",
+      "status": 200,
+      "outcome": "OK",
+      "bytes": 48323,
+      "sha256": "790d185ef4e9f28e72951008b2e39dd70c3f0482df23847afa25fb51961f1e6a",
+      "content_type": "text/html;charset=UTF-8",
+      "final_url": "https://ec.europa.eu/tools/eudamed/eudamed"
+    },
+    {
+      "name": "eudamed_api_guess",
+      "url": "https://ec.europa.eu/tools/eudamed/api/devices",
+      "status": 429,
+      "outcome": "HTTP_ERROR",
+      "bytes": 321,
+      "sha256": "c61f8f128504f1294a500daaf853b7cfe0f75b188f9b33ba33f9d39384bdb181",
+      "content_type": "application/json",
+      "final_url": "https://ec.europa.eu/tools/eudamed/api/devices",
+      "saved": "D:\\DEPPSKK\\worktrees\\horizon-001\\research\\horizon\\DATASETS\\regulatory\\_discovery\\eudamed_api_guess.txt",
+      "rate_limit_headers": {
+        "retry-after": "260"
+      }
+    },
+    {
+      "name": "pmda_home",
+      "url": "https://www.pmda.go.jp/english/",
+      "status": 200,
+      "outcome": "OK",
+      "bytes": 58190,
+      "sha256": "c95102a66e8380bbe886beb9effb54def479ac1db0017e9cc51142b28d88e473",
+      "content_type": "text/html",
+      "final_url": "https://www.pmda.go.jp/english/"
+    },
+    {
+      "name": "anvisa_dados",
+      "url": "https://dados.anvisa.gov.br/",
+      "status": 200,
+      "outcome": "OK",
+      "bytes": 46453,
+      "sha256": "55c94321cb2d5c42d300eebc19bf65a1ffeccd4f07bb9d94fd159885f451fb7d",
+      "content_type": "text/html;charset=utf-8",
+      "final_url": "https://dados.anvisa.gov.br/dados/"
+    },
+    {
+      "name": "dadosgov_search",
+      "url": "https://dados.gov.br/api/publico/conjuntos-dados?nomeConjuntoDados=dispositivos",
+      "status": 401,
+      "outcome": "HTTP_ERROR",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "content_type": null,
+      "final_url": "https://dados.gov.br/api/publico/conjuntos-dados?nomeConjuntoDados=dispositivos",
+      "saved": "D:\\DEPPSKK\\worktrees\\horizon-001\\research\\horizon\\DATASETS\\regulatory\\_discovery\\dadosgov_search.txt"
+    },
+    {
+      "name": "robots_agudid",
+      "url": "https://accessgudid.nlm.nih.gov/robots.txt",
+      "status": 200,
+      "outcome": "OK",
+      "bytes": 267,
+      "sha256": "7422e9ada43104217769583ffb57e7a0ade11809a9b7b38b20f0f810b34fdc7b",
+      "content_type": "text/plain; charset=UTF-8",
+      "final_url": "https://accessgudid.nlm.nih.gov/robots.txt",
+      "saved": "D:\\DEPPSKK\\worktrees\\horizon-001\\research\\horizon\\DATASETS\\regulatory\\_discovery\\robots_agudid.txt"
+    },
+    {
+      "name": "robots_apifda",
+      "url": "https://api.fda.gov/robots.txt",
+      "status": 404,
+      "outcome": "HTTP_ERROR",
+      "bytes": 149,
+      "sha256": "76349265e5506d1eba164f3909bd48be1be581943493355b3aad7ddc8ad908b7",
+      "content_type": "text/html; charset=utf-8",
+      "final_url": "https://api.fda.gov/robots.txt",
+      "saved": "D:\\DEPPSKK\\worktrees\\horizon-001\\research\\horizon\\DATASETS\\regulatory\\_discovery\\robots_apifda.txt"
+    },
+    {
+      "name": "robots_hc",
+      "url": "https://health-products.canada.ca/robots.txt",
+      "status": 404,
+      "outcome": "HTTP_ERROR",
+      "bytes": 770,
+      "sha256": "dbf49305570a40c9c041433e79684a8303cd95471841ac063c67fb57c694b88d",
+      "content_type": "text/html;charset=utf-8",
+      "final_url": "https://health-products.canada.ca/robots.txt",
+      "saved": "D:\\DEPPSKK\\worktrees\\horizon-001\\research\\horizon\\DATASETS\\regulatory\\_discovery\\robots_hc.txt"
+    },
+    {
+      "name": "robots_tga",
+      "url": "https://www.tga.gov.au/robots.txt",
+      "outcome": "TRANSPORT_ERROR",
+      "error": "ReadTimeout: HTTPSConnectionPool(host='www.tga.gov.au', port=443): Read timed out. (read timeout=30.0)"
+    },
+    {
+      "name": "robots_eudamed",
+      "url": "https://ec.europa.eu/robots.txt",
+      "status": 200,
+      "outcome": "OK",
+      "bytes": 10827,
+      "sha256": "fc082fc26f8bfdd488e560b11a7e2cc4b774e03c7fd5b51a00bdd3e1e21f75e2",
+      "content_type": "text/plain; charset=UTF-8",
+      "final_url": "https://ec.europa.eu/robots.txt"
+    },
+    {
+      "name": "robots_pmda",
+      "url": "https://www.pmda.go.jp/robots.txt",
+      "status": 404,
+      "outcome": "HTTP_ERROR",
+      "bytes": 70060,
+      "sha256": "83b310d9973c639e0cae2c932c589f2851783df0c2c8670da678b20130050f10",
+      "content_type": "text/html",
+      "final_url": "https://www.pmda.go.jp/robots.txt",
+      "saved": "D:\\DEPPSKK\\worktrees\\horizon-001\\research\\horizon\\DATASETS\\regulatory\\_discovery\\robots_pmda.txt"
+    },
+    {
+      "name": "robots_anvisa",
+      "url": "https://dados.anvisa.gov.br/robots.txt",
+      "status": 404,
+      "outcome": "HTTP_ERROR",
+      "bytes": 208,
+      "sha256": "e10aa5cfb3a2675cfb50f056b3c0b1b08e96f4ed5da21c4a7744773374e35fbe",
+      "content_type": "text/html; charset=iso-8859-1",
+      "final_url": "https://dados.anvisa.gov.br/robots.txt",
+      "saved": "D:\\DEPPSKK\\worktrees\\horizon-001\\research\\horizon\\DATASETS\\regulatory\\_discovery\\robots_anvisa.txt"
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "access_evidence": "GET https://api.sam.gov/ and GET /entity-information/v2/entities?api_key=test&samRegistered=Yes both returned HTTP 404 with a ZERO-byte body. The documented route (https://open.gsa.gov/api/sam-entity-extracts-api/, HTTP 200, 42,115 B) states: 'To access Public extracts: Users must have a non-Federal/Federal Individual (Personal) account and the respective API Key'.",
+  "access_state": "REQUIRES_REGISTRATION",
+  "auth_required": true,
+  "blockers": [
+    "ACCOUNT_AND_KEY_REQUIRED (quoted above).",
+    "UNKEYED_HOST_404: api.sam.gov returns HTTP 404 with an empty body even for its documented paths, so the failure mode is not a 401/403."
+  ],
+  "bulk_available": true,
+  "domain": "api.sam.gov",
+  "entity_types": [
+    "organisation"
+  ],
+  "first_verified_at": "2026-11-09T23:18:28Z",
+  "historical_depth": "not verified",
+  "id_schemes": [
+    "sam_uei"
+  ],
+  "licence_note": "The GSA docs page states the access requirement ('Users must have a non-Federal/Federal Individual (Personal) account and the respective API Key') but no reuse-licence sentence was found on it. Recorded as publicly readable without an explicit reuse licence.",
+  "licence_status": "open_no_explicit_licence",
+  "licence_url": "https://open.gsa.gov/api/sam-entity-extracts-api/",
+  "machine_interface": "REST JSON (keyed) + bulk extract files on sam.gov/data-services",
+  "name": "SAM.gov — System for Award Management entity/exclusions extracts",
+  "notes": "Not needed for this workstream's findings: SAM UEIs arrive with USAspending awards.",
+  "operator": "US General Services Administration",
+  "probe_suite": "industry",
+  "rate_policy": "Per the docs page: 'API Key Rate Limits' section; not exercised.",
+  "registration_url": "https://sam.gov/",
+  "robots_summary": "",
+  "robots_url": null,
+  "source_id": "sam_gov",
+  "unlock_route": "Create a SAM.gov individual (personal) account, request an API key, then use the Entity/Exclusions Extracts API (https://open.gsa.gov/api/sam-entity-extracts-api/) for monthly public extract files.",
+  "what_is_new": "Nothing collected: access is registration-gated and the unkeyed host returns a zero-byte 404 rather than an auth error. Clean negative."
+}

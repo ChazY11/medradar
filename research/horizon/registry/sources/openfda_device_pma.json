@@ -1,0 +1,32 @@
+{
+  "access_evidence": "PROBES.json reg_openfda_pma_001: HTTP 200, 1,977 bytes, marker 'pma_number'. DATASETS/regulatory/openfda_device_pma/raw/ holds 3 pulls (12,900 MEDTRONIC supplement matches, 169 PHILIPS).",
+  "access_state": "OPEN_DOCUMENTED",
+  "auth_required": false,
+  "blockers": [],
+  "bulk_available": true,
+  "domain": "api.fda.gov",
+  "entity_types": [
+    "regulatory_clearance"
+  ],
+  "first_verified_at": "2026-11-10T07:30:00Z",
+  "historical_depth": "PMA approvals and supplements; supplement_number distinguishes original approvals from supplements.",
+  "id_schemes": [
+    "uspto_pma",
+    "fda_product_code"
+  ],
+  "licence_note": "openFDA licence page: '...unless otherwise noted, the content, data, documentation, code, and related materials on openFDA is public domain and made available with a Creative Commons CC0 1.0 Universal dedication.' Caveat recorded on the same page: 'GMDN(R) is a registered trademark of The GMDN Agency... which is used under license from The GMDN Agency', with conditions on extracting GMDN Content. openFDA device endpoints do not carry GMDN fields, so this does not affect the openFDA records.",
+  "licence_status": "public_domain",
+  "licence_url": "https://open.fda.gov/license/",
+  "machine_interface": "REST JSON: /device/pma.json",
+  "name": "openFDA — device Premarket Approvals (PMA)",
+  "notes": "The endpoint mixes original PMAs and supplements; pma_number repeats across supplement rows, so unique_official_ids < records (33 of 60).",
+  "operator": "U.S. Food and Drug Administration",
+  "probe_suite": "regulatory",
+  "rate_policy": "openFDA authentication page: 'With no API key: 240 requests per minute, per IP address. 1,000 requests per day, per IP address.' No X-RateLimit-* response headers are sent; observed: all keyless pulls returned 200 at ~1.2 req/s, no 429.",
+  "registration_url": null,
+  "robots_summary": "HTTP 404 with body 'Cannot GET /robots.txt' — no robots policy is served for the API host; access is governed by the published openFDA terms.",
+  "robots_url": "https://api.fda.gov/robots.txt",
+  "source_id": "openfda_device_pma",
+  "unlock_route": "",
+  "what_is_new": "Highest-risk device approvals with an official pma_number, complementing the 510(k) clearance series."
+}

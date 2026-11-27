@@ -1,0 +1,88 @@
+{
+  "source_id": "openfda_device_classification",
+  "workstream": "regulatory",
+  "generated_at": "2026-11-09T23:09:53Z",
+  "raw_files": [
+    {
+      "path": "DATASETS/regulatory/openfda_device_classification/raw/classification__product_monitor.json",
+      "bytes": 104225,
+      "sha256": "65328f906bf5e4cb4bb11258eecebba02ca5cb1bfa1b2cf52ea8e85f6268b47e",
+      "requested_url": "https://api.fda.gov/device/classification.json?search=device_name%3A%22monitor%22&limit=50",
+      "final_url": "https://api.fda.gov/device/classification.json?search=device_name%3A%22monitor%22&limit=50",
+      "status": 200,
+      "content_type": null,
+      "fetched_at": "2026-11-09T23:09:53Z",
+      "note": "openFDA classification pull: device_name:\"monitor\" [loaded from disk; original fetch is in REQUEST_LOG.jsonl]",
+      "from_disk": true
+    },
+    {
+      "path": "DATASETS/regulatory/openfda_device_classification/raw/classification__product_ventilator.json",
+      "bytes": 80235,
+      "sha256": "814c2259ffab331b490bd60fe1f6f7845553712c951dabe84dd91233186821dc",
+      "requested_url": "https://api.fda.gov/device/classification.json?search=device_name%3A%22ventilator%22&limit=50",
+      "final_url": "https://api.fda.gov/device/classification.json?search=device_name%3A%22ventilator%22&limit=50",
+      "status": 200,
+      "content_type": null,
+      "fetched_at": "2026-11-09T23:09:53Z",
+      "note": "openFDA classification pull: device_name:\"ventilator\" [loaded from disk; original fetch is in REQUEST_LOG.jsonl]",
+      "from_disk": true
+    },
+    {
+      "path": "DATASETS/regulatory/openfda_device_classification/raw/classification__product_infusion.json",
+      "bytes": 98653,
+      "sha256": "e7041437353d276f446be4445745cbe54645b70c9014c4a569423ef218b99f39",
+      "requested_url": "https://api.fda.gov/device/classification.json?search=device_name%3A%22infusion%22&limit=50",
+      "final_url": "https://api.fda.gov/device/classification.json?search=device_name%3A%22infusion%22&limit=50",
+      "status": 200,
+      "content_type": null,
+      "fetched_at": "2026-11-09T23:09:53Z",
+      "note": "openFDA classification pull: device_name:\"infusion\" [loaded from disk; original fetch is in REQUEST_LOG.jsonl]",
+      "from_disk": true
+    }
+  ],
+  "counts": {
+    "records_emitted": 60,
+    "records_with_identifier": 60,
+    "records_with_event_at": 0,
+    "records_with_source_public_at": 0,
+    "unique_official_ids": 60
+  },
+  "pulls": [
+    {
+      "source_id": "openfda_device_classification",
+      "slice": "product_monitor",
+      "search": "device_name:\"monitor\"",
+      "status": 200,
+      "bytes": 104225,
+      "sha256": "65328f906bf5e4cb",
+      "raw": "DATASETS/regulatory/openfda_device_classification/raw/classification__product_monitor.json",
+      "from_disk": true,
+      "results": 50,
+      "total_available": 79
+    },
+    {
+      "source_id": "openfda_device_classification",
+      "slice": "product_ventilator",
+      "search": "device_name:\"ventilator\"",
+      "status": 200,
+      "bytes": 80235,
+      "sha256": "814c2259ffab331b",
+      "raw": "DATASETS/regulatory/openfda_device_classification/raw/classification__product_ventilator.json",
+      "from_disk": true,
+      "results": 22,
+      "total_available": 22
+    },
+    {
+      "source_id": "openfda_device_classification",
+      "slice": "product_infusion",
+      "search": "device_name:\"infusion\"",
+      "status": 200,
+      "bytes": 98653,
+      "sha256": "e7041437353d276f",
+      "raw": "DATASETS/regulatory/openfda_device_classification/raw/classification__product_infusion.json",
+      "from_disk": true,
+      "results": 29,
+      "total_available": 29
+    }
+  ]
+}

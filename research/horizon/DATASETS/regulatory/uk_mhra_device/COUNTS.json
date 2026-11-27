@@ -1,0 +1,19 @@
+{
+  "source_id": "uk_mhra_device",
+  "generated_at": "2026-11-09T23:24:18Z",
+  "attempts": [
+    {
+      "name": "govuk_search_api.json",
+      "url": "https://www.gov.uk/api/search.json?q=medical%20device%20register&count=5",
+      "note": "GOV.UK search API — does it expose an MHRA device register dataset?",
+      "status": 200,
+      "outcome": null,
+      "bytes": 13426,
+      "sha256": "c1ed1a004eca2764",
+      "error": null
+    }
+  ],
+  "summary": "MHRA publishes device guidance and alerts as GOV.UK content pages. There is no public machine-readable register of UK-registered medical devices (the UK MDR register is not published as open data). Recorded as MANUAL_ONLY.",
+  "official_identifier": "MHRA device registration (not publicly listed per device)",
+  "unlock_route": "MHRA publishes device alerts and guidance on GOV.UK; company-level device registration data is not open. Access would require an FOI request to MHRA."
+}

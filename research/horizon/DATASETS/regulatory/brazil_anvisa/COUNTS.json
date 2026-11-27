@@ -1,0 +1,82 @@
+{
+  "source_id": "brazil_anvisa",
+  "generated_at": "2026-11-09T23:34:18Z",
+  "access_state_observed": "OPEN",
+  "bulk_files_listed": [
+    "/dados/CONSULTAS/PRODUTOS/TA_CONSULTA_ALIMENTOS.CSV",
+    "/dados/CONSULTAS/PRODUTOS/TA_CONSULTA_ALIMENTOS_RESULTADO.CSV",
+    "/dados/CONSULTAS/PRODUTOS/TA_CONSULTA_COSMETICOS.CSV",
+    "/dados/CONSULTAS/PRODUTOS/TA_CONSULTA_ENSAIOS_CLINICOS.CSV",
+    "/dados/CONSULTAS/PRODUTOS/TA_CONSULTA_ENSAIOS_CLINICOS_LOCAIS.CSV",
+    "/dados/CONSULTAS/PRODUTOS/TA_CONSULTA_MEDICAMENTOS.CSV",
+    "/dados/CONSULTAS/PRODUTOS/TA_CONSULTA_PRODUTOS_CANNABIS.CSV",
+    "/dados/CONSULTAS/PRODUTOS/TA_CONSULTA_PRODUTOS_SAUDE.CSV",
+    "/dados/CONSULTAS/PRODUTOS/TA_CONSULTA_SANEANTES.CSV",
+    "/dados/CONSULTAS/PRODUTOS/TA_CONSULTA_TABACO.CSV",
+    "/dados/CONSULTAS/PRODUTOS/TA_CONSULTA_TABACO_DETALHE.CSV"
+  ],
+  "log": [
+    {
+      "step": "index",
+      "status": 200,
+      "files_listed": [
+        "/dados/CONSULTAS/PRODUTOS/TA_CONSULTA_ALIMENTOS.CSV",
+        "/dados/CONSULTAS/PRODUTOS/TA_CONSULTA_ALIMENTOS_RESULTADO.CSV",
+        "/dados/CONSULTAS/PRODUTOS/TA_CONSULTA_COSMETICOS.CSV",
+        "/dados/CONSULTAS/PRODUTOS/TA_CONSULTA_ENSAIOS_CLINICOS.CSV",
+        "/dados/CONSULTAS/PRODUTOS/TA_CONSULTA_ENSAIOS_CLINICOS_LOCAIS.CSV",
+        "/dados/CONSULTAS/PRODUTOS/TA_CONSULTA_MEDICAMENTOS.CSV",
+        "/dados/CONSULTAS/PRODUTOS/TA_CONSULTA_PRODUTOS_CANNABIS.CSV",
+        "/dados/CONSULTAS/PRODUTOS/TA_CONSULTA_PRODUTOS_SAUDE.CSV",
+        "/dados/CONSULTAS/PRODUTOS/TA_CONSULTA_SANEANTES.CSV",
+        "/dados/CONSULTAS/PRODUTOS/TA_CONSULTA_TABACO.CSV",
+        "/dados/CONSULTAS/PRODUTOS/TA_CONSULTA_TABACO_DETALHE.CSV"
+      ]
+    },
+    {
+      "step": "prefix256k",
+      "status": 200,
+      "bytes": 262144,
+      "columns": [
+        "NU_PROCESSO",
+        "NO_RAZAO_SOCIAL_EMPRESA",
+        "NU_CNPJ_EMPRESA",
+        "NO_PRODUTO",
+        "NU_REGISTRO_PRODUTO",
+        "CO_SEQ_PRODUTO",
+        "CO_SITUACAO_ASSUNTO_DOC",
+        "DT_PUBLICACAO",
+        "DS_SITUACAO_ASSUNTO_DOC",
+        "DT_VENCIMENTO_PRODUTO",
+        "NU_RESOLUCAO",
+        "DS_MOTIVO",
+        "CO_SEQ_SITUACAO_PRODUTO",
+        "TP_SITUACAO_PRODUTO",
+        "CANCELAMENTO",
+        "DT_CANCELAMENTO",
+        "DT_INICIO_VIGENCIA",
+        "SG_RISCO_PRODUTO",
+        "TIPOASSUNTO",
+        "DS_OBSERVACAO",
+        "CO_TIPO_PRODUTO",
+        "DT_VENCIMENTO_REGISTRO",
+        "SITUACAO_REGISTRO",
+        "DT_CARGA_ETL"
+      ],
+      "delimiter": ";"
+    },
+    {
+      "step": "prefix6m",
+      "status": 200,
+      "bytes": 262144
+    },
+    {
+      "step": "parse",
+      "rows_parsed": 902
+    }
+  ],
+  "licence_url": "https://www.gov.br/anvisa/pt-br/acessoainformacao/dadosabertos",
+  "licence_note": "ANVISA publishes these files on its open-data portal with no registration and no API key; the portal landing page (dados.anvisa.gov.br) presents them as 'dados abertos'. No explicit machine-reuse licence (e.g. CC-BY) is stated on the file index itself, so licence_status is recorded as open_no_explicit_licence rather than an invented permissive licence.",
+  "records_emitted": 120,
+  "records_with_official_identifier": 120
+}

@@ -1,0 +1,2058 @@
+{
+  "experiment": "EXP-H1",
+  "title": "Cross-database de-duplication of the same work, identifier linkage, and metadata disagreement over a pre-registered fixed sample",
+  "selection_rule": "experiments/scholarly/EXP_H1_SELECTION_RULE.md",
+  "generated_at": "2026-11-09T23:21:19Z",
+  "anchor_count": 60,
+  "sources_queried": [
+    "openalex",
+    "crossref",
+    "europepmc",
+    "pubmed_eutils",
+    "semantic_scholar",
+    "openaire"
+  ],
+  "core_sources": [
+    "openalex",
+    "crossref",
+    "europepmc",
+    "pubmed_eutils"
+  ],
+  "optional_sources": [
+    "semantic_scholar",
+    "openaire"
+  ],
+  "counts": {
+    "source_rows_fetched": 308,
+    "per_source_rows_fetched": {
+      "openalex": 60,
+      "crossref": 59,
+      "europepmc": 37,
+      "pubmed_eutils": 37,
+      "semantic_scholar": 56,
+      "openaire": 59
+    },
+    "anchor_source_hits": 308,
+    "per_source_anchor_hits": {
+      "openalex": 60,
+      "crossref": 59,
+      "europepmc": 37,
+      "pubmed_eutils": 37,
+      "semantic_scholar": 56,
+      "openaire": 59
+    },
+    "distinct_works_after_dedup": 60,
+    "dedup_ratio_rows": 0.19480519480519481,
+    "dedup_ratio_anchor_hits": 0.19480519480519481,
+    "off_anchor_records": 0,
+    "unresolved_records": 0
+  },
+  "anchors_by_number_of_sources_holding_them": {
+    "3": 4,
+    "4": 20,
+    "6": 36
+  },
+  "identifier_coverage": {
+    "openalex": {
+      "records": 60,
+      "with_scheme": {
+        "doi": 60,
+        "pmid": 37,
+        "pmcid": 21,
+        "openalex_id": 60,
+        "arxiv": 0,
+        "nih_core_project_num": 0,
+        "cordis_rcn": 0,
+        "s2_corpus_id": 0,
+        "mag": 0
+      }
+    },
+    "crossref": {
+      "records": 59,
+      "with_scheme": {
+        "doi": 59,
+        "pmid": 0,
+        "pmcid": 0,
+        "openalex_id": 0,
+        "arxiv": 0,
+        "nih_core_project_num": 0,
+        "cordis_rcn": 0,
+        "s2_corpus_id": 0,
+        "mag": 0
+      }
+    },
+    "europepmc": {
+      "records": 37,
+      "with_scheme": {
+        "doi": 37,
+        "pmid": 37,
+        "pmcid": 21,
+        "openalex_id": 0,
+        "arxiv": 0,
+        "nih_core_project_num": 0,
+        "cordis_rcn": 0,
+        "s2_corpus_id": 0,
+        "mag": 0
+      }
+    },
+    "pubmed_eutils": {
+      "records": 37,
+      "with_scheme": {
+        "doi": 37,
+        "pmid": 37,
+        "pmcid": 21,
+        "openalex_id": 0,
+        "arxiv": 0,
+        "nih_core_project_num": 0,
+        "cordis_rcn": 0,
+        "s2_corpus_id": 0,
+        "mag": 0
+      }
+    },
+    "semantic_scholar": {
+      "records": 56,
+      "with_scheme": {
+        "doi": 56,
+        "pmid": 37,
+        "pmcid": 18,
+        "openalex_id": 0,
+        "arxiv": 0,
+        "nih_core_project_num": 0,
+        "cordis_rcn": 0,
+        "s2_corpus_id": 56,
+        "mag": 20
+      }
+    },
+    "openaire": {
+      "records": 59,
+      "with_scheme": {
+        "doi": 59,
+        "pmid": 37,
+        "pmcid": 0,
+        "openalex_id": 0,
+        "arxiv": 0,
+        "nih_core_project_num": 0,
+        "cordis_rcn": 0,
+        "s2_corpus_id": 0,
+        "mag": 0
+      }
+    }
+  },
+  "grant_metadata_coverage": {
+    "openalex": 19,
+    "crossref": 12,
+    "europepmc": 13,
+    "pubmed_eutils": 7,
+    "semantic_scholar": 0,
+    "openaire": 0
+  },
+  "cross_identifier_verification": {
+    "pmid": {
+      "absent_all_sources": 22,
+      "single_value": 38,
+      "conflict": 0
+    },
+    "pmcid": {
+      "single_value": 0,
+      "conflict": 21
+    },
+    "rows": [
+      {
+        "anchor_no": 1,
+        "anchor_doi": "10.1016/j.yrtph.2021.104987",
+        "pmid_values": {
+          "34229014": [
+            "europepmc",
+            "openaire",
+            "openalex",
+            "pubmed_eutils",
+            "semantic_scholar"
+          ]
+        },
+        "pmid_status": "SINGLE_VALUE_AGREED",
+        "pmcid_values": {},
+        "pmcid_status": "ABSENT_ALL_SOURCES",
+        "openalex_exposes_pmid": true
+      },
+      {
+        "anchor_no": 2,
+        "anchor_doi": "10.1016/j.yrtph.2021.105004",
+        "pmid_values": {
+          "34256083": [
+            "europepmc",
+            "openaire",
+            "openalex",
+            "pubmed_eutils",
+            "semantic_scholar"
+          ]
+        },
+        "pmid_status": "SINGLE_VALUE_AGREED",
+        "pmcid_values": {},
+        "pmcid_status": "ABSENT_ALL_SOURCES",
+        "openalex_exposes_pmid": true
+      },
+      {
+        "anchor_no": 3,
+        "anchor_doi": "10.1111/jace.18041",
+        "pmid_values": {},
+        "pmid_status": "ABSENT_ALL_SOURCES",
+        "pmcid_values": {},
+        "pmcid_status": "ABSENT_ALL_SOURCES",
+        "openalex_exposes_pmid": false
+      },
+      {
+        "anchor_no": 4,
+        "anchor_doi": "10.1016/s0378-4274(21)00463-x",
+        "pmid_values": {},
+        "pmid_status": "ABSENT_ALL_SOURCES",
+        "pmcid_values": {},
+        "pmcid_status": "ABSENT_ALL_SOURCES",
+        "openalex_exposes_pmid": false
+      },
+      {
+        "anchor_no": 5,
+        "anchor_doi": "10.1016/j.mpmed.2021.08.009",
+        "pmid_values": {},
+        "pmid_status": "ABSENT_ALL_SOURCES",
+        "pmcid_values": {},
+        "pmcid_status": "ABSENT_ALL_SOURCES",
+        "openalex_exposes_pmid": false
+      },
+      {
+        "anchor_no": 6,
+        "anchor_doi": "10.1253/circj.cj-21-0491",
+        "pmid_values": {
+          "34615815": [
+            "europepmc",
+            "openaire",
+            "openalex",
+            "pubmed_eutils",
+            "semantic_scholar"
+          ]
+        },
+        "pmid_status": "SINGLE_VALUE_AGREED",
+        "pmcid_values": {},
+        "pmcid_status": "ABSENT_ALL_SOURCES",
+        "openalex_exposes_pmid": true
+      },
+      {
+        "anchor_no": 7,
+        "anchor_doi": "10.33564/ijeast.2021.v06i07.046",
+        "pmid_values": {},
+        "pmid_status": "ABSENT_ALL_SOURCES",
+        "pmcid_values": {},
+        "pmcid_status": "ABSENT_ALL_SOURCES",
+        "openalex_exposes_pmid": false
+      },
+      {
+        "anchor_no": 8,
+        "anchor_doi": "10.1161/circ.144.suppl_1.13385",
+        "pmid_values": {},
+        "pmid_status": "ABSENT_ALL_SOURCES",
+        "pmcid_values": {},
+        "pmcid_status": "ABSENT_ALL_SOURCES",
+        "openalex_exposes_pmid": false
+      },
+      {
+        "anchor_no": 9,
+        "anchor_doi": "10.1016/j.yrtph.2021.105096",
+        "pmid_values": {
+          "34896478": [
+            "europepmc",
+            "openaire",
+            "openalex",
+            "pubmed_eutils",
+            "semantic_scholar"
+          ]
+        },
+        "pmid_status": "SINGLE_VALUE_AGREED",
+        "pmcid_values": {},
+        "pmcid_status": "ABSENT_ALL_SOURCES",
+        "openalex_exposes_pmid": true
+      },
+      {
+        "anchor_no": 10,
+        "anchor_doi": "10.31478/202201b",
+        "pmid_values": {
+          "35402857": [
+            "europepmc",
+            "openaire",
+            "openalex",
+            "pubmed_eutils",
+            "semantic_scholar"
+          ]
+        },
+        "pmid_status": "SINGLE_VALUE_AGREED",
+        "pmcid_values": {
+          "https://www.ncbi.nlm.nih.gov/pmc/articles/8970224": [
+            "openalex"
+          ],
+          "8970224": [
+            "openalex"
+          ],
+          "PMC8970224": [
+            "europepmc",
+            "pubmed_eutils"
+          ]
+        },
+        "pmcid_status": "CONFLICT",
+        "openalex_exposes_pmid": true
+      },
+      {
+        "anchor_no": 11,
+        "anchor_doi": "10.1115/1.4053565",
+        "pmid_values": {},
+        "pmid_status": "ABSENT_ALL_SOURCES",
+        "pmcid_values": {},
+        "pmcid_status": "ABSENT_ALL_SOURCES",
+        "openalex_exposes_pmid": false
+      },
+      {
+        "anchor_no": 12,
+        "anchor_doi": "10.1161/jaha.121.023848",
+        "pmid_values": {
+          "35243902": [
+            "europepmc",
+            "openaire",
+            "openalex",
+            "pubmed_eutils",
+            "semantic_scholar"
+          ]
+        },
+        "pmid_status": "SINGLE_VALUE_AGREED",
+        "pmcid_values": {
+          "https://www.ncbi.nlm.nih.gov/pmc/articles/9075277": [
+            "openalex"
+          ],
+          "9075277": [
+            "openalex"
+          ],
+          "PMC9075277": [
+            "europepmc",
+            "pubmed_eutils",
+            "semantic_scholar"
+          ]
+        },
+        "pmcid_status": "CONFLICT",
+        "openalex_exposes_pmid": true
+      },
+      {
+        "anchor_no": 13,
+        "anchor_doi": "10.2345/0899-8205-54.4.311",
+        "pmid_values": {
+          "33171508": [
+            "europepmc",
+            "openaire",
+            "openalex",
+            "pubmed_eutils",
+            "semantic_scholar"
+          ]
+        },
+        "pmid_status": "SINGLE_VALUE_AGREED",
+        "pmcid_values": {},
+        "pmcid_status": "ABSENT_ALL_SOURCES",
+        "openalex_exposes_pmid": true
+      },
+      {
+        "anchor_no": 14,
+        "anchor_doi": "10.2345/0899-8205-54.4.291",
+        "pmid_values": {
+          "33171502": [
+            "europepmc",
+            "openaire",
+            "openalex",
+            "pubmed_eutils",
+            "semantic_scholar"
+          ]
+        },
+        "pmid_status": "SINGLE_VALUE_AGREED",
+        "pmcid_values": {},
+        "pmcid_status": "ABSENT_ALL_SOURCES",
+        "openalex_exposes_pmid": true
+      },
+      {
+        "anchor_no": 15,
+        "anchor_doi": "10.1097/rli.0000000000000673",
+        "pmid_values": {
+          "32776769": [
+            "europepmc",
+            "openaire",
+            "openalex",
+            "pubmed_eutils",
+            "semantic_scholar"
+          ]
+        },
+        "pmid_status": "SINGLE_VALUE_AGREED",
+        "pmcid_values": {},
+        "pmcid_status": "ABSENT_ALL_SOURCES",
+        "openalex_exposes_pmid": true
+      },
+      {
+        "anchor_no": 16,
+        "anchor_doi": "10.1016/j.ejvs.2021.11.001",
+        "pmid_values": {
+          "35027273": [
+            "europepmc",
+            "openaire",
+            "openalex",
+            "pubmed_eutils",
+            "semantic_scholar"
+          ]
+        },
+        "pmid_status": "SINGLE_VALUE_AGREED",
+        "pmcid_values": {},
+        "pmcid_status": "ABSENT_ALL_SOURCES",
+        "openalex_exposes_pmid": true
+      },
+      {
+        "anchor_no": 17,
+        "anchor_doi": "10.1007/s00535-022-01932-1",
+        "pmid_values": {
+          "36469127": [
+            "europepmc",
+            "openaire",
+            "openalex",
+            "pubmed_eutils",
+            "semantic_scholar"
+          ]
+        },
+        "pmid_status": "SINGLE_VALUE_AGREED",
+        "pmcid_values": {
+          "https://www.ncbi.nlm.nih.gov/pmc/articles/9735102": [
+            "openalex"
+          ],
+          "9735102": [
+            "openalex"
+          ],
+          "PMC9735102": [
+            "europepmc",
+            "pubmed_eutils",
+            "semantic_scholar"
+          ]
+        },
+        "pmcid_status": "CONFLICT",
+        "openalex_exposes_pmid": true
+      },
+      {
+        "anchor_no": 18,
+        "anchor_doi": "10.1002/bit.27335",
+        "pmid_values": {
+          "32181883": [
+            "europepmc",
+            "openaire",
+            "openalex",
+            "pubmed_eutils",
+            "semantic_scholar"
+          ]
+        },
+        "pmid_status": "SINGLE_VALUE_AGREED",
+        "pmcid_values": {},
+        "pmcid_status": "ABSENT_ALL_SOURCES",
+        "openalex_exposes_pmid": true
+      },
+      {
+        "anchor_no": 19,
+        "anchor_doi": "10.1111/jch.13851",
+        "pmid_values": {
+          "32248602": [
+            "europepmc",
+            "openaire",
+            "openalex",
+            "pubmed_eutils",
+            "semantic_scholar"
+          ]
+        },
+        "pmid_status": "SINGLE_VALUE_AGREED",
+        "pmcid_values": {
+          "https://www.ncbi.nlm.nih.gov/pmc/articles/8030025": [
+            "openalex"
+          ],
+          "8030025": [
+            "openalex"
+          ],
+          "PMC8030025": [
+            "europepmc",
+            "pubmed_eutils"
+          ]
+        },
+        "pmcid_status": "CONFLICT",
+        "openalex_exposes_pmid": true
+      },
+      {
+        "anchor_no": 20,
+        "anchor_doi": "10.1097/sla.0000000000003958",
+        "pmid_values": {
+          "32433280": [
+            "europepmc",
+            "openaire",
+            "openalex",
+            "pubmed_eutils",
+            "semantic_scholar"
+          ]
+        },
+        "pmid_status": "SINGLE_VALUE_AGREED",
+        "pmcid_values": {
+          "https://www.ncbi.nlm.nih.gov/pmc/articles/7268851": [
+            "openalex"
+          ],
+          "7268851": [
+            "openalex"
+          ],
+          "PMC7268851": [
+            "europepmc",
+            "pubmed_eutils",
+            "semantic_scholar"
+          ]
+        },
+        "pmcid_status": "CONFLICT",
+        "openalex_exposes_pmid": true
+      },
+      {
+        "anchor_no": 21,
+        "anchor_doi": "10.1109/icoei48184.2020.9142931",
+        "pmid_values": {},
+        "pmid_status": "ABSENT_ALL_SOURCES",
+        "pmcid_values": {},
+        "pmcid_status": "ABSENT_ALL_SOURCES",
+        "openalex_exposes_pmid": false
+      },
+      {
+        "anchor_no": 22,
+        "anchor_doi": "10.1093/jbi/wbaa070",
+        "pmid_values": {
+          "38424851": [
+            "europepmc",
+            "openaire",
+            "openalex",
+            "pubmed_eutils",
+            "semantic_scholar"
+          ]
+        },
+        "pmid_status": "SINGLE_VALUE_AGREED",
+        "pmcid_values": {},
+        "pmcid_status": "ABSENT_ALL_SOURCES",
+        "openalex_exposes_pmid": true
+      },
+      {
+        "anchor_no": 23,
+        "anchor_doi": "10.1002/jmri.27492",
+        "pmid_values": {
+          "33382171": [
+            "europepmc",
+            "openaire",
+            "openalex",
+            "pubmed_eutils",
+            "semantic_scholar"
+          ]
+        },
+        "pmid_status": "SINGLE_VALUE_AGREED",
+        "pmcid_values": {
+          "https://www.ncbi.nlm.nih.gov/pmc/articles/8564805": [
+            "openalex"
+          ],
+          "8564805": [
+            "openalex"
+          ],
+          "PMC8564805": [
+            "europepmc",
+            "pubmed_eutils",
+            "semantic_scholar"
+          ]
+        },
+        "pmcid_status": "CONFLICT",
+        "openalex_exposes_pmid": true
+      },
+      {
+        "anchor_no": 24,
+        "anchor_doi": "10.2967/jnumed.120.261881",
+        "pmid_values": {
+          "34301784": [
+            "europepmc",
+            "openaire",
+            "openalex",
+            "pubmed_eutils",
+            "semantic_scholar"
+          ]
+        },
+        "pmid_status": "SINGLE_VALUE_AGREED",
+        "pmcid_values": {
+          "https://www.ncbi.nlm.nih.gov/pmc/articles/8973286": [
+            "openalex"
+          ],
+          "8973286": [
+            "openalex"
+          ],
+          "PMC8973286": [
+            "europepmc",
+            "pubmed_eutils",
+            "semantic_scholar"
+          ]
+        },
+        "pmcid_status": "CONFLICT",
+        "openalex_exposes_pmid": true
+      },
+      {
+        "anchor_no": 25,
+        "anchor_doi": "10.1021/acsami.9b21808",
+        "pmid_values": {
+          "32037804": [
+            "europepmc",
+            "openaire",
+            "openalex",
+            "pubmed_eutils",
+            "semantic_scholar"
+          ]
+        },
+        "pmid_status": "SINGLE_VALUE_AGREED",
+        "pmcid_values": {
+          "https://www.ncbi.nlm.nih.gov/pmc/articles/7068717": [
+            "openalex"
+          ],
+          "7068717": [
+            "openalex"
+          ],
+          "PMC7068717": [
+            "europepmc",
+            "pubmed_eutils",
+            "semantic_scholar"
+          ]
+        },
+        "pmcid_status": "CONFLICT",
+        "openalex_exposes_pmid": true
+      },
+      {
+        "anchor_no": 26,
+        "anchor_doi": "10.1145/3385032.3385047",
+        "pmid_values": {},
+        "pmid_status": "ABSENT_ALL_SOURCES",
+        "pmcid_values": {},
+        "pmcid_status": "ABSENT_ALL_SOURCES",
+        "openalex_exposes_pmid": false
+      },
+      {
+        "anchor_no": 27,
+        "anchor_doi": "10.1016/j.arbres.2020.05.032",
+        "pmid_values": {
+          "32646601": [
+            "europepmc",
+            "openaire",
+            "openalex",
+            "pubmed_eutils",
+            "semantic_scholar"
+          ]
+        },
+        "pmid_status": "SINGLE_VALUE_AGREED",
+        "pmcid_values": {
+          "https://www.ncbi.nlm.nih.gov/pmc/articles/7338031": [
+            "openalex"
+          ],
+          "7338031": [
+            "openalex"
+          ],
+          "PMC7338031": [
+            "europepmc",
+            "pubmed_eutils",
+            "semantic_scholar"
+          ]
+        },
+        "pmcid_status": "CONFLICT",
+        "openalex_exposes_pmid": true
+      },
+      {
+        "anchor_no": 28,
+        "anchor_doi": "10.1007/978-3-030-54403-4",
+        "pmid_values": {},
+        "pmid_status": "ABSENT_ALL_SOURCES",
+        "pmcid_values": {},
+        "pmcid_status": "ABSENT_ALL_SOURCES",
+        "openalex_exposes_pmid": false
+      },
+      {
+        "anchor_no": 29,
+        "anchor_doi": "10.1016/j.arbr.2021.02.001",
+        "pmid_values": {
+          "32646601": [
+            "openaire"
+          ]
+        },
+        "pmid_status": "SINGLE_SOURCE_ONLY",
+        "pmcid_values": {},
+        "pmcid_status": "ABSENT_ALL_SOURCES",
+        "openalex_exposes_pmid": false
+      },
+      {
+        "anchor_no": 30,
+        "anchor_doi": "10.1002/mp.14881",
+        "pmid_values": {
+          "33843097": [
+            "europepmc",
+            "openaire",
+            "openalex",
+            "pubmed_eutils",
+            "semantic_scholar"
+          ]
+        },
+        "pmid_status": "SINGLE_VALUE_AGREED",
+        "pmcid_values": {
+          "https://www.ncbi.nlm.nih.gov/pmc/articles/9291042": [
+            "openalex"
+          ],
+          "9291042": [
+            "openalex"
+          ],
+          "PMC9291042": [
+            "europepmc",
+            "pubmed_eutils",
+            "semantic_scholar"
+          ]
+        },
+        "pmcid_status": "CONFLICT",
+        "openalex_exposes_pmid": true
+      },
+      {
+        "anchor_no": 31,
+        "anchor_doi": "10.1212/wnl.96.15_supplement.4100",
+        "pmid_values": {},
+        "pmid_status": "ABSENT_ALL_SOURCES",
+        "pmcid_values": {},
+        "pmcid_status": "ABSENT_ALL_SOURCES",
+        "openalex_exposes_pmid": false
+      },
+      {
+        "anchor_no": 32,
+        "anchor_doi": "10.1109/rams48097.2021.9605713",
+        "pmid_values": {},
+        "pmid_status": "ABSENT_ALL_SOURCES",
+        "pmcid_values": {},
+        "pmcid_status": "ABSENT_ALL_SOURCES",
+        "openalex_exposes_pmid": false
+      },
+      {
+        "anchor_no": 33,
+        "anchor_doi": "10.1109/ccta48906.2021.9659125",
+        "pmid_values": {},
+        "pmid_status": "ABSENT_ALL_SOURCES",
+        "pmcid_values": {},
+        "pmcid_status": "ABSENT_ALL_SOURCES",
+        "openalex_exposes_pmid": false
+      },
+      {
+        "anchor_no": 34,
+        "anchor_doi": "10.1109/ius52206.2021.9593683",
+        "pmid_values": {},
+        "pmid_status": "ABSENT_ALL_SOURCES",
+        "pmcid_values": {},
+        "pmcid_status": "ABSENT_ALL_SOURCES",
+        "openalex_exposes_pmid": false
+      },
+      {
+        "anchor_no": 35,
+        "anchor_doi": "10.1007/978-3-030-83864-5_33",
+        "pmid_values": {},
+        "pmid_status": "ABSENT_ALL_SOURCES",
+        "pmcid_values": {},
+        "pmcid_status": "ABSENT_ALL_SOURCES",
+        "openalex_exposes_pmid": false
+      },
+      {
+        "anchor_no": 36,
+        "anchor_doi": "10.1080/17434440.2022.2054334",
+        "pmid_values": {
+          "35298323": [
+            "europepmc",
+            "openaire",
+            "openalex",
+            "pubmed_eutils",
+            "semantic_scholar"
+          ]
+        },
+        "pmid_status": "SINGLE_VALUE_AGREED",
+        "pmcid_values": {
+          "https://www.ncbi.nlm.nih.gov/pmc/articles/11229789": [
+            "openalex"
+          ],
+          "11229789": [
+            "openalex"
+          ],
+          "PMC11229789": [
+            "europepmc",
+            "pubmed_eutils",
+            "semantic_scholar"
+          ]
+        },
+        "pmcid_status": "CONFLICT",
+        "openalex_exposes_pmid": true
+      },
+      {
+        "anchor_no": 37,
+        "anchor_doi": "10.2196/43905",
+        "pmid_values": {
+          "36538379": [
+            "europepmc",
+            "openaire",
+            "openalex",
+            "pubmed_eutils",
+            "semantic_scholar"
+          ]
+        },
+        "pmid_status": "SINGLE_VALUE_AGREED",
+        "pmcid_values": {
+          "https://www.ncbi.nlm.nih.gov/pmc/articles/9872976": [
+            "openalex"
+          ],
+          "9872976": [
+            "openalex"
+          ],
+          "PMC9872976": [
+            "europepmc",
+            "pubmed_eutils",
+            "semantic_scholar"
+          ]
+        },
+        "pmcid_status": "CONFLICT",
+        "openalex_exposes_pmid": true
+      },
+      {
+        "anchor_no": 38,
+        "anchor_doi": "10.1021/acssensors.0c00712",
+        "pmid_values": {
+          "32627540": [
+            "europepmc",
+            "openaire",
+            "openalex",
+            "pubmed_eutils",
+            "semantic_scholar"
+          ]
+        },
+        "pmid_status": "SINGLE_VALUE_AGREED",
+        "pmcid_values": {},
+        "pmcid_status": "ABSENT_ALL_SOURCES",
+        "openalex_exposes_pmid": true
+      },
+      {
+        "anchor_no": 39,
+        "anchor_doi": "10.1117/12.2618126",
+        "pmid_values": {},
+        "pmid_status": "ABSENT_ALL_SOURCES",
+        "pmcid_values": {},
+        "pmcid_status": "ABSENT_ALL_SOURCES",
+        "openalex_exposes_pmid": false
+      },
+      {
+        "anchor_no": 40,
+        "anchor_doi": "10.1007/978-3-662-59715-6_42",
+        "pmid_values": {},
+        "pmid_status": "ABSENT_ALL_SOURCES",
+        "pmcid_values": {},
+        "pmcid_status": "ABSENT_ALL_SOURCES",
+        "openalex_exposes_pmid": false
+      },
+      {
+        "anchor_no": 41,
+        "anchor_doi": "10.1515/9783110591026-005",
+        "pmid_values": {},
+        "pmid_status": "ABSENT_ALL_SOURCES",
+        "pmcid_values": {},
+        "pmcid_status": "ABSENT_ALL_SOURCES",
+        "openalex_exposes_pmid": false
+      },
+      {
+        "anchor_no": 42,
+        "anchor_doi": "10.3390/polym12051033",
+        "pmid_values": {
+          "32370122": [
+            "europepmc",
+            "openaire",
+            "openalex",
+            "pubmed_eutils",
+            "semantic_scholar"
+          ]
+        },
+        "pmid_status": "SINGLE_VALUE_AGREED",
+        "pmcid_values": {
+          "https://www.ncbi.nlm.nih.gov/pmc/articles/7284835": [
+            "openalex"
+          ],
+          "7284835": [
+            "openalex"
+          ],
+          "PMC7284835": [
+            "europepmc",
+            "pubmed_eutils",
+            "semantic_scholar"
+          ]
+        },
+        "pmcid_status": "CONFLICT",
+        "openalex_exposes_pmid": true
+      },
+      {
+        "anchor_no": 43,
+        "anchor_doi": "10.1097/ccm.0000000000004892",
+        "pmid_values": {
+          "33595959": [
+            "europepmc",
+            "openaire",
+            "openalex",
+            "pubmed_eutils",
+            "semantic_scholar"
+          ]
+        },
+        "pmid_status": "SINGLE_VALUE_AGREED",
+        "pmcid_values": {},
+        "pmcid_status": "ABSENT_ALL_SOURCES",
+        "openalex_exposes_pmid": true
+      },
+      {
+        "anchor_no": 44,
+        "anchor_doi": "10.4414/smw.2021.20515",
+        "pmid_values": {
+          "34161597": [
+            "europepmc",
+            "openaire",
+            "openalex",
+            "pubmed_eutils",
+            "semantic_scholar"
+          ]
+        },
+        "pmid_status": "SINGLE_VALUE_AGREED",
+        "pmcid_values": {},
+        "pmcid_status": "ABSENT_ALL_SOURCES",
+        "openalex_exposes_pmid": true
+      },
+      {
+        "anchor_no": 45,
+        "anchor_doi": "10.25368/2021.11",
+        "pmid_values": {},
+        "pmid_status": "ABSENT_ALL_SOURCES",
+        "pmcid_values": {},
+        "pmcid_status": "ABSENT_ALL_SOURCES",
+        "openalex_exposes_pmid": false
+      },
+      {
+        "anchor_no": 46,
+        "anchor_doi": "10.3389/fped.2021.722497",
+        "pmid_values": {
+          "34650941": [
+            "europepmc",
+            "openaire",
+            "openalex",
+            "pubmed_eutils",
+            "semantic_scholar"
+          ]
+        },
+        "pmid_status": "SINGLE_VALUE_AGREED",
+        "pmcid_values": {
+          "https://www.ncbi.nlm.nih.gov/pmc/articles/8505982": [
+            "openalex"
+          ],
+          "8505982": [
+            "openalex"
+          ],
+          "PMC8505982": [
+            "europepmc",
+            "pubmed_eutils",
+            "semantic_scholar"
+          ]
+        },
+        "pmcid_status": "CONFLICT",
+        "openalex_exposes_pmid": true
+      },
+      {
+        "anchor_no": 47,
+        "anchor_doi": "10.12968/s2514-9768(22)90086-9",
+        "pmid_values": {},
+        "pmid_status": "ABSENT_ALL_SOURCES",
+        "pmcid_values": {},
+        "pmcid_status": "ABSENT_ALL_SOURCES",
+        "openalex_exposes_pmid": false
+      },
+      {
+        "anchor_no": 48,
+        "anchor_doi": "10.1093/ageing/afab278",
+        "pmid_values": {
+          "35136896": [
+            "europepmc",
+            "openaire",
+            "openalex",
+            "pubmed_eutils",
+            "semantic_scholar"
+          ]
+        },
+        "pmid_status": "SINGLE_VALUE_AGREED",
+        "pmcid_values": {
+          "https://www.ncbi.nlm.nih.gov/pmc/articles/8825757": [
+            "openalex"
+          ],
+          "8825757": [
+            "openalex"
+          ],
+          "PMC8825757": [
+            "europepmc",
+            "pubmed_eutils",
+            "semantic_scholar"
+          ]
+        },
+        "pmcid_status": "CONFLICT",
+        "openalex_exposes_pmid": true
+      },
+      {
+        "anchor_no": 49,
+        "anchor_doi": "10.1364/boe.469747",
+        "pmid_values": {
+          "36425613": [
+            "europepmc",
+            "openaire",
+            "openalex",
+            "pubmed_eutils",
+            "semantic_scholar"
+          ]
+        },
+        "pmid_status": "SINGLE_VALUE_AGREED",
+        "pmcid_values": {
+          "https://www.ncbi.nlm.nih.gov/pmc/articles/9664893": [
+            "openalex"
+          ],
+          "9664893": [
+            "openalex"
+          ],
+          "PMC9664893": [
+            "europepmc",
+            "pubmed_eutils"
+          ]
+        },
+        "pmcid_status": "CONFLICT",
+        "openalex_exposes_pmid": true
+      },
+      {
+        "anchor_no": 50,
+        "anchor_doi": "10.2991/artres.k.201209.041",
+        "pmid_values": {},
+        "pmid_status": "ABSENT_ALL_SOURCES",
+        "pmcid_values": {},
+        "pmcid_status": "ABSENT_ALL_SOURCES",
+        "openalex_exposes_pmid": false
+      },
+      {
+        "anchor_no": 51,
+        "anchor_doi": "10.1109/mems51670.2022.9699652",
+        "pmid_values": {},
+        "pmid_status": "ABSENT_ALL_SOURCES",
+        "pmcid_values": {},
+        "pmcid_status": "ABSENT_ALL_SOURCES",
+        "openalex_exposes_pmid": false
+      },
+      {
+        "anchor_no": 52,
+        "anchor_doi": "10.1136/bmjopen-2022-064581",
+        "pmid_values": {
+          "36385038": [
+            "europepmc",
+            "openaire",
+            "openalex",
+            "pubmed_eutils",
+            "semantic_scholar"
+          ]
+        },
+        "pmid_status": "SINGLE_VALUE_AGREED",
+        "pmcid_values": {
+          "https://www.ncbi.nlm.nih.gov/pmc/articles/9670915": [
+            "openalex"
+          ],
+          "9670915": [
+            "openalex"
+          ],
+          "PMC9670915": [
+            "europepmc",
+            "pubmed_eutils",
+            "semantic_scholar"
+          ]
+        },
+        "pmcid_status": "CONFLICT",
+        "openalex_exposes_pmid": true
+      },
+      {
+        "anchor_no": 53,
+        "anchor_doi": "10.1186/s13244-022-01259-8",
+        "pmid_values": {
+          "35900608": [
+            "europepmc",
+            "openaire",
+            "openalex",
+            "pubmed_eutils",
+            "semantic_scholar"
+          ]
+        },
+        "pmid_status": "SINGLE_VALUE_AGREED",
+        "pmcid_values": {
+          "https://www.ncbi.nlm.nih.gov/pmc/articles/9334487": [
+            "openalex"
+          ],
+          "9334487": [
+            "openalex"
+          ],
+          "PMC9334487": [
+            "europepmc",
+            "pubmed_eutils",
+            "semantic_scholar"
+          ]
+        },
+        "pmcid_status": "CONFLICT",
+        "openalex_exposes_pmid": true
+      },
+      {
+        "anchor_no": 54,
+        "anchor_doi": "10.3969/j.issn.1671-7104.2022.04.023",
+        "pmid_values": {
+          "35929167": [
+            "europepmc",
+            "openalex",
+            "pubmed_eutils",
+            "semantic_scholar"
+          ]
+        },
+        "pmid_status": "SINGLE_VALUE_AGREED",
+        "pmcid_values": {},
+        "pmcid_status": "ABSENT_ALL_SOURCES",
+        "openalex_exposes_pmid": true
+      },
+      {
+        "anchor_no": 55,
+        "anchor_doi": "10.21037/atm-22-3491",
+        "pmid_values": {
+          "36111004": [
+            "europepmc",
+            "openaire",
+            "openalex",
+            "pubmed_eutils",
+            "semantic_scholar"
+          ]
+        },
+        "pmid_status": "SINGLE_VALUE_AGREED",
+        "pmcid_values": {
+          "https://www.ncbi.nlm.nih.gov/pmc/articles/9469145": [
+            "openalex"
+          ],
+          "9469145": [
+            "openalex"
+          ],
+          "PMC9469145": [
+            "europepmc",
+            "pubmed_eutils",
+            "semantic_scholar"
+          ]
+        },
+        "pmcid_status": "CONFLICT",
+        "openalex_exposes_pmid": true
+      },
+      {
+        "anchor_no": 56,
+        "anchor_doi": "10.21595/jve.2022.22479",
+        "pmid_values": {},
+        "pmid_status": "ABSENT_ALL_SOURCES",
+        "pmcid_values": {},
+        "pmcid_status": "ABSENT_ALL_SOURCES",
+        "openalex_exposes_pmid": false
+      },
+      {
+        "anchor_no": 57,
+        "anchor_doi": "10.1148/radiol.212257",
+        "pmid_values": {
+          "35997608": [
+            "europepmc",
+            "openaire",
+            "openalex",
+            "pubmed_eutils",
+            "semantic_scholar"
+          ]
+        },
+        "pmid_status": "SINGLE_VALUE_AGREED",
+        "pmcid_values": {},
+        "pmcid_status": "ABSENT_ALL_SOURCES",
+        "openalex_exposes_pmid": true
+      },
+      {
+        "anchor_no": 58,
+        "anchor_doi": "10.1177/1358863x221117608",
+        "pmid_values": {
+          "36000474": [
+            "europepmc",
+            "openaire",
+            "openalex",
+            "pubmed_eutils",
+            "semantic_scholar"
+          ]
+        },
+        "pmid_status": "SINGLE_VALUE_AGREED",
+        "pmcid_values": {},
+        "pmcid_status": "ABSENT_ALL_SOURCES",
+        "openalex_exposes_pmid": true
+      },
+      {
+        "anchor_no": 59,
+        "anchor_doi": "10.21037/atm-22-3767",
+        "pmid_values": {
+          "36330417": [
+            "europepmc",
+            "openaire",
+            "openalex",
+            "pubmed_eutils",
+            "semantic_scholar"
+          ]
+        },
+        "pmid_status": "SINGLE_VALUE_AGREED",
+        "pmcid_values": {
+          "https://www.ncbi.nlm.nih.gov/pmc/articles/9622480": [
+            "openalex"
+          ],
+          "9622480": [
+            "openalex"
+          ],
+          "PMC9622480": [
+            "europepmc",
+            "pubmed_eutils",
+            "semantic_scholar"
+          ]
+        },
+        "pmcid_status": "CONFLICT",
+        "openalex_exposes_pmid": true
+      },
+      {
+        "anchor_no": 60,
+        "anchor_doi": "10.21037/atm-22-4589",
+        "pmid_values": {
+          "36388840": [
+            "europepmc",
+            "openaire",
+            "openalex",
+            "pubmed_eutils",
+            "semantic_scholar"
+          ]
+        },
+        "pmid_status": "SINGLE_VALUE_AGREED",
+        "pmcid_values": {
+          "https://www.ncbi.nlm.nih.gov/pmc/articles/9652509": [
+            "openalex"
+          ],
+          "9652509": [
+            "openalex"
+          ],
+          "PMC9652509": [
+            "europepmc",
+            "pubmed_eutils",
+            "semantic_scholar"
+          ]
+        },
+        "pmcid_status": "CONFLICT",
+        "openalex_exposes_pmid": true
+      }
+    ]
+  },
+  "metadata_disagreement": {
+    "title": {
+      "all_sources_identical": 24,
+      "prefix_of_each_other": 27,
+      "materially_different": 9,
+      "examples": [
+        {
+          "anchor_doi": "10.1016/j.yrtph.2021.104987",
+          "titles": {
+            "openalex": "Carcinogenic assessment of cobalt-containing alloys in medical devices or cobalt in occupational settings: A systematic review and meta-analysis of overall cancer risk from published epidemiologic studies",
+            "crossref": "Carcinogenic assessment of cobalt-containing alloys in medical devices or cobalt in occupational settings: A systematic review and meta-analysis of overall cancer risk from published epidemiologic studies",
+            "europepmc": "Carcinogenic assessment of cobalt-containing alloys in medical devices or cobalt in occupational settings: A systematic review and meta-analysis of overall cancer risk from published epidemiologic studies.",
+            "pubmed_eutils": "Carcinogenic assessment of cobalt-containing alloys in medical devices or cobalt in occupational settings: A systematic review and meta-analysis of overall cancer risk from published epidemiologic studies.",
+            "semantic_scholar": "Carcinogenic Assessment of Cobalt-Containing Alloys in Medical Devices or Cobalt in Occupational Settings: A Systematic Review and Meta-Analysis of Overall Cancer Risk from Published Epidemiologic Studies.",
+            "openaire": "Carcinogenic assessment of cobalt-containing alloys in medical devices or cobalt in occupational settings: A systematic review and meta-analysis of overall cancer risk from published epidemiologic studies"
+          }
+        },
+        {
+          "anchor_doi": "10.1016/j.yrtph.2021.105004",
+          "titles": {
+            "openalex": "An integrated benefit-risk assessment of cobalt-containing alloys used in medical devices: Implications for regulatory requirements in the European Union",
+            "crossref": "An integrated benefit-risk assessment of cobalt-containing alloys used in medical devices: Implications for regulatory requirements in the European Union",
+            "europepmc": "An integrated benefit-risk assessment of cobalt-containing alloys used in medical devices: Implications for regulatory requirements in the European Union.",
+            "pubmed_eutils": "An integrated benefit-risk assessment of cobalt-containing alloys used in medical devices: Implications for regulatory requirements in the European Union.",
+            "semantic_scholar": "An Integrated Benefit-Risk Assessment of Cobalt-Containing Alloys Used in Medical Devices: Implications for Regulatory Requirements in the European Union.",
+            "openaire": "An integrated benefit-risk assessment of cobalt-containing alloys used in medical devices: Implications for regulatory requirements in the European Union"
+          }
+        },
+        {
+          "anchor_doi": "10.1253/circj.cj-21-0491",
+          "titles": {
+            "openalex": "Real-World Clinical Outcomes of IN.PACT Admiral Drug-Coated Balloon for Femoropopliteal Artery Disease ― 12-Month Results From Japan Post-Market Surveillance Study ―",
+            "crossref": "Real-World Clinical Outcomes of IN.PACT Admiral Drug-Coated Balloon for Femoropopliteal Artery Disease ― 12-Month Results From Japan Post-Market Surveillance Study ―",
+            "europepmc": "Real-World Clinical Outcomes of IN.PACT Admiral Drug-Coated Balloon for Femoropopliteal Artery Disease - 12-Month Results From Japan Post-Market Surveillance Study.",
+            "pubmed_eutils": "Real-World Clinical Outcomes of IN.PACT Admiral Drug-Coated Balloon for Femoropopliteal Artery Disease - 12-Month Results From Japan Post-Market Surveillance Study.",
+            "semantic_scholar": "Real-World Clinical Outcomes of IN.PACT Admiral Drug-Coated Balloon for Femoropopliteal Artery Disease - 12-Month Results From Japan Post-Market Surveillance Study.",
+            "openaire": "Real-World Clinical Outcomes of IN.PACT Admiral Drug-Coated Balloon for Femoropopliteal Artery Disease ― 12-Month Results From Japan Post-Market Surveillance Study ―"
+          }
+        },
+        {
+          "anchor_doi": "10.1016/j.yrtph.2021.105096",
+          "titles": {
+            "openalex": "Site-specific cancer risk following cobalt exposure via orthopedic implants or in occupational settings: A systematic review and meta-analysis",
+            "crossref": "Site-specific cancer risk following cobalt exposure via orthopedic implants or in occupational settings: A systematic review and meta-analysis",
+            "europepmc": "Site-specific cancer risk following cobalt exposure via orthopedic implants or in occupational settings: A systematic review and meta-analysis.",
+            "pubmed_eutils": "Site-specific cancer risk following cobalt exposure via orthopedic implants or in occupational settings: A systematic review and meta-analysis.",
+            "semantic_scholar": "Site-specific cancer risk following cobalt exposure via orthopedic implants or in occupational settings: A systematic review and meta-analysis.",
+            "openaire": "Site-specific cancer risk following cobalt exposure via orthopedic implants or in occupational settings: A systematic review and meta-analysis"
+          }
+        },
+        {
+          "anchor_doi": "10.31478/202201b",
+          "titles": {
+            "openalex": "Health Product Manufacturers and Innovators COVID-19 Impact Assessment: Lessons Learned and Compelling Needs",
+            "crossref": "Health Product Manufacturers and Innovators COVID-19 Impact Assessment: Lessons Learned and Compelling Needs",
+            "europepmc": "Health Product Manufacturers and Innovators COVID-19 Impact Assessment: Lessons Learned and Compelling Needs.",
+            "pubmed_eutils": "Health Product Manufacturers and Innovators COVID-19 Impact Assessment: Lessons Learned and Compelling Needs.",
+            "semantic_scholar": "Health Product Manufacturers and Innovators COVID-19 Impact Assessment: Lessons Learned and Compelling Needs.",
+            "openaire": "Health Product Manufacturers and Innovators COVID-19 Impact Assessment: Lessons Learned and Compelling Needs"
+          }
+        },
+        {
+          "anchor_doi": "10.1161/jaha.121.023848",
+          "titles": {
+            "openalex": "Practice Patterns and Outcomes of Transcatheter Aortic Valve Replacement in the United States and Japan: A Report From Joint Data Harmonization Initiative of STS/ACC TVT and J‐TVT",
+            "crossref": "Practice Patterns and Outcomes of Transcatheter Aortic Valve Replacement in the United States and Japan: A Report From Joint Data Harmonization Initiative of STS/ACC TVT and J‐TVT",
+            "europepmc": "Practice Patterns and Outcomes of Transcatheter Aortic Valve Replacement in the United States and Japan: A Report From Joint Data Harmonization Initiative of STS/ACC TVT and J-TVT.",
+            "pubmed_eutils": "Practice Patterns and Outcomes of Transcatheter Aortic Valve Replacement in the United States and Japan: A Report From Joint Data Harmonization Initiative of STS/ACC TVT and J-TVT.",
+            "semantic_scholar": "Practice Patterns and Outcomes of Transcatheter Aortic Valve Replacement in the United States and Japan: A Report From Joint Data Harmonization Initiative of STS/ACC TVT and J‐TVT",
+            "openaire": "Practice Patterns and Outcomes of Transcatheter Aortic Valve Replacement in the United States and Japan: A Report From Joint Data Harmonization Initiative of STS/ACC TVT and J‐TVT"
+          }
+        },
+        {
+          "anchor_doi": "10.2345/0899-8205-54.4.311",
+          "titles": {
+            "openalex": "Reading Room : Applied Human Factors in Medical Device Design",
+            "crossref": "<i>Reading Room</i> : Applied Human Factors in Medical Device Design",
+            "europepmc": "Reading Room: Applied Human Factors in Medical Device Design.",
+            "pubmed_eutils": "Reading Room: Applied Human Factors in Medical Device Design.",
+            "semantic_scholar": "Reading Room: Applied Human Factors in Medical Device Design.",
+            "openaire": "<i>Reading Room</i> : Applied Human Factors in Medical Device Design"
+          }
+        },
+        {
+          "anchor_doi": "10.2345/0899-8205-54.4.291",
+          "titles": {
+            "openalex": "View From The Top : Reliability and Resiliency: Vital to Dealing with Incredibly Complex, Fragile Healthcare Supply Chains",
+            "crossref": "<i>View From The Top</i> : Reliability and Resiliency: Vital to Dealing with Incredibly Complex, Fragile Healthcare Supply Chains",
+            "europepmc": "View From The Top: Reliability and Resiliency: Vital to Dealing with Incredibly Complex, Fragile Healthcare Supply Chains.",
+            "pubmed_eutils": "View From The Top: Reliability and Resiliency: Vital to Dealing with Incredibly Complex, Fragile Healthcare Supply Chains.",
+            "semantic_scholar": "View From The Top: Reliability and Resiliency: Vital to Dealing with Incredibly Complex, Fragile Healthcare Supply Chains.",
+            "openaire": "<i>View From The Top</i> : Reliability and Resiliency: Vital to Dealing with Incredibly Complex, Fragile Healthcare Supply Chains"
+          }
+        },
+        {
+          "anchor_doi": "10.1097/rli.0000000000000673",
+          "titles": {
+            "openalex": "Artificial Intelligence and Machine Learning in Radiology",
+            "crossref": "Artificial Intelligence and Machine Learning in Radiology",
+            "europepmc": "Artificial Intelligence and Machine Learning in Radiology: Current State and Considerations for Routine Clinical Implementation.",
+            "pubmed_eutils": "Artificial Intelligence and Machine Learning in Radiology: Current State and Considerations for Routine Clinical Implementation.",
+            "semantic_scholar": "Artificial Intelligence and Machine Learning in Radiology",
+            "openaire": "Artificial Intelligence and Machine Learning in Radiology"
+          }
+        },
+        {
+          "anchor_doi": "10.1016/j.ejvs.2021.11.001",
+          "titles": {
+            "openalex": "Re “Pre-Surgical and Post-Surgical Aortic Aneurysm Maximum Diameter Measurement: Full Automation by Artificial Intelligence”",
+            "crossref": "Re “Pre-Surgical and Post-Surgical Aortic Aneurysm Maximum Diameter Measurement: Full Automation by Artificial Intelligence”",
+            "europepmc": "Re \"Pre-Surgical and Post-Surgical Aortic Aneurysm Maximum Diameter Measurement: Full Automation by Artificial Intelligence\".",
+            "pubmed_eutils": "Re \"Pre-Surgical and Post-Surgical Aortic Aneurysm Maximum Diameter Measurement: Full Automation by Artificial Intelligence\".",
+            "semantic_scholar": "Re \"Pre-Surgical and Post-Surgical Aortic Aneurysm Maximum Diameter Measurement: Full Automation by Artificial Intelligence\".",
+            "openaire": "Re “Pre-Surgical and Post-Surgical Aortic Aneurysm Maximum Diameter Measurement: Full Automation by Artificial Intelligence”"
+          }
+        },
+        {
+          "anchor_doi": "10.1007/s00535-022-01932-1",
+          "titles": {
+            "openalex": "SWOT analysis of noninvasive tests for diagnosing NAFLD with severe fibrosis: an expert review by the JANIT Forum",
+            "crossref": "SWOT analysis of noninvasive tests for diagnosing NAFLD with severe fibrosis: an expert review by the JANIT Forum",
+            "europepmc": "SWOT analysis of noninvasive tests for diagnosing NAFLD with severe fibrosis: an expert review by the JANIT Forum.",
+            "pubmed_eutils": "SWOT analysis of noninvasive tests for diagnosing NAFLD with severe fibrosis: an expert review by the JANIT Forum.",
+            "semantic_scholar": "SWOT analysis of noninvasive tests for diagnosing NAFLD with severe fibrosis: an expert review by the JANIT Forum",
+            "openaire": "SWOT analysis of noninvasive tests for diagnosing NAFLD with severe fibrosis: an expert review by the JANIT Forum"
+          }
+        },
+        {
+          "anchor_doi": "10.1002/bit.27335",
+          "titles": {
+            "openalex": "Hydrocyclones as cell retention device for CHO perfusion processes in single‐use bioreactors",
+            "crossref": "Hydrocyclones as cell retention device for CHO perfusion processes in single‐use bioreactors",
+            "europepmc": "Hydrocyclones as cell retention device for CHO perfusion processes in single-use bioreactors.",
+            "pubmed_eutils": "Hydrocyclones as cell retention device for CHO perfusion processes in single-use bioreactors.",
+            "semantic_scholar": "Hydrocyclones as cell retention device for CHO perfusion processes in single‐use bioreactors",
+            "openaire": "Hydrocyclones as cell retention device for CHO perfusion processes in single‐use bioreactors"
+          }
+        },
+        {
+          "anchor_doi": "10.1111/jch.13851",
+          "titles": {
+            "openalex": "Evaluating the impact of motion artifact on noninvasive blood pressure devices",
+            "crossref": "Evaluating the impact of motion artifact on noninvasive blood pressure devices",
+            "europepmc": "Evaluating the impact of motion artifact on noninvasive blood pressure devices.",
+            "pubmed_eutils": "Evaluating the impact of motion artifact on noninvasive blood pressure devices.",
+            "semantic_scholar": "Evaluating the impact of motion artifact on noninvasive blood pressure devices",
+            "openaire": "Evaluating the impact of motion artifact on noninvasive blood pressure devices"
+          }
+        },
+        {
+          "anchor_doi": "10.1097/sla.0000000000003958",
+          "titles": {
+            "openalex": "An Emergency Surgery in Severe Case Infected by COVID-19 With Perforated Duodenal Bulb Ulcer",
+            "crossref": "An Emergency Surgery in Severe Case Infected by COVID-19 With Perforated Duodenal Bulb Ulcer",
+            "europepmc": "An Emergency Surgery in Severe Case Infected by COVID-19 With Perforated Duodenal Bulb Ulcer.",
+            "pubmed_eutils": "An Emergency Surgery in Severe Case Infected by COVID-19 With Perforated Duodenal Bulb Ulcer.",
+            "semantic_scholar": "An Emergency Surgery in Severe Case Infected by COVID-19 With Perforated Duodenal Bulb Ulcer",
+            "openaire": "An Emergency Surgery in Severe Case Infected by COVID-19 With Perforated Duodenal Bulb Ulcer"
+          }
+        },
+        {
+          "anchor_doi": "10.1093/jbi/wbaa070",
+          "titles": {
+            "openalex": "Pressure-based Compression Guidance of the Breast in Digital Breast Tomosynthesis Using Flexible Paddles Compared to Conventional Compression",
+            "crossref": "Pressure-based Compression Guidance of the Breast in Digital Breast Tomosynthesis Using Flexible Paddles Compared to Conventional Compression",
+            "europepmc": "Pressure-based Compression Guidance of the Breast in Digital Breast Tomosynthesis Using Flexible Paddles Compared to Conventional Compression.",
+            "pubmed_eutils": "Pressure-based Compression Guidance of the Breast in Digital Breast Tomosynthesis Using Flexible Paddles Compared to Conventional Compression.",
+            "semantic_scholar": "Pressure-based Compression Guidance of the Breast in Digital Breast Tomosynthesis Using Flexible Paddles Compared to Conventional Compression.",
+            "openaire": "Pressure-based Compression Guidance of the Breast in Digital Breast Tomosynthesis Using Flexible Paddles Compared to Conventional Compression"
+          }
+        }
+      ]
+    },
+    "author_count_delta_distribution": {
+      "0": 54,
+      "1": 2,
+      "2": 1,
+      "4": 1,
+      "6": 1,
+      "201": 1
+    },
+    "author_examples": [
+      {
+        "anchor_doi": "10.1253/circj.cj-21-0491",
+        "author_counts": {
+          "crossref": 11,
+          "europepmc": 11,
+          "pubmed_eutils": 11,
+          "semantic_scholar": 10,
+          "openaire": 11
+        },
+        "delta": 1
+      },
+      {
+        "anchor_doi": "10.33564/ijeast.2021.v06i07.046",
+        "author_counts": {
+          "crossref": 4,
+          "semantic_scholar": 2,
+          "openaire": 2
+        },
+        "delta": 2
+      },
+      {
+        "anchor_doi": "10.31478/202201b",
+        "author_counts": {
+          "crossref": 12,
+          "europepmc": 6,
+          "pubmed_eutils": 6,
+          "semantic_scholar": 6,
+          "openaire": 6
+        },
+        "delta": 6
+      },
+      {
+        "anchor_doi": "10.1007/s00535-022-01932-1",
+        "author_counts": {
+          "crossref": 36,
+          "europepmc": 36,
+          "pubmed_eutils": 36,
+          "semantic_scholar": 36,
+          "openaire": 35
+        },
+        "delta": 1
+      },
+      {
+        "anchor_doi": "10.1007/978-3-030-54403-4",
+        "author_counts": {
+          "crossref": 0,
+          "semantic_scholar": 0,
+          "openaire": 4
+        },
+        "delta": 4
+      },
+      {
+        "anchor_doi": "10.1093/ageing/afab278",
+        "author_counts": {
+          "crossref": 228,
+          "europepmc": 28,
+          "pubmed_eutils": 28,
+          "semantic_scholar": 27,
+          "openaire": 200
+        },
+        "delta": 201
+      }
+    ],
+    "publication_date_spread_buckets": {
+      "31-180_days": 15,
+      "8-30_days": 9,
+      "same_day": 24,
+      "over_180_days": 7,
+      "1-7_days": 5
+    },
+    "date_conflict_examples": [
+      {
+        "anchor_doi": "10.1016/j.yrtph.2021.104987",
+        "openalex_date": "2021-07-03",
+        "per_source_date": {
+          "openalex": "2021-07-03",
+          "crossref": "2021-10-01",
+          "europepmc": "2021-07-03",
+          "pubmed_eutils": "2021-07-03",
+          "semantic_scholar": "2021-07-03",
+          "openaire": "2021-10-01"
+        },
+        "per_source_delta_days_vs_openalex": {
+          "openalex": 0,
+          "crossref": 90,
+          "europepmc": 0,
+          "pubmed_eutils": 0,
+          "semantic_scholar": 0,
+          "openaire": 90
+        },
+        "max_spread_days": 90,
+        "bucket": "31-180_days"
+      },
+      {
+        "anchor_doi": "10.1016/j.yrtph.2021.105004",
+        "openalex_date": "2021-07-10",
+        "per_source_date": {
+          "openalex": "2021-07-10",
+          "crossref": "2021-10-01",
+          "europepmc": "2021-07-10",
+          "pubmed_eutils": "2021-07-10",
+          "semantic_scholar": "2021-07-10",
+          "openaire": "2021-10-01"
+        },
+        "per_source_delta_days_vs_openalex": {
+          "openalex": 0,
+          "crossref": 83,
+          "europepmc": 0,
+          "pubmed_eutils": 0,
+          "semantic_scholar": 0,
+          "openaire": 83
+        },
+        "max_spread_days": 83,
+        "bucket": "31-180_days"
+      },
+      {
+        "anchor_doi": "10.1111/jace.18041",
+        "openalex_date": "2021-07-19",
+        "per_source_date": {
+          "openalex": "2021-07-19",
+          "crossref": "2021-07-28",
+          "semantic_scholar": "2021-07-28",
+          "openaire": "2021-07-28"
+        },
+        "per_source_delta_days_vs_openalex": {
+          "openalex": 0,
+          "crossref": 9,
+          "semantic_scholar": 9,
+          "openaire": 9
+        },
+        "max_spread_days": 9,
+        "bucket": "8-30_days"
+      },
+      {
+        "anchor_doi": "10.1016/j.mpmed.2021.08.009",
+        "openalex_date": "2021-09-27",
+        "per_source_date": {
+          "openalex": "2021-09-27",
+          "crossref": "2021-11-01",
+          "openaire": "2013-12-01"
+        },
+        "per_source_delta_days_vs_openalex": {
+          "openalex": 0,
+          "crossref": 35,
+          "openaire": -2857
+        },
+        "max_spread_days": 2892,
+        "bucket": "over_180_days"
+      },
+      {
+        "anchor_doi": "10.1253/circj.cj-21-0491",
+        "openalex_date": "2021-10-05",
+        "per_source_date": {
+          "openalex": "2021-10-05",
+          "crossref": "2021-11-25",
+          "europepmc": "2021-10-06",
+          "pubmed_eutils": "2021-10-06",
+          "semantic_scholar": "2021-10-06",
+          "openaire": "2021-11-25"
+        },
+        "per_source_delta_days_vs_openalex": {
+          "openalex": 0,
+          "crossref": 51,
+          "europepmc": 1,
+          "pubmed_eutils": 1,
+          "semantic_scholar": 1,
+          "openaire": 51
+        },
+        "max_spread_days": 51,
+        "bucket": "31-180_days"
+      },
+      {
+        "anchor_doi": "10.1016/j.yrtph.2021.105096",
+        "openalex_date": "2021-12-09",
+        "per_source_date": {
+          "openalex": "2021-12-09",
+          "crossref": "2022-03-01",
+          "europepmc": "2021-12-10",
+          "pubmed_eutils": "2021-12-10",
+          "semantic_scholar": "2021-12-01",
+          "openaire": "2022-03-01"
+        },
+        "per_source_delta_days_vs_openalex": {
+          "openalex": 0,
+          "crossref": 82,
+          "europepmc": 1,
+          "pubmed_eutils": 1,
+          "semantic_scholar": -8,
+          "openaire": 82
+        },
+        "max_spread_days": 90,
+        "bucket": "31-180_days"
+      },
+      {
+        "anchor_doi": "10.31478/202201b",
+        "openalex_date": "2022-01-14",
+        "per_source_date": {
+          "openalex": "2022-01-14",
+          "crossref": "2022-01-18",
+          "europepmc": "2022-01-18",
+          "pubmed_eutils": "2022-01-18",
+          "semantic_scholar": "2022-01-18",
+          "openaire": "2022-01-18"
+        },
+        "per_source_delta_days_vs_openalex": {
+          "openalex": 0,
+          "crossref": 4,
+          "europepmc": 4,
+          "pubmed_eutils": 4,
+          "semantic_scholar": 4,
+          "openaire": 4
+        },
+        "max_spread_days": 4,
+        "bucket": "1-7_days"
+      },
+      {
+        "anchor_doi": "10.1115/1.4053565",
+        "openalex_date": "2022-01-18",
+        "per_source_date": {
+          "openalex": "2022-01-18",
+          "crossref": "2022-02-09",
+          "openaire": "2021-05-19"
+        },
+        "per_source_delta_days_vs_openalex": {
+          "openalex": 0,
+          "crossref": 22,
+          "openaire": -244
+        },
+        "max_spread_days": 266,
+        "bucket": "over_180_days"
+      },
+      {
+        "anchor_doi": "10.1161/jaha.121.023848",
+        "openalex_date": "2022-03-04",
+        "per_source_date": {
+          "openalex": "2022-03-04",
+          "crossref": "2022-03-15",
+          "europepmc": "2022-03-04",
+          "pubmed_eutils": "2022-03-04",
+          "semantic_scholar": "2022-03-04",
+          "openaire": "2022-03-15"
+        },
+        "per_source_delta_days_vs_openalex": {
+          "openalex": 0,
+          "crossref": 11,
+          "europepmc": 0,
+          "pubmed_eutils": 0,
+          "semantic_scholar": 0,
+          "openaire": 11
+        },
+        "max_spread_days": 11,
+        "bucket": "8-30_days"
+      },
+      {
+        "anchor_doi": "10.1097/rli.0000000000000673",
+        "openalex_date": "2020-07-29",
+        "per_source_date": {
+          "openalex": "2020-07-29",
+          "crossref": "2020-07-29",
+          "europepmc": "2020-09-01",
+          "pubmed_eutils": "2020-09-01",
+          "semantic_scholar": "2020-07-29",
+          "openaire": "2020-07-29"
+        },
+        "per_source_delta_days_vs_openalex": {
+          "openalex": 0,
+          "crossref": 0,
+          "europepmc": 34,
+          "pubmed_eutils": 34,
+          "semantic_scholar": 0,
+          "openaire": 0
+        },
+        "max_spread_days": 34,
+        "bucket": "31-180_days"
+      },
+      {
+        "anchor_doi": "10.1016/j.ejvs.2021.11.001",
+        "openalex_date": "2022-01-11",
+        "per_source_date": {
+          "openalex": "2022-01-11",
+          "crossref": "2022-03-01",
+          "europepmc": "2022-01-11",
+          "pubmed_eutils": "2022-01-11",
+          "semantic_scholar": "2022-01-01",
+          "openaire": "2022-03-01"
+        },
+        "per_source_delta_days_vs_openalex": {
+          "openalex": 0,
+          "crossref": 49,
+          "europepmc": 0,
+          "pubmed_eutils": 0,
+          "semantic_scholar": -10,
+          "openaire": 49
+        },
+        "max_spread_days": 59,
+        "bucket": "31-180_days"
+      },
+      {
+        "anchor_doi": "10.1002/bit.27335",
+        "openalex_date": "2020-03-17",
+        "per_source_date": {
+          "openalex": "2020-03-17",
+          "crossref": "2020-04-08",
+          "europepmc": "2020-04-08",
+          "pubmed_eutils": "2020-04-08",
+          "semantic_scholar": "2020-03-17",
+          "openaire": "2020-04-08"
+        },
+        "per_source_delta_days_vs_openalex": {
+          "openalex": 0,
+          "crossref": 22,
+          "europepmc": 22,
+          "pubmed_eutils": 22,
+          "semantic_scholar": 0,
+          "openaire": 22
+        },
+        "max_spread_days": 22,
+        "bucket": "8-30_days"
+      },
+      {
+        "anchor_doi": "10.1111/jch.13851",
+        "openalex_date": "2020-04-01",
+        "per_source_date": {
+          "openalex": "2020-04-01",
+          "crossref": "2020-04-01",
+          "europepmc": "2020-04-05",
+          "pubmed_eutils": "2020-04-05",
+          "semantic_scholar": "2020-04-01",
+          "openaire": "2020-04-01"
+        },
+        "per_source_delta_days_vs_openalex": {
+          "openalex": 0,
+          "crossref": 0,
+          "europepmc": 4,
+          "pubmed_eutils": 4,
+          "semantic_scholar": 0,
+          "openaire": 0
+        },
+        "max_spread_days": 4,
+        "bucket": "1-7_days"
+      },
+      {
+        "anchor_doi": "10.1097/sla.0000000000003958",
+        "openalex_date": "2020-05-19",
+        "per_source_date": {
+          "openalex": "2020-05-19",
+          "crossref": "2020-05-19",
+          "europepmc": "2020-07-01",
+          "pubmed_eutils": "2020-07-01",
+          "semantic_scholar": "2020-05-19",
+          "openaire": "2020-05-19"
+        },
+        "per_source_delta_days_vs_openalex": {
+          "openalex": 0,
+          "crossref": 0,
+          "europepmc": 43,
+          "pubmed_eutils": 43,
+          "semantic_scholar": 0,
+          "openaire": 0
+        },
+        "max_spread_days": 43,
+        "bucket": "31-180_days"
+      },
+      {
+        "anchor_doi": "10.1093/jbi/wbaa070",
+        "openalex_date": "2020-09-08",
+        "per_source_date": {
+          "openalex": "2020-09-08",
+          "crossref": "2020-09-08",
+          "europepmc": "2020-11-01",
+          "pubmed_eutils": "2020-11-21",
+          "semantic_scholar": "2020-09-08",
+          "openaire": "2020-09-08"
+        },
+        "per_source_delta_days_vs_openalex": {
+          "openalex": 0,
+          "crossref": 0,
+          "europepmc": 54,
+          "pubmed_eutils": 74,
+          "semantic_scholar": 0,
+          "openaire": 0
+        },
+        "max_spread_days": 74,
+        "bucket": "31-180_days"
+      },
+      {
+        "anchor_doi": "10.1021/acsami.9b21808",
+        "openalex_date": "2020-02-10",
+        "per_source_date": {
+          "openalex": "2020-02-10",
+          "crossref": "2020-02-10",
+          "europepmc": "2020-02-25",
+          "pubmed_eutils": "2020-02-25",
+          "semantic_scholar": "2020-02-10",
+          "openaire": "2020-02-10"
+        },
+        "per_source_delta_days_vs_openalex": {
+          "openalex": 0,
+          "crossref": 0,
+          "europepmc": 15,
+          "pubmed_eutils": 15,
+          "semantic_scholar": 0,
+          "openaire": 0
+        },
+        "max_spread_days": 15,
+        "bucket": "8-30_days"
+      },
+      {
+        "anchor_doi": "10.1016/j.arbres.2020.05.032",
+        "openalex_date": "2020-07-06",
+        "per_source_date": {
+          "openalex": "2020-07-06",
+          "crossref": "2021-04-01",
+          "europepmc": "2020-07-06",
+          "pubmed_eutils": "2020-07-06",
+          "semantic_scholar": "2020-07-06",
+          "openaire": "2021-04-01"
+        },
+        "per_source_delta_days_vs_openalex": {
+          "openalex": 0,
+          "crossref": 269,
+          "europepmc": 0,
+          "pubmed_eutils": 0,
+          "semantic_scholar": 0,
+          "openaire": 269
+        },
+        "max_spread_days": 269,
+        "bucket": "over_180_days"
+      },
+      {
+        "anchor_doi": "10.1007/978-3-030-54403-4",
+        "openalex_date": "2020-10-20",
+        "per_source_date": {
+          "openalex": "2020-10-20",
+          "crossref": "2021-01-01",
+          "openaire": "2021-01-01"
+        },
+        "per_source_delta_days_vs_openalex": {
+          "openalex": 0,
+          "crossref": 73,
+          "openaire": 73
+        },
+        "max_spread_days": 73,
+        "bucket": "31-180_days"
+      },
+      {
+        "anchor_doi": "10.1016/j.arbr.2021.02.001",
+        "openalex_date": "2021-02-21",
+        "per_source_date": {
+          "openalex": "2021-02-21",
+          "crossref": "2021-04-01",
+          "semantic_scholar": "2021-02-19",
+          "openaire": "2021-04-01"
+        },
+        "per_source_delta_days_vs_openalex": {
+          "openalex": 0,
+          "crossref": 39,
+          "semantic_scholar": -2,
+          "openaire": 39
+        },
+        "max_spread_days": 41,
+        "bucket": "31-180_days"
+      },
+      {
+        "anchor_doi": "10.1002/mp.14881",
+        "openalex_date": "2021-04-12",
+        "per_source_date": {
+          "openalex": "2021-04-12",
+          "crossref": "2021-06-28",
+          "europepmc": "2021-06-28",
+          "pubmed_eutils": "2021-06-28",
+          "semantic_scholar": "2021-04-12",
+          "openaire": "2021-06-28"
+        },
+        "per_source_delta_days_vs_openalex": {
+          "openalex": 0,
+          "crossref": 77,
+          "europepmc": 77,
+          "pubmed_eutils": 77,
+          "semantic_scholar": 0,
+          "openaire": 77
+        },
+        "max_spread_days": 77,
+        "bucket": "31-180_days"
+      },
+      {
+        "anchor_doi": "10.1007/978-3-030-83864-5_33",
+        "openalex_date": "2021-11-22",
+        "per_source_date": {
+          "openalex": "2021-11-22",
+          "crossref": "2021-11-23",
+          "semantic_scholar": "2021-11-23",
+          "openaire": "2021-11-23"
+        },
+        "per_source_delta_days_vs_openalex": {
+          "openalex": 0,
+          "crossref": 1,
+          "semantic_scholar": 1,
+          "openaire": 1
+        },
+        "max_spread_days": 1,
+        "bucket": "1-7_days"
+      },
+      {
+        "anchor_doi": "10.1080/17434440.2022.2054334",
+        "openalex_date": "2022-03-04",
+        "per_source_date": {
+          "openalex": "2022-03-04",
+          "crossref": "2022-03-04",
+          "europepmc": "2022-03-17",
+          "pubmed_eutils": "2022-03-17",
+          "semantic_scholar": "2022-03-04",
+          "openaire": "2022-03-04"
+        },
+        "per_source_delta_days_vs_openalex": {
+          "openalex": 0,
+          "crossref": 0,
+          "europepmc": 13,
+          "pubmed_eutils": 13,
+          "semantic_scholar": 0,
+          "openaire": 0
+        },
+        "max_spread_days": 13,
+        "bucket": "8-30_days"
+      },
+      {
+        "anchor_doi": "10.2196/43905",
+        "openalex_date": "2022-12-19",
+        "per_source_date": {
+          "openalex": "2022-12-19",
+          "crossref": "2023-01-23",
+          "europepmc": "2023-01-23",
+          "pubmed_eutils": "2023-01-23",
+          "semantic_scholar": "2022-10-28",
+          "openaire": "2023-01-23"
+        },
+        "per_source_delta_days_vs_openalex": {
+          "openalex": 0,
+          "crossref": 35,
+          "europepmc": 35,
+          "pubmed_eutils": 35,
+          "semantic_scholar": -52,
+          "openaire": 35
+        },
+        "max_spread_days": 87,
+        "bucket": "31-180_days"
+      },
+      {
+        "anchor_doi": "10.1021/acssensors.0c00712",
+        "openalex_date": "2020-07-06",
+        "per_source_date": {
+          "openalex": "2020-07-06",
+          "crossref": "2020-07-06",
+          "europepmc": "2020-07-23",
+          "pubmed_eutils": "2020-07-23",
+          "semantic_scholar": "2020-07-06",
+          "openaire": "2020-07-06"
+        },
+        "per_source_delta_days_vs_openalex": {
+          "openalex": 0,
+          "crossref": 0,
+          "europepmc": 17,
+          "pubmed_eutils": 17,
+          "semantic_scholar": 0,
+          "openaire": 0
+        },
+        "max_spread_days": 17,
+        "bucket": "8-30_days"
+      },
+      {
+        "anchor_doi": "10.1007/978-3-662-59715-6_42",
+        "openalex_date": "2020-01-01",
+        "per_source_date": {
+          "openalex": "2020-01-01",
+          "crossref": "2020-01-01",
+          "openaire": "2018-01-01"
+        },
+        "per_source_delta_days_vs_openalex": {
+          "openalex": 0,
+          "crossref": 0,
+          "openaire": -730
+        },
+        "max_spread_days": 730,
+        "bucket": "over_180_days"
+      }
+    ],
+    "date_conflict_count": 36
+  },
+  "per_source_marginal": {
+    "openalex": {
+      "unique_works_only_this_source": 0,
+      "records": 60,
+      "anchor_hits": 60,
+      "anchors_where_this_is_the_only_source": 0
+    },
+    "crossref": {
+      "unique_works_only_this_source": 0,
+      "records": 59,
+      "anchor_hits": 59,
+      "anchors_where_this_is_the_only_source": 0
+    },
+    "europepmc": {
+      "unique_works_only_this_source": 0,
+      "records": 37,
+      "anchor_hits": 37,
+      "anchors_where_this_is_the_only_source": 0
+    },
+    "pubmed_eutils": {
+      "unique_works_only_this_source": 0,
+      "records": 37,
+      "anchor_hits": 37,
+      "anchors_where_this_is_the_only_source": 0
+    },
+    "semantic_scholar": {
+      "unique_works_only_this_source": 0,
+      "records": 56,
+      "anchor_hits": 56,
+      "anchors_where_this_is_the_only_source": 0
+    },
+    "openaire": {
+      "unique_works_only_this_source": 0,
+      "records": 59,
+      "anchor_hits": 59,
+      "anchors_where_this_is_the_only_source": 0
+    }
+  }
+}
