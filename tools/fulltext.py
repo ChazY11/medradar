@@ -355,6 +355,10 @@ def main() -> int:
     parser.add_argument("--limit", type=int, default=100)
     parser.add_argument("--out", default=DEFAULT_OUT)
     parser.add_argument("--status", action="store_true")
+    parser.add_argument("--reference", default="",
+                        help="reference store; when given, the pass is recorded per specialty")
+    parser.add_argument("--specialty", default="",
+                        help="the field this query covers, recorded with the pass")
     args = parser.parse_args()
 
     out_dir = Path(args.out)
@@ -369,6 +373,21 @@ def main() -> int:
         stats = fetch_preprints(fetcher, out_dir, args.days, args.limit)
     print(json.dumps(stats, ensure_ascii=False, indent=2))
     print(json.dumps(status(out_dir), ensure_ascii=False))
+    # Record the pass so the next night can tell an exhausted field from an unvisited one, and so the
+    # coverage page can report papers per field instead of one number about orthopaedics.
+    if args.reference and args.specialty:
+        try:
+            from medradar.radar.paper_passes import record_pass
+            from medradar.radar.reference import UdiReference
+
+            store = UdiReference(args.reference)
+            try:
+                record_pass(store, args.specialty, args.query, stats)
+            finally:
+                store.close()
+            print(f"recorded pass for {args.specialty}")
+        except Exception as error:  # noqa: BLE001 - recording must not fail the crawl
+            print(f"could not record pass: {type(error).__name__}: {error}")
     return 0
 
 

@@ -3815,6 +3815,36 @@ def test_a_closed_patent_window_does_not_cost_one_request_per_company(monkeypatc
     assert len(calls) == 3
 
 
+def test_the_paper_crawl_moves_to_a_field_nobody_has_covered(tmp_path):
+    """Measured: one fixed query drew 120 candidates of which 112 were cached, and covered one field."""
+    from medradar.radar.paper_passes import QUERIES, next_queries, read_passes, record_pass
+    from medradar.radar.reference import UdiReference
+
+    store = UdiReference(tmp_path / "reference.db")
+    first = next_queries(store, count=2)
+    assert [name for name, _q in first] == [QUERIES[0][0], QUERIES[1][0]]
+    assert read_passes(store) == []
+
+    record_pass(store, QUERIES[0][0], QUERIES[0][1],
+                {"candidates": 120, "stored": 7, "skipped_cached": 112})
+    record_pass(store, QUERIES[1][0], QUERIES[1][1],
+                {"candidates": 120, "stored": 60, "skipped_cached": 40})
+
+    passes = read_passes(store)
+    assert {row["specialty"] for row in passes} == {QUERIES[0][0], QUERIES[1][0]}
+    # Never-run fields come next, before any field is revisited.
+    third = [name for name, _q in next_queries(store, count=2)]
+    assert third == [QUERIES[2][0], QUERIES[3][0]]
+
+    # Once every field has run, the ones yielding least go first - an exhausted query is not retried
+    # ahead of one that still finds papers.
+    for name, query in QUERIES[2:]:
+        record_pass(store, name, query, {"candidates": 120, "stored": 50, "skipped_cached": 70})
+    ranked = [name for name, _q in next_queries(store, count=1)]
+    assert ranked == [QUERIES[0][0]]      # 7/120 is the lowest yield on record
+    store.close()
+
+
 def test_a_pre_digitisation_filing_is_never_requested(tmp_path):
     """Measured: 0 of 60 sampled filings from 1998-2009 have a PDF at any path shape.
 
