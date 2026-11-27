@@ -80,7 +80,11 @@ def layer_availability(args):
     # A deploy restarts the web service for about eighteen seconds. Retrying across thirty covers
     # that without hiding a genuine outage: an app that is really down still fails all five attempts
     # and the recorded error names the connection failure.
-    attempts = int(getattr(args, "retry_attempts", 5) or 1)
+    # 10 x 6 s = 60 s. Measured: a deploy restarts the web unit for about 18 s and then the first
+    # requests pay a 5.4 s warm-up, so a 30 s window still reported the deployment as an outage - the
+    # health unit went red on 2026-11-28 at 05:06:44 while a routine deploy was in progress, then green
+    # again two minutes later with no change to the product.
+    attempts = int(getattr(args, "retry_attempts", 10) or 1)
     delay = float(getattr(args, "retry_delay", 6.0) or 0.0)
     checks.append({"id": "port", "ok": _port_open("127.0.0.1", args.port),
                    "detail": "127.0.0.1:" + str(args.port)})
@@ -119,7 +123,7 @@ def main():
     parser.add_argument("--port", type=int, default=8792)
     parser.add_argument("--base-url", default="http://127.0.0.1:8792")
     parser.add_argument("--healthz-url", default="http://127.0.0.1:8792/healthz")
-    parser.add_argument("--retry-attempts", type=int, default=5,
+    parser.add_argument("--retry-attempts", type=int, default=10,
                         help="availability attempts; 5 x 6 s covers a service restart on deploy")
     parser.add_argument("--retry-delay", type=float, default=6.0)
     parser.add_argument("--web-dir", default=None)
