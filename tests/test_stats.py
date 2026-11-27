@@ -229,6 +229,19 @@ class BlockBootstrapTests(unittest.TestCase):
         self.assertGreaterEqual(coverage, 0.70, f"coverage {coverage:.2f} too low")
         self.assertLessEqual(coverage, 1.0)
 
+    def test_block_bootstrap_p_value_uses_plus_one_smoothing(self) -> None:
+        blocks = ["d1", "d2", "d3", "d4"]
+        n_boot = 200
+        expected_min = round(2.0 / (n_boot + 1), 6)
+        positive = stats.block_bootstrap_p_value([0.05, 0.06, 0.07, 0.08], blocks=blocks, n_boot=n_boot, seed=7)
+        negative = stats.block_bootstrap_p_value([-0.05, -0.06, -0.07, -0.08], blocks=blocks, n_boot=n_boot, seed=7)
+        centered = stats.block_bootstrap_p_value([-0.05, -0.01, 0.01, 0.05], blocks=blocks, n_boot=n_boot, seed=7)
+        self.assertGreater(positive["p"], 0.0)
+        self.assertEqual(positive["p"], expected_min)
+        self.assertEqual(negative["p"], expected_min)
+        self.assertGreater(centered["p"], 0.2)
+        self.assertLessEqual(centered["p"], 1.0)
+
 
 class MultipleTestingTests(unittest.TestCase):
     def test_bonferroni_scales_by_number_of_tests(self) -> None:
