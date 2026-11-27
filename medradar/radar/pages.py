@@ -648,6 +648,11 @@ def sources_page(*, meta: Mapping[str, Any], coverage: Mapping[str, Any] | None 
             for step in (night.get("steps") or []))
         # A run that never reached `done` was interrupted, and printing only "共 N 步" would present a
         # half-finished attempt as the night's work.
+        # A rehearsal is real evidence but it is not the night's work, and the two looked identical.
+        dry_note = (
+            '<p class="gap"><b>这次是手动试跑</b>：不是定时任务执行的结果，'
+            '用途是验证链路本身。它跑出的数字是真的，但不代表这一夜做了什么。</p>'
+            if night.get("dry") else "")
         interrupted_note = (
             '<p class="gap"><b>这次运行没有跑完</b>：账本里没有 done 这一步，'
             '说明它被中断了（手动结束、超时或机器重启）。下面是它中断前做完的部分。</p>'
@@ -656,7 +661,7 @@ def sources_page(*, meta: Mapping[str, Any], coverage: Mapping[str, Any] | None 
                        f'<p class="muted small">开始于 {esc(str(night.get("run")))}，'
                        f'共 {n(night.get("count"))} 步。每一步都故意吞掉自己的失败——'
                        '抓不到源是正常的一夜，不是故障——所以这里列出每一步到底做了什么。</p>'
-                       + interrupted_note +
+                       + dry_note + interrupted_note +
                        '<div class="card"><table><thead><tr><th>步骤</th><th>结果</th>'
                        f'<th>产出</th><th>时间</th></tr></thead><tbody>{night_rows}</tbody></table></div>')
     elif night:

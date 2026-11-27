@@ -41,9 +41,11 @@ def read(directory: str | os.PathLike[str] | None = None, *, limit_steps: int = 
     if not rows:
         return {"available": False, "run": None, "steps": [], "failed": []}
     run_id = rows[-1].get("run")
+    start_row: dict[str, Any] = {}
     for row in reversed(rows):
         if row.get("step") == "_start":
             run_id = row.get("run")
+            start_row = row
             break
     steps = [row for row in rows if row.get("run") == run_id and row.get("step") != "_start"]
     # A run that never reached `done` was interrupted - killed by hand, by a timeout, or by the box
@@ -56,6 +58,7 @@ def read(directory: str | os.PathLike[str] | None = None, *, limit_steps: int = 
         "steps": steps[-limit_steps:],
         "failed": [row.get("step") for row in steps if not row.get("ok")],
         "interrupted": interrupted,
+        "dry": bool(start_row.get("dry")),
     }
 
 
@@ -74,6 +77,7 @@ def summary_for_page(directory: str | os.PathLike[str] | None = None) -> dict[st
         "failed": data.get("failed") or [],
         "count": len(steps),
         "interrupted": bool(data.get("interrupted")),
+        "dry": bool(data.get("dry")),
     }
 
 

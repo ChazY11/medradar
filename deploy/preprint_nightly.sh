@@ -28,7 +28,10 @@ LOG="$REL/tools/nightly_log.py"
 # a stale file left by an earlier run - a wrong count on the page, produced by a permissions problem.
 WORK=$(mktemp -d "${TMPDIR:-/tmp}/medradar-nightly.XXXXXX") || WORK=/tmp
 trap 'rm -rf "$WORK"' EXIT INT TERM
-RUN=$(MEDRADAR_RADAR_DIR=${MEDRADAR_RADAR_DIR:-/srv/medradar/data/radar} "$PY" "$LOG" start 2>/dev/null || date -Is)
+# MEDRADAR_NIGHTLY_DRY=1 marks the run as a rehearsal, so the page cannot present it as the night's work.
+DRY_FLAG=""
+[ "${MEDRADAR_NIGHTLY_DRY:-}" = "1" ] && DRY_FLAG="--dry"
+RUN=$(MEDRADAR_RADAR_DIR=${MEDRADAR_RADAR_DIR:-/srv/medradar/data/radar} "$PY" "$LOG" start $DRY_FLAG 2>/dev/null || date -Is)
 mark() { MEDRADAR_RADAR_DIR=${MEDRADAR_RADAR_DIR:-/srv/medradar/data/radar} "$PY" "$LOG" mark "$1" "$2" "$RUN" "$3" 2>/dev/null || true; }
 grab() { grep -oE "$1" "$2" 2>/dev/null | head -1 | tr -d '\n'; }
 

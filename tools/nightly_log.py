@@ -49,9 +49,18 @@ def _append(path: Path, payload: dict[str, Any]) -> None:
         pass
 
 
-def start(path: Path | None = None, *, run: str | None = None) -> str:
+def start(path: Path | None = None, *, run: str | None = None, dry: bool = False) -> str:
+    """Open a run. `dry=True` marks an operator-run rehearsal.
+
+    Measured 2026-11-28: a shortened-sleep rehearsal I ran by hand was presented on /sources as
+    最近一次夜间任务, with real step counts and a real record total - indistinguishable from the 04:31 run
+    that actually fired. A rehearsal is useful evidence; claiming it was the night's work is not.
+    """
     run_id = run or _now()
-    _append(path or DEFAULT_PATH, {"run": run_id, "step": "_start", "ok": True, "at": _now()})
+    row: dict[str, Any] = {"run": run_id, "step": "_start", "ok": True, "at": _now()}
+    if dry:
+        row["dry"] = True
+    _append(path or DEFAULT_PATH, row)
     return run_id
 
 
@@ -78,7 +87,7 @@ def main(argv: list[str] | None = None) -> int:
         return 0
     command = args[0]
     if command == "start":
-        print(start(path))
+        print(start(path, dry="--dry" in args))
         return 0
     if command == "mark" and len(args) >= 3:
         run = args[3] if len(args) > 3 else start(path)

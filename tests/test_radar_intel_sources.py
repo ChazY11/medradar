@@ -4442,6 +4442,39 @@ def test_the_nightly_guard_blocks_a_live_run_and_clears_a_stale_one():
     assert "PASS" in result.stdout
 
 
+def test_a_rehearsal_is_not_presented_as_the_nights_work(tmp_path):
+    """A shortened-sleep rehearsal I ran by hand looked identical to the 04:31 run on /sources."""
+    from medradar.radar import nightly
+    from medradar.radar.pages import sources_page
+
+    ledger = tmp_path / "nightly.jsonl"
+    dry_rows = [
+        {"run": "r-dry", "step": "_start", "ok": True, "at": "2026-11-27T23:07:17+00:00", "dry": True},
+        {"run": "r-dry", "step": "done", "ok": True, "note": "5749 records",
+         "at": "2026-11-27T23:07:30+00:00"},
+    ]
+    ledger.write_text("\n".join(json.dumps(row, ensure_ascii=False) for row in dry_rows) + "\n",
+                      encoding="utf-8")
+    summary = nightly.summary_for_page(tmp_path)
+    assert summary["dry"] is True
+
+    base = {"sources": [], "shape": {}, "gaps": []}
+    page = sources_page(meta=base, coverage={"nightly": summary})
+    assert "这次是手动试跑" in page
+
+    # The scheduled run carries no flag and gets no annotation.
+    scheduled = [
+        {"run": "r-night", "step": "_start", "ok": True, "at": "2026-11-28T20:31:26+00:00"},
+        {"run": "r-night", "step": "done", "ok": True, "note": "5699 records",
+         "at": "2026-11-28T20:55:36+00:00"},
+    ]
+    ledger.write_text("\n".join(json.dumps(row, ensure_ascii=False) for row in scheduled) + "\n",
+                      encoding="utf-8")
+    real = nightly.summary_for_page(tmp_path)
+    assert real["dry"] is False
+    assert "这次是手动试跑" not in sources_page(meta=base, coverage={"nightly": real})
+
+
 def test_a_pre_digitisation_filing_is_never_requested(tmp_path):
     """Measured: 0 of 60 sampled filings from 1998-2009 have a PDF at any path shape.
 
