@@ -46,11 +46,16 @@ def read(directory: str | os.PathLike[str] | None = None, *, limit_steps: int = 
             run_id = row.get("run")
             break
     steps = [row for row in rows if row.get("run") == run_id and row.get("step") != "_start"]
+    # A run that never reached `done` was interrupted - killed by hand, by a timeout, or by the box
+    # going away. Measured 2026-11-28: an aborted test left a two-step run in the ledger, and the page
+    # presented it as 最近一次夜间任务, which reads as "the job ran and this is what it did".
+    interrupted = bool(steps) and not any(row.get("step") == "done" for row in steps)
     return {
         "available": True,
         "run": run_id,
         "steps": steps[-limit_steps:],
         "failed": [row.get("step") for row in steps if not row.get("ok")],
+        "interrupted": interrupted,
     }
 
 
@@ -68,6 +73,7 @@ def summary_for_page(directory: str | os.PathLike[str] | None = None) -> dict[st
                    "note": row.get("note") or ""} for row in steps],
         "failed": data.get("failed") or [],
         "count": len(steps),
+        "interrupted": bool(data.get("interrupted")),
     }
 
 

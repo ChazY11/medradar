@@ -4386,6 +4386,39 @@ def test_a_technology_topic_shows_what_is_published_about_it_and_what_that_is_no
     assert "没有这个技术主题" in missing
 
 
+def test_an_interrupted_night_is_not_presented_as_the_night(tmp_path):
+    """An aborted run left two steps in the ledger and the page called it 最近一次夜间任务."""
+    from medradar.radar import nightly
+
+    ledger = tmp_path / "nightly.jsonl"
+    rows = [
+        {"run": "r1", "step": "_start", "at": "2026-11-27T20:31:26+00:00"},
+        {"run": "r1", "step": "preprints", "ok": True, "note": "stored 0", "at": "2026-11-27T20:31:39+00:00"},
+        {"run": "r1", "step": "done", "ok": True, "note": "5699 records", "at": "2026-11-27T20:55:36+00:00"},
+        # A second run that was killed before it could finish.
+        {"run": "r2", "step": "_start", "at": "2026-11-27T22:45:42+00:00"},
+        {"run": "r2", "step": "preprints", "ok": True, "note": "stored 0", "at": "2026-11-27T22:45:50+00:00"},
+    ]
+    ledger.write_text("\n".join(json.dumps(row, ensure_ascii=False) for row in rows) + "\n",
+                      encoding="utf-8")
+
+    from medradar.radar.pages import sources_page
+
+    base = {"sources": [], "shape": {}, "gaps": []}
+    interrupted = nightly.summary_for_page(tmp_path)
+    assert interrupted["run"] == "r2"                  # the newest run is the one shown
+    assert interrupted["interrupted"] is True          # ...and it has no done step
+    page = sources_page(meta=base, coverage={"nightly": interrupted})
+    assert "这次运行没有跑完" in page
+
+    # The complete run is neither flagged in the data nor annotated on the page.
+    ledger.write_text("\n".join(json.dumps(row, ensure_ascii=False) for row in rows[:3]) + "\n",
+                      encoding="utf-8")
+    complete = nightly.summary_for_page(tmp_path)
+    assert complete["interrupted"] is False
+    assert "这次运行没有跑完" not in sources_page(meta=base, coverage={"nightly": complete})
+
+
 def test_a_pre_digitisation_filing_is_never_requested(tmp_path):
     """Measured: 0 of 60 sampled filings from 1998-2009 have a PDF at any path shape.
 
