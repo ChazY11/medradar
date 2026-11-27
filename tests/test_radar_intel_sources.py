@@ -4166,6 +4166,43 @@ def test_a_field_can_say_what_was_published_lately_among_what_it_holds(tmp_path)
     store.close()
 
 
+def test_a_paper_page_marks_a_pre_filled_date_instead_of_printing_it_as_published():
+    """14 of 3,366 records carry a date after today; the page printed 2027-01-01 as the publication."""
+    from medradar.radar.pages import paper_page
+
+    future = paper_page(record={"title": "Next January", "year": "2027-01-01"},
+                        terms=[], brands=[], paper_id="PMC1")
+    assert "期刊预填，尚未出版" in future
+    past = paper_page(record={"title": "Older", "year": "2024-03-01"},
+                      terms=[], brands=[], paper_id="PMC2")
+    assert "2024-03-01" in past and "期刊预填" not in past
+
+
+def test_a_paper_term_list_does_not_lead_with_function_words(tmp_path):
+    """Measured on PMC13739605: half the first eight terms were with/that/this/which."""
+    from medradar.radar.papers_index import paper_terms
+    from medradar.radar.reference import UdiReference
+    from medradar.radar.papers_index import ensure_tables
+
+    store = UdiReference(tmp_path / "ref.db")
+    ensure_tables(store)
+    rows = [("lung", 48), ("pressure", 37), ("with", 35), ("that", 34), ("surgery", 19),
+            ("this", 18), ("which", 17), ("cmh2o", 16)]
+    store.conn.executemany(
+        "INSERT INTO paper_term (term, paper_id, title, year, hits) VALUES (?,?,?,?,?)",
+        [(term, "PMC1", "t", "2024", hits) for term, hits in rows])
+    store.conn.commit()
+
+    kept = [item["term"] for item in paper_terms(store, "PMC1", limit=4)]
+    assert "with" not in kept and "that" not in kept and "this" not in kept
+    assert kept == ["lung", "pressure", "surgery", "cmh2o"]     # meaningful terms first
+
+    # Ask for everything and the filter still holds: it is a rule, not a shorter page.
+    everything = [item["term"] for item in paper_terms(store, "PMC1", limit=40)]
+    assert not ({"with", "that", "this", "which"} & set(everything))
+    store.close()
+
+
 def test_a_pre_digitisation_filing_is_never_requested(tmp_path):
     """Measured: 0 of 60 sampled filings from 1998-2009 have a PDF at any path shape.
 

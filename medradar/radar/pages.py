@@ -1371,6 +1371,8 @@ def paper_page(*, record: Mapping[str, Any] | None, terms: Sequence[Mapping[str,
     this paper was indexed under. That is a lead to check, not a claim that the paper studies that
     product, and the page says so before the list rather than after it.
     """
+    from .watermark import utc_today
+
     if record is None:
         return layout(
             title="论文 · MedRadar",
@@ -1395,10 +1397,18 @@ def paper_page(*, record: Mapping[str, Any] | None, terms: Sequence[Mapping[str,
                   f'<th>是哪些词</th></tr></thead><tbody>{brand_rows}</tbody></table></div>'
                   if brand_rows else gap_note("no_registered_brand_shares_these_terms"))
 
+    # A date after today is a journal pre-filling an upcoming issue, not a paper published in the
+    # future. Measured in the live corpus: 14 of 3,366 records carry one (three at 2027-01-01).
+    raw_date = str(record.get("year") or "")[:10]
+    if raw_date and raw_date > str(utc_today()):
+        date_note = f' · {esc(raw_date)}<span class="muted small">（期刊预填，尚未出版）</span>'
+    else:
+        date_note = f' · {esc(raw_date)}' if raw_date else ""
+
     body = f"""
 <p class="small muted"><a href="/">← 重新查询</a></p>
 <h1>{esc(record.get("title") or paper_id)}</h1>
-<p class="lede">{esc(paper_id)}{(" · " + esc(str(record.get("year"))[:10])) if record.get("year") else ""}</p>
+<p class="lede">{esc(paper_id)}{date_note}</p>
 
 <h2>这篇论文被索引到的词</h2>
 <p class="muted small">只索引了注册表里出现过的名称，所以这张词表本身就是"这篇论文提到了哪些已知产品名"。</p>

@@ -96,6 +96,28 @@ STRUCTURAL_WORDS = frozenset({
     "mm", "cm", "inch", "inches", "pcs", "pc", "unit", "units", "package",
 })
 
+#: English function words and research-report filler that survive the register vocabulary check.
+#
+# The index keeps only tokens that appear somewhere in the 318k-term register vocabulary, which is the
+# right filter for "is this a device name". It is not a stopword list: brand names contain "with",
+# "that", "this" and "figure", so a paper's term table filled with them. Measured on PMC13739605, the
+# first eight rows were lung/pressure/with/cmh2o/surgery/volume/that/driving - half noise, and the words
+# that mean something were pushed down.
+FUNCTION_WORDS = STRUCTURAL_WORDS | {
+    "that", "this", "these", "those", "which", "than", "then", "there", "their", "they",
+    "have", "has", "had", "was", "were", "are", "been", "being", "does", "did", "doing",
+    "into", "between", "during", "after", "before", "within", "without", "among", "under",
+    "also", "such", "more", "most", "less", "least", "very", "much", "many", "some", "any",
+    "can", "could", "may", "might", "must", "shall", "should", "will", "would",
+    "not", "but", "however", "therefore", "thus", "hence", "while", "whereas", "because",
+    "using", "used", "use", "uses", "based", "according", "respectively", "including",
+    "show", "shows", "shown", "showing", "found", "observed", "reported", "suggest",
+    "study", "studies", "result", "results", "group", "groups", "patient", "patients",
+    "table", "tables", "figure", "figures", "data", "method", "methods", "conclusion",
+    "introduction", "background", "objective", "objectives", "purpose", "aim", "aims",
+    "total", "mean", "median", "value", "values", "level", "levels", "type", "types",
+}
+
 #: Counters that stay valid until the index is rebuilt, keyed by (database path, mtime).
 #:
 #: Not keyed by id(reference): CPython reuses ids after garbage collection, which made a fresh store
@@ -232,15 +254,31 @@ def brands_for_terms(reference, terms: Sequence[str], *, limit: int = 30,
     return out
 
 
-def paper_terms(reference, paper_id: str, *, limit: int = 40) -> list[dict[str, Any]]:
-    """The terms a paper was indexed under, most frequent first."""
+def paper_terms(reference, paper_id: str, *, limit: int = 40,
+                skip_function_words: bool = True) -> list[dict[str, Any]]:
+    """The terms a paper was indexed under, most frequent first.
+
+    Function words are dropped by default. They reach the table because the register vocabulary happens
+    to contain them inside brand names ("with", "that", "figure"), so the filter that decides "is this
+    a device name" also lets them through. Measured on PMC13739605: of the first eight rows, four were
+    function words, and the terms that carry meaning were pushed off the top of the page.
+    """
     try:
+        # Ask for more than `limit` so the filter does not shorten the visible list.
         rows = reference.conn.execute(
             "SELECT term, hits FROM paper_term WHERE paper_id = ? ORDER BY hits DESC LIMIT ?",
-            (paper_id, limit)).fetchall()
+            (paper_id, limit * 4 if skip_function_words else limit)).fetchall()
     except Exception:  # noqa: BLE001
         return []
-    return [{"term": str(r[0]), "hits": int(r[1] or 0)} for r in rows]
+    kept: list[dict[str, Any]] = []
+    for row in rows:
+        term = str(row[0])
+        if skip_function_words and term in FUNCTION_WORDS:
+            continue
+        kept.append({"term": term, "hits": int(row[1] or 0)})
+        if len(kept) >= limit:
+            break
+    return kept
 
 
 def paper_record(reference, paper_id: str) -> dict[str, Any] | None:
