@@ -6403,6 +6403,63 @@ def test_a_comparison_sends_a_device_identifier_to_the_device_page():
     assert "没有匹配到公司，未参与对比" in plain
 
 
+def test_a_field_page_lists_the_product_codes_it_is_made_of(tmp_path):
+    """"产品码 295" is a number a reader cannot act on; the codes are what a regulatory reader works in."""
+    import sqlite3
+
+    from medradar.radar.pages import _field_codes_block, area_page
+    from medradar.radar.product_codes import codes_for_specialty
+
+    path = tmp_path / "codes.db"
+    conn = sqlite3.connect(path)
+    conn.execute("CREATE TABLE product_code_class (product_code TEXT, device_name TEXT,"
+                 " medical_specialty TEXT, regulation_number TEXT, device_class TEXT, fetched_at TEXT)")
+    conn.execute("CREATE TABLE udi_device (device_key TEXT, di TEXT, brand_name TEXT, company_name TEXT,"
+                 " labeler_duns TEXT, version_or_model TEXT, catalog_number TEXT, product_codes TEXT,"
+                 " gmdn_name TEXT, publish_date TEXT)")
+    # The device census joins udi_premarket; without it the count cannot run and the page prints a dash.
+    conn.execute("CREATE TABLE udi_premarket (device_key TEXT, submission_number TEXT)")
+    conn.executemany("INSERT INTO product_code_class VALUES (?,?,?,?,?,?)", [
+        ("D351", "Prosthesis, Crown", "Dental", "872.3640", "2", "x"),
+        ("EIH", "Powder, Porcelain", "Dental", "872.6660", "2", "x"),
+        ("HWC", "Screw, Fixation, Bone", "Orthopedic", "888.3040", "2", "x"),
+    ])
+    conn.executemany("INSERT INTO udi_device VALUES (?,?,?,?,?,?,?,?,?,?)",
+                     # product_codes is a JSON array in the register, not a bare string.
+                     [(f"k{i}", f"di{i}", "b", "c", "d", "m", "cat", '["D351"]', "g", "2026-01-01")
+                      for i in range(3)]
+                     + [(f"j{i}", f"dj{i}", "b", "c", "d", "m", "cat", '["EIH"]', "g", "2026-01-01")
+                        for i in range(1)])
+    conn.executemany("INSERT INTO udi_premarket VALUES (?,?)",
+                     [(f"k{i}", "K1") for i in range(3)] + [("j0", "K2")])
+    conn.commit()
+    conn.close()
+
+    class Store:
+        def __init__(self):
+            self.conn = sqlite3.connect(path)
+            self.path = path
+
+    store = Store()
+    result = codes_for_specialty(store, "dental")     # case-insensitive, like the field page
+    store.conn.close()
+
+    assert result["total"] == 2                        # Orthopedic's code is not in this field
+    assert [item["product_code"] for item in result["codes"]] == ["D351", "EIH"]   # by devices
+    assert result["codes"][0]["devices"] == 3
+
+    html = _field_codes_block(result, "Dental")
+    assert "这个领域由哪些产品码组成" in html
+    assert "D351" in html and "/device?query=D351" in html
+    assert "共 2 个" in html
+    # No codes: no section, not an empty heading.
+    assert _field_codes_block({}, "Dental") == ""
+    # And the page shows it even when the field has no literature.
+    page = area_page(specialty="Dental", summary={"devices": 10, "codes": 2, "companies": 3},
+                     companies=[], data={"field_codes": result})
+    assert "这个领域由哪些产品码组成" in page
+
+
 def test_a_pre_digitisation_filing_is_never_requested(tmp_path):
     """Measured: 0 of 60 sampled filings from 1998-2009 have a PDF at any path shape.
 

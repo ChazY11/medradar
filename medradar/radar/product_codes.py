@@ -166,6 +166,43 @@ def specialty_counts(reference, codes: Sequence[str]) -> list[dict[str, Any]]:
             for name, count in sorted(tally.items(), key=lambda kv: -kv[1])]
 
 
+def codes_for_specialty(reference, specialty: str, *, limit: int = 40) -> dict[str, Any]:
+    """The product codes that make up one field, largest first, with how many devices sit behind each.
+
+    The field page printed "产品码 295" and nothing else: a number a reader cannot act on. Which codes they are
+    is the register's own structure, and one query answers it - the device counts come from the same census the
+    device page uses, so the two agree.
+
+    `limit` caps the rows; `total` says how many there are, so a truncated list is visibly truncated.
+    """
+    from .code_census import product_code_census
+
+    name = " ".join(str(specialty or "").split())
+    if not name:
+        return {"codes": [], "total": 0}
+    try:
+        rows = reference.conn.execute(
+            "SELECT product_code, device_name, regulation_number, device_class"
+            " FROM product_code_class WHERE LOWER(medical_specialty) = LOWER(?)",
+            (name,)).fetchall()
+    except Exception:  # noqa: BLE001 - no table, nothing to list
+        return {"codes": [], "total": 0}
+    try:
+        census = product_code_census(reference) if rows else {}
+    except Exception:  # noqa: BLE001 - the list is still worth showing without counts
+        # A zero here would read as "this code has no devices", which is a different claim from "we could not
+        # count". None travels to the page, which prints a dash.
+        census = None
+    items = [{"product_code": str(row[0]),
+              "device_name": str(row[1] or ""),
+              "regulation_number": str(row[2] or ""),
+              "device_class": str(row[3] or ""),
+              "devices": (int(census.get(str(row[0])) or 0) if census is not None else None)}
+             for row in rows]
+    items.sort(key=lambda item: (-(item["devices"] or 0), item["product_code"]))
+    return {"codes": items[:max(1, limit)], "total": len(items)}
+
+
 def product_codes_summary(reference) -> dict[str, Any]:
     """What the table holds, by specialty, for the coverage page."""
     ensure_table(reference)

@@ -1152,6 +1152,34 @@ def _trend_text(trend: Mapping[str, Any]) -> str:
     return text + ' · 词频不是技术判断</span>'
 
 
+def _field_codes_block(codes: Mapping[str, Any], specialty: str) -> str:
+    """Which product codes make up this field - the register's own structure, not our summary of it.
+
+    The page printed "产品码 295" and nothing else. Codes are what a regulatory reader works in: they file,
+    search and talk in them.
+    """
+    items = list(codes.get("codes") or [])
+    total = int(codes.get("total") or 0)
+    if not items:
+        return ""
+    rows = "".join(
+        f'<tr><td><a href="/device?query={esc(item["product_code"])}">'
+        f'{esc(item["product_code"])}</a></td>'
+        f'<td>{esc(str(item.get("device_name") or "")[:64])}</td>'
+        f'<td class="muted small">{esc(str(item.get("regulation_number") or ""))}</td>'
+        f'<td class="num">{n(item.get("devices")) if item.get("devices") is not None else "—"}</td></tr>'
+        for item in items)
+    more = (f'，按注册设备数排序列出前 {n(len(items))} 个，共 {n(total)} 个'
+            if total > len(items) else f'，共 {n(total)} 个')
+    return ('<h2>这个领域由哪些产品码组成</h2>'
+            f'<details><summary>展开 {esc(specialty)} 的产品码{more}</summary>'
+            '<p class="small muted">产品码来自 FDA 分类库；设备数按注册条目计，'
+            '一台设备带多个产品码时会在各码下分别计入。点产品码直接查该码下的设备。'
+            '设备数为「—」表示这次没能统计（不是没有设备）。</p>'
+            '<table><thead><tr><th>产品码</th><th>分类名</th><th>法规号</th><th>设备数</th></tr>'
+            f'</thead><tbody>{rows}</tbody></table></details>')
+
+
 def _company_trend_line(specialty: str, trend: Mapping[str, Any]) -> str:
     """What is rising in the field this company registers most in.
 
@@ -2671,6 +2699,8 @@ def area_page(*, specialty: str, summary: Mapping[str, Any] | None,
     else:
         topics_block = ('<h2>这个领域的文献在谈什么</h2>'
                         + gap_note("no_papers_for_this_specialty"))
+    # Outside the literature branch: the codes are the register's structure, not a property of the papers.
+    topics_block += _field_codes_block(data.get("field_codes") or {}, str(specialty or ""))
     # What goes wrong in this field, from MAUDE. Counts of reports, not rates: MAUDE is voluntary, so a
     # popular code has more reports partly because it has more devices in use and more reporters.
     shape = data.get("field_failures") or {}
@@ -3708,6 +3738,7 @@ def pages_router(service: Any, *, endpoints: Mapping[str, Any] | None = None) ->
                 literature_coverage: dict[str, Any] = {}
                 field_emerging: dict[str, Any] = {}
                 field_rank: dict[str, Any] = {}
+                field_codes: dict[str, Any] = {}
                 if summary:
                     try:
                         from .paper_passes import field_topics as read_topics, papers_for
@@ -3742,6 +3773,9 @@ def pages_router(service: Any, *, endpoints: Mapping[str, Any] | None = None) ->
 
                         field_rank = trend_rank(read_trends(store), resolved_name,
                                                 min_total=TREND_SMALL_WINDOW)
+                        from .product_codes import codes_for_specialty
+
+                        field_codes = codes_for_specialty(store, resolved_name)
                         # How much of the corpus the field pages speak for at all: audit 09 asked for it.
                         literature_coverage = field_coverage(store)
                     except Exception:  # noqa: BLE001 - no literature is an empty note
@@ -3756,6 +3790,7 @@ def pages_router(service: Any, *, endpoints: Mapping[str, Any] | None = None) ->
                                    "field_recency": field_recency,
                                    "field_emerging": field_emerging,
                                    "field_rank": field_rank,
+                                   "field_codes": field_codes,
                                    "literature_coverage": literature_coverage,
                                    "resolved_from": resolved_from})
 
