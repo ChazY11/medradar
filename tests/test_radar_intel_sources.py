@@ -5499,6 +5499,53 @@ def test_europe_pmc_paginates_with_its_own_cursor_mark_not_the_page_number():
     assert second_cursor.split("|")[0] == "1"
 
 
+def test_observed_pmcids_can_be_fetched_by_identity(tmp_path):
+    """The radar lane recorded papers the field index never saw; 190 observed records carry a PMCID."""
+    from tools.fulltext import fetch_by_pmcids
+
+    stored: list[str] = []
+
+    class Fetcher:
+        def get_bytes(self, url, *, allow_not_found=False):
+            class Result:
+                def __init__(self, body):
+                    self.body = body
+            if "NOTHERE" in url:
+                return Result(b"")
+            return Result(b"<article><body><p>text</p></body></article>")
+
+    import tools.fulltext as ft
+
+    original = ft._payload_bytes
+    ft._payload_bytes = lambda response: response.body
+    try:
+        original_store = ft._store
+
+        def fake_store(out_dir, identifier, **kwargs):
+            stored.append(identifier)
+            (Path(out_dir) / f"paper_{identifier}.json").write_text("{}", encoding="utf-8")
+
+        ft._store = fake_store
+        original_parse = ft.parse_jats
+
+        class Document:
+            sections = {"body": "text"}
+
+        ft.parse_jats = lambda body: Document()
+        try:
+            stats = fetch_by_pmcids(Fetcher(), tmp_path, ["PMC1", "not-an-id", "PMC2"])
+        finally:
+            ft.parse_jats = original_parse
+    finally:
+        ft._payload_bytes = original
+        ft._store = original_store
+
+    # Only identifiers that look like PMCIDs are attempted; the junk one is skipped silently.
+    assert stats["candidates"] == 2
+    assert stored == ["PMC1", "PMC2"]
+    assert stats["stored"] == 2
+
+
 def test_a_pre_digitisation_filing_is_never_requested(tmp_path):
     """Measured: 0 of 60 sampled filings from 1998-2009 have a PDF at any path shape.
 

@@ -242,6 +242,73 @@ def fetch_europepmc(fetcher: PoliteFetcher, out_dir: Path, query: str, limit: in
     return stats
 
 
+def fetch_by_pmcids(fetcher: PoliteFetcher, out_dir: Path, pmcids: list[str]) -> dict[str, int]:
+    """Full text for known PMCIDs, instead of for a fresh query.
+
+    The radar lane records papers it observes; the field pages read this directory. Without this bridge the
+    two never met, and a paper the radar found today could not appear on its field page at all. Measured
+    2026-11-28: 190 observed records carry a PMCID and none of them were in the corpus.
+
+    Every identifier is reported: stored, already cached, unpublished, or failed with the reason. A bounded
+    list keeps a run inside its politeness budget.
+    """
+    stats = {"candidates": 0, "stored": 0, "skipped_cached": 0, "no_fulltext": 0,
+             "failed": 0, "matched_ids": []}
+    for raw in pmcids:
+        pmcid = str(raw or "").strip()
+        if not pmcid.upper().startswith("PMC"):
+            continue
+        stats["candidates"] += 1
+        if _out_path(out_dir, pmcid).exists():
+            stats["skipped_cached"] += 1
+            stats["matched_ids"].append(pmcid)
+            continue
+        url = PMC_OA_BUCKET.format(pmcid=pmcid)
+        body = b""
+        source_url = url
+        try:
+            body = _payload_bytes(fetcher.get_bytes(url, allow_not_found=True))
+        except RateLimited:
+            stats["retry_later"] = stats.get("retry_later", 0) + 1
+            continue
+        except Exception:  # noqa: BLE001 - a mirror miss falls through to the EBI attempt
+            body = b""
+        if not body:
+            time.sleep(SECONDS_BETWEEN)
+            source_url = EUROPEPMC_FULLTEXT.format(pmcid=pmcid)
+            try:
+                body = _payload_bytes(fetcher.get_bytes(source_url, allow_not_found=True))
+            except RateLimited:
+                stats["retry_later"] = stats.get("retry_later", 0) + 1
+                continue
+            except Exception as error:  # noqa: BLE001
+                _store_failure(out_dir, pmcid, url=source_url, status="failed",
+                               reason=f"{type(error).__name__}: {error}")
+                stats["failed"] += 1
+                continue
+        if not body:
+            _store_failure(out_dir, pmcid, url=source_url, status="not_published",
+                           reason="absent from the PMC Open Access mirror and the Europe PMC endpoint")
+            stats["no_fulltext"] += 1
+            continue
+        try:
+            document = parse_jats(body)
+        except JatsError as error:
+            status = "empty_record" if "no body text or abstract" in str(error) else "failed"
+            _store_failure(out_dir, pmcid, url=source_url, status=status, reason=str(error))
+            if status == "failed":
+                stats["failed"] += 1
+            else:
+                stats["no_fulltext"] += 1
+            continue
+        _store(out_dir, pmcid, url=source_url, journal="", licence="",
+               title="", published_at="", document=document,
+               extra={"bytes": len(body), "via": "radar-observed"})
+        stats["stored"] += 1
+        stats["matched_ids"].append(pmcid)
+    return stats
+
+
 def fetch_preprints(fetcher: PoliteFetcher, out_dir: Path, days: int, limit: int,
                     servers: Iterable[str] = ("medrxiv", "biorxiv")) -> dict[str, int]:
     stats = {"candidates": 0, "stored": 0, "skipped_cached": 0, "no_fulltext": 0, "failed": 0,
@@ -370,6 +437,9 @@ def main() -> int:
                         help="reference store; when given, the pass is recorded per specialty")
     parser.add_argument("--specialty", default="",
                         help="the field this query covers, recorded with the pass")
+    parser.add_argument("--pmcids", default="",
+                        help="comma-separated PMCIDs to fetch by identity, for papers the radar lane "
+                             "observed; takes precedence over --query")
     args = parser.parse_args()
 
     out_dir = Path(args.out)
@@ -378,7 +448,10 @@ def main() -> int:
         return 0
 
     fetcher = _fetcher()
-    if args.source == "europepmc":
+    ids = [part.strip() for part in str(args.pmcids or "").split(",") if part.strip()]
+    if ids:
+        stats = fetch_by_pmcids(fetcher, out_dir, ids[: max(1, args.limit)])
+    elif args.source == "europepmc":
         stats = fetch_europepmc(fetcher, out_dir, args.query, args.limit)
     else:
         stats = fetch_preprints(fetcher, out_dir, args.days, args.limit)
