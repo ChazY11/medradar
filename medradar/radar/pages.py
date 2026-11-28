@@ -442,7 +442,7 @@ def _area_line(timeline: Any) -> str:
             f'<ul class="small" style="margin:4px 0 0 18px">{"".join(parts)}</ul>')
 
 
-def _field_topics_line(timeline: Any) -> str:
+def _field_topics_line(timeline: Any, store: Any = None) -> str:
     """What the device's field is talking about, so one product leads to the research around it.
 
     The terms are the field's own papers' words, filtered for structural vocabulary; the sentence says
@@ -459,12 +459,27 @@ def _field_topics_line(timeline: Any) -> str:
         f'<span class="chip" title="{n(item.get("count"))} 次命中">{esc(str(item.get("term")))}'
         f'<span class="muted small"> {n(item.get("papers"))}/{n(item.get("held"))} 篇</span></span>'
         for item in topics)
+    # What is rising in that field, from the table the night builds. A device page is where an engineer
+    # stands when asking "what is moving in this area", and the answer lived one click away on the field page.
+    trend = ""
+    try:
+        from .paper_passes import field_trends
+
+        entry = (field_trends(store) if store is not None else {}).get(specialty) or {}
+    except Exception:  # noqa: BLE001 - no table, no line
+        entry = {}
+    if entry.get("term"):
+        trend = (f'<p class="small">这个领域最近上升的词：'
+                 f'<a href="/area?name={esc(specialty)}">{esc(str(entry.get("term")))}</a>'
+                 f'<span class="muted small"> {esc(str(entry.get("lift")))}× · 算于 '
+                 f'{esc(str(entry.get("computed_at")) or "未知")} · 词频不是技术判断</span></p>')
     return (f'<p class="small" style="margin:10px 0 0">'
             f'<b>{esc(specialty)}</b> 这个领域的文献在谈什么'
             f'（<a href="/area?name={esc(specialty)}">看该领域</a>）'
             f'<span class="muted small"> · 论文里出现的词，不是技术判断；'
             '虚词与在 10 个以上领域都出现的通用词已去掉。数字是「出现在多少篇里」</span></p>'
-            f'<div class="chips">{chips}</div>')
+            f'<div class="chips">{chips}</div>'
+            + trend)
 
 
 def _suggestion_block(names: Sequence[str]) -> str:
@@ -652,7 +667,7 @@ def device_dossier(timeline: Any, *, query: str, store: Any = None,
 {('· 型号 ' + esc(head.version_or_model)) if head.version_or_model else ''}</p>
 <div class="chips">{_identifier_chips(head)}</div>
 {_area_line(timeline)}
-{_field_topics_line(timeline)}
+{_field_topics_line(timeline, store)}
 {shelf}
 <div class="grid" style="margin-top:22px">{summary_cards}</div>
 

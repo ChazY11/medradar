@@ -6007,6 +6007,42 @@ def test_the_recent_list_exports_with_its_bounds():
                                        "until": "2026-11-28"}).strip()
 
 
+def test_a_device_page_shows_what_is_rising_in_its_field(tmp_path):
+    """A device page is where an engineer stands when asking what is moving in this area."""
+    import sqlite3
+
+    from medradar.radar.pages import _field_topics_line
+
+    path = tmp_path / "dev_trend.db"
+    conn = sqlite3.connect(path)
+    conn.execute("CREATE TABLE field_trend (specialty TEXT PRIMARY KEY, term TEXT, recent INTEGER,"
+                 " baseline INTEGER, lift REAL, computed_at TEXT)")
+    conn.execute("INSERT INTO field_trend VALUES ('Dental','gingival',17,1,14.53,'2026-11-28')")
+    conn.commit()
+    conn.close()
+
+    class Store:
+        def __init__(self):
+            self.conn = sqlite3.connect(path)
+
+    class Timeline:
+        field_topics = [{"term": "edentulous", "papers": 59, "held": 120, "count": 421}]
+        field_specialty = "Dental"
+
+    store = Store()
+    line = _field_topics_line(Timeline(), store)
+    store.conn.close()
+
+    assert "edentulous" in line                       # the chips still render
+    assert "这个领域最近上升的词" in line
+    assert "gingival" in line
+    assert "算于 2026-11-28" in line                  # the table's own stamp travels with it
+    assert "词频不是技术判断" in line
+
+    # Without a store or a table the chips still render; the trend line is simply absent.
+    assert "最近上升的词" not in _field_topics_line(Timeline())
+
+
 def test_a_pre_digitisation_filing_is_never_requested(tmp_path):
     """Measured: 0 of 60 sampled filings from 1998-2009 have a PDF at any path shape.
 
