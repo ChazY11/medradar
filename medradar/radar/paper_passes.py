@@ -182,7 +182,7 @@ def field_topics(reference, specialty: str, *, limit: int = 12) -> list[dict[str
     not about the corpus. Words that appear in most fields are filtered out: "implant" says nothing
     when every field's papers say it.
     """
-    from .papers_index import FUNCTION_WORDS, tokens
+    from .papers_index import FUNCTION_WORDS, is_generic, term_field_spread, tokens
 
     ids = papers_for(reference, specialty)
     if not ids:
@@ -191,24 +191,29 @@ def field_topics(reference, specialty: str, *, limit: int = 12) -> list[dict[str
     try:
         rows = reference.conn.execute(
             f"SELECT term, SUM(hits) AS n FROM paper_term WHERE paper_id IN ({placeholders})"
-            f" GROUP BY term ORDER BY n DESC LIMIT 400", tuple(ids[:900])).fetchall()
+            f" GROUP BY term ORDER BY n DESC LIMIT 800", tuple(ids[:900])).fetchall()
     except Exception:  # noqa: BLE001 - no term table yet
         return []
-    total = sum(int(row[1] or 0) for row in rows) or 1
-    kept: list[dict[str, Any]] = []
+    # A word that appears in most fields is not evidence about this one. Measured on Dental: the static
+    # list alone left clinical, implant, that, this, with, bone at the top; the spread filter leaves
+    # edentulous, abutment, occlusal, mandibular, osteotomy.
+    spread = term_field_spread(reference)
+    candidates: list[tuple[str, int]] = []
     for term, count in rows:
         text = str(term or "")
         # The same word list the paper page uses. It was STRUCTURAL_WORDS here and FUNCTION_WORDS
         # there, so a field's topic chips still led with "which 1,704" while the paper page had been
         # cleaned - one question, two standards.
-        if len(text) < MIN_TOPIC_LENGTH or text in FUNCTION_WORDS:
+        if len(text) < MIN_TOPIC_LENGTH or text in FUNCTION_WORDS or is_generic(text, spread):
             continue
-        share = 100.0 * int(count or 0) / total
-        if share < 0.4:
-            continue
-        kept.append({"term": text, "count": int(count or 0), "share": round(share, 1)})
-        if len(kept) >= limit:
-            break
+        candidates.append((text, int(count or 0)))
+    # The share is renormalised over what survived. It used to be taken against every term in the field,
+    # which was fine while the list was dominated by clinical/implant/that; once those are filtered out the
+    # remaining domain words look small and a 0.4% floor emptied the row entirely.
+    total = sum(count for _, count in candidates) or 1
+    kept: list[dict[str, Any]] = []
+    for text, count in candidates[:limit]:
+        kept.append({"term": text, "count": count, "share": round(100.0 * count / total, 1)})
     return kept
 
 

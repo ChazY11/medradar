@@ -261,6 +261,47 @@ def brands_for_terms(reference, terms: Sequence[str], *, limit: int = 30,
     return out
 
 
+#: How many distinct fields a term must appear in before it stops being a field signal.
+#:
+#: Measured 2026-11-28: with the static word list alone, Dental's most frequent terms included clinical,
+#: implant, that, this, with, bone - words that say nothing about dentistry. Filtering by "appears in 10 or
+#: more fields" leaves edentulous 59, abutment 57, occlusal 53, mandibular 51, osteotomy 41. The list cannot
+#: be enumerated by hand (186 entries covered the figure words, not the vocabulary), but the spread across
+#: fields is measurable and self-maintaining.
+GENERIC_FIELD_SPREAD = 10
+
+_SPREAD_CACHE: dict[tuple[str, float, int], dict[str, int]] = {}
+
+
+def term_field_spread(reference) -> dict[str, int]:
+    """term -> how many distinct specialties it appears in. One second over 10,216 terms, cached."""
+    try:
+        path = str(reference.path)
+        key = (path, os.path.getmtime(path), os.path.getsize(path))
+        cached_spread = _SPREAD_CACHE.get(key)
+        if cached_spread is not None:
+            return cached_spread
+    except Exception:  # noqa: BLE001 - no cache key, still compute
+        key = None
+    spread: dict[str, int] = {}
+    try:
+        for row in reference.conn.execute(
+                "SELECT t.term, COUNT(DISTINCT f.specialty) FROM paper_term t"
+                " JOIN paper_field f ON f.paper_id = t.paper_id GROUP BY t.term"):
+            spread[str(row[0])] = int(row[1] or 0)
+    except Exception:  # noqa: BLE001 - no index yet
+        return {}
+    if key is not None:
+        _SPREAD_CACHE.clear()
+        _SPREAD_CACHE[key] = spread
+    return spread
+
+
+def is_generic(term: str, spread: Mapping[str, int], *, threshold: int = GENERIC_FIELD_SPREAD) -> bool:
+    """A word that shows up in most fields is not evidence about any one of them."""
+    return int(spread.get(str(term), 0)) >= int(threshold)
+
+
 def paper_terms(reference, paper_id: str, *, limit: int = 40,
                 skip_function_words: bool = True) -> list[dict[str, Any]]:
     """The terms a paper was indexed under, most frequent first.

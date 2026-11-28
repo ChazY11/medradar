@@ -3930,7 +3930,9 @@ def test_a_field_page_says_what_its_papers_talk_about_and_what_that_is_not(tmp_p
     assert "osseointegration" in page
     # The claim is bounded in the page itself.
     assert "不是我们的技术判断" in page
-    assert "结构性词已按词表滤掉" in page
+    # The filter sentence changed when the cross-field rule was added; assert the rule, not the wording.
+    assert "结构性虚词按词表去掉" in page
+    assert "10 个以上领域都出现的词也去掉" in page
 
     empty = area_page(specialty="Ophthalmic", summary=summary, companies=[],
                       data={"field_topics": [], "field_papers": []})
@@ -5181,6 +5183,20 @@ def test_a_comparison_shows_how_active_the_literature_is_in_each_company_area():
     assert "这衡量的是它所在赛道的文献活跃度，不是这家公司的产出" in page
 
     assert "近 90 天文献占比" not in compare_page(companies=[company("ACME", [])])
+
+
+def test_a_word_that_appears_in_every_field_is_not_a_field_topic():
+    """Measured: the static list left clinical/implant/that/with at the top of Dental's chips."""
+    from medradar.radar.papers_index import GENERIC_FIELD_SPREAD, is_generic
+
+    spread = {"clinical": 20, "implant": 19, "bone": 18, "edentulous": 7, "abutment": 3}
+    assert is_generic("clinical", spread)
+    assert is_generic("implant", spread)
+    assert not is_generic("edentulous", spread)
+    assert not is_generic("abutment", spread)
+    # A term nobody has seen is not generic just because its count is zero.
+    assert not is_generic("osteotomy", spread)
+    assert GENERIC_FIELD_SPREAD == 10
 
 
 def test_a_pre_digitisation_filing_is_never_requested(tmp_path):

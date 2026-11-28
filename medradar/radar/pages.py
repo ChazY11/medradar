@@ -2175,7 +2175,8 @@ def area_page(*, specialty: str, summary: Mapping[str, Any] | None,
         topics_block = (
             '<h2>这个领域的文献在谈什么</h2>'
             f'<p class="muted small">从本领域查询抓进来的 {n(len(field_papers))} 篇全文中统计词频。'
-            '这是「论文里出现的词」，不是我们的技术判断；领域通用的结构性词已按词表滤掉。</p>'
+            '这是「论文里出现的词」，不是我们的技术判断。两条过滤：结构性虚词按词表去掉，'
+            '同时在 10 个以上领域都出现的词也去掉——到处都有的词说明不了这个领域。</p>'
             f'<div class="chips">{chips}</div>')
     else:
         topics_block = ('<h2>这个领域的文献在谈什么</h2>'
