@@ -499,7 +499,8 @@ def area_markdown(specialty: str, summary: Mapping[str, Any],
                   companies: Sequence[Mapping[str, Any]],
                   *, failures: Mapping[str, Any] | None = None,
                   topics: Sequence[Mapping[str, Any]] | None = None,
-                  emerging: Mapping[str, Any] | None = None) -> str:
+                  emerging: Mapping[str, Any] | None = None,
+                  codes: Mapping[str, Any] | None = None) -> str:
     """One specialty's leaders and failure record, with the sampling and reporting caveats kept."""
     lines = [f"# {specialty}", "", f"> 导出于 {_stamp()}。{SOURCE_LINE}", ""]
     lines.append(f"> {int(summary.get('devices') or 0):,} 台设备 · "
@@ -616,6 +617,24 @@ def area_markdown(specialty: str, summary: Mapping[str, Any],
         lines.append(f"> 这个领域的 {int(shape.get('codes') or 0):,} 个产品码下，"
                      "我们扫过的 MAUDE 报告里一条也没有匹配到。"
                      "这不等于没有上报：可能是这些码的报告文件还没扫到。")
+    # Which codes the field is made of: the register's structure, and the vocabulary a regulatory reader
+    # files and searches in. Absent when the caller did not pass them, not shown empty.
+    code_rows = list((codes or {}).get("codes") or [])
+    if code_rows:
+        total_codes = int((codes or {}).get("total") or len(code_rows))
+        lines.append("")
+        lines.append("## 这个领域由哪些产品码组成")
+        lines.append("")
+        lines.append(f"> 按注册设备数排序列出前 {len(code_rows)} 个，共 {total_codes:,} 个。"
+                     "设备数为「—」表示这次没能统计，不是没有设备。")
+        lines.append("")
+        lines.append("| 产品码 | 分类名 | 法规号 | 设备数 |")
+        lines.append("| --- | --- | --- | ---: |")
+        for item in code_rows:
+            devices = item.get("devices")
+            lines.append(f"| {item.get('product_code')} | {item.get('device_name') or ''} | "
+                         f"{item.get('regulation_number') or ''} | "
+                         f"{f'{int(devices):,}' if devices is not None else '—'} |")
     return "\n".join(lines)
 
 
@@ -840,7 +859,8 @@ def area_json(specialty: str, summary: Mapping[str, Any],
               *, failures: Mapping[str, Any] | None = None,
               monthly: Sequence[Mapping[str, Any]] | None = None,
               topics: Sequence[Mapping[str, Any]] | None = None,
-              emerging: Mapping[str, Any] | None = None) -> str:
+              emerging: Mapping[str, Any] | None = None,
+              codes: Mapping[str, Any] | None = None) -> str:
     """One specialty, machine-readable, with the bounds as fields rather than as prose.
 
     A JSON consumer will not read a Chinese sentence in a document header, so each caveat is a named
@@ -857,6 +877,17 @@ def area_json(specialty: str, summary: Mapping[str, Any],
                     "devices": int(item.get("devices") or 0)} for item in companies],
         companies_kept=len(companies),
         companies_total=int(summary.get("companies") or 0),
+        # Which codes make up the field; null when the caller had none to pass, so a consumer can tell
+        # "not provided" from "empty".
+        product_codes=None if not (codes or {}).get("codes") else [
+            {"product_code": item.get("product_code"),
+             "device_name": item.get("device_name") or "",
+             "regulation_number": item.get("regulation_number") or "",
+             "device_class": item.get("device_class") or "",
+             # None, not 0: an uncounted code is not an empty one.
+             "devices": (None if item.get("devices") is None else int(item.get("devices") or 0))}
+            for item in ((codes or {}).get("codes") or [])],
+        product_codes_total=int((codes or {}).get("total") or 0),
         # Two named fields, not one list: a consumer that merges them would rank a brand-new instrument name
         # above a real trend, which is the defect round 106 fixed on the page.
         terms_rising=[{"term": item.get("term"), "recent": int(item.get("recent") or 0),

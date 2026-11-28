@@ -3426,6 +3426,13 @@ def pages_router(service: Any, *, endpoints: Mapping[str, Any] | None = None) ->
                     failures = read_failures(store, name)
                 except Exception:  # noqa: BLE001 - no failure index is a stated gap
                     failures = {}
+                # The product codes the field is made of; one query plus the same census the page uses.
+                try:
+                    from .product_codes import codes_for_specialty
+
+                    field_codes = codes_for_specialty(store, name)
+                except Exception:  # noqa: BLE001 - one section fewer
+                    field_codes = {}
                 # The monthly shape comes along so a JSON consumer sees the same series the page draws.
                 try:
                     from .paper_passes import field_topics as read_topics, monthly_counts
@@ -3445,11 +3452,13 @@ def pages_router(service: Any, *, endpoints: Mapping[str, Any] | None = None) ->
                 elif format == "json":
                     body = export_mod.area_json(name, summary, companies,
                                                 failures=failures, monthly=monthly,
-                                                topics=field_topics, emerging=emerging)
+                                                topics=field_topics, emerging=emerging,
+                                                codes=field_codes)
                     media, suffix = "application/json; charset=utf-8", "json"
                 else:
                     body = export_mod.area_markdown(name, summary, companies, failures=failures,
-                                                    topics=field_topics, emerging=emerging)
+                                                    topics=field_topics, emerging=emerging,
+                                                    codes=field_codes)
                     media, suffix = "text/markdown; charset=utf-8", "md"
                 stem = f"medradar-area-{_slug(name)}"
             elif kind == "area_failures":

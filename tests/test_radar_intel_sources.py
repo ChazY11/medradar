@@ -6460,6 +6460,38 @@ def test_a_field_page_lists_the_product_codes_it_is_made_of(tmp_path):
     assert "这个领域由哪些产品码组成" in page
 
 
+def test_the_field_export_carries_the_product_codes():
+    """The page lists them since round 127; a forwarded field document should too."""
+    import json
+
+    from medradar.radar import export as export_mod
+
+    summary = {"devices": 10, "codes": 2, "companies": 3}
+    codes = {"codes": [
+        {"product_code": "D351", "device_name": "Prosthesis, Crown",
+         "regulation_number": "872.3640", "device_class": "2", "devices": 1234},
+        # An uncounted code is not an empty one.
+        {"product_code": "EIH", "device_name": "Powder, Porcelain",
+         "regulation_number": "872.6660", "device_class": "2", "devices": None},
+    ], "total": 2}
+
+    markdown = export_mod.area_markdown("Dental", summary, [], codes=codes)
+    assert "## 这个领域由哪些产品码组成" in markdown
+    assert "| D351 | Prosthesis, Crown | 872.3640 | 1,234 |" in markdown
+    assert "| EIH | Powder, Porcelain | 872.6660 | — |" in markdown
+    assert "设备数为「—」表示这次没能统计" in markdown
+
+    data = json.loads(export_mod.area_json("Dental", summary, [], codes=codes))
+    assert data["product_codes_total"] == 2
+    assert data["product_codes"][0]["product_code"] == "D351"
+    assert data["product_codes"][1]["devices"] is None       # preserved, not turned into 0
+
+    # Not passed is null, so a consumer can tell "not provided" from "empty".
+    assert json.loads(export_mod.area_json("Dental", summary, []))["product_codes"] is None
+    # And the markdown omits the section rather than printing a heading with no table.
+    assert "这个领域由哪些产品码组成" not in export_mod.area_markdown("Dental", summary, [])
+
+
 def test_a_pre_digitisation_filing_is_never_requested(tmp_path):
     """Measured: 0 of 60 sampled filings from 1998-2009 have a PDF at any path shape.
 
