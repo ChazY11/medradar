@@ -16,6 +16,9 @@ from __future__ import annotations
 GAP_TEXT: dict[str, str] = {
     # --- the device register and its filings
     "device_not_in_udi_register": "这个标识不在设备注册表里（K 号、DI、DUNS、型号、品牌、公司都试过了）",
+    "name_scan_stopped_at_budget": ("按名称片段搜索时扫描到了时间上限就停了：注册表有 520 万台设备，"
+                                    "名称中间的片段只能逐行比对。改成从名称开头输入，或者用 K 号、DI、DUNS、型号查，"
+                                    "这些都能走索引"),
     "no_clearance_linked_to_this_device": "注册表没有把任何批文关联到这台设备",
     "no_readable_summary_for_any_clearance": "批文存在，但存储的文本读不出内容",
     "document_not_published_by_fda": "FDA 没有公布这份文件的正文",

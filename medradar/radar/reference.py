@@ -120,6 +120,13 @@ CREATE INDEX IF NOT EXISTS idx_udi_company ON udi_device(company_name);
     -- every row (218 ms -> about 60 ms).
     CREATE INDEX IF NOT EXISTS idx_udi_duns_brand ON udi_device(labeler_duns, brand_name);
 CREATE INDEX IF NOT EXISTS idx_udi_duns_pub   ON udi_device(labeler_duns, publish_date);
+    -- The case-insensitive model and catalog fallbacks could not use a BINARY index, so a query that
+    -- matched nothing scanned 5.2M rows twice to prove it (measured: 20.7 s for a Chinese term that
+    -- can never match an English register). An expression index makes the same lookup 0.1 ms.
+    CREATE INDEX IF NOT EXISTS idx_udi_model_nocase
+        ON udi_device(version_or_model COLLATE NOCASE);
+CREATE INDEX IF NOT EXISTS idx_udi_catalog_nocase
+        ON udi_device(catalog_number COLLATE NOCASE);
 
 CREATE TABLE IF NOT EXISTS udi_premarket (
     submission_number TEXT NOT NULL,

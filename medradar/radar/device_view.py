@@ -29,6 +29,8 @@ that silently made requests would be unreproducible.
 
 from __future__ import annotations
 
+import time
+
 import json
 import re
 from dataclasses import dataclass, field
@@ -227,6 +229,12 @@ class DeviceTimeline:
 
 
 # ------------------------------------------------------------------ resolution
+#: How long a name-fragment scan may run before it is abandoned. Measured: the two contains-scans in
+#: resolve() took 6.6 s on an English miss. A tenth of that is enough for the prefix hits a user
+#: usually wants, and the page says when the search stopped early.
+SCAN_BUDGET_SECONDS = 1.0
+
+
 def resolve(reference, query: str, *, limit: int = 25) -> list[DeviceRef]:
     """Find devices by K number, DI, DUNS, model/catalog number, or company name.
 
@@ -272,6 +280,13 @@ def resolve(reference, query: str, *, limit: int = 25) -> list[DeviceRef]:
     # return nothing - 1.57 s of a 1.6 s resolve. For a letter-only query it now runs at the end,
     # only if nothing else matched, so recall is unchanged and the common case costs nothing.
     identifier_shaped = any(ch.isdigit() for ch in text)
+    # Chinese input cannot match the register's text columns: GUDID names, models and catalog numbers
+    # are ASCII. A Chinese query used to fall through to `brand_name LIKE '%…%'` and
+    # `company_name LIKE '%…%'` plus the two COLLATE NOCASE scans - four full passes over 5.2M rows,
+    # measured 20.7 s, to return nothing. The alias table resolves Chinese names to English above this
+    # point, so anything still Chinese here is a miss; say so instead of scanning for it.
+    cjk = any("\u4e00" <= ch <= "\u9fff" for ch in text)
+    scan_truncated = False
     if not refs and identifier_shaped:
         add(_query(reference,
                    "SELECT * FROM udi_device WHERE version_or_model = ? COLLATE NOCASE LIMIT ?",
@@ -328,18 +343,33 @@ def resolve(reference, query: str, *, limit: int = 25) -> list[DeviceRef]:
                 add(_query(reference,
                            "SELECT * FROM udi_device WHERE company_name >= ? AND company_name < ? "
                            "LIMIT ?", (bounds[0], bounds[1], limit)), "company_name")
-            if not refs:
-                add(_query(reference,
-                           "SELECT * FROM udi_device WHERE brand_name LIKE ? LIMIT ?",
-                           (f"%{text}%", limit)), "brand_name")
-                add(_query(reference,
-                           "SELECT * FROM udi_device WHERE company_name LIKE ? LIMIT ?",
-                           (f"%{text}%", limit)), "company_name")
+            if not refs and not cjk:
+                # A contains-scan cannot use an index. Measured: an English query that matches nothing
+                # (zzzznotarealbrand) spent 6.6 s in these two statements. They are now given a budget
+                # and abandoned when it runs out, and the page says the search was cut short instead of
+                # pretending the name is absent.
+                _scan_deadline = time.monotonic() + SCAN_BUDGET_SECONDS
+                try:
+                    reference.conn.set_progress_handler(
+                        lambda: 1 if time.monotonic() > _scan_deadline else 0, 10_000)
+                    add(_query(reference,
+                               "SELECT * FROM udi_device WHERE brand_name LIKE ? LIMIT ?",
+                               (f"%{text}%", limit)), "brand_name")
+                    add(_query(reference,
+                               "SELECT * FROM udi_device WHERE company_name LIKE ? LIMIT ?",
+                               (f"%{text}%", limit)), "company_name")
+                except Exception:  # noqa: BLE001 - an aborted scan is a stated gap, not a crash
+                    scan_truncated = True
+                finally:
+                    try:
+                        reference.conn.set_progress_handler(None, 0)
+                    except Exception:  # noqa: BLE001
+                        pass
 
-    if not refs:
+    if not refs and not cjk:
         # Last resort for a letter-only query: a model or catalog number written in a different case
-        # from the stored one. It is the same two full scans described above, paid only when nothing
-        # else matched, so recall is unchanged while the common path stays off it.
+        # from the stored one. It is the same two lookups described above, paid only when nothing else
+        # matched; they now use expression indexes, so this is 0.1 ms rather than two full scans.
         add(_query(reference,
                    "SELECT * FROM udi_device WHERE version_or_model = ? COLLATE NOCASE LIMIT ?",
                    (text, limit)), "version_or_model")
@@ -354,7 +384,14 @@ def resolve(reference, query: str, *, limit: int = 25) -> list[DeviceRef]:
             continue
         seen.add(ref.device_key)
         unique.append(ref)
-    return unique[:limit]
+    result = unique[:limit]
+    # The caller needs to know the search was cut short, and a list cannot carry that, so the answer
+    # carries it as an attribute rather than in a second return value that every caller would ignore.
+    try:
+        result.scan_truncated = scan_truncated
+    except AttributeError:
+        pass
+    return result
 
 
 def _prefix_bounds(text: str) -> tuple[str, str] | None:
@@ -598,6 +635,9 @@ def build(reference, query: str, *, corpus_root: str | Path | None = None,
     timeline = DeviceTimeline(query=query)
     timeline.detail_scope = "all" if detail_for is None else f"first:{int(detail_for)}"
     timeline.refs = resolve(reference, query, limit=limit)
+    if getattr(timeline.refs, "scan_truncated", False):
+        # The scan stopped at its budget, so "not found" would be a claim this search cannot support.
+        timeline.gaps.append("name_scan_stopped_at_budget")
     if not timeline.refs:
         timeline.gaps.append(GAP_NOT_IN_INDEX)
         return timeline

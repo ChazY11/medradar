@@ -469,6 +469,11 @@ def device_dossier(timeline: Any, *, query: str, store: Any = None) -> str:
                 # A Chinese name cannot match an English legal name, and saying only "not in the
                 # register" leaves the reader thinking the product has never heard of the company.
                 + (_cjk_hint(query, action="/device") if _looks_chinese(query) else "")
+                # Every gap this search recorded, not just "not in the register". A name scan that hit
+                # its time budget means the answer is "we stopped looking", which is a different claim
+                # from "it is not there" - and the hardcoded code below used to hide exactly that.
+                + "".join(gap_note(code) for code in dict.fromkeys(
+                    code for code in (timeline.gaps or []) if code != "device_not_in_udi_register"))
                 + gap_note("device_not_in_udi_register")
                 + '<form class="search" method="get" action="/device">'
                   '<input type="search" name="query" value="" aria-label="查询">'

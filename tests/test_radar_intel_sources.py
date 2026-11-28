@@ -4667,6 +4667,55 @@ def test_the_paper_row_says_which_years_the_corpus_covers(tmp_path):
     assert "一轮抓取" in years                    # and the shape is labelled as ours
 
 
+def test_a_chinese_query_that_matches_nothing_does_not_scan_the_register(tmp_path):
+    """Audit 07: /device?query=不存在的编号 took 20.7 s to say "not found"."""
+    import inspect
+
+    from medradar.radar import device_view
+
+    source = inspect.getsource(device_view.resolve)
+    # The CJK guard has to stand in front of both expensive paths: the two contains-scans and the
+    # two case-insensitive fallbacks.
+    assert "cjk" in source
+    assert 'if not refs and not cjk:' in source
+    # And the guard is defined from the query itself, not from a caller flag.
+    assert 'for ch in text)' in source
+
+
+def test_the_case_insensitive_lookups_have_expression_indexes(tmp_path):
+    """Without them the fallback scans 5.2M rows; with them the same miss is 0.1 ms."""
+    from medradar.radar.reference import UdiReference
+
+    store = UdiReference(tmp_path / "ref.db")
+    try:
+        names = {row[0] for row in store.conn.execute(
+            "SELECT name FROM sqlite_master WHERE type='index' AND tbl_name='udi_device'")}
+    finally:
+        store.close()
+    assert "idx_udi_model_nocase" in names
+    assert "idx_udi_catalog_nocase" in names
+
+
+def test_a_budgeted_scan_says_so_instead_of_claiming_absence():
+    """Audit 07: a scan that stopped early is a different answer from "not in the register"."""
+    from medradar.radar.pages import device_dossier
+
+    class Truncated:
+        refs = []
+        gaps = ["name_scan_stopped_at_budget"]
+
+    page = device_dossier(Truncated(), query="zzzznotarealbrand")
+    assert "扫描到了时间上限" in page       # we stopped looking
+    assert "不在设备注册表里" in page        # and this is still true of what we covered
+
+    class Plain:
+        refs = []
+        gaps = []
+
+    once = device_dossier(Plain(), query="zzzz")
+    assert once.count("不在设备注册表里") == 1     # no duplicate when there is no extra gap
+
+
 def test_a_pre_digitisation_filing_is_never_requested(tmp_path):
     """Measured: 0 of 60 sampled filings from 1998-2009 have a PDF at any path shape.
 
