@@ -5774,13 +5774,18 @@ def test_rising_terms_compare_two_windows_by_share_not_volume(tmp_path):
 
     store = Wired()
     result = emerging_terms(store, "Dental", today="2026-11-28")
-    by_term = {item["term"]: item for item in result["terms"]}
+    by_term = {item["term"]: item for item in result["terms"] + result["new"]}
     # Appears in every recent paper and none of the older ones.
     assert by_term["clearaligner"]["lift"] >= 3.0
     assert by_term["clearaligner"]["baseline"] == 0
     # Flat across both windows: present, but not rising.
     assert by_term["edentulous"]["lift"] == 1.0
     assert result["recent"] == 4 and result["baseline"] == 4
+    # Two different claims, kept apart: "clearaligner" never appeared before, so it is a candidate, not a
+    # trend, and mixing the two put an instrument brand beside real signals.
+    # "clearaligner" is used by every recent paper and none of the older ones: a candidate, not a trend.
+    assert [item["term"] for item in result["new"]] == ["clearaligner"]
+    assert all(item["baseline"] > 0 for item in result["terms"])
     # Generic English is filtered with the same rule the topic chips use: "multiple 32x" was the top of
     # the list before this, which reads as a broken feature.
     from medradar.radar.papers_index import FUNCTION_WORDS

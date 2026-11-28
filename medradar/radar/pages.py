@@ -2258,12 +2258,27 @@ def _emerging_block(emerging: Mapping[str, Any]) -> str:
     if not terms or not recent or not baseline:
         # No baseline means nothing to compare against; the page says that above, in the topics note.
         return ""
-    rows = "".join(
-        f'<tr><td>{esc(str(item["term"]))}</td>'
-        f'<td class="num">{n(item["recent"])}/{n(recent)}</td>'
-        f'<td class="num">{n(item["baseline"])}/{n(baseline)}</td>'
-        f'<td class="num">{esc(str(item["lift"]))}×</td></tr>'
-        for item in terms)
+    def _row(item: Mapping[str, Any], label: str) -> str:
+        return (f'<tr><td>{esc(str(item["term"]))}</td>'
+                f'<td class="num">{label}</td>'
+                f'<td class="num">{n(item["recent"])}/{n(recent)}</td>'
+                f'<td class="num">{n(item["baseline"])}/{n(baseline)}</td>'
+                f'<td class="num">{esc(str(item["lift"]))}×</td></tr>')
+
+    rising = terms
+    fresh = emerging.get("new") or []
+    rows = "".join(_row(item, "已存在") for item in rising)
+    fresh_rows = "".join(_row(item, "新出现") for item in fresh)
+    fresh_block = ""
+    if fresh_rows:
+        fresh_block = (
+            '<h3>近 90 天新出现的说法</h3>'
+            '<p class="muted small">这些词在之前一年里一次都没出现在本领域的论文中。'
+            '<b>可能是新方向，也可能只是一个仪器品牌或作者名</b>——所以按出现的篇数排，'
+            f'并且要求至少出现在 {max(3, int(0.08 * recent))} 篇里。要判断它是不是真方向，'
+            '点开几篇原文看比看这个列表可靠。</p>'
+            '<div class="card"><table><thead><tr><th>说法</th><th>类型</th><th>近 90 天</th>'
+            f'<th>之前一年</th><th>涨幅</th></tr></thead><tbody>{fresh_rows}</tbody></table></div>')
     return (f'<h2>近 {n(emerging.get("recent_days") or 90)} 天相对上升的说法</h2>'
             f'<p class="muted small">拿本领域近 {n(emerging.get("recent_days") or 90)} 天的 '
             f'{n(recent)} 篇，对比之前一年的 {n(baseline)} 篇：算每个词在两边各占多少篇，再看占比涨了多少倍。'
@@ -2272,8 +2287,9 @@ def _emerging_block(emerging: Mapping[str, Any]) -> str:
             + '<b>这是词频，不是我们的技术判断</b>；涨的原因是这几篇新论文用了它，'
             '而且只统计我们抓到的这批（不是该领域全部论文）。'
             '倍数很大通常意味着这个词以前几乎没出现，未必意味着方向重要——看右边两列的绝对篇数再判断。</p>'
-            '<div class="card"><table><thead><tr><th>说法</th><th>近 90 天</th>'
-            f'<th>之前一年</th><th>涨幅</th></tr></thead><tbody>{rows}</tbody></table></div>')
+            '<div class="card"><table><thead><tr><th>说法</th><th>类型</th><th>近 90 天</th>'
+            f'<th>之前一年</th><th>涨幅</th></tr></thead><tbody>{rows}</tbody></table></div>'
+            + fresh_block)
 
 
 def area_page(*, specialty: str, summary: Mapping[str, Any] | None,

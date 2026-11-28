@@ -306,8 +306,20 @@ def emerging_terms(reference, specialty: str, *, recent_days: int = 90, baseline
         terms.append({"term": term, "recent": recent_n, "recent_share": round(recent_share, 4),
                       "baseline": base_n, "baseline_share": round(base_share, 4),
                       "lift": round(lift, 2)})
-    terms.sort(key=lambda item: (item["lift"], item["recent"]), reverse=True)
-    return {"terms": terms[:limit], "recent": len(recent_ids), "baseline": len(baseline_ids),
+    # Two different claims, kept apart. A word that already existed and is now used more is a trend; a word
+    # that never appeared before is a candidate, and one paper is enough to produce it. Measured 2026-11-28:
+    # mixing them put "jeol 7/40" and "klein 3/40" - an instrument brand and an author - beside real signals,
+    # ranked above them because their baseline was zero and their lift therefore infinite.
+    rising = [item for item in terms if item["baseline"] > 0]
+    fresh = [item for item in terms if item["baseline"] == 0]
+    rising.sort(key=lambda item: (item["lift"], item["recent"]), reverse=True)
+    # New words rank by how many recent papers use them, not by lift: lift is unbounded when the baseline is
+    # empty, so it cannot order them.
+    fresh.sort(key=lambda item: item["recent"], reverse=True)
+    fresh = [item for item in fresh
+             if item["recent"] >= 3 and item["recent_share"] >= 0.08]
+    return {"terms": rising[:limit], "new": fresh[:max(3, limit // 2)],
+            "recent": len(recent_ids), "baseline": len(baseline_ids),
             "recent_days": recent_days, "baseline_days": baseline_days}
 
 
