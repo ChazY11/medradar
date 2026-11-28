@@ -5735,6 +5735,71 @@ def test_a_mistyped_company_in_a_comparison_offers_the_corrected_comparison():
     assert "相近公司" not in page
 
 
+def test_rising_terms_compare_two_windows_by_share_not_volume(tmp_path):
+    """The product's headline question: what does the field's newest work talk about more than before."""
+    import sqlite3
+
+    from medradar.radar.paper_passes import emerging_terms
+
+    path = tmp_path / "rise.db"
+    conn = sqlite3.connect(path)
+    conn.execute("CREATE TABLE paper_field (paper_id TEXT, specialty TEXT, added_at TEXT)")
+    conn.execute("CREATE TABLE paper_meta (paper_id TEXT, title TEXT, journal TEXT, published_at TEXT)")
+    conn.execute("CREATE TABLE paper_term (term TEXT, paper_id TEXT, title TEXT, year INT, hits INT)")
+    conn.executemany("INSERT INTO paper_field VALUES (?,?,?)",
+                     [(f"P{i}", "Dental", "2026-11-28") for i in range(8)])
+    # Four papers in the last 90 days, four a year ago.
+    conn.executemany("INSERT INTO paper_meta VALUES (?,?,?,?)",
+                     [(f"P{i}", f"t{i}", "j",
+                       "2026-11-01" if i < 4 else "2026-02-01") for i in range(8)])
+    rows = []
+    for i in range(4):
+        rows += [("clearaligner", f"P{i}", "t", 2026, 2), ("edentulous", f"P{i}", "t", 2026, 1)]
+    for i in range(4, 8):
+        rows.append(("edentulous", f"P{i}", "t", 2026, 2))
+    conn.executemany("INSERT INTO paper_term VALUES (?,?,?,?,?)", rows)
+    conn.commit()
+    conn.close()
+
+    class Store:
+        conn = None
+
+        @property
+        def path(self):
+            return path
+
+    class Wired(Store):
+        def __init__(self):
+            self.conn = sqlite3.connect(path)
+
+    store = Wired()
+    result = emerging_terms(store, "Dental", today="2026-11-28")
+    by_term = {item["term"]: item for item in result["terms"]}
+    # Appears in every recent paper and none of the older ones.
+    assert by_term["clearaligner"]["lift"] >= 3.0
+    assert by_term["clearaligner"]["baseline"] == 0
+    # Flat across both windows: present, but not rising.
+    assert by_term["edentulous"]["lift"] == 1.0
+    assert result["recent"] == 4 and result["baseline"] == 4
+    # Generic English is filtered with the same rule the topic chips use: "multiple 32x" was the top of
+    # the list before this, which reads as a broken feature.
+    from medradar.radar.papers_index import FUNCTION_WORDS
+
+    for item in result["terms"]:
+        assert item["term"] not in FUNCTION_WORDS
+    # Forward-dated records must not count as "recent".
+    assert all(item["recent"] <= 4 for item in result["terms"])
+    store.conn.close()
+
+    # And the block states what the numbers are and are not.
+    from medradar.radar.pages import _emerging_block
+
+    page = _emerging_block(result)
+    assert "近 90 天相对上升的说法" in page
+    assert "词频，不是我们的技术判断" in page
+    assert "只统计我们抓到的这批" in page
+
+
 def test_a_pre_digitisation_filing_is_never_requested(tmp_path):
     """Measured: 0 of 60 sampled filings from 1998-2009 have a PDF at any path shape.
 

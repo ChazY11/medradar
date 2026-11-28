@@ -2245,6 +2245,37 @@ def areas_page(*, data: Mapping[str, Any]) -> str:
     return layout(title="技术领域分布 · MedRadar", body=body, active="areas")
 
 
+def _emerging_block(emerging: Mapping[str, Any]) -> str:
+    """What this field's newest papers say more than its older ones did.
+
+    A word frequency with two windows, not a model and not a judgement: the numbers are the share of recent
+    papers using a term against the share of the year before. Three limits are printed with the block,
+    because each one changes what a reader should conclude.
+    """
+    terms = emerging.get("terms") or []
+    recent = int(emerging.get("recent") or 0)
+    baseline = int(emerging.get("baseline") or 0)
+    if not terms or not recent or not baseline:
+        # No baseline means nothing to compare against; the page says that above, in the topics note.
+        return ""
+    rows = "".join(
+        f'<tr><td>{esc(str(item["term"]))}</td>'
+        f'<td class="num">{n(item["recent"])}/{n(recent)}</td>'
+        f'<td class="num">{n(item["baseline"])}/{n(baseline)}</td>'
+        f'<td class="num">{esc(str(item["lift"]))}×</td></tr>'
+        for item in terms)
+    return (f'<h2>近 {n(emerging.get("recent_days") or 90)} 天相对上升的说法</h2>'
+            f'<p class="muted small">拿本领域近 {n(emerging.get("recent_days") or 90)} 天的 '
+            f'{n(recent)} 篇，对比之前一年的 {n(baseline)} 篇：算每个词在两边各占多少篇，再看占比涨了多少倍。'
+            + (f'<b>样本偏小：近 90 天只有 {n(recent)} 篇，倍数容易被个别论文拉高，请结合右边绝对篇数看。</b>'
+               if recent < 60 else '')
+            + '<b>这是词频，不是我们的技术判断</b>；涨的原因是这几篇新论文用了它，'
+            '而且只统计我们抓到的这批（不是该领域全部论文）。'
+            '倍数很大通常意味着这个词以前几乎没出现，未必意味着方向重要——看右边两列的绝对篇数再判断。</p>'
+            '<div class="card"><table><thead><tr><th>说法</th><th>近 90 天</th>'
+            f'<th>之前一年</th><th>涨幅</th></tr></thead><tbody>{rows}</tbody></table></div>')
+
+
 def area_page(*, specialty: str, summary: Mapping[str, Any] | None,
               companies: Sequence[Mapping[str, Any]],
               data: Mapping[str, Any] | None = None) -> str:
@@ -2332,6 +2363,7 @@ def area_page(*, specialty: str, summary: Mapping[str, Any] | None,
             '同时在 10 个以上领域都出现的词也去掉——到处都有的词说明不了这个领域。'
             f'数字是「出现在这 {n(len(field_papers))} 篇里的多少篇」，不是出现次数。{coverage_note}</p>'
             f'<div class="chips">{chips}</div>')
+        topics_block += _emerging_block(data.get("field_emerging") or {})
     else:
         topics_block = ('<h2>这个领域的文献在谈什么</h2>'
                         + gap_note("no_papers_for_this_specialty"))
@@ -3289,6 +3321,7 @@ def pages_router(service: Any, *, endpoints: Mapping[str, Any] | None = None) ->
                 # "Dental Implants": all three 500, while 牙科 (which resolves through the alias table) worked.
                 field_recency: dict[str, Any] = {}
                 literature_coverage: dict[str, Any] = {}
+                field_emerging: dict[str, Any] = {}
                 if summary:
                     try:
                         from .paper_passes import field_topics as read_topics, papers_for
@@ -3314,6 +3347,11 @@ def pages_router(service: Any, *, endpoints: Mapping[str, Any] | None = None) ->
                         from .paper_passes import field_coverage, recency_by_specialty
 
                         field_recency = recency_by_specialty(store).get(resolved_name) or {}
+                        # What the field's newest papers say more than its older ones: the question the
+                        # product exists for, answered as a word frequency and labelled as one.
+                        from .paper_passes import emerging_terms_cached
+
+                        field_emerging = emerging_terms_cached(store, resolved_name)
                         # How much of the corpus the field pages speak for at all: audit 09 asked for it.
                         literature_coverage = field_coverage(store)
                     except Exception:  # noqa: BLE001 - no literature is an empty note
@@ -3326,6 +3364,7 @@ def pages_router(service: Any, *, endpoints: Mapping[str, Any] | None = None) ->
                                    "field_recent": field_recent, "field_monthly": field_monthly,
                                    "field_failures": field_failures,
                                    "field_recency": field_recency,
+                                   "field_emerging": field_emerging,
                                    "literature_coverage": literature_coverage,
                                    "resolved_from": resolved_from})
 

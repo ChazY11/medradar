@@ -212,6 +212,128 @@ def field_coverage(reference) -> dict[str, int]:
 _TOPICS_CACHE: dict[tuple[str, float, str], list[dict[str, Any]]] = {}
 
 
+def emerging_terms(reference, specialty: str, *, recent_days: int = 90, baseline_days: int = 365,
+                   limit: int = 8, today: str | None = None) -> dict[str, Any]:
+    """Which words the field's newest papers use more than its older ones do.
+
+    This is the question the product exists for - what is being worked on now - answered without a model:
+    for each term, the share of recent papers that use it against the share of older papers that do, and
+    the terms whose share rose most.
+
+    What it is not: a claim about the whole field. It counts the papers we hold for this field (a bounded
+    sample), it is a word frequency and not a judgement about importance, and a term "rising" here means
+    rising inside our corpus. The page says all three.
+
+    Forward-dated records are excluded, because journals pre-fill upcoming issues and a term that "rose"
+    on a 2027 paper is not a signal about today.
+    """
+    from .watermark import utc_today
+
+    ids = papers_for(reference, specialty, limit=5000)
+    if not ids:
+        return {"terms": [], "recent": 0, "baseline": 0, "recent_days": recent_days,
+                "baseline_days": baseline_days}
+    placeholders = ",".join("?" for _ in ids[:900])
+    stamp = str(today or utc_today())
+    try:
+        rows = reference.conn.execute(
+            f"SELECT p.paper_id, p.published_at FROM paper_meta p WHERE p.paper_id IN ({placeholders})"
+            f" AND p.published_at IS NOT NULL AND p.published_at <> '' AND p.published_at <= ?",
+            tuple(ids[:900]) + (stamp,)).fetchall()
+    except Exception:  # noqa: BLE001 - no meta table
+        return {"terms": [], "recent": 0, "baseline": 0, "recent_days": recent_days,
+                "baseline_days": baseline_days}
+    from datetime import date, timedelta
+
+    try:
+        end = date.fromisoformat(stamp[:10])
+    except ValueError:
+        end = date.today()
+    recent_start = (end - timedelta(days=recent_days)).isoformat()
+    baseline_start = (end - timedelta(days=baseline_days)).isoformat()
+
+    recent_ids: set[str] = set()
+    baseline_ids: set[str] = set()
+    for paper_id, published in rows:
+        day = str(published)[:10]
+        if day >= recent_start:
+            recent_ids.add(str(paper_id))
+        elif day >= baseline_start:
+            baseline_ids.add(str(paper_id))
+    if not recent_ids or not baseline_ids:
+        return {"terms": [], "recent": len(recent_ids), "baseline": len(baseline_ids),
+                "recent_days": recent_days, "baseline_days": baseline_days}
+
+    def counts(ids_subset: set[str]) -> dict[str, int]:
+        wanted = sorted(ids_subset)[:900]
+        if not wanted:
+            return {}
+        marks = ",".join("?" for _ in wanted)
+        found = reference.conn.execute(
+            f"SELECT term, COUNT(DISTINCT paper_id) FROM paper_term WHERE paper_id IN ({marks})"
+            f" GROUP BY term", tuple(wanted)).fetchall()
+        return {str(term): int(n) for term, n in found}
+
+    recent_counts = counts(recent_ids)
+    baseline_counts = counts(baseline_ids)
+    # The same two filters the topic chips use, for the same reason. Without them the top of this list is
+    # "multiple 32x", "factors 30.8x", "effect 29x" - generic English that says nothing about the field, and
+    # a reader would rightly stop trusting the block. Measured 2026-11-28 on Dental: those five words were
+    # the entire first screen.
+    from .papers_index import FUNCTION_WORDS, is_generic, term_field_spread
+
+    spread = term_field_spread(reference)
+    terms: list[dict[str, Any]] = []
+    for term, recent_n in recent_counts.items():
+        if recent_n < 3:
+            continue
+        if term in FUNCTION_WORDS or is_generic(term, spread):
+            continue
+        # "1272" is not a word, and a 3-of-40 term is noise rather than a direction. Measured 2026-11-28:
+        # Orthopedic (40 recent papers) produced "1272 4.95x", "spark 4.95x", "quanta 4.95x" - all artefacts
+        # of a small window. Digits are dropped outright; the threshold rises with the window so that a
+        # small sample must clear a higher bar.
+        if any(ch.isdigit() for ch in term) or len(term) < 4:
+            continue
+        if recent_n < max(3, round(0.06 * len(recent_ids))):
+            continue
+        # Share of the window's papers that use the term: a field with three times as many recent papers
+        # must not win on volume alone.
+        recent_share = recent_n / max(1, len(recent_ids))
+        base_n = baseline_counts.get(term, 0)
+        base_share = base_n / max(1, len(baseline_ids))
+        lift = recent_share / base_share if base_share > 0 else float(recent_n)
+        terms.append({"term": term, "recent": recent_n, "recent_share": round(recent_share, 4),
+                      "baseline": base_n, "baseline_share": round(base_share, 4),
+                      "lift": round(lift, 2)})
+    terms.sort(key=lambda item: (item["lift"], item["recent"]), reverse=True)
+    return {"terms": terms[:limit], "recent": len(recent_ids), "baseline": len(baseline_ids),
+            "recent_days": recent_days, "baseline_days": baseline_days}
+
+
+_EMERGING_CACHE: dict[tuple[str, float, str], dict[str, Any]] = {}
+
+
+def emerging_terms_cached(reference, specialty: str, *, recent_days: int = 90,
+                          baseline_days: int = 365, limit: int = 8,
+                          today: str | None = None) -> dict[str, Any]:
+    """emerging_terms with a per-store cache; the query joins two windows over up to 900 papers."""
+    try:
+        key = (str(reference.path), os.path.getmtime(str(reference.path)), specialty)
+    except Exception:  # noqa: BLE001
+        return emerging_terms(reference, specialty, recent_days=recent_days,
+                              baseline_days=baseline_days, limit=limit, today=today)
+    hit = _EMERGING_CACHE.get(key)
+    if hit is not None:
+        return hit
+    value = emerging_terms(reference, specialty, recent_days=recent_days,
+                           baseline_days=baseline_days, limit=limit, today=today)
+    if len(_EMERGING_CACHE) > 128:
+        _EMERGING_CACHE.clear()
+    _EMERGING_CACHE[key] = value
+    return value
+
+
 def field_topics_cached(reference, specialty: str, *, limit: int = 12) -> list[dict[str, Any]]:
     """field_topics with a per-store cache.
 
