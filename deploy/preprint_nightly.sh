@@ -217,5 +217,10 @@ echo "[$(date -Is)] link observed papers to fields"
 tail -2 $WORK/step_link.log
 mark "field links" ok "$(grab 'linked [0-9]+ observations' $WORK/step_link.log) linked"
 
+echo "[$(date -Is)] field trends"
+"$PY" "$REL/tools/field_trends.py" --reference "${MEDRADAR_REFERENCE_DB:-/srv/medradar/reference_slim.db}" > $WORK/step_trends.log 2>&1 || true
+tail -2 $WORK/step_trends.log
+mark "field trends" ok "$(grab '"with_term": [0-9]+' $WORK/step_trends.log) fields"
+
 mark "done" ok "$(ls "$OUT"/*.json 2>/dev/null | wc -l) records"
 exit 0
