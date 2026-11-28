@@ -2125,10 +2125,19 @@ def paper_page(*, record: Mapping[str, Any] | None, terms: Sequence[Mapping[str,
                      '改写或截断的标题匹配不到。点开确认是哪一篇。</p>'
                      f'<div class="card"><table><thead><tr><th>标题</th><th>期刊</th>'
                      f'<th>发表日期</th></tr></thead><tbody>{rows}</tbody></table></div>')
-        else:
+        elif _claims_to_be_paper_id(paper_id):
+            # A well-formed identifier we do not hold is a coverage statement.
             found = (gap_note("paper_not_in_index")
                      + '<p class="small muted">标题里也没有这几个字。索引只收录已归档全文，'
                        '摘要和付费墙后的正文不在内。</p>')
+        else:
+            # Not an identifier at all. "This paper is not in the index" would be a claim about a paper that
+            # was never named - the same wording for both cases told the reader the wrong thing.
+            found = ('<div class="gap"><b>「' + esc(str(paper_id)[:60]) + '」不像论文编号。</b>'
+                     '这里认三种写法：<code>PMC13788955</code>、7–8 位数字的 PMID、'
+                     '<code>10.xxxx/…</code> 形式的 DOI；或者直接给标题里的几个英文词。'
+                     '刚才按标题也没找到匹配——索引只收录我们已归档全文的论文，'
+                     '摘要和付费墙后的正文不在内。</div>')
 
         return layout(
             title="论文 · MedRadar",
@@ -2180,6 +2189,22 @@ def paper_page(*, record: Mapping[str, Any] | None, terms: Sequence[Mapping[str,
 {brand_html}
 """
     return layout(title=f"{record.get('title') or paper_id} · MedRadar", body=body, active="device")
+
+
+def _claims_to_be_paper_id(text: str) -> bool:
+    """Does this string present itself as a paper identifier?
+
+    A looser test than `_looks_like_paper_id`, because it answers a different question. Routing needs a strict
+    shape - a bare five-digit number must not hijack the device search. A miss message needs only to know
+    whether the reader was naming a paper at all: "PMC404" claims to be a PMC id even though real ones are
+    longer, and telling that reader "this does not look like an identifier" is wrong.
+    """
+    import re
+
+    token = text.strip()
+    return bool(re.match(r"PMC\d+", token, re.IGNORECASE)
+                or re.fullmatch(r"\d{6,9}", token)
+                or re.fullmatch(r"10\.\d{4,9}/\S+", token))
 
 
 def _looks_like_paper_id(text: str) -> bool:

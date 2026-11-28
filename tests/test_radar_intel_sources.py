@@ -6305,6 +6305,31 @@ def test_a_search_that_lands_on_a_miss_says_how_it_got_there():
     assert "一个框怎么分流" in inspect.getsource(pages_mod)
 
 
+def test_a_paper_miss_distinguishes_a_missing_paper_from_a_non_identifier():
+    """"This paper is not in the index" is a claim about a paper; a string that never named one deserves a
+    different sentence."""
+    from medradar.radar.pages import paper_page
+
+    not_an_id = paper_page(record=None, terms=[], brands=[], paper_id="zzzzq",
+                           suggestions=[], title_matches=[])
+    assert "不像论文编号" in not_an_id
+    # What the box does accept, and why the title search also failed.
+    assert "PMC13788955" in not_an_id and "DOI" in not_an_id
+    assert "摘要和付费墙后的正文不在内" in not_an_id
+    # The coverage claim belongs to the other case only.
+    assert "不在索引里" not in not_an_id
+
+    identifier = paper_page(record=None, terms=[], brands=[], paper_id="PMC99999999",
+                            suggestions=[], title_matches=[])
+    assert "不在索引里" in identifier
+    assert "不像论文编号" not in identifier
+    # "PMC404" is shorter than a real PMC id but it still claims to be one: the miss message asks whether the
+    # reader was naming a paper, not whether the shape would route correctly.
+    short_id = paper_page(record=None, terms=[], brands=[], paper_id="PMC404",
+                          suggestions=[], title_matches=[])
+    assert "不在索引里" in short_id and "不像论文编号" not in short_id
+
+
 def test_a_pre_digitisation_filing_is_never_requested(tmp_path):
     """Measured: 0 of 60 sampled filings from 1998-2009 have a PDF at any path shape.
 
