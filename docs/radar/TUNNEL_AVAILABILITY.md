@@ -51,3 +51,41 @@ after a rotation is exactly what these numbers describe.
 * The address **rotates**; only a custom domain on a paid plan fixes that, and none is available here.
 * A reconnect still costs a few seconds of 502 — now bounded by 2 s, not 15 s.
 * Nothing else in the stack advertises the old address: the file is rewritten by the same loop that prints it.
+---
+# A reconnect storm is worse than a slow reconnect
+
+Measured 2026-11-28, end of round 101.
+
+## What happened
+
+Public checks returned `000` on three pages in a row while the local service answered 200 in 0.46 s. The
+tunnel unit was active with **17 restarts**, and its log said:
+
+```
+18:14:55 ssh: connect to host localhost.run port 22: Connection refused
+18:14:55 Deactivated successfully.
+18:14:57 Scheduled restart job, restart counter is at 17.
+```
+
+So the relay briefly refused us, and `RestartSec=2` - installed in round 91 to shorten the 502 window -
+turned that into a reconnect every two seconds. The service looked broken while it was mostly us retrying
+too hard.
+
+A manual connection minutes later reached the welcome banner, and the next address answered 200 three times
+in a row. The relay was fine; the storm was ours.
+
+## What changed
+
+```
+RestartSec=5  RestartSteps=4  RestartMaxDelaySec=60   # five seconds, doubling to a minute
+StartLimitIntervalSec=0                              # one outage must not stop the unit for good
+```
+
+This trades a few seconds of extra 502 window (round 91 wanted 2 s) for not provoking the relay during an
+outage. Measured after: restarts 0, address serving 200 in 0.88-1.04 s, gate 401, no failed units.
+
+## The lesson for this file
+
+Round 91 optimised the reconnect window without measuring what repeated reconnects do to the other end. Both
+numbers are now written down: a single reconnect costs a few seconds of 502, and a burst costs the tunnel for
+minutes.
