@@ -1006,6 +1006,7 @@ def sources_page(*, meta: Mapping[str, Any], coverage: Mapping[str, Any] | None 
 {banner}
 {stamp}
 {_materialised_block(data.get("materialised") or [])}
+{_probe_block(data.get("probe"))}
 {night_block}
 <h2>各数据集规模</h2>
 <div class="card"><table><thead><tr><th>数据集</th><th>规模</th><th>说明</th></tr></thead>
@@ -1282,6 +1283,32 @@ def _age_cell(stamp: Any) -> str:
         return ""
     return (f'<br><span class="small" style="color:var(--{"bad" if stale else "muted"})">'
             f'{"已过期 · " if stale else ""}{esc(phrase)}</span>')
+
+
+def _probe_block(report: Mapping[str, Any] | None) -> str:
+    """The last run of tools/store_probe.py: do the pages still say why their content is missing?
+
+    The tool breaks one column per materialised table and asks each reader-facing path what it does with the
+    failure. A page-level path that loses content and says nothing is the defect audits 13 and 14 found by hand,
+    one table at a time; the nightly runs it from now on.
+    """
+    data = dict(report or {})
+    if not data.get("at"):
+        return ""
+    silent = list(data.get("page_level_silent") or [])
+    checked = int(data.get("page_level_checked") or 0)
+    if silent:
+        return ('<h2>页面静默降级自检</h2>'
+                '<div class="gap"><b>有页面在数据读不出来时不会说明原因。</b>'
+                f'最近一次自检（{esc(str(data.get("at")))}）里，'
+                f'{n(len(silent))} / {n(checked)} 条页面级路径静默返回空：'
+                f'{esc("、".join(str(item) for item in silent)[:180])}。</div>')
+    if not checked:
+        return ""
+    return ('<h2>页面静默降级自检</h2>'
+            f'<p class="muted small">最近一次自检（{esc(str(data.get("at")))}）：'
+            f'{n(checked)} 条页面级路径在表结构被弄坏后都给出了原因，没有一条静默返回空。'
+            '这项自检每晚跑一次（<code>tools/store_probe.py</code>）。</p>')
 
 
 def _materialised_block(statuses: Sequence[Mapping[str, Any]]) -> str:
@@ -3474,6 +3501,15 @@ def pages_router(service: Any, *, endpoints: Mapping[str, Any] | None = None) ->
                 if store is not None:
                     data = dict(data or {})
                     data["materialised"] = materialised_status(store)
+                    # The nightly's store probe, written beside the counts.
+                    try:
+                        radar_dir = getattr(service, "radar_dir", None) or os.environ.get("MEDRADAR_RADAR_DIR")
+                        if radar_dir:
+                            probe_path = Path(str(radar_dir)) / "store_probe.json"
+                            if probe_path.is_file():
+                                data["probe"] = json.loads(probe_path.read_text(encoding="utf-8"))
+                    except Exception:  # noqa: BLE001 - no report is no block
+                        data["probe"] = {}
             except Exception:  # noqa: BLE001 - no status block is the old page
                 pass
             # What the last nightly run did, so a step that silently did nothing is visible here.

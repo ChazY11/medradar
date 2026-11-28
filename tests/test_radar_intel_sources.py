@@ -6998,6 +6998,39 @@ def test_no_page_level_path_goes_silent_when_a_table_schema_moves():
     assert any(row["verdict"] == "honest" for row in page_level)
 
 
+def test_the_store_probe_says_whether_a_page_went_silent():
+    """The nightly runs tools/store_probe.py and writes a summary; /sources prints it."""
+    from medradar.radar.pages import _probe_block
+
+    green = _probe_block({"at": "2026-11-29T00:00:00Z", "page_level_checked": 2,
+                          "page_level_silent": []})
+    assert "没有一条静默返回空" in green
+    assert "每晚跑一次" in green
+
+    bad = _probe_block({"at": "2026-11-29T00:00:00Z", "page_level_checked": 2,
+                        "page_level_silent": ["device:peers(page)"]})
+    assert "不会说明原因" in bad
+    assert "device:peers(page)" in bad
+
+    # No report (the tool has never run here): no block, not a claim about health.
+    assert _probe_block({}) == ""
+    assert _probe_block(None) == ""
+
+    # The tool's exit code is about pages: a raw helper returning {} is documented, a page losing content is
+    # the defect. Checked here because the nightly relies on it.
+    import importlib.util
+    from pathlib import Path as _Path
+
+    root = _Path(__file__).resolve().parents[1]
+    spec = importlib.util.spec_from_file_location("store_probe2", root / "tools" / "store_probe.py")
+    module = importlib.util.module_from_spec(spec)
+    assert spec.loader is not None
+    spec.loader.exec_module(module)
+    rows = module.probe()
+    page_level = [row for row in rows if row["path"].endswith("(page)")]
+    assert page_level and all(row["verdict"] != "silent" for row in page_level)
+
+
 def test_a_pre_digitisation_filing_is_never_requested(tmp_path):
     """Measured: 0 of 60 sampled filings from 1998-2009 have a PDF at any path shape.
 

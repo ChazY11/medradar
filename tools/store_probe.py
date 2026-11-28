@@ -217,6 +217,8 @@ def _describe(value: Any) -> str:
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--json", action="store_true", help="machine-readable output")
+    parser.add_argument("--summary", default="", metavar="PATH",
+                        help="also write a compact summary (what /sources shows) to PATH")
     args = parser.parse_args()
 
     rows = probe()
@@ -228,8 +230,25 @@ def main() -> int:
             print(f"{row['table']:18} {row['path']:16} {row['verdict']:8} "
                   f"{row['before']:10} {row['after']:10} {row['error']}")
     silent = [row for row in rows if row["verdict"] == "silent"]
+    if args.summary:
+        from datetime import datetime, timezone
+
+        page_level = [row for row in rows if row["path"].endswith("(page)")]
+        payload = {
+            "at": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+            "rows": len(rows),
+            "silent": [{"table": row["table"], "path": row["path"]} for row in silent],
+            # Only the page-level verdicts decide whether a reader is misled; the raw helpers are paired with a
+            # status call, and their rows are kept so the pairing stays visible.
+            "page_level_silent": [row["path"] for row in page_level if row["verdict"] == "silent"],
+            "page_level_checked": len(page_level),
+        }
+        Path(args.summary).write_text(json.dumps(payload, ensure_ascii=False, indent=2),
+                                      encoding="utf-8")
     print(f"\n{silent.__len__()} silent of {len(rows)}", file=sys.stderr)
-    return 1 if silent else 0
+    # The exit code is about pages: a raw helper returning {} is documented behaviour, a page losing content and
+    # saying nothing is the defect this tool exists to catch.
+    return 1 if any(row["verdict"] == "silent" for row in rows if row["path"].endswith("(page)")) else 0
 
 
 if __name__ == "__main__":
