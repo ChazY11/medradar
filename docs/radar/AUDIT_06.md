@@ -91,7 +91,14 @@ shipped and had to be reverted.
 
 ## 6. Known and not fixed
 
-- **`/compare` cold 1.76 s.** Data warmed, HTML cache not. Reason above; fix is a refactor.
+- ~~**`/compare` cold 1.76 s.**~~ **Resolved in round 61.** The routes now register their canonical
+  requests in `_PAGE_ROUTES` and `warmup()` calls them, so the cached HTML is primed instead of only the
+  data underneath. Measured after a restart: `/compare` 1.76 s -> 0.28 s, `/radar` 3.80 s -> 0.31-0.45 s,
+  `/sources` and `/company` unchanged and already fast.
+
+  One honest caveat: for about 90 seconds *after* a restart the warm-up thread competes with real
+  requests for the two cores, and `/compare` measured 1.72 s at 45 s in. Priming all seven pages made it
+  worse (4.6 s) - home, areas and map answer in 0.27-0.39 s cold and are no longer primed.
 - **Patent coverage** 92 applicants / 264 patents; Google Patents is windowed.
 - **`paper_field`** holds 23 papers with no archived text; the column reports the difference.
 - **Public address rotates**; a single sample has been 5–9 s while the server answers in 0.3 s.

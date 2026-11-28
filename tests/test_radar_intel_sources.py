@@ -4510,6 +4510,25 @@ def test_the_index_reports_the_files_it_could_not_index(tmp_path):
             + stats["unreadable"]) == stats["files_seen"]
 
 
+def test_the_warm_up_primes_the_rendered_pages_not_only_the_data():
+    """Audit 06: warming the data left the route cache cold, and /compare paid 1.76 s for it."""
+    from medradar.radar import pages as pages_mod
+
+    # The registry is populated by pages_router(); without it there is nothing to prime, and that is a
+    # state the warm-up has to survive rather than assume away.
+    assert isinstance(pages_mod._PAGE_ROUTES, dict)
+
+    import inspect
+
+    source = inspect.getsource(pages_mod.warmup)
+    assert "_PAGE_ROUTES" in source            # the warm-up actually walks the registry
+    assert "primed" in source                  # and reports what it primed
+    # The routes are registered with their canonical arguments, not left for the reader to supply.
+    register_source = inspect.getsource(pages_mod.pages_router)
+    for name in ("sources", "radar", "company", "compare"):
+        assert f'"{name}": lambda' in register_source, name
+
+
 def test_a_pre_digitisation_filing_is_never_requested(tmp_path):
     """Measured: 0 of 60 sampled filings from 1998-2009 have a PDF at any path shape.
 

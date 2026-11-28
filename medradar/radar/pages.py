@@ -1541,6 +1541,16 @@ def warmup(service: Any) -> dict[str, Any]:
                 warmed[name] = True
             except Exception as error:  # noqa: BLE001 - a page that cannot warm still serves
                 report["errors"].append(f"{name}: {type(error).__name__}")
+        # Prime the rendered pages themselves. This is the step audit 06 said was missing: the data
+        # below these routes was warm and the cache entry was not, so /compare still cost 1.76 s cold.
+        primed: dict[str, bool] = {}
+        for name, call in list(_PAGE_ROUTES.items()):
+            try:
+                call()
+                primed[name] = True
+            except Exception as error:  # noqa: BLE001 - a page that cannot warm still serves
+                report["errors"].append(f"prime:{name}: {type(error).__name__}")
+        report["primed"] = primed
         report["warmed"] = warmed
     except Exception as error:  # noqa: BLE001
         report["errors"].append(f"{type(error).__name__}: {error}")
@@ -1952,6 +1962,15 @@ def radar_page(*, feed: Mapping[str, Any], stats: Mapping[str, Any]) -> str:
 <p class="small muted">{esc(str(feed.get("note") or ""))}</p>
 """
     return layout(title="实时雷达 · MedRadar", body=body, active="feed")
+
+
+#: The canonical request for each page, filled by pages_router() and used by warmup().
+#
+# Warming the data underneath a page is not the same as warming the page: every route returns
+# `cached(key, ttl, render)` (rendered HTML), while warmup() called the builders. Measured cold after a
+# restart: /compare 1.76 s, and the audit recorded the cause but not the fix. Calling the route functions
+# themselves primes the entry the reader will ask for.
+_PAGE_ROUTES: dict[str, Any] = {}
 
 
 def pages_router(service: Any, *, endpoints: Mapping[str, Any] | None = None) -> Any:
@@ -2519,6 +2538,19 @@ def pages_router(service: Any, *, endpoints: Mapping[str, Any] | None = None) ->
                                  extra=f'<span class="small muted">{esc(str(error)[:200])}</span>')),
                 active="map"), status_code=503)
         return HTMLResponse(map_page(payload=payload if isinstance(payload, Mapping) else {}))
+
+    # Canonical requests, in the order a first reader is likely to need them. Each one goes through
+    # cached(), so the page is rendered once at startup instead of on the first click.
+    # Only the pages that are expensive cold. Measured on the 2-vCPU box: priming all seven made the
+    # first requests *slower* (compare 4.6 s, radar 3.9 s) because the warm-up thread was competing with
+    # them for both cores. home, areas and map answer in 0.27-0.39 s cold and need nothing.
+    _PAGE_ROUTES.clear()
+    _PAGE_ROUTES.update({
+        "sources": lambda: sources_view(),
+        "radar": lambda: radar_view(),
+        "company": lambda: company_view("Medtronic"),
+        "compare": lambda: compare_view(["Medtronic", "Stryker"]),
+    })
 
     return router
 
