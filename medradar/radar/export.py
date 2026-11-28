@@ -648,6 +648,19 @@ def area_csv(companies: Sequence[Mapping[str, Any]]) -> str:
     return buffer.getvalue()
 
 
+def _uncovered(company: Mapping[str, Any], key: str) -> bool:
+    """True when a zero in this column means "not in the lane", not "none of them".
+
+    The patent lane covers 92 applicants out of the register; the per-company lookup records that in
+    `patent_gap`. The page started saying so in round 133, and the file - which is the artefact that travels -
+    kept printing 0.
+    """
+    if key != "patents":
+        return False
+    return (int(company.get("patents") or 0) == 0
+            and company.get("patent_gap") == "patent_only_searched_not_recorded")
+
+
 def compare_markdown(companies: Sequence[Mapping[str, Any]]) -> str:
     found = [c for c in companies if c.get("found")]
     lines = ["# 公司对比", "", f"> 导出于 {_stamp()}。{SOURCE_LINE}", ""]
@@ -659,7 +672,8 @@ def compare_markdown(companies: Sequence[Mapping[str, Any]]) -> str:
     lines.append("| --- |" + " ---: |" * len(found))
     for label, key in (("注册设备", "devices"), ("批文", "clearances"), ("失效记录", "failures"),
                        ("在研试验", "trials"), ("专利", "patents"), ("相关论文", "papers")):
-        lines.append(f"| {label} | " + " | ".join(f"{c.get(key) or 0:,}" for c in found) + " |")
+        lines.append(f"| {label} | " + " | ".join(
+            ("未收录" if _uncovered(c, key) else f"{c.get(key) or 0:,}") for c in found) + " |")
     codes = [set(c.get("product_codes") or []) for c in found]
     shared = set.intersection(*codes) if codes else set()
     union = set.union(*codes) if codes else set()
@@ -721,14 +735,20 @@ def compare_csv(companies: Sequence[Mapping[str, Any]]) -> str:
     buffer = io.StringIO()
     writer = csv.writer(buffer, lineterminator="\n")
     writer.writerow(["company", "duns", "devices", "clearances", "failures", "trials",
-                     "patents", "papers", "product_codes", "specialties", "topic_gap"])
+                     "patents", "patents_covered", "papers", "product_codes", "specialties",
+                     "topic_gap"])
     for item in companies:
         if not item.get("found"):
             continue
         writer.writerow([
             item.get("company_name") or item.get("query"), item.get("labeler_duns") or "",
             item.get("devices") or 0, item.get("clearances") or 0, item.get("failures") or 0,
-            item.get("trials") or 0, item.get("patents") or 0, item.get("papers") or 0,
+            item.get("trials") or 0,
+            # An explicit coverage column, because a CSV has no room for the sentence: the number stays a
+            # number and the truth travels beside it.
+            "" if _uncovered(item, "patents") else (item.get("patents") or 0),
+            "no" if _uncovered(item, "patents") else "yes",
+            item.get("papers") or 0,
             ";".join(item.get("product_codes") or []),
             # "Dental:8;Orthopedic:2" - the count matters, not only the name.
             ";".join(f"{row['specialty']}:{row['codes']}"
@@ -961,7 +981,10 @@ def compare_json(companies: Sequence[Mapping[str, Any]]) -> str:
                                "clearances": int(c.get("clearances") or 0),
                                "failures_by_product_code": int(c.get("failures") or 0),
                                "trials": int(c.get("trials") or 0),
-                               "patents": int(c.get("patents") or 0),
+                               # null, not 0: the patent lane covers 92 applicants, so an absent
+                               # count here means "not covered", and a consumer reading 0 would rank it.
+                               "patents": (None if _uncovered(c, "patents")
+                                           else int(c.get("patents") or 0)),
                                "papers": int(c.get("papers") or 0)},
                     "product_codes": c.get("product_codes") or [],
                     "specialties": c.get("specialties") or [],
@@ -973,7 +996,11 @@ def compare_json(companies: Sequence[Mapping[str, Any]]) -> str:
                    for c in found],
         missing=[{"query": c.get("query")} for c in companies if not c.get("found")],
         bounds=["注册设备多表示铺货广，批文多才表示产品线深；两者不可互换。",
-                "brand_reports 是名称匹配，不是法定主体归属，也不跨法人聚合。"])
+                "brand_reports 是名称匹配，不是法定主体归属，也不跨法人聚合。",
+                "counts.patents 为 null 表示这家公司不在专利库覆盖范围内（专利库只覆盖已抓取的受让人），"
+                "不是它没有专利；0 才是搜过而确实没有入库记录。",
+                "counts.papers 按注册品牌名称在已归档全文中匹配；提到名称不等于研究这家公司，"
+                "索引也只含已归档全文。"])
 
 
 def areas_json(items: Sequence[Mapping[str, Any]], *, updated_at: str | None = None,

@@ -6647,6 +6647,46 @@ def test_a_comparison_does_not_print_zero_for_an_uncovered_patent_lane():
     assert "—<span class=\"small\"> 未收录</span>" not in plain
 
 
+def test_an_uncovered_patent_count_travels_as_uncovered_in_every_format():
+    """Round 133 fixed the page; the file is the artefact that gets forwarded."""
+    import json
+
+    from medradar.radar import export as export_mod
+
+    def company(name, **over):
+        base = {"query": name, "found": True, "company_name": name, "labeler_duns": "1",
+                "devices": 10, "clearances": 1, "failures": 2, "trials": 0, "patents": 0,
+                "papers": 3, "product_codes": [], "specialties": [], "topic_gap": ""}
+        base.update(over)
+        return base
+
+    uncovered = company("MEDTRONIC", patent_gap="patent_only_searched_not_recorded")
+    covered = company("STRYKER", patents=7)
+
+    markdown = export_mod.compare_markdown([uncovered, covered])
+    assert "未收录" in markdown
+    assert "| 专利 | 未收录 | 7 |" in markdown
+
+    rows = export_mod.compare_csv([uncovered, covered]).splitlines()
+    header = rows[0].split(",")
+    assert "patents_covered" in header
+    index = header.index("patents_covered")
+    assert rows[1].split(",")[index] == "no"
+    assert rows[2].split(",")[index] == "yes"
+    # The number stays empty rather than claiming zero.
+    assert rows[1].split(",")[header.index("patents")] == ""
+
+    data = json.loads(export_mod.compare_json([uncovered, covered]))
+    assert data["companies"][0]["counts"]["patents"] is None
+    assert data["companies"][1]["counts"]["patents"] == 7
+    assert any("null" in bound for bound in data["bounds"])
+
+    # A plain zero with no gap recorded is still a zero in every format.
+    plain = company("A")
+    assert "未收录" not in export_mod.compare_markdown([plain, covered])
+    assert json.loads(export_mod.compare_json([plain]))["companies"][0]["counts"]["patents"] == 0
+
+
 def test_a_pre_digitisation_filing_is_never_requested(tmp_path):
     """Measured: 0 of 60 sampled filings from 1998-2009 have a PDF at any path shape.
 
