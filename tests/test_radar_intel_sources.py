@@ -4574,6 +4574,30 @@ def test_a_field_shows_its_monthly_shape_and_says_what_the_shape_is(tmp_path):
     assert "按月分布" not in plain
 
 
+def test_a_company_shows_registrations_by_year_and_what_the_axis_means():
+    """Momentum from the register, which is attributed by DUNS - not from papers, which are a lead."""
+    from medradar.radar.pages import company_page
+
+    base = {
+        "found": True, "company_name": "ACME ORTHOPEDICS", "query": "Acme", "devices": 450,
+        "clearances": 3, "failures": 0, "trials": 0, "patents": 0, "papers": 0, "brands": [],
+        "product_codes": [], "topics": {}, "specialties": [], "specialty_examples": {},
+        "device_years": [{"year": "2024", "n": 80}, {"year": "2025", "n": 300},
+                         {"year": str(__import__("datetime").date.today().year), "n": 20}],
+    }
+    page = company_page(data=base)
+    assert "注册登记按年" in page
+    assert "注册台数" in page and "占比" in page
+    # The axis is GUDID's record date, and the page must not let it read as R&D spend.
+    assert "不是研发时间" in page
+    assert "不能当作研发投入的曲线" in page
+    assert "当前年份未满" in page
+    assert "当年未满" in page                      # the partial year is marked in its row
+
+    # No series, no block.
+    assert "注册登记按年" not in company_page(data=dict(base, device_years=[]))
+
+
 def test_a_pre_digitisation_filing_is_never_requested(tmp_path):
     """Measured: 0 of 60 sampled filings from 1998-2009 have a PDF at any path shape.
 

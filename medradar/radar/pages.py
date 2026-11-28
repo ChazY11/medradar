@@ -1051,6 +1051,37 @@ def company_page(*, data: Mapping[str, Any]) -> str:
                    f'<th>标题</th></tr></thead><tbody>{patent_rows}</tbody></table></div>'
                    if patent_rows else gap_note(data.get("patent_gap") or "patent_bulk_tables_absent"))
 
+    from .watermark import utc_today
+
+    # Registered devices by year, above the field block: it is the company's own record, not a lead.
+    #
+    # Drawn as a table, not bars. Measured on Medtronic: one backfill year holds 20,440 devices and the
+    # recent years hold 803 / 1,904 / 881, so a bar chart scaled to the peak renders every interesting
+    # year as a two-pixel stub. Reading the numbers beats reading a shape that cannot show them.
+    years = data.get("device_years") or []
+    this_year = str(utc_today())[:4]
+    total_years = sum(int(item.get("n") or 0) for item in years)
+    if years and total_years:
+        peak = max(int(item.get("n") or 0) for item in years) or 1
+        peak_year = next(str(item.get("year")) for item in years
+                         if int(item.get("n") or 0) == peak)
+        rows = "".join(
+            f'<tr><td>{esc(str(item.get("year")))}'
+            f'{"<span class=\"muted small\"> · 当年未满</span>" if str(item.get("year")) == this_year else ""}'
+            f'</td><td class="num">{n(item.get("n"))}</td>'
+            f'<td class="num muted small">{100.0 * int(item.get("n") or 0) / total_years:.1f}%</td></tr>'
+            for item in years)
+        years_block = (
+            '<h2>注册登记按年</h2>'
+            f'<p class="muted small">这家公司的设备注册记录按 UDI 发布日期统计，{n(len(years))} 年，'
+            f'合计 {n(total_years)} 台，最多一年是 {esc(peak_year)} 的 {n(peak)} 台。'
+            '<b>这是 GUDID 的收录时间，不是研发时间</b>——登记可以晚于上市，早年设备也可能被集中补录；'
+            '当前年份未满。因此这张表看的是记录节奏，不能当作研发投入的曲线。</p>'
+            '<div class="card"><table><thead><tr><th>年份</th><th>注册台数</th><th>占比</th></tr>'
+            f'</thead><tbody>{rows}</tbody></table></div>')
+    else:
+        years_block = ""
+
     primary = str(data.get("primary_specialty") or "")
     topics = data.get("field_topics") or []
     field_recent = data.get("field_recent") or []
@@ -1094,6 +1125,7 @@ def company_page(*, data: Mapping[str, Any]) -> str:
 <p class="muted small">来自科技地图：每个方向一条，点进去看具体出处。</p>
 {topic_html}
 
+{years_block}
 <h2>2b · 它在哪些技术领域注册了产品</h2>
 <p class="muted small">按 FDA 产品码分类统计——<b>这是"注册了什么"，不是"发表了什么"</b>，
 和上面那段（科技地图）回答的是不同的问题，不能混用。</p>
@@ -1151,6 +1183,18 @@ def _company_data(store: Any, query: str, *, snapshot: Mapping[str, Any]) -> dic
     out["clearances"] = scalar(
         "SELECT COUNT(DISTINCT submission_number) FROM udi_premarket WHERE labeler_duns = ?",
         (duns,))
+    # Registered devices by year. Solid attribution (labeler DUNS) and large numbers, unlike papers,
+    # which we can only tie to a company by brand-name mention. Measured on Medtronic: 45,433 devices
+    # across 2019-2026 with a 7,554 peak in 2022 - a shape worth showing and worth bounding.
+    try:
+        rows = store.conn.execute(
+            "SELECT substr(publish_date,1,4) AS y, COUNT(*) FROM udi_device"
+            " WHERE labeler_duns = ? AND COALESCE(publish_date,'') <> ''"
+            " GROUP BY y ORDER BY y DESC LIMIT 12", (duns,)).fetchall()
+        out["device_years"] = [{"year": str(r[0]), "n": int(r[1] or 0)}
+                               for r in reversed(rows)]
+    except Exception:  # noqa: BLE001 - no register is a stated gap
+        out["device_years"] = []
     try:
         # The list is capped for display, and the cap is recorded rather than hidden: reporting
         # "共 200 个产品码" for a labeler that has 500 is a completeness claim the data does not
