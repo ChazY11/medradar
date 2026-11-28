@@ -509,6 +509,40 @@ def _field_topics_line(timeline: Any, store: Any = None) -> str:
             + trend)
 
 
+def _code_peers_block(peers: Mapping[str, Sequence[Mapping[str, Any]]], head: Any) -> str:
+    """Who else registers under this device's product codes, and how big they are.
+
+    The page already said how many devices sit behind the code ("DZE 321 台"); this says who they belong to,
+    which is the question a reader evaluating one product actually asks. Read from the table the night builds -
+    the grouping is 12.4 s on the production store.
+    """
+    codes = [str(code) for code in (getattr(head, "product_codes", None) or [])]
+    shown = [(code, list(peers.get(code) or [])) for code in codes]
+    shown = [(code, rows) for code, rows in shown if rows]
+    if not shown:
+        return ""
+    own = str(getattr(head, "company_name", "") or "").strip().casefold()
+    blocks = []
+    for code, rows in shown:
+        cells = "".join(
+            f'<tr><td class="num">{n(item.get("rank"))}</td>'
+            f'<td><a href="/company?q={esc(str(item.get("company_name")))}">'
+            f'{esc(str(item.get("company_name"))[:52])}</a>'
+            f'{"<span class=\"muted small\"> 本公司</span>" if str(item.get("company_name")).strip().casefold() == own else ""}</td>'
+            f'<td class="num">{n(item.get("devices"))}</td></tr>'
+            for item in rows)
+        stamp = str((rows[0] or {}).get("computed_at") or "")
+        blocks.append(
+            f'<div class="card"><h4>产品码 {esc(code)} 下注册最多的公司'
+            f'<span class="muted small"> 算于 {esc(stamp or "未知")}</span></h4>'
+            f'<table><thead><tr><th>#</th><th>公司</th><th>设备数</th></tr></thead>'
+            f'<tbody>{cells}</tbody></table></div>')
+    return ('<h2>同一产品码下还有谁</h2>'
+            '<p class="muted small">按注册设备数排前几位。这是"注册了什么"，不是销量、不是市场份额；'
+            '同一台设备带多个产品码时会在各码下分别计入。</p>'
+            + "".join(blocks))
+
+
 def _suggestion_block(names: Sequence[str]) -> str:
     """Registered brand names that contain what was typed.
 
@@ -548,7 +582,7 @@ def _device_id_shape(text: str) -> str:
 
 def device_dossier(timeline: Any, *, query: str, store: Any = None,
                    substituted_from: str = "", suggestions: Sequence[str] = (),
-                   routed_from: str = "") -> str:
+                   routed_from: str = "", code_peers: Mapping[str, Sequence[Mapping[str, Any]]] | None = None) -> str:
     refs = timeline.refs
     if not refs:
         shape = _device_id_shape(query)
@@ -732,6 +766,7 @@ def device_dossier(timeline: Any, *, query: str, store: Any = None,
 <div class="chips">{_identifier_chips(head)}</div>
 {_area_line(timeline)}
 {_field_topics_line(timeline, store)}
+{_code_peers_block(code_peers or {}, head)}
 {shelf}
 <div class="grid" style="margin-top:22px">{summary_cards}</div>
 
@@ -3252,11 +3287,21 @@ def pages_router(service: Any, *, endpoints: Mapping[str, Any] | None = None) ->
                     suggestions = suggest_brands(store, query)
                 except Exception:  # noqa: BLE001 - no suggestions is one block fewer
                     suggestions = []
+            # Who else registers under the same product codes, from the table the night builds.
+            code_peers: dict[str, Any] = {}
+            if timeline.refs:
+                try:
+                    from .code_leaders import leaders_for
+
+                    code_peers = leaders_for(store, list(timeline.refs[0].product_codes or [])[:4])
+                except Exception:  # noqa: BLE001 - one block fewer
+                    code_peers = {}
             try:
                 return device_dossier(timeline, query=query, store=store,
                                       substituted_from=substituted_from,
                                       suggestions=suggestions,
-                                      routed_from=("search" if from_ == "search" else ""))
+                                      routed_from=("search" if from_ == "search" else ""),
+                                      code_peers=code_peers)
             finally:
                 store.close()
 

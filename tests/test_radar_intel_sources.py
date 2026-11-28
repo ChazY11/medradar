@@ -6687,6 +6687,48 @@ def test_an_uncovered_patent_count_travels_as_uncovered_in_every_format():
     assert json.loads(export_mod.compare_json([plain]))["companies"][0]["counts"]["patents"] == 0
 
 
+def test_a_device_page_names_the_other_registrants_in_its_code(tmp_path):
+    """The page said how many devices sit behind the code; it did not say who owns them."""
+    import sqlite3
+
+    from medradar.radar.code_leaders import leaders_for, status, store_leaders
+    from medradar.radar.pages import _code_peers_block
+
+    class Store:
+        def __init__(self, conn):
+            self.conn = conn
+
+    conn = sqlite3.connect(":memory:")
+    conn.execute("CREATE TABLE udi_device (device_key TEXT, company_name TEXT, product_codes TEXT)")
+    conn.executemany("INSERT INTO udi_device VALUES (?,?,?)", [
+        ("1", "Acme", '["DZE","EIH"]'), ("2", "Acme", '["DZE"]'), ("3", "Beta", '["DZE"]'),
+        ("4", "Beta", '["DZE"]'), ("5", "Gamma", '["EIH"]'), ("6", "", '["DZE"]'),
+    ])
+    store = Store(conn)
+
+    # The empty company name is not a registrant and must not appear.
+    built = store_leaders(store, top=2, at="2026-11-29")
+    assert built["codes"] == 2 and built["rows"] == 4
+    leaders = leaders_for(store, ["DZE"], limit=2)["DZE"]
+    assert [item["company_name"] for item in leaders] == ["Acme", "Beta"]
+    assert all(item["computed_at"] == "2026-11-29" for item in leaders)
+    assert status(store)["rows"] == 4
+
+    class Head:
+        product_codes = ["DZE"]
+        company_name = "Acme"
+
+    html = _code_peers_block({"DZE": leaders}, Head())
+    assert "同一产品码下还有谁" in html
+    assert "本公司" in html                       # the reader's own company is marked
+    assert "算于 2026-11-29" in html              # the table's stamp travels with it
+    assert "不是销量、不是市场份额" in html
+
+    # No table built: no block, rather than an empty heading.
+    assert _code_peers_block({}, Head()) == ""
+    assert leaders_for(Store(sqlite3.connect(":memory:")), ["DZE"]) == {}
+
+
 def test_a_pre_digitisation_filing_is_never_requested(tmp_path):
     """Measured: 0 of 60 sampled filings from 1998-2009 have a PDF at any path shape.
 

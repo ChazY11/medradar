@@ -222,5 +222,10 @@ echo "[$(date -Is)] field trends"
 tail -2 $WORK/step_trends.log
 mark "field trends" ok "$(grab '"with_term": [0-9]+' $WORK/step_trends.log) fields"
 
+echo "[$(date -Is)] code leaders"
+"$PY" "$REL/tools/code_leaders.py" --reference "${MEDRADAR_REFERENCE_DB:-/srv/medradar/reference_slim.db}" > $WORK/step_leaders.log 2>&1 || true
+tail -2 $WORK/step_leaders.log
+mark "code leaders" ok "$(grab '"codes": [0-9]+' $WORK/step_leaders.log) codes"
+
 mark "done" ok "$(ls "$OUT"/*.json 2>/dev/null | wc -l) records"
 exit 0

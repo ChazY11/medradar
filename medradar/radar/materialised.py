@@ -29,6 +29,9 @@ MATERIALISED: dict[str, dict[str, Any]] = {
                     "what": "/areas、设备页、公司页、导出的上升词"},
     "paper_field": {"columns": ("paper_id", "specialty", "added_at"), "stamp": "added_at",
                     "what": "论文与领域的关联（领域页、近两周发表）"},
+    "code_leader": {"columns": ("code", "rank", "company_name", "devices", "computed_at"),
+                    "stamp": "computed_at",
+                    "what": "设备页「同一产品码下还有谁」"},
 }
 
 
