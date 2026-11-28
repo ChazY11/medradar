@@ -1179,7 +1179,8 @@ def company_page(*, data: Mapping[str, Any]) -> str:
 <h1>{esc(name)}</h1><p class="lede">{esc(data.get("matched_by") or "")} · DUNS {esc(data.get("labeler_duns") or "—")}
  · <a href="/compare?q={esc(name)}">与其他公司对比</a></p>
 <p class="small muted">导出：<a href="/download?kind=company&format=md&q={esc(name)}">Markdown</a>
- · <a href="/download?kind=company&format=csv&q={esc(name)}">CSV</a></p>
+ · <a href="/download?kind=company&format=csv&q={esc(name)}">CSV</a>
+ · <a href="/download?kind=company&format=json&q={esc(name)}">JSON</a></p>
 <div class="grid">{stats}</div>
 
 <h2>1 · 它注册了哪些器械</h2><p class="muted small">来源：FDA UDI 设备注册表。点击品牌进入设备档案。</p>
@@ -1666,7 +1667,8 @@ def compare_page(*, companies: Sequence[Mapping[str, Any]],
 <p class="lede">{n(len(found))} 家公司并列。数字大的标出来，但"大"不等于"强"——
 注册设备多是铺货广，批文多才是产品线深。</p>
 <p class="small muted">导出：<a href="/download?kind=compare&format=md&q={esc(','.join(str(c.get('company_name') or c.get('query')) for c in found))}">Markdown</a>
- · <a href="/download?kind=compare&format=csv&q={esc(','.join(str(c.get('company_name') or c.get('query')) for c in found))}">CSV</a></p>
+ · <a href="/download?kind=compare&format=csv&q={esc(','.join(str(c.get('company_name') or c.get('query')) for c in found))}">CSV</a>
+ · <a href="/download?kind=compare&format=json&q={esc(','.join(str(c.get('company_name') or c.get('query')) for c in found))}">JSON</a></p>
 {swapped_html}
 {missing_html}
 <h2>规模与产出</h2>
@@ -2015,7 +2017,8 @@ def areas_page(*, data: Mapping[str, Any]) -> str:
 <p class="small">{tabs}</p>
 <p class="muted small">{esc(order_note)}</p>
 <p class="small muted">导出：<a href="/download?kind=areas&format=md">Markdown</a>
- · <a href="/download?kind=areas&format=csv">CSV</a></p>
+ · <a href="/download?kind=areas&format=csv">CSV</a>
+ · <a href="/download?kind=areas&format=json">JSON</a></p>
 <div class="gap"><b>这张表说明什么：</b>它数的是<b>注册了什么</b>——产品码来自厂商登记，
 不是论文、不是专利。一家公司在某领域设备多，说明它在那里铺得广，不说明它技术领先。
 「设备数」按注册条目计，同一台设备有多个产品码时会分别计入各领域，所以各行相加会大于总设备数。</div>
@@ -2196,6 +2199,7 @@ def area_page(*, specialty: str, summary: Mapping[str, Any] | None,
             f'<p class="small muted">导出：'
             f'<a href="/download?kind=papers&format=md&name={esc(specialty)}">Markdown</a>'
             f' · <a href="/download?kind=papers&format=csv&name={esc(specialty)}">CSV</a>'
+            f' · <a href="/download?kind=papers&format=json&name={esc(specialty)}">JSON</a>'
             f'<span class="muted"> —— CSV 是纯数据表，上面那句边界说明不在文件里；'
             f'要连说明一起转发，用 Markdown。</span></p>'
             f'<div class="card"><table><thead><tr><th>发表日期</th><th>标题</th></tr></thead>'
@@ -2210,7 +2214,8 @@ def area_page(*, specialty: str, summary: Mapping[str, Any] | None,
 {resolved_note}
 <p class="small muted">导出：
 <a href="/download?kind=area&format=md&name={esc(specialty)}">Markdown</a>
- · <a href="/download?kind=area&format=csv&name={esc(specialty)}">CSV</a></p>
+ · <a href="/download?kind=area&format=csv&name={esc(specialty)}">CSV</a>
+ · <a href="/download?kind=area&format=json&name={esc(specialty)}">JSON</a></p>
 <div class="gap"><b>这张表数的是注册，不是技术。</b>设备数按注册条目计，一台设备带多个产品码时
 会在各领域分别计入；一家公司在这里设备多，说明它铺得广，不说明它领先。</div>
 {topics_block}
@@ -2669,6 +2674,9 @@ def pages_router(service: Any, *, endpoints: Mapping[str, Any] | None = None) ->
                 if format == "csv":
                     body = export_mod.areas_csv(items)
                     media, suffix = "text/csv; charset=utf-8", "csv"
+                elif format == "json":
+                    body = export_mod.areas_json(items, updated_at=data.get("updated_at"))
+                    media, suffix = "application/json; charset=utf-8", "json"
                 else:
                     body = export_mod.areas_markdown(items, updated_at=data.get("updated_at"))
                     media, suffix = "text/markdown; charset=utf-8", "md"
@@ -2686,9 +2694,20 @@ def pages_router(service: Any, *, endpoints: Mapping[str, Any] | None = None) ->
                     failures = read_failures(store, name)
                 except Exception:  # noqa: BLE001 - no failure index is a stated gap
                     failures = {}
+                # The monthly shape comes along so a JSON consumer sees the same series the page draws.
+                try:
+                    from .paper_passes import monthly_counts
+
+                    monthly = monthly_counts(store, name)
+                except Exception:  # noqa: BLE001 - no literature yet is a stated gap
+                    monthly = []
                 if format == "csv":
                     body = export_mod.area_csv(companies)
                     media, suffix = "text/csv; charset=utf-8", "csv"
+                elif format == "json":
+                    body = export_mod.area_json(name, summary, companies,
+                                                failures=failures, monthly=monthly)
+                    media, suffix = "application/json; charset=utf-8", "json"
                 else:
                     body = export_mod.area_markdown(name, summary, companies, failures=failures)
                     media, suffix = "text/markdown; charset=utf-8", "md"
@@ -2701,6 +2720,9 @@ def pages_router(service: Any, *, endpoints: Mapping[str, Any] | None = None) ->
                 if format == "csv":
                     body = export_mod.field_papers_csv(items)
                     media, suffix = "text/csv; charset=utf-8", "csv"
+                elif format == "json":
+                    body = export_mod.field_papers_json(name, items, held=held)
+                    media, suffix = "application/json; charset=utf-8", "json"
                 else:
                     body = export_mod.field_papers_markdown(name, items, held=held)
                     media, suffix = "text/markdown; charset=utf-8", "md"
@@ -2711,6 +2733,9 @@ def pages_router(service: Any, *, endpoints: Mapping[str, Any] | None = None) ->
                 if format == "csv":
                     body = export_mod.company_csv(data)
                     media, suffix = "text/csv; charset=utf-8", "csv"
+                elif format == "json":
+                    body = export_mod.company_json(data)
+                    media, suffix = "application/json; charset=utf-8", "json"
                 else:
                     body = export_mod.company_markdown(data)
                     media, suffix = "text/markdown; charset=utf-8", "md"
@@ -2748,7 +2773,10 @@ def pages_router(service: Any, *, endpoints: Mapping[str, Any] | None = None) ->
                     body = export_mod.compare_csv(data)
                     media, suffix = "text/csv; charset=utf-8", "csv"
                 else:
-                    body = json.dumps(data, ensure_ascii=False, indent=2)
+                    # A plain dump of the internal dicts shipped every field including the ones the page
+                    # deliberately keeps apart. The envelope names the schema and separates the
+                    # name-matched block, so a consumer cannot merge it into the hard numbers by accident.
+                    body = export_mod.compare_json(data)
                     media, suffix = "application/json; charset=utf-8", "json"
                 stem = f"medradar-compare-{_slug('-'.join(names))}"
         finally:

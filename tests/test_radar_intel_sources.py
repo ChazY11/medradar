@@ -4937,6 +4937,42 @@ def test_the_device_export_carries_the_shelf_as_a_sentence_and_as_a_column():
     assert "同类规模" not in device_markdown(Timeline(), query="x", shelf={})
 
 
+def test_every_export_kind_answers_json_with_json():
+    """Audit-adjacent defect: format=json returned Markdown with a .md filename for four of five kinds."""
+    import json
+
+    from medradar.radar.export import (area_json, areas_json, company_json, compare_json,
+                                       field_papers_json)
+
+    area = json.loads(area_json(
+        "Dental", {"devices": 100, "codes": 295, "companies": 50},
+        [{"rank": 1, "company_name": "ACME", "devices": 10}],
+        failures={"codes": 295, "total": 12428, "by_event": {"Injury": 7149},
+                  "by_code": [{"code": "DZE", "reports": 1653}], "by_year": {"2026": 5457}},
+        monthly=[{"ym": "2026-11", "n": 19}]))
+    assert area["schema"] == "medradar.radar.area.export.v1"
+    assert area["failures"]["reports"] == 12428
+    assert area["monthly"][0]["ym"] == "2026-11"
+    assert len(area["bounds"]) >= 3            # the caveats exist as fields, not only as prose
+
+    company = json.loads(company_json({
+        "found": True, "company_name": "X", "devices": 10,
+        "brand_failures": {"brands": 337, "total": 6843, "by_event": {}},
+        "device_years": [{"year": "2025", "n": 1}]}))
+    # Name-matched reports are their own key, never folded into the counts of the company's records.
+    assert company["counts"]["devices"] == 10
+    assert company["brand_reports"]["reports"] == 6843
+    assert company["brand_reports"]["attribution"] == "name_match_not_legal_entity"
+
+    cmp_payload = json.loads(compare_json([{"found": True, "company_name": "A", "devices": 1,
+                                            "brand_failures": {"brands": 1, "total": 2}}]))
+    assert cmp_payload["companies"][0]["brand_reports"]["reports"] == 2
+    assert any("名称匹配" in text for text in cmp_payload["bounds"])
+
+    assert json.loads(areas_json([{"specialty": "D", "devices": 1}]))["specialties"][0]["specialty"] == "D"
+    assert json.loads(field_papers_json("D", [{"paper_id": "P1"}]))["papers"][0]["paper_id"] == "P1"
+
+
 def test_a_pre_digitisation_filing_is_never_requested(tmp_path):
     """Measured: 0 of 60 sampled filings from 1998-2009 have a PDF at any path shape.
 

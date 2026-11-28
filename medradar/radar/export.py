@@ -605,6 +605,132 @@ def device_json(timeline: Any, *, query: str) -> str:
     return json.dumps(payload, ensure_ascii=False, indent=2)
 
 
-__all__ = ["area_csv", "area_markdown", "areas_csv", "areas_markdown", "company_csv",
-           "company_markdown", "compare_csv", "compare_markdown", "device_csv", "device_json",
-           "device_markdown"]
+def _json_payload(schema: str, **fields: Any) -> str:
+    """The envelope every JSON export shares, so a consumer can tell which one it received."""
+    payload: dict[str, Any] = {"schema": f"medradar.radar.{schema}.export.v1",
+                               "exported_at": _stamp(),
+                               "source": SOURCE_LINE}
+    payload.update(fields)
+    return json.dumps(payload, ensure_ascii=False, indent=2)
+
+
+def area_json(specialty: str, summary: Mapping[str, Any],
+              companies: Sequence[Mapping[str, Any]],
+              *, failures: Mapping[str, Any] | None = None,
+              monthly: Sequence[Mapping[str, Any]] | None = None) -> str:
+    """One specialty, machine-readable, with the bounds as fields rather than as prose.
+
+    A JSON consumer will not read a Chinese sentence in a document header, so each caveat is a named
+    field: `bounds` says what the numbers are not, and `gaps` carries the same reason codes the page uses.
+    """
+    shape = dict(failures or {})
+    return _json_payload(
+        "area",
+        specialty=specialty,
+        summary={"devices": int(summary.get("devices") or 0),
+                 "codes": int(summary.get("codes") or 0),
+                 "companies": int(summary.get("companies") or 0)},
+        companies=[{"rank": item.get("rank"), "company_name": item.get("company_name"),
+                    "devices": int(item.get("devices") or 0)} for item in companies],
+        companies_kept=len(companies),
+        companies_total=int(summary.get("companies") or 0),
+        failures={"codes": int(shape.get("codes") or 0),
+                  "reports": int(shape.get("total") or 0),
+                  "by_event": shape.get("by_event") or {},
+                  "by_code": shape.get("by_code") or [],
+                  "by_year": shape.get("by_year") or {}},
+        monthly=list(monthly or []),
+        bounds=[
+            "失败记录是 MAUDE 报告数，不是故障率：自愿上报，产品用得越多、上报的人越多，数字越大。",
+            "失效索引扫的是最近的报告文件，年份分布反映我们的扫描窗口，不是领域趋势。",
+            "月度论文分布来自一轮抓取，年份集中，不代表该领域全部发表。",
+        ],
+        gaps={code: GAP_TEXT.get(code, code) for code in
+              (["no_company_in_this_specialty"] if not companies else [])})
+
+
+def company_json(data: Mapping[str, Any]) -> str:
+    """One company, machine-readable. The name-matched block is a separate key, never merged with totals."""
+    brand_shape = dict(data.get("brand_failures") or {})
+    return _json_payload(
+        "company",
+        company_name=data.get("company_name"), query=data.get("query"),
+        found=bool(data.get("found")), labeler_duns=data.get("labeler_duns"),
+        matched_by=data.get("matched_by"),
+        counts={"devices": int(data.get("devices") or 0),
+                "clearances": int(data.get("clearances") or 0),
+                "failures_by_product_code": int(data.get("failures") or 0),
+                "trials": int(data.get("trials") or 0),
+                "patents": int(data.get("patents") or 0),
+                "papers": int(data.get("papers") or 0)},
+        brands=data.get("brands") or [],
+        product_codes=data.get("product_codes") or [],
+        product_code_total=data.get("product_code_total"),
+        specialties=data.get("specialties") or [],
+        device_years=data.get("device_years") or [],
+        brand_reports={"brands_matched": int(brand_shape.get("brands") or 0),
+                       "reports": int(brand_shape.get("total") or 0),
+                       "by_brand": brand_shape.get("by_brand") or [],
+                       "by_event": brand_shape.get("by_event") or {},
+                       "attribution": "name_match_not_legal_entity"},
+        bounds=[
+            "brand_reports 是名称匹配，不是法定主体归属，也不跨法人合并。",
+            "brand_reports 是 MAUDE 报告数，不是故障率。",
+            "device_years 按 UDI 发布日期统计，是 GUDID 的收录时间，不是研发时间。",
+            "trials 可能按集团名匹配，不等于这个法人实体。",
+        ])
+
+
+def compare_json(companies: Sequence[Mapping[str, Any]]) -> str:
+    found = [c for c in companies if c.get("found")]
+    return _json_payload(
+        "compare",
+        companies=[{"company_name": c.get("company_name"),
+                    "counts": {"devices": int(c.get("devices") or 0),
+                               "clearances": int(c.get("clearances") or 0),
+                               "failures_by_product_code": int(c.get("failures") or 0),
+                               "trials": int(c.get("trials") or 0),
+                               "patents": int(c.get("patents") or 0),
+                               "papers": int(c.get("papers") or 0)},
+                    "product_codes": c.get("product_codes") or [],
+                    "specialties": c.get("specialties") or [],
+                    "device_years": c.get("device_years") or [],
+                    "brand_reports": {"brands_matched": int((c.get("brand_failures") or {}).get("brands") or 0),
+                                      "reports": int((c.get("brand_failures") or {}).get("total") or 0),
+                                      "by_event": (c.get("brand_failures") or {}).get("by_event") or {},
+                                      "attribution": "name_match_not_legal_entity"}}
+                   for c in found],
+        missing=[{"query": c.get("query")} for c in companies if not c.get("found")],
+        bounds=["注册设备多表示铺货广，批文多才表示产品线深；两者不可互换。",
+                "brand_reports 是名称匹配，不是法定主体归属，也不跨法人聚合。"])
+
+
+def areas_json(items: Sequence[Mapping[str, Any]], *, updated_at: str | None = None) -> str:
+    return _json_payload(
+        "areas",
+        updated_at=updated_at,
+        specialties=[{"specialty": item.get("specialty"),
+                      "devices": int(item.get("devices") or 0),
+                      "codes": int(item.get("codes") or 0),
+                      "companies": int(item.get("companies") or 0),
+                      "papers": int(item.get("papers") or 0),
+                      "matched": int(item.get("matched") or 0)} for item in items],
+        bounds=["数字按注册条目计，一台设备带多个产品码时会在各领域分别计入。"])
+
+
+def field_papers_json(specialty: str, papers: Sequence[Mapping[str, Any]],
+                      *, held: int = 0) -> str:
+    return _json_payload(
+        "papers",
+        specialty=specialty, held=int(held),
+        papers=[{"paper_id": item.get("paper_id"), "title": item.get("title"),
+                 "journal": item.get("journal"), "published_at": item.get("published_at")}
+                for item in papers],
+        bounds=["这是「我们手上的这些论文里最新的」，不是该领域全部新论文；"
+                "出版日期在未来的期刊预填记录已排除。"])
+
+
+__all__ = ["area_csv", "area_json", "area_markdown", "areas_csv", "areas_json", "areas_markdown",
+           "company_csv", "company_json", "company_markdown", "compare_csv", "compare_json",
+           "compare_markdown", "device_csv", "device_json", "device_markdown",
+           "field_papers_json", "field_papers_markdown"]
