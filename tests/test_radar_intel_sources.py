@@ -6975,6 +6975,29 @@ def test_a_materialised_table_says_how_long_ago_it_was_rebuilt():
     assert _stale_mark("") == ""
 
 
+def test_no_page_level_path_goes_silent_when_a_table_schema_moves():
+    """Audit 14 was run by hand; tools/store_probe.py runs it in a second. Its rule: a path that ends at a page
+    must report the failure, not return the empty answer a healthy-but-empty store would give."""
+    import importlib.util
+    from pathlib import Path
+
+    root = Path(__file__).resolve().parents[1]
+    spec = importlib.util.spec_from_file_location("store_probe", root / "tools" / "store_probe.py")
+    module = importlib.util.module_from_spec(spec)
+    assert spec.loader is not None
+    spec.loader.exec_module(module)
+
+    rows = module.probe()
+    assert rows, "the probe found nothing to measure"
+    page_level = [row for row in rows if row["path"].endswith("(page)")]
+    assert page_level, "the probe must cover the page-level assemblies, not only the raw helpers"
+    silent = [row for row in page_level if row["verdict"] == "silent"]
+    assert silent == [], f"these page paths lose content and say nothing: {silent}"
+    # The raw helpers are allowed to be silent on their own: the page pairs them with a status call, and the
+    # page-level rows above are what prove the pairing happens.
+    assert any(row["verdict"] == "honest" for row in page_level)
+
+
 def test_a_pre_digitisation_filing_is_never_requested(tmp_path):
     """Measured: 0 of 60 sampled filings from 1998-2009 have a PDF at any path shape.
 

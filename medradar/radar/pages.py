@@ -509,7 +509,8 @@ def _field_topics_line(timeline: Any, store: Any = None) -> str:
             + trend)
 
 
-def _code_peers_block(peers: Mapping[str, Sequence[Mapping[str, Any]]], head: Any) -> str:
+def _code_peers_block(peers: Mapping[str, Sequence[Mapping[str, Any]]], head: Any,
+                      gap: str = "") -> str:
     """Who else registers under this device's product codes, and how big they are.
 
     The page already said how many devices sit behind the code ("DZE 321 台"); this says who they belong to,
@@ -520,6 +521,14 @@ def _code_peers_block(peers: Mapping[str, Sequence[Mapping[str, Any]]], head: An
     shown = [(code, list(peers.get(code) or [])) for code in codes]
     shown = [(code, rows) for code, rows in shown if rows]
     if not shown:
+        # A table that exists and cannot be read is not "no peers"; tools/store_probe.py found this path
+        # returning {} for both.
+        if gap:
+            return ('<h2>同一产品码下还有谁</h2>'
+                    '<div class="gap"><b>这张表暂时读不出来。</b>'
+                    '「每个产品码下注册最多的公司」由夜间任务重算，'
+                    f'当前按页面的列读不出来（{esc(gap[:70])}），所以这里没有内容——'
+                    '不是这个产品码下没有别的公司。</div>')
         return ""
     own = str(getattr(head, "company_name", "") or "").strip().casefold()
     blocks = []
@@ -582,7 +591,8 @@ def _device_id_shape(text: str) -> str:
 
 def device_dossier(timeline: Any, *, query: str, store: Any = None,
                    substituted_from: str = "", suggestions: Sequence[str] = (),
-                   routed_from: str = "", code_peers: Mapping[str, Sequence[Mapping[str, Any]]] | None = None) -> str:
+                   routed_from: str = "", code_peers: Mapping[str, Sequence[Mapping[str, Any]]] | None = None,
+                   code_peers_gap: str = "") -> str:
     refs = timeline.refs
     if not refs:
         shape = _device_id_shape(query)
@@ -766,7 +776,7 @@ def device_dossier(timeline: Any, *, query: str, store: Any = None,
 <div class="chips">{_identifier_chips(head)}</div>
 {_area_line(timeline)}
 {_field_topics_line(timeline, store)}
-{_code_peers_block(code_peers or {}, head)}
+{_code_peers_block(code_peers or {}, head, code_peers_gap)}
 {shelf}
 <div class="grid" style="margin-top:22px">{summary_cards}</div>
 
@@ -3406,11 +3416,18 @@ def pages_router(service: Any, *, endpoints: Mapping[str, Any] | None = None) ->
                     suggestions = []
             # Who else registers under the same product codes, from the table the night builds.
             code_peers: dict[str, Any] = {}
+            code_peers_gap = ""
             if timeline.refs:
                 try:
-                    from .code_leaders import leaders_for
+                    from .code_leaders import leaders_for, status as leaders_status
 
                     code_peers = leaders_for(store, list(timeline.refs[0].product_codes or [])[:4])
+                    # tools/store_probe.py found this path going silent: a leader table whose schema moved
+                    # returned {} and the page simply lost the block, exactly as audit 14 found on /areas.
+                    if not code_peers:
+                        state = leaders_status(store)
+                        if state.get("present") and not state.get("readable"):
+                            code_peers_gap = str(state.get("error") or "code_leader_unreadable")
                 except Exception:  # noqa: BLE001 - one block fewer
                     code_peers = {}
             try:
@@ -3418,7 +3435,8 @@ def pages_router(service: Any, *, endpoints: Mapping[str, Any] | None = None) ->
                                       substituted_from=substituted_from,
                                       suggestions=suggestions,
                                       routed_from=("search" if from_ == "search" else ""),
-                                      code_peers=code_peers)
+                                      code_peers=code_peers,
+                                      code_peers_gap=code_peers_gap)
             finally:
                 store.close()
 

@@ -124,6 +124,10 @@ def ranks_for_company(reference: Any, company_name: str,
 def status(reference: Any) -> dict[str, Any]:
     """Present, readable, rows, stamp - the same question `materialised.py` asks of every table."""
     try:
+        # Probe with the columns the reader selects, not COUNT(*): a table whose `company_name` moved still
+        # answers a count, and this function exists to catch exactly that (tools/store_probe.py found it).
+        reference.conn.execute(
+            "SELECT code, rank, company_name, devices, computed_at FROM code_leader LIMIT 1").fetchall()
         row = reference.conn.execute(
             "SELECT COUNT(*), MAX(computed_at) FROM code_leader").fetchone()
         return {"present": True, "readable": True, "rows": int(row[0] or 0),
