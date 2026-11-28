@@ -267,6 +267,8 @@ def main() -> int:
     parser.add_argument("--json", action="store_true", help="machine-readable output")
     parser.add_argument("--summary", default="", metavar="PATH",
                         help="also write a compact summary (what /sources shows) to PATH")
+    parser.add_argument("--history", default="", metavar="PATH",
+                        help="append this run to a JSONL history, so a green run cannot erase a red one")
     args = parser.parse_args()
 
     rows = probe()
@@ -293,6 +295,15 @@ def main() -> int:
         }
         Path(args.summary).write_text(json.dumps(payload, ensure_ascii=False, indent=2),
                                       encoding="utf-8")
+        if args.history:
+            # Append-only: the summary file is overwritten every night, so without this the record of a
+            # regression disappears the moment the next run passes.
+            line = json.dumps({"at": payload["at"],
+                               "page_level_checked": payload["page_level_checked"],
+                               "page_level_silent": payload["page_level_silent"]},
+                              ensure_ascii=False)
+            with Path(args.history).open("a", encoding="utf-8") as handle:
+                handle.write(line + "\n")
     print(f"\n{silent.__len__()} silent of {len(rows)}", file=sys.stderr)
     # The exit code is about pages: a raw helper returning {} is documented behaviour, a page losing content and
     # saying nothing is the defect this tool exists to catch.

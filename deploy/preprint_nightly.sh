@@ -151,7 +151,7 @@ tail -2 $WORK/step_specialty.log
 mark "specialty stats" ok "$(grab '"specialties": [0-9]+' $WORK/step_specialty.log) fields"
 
 echo "[$(date -Is)] store probe"
-"$PY" "$REL/tools/store_probe.py" --summary "${MEDRADAR_RADAR_DIR:-/srv/medradar/data/radar}/store_probe.json" > $WORK/step_probe.log 2>&1 || true
+"$PY" "$REL/tools/store_probe.py" --summary "${MEDRADAR_RADAR_DIR:-/srv/medradar/data/radar}/store_probe.json" --history "${MEDRADAR_RADAR_DIR:-/srv/medradar/data/radar}/store_probe_history.jsonl" > $WORK/step_probe.log 2>&1 || true
 tail -1 $WORK/step_probe.log
 mark "store probe" ok "$(grep -o 'page_level_silent": \[[^]]*\]' "${MEDRADAR_RADAR_DIR:-/srv/medradar/data/radar}/store_probe.json" 2>/dev/null | head -1)"
 

@@ -1308,9 +1308,21 @@ def _probe_block(report: Mapping[str, Any] | None) -> str:
                 f'{esc("、".join(str(item) for item in silent)[:180])}。</div>')
     if not checked:
         return ""
+    # The history line: a green run must not erase the memory of a red one, so the record is append-only and
+    # this is where the last failure is named.
+    history = [dict(item) for item in (data.get("history") or []) if isinstance(item, Mapping)]
+    past_failures = [item for item in history if item.get("page_level_silent")]
+    last_failure = past_failures[-1] if past_failures else {}
+    record = ""
+    if last_failure:
+        record = (f'最近一次出现静默是 {esc(str(last_failure.get("at")))}'
+                  f'（{esc("、".join(str(x) for x in (last_failure.get("page_level_silent") or []))[:120])}）。')
+    elif history:
+        record = f'最近 {n(len(history))} 次自检都没有出现静默。'
     return ('<h2>页面静默降级自检</h2>'
             f'<p class="muted small">最近一次自检（{esc(str(data.get("at")))}）：'
             f'{n(checked)} 条页面级路径在表结构被弄坏后都给出了原因，没有一条静默返回空。'
+            f'{record}'
             '这项自检每晚跑一次（<code>tools/store_probe.py</code>）。</p>')
 
 
@@ -3524,7 +3536,13 @@ def pages_router(service: Any, *, endpoints: Mapping[str, Any] | None = None) ->
                         if radar_dir:
                             probe_path = Path(str(radar_dir)) / "store_probe.json"
                             if probe_path.is_file():
-                                data["probe"] = json.loads(probe_path.read_text(encoding="utf-8"))
+                                report = json.loads(probe_path.read_text(encoding="utf-8"))
+                                # The last twenty runs, so "green tonight" cannot hide "red last night".
+                                history_path = probe_path.with_name("store_probe_history.jsonl")
+                                if history_path.is_file():
+                                    lines = history_path.read_text(encoding="utf-8").splitlines()[-20:]
+                                    report["history"] = [json.loads(line) for line in lines if line.strip()]
+                                data["probe"] = report
                     except Exception:  # noqa: BLE001 - no report is no block
                         data["probe"] = {}
             except Exception:  # noqa: BLE001 - no status block is the old page

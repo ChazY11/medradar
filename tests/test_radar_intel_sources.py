@@ -7012,6 +7012,20 @@ def test_the_store_probe_says_whether_a_page_went_silent():
     assert "不会说明原因" in bad
     assert "device:peers(page)" in bad
 
+    # History: a green run must not erase the memory of a red one.
+    with_history = _probe_block({
+        "at": "2026-11-29T00:00:00Z", "page_level_checked": 4, "page_level_silent": [],
+        "history": [{"at": "2026-11-27T00:00:00Z", "page_level_silent": ["device:peers(page)"]},
+                    {"at": "2026-11-29T00:00:00Z", "page_level_silent": []}]})
+    assert "最近一次出现静默是 2026-11-27" in with_history
+    assert "device:peers(page)" in with_history
+
+    clean_history = _probe_block({
+        "at": "2026-11-29T00:00:00Z", "page_level_checked": 4, "page_level_silent": [],
+        "history": [{"at": "2026-11-28T00:00:00Z", "page_level_silent": []},
+                    {"at": "2026-11-29T00:00:00Z", "page_level_silent": []}]})
+    assert "最近 2 次自检都没有出现静默" in clean_history
+
     # No report (the tool has never run here): no block, not a claim about health.
     assert _probe_block({}) == ""
     assert _probe_block(None) == ""
