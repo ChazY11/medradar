@@ -4973,6 +4973,25 @@ def test_every_export_kind_answers_json_with_json():
     assert json.loads(field_papers_json("D", [{"paper_id": "P1"}]))["papers"][0]["paper_id"] == "P1"
 
 
+def test_the_failure_table_has_its_own_file():
+    """One CSV holds one table: the company list stays in area.csv, the codes get their own sheet."""
+    from medradar.radar.export import area_csv, area_failures_csv
+
+    companies = [{"rank": 1, "company_name": "ACME", "devices": 10}]
+    area = area_csv(companies)
+    assert "product_code" not in area          # the company sheet is not contaminated
+    assert "ACME" in area
+
+    table = area_failures_csv("Dental", {
+        "by_code": [{"code": "DZE", "reports": 1653}, {"code": "LRK", "reports": 1479}],
+        "names": {"DZE": "Screw endosteal dental implant"}})
+    header = table.splitlines()[0]
+    assert header == "specialty,product_code,device_name,reports"
+    assert "Dental,DZE,Screw endosteal dental implant,1653" in table
+    # No codes, header only - not an empty file and not a fake row.
+    assert area_failures_csv("X", {}).strip() == "specialty,product_code,device_name,reports"
+
+
 def test_a_pre_digitisation_filing_is_never_requested(tmp_path):
     """Measured: 0 of 60 sampled filings from 1998-2009 have a PDF at any path shape.
 

@@ -605,6 +605,24 @@ def device_json(timeline: Any, *, query: str) -> str:
     return json.dumps(payload, ensure_ascii=False, indent=2)
 
 
+def area_failures_csv(specialty: str, failures: Mapping[str, Any]) -> str:
+    """The failure table as its own file.
+
+    One CSV holds one table. Squeezing companies and failure codes into the same sheet, or into two blocks
+    under one header, produces a file that no spreadsheet and no parser reads correctly - and the field's
+    company list is what the CSV is for. The caveats that must travel with these numbers are in the
+    markdown and in the JSON's bounds; a CSV column cannot carry a sentence.
+    """
+    buffer = io.StringIO()
+    writer = csv.writer(buffer, lineterminator="\n")
+    writer.writerow(["specialty", "product_code", "device_name", "reports"])
+    names = failures.get("names") or {}
+    for item in (failures.get("by_code") or []):
+        code = str(item.get("code") or "")
+        writer.writerow([specialty, code, str(names.get(code) or ""), int(item.get("reports") or 0)])
+    return buffer.getvalue()
+
+
 def _json_payload(schema: str, **fields: Any) -> str:
     """The envelope every JSON export shares, so a consumer can tell which one it received."""
     payload: dict[str, Any] = {"schema": f"medradar.radar.{schema}.export.v1",
@@ -730,7 +748,7 @@ def field_papers_json(specialty: str, papers: Sequence[Mapping[str, Any]],
                 "出版日期在未来的期刊预填记录已排除。"])
 
 
-__all__ = ["area_csv", "area_json", "area_markdown", "areas_csv", "areas_json", "areas_markdown",
+__all__ = ["area_csv", "area_failures_csv", "area_json", "area_markdown", "areas_csv", "areas_json", "areas_markdown",
            "company_csv", "company_json", "company_markdown", "compare_csv", "compare_json",
            "compare_markdown", "device_csv", "device_json", "device_markdown",
            "field_papers_json", "field_papers_markdown"]

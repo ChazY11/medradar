@@ -2215,7 +2215,8 @@ def area_page(*, specialty: str, summary: Mapping[str, Any] | None,
 <p class="small muted">导出：
 <a href="/download?kind=area&format=md&name={esc(specialty)}">Markdown</a>
  · <a href="/download?kind=area&format=csv&name={esc(specialty)}">CSV</a>
- · <a href="/download?kind=area&format=json&name={esc(specialty)}">JSON</a></p>
+ · <a href="/download?kind=area&format=json&name={esc(specialty)}">JSON</a>
+ · 失效表 <a href="/download?kind=area_failures&format=csv&name={esc(specialty)}">CSV</a></p>
 <div class="gap"><b>这张表数的是注册，不是技术。</b>设备数按注册条目计，一台设备带多个产品码时
 会在各领域分别计入；一家公司在这里设备多，说明它铺得广，不说明它领先。</div>
 {topics_block}
@@ -2637,7 +2638,7 @@ def pages_router(service: Any, *, endpoints: Mapping[str, Any] | None = None) ->
     def download(q: str = Query("", max_length=240),
                  name: str = Query("", max_length=120),
                  kind: str = Query("device",
-                          pattern="^(device|compare|areas|area|company|papers)$"),
+                          pattern="^(device|compare|areas|area|area_failures|company|papers)$"),
                  format: str = Query("md", pattern="^(md|csv|json)$")) -> Any:
         """One dossier, one comparison, the whole field map, or one specialty - as a file.
 
@@ -2712,6 +2713,18 @@ def pages_router(service: Any, *, endpoints: Mapping[str, Any] | None = None) ->
                     body = export_mod.area_markdown(name, summary, companies, failures=failures)
                     media, suffix = "text/markdown; charset=utf-8", "md"
                 stem = f"medradar-area-{_slug(name)}"
+            elif kind == "area_failures":
+                # Its own file: a CSV holds one table, and the caveats live in the markdown and JSON.
+                from .specialty import failure_shape as read_failures
+
+                failures = read_failures(store, name)
+                if format == "json":
+                    body = export_mod.area_json(name, one(store, name) or [], [], failures=failures)
+                    media, suffix = "application/json; charset=utf-8", "json"
+                else:
+                    body = export_mod.area_failures_csv(name, failures)
+                    media, suffix = "text/csv; charset=utf-8", "csv"
+                stem = f"medradar-area-failures-{_slug(name)}"
             elif kind == "papers":
                 from .paper_passes import papers_for, recent_for
 
