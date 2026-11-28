@@ -1164,6 +1164,20 @@ def _company_trend_line(specialty: str, trend: Mapping[str, Any]) -> str:
     return f'<p class="small">这个领域最近上升的词：{text}</p>'
 
 
+def _wrong_box_hint(text: str) -> str:
+    """If this string belongs in another box, say which one and link it.
+
+    Measured 2026-11-28: /company?q=K213506 answered "在设备注册表里按公司名匹配...设备注册表里没有匹配到这家
+    公司", which is true and useless - a K number is a device, and the site has a page for that.
+    """
+    shape = _device_id_shape(text)
+    if not shape:
+        return ""
+    return (f'<div class="gap"><b>「{esc(text)}」看起来是「{esc(shape)}」，不是公司名。</b>'
+            f'器械标识符请在器械查询里用：'
+            f'<a href="/device?query={quote(text)}">按「{esc(shape)}」查这台设备</a>。</div>')
+
+
 def company_page(*, data: Mapping[str, Any], suggestions: Sequence[str] = ()) -> str:
     """One company: how much it has registered, filed, failed, is trialling, owns, and publishes."""
     name = data.get("company_name") or data.get("query") or ""
@@ -1175,6 +1189,9 @@ def company_page(*, data: Mapping[str, Any], suggestions: Sequence[str] = ()) ->
             body=(f'<h1>没有找到「{esc(missing)}」</h1>'
                   '<p class="lede">在设备注册表里按公司名匹配（先精确、后包含）。</p>'
                   + (_cjk_hint(missing, action="/company") if _looks_chinese(missing) else "")
+                  # A device identifier typed into the company box belongs in the device box; the site knows
+                  # the shape and can say so instead of "no company by that name".
+                  + _wrong_box_hint(missing)
                   + gap_note("company_not_in_register")
                   + _suggestion_block(suggestions)
                   + '<p class="small muted"><a href="/">← 回到查询</a></p>'),

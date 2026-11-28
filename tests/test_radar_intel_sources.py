@@ -6357,6 +6357,26 @@ def test_a_device_miss_distinguishes_an_absent_identifier_from_a_non_identifier(
     assert "注册表里没有这个号码" not in other
 
 
+def test_the_company_box_sends_a_device_identifier_to_the_device_box():
+    """Measured 2026-11-28: /company?q=K213506 answered "no company by that name" - true and useless."""
+    from medradar.radar.pages import company_page, _wrong_box_hint
+
+    assert "/device?query=K213506" in _wrong_box_hint("K213506")
+    assert "DUNS" in _wrong_box_hint("830350380")
+    assert "DI" in _wrong_box_hint("08800055700571")
+    # A company name gets no hint; it is in the right box.
+    assert _wrong_box_hint("Medtronic") == ""
+
+    page = company_page(data={"found": False, "query": "K213506"})
+    assert "不是公司名" in page
+    assert "/device?query=K213506" in page
+    # The miss itself still says what it tried.
+    assert "company_not_in_register" in page
+    # A genuine company miss is unchanged.
+    plain = company_page(data={"found": False, "query": "zzzzq"})
+    assert "不是公司名" not in plain
+
+
 def test_a_pre_digitisation_filing_is_never_requested(tmp_path):
     """Measured: 0 of 60 sampled filings from 1998-2009 have a PDF at any path shape.
 
