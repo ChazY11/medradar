@@ -329,6 +329,27 @@ def paper_terms(reference, paper_id: str, *, limit: int = 40,
     return kept
 
 
+def search_paper_titles(reference, query: str, *, limit: int = 5) -> list[dict[str, Any]]:
+    """Papers whose title contains the query, for the reader who arrives with a title and no ID.
+
+    Measured 2026-11-28: 6 ms over 5,485 titles, so this is a fallback, not a feature to ration. A title
+    match is not an identity: the same title can exist twice, and a truncated or paraphrased title will
+    not match at all, so the caller must present these as candidates to open rather than as the answer.
+    """
+    text = " ".join(str(query or "").split())
+    if len(text) < 4:
+        return []
+    try:
+        rows = reference.conn.execute(
+            "SELECT paper_id, title, journal, published_at FROM paper_meta"
+            " WHERE title LIKE ? ORDER BY published_at DESC LIMIT ?",
+            (f"%{text}%", int(limit))).fetchall()
+    except Exception:  # noqa: BLE001 - no index, no suggestions
+        return []
+    return [{"paper_id": str(row[0]), "title": str(row[1] or ""),
+             "journal": str(row[2] or ""), "published_at": str(row[3] or "")} for row in rows]
+
+
 def paper_record(reference, paper_id: str) -> dict[str, Any] | None:
     try:
         row = reference.conn.execute(

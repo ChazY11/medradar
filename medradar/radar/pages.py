@@ -1911,7 +1911,8 @@ def warmup(service: Any) -> dict[str, Any]:
 
 def paper_page(*, record: Mapping[str, Any] | None, terms: Sequence[Mapping[str, Any]],
                brands: Sequence[Mapping[str, Any]], paper_id: str,
-               suggestions: Sequence[str] = ()) -> str:
+               suggestions: Sequence[str] = (),
+               title_matches: Sequence[Mapping[str, Any]] = ()) -> str:
     """The reverse of the device dossier: a reader arrives with a paper and asks who makes the thing.
 
     Every other page here starts from a device. An engineer reading a paper has the opposite problem,
@@ -1922,11 +1923,36 @@ def paper_page(*, record: Mapping[str, Any] | None, terms: Sequence[Mapping[str,
     from .watermark import utc_today
 
     if record is None:
+        # A reader who arrives with a title used to be told the paper was not in the index, which was
+        # false whenever the title did match - the page only looked at identifiers. Titles are now
+        # searched, and the matches are offered as candidates rather than as an identity: a title can
+        # repeat across papers, and a paraphrased one will not match at all.
+        if title_matches:
+            rows = "".join(
+                f'<tr><td><a href="/paper?id={esc(str(item.get("paper_id")))}">'
+                f'{esc(str(item.get("title")))}</a></td>'
+                f'<td class="muted small">{esc(str(item.get("journal") or ""))}</td>'
+                f'<td class="muted small">{esc(str(item.get("published_at") or ""))}</td></tr>'
+                for item in title_matches)
+            found = (f'<h2>标题里有这几个字的有 {len(title_matches)} 篇</h2>'
+                     '<p class="small muted">按标题文字匹配，不是唯一识别——同名论文会有多个，'
+                     '改写或截断的标题匹配不到。点开确认是哪一篇。</p>'
+                     f'<div class="card"><table><thead><tr><th>标题</th><th>期刊</th>'
+                     f'<th>发表日期</th></tr></thead><tbody>{rows}</tbody></table></div>')
+        else:
+            found = (gap_note("paper_not_in_index")
+                     + '<p class="small muted">标题里也没有这几个字。索引只收录已归档全文，'
+                       '摘要和付费墙后的正文不在内。</p>')
+
         return layout(
             title="论文 · MedRadar",
-            body=(f'<h1>索引里没有这篇论文：{esc(paper_id)}</h1>'
-                  '<p class="lede">只收录已归档全文的论文；摘要或付费墙后的正文不在索引里。</p>'
-                  + gap_note("paper_not_in_index")
+            body=(f'<h1>没有这篇论文：{esc(paper_id)}</h1>'
+                  '<p class="lede">可以输入论文编号（如 PMC13788955），也可以输入标题里的几个词。</p>'
+                  '<form class="search" method="get" action="/paper">'
+                  f'<input type="search" name="id" value="{esc(paper_id)}" '
+                  'aria-label="论文编号或标题关键词">'
+                  '<button type="submit">反查</button></form>'
+                  + found
                   + (f'<p class="small muted">例如：'
                      + " · ".join(f'<a href="/paper?id={esc(s)}">{esc(s)}</a>' for s in suggestions[:4])
                      + "</p>" if suggestions else "")),
@@ -2957,6 +2983,12 @@ def pages_router(service: Any, *, endpoints: Mapping[str, Any] | None = None) ->
                               body=gap_note("device_index_absent"), active="device")
             try:
                 record = paper_record(store, id)
+                # Not an identifier: try the title. Measured 6 ms over 5,485 titles.
+                title_matches = []
+                if record is None:
+                    from .papers_index import search_paper_titles
+
+                    title_matches = search_paper_titles(store, id)
                 # The same cross-field rule the field pages use: a word that appears in ten or more of
                 # the twenty fields says nothing about this paper either. Measured on PMC13788955: the
                 # list led with implants, prosthetic, children, bone, growth, treatment, years, clinical.
@@ -2977,7 +3009,7 @@ def pages_router(service: Any, *, endpoints: Mapping[str, Any] | None = None) ->
             finally:
                 store.close()
             return paper_page(record=record, terms=terms, brands=brands, paper_id=id,
-                              suggestions=suggestions)
+                              suggestions=suggestions, title_matches=title_matches)
 
         return HTMLResponse(cached(f"paper:{id}", 300.0, render))
 

@@ -5273,6 +5273,40 @@ def test_the_device_page_counts_papers_too_not_only_the_field_page():
     assert _field_topics_line(type("T", (), {"field_topics": [], "field_specialty": ""})()) == ""
 
 
+def test_a_title_typed_into_the_paper_box_finds_candidates(tmp_path):
+    """Audit 09: arriving with a title answered 索引里没有这篇论文 - which was false whenever the
+    title did match, because the page only looked at identifiers."""
+    from medradar.radar.pages import paper_page
+    from medradar.radar.papers_index import search_paper_titles
+    from medradar.radar.reference import UdiReference
+
+    store = UdiReference(tmp_path / "ref.db")
+    store.conn.execute("CREATE TABLE IF NOT EXISTS paper_meta (paper_id TEXT PRIMARY KEY,"
+                       " title TEXT, journal TEXT, published_at TEXT)")
+    for pid, title in (("PMC1", "Clinical Outcomes of Dental Implant Therapy"),
+                       ("PMC2", "Clinical Outcomes of Dental Implants in Children"),
+                       ("PMC3", "Something Else Entirely")):
+        store.conn.execute("INSERT INTO paper_meta VALUES (?,?,?,?)",
+                           (pid, title, "J", "2026-01-01"))
+    store.conn.commit()
+
+    hits = search_paper_titles(store, "Clinical Outcomes")
+    store.close()
+    assert [h["paper_id"] for h in hits] == ["PMC1", "PMC2"]
+    # A very short query is not a search.
+    assert search_paper_titles(None, "ab") == []
+
+    page = paper_page(record=None, terms=[], brands=[], paper_id="Clinical Outcomes of Dental Implant Therapy",
+                      title_matches=hits)
+    assert "标题里有这几个字的有 2 篇" in page
+    assert "/paper?id=PMC1" in page
+    # Candidates, not an identity claim.
+    assert "不是唯一识别" in page
+
+    empty = paper_page(record=None, terms=[], brands=[], paper_id="zzzz")
+    assert "也可以输入标题里的几个词" in empty
+
+
 def test_a_pre_digitisation_filing_is_never_requested(tmp_path):
     """Measured: 0 of 60 sampled filings from 1998-2009 have a PDF at any path shape.
 
