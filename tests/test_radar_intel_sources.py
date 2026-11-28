@@ -4535,6 +4535,45 @@ def test_the_warm_up_primes_the_rendered_pages_not_only_the_data():
     assert 'compare_view(["Medtronic,Stryker"])' in register_source
 
 
+def test_a_field_shows_its_monthly_shape_and_says_what_the_shape_is(tmp_path):
+    """A field's papers by month - bounded, because the corpus is one crawl made now."""
+    from medradar.radar.paper_passes import ensure_table as ensure_paper_field
+    from medradar.radar.paper_passes import monthly_counts
+    from medradar.radar.pages import area_page
+    from medradar.radar.papers_index import ensure_tables
+    from medradar.radar.reference import UdiReference
+
+    store = UdiReference(tmp_path / "ref.db")
+    ensure_tables(store)
+    ensure_paper_field(store)
+    for pid, when in (("P1", "2026-11-03"), ("P2", "2026-11-20"), ("P3", "2026-09-01")):
+        store.conn.execute("INSERT OR REPLACE INTO paper_meta (paper_id, title, journal, published_at)"
+                           " VALUES (?,?,?,?)", (pid, "t", "j", when))
+    store.conn.executemany(
+        "INSERT OR REPLACE INTO paper_field (paper_id, specialty, added_at) VALUES (?,?,?)",
+        [(pid, "Dental", "2026-11-28T00:00:00+00:00") for pid in ("P1", "P2", "P3")])
+    store.conn.commit()
+
+    series = monthly_counts(store, "Dental", months=3, today="2026-11-28")
+    store.close()
+    assert [item["ym"] for item in series] == ["2026-09", "2026-10", "2026-11"]   # oldest first
+    assert dict((item["ym"], item["n"]) for item in series)["2026-11"] == 2
+
+    page = area_page(specialty="Dental",
+                     summary={"specialty": "Dental", "codes": 1, "devices": 2, "companies": 3},
+                     companies=[], data={"field_monthly": series})
+    assert "按月分布" in page
+    assert page.count('class="month"') == 3
+    # The bars are our papers, not the field's output, and the page has to say so.
+    assert "不是该领域的总发表量" in page
+
+    # No series, no block.
+    plain = area_page(specialty="Dental",
+                      summary={"specialty": "Dental", "codes": 1, "devices": 2, "companies": 3},
+                      companies=[], data={})
+    assert "按月分布" not in plain
+
+
 def test_a_pre_digitisation_filing_is_never_requested(tmp_path):
     """Measured: 0 of 60 sampled filings from 1998-2009 have a PDF at any path shape.
 

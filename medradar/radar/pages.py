@@ -91,6 +91,9 @@ letter-spacing:.02em}
 background:var(--card)}
 .card h4{margin:0 0 6px;font-size:15px}
 .chips{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0 0}
+.months{display:flex;gap:6px;align-items:flex-end;padding:10px 0 4px;overflow-x:auto}
+.month{display:flex;flex-direction:column;align-items:center;gap:4px;min-width:34px}
+.month .bar{width:22px;background:var(--accent,#4f7cff);border-radius:3px 3px 0 0;opacity:.85;align-self:flex-end}
 .chip{font-size:12px;padding:2px 9px;border:1px solid var(--line);border-radius:999px;
 color:var(--muted);white-space:nowrap}
 .chip.k{color:var(--fg);font-weight:600}
@@ -1854,6 +1857,26 @@ def area_page(*, specialty: str, summary: Mapping[str, Any] | None,
     else:
         topics_block = ('<h2>这个领域的文献在谈什么</h2>'
                         + gap_note("no_papers_for_this_specialty"))
+    # Monthly shape. The corpus is one crawl, made now, so the series says when our papers were
+    # published - not how much the field publishes. The sentence under the bars states that.
+    monthly = data.get("field_monthly") or []
+    if monthly and sum(int(item.get("n") or 0) for item in monthly):
+        peak = max(int(item.get("n") or 0) for item in monthly) or 1
+        bars = "".join(
+            f'<div class="month"><div class="bar" style="height:{max(2, int(round(60 * int(item.get("n") or 0) / peak)))}px"'
+            f' title="{esc(str(item.get("ym")))}：{n(item.get("n"))} 篇"></div>'
+            f'<span class="muted small">{esc(str(item.get("ym"))[2:])}</span></div>'
+            for item in monthly)
+        monthly_block = (
+            '<h2>按月分布</h2>'
+            f'<p class="muted small">本领域已归档论文按发表日期统计，近 {n(len(monthly))} 个月，'
+            f'最高一个月 {n(peak)} 篇。'
+            '<b>这反映的是我们这批论文的发表时间</b>，不是该领域的总发表量——'
+            '语料是一轮抓取的结果，年份集中在抓取时可见的近几年。</p>'
+            f'<div class="months">{bars}</div>')
+    else:
+        monthly_block = ""
+
     # What has been published lately among what we hold. Bounded in the sentence itself: this is the
     # newest of the papers this field's lane fetched, not everything published in the field.
     recent = data.get("field_recent") or []
@@ -1890,6 +1913,7 @@ def area_page(*, specialty: str, summary: Mapping[str, Any] | None,
 <div class="gap"><b>这张表数的是注册，不是技术。</b>设备数按注册条目计，一台设备带多个产品码时
 会在各领域分别计入；一家公司在这里设备多，说明它铺得广，不说明它领先。</div>
 {topics_block}
+{monthly_block}
 {recent_block}
 {coverage}
 {table}
@@ -2514,22 +2538,25 @@ def pages_router(service: Any, *, endpoints: Mapping[str, Any] | None = None) ->
                 field_topics: list[dict[str, Any]] = []
                 field_papers: list[str] = []
                 field_recent: list[dict[str, Any]] = []
+                field_monthly: list[dict[str, Any]] = []
                 if summary:
                     try:
                         from .paper_passes import field_topics as read_topics, papers_for
 
                         field_papers = papers_for(store, resolved_name)
                         field_topics = read_topics(store, resolved_name, limit=12)
-                        from .paper_passes import recent_for
+                        from .paper_passes import monthly_counts, recent_for
 
                         field_recent = recent_for(store, resolved_name, limit=10)
+                        field_monthly = monthly_counts(store, resolved_name)
                     except Exception:  # noqa: BLE001 - no literature yet is a stated gap
-                        field_topics, field_papers = [], []
+                        field_topics, field_papers, field_monthly, field_recent = [], [], [], []
             finally:
                 store.close()
             return area_page(specialty=resolved_name, summary=summary, companies=companies,
                              data={"field_topics": field_topics, "field_papers": field_papers,
-                                   "field_recent": field_recent, "resolved_from": resolved_from})
+                                   "field_recent": field_recent, "field_monthly": field_monthly,
+                                   "resolved_from": resolved_from})
 
         return HTMLResponse(cached(f"area:{name}", 300.0, render))
 

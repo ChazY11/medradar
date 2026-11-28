@@ -246,6 +246,41 @@ def recent_for(reference, specialty: str, *, limit: int = 10,
              "published_at": str(row[3] or "")[:10]} for row in rows]
 
 
+def monthly_counts(reference, specialty: str, *, months: int = 12,
+                   today: str | None = None) -> list[dict[str, Any]]:
+    """Newest-first monthly counts of archived papers in a field, oldest month first in the return.
+
+    Measured 2026-11-28 on the live store: Dental 25/16/15/18 by month, Cardiovascular 30/26/20, so the
+    series is dense enough to read. It is also heavily recent - 4,676 of 5,485 papers are dated 2026 -
+    because the crawl ran now, and the page says that rather than presenting the shape as the field's
+    own publication trend.
+    """
+    from .watermark import utc_today
+
+    cutoff = str(today or utc_today())[:7]
+    try:
+        rows = dict(reference.conn.execute(
+            "SELECT substr(m.published_at,1,7) AS ym, COUNT(*) FROM paper_field f"
+            " JOIN paper_meta m ON m.paper_id = f.paper_id"
+            " WHERE f.specialty = ? AND COALESCE(m.published_at,'') <> '' AND m.published_at <= ?"
+            "   AND m.published_at >= ?"
+            " GROUP BY ym", (specialty, str(today or utc_today()),
+                              f"{int(cutoff[:4]) - 1}-{cutoff[5:7]}-01")).fetchall())
+    except Exception:  # noqa: BLE001 - no literature yet
+        return []
+
+    year, month = int(cutoff[:4]), int(cutoff[5:7])
+    series: list[dict[str, Any]] = []
+    for _ in range(int(months)):
+        key = f"{year:04d}-{month:02d}"
+        series.append({"ym": key, "n": int(rows.get(key, 0) or 0)})
+        month -= 1
+        if month == 0:
+            year, month = year - 1, 12
+    series.reverse()
+    return series
+
+
 def dates_for(reference, paper_ids: Sequence[str]) -> dict[str, str]:
     """Publication date per paper id, for matches that came from the term index.
 
@@ -289,5 +324,5 @@ def recent_any(reference, *, limit: int = 8, today: str | None = None) -> list[d
              "published_at": str(row[3] or "")[:10], "specialty": row[4] or ""} for row in rows]
 
 
-__all__ = ["QUERIES", "by_specialty", "dates_for", "recent_any", "ensure_table", "field_topics", "next_queries", "papers_for",
+__all__ = ["QUERIES", "by_specialty", "dates_for", "monthly_counts", "recent_any", "ensure_table", "field_topics", "next_queries", "papers_for",
            "read_passes", "record_field", "record_pass", "recent_for"]
