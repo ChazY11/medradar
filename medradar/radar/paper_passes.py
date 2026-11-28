@@ -329,6 +329,43 @@ def emerging_terms(reference, specialty: str, *, recent_days: int = 90, baseline
 _EMERGING_CACHE: dict[tuple[str, float, str], dict[str, Any]] = {}
 
 
+def recent_publications(reference, *, days: int = 14, per_field: int = 3,
+                        max_fields: int = 8, today: str | None = None) -> dict[str, Any]:
+    """What has been published in each field in the last few days.
+
+    The change feed answers "what did our sources do"; this answers "what came out", which is the question a
+    reader opens the page with. Only papers we hold and only their publication date - the field grouping comes
+    from the query that fetched them, so a paper in no field is not listed here, and the page says so.
+
+    Forward-dated records are excluded for the same reason as everywhere else: journals pre-fill upcoming
+    issues, and a 2027 date in a "last 14 days" list is the one error this product cannot afford.
+    """
+    from .watermark import utc_today
+
+    stamp = str(today or utc_today())
+    start = f"-{int(days)} day"
+    try:
+        rows = reference.conn.execute(
+            "SELECT f.specialty, m.paper_id, m.title, m.published_at"
+            " FROM paper_field f JOIN paper_meta m ON m.paper_id = f.paper_id"
+            " WHERE m.published_at >= date(?, ?) AND m.published_at <= date(?)"
+            " ORDER BY m.published_at DESC",
+            (stamp, start, stamp)).fetchall()
+    except Exception:  # noqa: BLE001 - no tables, nothing to list
+        return {"fields": [], "total": 0, "days": days, "until": stamp}
+    grouped: dict[str, list[tuple[str, str, str]]] = {}
+    for specialty, paper_id, title, published in rows:
+        grouped.setdefault(str(specialty), []).append(
+            (str(paper_id), str(title or ""), str(published or "")[:10]))
+    fields = sorted(grouped.items(), key=lambda item: (-len(item[1]), item[0]))
+    return {
+        "fields": [{"specialty": specialty, "count": len(items),
+                    "papers": items[:max(1, per_field)]}
+                   for specialty, items in fields[:max_fields]],
+        "total": len(rows), "days": int(days), "until": stamp,
+    }
+
+
 _TREND_TABLE = """
 CREATE TABLE IF NOT EXISTS field_trend (
     specialty   TEXT PRIMARY KEY,

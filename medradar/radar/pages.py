@@ -2262,6 +2262,39 @@ def areas_page(*, data: Mapping[str, Any]) -> str:
     return layout(title="技术领域分布 · MedRadar", body=body, active="areas")
 
 
+def _recent_publications_block(payload: Mapping[str, Any]) -> str:
+    """What came out in the last fortnight, per field.
+
+    The change table below answers "what did our sources do"; a reader opens this page to ask "what is new".
+    Both belong here, and the numbers say which is which: papers we hold, grouped by the query that fetched
+    them, with the window printed.
+    """
+    fields = payload.get("fields") or []
+    total = int(payload.get("total") or 0)
+    days = int(payload.get("days") or 14)
+    until = str(payload.get("until") or "")
+    if not total:
+        return ('<h2>近两周发表</h2><p class="muted small">这段时间我们抓到的论文里，'
+                '按发表日期没有一篇落在最近两周。语料还在补，这不代表这两个月没有研究。</p>')
+    cards = []
+    for item in fields:
+        lines = "".join(
+            f'<li><a href="/paper?id={esc(paper_id)}">{esc(title[:96])}</a>'
+            f'<span class="muted small"> {esc(published)}</span></li>'
+            for paper_id, title, published in (item.get("papers") or []))
+        cards.append(
+            f'<div class="card"><h4><a href="/area?name={esc(item.get("specialty"))}">'
+            f'{esc(item.get("specialty"))}</a>'
+            f'<span class="muted small"> {n(item.get("count"))} 篇</span></h4>'
+            f'<ul class="small">{lines}</ul></div>')
+    return (f'<h2>近 {days} 天发表</h2>'
+            f'<p class="muted small">截至 {esc(until)}，我们抓到的论文里有 {n(total)} 篇的发表日期落在过去 '
+            f'{days} 天，按领域分组，每个领域列最新的几篇。'
+            '<b>这是我们抓到的，不是该领域全部发表</b>——没被任何一个领域查询命中的论文不会出现在这里；'
+            '未来日期的记录已排除（期刊会预填下期）。</p>'
+            f'<div class="cards">{"" .join(cards)}</div>')
+
+
 def _trend_stamp(trends: Mapping[str, Mapping[str, Any]]) -> str:
     """When the materialised trend table was built; blank when it never has been."""
     stamps = sorted({str(row.get("computed_at") or "") for row in trends.values()} - {""})
@@ -2616,7 +2649,8 @@ def _resolve_compare_names(store: Any, names: Sequence[str],
     return resolved[:4], substitutions
 
 
-def radar_page(*, feed: Mapping[str, Any], stats: Mapping[str, Any]) -> str:
+def radar_page(*, feed: Mapping[str, Any], stats: Mapping[str, Any],
+               recent_papers: Mapping[str, Any] | None = None) -> str:
     """A server-rendered front door for the live radar.
 
     /radar used to be the SPA alone: the server answered with an empty shell, so the page could not
@@ -2666,6 +2700,8 @@ def radar_page(*, feed: Mapping[str, Any], stats: Mapping[str, Any]) -> str:
   <div class="stat"><b>{n(stats.get("sources"))}</b><span>在产出的源</span></div>
   <div class="stat"><b>{n(len(items))}</b><span>本页条数</span></div>
 </div>
+{_recent_publications_block(recent_papers or {})}
+<h2>源的变动</h2>
 <div class="gap"><b>怎么读这张表：</b>「NEW」不都是新闻。首次开启某个源时回填的历史记录也会以 NEW 出现，
 这类行标着<span class="muted">历史记录 · 首次开启时已公开</span>。只有不带这个标记的行才是我们观察到的变化。</div>
 <div class="card"><table><thead><tr><th>观测时间</th><th>源</th><th>类型</th><th>标题</th>
@@ -3443,6 +3479,18 @@ def pages_router(service: Any, *, endpoints: Mapping[str, Any] | None = None) ->
     def radar_view() -> Any:
         def render() -> str:
             feed: dict[str, Any] = {"items": [], "note": ""}
+            recent_papers: dict[str, Any] = {}
+            try:
+                from .paper_passes import recent_publications
+
+                store = _store()
+                if store is not None:
+                    try:
+                        recent_papers = recent_publications(store)
+                    finally:
+                        store.close()
+            except Exception:  # noqa: BLE001 - the change table still renders without it
+                recent_papers = {}
             stats: dict[str, Any] = {}
             try:
                 from .health import change_stream
@@ -3460,7 +3508,7 @@ def pages_router(service: Any, *, endpoints: Mapping[str, Any] | None = None) ->
                     )[0]["n"] or 0)
             except Exception as error:  # noqa: BLE001 - no ledger is a state, and the page says so
                 feed = {"items": [], "note": f"读不到雷达台账：{type(error).__name__}"}
-            return radar_page(feed=feed, stats=stats)
+            return radar_page(feed=feed, stats=stats, recent_papers=recent_papers)
 
         # 60 s was shorter than the thing it caches: the scheduler cycle is 300 s, so the feed could not
         # change between two refresh intervals, and priming it at startup was wasted - measured /radar at

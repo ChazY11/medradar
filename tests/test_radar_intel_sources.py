@@ -5931,6 +5931,51 @@ def test_comparing_more_names_than_the_page_shows_does_not_scan_each_one(tmp_pat
     assert _compare_names(Store(set()), ["a", "b", "c", "d", "e"], {}) == ["a", "b", "c", "d"]
 
 
+def test_the_radar_page_answers_what_came_out(tmp_path):
+    """Audit 11 asked whether a page answers the question the reader has. /radar answered "what did our
+    sources do" and not "what came out"."""
+    import sqlite3
+
+    from medradar.radar.pages import radar_page
+    from medradar.radar.paper_passes import recent_publications
+
+    path = tmp_path / "recent.db"
+    conn = sqlite3.connect(path)
+    conn.execute("CREATE TABLE paper_field (paper_id TEXT, specialty TEXT, added_at TEXT)")
+    conn.execute("CREATE TABLE paper_meta (paper_id TEXT, title TEXT, journal TEXT, published_at TEXT)")
+    conn.executemany("INSERT INTO paper_field VALUES (?,?,?)",
+                     [("P1", "Dental", "x"), ("P2", "Dental", "x"), ("P3", "Cardiovascular", "x")])
+    # P2 is forward-dated: journals pre-fill upcoming issues and it must not appear.
+    conn.executemany("INSERT INTO paper_meta VALUES (?,?,?,?)",
+                     [("P1", "A dental paper", "j", "2026-11-27"),
+                      ("P2", "A future paper", "j", "2027-01-01"),
+                      ("P3", "A cardiac paper", "j", "2026-11-20")])
+    conn.commit()
+    conn.close()
+
+    class Store:
+        def __init__(self):
+            self.conn = sqlite3.connect(path)
+
+    store = Store()
+    result = recent_publications(store, days=14, today="2026-11-28")
+    assert result["total"] == 2                      # the 2027 record is excluded
+    assert result["until"] == "2026-11-28"
+    by_field = {item["specialty"]: item for item in result["fields"]}
+    assert by_field["Dental"]["count"] == 1
+    store.conn.close()
+
+    page = radar_page(feed={"items": [], "note": ""}, stats={}, recent_papers=result)
+    assert "近 14 天发表" in page
+    assert "/paper?id=P1" in page
+    # The bound is stated: our corpus, not the whole field.
+    assert "这是我们抓到的，不是该领域全部发表" in page
+
+    empty = radar_page(feed={"items": [], "note": ""}, stats={},
+                       recent_papers={"fields": [], "total": 0, "days": 14})
+    assert "没有一篇落在最近两周" in empty
+
+
 def test_a_pre_digitisation_filing_is_never_requested(tmp_path):
     """Measured: 0 of 60 sampled filings from 1998-2009 have a PDF at any path shape.
 
