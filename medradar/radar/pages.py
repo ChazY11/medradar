@@ -2024,15 +2024,29 @@ def _resolve_compare_names(store: Any, names: Sequence[str],
     """
     from .aliases import lookup
 
+    def exists(name: str) -> bool:
+        """Is this a company the register knows? Two columns, not a dossier.
+
+        This used to call _company_data, which builds the whole company view - brands, failures,
+        trials, patents, papers, specialties, years. Measured on /compare?q=Bauerfeind,Medline: the
+        resolve step called it 3 times and the render called it twice more, so two companies cost five
+        dossiers and the cold page took 1.9 s instead of 0.8 s.
+        """
+        try:
+            return store.conn.execute(
+                "SELECT 1 FROM udi_company WHERE company_name = ? COLLATE NOCASE"
+                " OR company_name LIKE ? LIMIT 1", (name, f"%{name}%")).fetchone() is not None
+        except Exception:  # noqa: BLE001 - an absent register means "not found", same as before
+            return False
+
     resolved: list[str] = []
     substitutions: dict[str, str] = {}
     for name in names:
         candidate = name
-        if not _company_data(store, name, snapshot=snapshot).get("found"):
-            hits = lookup(name)
-            for hit in hits:
+        if not exists(name):
+            for hit in lookup(name):
                 target = str(hit["search_as"])
-                if _company_data(store, target, snapshot=snapshot).get("found"):
+                if exists(target):
                     candidate = target
                     substitutions[name] = target
                     break
