@@ -336,7 +336,8 @@ def company_csv(data: Mapping[str, Any]) -> str:
     return buffer.getvalue()
 
 
-def areas_markdown(items: Sequence[Mapping[str, Any]], *, updated_at: str | None = None) -> str:
+def areas_markdown(items: Sequence[Mapping[str, Any]], *, updated_at: str | None = None,
+                   recency: Mapping[str, Mapping[str, int]] | None = None) -> str:
     """The whole-register split by specialty, with the caveats the page prints.
 
     An export that loses the caveat is worse than no export: the file travels alone, so the reader
@@ -352,29 +353,39 @@ def areas_markdown(items: Sequence[Mapping[str, Any]], *, updated_at: str | None
     if not items:
         lines.append(_gap("specialty_stats_absent"))
         return "\n".join(lines)
-    lines.append("| 技术领域 | 产品码 | 设备数 | 公司数 | 设备最多的公司 |")
-    lines.append("| --- | ---: | ---: | ---: | --- |")
+    if recency:
+        lines.append("> 近 90 天占比：每个领域只保留最新的 120 篇，占比高说明这个领域近期产出密集到把"
+                     "这个名额填满——是密度信号，不是产量。")
+        lines.append("")
+    lines.append("| 技术领域 | 产品码 | 设备数 | 公司数 | 设备最多的公司 | 近 90 天占比 |")
+    lines.append("| --- | ---: | ---: | ---: | --- | ---: |")
     for item in items:
         leaders = item.get("top_companies") or []
         names = "；".join(f"{lead.get('company')} {int(lead.get('devices') or 0):,}"
                           for lead in leaders[:4])
+        entry = (recency or {}).get(str(item.get("specialty"))) or {}
+        share = (f"{int(entry['pct'])}%" if entry else "—")
         lines.append(f"| {item.get('specialty')} | {int(item.get('codes') or 0):,} | "
                      f"{int(item.get('devices') or 0):,} | {int(item.get('companies') or 0):,} | "
-                     f"{names or '—'} |")
+                     f"{names or '—'} | {share} |")
     return "\n".join(lines)
 
 
-def areas_csv(items: Sequence[Mapping[str, Any]]) -> str:
+def areas_csv(items: Sequence[Mapping[str, Any]],
+              recency: Mapping[str, Mapping[str, int]] | None = None) -> str:
     buffer = io.StringIO()
     writer = csv.writer(buffer, lineterminator="\n")
     writer.writerow(["specialty", "product_codes", "devices", "companies", "top_company",
-                     "top_company_devices"])
+                     "top_company_devices", "papers_held", "papers_last_90d", "recent_pct"])
     for item in items:
         leaders = item.get("top_companies") or []
         lead = leaders[0] if leaders else {}
+        entry = (recency or {}).get(str(item.get("specialty"))) or {}
         writer.writerow([item.get("specialty"), int(item.get("codes") or 0),
                          int(item.get("devices") or 0), int(item.get("companies") or 0),
-                         lead.get("company") or "", int(lead.get("devices") or 0)])
+                         lead.get("company") or "", int(lead.get("devices") or 0),
+                         int(entry.get("held") or 0), int(entry.get("recent") or 0),
+                         int(entry.get("pct") or 0)])
     return buffer.getvalue()
 
 
@@ -749,17 +760,32 @@ def compare_json(companies: Sequence[Mapping[str, Any]]) -> str:
                 "brand_reports 是名称匹配，不是法定主体归属，也不跨法人聚合。"])
 
 
-def areas_json(items: Sequence[Mapping[str, Any]], *, updated_at: str | None = None) -> str:
+def areas_json(items: Sequence[Mapping[str, Any]], *, updated_at: str | None = None,
+               recency: Mapping[str, Mapping[str, int]] | None = None) -> str:
+    rows = []
+    for item in items:
+        entry = (recency or {}).get(str(item.get("specialty"))) or {}
+        held = int(entry.get("held") or 0)
+        rows.append({
+            "specialty": item.get("specialty"),
+            "devices": int(item.get("devices") or 0),
+            "codes": int(item.get("codes") or 0),
+            "companies": int(item.get("companies") or 0),
+            # The specialty row does not always carry a paper count; the recency map does. Without the
+            # fallback the file said papers 0 next to papers_last_90d 64 - two fields in one object
+            # contradicting each other.
+            "papers": int(item.get("papers") or held or 0),
+            "papers_held": held,
+            "matched": int(item.get("matched") or 0),
+            "papers_last_90d": int(entry.get("recent") or 0),
+            "recent_pct": int(entry.get("pct") or 0),
+        })
     return _json_payload(
         "areas",
         updated_at=updated_at,
-        specialties=[{"specialty": item.get("specialty"),
-                      "devices": int(item.get("devices") or 0),
-                      "codes": int(item.get("codes") or 0),
-                      "companies": int(item.get("companies") or 0),
-                      "papers": int(item.get("papers") or 0),
-                      "matched": int(item.get("matched") or 0)} for item in items],
-        bounds=["数字按注册条目计，一台设备带多个产品码时会在各领域分别计入。"])
+        specialties=rows,
+        bounds=["数字按注册条目计，一台设备带多个产品码时会在各领域分别计入。",
+                "recent_pct 建立在每领域 120 篇的上限上：它是产出密度的信号，不是产量。"])
 
 
 def field_papers_json(specialty: str, papers: Sequence[Mapping[str, Any]],

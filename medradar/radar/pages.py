@@ -2730,14 +2730,23 @@ def pages_router(service: Any, *, endpoints: Mapping[str, Any] | None = None) ->
                     data["recency"] = recency_by_specialty(store)
                 except Exception:  # noqa: BLE001 - no literature is an empty column, not a broken page
                     data["recency"] = {}
+                # The recency column travels with the file: the page can show it, so the export must.
+                try:
+                    from .paper_passes import recency_by_specialty
+
+                    recency = recency_by_specialty(store)
+                except Exception:  # noqa: BLE001 - an empty column, not a failed export
+                    recency = {}
                 if format == "csv":
-                    body = export_mod.areas_csv(items)
+                    body = export_mod.areas_csv(items, recency=recency)
                     media, suffix = "text/csv; charset=utf-8", "csv"
                 elif format == "json":
-                    body = export_mod.areas_json(items, updated_at=data.get("updated_at"))
+                    body = export_mod.areas_json(items, updated_at=data.get("updated_at"),
+                                                 recency=recency)
                     media, suffix = "application/json; charset=utf-8", "json"
                 else:
-                    body = export_mod.areas_markdown(items, updated_at=data.get("updated_at"))
+                    body = export_mod.areas_markdown(items, updated_at=data.get("updated_at"),
+                                                     recency=recency)
                     media, suffix = "text/markdown; charset=utf-8", "md"
                 stem = "medradar-areas"
             elif kind == "area":

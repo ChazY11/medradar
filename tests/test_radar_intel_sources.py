@@ -3456,8 +3456,10 @@ def test_the_field_map_and_a_specialty_can_be_taken_away(tmp_path):
     assert "GLOBUS MEDICAL, INC. 132,778" in markdown
 
     csv_text = areas_csv(items)
-    assert csv_text.splitlines()[0] == ("specialty,product_codes,devices,companies,"
-                                        "top_company,top_company_devices")
+    # The header gained the recency columns when the page gained them; both must move together.
+    assert csv_text.splitlines()[0] == (
+        "specialty,product_codes,devices,companies,top_company,top_company_devices,"
+        "papers_held,papers_last_90d,recent_pct")
     assert "Orthopedic,239," in csv_text
 
     summary = {"specialty": "Orthopedic", "codes": 239, "devices": 1435239, "companies": 1069}
@@ -5103,6 +5105,36 @@ def test_the_field_list_can_be_sorted_by_how_recent_its_literature_is(tmp_path):
     assert page.index("Hematology") < page.index("Dental")
     # The cap that makes the ratio a density signal rather than an output count is stated.
     assert "只保留最新的 120 篇" in page
+
+
+def test_the_field_exports_carry_the_recency_column():
+    """The page shows it, so the file must: otherwise the file and the page disagree."""
+    import json
+
+    from medradar.radar.export import areas_csv, areas_json, areas_markdown
+
+    items = [{"specialty": "Dental", "codes": 295, "devices": 900, "companies": 50,
+              "top_companies": [{"company": "A", "devices": 10}]}]
+    recency = {"Dental": {"held": 120, "recent": 68, "pct": 57}}
+
+    md = areas_markdown(items, recency=recency)
+    assert "近 90 天占比" in md
+    assert "| 57% |" in md
+    assert "是密度信号，不是产量" in md          # the bound, inside the file
+
+    rows = areas_csv(items, recency=recency)
+    assert rows.splitlines()[0].endswith("papers_held,papers_last_90d,recent_pct")
+    assert "120,68,57" in rows
+
+    payload = json.loads(areas_json(items, recency=recency))
+    entry = payload["specialties"][0]
+    assert entry["recent_pct"] == 57 and entry["papers_last_90d"] == 68
+    assert any("120 篇的上限" in text for text in payload["bounds"])
+
+    # The column stays in the table with a dash when there is no data - a stable shape beats a
+    # disappearing column.
+    assert "近 90 天占比" in areas_markdown(items)
+    assert "| — |" in areas_markdown(items)
 
 
 def test_a_pre_digitisation_filing_is_never_requested(tmp_path):
