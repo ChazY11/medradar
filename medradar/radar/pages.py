@@ -1472,6 +1472,17 @@ def warmup(service: Any) -> dict[str, Any]:
             report["dossier"] = True
         except Exception as error:  # noqa: BLE001
             report["errors"].append(f"dossier: {type(error).__name__}")
+        # The field pages need the 318k-term vocabulary loaded before their topic chips can be built.
+        # Measured: the first /area in a fresh process took 1.1-1.35 s and every one after it 0.26-0.30 s,
+        # with field_topics itself at 851-959 ms on the first call and 33 ms afterwards.
+        try:
+            from .paper_passes import field_topics
+
+            field_topics(store, "Dental")
+            report["vocabulary"] = True
+        except Exception as error:  # noqa: BLE001 - no literature yet is normal
+            report["errors"].append(f"vocabulary: {type(error).__name__}")
+
         try:
             from .papers_index import _total_papers
 
