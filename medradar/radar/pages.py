@@ -2823,20 +2823,24 @@ def pages_router(service: Any, *, endpoints: Mapping[str, Any] | None = None) ->
                     failures = {}
                 # The monthly shape comes along so a JSON consumer sees the same series the page draws.
                 try:
-                    from .paper_passes import monthly_counts
+                    from .paper_passes import field_topics as read_topics, monthly_counts
 
                     monthly = monthly_counts(store, name)
+                    field_topics = read_topics(store, name)
                 except Exception:  # noqa: BLE001 - no literature yet is a stated gap
                     monthly = []
+                    field_topics = []
                 if format == "csv":
                     body = export_mod.area_csv(companies)
                     media, suffix = "text/csv; charset=utf-8", "csv"
                 elif format == "json":
                     body = export_mod.area_json(name, summary, companies,
-                                                failures=failures, monthly=monthly)
+                                                failures=failures, monthly=monthly,
+                                                topics=field_topics)
                     media, suffix = "application/json; charset=utf-8", "json"
                 else:
-                    body = export_mod.area_markdown(name, summary, companies, failures=failures)
+                    body = export_mod.area_markdown(name, summary, companies, failures=failures,
+                                                    topics=field_topics)
                     media, suffix = "text/markdown; charset=utf-8", "md"
                 stem = f"medradar-area-{_slug(name)}"
             elif kind == "area_failures":

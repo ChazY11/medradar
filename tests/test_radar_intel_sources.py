@@ -5230,6 +5230,31 @@ def test_a_topic_chip_counts_papers_not_repetitions():
     assert "不是出现次数" in page
 
 
+def test_the_field_exports_carry_the_topic_list_with_its_coverage():
+    """The chips are on the page, so they travel in the file - with papers, not hits, as the unit."""
+    import json
+
+    from medradar.radar.export import area_json, area_markdown
+
+    topics = [{"term": "edentulous", "papers": 59, "held": 120, "count": 290},
+              {"term": "abutment", "papers": 57, "held": 120, "count": 362}]
+    md = area_markdown("Dental", {"devices": 900, "codes": 295, "companies": 50},
+                       [{"rank": 1, "company_name": "A", "devices": 10}], topics=topics)
+    assert "## 这个领域的文献在谈什么" in md
+    assert "| edentulous | 59/120 | 290 |" in md
+    assert "不是我们的技术判断" in md
+    assert "10 个以上领域" in md               # the cross-field rule, stated in the document
+
+    payload = json.loads(area_json("Dental", {"devices": 900, "codes": 295, "companies": 50}, [],
+                                   topics=topics))
+    assert payload["topics"][0] == {"term": "edentulous", "papers": 59, "held": 120, "hits": 290}
+    assert any("不是技术判断" in text for text in payload["bounds"])
+
+    # No topics, no section - rather than an empty heading.
+    assert "## 这个领域的文献在谈什么" not in area_markdown(
+        "X", {"devices": 1, "codes": 1, "companies": 1}, [])
+
+
 def test_a_pre_digitisation_filing_is_never_requested(tmp_path):
     """Measured: 0 of 60 sampled filings from 1998-2009 have a PDF at any path shape.
 

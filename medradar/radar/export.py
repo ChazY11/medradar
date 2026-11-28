@@ -436,7 +436,8 @@ def field_papers_markdown(specialty: str, papers: Sequence[Mapping[str, Any]],
 
 def area_markdown(specialty: str, summary: Mapping[str, Any],
                   companies: Sequence[Mapping[str, Any]],
-                  *, failures: Mapping[str, Any] | None = None) -> str:
+                  *, failures: Mapping[str, Any] | None = None,
+                  topics: Sequence[Mapping[str, Any]] | None = None) -> str:
     """One specialty's leaders and failure record, with the sampling and reporting caveats kept."""
     lines = [f"# {specialty}", "", f"> 导出于 {_stamp()}。{SOURCE_LINE}", ""]
     lines.append(f"> {int(summary.get('devices') or 0):,} 台设备 · "
@@ -496,6 +497,21 @@ def area_markdown(specialty: str, summary: Mapping[str, Any],
             code = str(item.get("code") or "")
             lines.append(f"| {code} | {str(names.get(code) or '').strip()} | "
                          f"{int(item.get('reports') or 0):,} |")
+    # The chips on the page, with their coverage, so a forwarded file says what the field talks about
+    # and not only how big it is.
+    topic_rows = list(topics or [])
+    if topic_rows:
+        lines.append("")
+        lines.append("## 这个领域的文献在谈什么")
+        lines.append("")
+        lines.append("> 从本领域已归档全文中统计。这是「论文里出现的词」，不是我们的技术判断。"
+                     "两条过滤：结构性虚词按词表去掉；在 10 个以上领域都出现的词也去掉。")
+        lines.append("")
+        lines.append("| 词 | 出现在多少篇 | 命中次数 |")
+        lines.append("| --- | ---: | ---: |")
+        for item in topic_rows:
+            lines.append(f"| {item.get('term')} | {int(item.get('papers') or 0):,}/"
+                         f"{int(item.get('held') or 0):,} | {int(item.get('count') or 0):,} |")
     elif int(shape.get("codes") or 0):
         # Checked and empty is an answer; an absent section would read as "not looked at".
         lines.append("")
@@ -672,7 +688,8 @@ def _json_payload(schema: str, **fields: Any) -> str:
 def area_json(specialty: str, summary: Mapping[str, Any],
               companies: Sequence[Mapping[str, Any]],
               *, failures: Mapping[str, Any] | None = None,
-              monthly: Sequence[Mapping[str, Any]] | None = None) -> str:
+              monthly: Sequence[Mapping[str, Any]] | None = None,
+              topics: Sequence[Mapping[str, Any]] | None = None) -> str:
     """One specialty, machine-readable, with the bounds as fields rather than as prose.
 
     A JSON consumer will not read a Chinese sentence in a document header, so each caveat is a named
@@ -695,10 +712,15 @@ def area_json(specialty: str, summary: Mapping[str, Any],
                   "by_code": shape.get("by_code") or [],
                   "by_year": shape.get("by_year") or {}},
         monthly=list(monthly or []),
+        topics=[{"term": item.get("term"),
+                 "papers": int(item.get("papers") or 0),
+                 "held": int(item.get("held") or 0),
+                 "hits": int(item.get("count") or 0)} for item in (topics or [])],
         bounds=[
             "失败记录是 MAUDE 报告数，不是故障率：自愿上报，产品用得越多、上报的人越多，数字越大。",
             "失效索引扫的是最近的报告文件，年份分布反映我们的扫描窗口，不是领域趋势。",
             "月度论文分布来自一轮抓取，年份集中，不代表该领域全部发表。",
+            "topics 是论文里出现的词，不是技术判断；已去掉结构性虚词与在 10 个以上领域出现的通用词。",
         ],
         gaps={code: GAP_TEXT.get(code, code) for code in
               (["no_company_in_this_specialty"] if not companies else [])})
