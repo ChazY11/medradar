@@ -1076,7 +1076,9 @@ def topic_page(*, payload: Mapping[str, Any], topic_id: str,
 #: page already says so in its own block; the one-line versions must say it too, because they are where the
 #: number appears without the block around it. Measured 2026-11-28: Orthopedic has 40 recent papers and its
 #: top term is "centrifuge 3/40" - which then appeared as the headline on every Orthopedic company page.
-TREND_SMALL_WINDOW = 60
+from .paper_passes import TREND_MIN_PAPERS as _TREND_MIN_PAPERS  # noqa: E402 - module constant reused
+
+TREND_SMALL_WINDOW = _TREND_MIN_PAPERS  # one source: paper_passes.TREND_MIN_PAPERS
 
 
 def _trend_text(trend: Mapping[str, Any]) -> str:
@@ -2447,7 +2449,7 @@ def _emerging_block(emerging: Mapping[str, Any], rank: Mapping[str, Any] | None 
             f'<p class="muted small">拿本领域近 {n(emerging.get("recent_days") or 90)} 天{anchor}的 '
             f'{n(recent)} 篇，对比之前一年的 {n(baseline)} 篇：算每个词在两边各占多少篇，再看占比涨了多少倍。'
             + (f'<b>样本偏小：近 90 天只有 {n(recent)} 篇，倍数容易被个别论文拉高，请结合右边绝对篇数看。</b>'
-               if recent < 60 else '')
+               if recent < _TREND_MIN_PAPERS else '')
             + '<b>这是词频，不是我们的技术判断</b>；涨的原因是这几篇新论文用了它，'
             '而且只统计我们抓到的这批（不是该领域全部论文）。'
             '倍数很大通常意味着这个词以前几乎没出现，未必意味着方向重要——看右边两列的绝对篇数再判断。</p>'

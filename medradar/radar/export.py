@@ -27,6 +27,8 @@ from typing import Any, Mapping, Sequence
 
 from .gaps import GAP_TEXT
 
+from .paper_passes import TREND_MIN_PAPERS
+
 SOURCE_LINE = ("来源：FDA UDI 设备注册表、FDA 510(k) 摘要正文、MAUDE 失效记录、"
                "ClinicalTrials.gov、公开文献全文。")
 
@@ -387,7 +389,7 @@ def areas_markdown(items: Sequence[Mapping[str, Any]], *, updated_at: str | None
         "papers": "按已归档论文数排序。",
         "recent": "按近 90 天发表占比排序。",
         "pending": "还没被文献线抓到过的领域排在最前，再按设备数——待办队列，不是阅读顺序。",
-        "trend": ("按「上升最快的词」的涨幅排序；只排近 90 天样本达到 60 篇的领域，"
+        "trend": (f"按「上升最快的词」的涨幅排序；只排近 90 天样本达到 {TREND_MIN_PAPERS} 篇的领域，"
                   "样本更小的排在最后。涨幅是词频变化，不是重要性判断。"),
     }.get(order, "")
     if order_note:

@@ -6207,6 +6207,30 @@ def test_a_field_page_says_where_it_sits_in_the_trend_order(tmp_path):
     assert "不参与排名" in unranked
 
 
+def test_the_trend_threshold_has_one_source():
+    """Audit 12: 60 was written in five places - a constant, a default argument, an inline comparison, and an
+    export sentence. Changing it would have updated some of them."""
+    import inspect
+
+    from medradar.radar import export as export_mod
+    from medradar.radar import pages as pages_mod
+    from medradar.radar.paper_passes import TREND_MIN_PAPERS, trend_rank
+
+    assert TREND_MIN_PAPERS == 60
+    # The page's alias is the same number, not a copy of it.
+    assert pages_mod.TREND_SMALL_WINDOW == TREND_MIN_PAPERS
+
+    pages_src = inspect.getsource(pages_mod)
+    export_src = inspect.getsource(export_mod)
+    # No bare 60 in a comparison or in a sentence about the threshold.
+    assert "< 60 else" not in pages_src
+    assert "样本达到 60 篇" not in export_src
+    # trend_rank takes the constant when no argument is given.
+    ranked = trend_rank({"A": {"term": "x", "recent": 5, "recent_total": TREND_MIN_PAPERS - 1,
+                               "lift": 9.0}}, "A")
+    assert ranked["rank"] is None and ranked["min_total"] == TREND_MIN_PAPERS
+
+
 def test_a_pre_digitisation_filing_is_never_requested(tmp_path):
     """Measured: 0 of 60 sampled filings from 1998-2009 have a PDF at any path shape.
 

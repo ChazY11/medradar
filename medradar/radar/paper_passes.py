@@ -329,14 +329,22 @@ def emerging_terms(reference, specialty: str, *, recent_days: int = 90, baseline
 _EMERGING_CACHE: dict[tuple[str, float, str], dict[str, Any]] = {}
 
 
+#: How many papers a field's recent window needs before its lift is worth ranking. Below this, a term seen in
+#: three papers produces a large multiple and no signal. One constant, because five copies of a threshold is how
+#: the page and the export come to disagree about which fields qualify - audit 12 found the number written out in
+#: pages.py, in this module's default, in an inline comparison, and in an export sentence.
+TREND_MIN_PAPERS = 60
+
+
 def trend_rank(trends: Mapping[str, Any], specialty: str,
-               *, min_total: int = 60) -> dict[str, Any]:
+               *, min_total: int | None = None) -> dict[str, Any]:
     """Where this field sits when the fields are ordered by how fast their vocabulary is moving.
 
     The same rule as `order_area_items`: only fields whose recent window reaches `min_total` papers take part,
     because a small window produces a large lift out of three papers. A field that does not qualify says so -
     a rank computed against an unreliable lift would be worse than no rank.
     """
+    min_total = TREND_MIN_PAPERS if min_total is None else int(min_total)
     eligible = {name: row for name, row in (trends or {}).items()
                 if str(row.get("term") or "") and int(row.get("recent_total") or 0) >= min_total}
     if str(specialty) not in eligible:
