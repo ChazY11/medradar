@@ -6560,6 +6560,26 @@ def test_an_unreadable_trend_table_is_not_reported_as_never_computed(tmp_path):
     assert healthy["computed_at"] == "2026-11-28"
 
 
+def test_the_front_page_strip_points_at_the_full_window():
+    """Audit 13 recorded it as unfixed: the strip answers "what is newest" and did not say where the rest is."""
+    from medradar.radar.pages import landing
+
+    page = landing(stats={"设备注册": 100}, examples=[], data={
+        "recent_papers": [{"paper_id": "P1", "title": "T", "published_at": "2026-11-27",
+                           "specialty": "Dental"}],
+        "fields_with_papers": 20, "fields_total": 20,
+        "recent_total": 147, "recent_days": 14, "recent_until": "2026-11-28"})
+    assert "近 14 天我们一共抓到 147 篇" in page
+    assert "（截至 2026-11-28）" in page
+    assert "按领域分组看全部" in page
+
+    # When the strip is the whole window there is nothing more to point at.
+    small = landing(stats={}, examples=[], data={
+        "recent_papers": [{"paper_id": "P1", "title": "T", "published_at": "x", "specialty": "D"}],
+        "recent_total": 1, "recent_days": 14})
+    assert "按领域分组看全部" not in small
+
+
 def test_a_pre_digitisation_filing_is_never_requested(tmp_path):
     """Measured: 0 of 60 sampled filings from 1998-2009 have a PDF at any path shape.
 

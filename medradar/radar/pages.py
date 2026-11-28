@@ -198,11 +198,19 @@ def _landing_literature(store: Any) -> dict[str, Any]:
     try:
         from .paper_passes import QUERIES, by_specialty, recent_any
 
+        from .paper_passes import recent_publications
+
         held = by_specialty(store)
+        # The strip shows eight; the answer to "how much more is there" is the same window /radar shows, so the
+        # reader is sent to the page that has it rather than left to guess the strip is everything.
+        window = recent_publications(store, days=14, per_field=1, max_fields=1)
         return {
             "recent_papers": recent_any(store, limit=8),
             "fields_with_papers": len(held),
             "fields_total": len(QUERIES),
+            "recent_total": int(window.get("total") or 0),
+            "recent_days": int(window.get("days") or 14),
+            "recent_until": str(window.get("until") or ""),
         }
     except Exception:  # noqa: BLE001 - no literature yet is a stated gap, not a failure
         return {}
@@ -277,11 +285,21 @@ def landing(*, stats: Mapping[str, Any], examples: Sequence[tuple[str, str]],
                      f'<a href="/areas?sort=pending">还没抓的排在这里</a>。')
         else:
             scope = ""
+        # How many more there are, and where. The strip shows eight; /radar carries the per-field view of the
+        # same window, and a reader who wants more should not have to find it in the navigation bar.
+        window = int(data.get("recent_total") or 0)
+        days = int(data.get("recent_days") or 14)
+        until = str(data.get("recent_until") or "")
+        more = ""
+        if window > len(recent):
+            more = (f'<br>近 {n(days)} 天我们一共抓到 {n(window)} 篇'
+                    f'{"（截至 " + esc(until) + "）" if until else ""}，'
+                    f'<a href="/radar">按领域分组看全部</a>；导出在实时雷达页。')
         recent_block = (
             '<h2>最近发表</h2>'
             f'<p class="muted small">所跟踪领域里发表日期最新的 {n(len(recent))} 篇。'
             f'这是"我们手上的论文里最新的"，不是全部新论文；出版日期在未来的期刊预填记录已排除。'
-            f'{scope}</p>'
+            f'{scope}{more}</p>'
             f'<div class="card"><table><thead><tr><th>发表日期</th><th>标题</th>'
             f'<th>领域</th></tr></thead><tbody>{rows}</tbody></table></div>')
     else:
