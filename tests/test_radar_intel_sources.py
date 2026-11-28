@@ -6255,9 +6255,54 @@ def test_one_search_box_routes_by_what_was_typed():
     assert '@router.get("/search")' in source
     assert 'RedirectResponse(f"/paper?id={quote(text)}"' in source
     assert 'RedirectResponse(f"/area?name={quote(text)}"' in source
-    assert 'RedirectResponse(f"/device?query={quote(text)}"' in source
+    # The device redirect carries the marker that lets its miss page explain the routing.
+    assert 'RedirectResponse(f"/device?query={quote(text)}&from=search"' in source
     # And the front page offers it.
     assert 'action="/search"' in inspect.getsource(pages_mod)
+
+
+def test_a_search_that_lands_on_a_miss_says_how_it_got_there():
+    """The one box redirects by shape; when the destination answers "not found", the reader deserves to know why
+    this page answered rather than another."""
+    from medradar.radar.pages import device_dossier
+
+    class Head:
+        brand_name = "X"
+        version_or_model = ""
+        company_name = "C"
+        di = ""
+        device_key = "k"
+        labeler_duns = ""
+        product_codes: list = []
+        gmdn_name = ""
+        device_description = ""
+        catalog_number = ""
+
+    class Timeline:
+        refs: list = []
+        clearances: dict = {}
+        specs: dict = {}
+        failures: dict = {}
+        trials: dict = {}
+        patents: dict = {}
+        papers: dict = {}
+        gaps = ["device_not_in_udi_register"]
+
+    routed = device_dossier(Timeline(), query="zzzqqq", routed_from="search")
+    assert "按内容判断后送来的" in routed
+    # Every other route into this page is unchanged.
+    assert "按内容判断后送来的" not in device_dossier(Timeline(), query="zzzqqq")
+
+    import inspect
+
+    from medradar.radar import pages as pages_mod
+
+    source = inspect.getsource(pages_mod.pages_router)
+    # The marker is carried on the redirect and consumed by the page.
+    assert "&from=search" in source
+    assert 'alias="from"' in source
+    # And /sources states the rule the box follows, since the front page points there.
+    assert "一个框怎么分流" in inspect.getsource(pages_mod)
 
 
 def test_a_pre_digitisation_filing_is_never_requested(tmp_path):

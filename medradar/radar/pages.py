@@ -508,7 +508,8 @@ def _suggestion_block(names: Sequence[str]) -> str:
 
 
 def device_dossier(timeline: Any, *, query: str, store: Any = None,
-                   substituted_from: str = "", suggestions: Sequence[str] = ()) -> str:
+                   substituted_from: str = "", suggestions: Sequence[str] = (),
+                   routed_from: str = "") -> str:
     refs = timeline.refs
     if not refs:
         body = (f'<h1>没有找到「{esc(query)}」</h1>'
@@ -521,6 +522,9 @@ def device_dossier(timeline: Any, *, query: str, store: Any = None,
                 # from "it is not there" - and the hardcoded code below used to hide exactly that.
                 + "".join(gap_note(code) for code in dict.fromkeys(
                     code for code in (timeline.gaps or []) if code != "device_not_in_udi_register"))
+                + (('<p class="small muted">这一页是「一个框查全部」按内容判断后送来的：'
+                    '它看起来不像论文编号，也不是技术领域名，所以走了器械查询。</p>')
+                   if routed_from == "search" else "")
                 + _suggestion_block(suggestions)
                 + gap_note("device_not_in_udi_register")
                 + '<form class="search" method="get" action="/device">'
@@ -930,6 +934,9 @@ def sources_page(*, meta: Mapping[str, Any], coverage: Mapping[str, Any] | None 
 · 不冒充集团证据：子公司/集团的匹配会注明"集团级"。<br>
 · 不编造规格：物理上不可能的数值直接丢弃并计数。<br>
 · 不把"我们没抓"写成"它没有"：专利与失效都区分这两种情况。<br>
+· 一个框怎么分流：论文编号（PMC…／8 位以内数字／DOI）进论文页；中文领域名与注册表里的英文领域名
+进领域页；其余进器械查询（它会解析品牌、公司名与 DUNS）。判断只依据字符串形状，不代表内容一定存在。
+<br>
 · 对不可能靠重试成功的源不再反复打：openalex 需要凭据（401）、draeger 拒绝自动访问（403），
 两者都已注明不可重试，调度器改为最多每 24 小时试一次，而不是每 5 分钟写一条失败。
 </p></div>
@@ -2975,7 +2982,8 @@ def pages_router(service: Any, *, endpoints: Mapping[str, Any] | None = None) ->
 
     @router.get("/device", response_class=HTMLResponse)
     def device_page_view(query: str | None = Query(None, max_length=120),
-                         limit: int = Query(25, ge=1, le=100)) -> Any:
+                         limit: int = Query(25, ge=1, le=100),
+                         from_: str = Query("", alias="from", max_length=16)) -> Any:
         if not query:
             return HTMLResponse(landing(stats={"设备注册": 0}, examples=[]))
 
@@ -3029,11 +3037,14 @@ def pages_router(service: Any, *, endpoints: Mapping[str, Any] | None = None) ->
             try:
                 return device_dossier(timeline, query=query, store=store,
                                       substituted_from=substituted_from,
-                                      suggestions=suggestions)
+                                      suggestions=suggestions,
+                                      routed_from=("search" if from_ == "search" else ""))
             finally:
                 store.close()
 
-        return HTMLResponse(cached(f"device:{query}:{limit}", 120.0, render))
+        # The marker belongs in the key: without it the first render - whichever route asked first - was cached
+        # and served to both, so a direct visit showed "sent here by the one box" that never happened.
+        return HTMLResponse(cached(f"device:{query}:{limit}:{from_}", 120.0, render))
 
     @router.get("/sources", response_class=HTMLResponse)
     def sources_view() -> Any:
@@ -3715,7 +3726,9 @@ def pages_router(service: Any, *, endpoints: Mapping[str, Any] | None = None) ->
         except Exception:  # noqa: BLE001 - no register, fall through to the device search
             pass
 
-        return RedirectResponse(f"/device?query={quote(text)}", status_code=303)
+        # The marker travels so the device page can say how the site decided; it is dropped by every link on
+        # that page, so it never accumulates.
+        return RedirectResponse(f"/device?query={quote(text)}&from=search", status_code=303)
 
     @router.get("/radar", response_class=HTMLResponse)
     def radar_view() -> Any:
