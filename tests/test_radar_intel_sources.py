@@ -4737,7 +4737,7 @@ def test_a_field_shows_its_failure_reports_and_says_they_are_not_rates(tmp_path)
     store.conn.executemany("INSERT INTO maude_failure_index VALUES (?,?,?,?,?)", [
         ("DZE", "m", "b", "Malfunction", "2026-01-01"),
         ("DZE", "m", "b", "Injury", "2026-02-01"),
-        ("DZE", "m", "b", "Injury", "2026-03-01"),
+        ("DZE", "m", "b", "Injury", "2025-03-01"),
     ])
     store.conn.commit()
 
@@ -4746,6 +4746,7 @@ def test_a_field_shows_its_failure_reports_and_says_they_are_not_rates(tmp_path)
     assert shape["total"] == 3
     assert shape["by_code"][0] == {"code": "DZE", "reports": 3}
     assert shape["by_event"]["Injury"] == 2
+    assert shape["by_year"] == {"2025": 1, "2026": 2}       # when the reports arrived
 
     page = area_page(specialty="Dental",
                      summary={"specialty": "Dental", "codes": 1, "devices": 2, "companies": 3},
@@ -4754,6 +4755,10 @@ def test_a_field_shows_its_failure_reports_and_says_they_are_not_rates(tmp_path)
     assert "伤害 2" in page
     # The bound has to be there: reports are voluntary and are not a safety comparison.
     assert "不是故障率" in page
+    # And the year shape is ours: the sweep walks the newest files, so 2026 dominates by construction.
+    assert "报告日期 2025–2026" in page
+    assert "扫的是最近的报告文件" in page
+    assert "不是该领域变得更危险了" in page
 
     assert "这个领域报过哪些失效" not in area_page(
         specialty="Dental", summary={"specialty": "Dental", "codes": 1, "devices": 1, "companies": 1},

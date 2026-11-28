@@ -132,6 +132,19 @@ def failure_shape(reference, specialty: str, *, limit: int = 6) -> dict[str, Any
             codes).fetchone()[0] or 0)
     except Exception:  # noqa: BLE001 - no failure index yet is a stated gap
         return {"codes": len(codes), "total": 0, "by_code": [], "by_event": {}, "names": {}}
+    # When the reports we hold were received. Measured on Dental: 12,428 reports spanning 2015-2026 with
+    # 5,457 in 2026 alone, and DZE's 1,653 all inside 2026 - because the sweep walks the most recent
+    # MAUDE files. The year shape is therefore ours, and a chart of it would read as "2026 got worse".
+    by_year: dict[str, int] = {}
+    try:
+        for row in reference.conn.execute(
+                f"SELECT substr(date_received,1,4) AS y, COUNT(*) FROM maude_failure_index"
+                f" WHERE product_code IN ({marks}) AND COALESCE(date_received,'') <> ''"
+                f" GROUP BY y ORDER BY y", codes):
+            by_year[str(row[0])] = int(row[1] or 0)
+    except Exception:  # noqa: BLE001 - no dates is a stated gap
+        by_year = {}
+
     names: dict[str, str] = {}
     try:
         for row in reference.conn.execute(
@@ -141,7 +154,7 @@ def failure_shape(reference, specialty: str, *, limit: int = 6) -> dict[str, Any
     except Exception:  # noqa: BLE001
         names = {}
     return {"codes": len(codes), "total": total, "by_code": by_code, "by_event": by_event,
-            "names": names}
+            "names": names, "by_year": by_year}
 
 
 def companies_in_specialty(reference, specialty: str, *, limit: int = LEADERS_KEPT

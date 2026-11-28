@@ -2000,6 +2000,23 @@ def area_page(*, specialty: str, summary: Mapping[str, Any] | None,
             '数字就越大；不能用来比较两个产品谁更安全。</p>'
             f'<div class="card"><table><thead><tr><th>产品码</th><th>报告数</th></tr></thead>'
             f'<tbody>{rows}</tbody></table></div>')
+        # When those reports arrived, and why the shape is ours rather than the field's. Measured on
+        # Dental: 2015-2026, with 5,457 of 12,428 in 2026 because the sweep walks the newest files;
+        # DZE's 1,653 are all 2026. Printed as numbers with that sentence, not as bars, because a bar
+        # chart of a crawl window reads as a safety trend.
+        years = shape.get("by_year") or {}
+        if years:
+            keys = sorted(years)
+            total_year = sum(years.values()) or 1
+            top_key = max(years, key=lambda k: years[k])
+            share = 100.0 * years[top_key] / total_year
+            listed = " · ".join(f"{k} {n(years[k])}" for k in keys[-6:])
+            failures_block += (
+                f'<p class="muted small">报告日期 {esc(keys[0])}–{esc(keys[-1])}，'
+                f'最近几年：{listed}。'
+                f'其中 {esc(top_key)} 年占 {share:.0f}%——'
+                '<b>因为我们的失效索引扫的是最近的报告文件</b>，所以近年偏多；'
+                '这不是该领域变得更危险了。</p>')
     else:
         failures_block = ""
 
