@@ -188,7 +188,17 @@ class RadarScheduler:
         elapsed = (_now_dt() - moment).total_seconds()
         failures = int(state.get("consecutive_failures") or 0)
         if failures:
-            # Retry a failing source sooner, but never faster than every 15 minutes.
+            # A failure that cannot succeed by retrying is not made better by retrying sooner. Measured
+            # 2026-11-28: openalex needs a credential (401, retryable=0) and draeger refuses automated
+            # access (403, retryable=0); the old rule shrank the interval as failures grew, so the
+            # 5-minute watcher wrote 3,900 failure rows a week for calls that could never succeed.
+            latest = self.ledger.failures(source=source_id, limit=1)
+            if latest:
+                flag = latest[0].get("retryable")
+                # A missing flag means "unknown", which is treated as retryable - the conservative side.
+                if flag is not None and not int(flag):
+                    return elapsed >= 24 * 3600
+            # Retry a *transient* failure sooner, but never faster than every 15 minutes.
             cadence = min(cadence, max(0.25, cadence / max(1, failures)))
         return elapsed >= cadence * 3600
 

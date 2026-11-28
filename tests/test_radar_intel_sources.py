@@ -5366,6 +5366,33 @@ def test_the_public_entry_point_is_stated_with_its_rotations(tmp_path):
     assert "隧道没有启动" in sources_page(meta={"sources": []}, coverage={}, tunnel=missing)
 
 
+def test_a_source_that_cannot_succeed_is_not_retried_every_five_minutes(tmp_path):
+    """Measured 2026-11-28: openalex needed a credential and draeger refused access, both retryable=0.
+    The scheduler shrank the interval as failures grew, so 3,900 rows a week were written for calls that
+    could never succeed."""
+    from medradar.radar.scheduler import RadarScheduler
+
+    class FakeLedger:
+        def __init__(self, flag):
+            self.flag = flag
+
+        def get_source_state(self, source_id):
+            return {"enabled": 1, "last_checked_at": "2026-11-28T00:00:00+00:00",
+                    "cadence_hours": 12.0, "consecutive_failures": 500}
+
+        def failures(self, *, source=None, limit=20):
+            return [{"retryable": self.flag}]
+
+    scheduler = RadarScheduler.__new__(RadarScheduler)
+    scheduler.ledger = FakeLedger(0)
+    # Last check was 10 hours ago: past the shrunken transient interval, well inside the 24 h hold.
+    assert scheduler._is_due("openalex") is False
+
+    scheduler.ledger = FakeLedger(1)
+    # A transient failure keeps the old behaviour and is retried sooner.
+    assert scheduler._is_due("europepmc") is True
+
+
 def test_a_pre_digitisation_filing_is_never_requested(tmp_path):
     """Measured: 0 of 60 sampled filings from 1998-2009 have a PDF at any path shape.
 

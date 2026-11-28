@@ -856,7 +856,9 @@ def sources_page(*, meta: Mapping[str, Any], coverage: Mapping[str, Any] | None 
 · 不猜测匹配：型号精确匹配与品牌族匹配分开标注。<br>
 · 不冒充集团证据：子公司/集团的匹配会注明"集团级"。<br>
 · 不编造规格：物理上不可能的数值直接丢弃并计数。<br>
-· 不把"我们没抓"写成"它没有"：专利与失效都区分这两种情况。
+· 不把"我们没抓"写成"它没有"：专利与失效都区分这两种情况。<br>
+· 对不可能靠重试成功的源不再反复打：openalex 需要凭据（401）、draeger 拒绝自动访问（403），
+两者都已注明不可重试，调度器改为最多每 24 小时试一次，而不是每 5 分钟写一条失败。
 </p></div>
 """
     return layout(title="数据覆盖 · MedRadar", body=body, active="sources")
