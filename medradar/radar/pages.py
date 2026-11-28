@@ -469,13 +469,9 @@ def _field_topics_line(timeline: Any, store: Any = None) -> str:
     except Exception:  # noqa: BLE001 - no table, no line
         entry = {}
     if entry.get("term"):
-        total = int(entry.get("recent_total") or 0)
-        share = (f' {int(entry.get("recent") or 0)}/{total} 篇' if total
-                 else f' {int(entry.get("recent") or 0)} 篇')
-        trend = (f'<p class="small">这个领域最近上升的词：'
-                 f'<a href="/area?name={esc(specialty)}">{esc(str(entry.get("term")))}</a>'
-                 f'<span class="muted small">{share} · {esc(str(entry.get("lift")))}× · 算于 '
-                 f'{esc(str(entry.get("computed_at")) or "未知")} · 词频不是技术判断</span></p>')
+        text = _trend_text({**dict(entry), "specialty": specialty})
+        if text:
+            trend = f'<p class="small">这个领域最近上升的词：{text}</p>'
     return (f'<p class="small" style="margin:10px 0 0">'
             f'<b>{esc(specialty)}</b> 这个领域的文献在谈什么'
             f'（<a href="/area?name={esc(specialty)}">看该领域</a>）'
@@ -1076,6 +1072,46 @@ def topic_page(*, payload: Mapping[str, Any], topic_id: str,
     return layout(title=f"{topic.get('label_zh') or topic_id} · MedRadar", body=body, active="map")
 
 
+#: Below this many papers in the recent window, a rising term is noise rather than a direction. The field
+#: page already says so in its own block; the one-line versions must say it too, because they are where the
+#: number appears without the block around it. Measured 2026-11-28: Orthopedic has 40 recent papers and its
+#: top term is "centrifuge 3/40" - which then appeared as the headline on every Orthopedic company page.
+TREND_SMALL_WINDOW = 60
+
+
+def _trend_text(trend: Mapping[str, Any]) -> str:
+    """The share, the multiple, the date and - when the window is small - the warning. One implementation.
+
+    The device page, the company page and the export all render the same row; three copies of this sentence is
+    how two pages end up disagreeing about one number.
+    """
+    term = str(trend.get("term") or "")
+    if not term:
+        return ""
+    recent = int(trend.get("recent") or 0)
+    total = int(trend.get("recent_total") or 0)
+    share = f'{recent}/{total} 篇' if total else f'{recent} 篇'
+    lift = trend.get("lift")
+    stamp = str(trend.get("computed_at") or "未知")
+    text = (f'<a href="/area?name={esc(str(trend.get("specialty") or ""))}">{esc(term)}</a>'
+            f'<span class="muted small"> {esc(share)} · {esc(str(lift))}× · 算于 {esc(stamp)}')
+    if total and total < TREND_SMALL_WINDOW:
+        text += f' · <b>样本偏小</b>（该领域近 90 天只有 {total} 篇，倍数容易被个别论文拉高）'
+    return text + ' · 词频不是技术判断</span>'
+
+
+def _company_trend_line(specialty: str, trend: Mapping[str, Any]) -> str:
+    """What is rising in the field this company registers most in.
+
+    A company dossier says how much it registered; this says what is moving around it, from the same
+    materialised row the field page and /areas read. One number, one source, one date.
+    """
+    text = _trend_text({**dict(trend), "specialty": specialty})
+    if not text:
+        return ""
+    return f'<p class="small">这个领域最近上升的词：{text}</p>'
+
+
 def company_page(*, data: Mapping[str, Any], suggestions: Sequence[str] = ()) -> str:
     """One company: how much it has registered, filed, failed, is trialling, owns, and publishes."""
     name = data.get("company_name") or data.get("query") or ""
@@ -1283,7 +1319,8 @@ def company_page(*, data: Mapping[str, Any], suggestions: Sequence[str] = ()) ->
             + (f'<div class="chips">{chips}</div>' if chips else '')
             + (f'<div class="card" style="margin-top:10px"><table><thead><tr><th>发表日期</th>'
                f'<th>标题</th></tr></thead><tbody>{rows}</tbody></table></div>'
-               if rows else gap_note("no_papers_for_this_specialty")))
+               if rows else gap_note("no_papers_for_this_specialty"))
+            + _company_trend_line(primary, data.get("field_trend") or {}))
     else:
         field_block = ""
 
@@ -3031,6 +3068,14 @@ def pages_router(service: Any, *, endpoints: Mapping[str, Any] | None = None) ->
                               body=gap_note("device_not_in_udi_register"), active="company")
             try:
                 data = _company_data(store, q, snapshot=_snapshot())
+                # The rising term of the field this company registers most in, from the materialised table.
+                try:
+                    from .paper_passes import field_trends
+
+                    primary = str(data.get("primary_specialty") or "")
+                    data["field_trend"] = (field_trends(store).get(primary) or {}) if primary else {}
+                except Exception:  # noqa: BLE001 - one line fewer
+                    data["field_trend"] = {}
                 # A miss used to end at "company_not_in_register" while the register held MEDTRONIC under
                 # a longer legal name. Same net as /device, cheaper to build: 12,392 names in 1.5 s, primed
                 # during warm-up.

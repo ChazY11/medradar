@@ -6094,6 +6094,29 @@ def test_the_device_export_carries_the_rising_term_with_its_bound():
     assert "最近上升的词" not in export_mod.device_markdown(Timeline(), query="K1")
 
 
+def test_a_company_page_shows_the_trend_of_its_main_field():
+    """A dossier says how much a company registered; this says what is moving around it."""
+    from medradar.radar.pages import _company_trend_line
+
+    line = _company_trend_line("Dental", {"term": "gingival", "recent": 17, "recent_total": 62,
+                                          "baseline": 1, "lift": 14.53, "computed_at": "2026-11-28"})
+    assert "这个领域最近上升的词" in line
+    assert "gingival" in line
+    assert "17/62 篇" in line                       # the share, from the same row the field page reads
+    assert "算于 2026-11-28" in line
+    assert "词频不是技术判断" in line
+
+    # A small window is called out where the number appears; Orthopedic's "centrifuge 3/40" was otherwise the
+    # headline on every company page in that field.
+    small = _company_trend_line("Orthopedic", {"term": "centrifuge", "recent": 3, "recent_total": 40,
+                                               "lift": 4.95, "computed_at": "2026-11-28"})
+    assert "样本偏小" in small
+
+    # No trend row: no line, rather than an empty claim.
+    assert _company_trend_line("Dental", {}) == ""
+    assert _company_trend_line("Dental", {"term": ""}) == ""
+
+
 def test_a_pre_digitisation_filing_is_never_requested(tmp_path):
     """Measured: 0 of 60 sampled filings from 1998-2009 have a PDF at any path shape.
 
