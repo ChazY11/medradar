@@ -5624,6 +5624,56 @@ def test_an_unknown_field_name_answers_with_a_page_not_a_server_error(tmp_path):
     assert "/areas" in page
 
 
+def test_a_miss_offers_the_registers_own_spellings(tmp_path):
+    """Measured 2026-11-28: `Clydesdal` matched three registered brands and the page offered none.
+    LIKE '%x%' costs 1,537 ms and LIKE 'x%' 681 ms on the production store; an in-memory list is 0.05 ms."""
+    from medradar.radar.pages import device_dossier
+    from medradar.radar.reference import UdiReference
+    from medradar.radar.suggestions import suggest_brands
+
+    store = UdiReference(tmp_path / "ref.db")
+    # The store creates udi_device; only the rows are ours to add.
+    for brand in ("CLYDESDALE PTC™ Spinal System", "Clydesdale", "Clydesdale™ Spinal System",
+                  "ZIMMER", "MEDTRONIC"):
+        store.conn.execute(
+            "INSERT INTO udi_device (brand_name, first_observed_at) VALUES (?, ?)",
+            (brand, "2026-11-28T00:00:00+00:00"))
+    store.conn.commit()
+
+    hits = suggest_brands(store, "Clydesdal")
+    assert "Clydesdale" in hits and len(hits) >= 2
+    # Prefix matches come first; the register's own spelling is what comes back.
+    assert hits[0].upper().startswith("CLYDESDAL")
+    # Too short to be a search.
+    assert suggest_brands(store, "Cl") == []
+    store.close()
+
+    class Timeline:
+        refs: list = []
+        clearances: dict = {}
+        specs: dict = {}
+        failures: dict = {}
+        trials: dict = {}
+        patents: dict = {}
+        papers: dict = {}
+        gaps = ["device_not_in_udi_register"]
+
+    page = device_dossier(Timeline(), query="Clydesdal", suggestions=hits[:2])
+    # Suggestions are computed only for a truncated scan; the route carries that condition.
+    import inspect
+
+    from medradar.radar import pages as pages_mod
+
+    route = inspect.getsource(pages_mod.pages_router)
+    assert 'name_scan_stopped_at_budget" in (timeline.gaps or [])' in route
+    # And the 1.3 s table is built during warm-up, not by the first reader who mistypes.
+    assert 'suggest_brands(store, "medtronic")' in inspect.getsource(pages_mod.warmup)
+    assert "注册表里有这些相近的品牌名" in page
+    assert "/device?query=" in page
+    # Not a spell corrector: the page says what the matching actually is.
+    assert "不是拼写纠正" in page
+
+
 def test_a_pre_digitisation_filing_is_never_requested(tmp_path):
     """Measured: 0 of 60 sampled filings from 1998-2009 have a PDF at any path shape.
 

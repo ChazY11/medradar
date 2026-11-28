@@ -467,8 +467,24 @@ def _field_topics_line(timeline: Any) -> str:
             f'<div class="chips">{chips}</div>')
 
 
+def _suggestion_block(names: Sequence[str]) -> str:
+    """Registered brand names that contain what was typed.
+
+    A miss used to end at "not in the register" while the register held three spellings one letter away
+    (Clydesdal -> CLYDESDALE PTC™ Spinal System, Clydesdale, Clydesdale™ Spinal System). These are the
+    register's own strings, so clicking one always answers.
+    """
+    if not names:
+        return ""
+    links = "".join(
+        f'<li><a href="/device?query={esc(name)}">{esc(name)}</a></li>' for name in names[:5])
+    return ('<div class="gap"><b>注册表里有这些相近的品牌名：</b>'
+            f'<ul class="small">{links}</ul>'
+            '<span class="muted small">按名称包含匹配，不是拼写纠正——点一个直接查。</span></div>')
+
+
 def device_dossier(timeline: Any, *, query: str, store: Any = None,
-                   substituted_from: str = "") -> str:
+                   substituted_from: str = "", suggestions: Sequence[str] = ()) -> str:
     refs = timeline.refs
     if not refs:
         body = (f'<h1>没有找到「{esc(query)}」</h1>'
@@ -481,6 +497,7 @@ def device_dossier(timeline: Any, *, query: str, store: Any = None,
                 # from "it is not there" - and the hardcoded code below used to hide exactly that.
                 + "".join(gap_note(code) for code in dict.fromkeys(
                     code for code in (timeline.gaps or []) if code != "device_not_in_udi_register"))
+                + _suggestion_block(suggestions)
                 + gap_note("device_not_in_udi_register")
                 + '<form class="search" method="get" action="/device">'
                   '<input type="search" name="query" value="" aria-label="查询">'
@@ -1878,6 +1895,16 @@ def warmup(service: Any) -> dict[str, Any]:
         # index, paid by whoever happened to open the second-most-prominent link in the nav. This
         # runs the same queries the pages run, so the pages' own caches are primed too.
         warmed: dict[str, Any] = {}
+        # The suggestion table is 339,101 brand names and 1.3 s to build; a miss page must not be the
+        # first caller.
+        try:
+            from .suggestions import suggest_brands
+
+            suggest_brands(store, "medtronic")
+            warmed["suggestions"] = True
+        except Exception as error:  # noqa: BLE001
+            report["errors"].append(f"suggestions: {type(error).__name__}")
+
         try:
             from .papers_index import brands_for_terms, distinctive_terms, paper_record, paper_terms
 
@@ -2696,9 +2723,21 @@ def pages_router(service: Any, *, endpoints: Mapping[str, Any] | None = None) ->
                             break
                 except Exception:  # noqa: BLE001 - a failed alias lookup is the old behaviour
                     substituted_from = ""
+            # Still nothing: offer the register's own spellings - but only when the name scan was cut
+            # short by its time budget. Otherwise resolve() already looked at every brand, and this is a
+            # second, slower way to learn the same nothing (measured: 2.5 s cold for an absent name).
+            suggestions: list[str] = []
+            if not timeline.refs and "name_scan_stopped_at_budget" in (timeline.gaps or []):
+                try:
+                    from .suggestions import suggest_brands
+
+                    suggestions = suggest_brands(store, query)
+                except Exception:  # noqa: BLE001 - no suggestions is one block fewer
+                    suggestions = []
             try:
                 return device_dossier(timeline, query=query, store=store,
-                                      substituted_from=substituted_from)
+                                      substituted_from=substituted_from,
+                                      suggestions=suggestions)
             finally:
                 store.close()
 
