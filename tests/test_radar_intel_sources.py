@@ -4992,6 +4992,83 @@ def test_the_failure_table_has_its_own_file():
     assert area_failures_csv("X", {}).strip() == "specialty,product_code,device_name,reports"
 
 
+def test_every_kind_and_format_combination_answers(tmp_path):
+    """Audit 08: kind=area_failures&format=json returned 500 - the validator accepted it, the handler
+    did not. Every combination the route admits must have a branch that produces a file."""
+    import inspect
+
+    from medradar.radar import pages as pages_mod
+
+    source = inspect.getsource(pages_mod.pages_router)
+    # The query pattern admits these kinds; every one of them must reach a branch that writes a file.
+    pattern_line = next(line for line in source.splitlines() if "pattern=" in line and "device|" in line)
+    for kind in ("device", "compare", "areas", "area", "area_failures", "company", "papers"):
+        assert kind in pattern_line, kind
+    # `compare` is the trailing else, so it needs the JSON exporter wired there rather than a kind check.
+    assert "export_mod.compare_json(data)" in source
+    # And area_failures must handle all three formats, not just the CSV it was built for.
+    branch = source[source.index('kind == "area_failures"'):]
+    branch = branch[:branch.index('kind == "papers"')]
+    assert 'format == "json"' in branch
+    assert "area_failures_json" in branch
+    assert "area_failures_csv" in branch
+
+
+def test_the_failure_json_export_is_its_own_schema():
+    import json
+
+    from medradar.radar.export import area_failures_json
+
+    payload = json.loads(area_failures_json("Dental", {
+        "codes": 295, "total": 12428, "by_event": {"Injury": 7149}, "by_year": {"2026": 5457},
+        "by_code": [{"code": "DZE", "reports": 1653}], "names": {"DZE": "Implant"}}))
+    assert payload["schema"] == "medradar.radar.area_failures.export.v1"
+    assert payload["reports"] == 12428
+    assert payload["by_code"][0] == {"product_code": "DZE", "device_name": "Implant",
+                                     "reports": 1653}
+    assert len(payload["bounds"]) == 2          # report count is not a rate; the window is ours
+
+
+def test_a_chinese_company_name_resolves_on_the_device_page_and_says_so():
+    """Audit 08: the page knew 美敦力 -> Medtronic and still answered 没有找到."""
+    import inspect
+
+    from medradar.radar import pages as pages_mod
+
+    source = inspect.getsource(pages_mod.pages_router)
+    # The route has to attempt the alias when a Chinese query found nothing, and pass the result down.
+    assert "from .aliases import lookup" in source
+    assert "_looks_chinese(query)" in source
+    assert "substituted_from=substituted_from" in source
+
+    class Ref:
+        device_key = "k"
+        brand_name = "ARUM"
+        version_or_model = "NB1"
+        company_name = "ACME"
+        di = "08800055700571"
+        labeler_duns = "1"
+        product_codes: list = []
+        gmdn_name = ""
+
+    class Timeline:
+        refs = [Ref()]
+        clearances: dict = {}
+        specs: dict = {}
+        failures: dict = {}
+        trials: dict = {}
+        patents: dict = {}
+        papers: dict = {}
+        gaps: list = []
+
+    page = pages_mod.device_dossier(Timeline(), query="美敦力", substituted_from="Medtronic")
+    assert "按英文法定名称「Medtronic」查询" in page
+    # And the substitution is labelled as a convenience, not as register content.
+    assert "中文名对照只是方便输入" in page
+
+    assert "按英文法定名称" not in pages_mod.device_dossier(Timeline(), query="K213506")
+
+
 def test_a_pre_digitisation_filing_is_never_requested(tmp_path):
     """Measured: 0 of 60 sampled filings from 1998-2009 have a PDF at any path shape.
 

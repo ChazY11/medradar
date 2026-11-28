@@ -605,6 +605,32 @@ def device_json(timeline: Any, *, query: str) -> str:
     return json.dumps(payload, ensure_ascii=False, indent=2)
 
 
+def area_failures_json(specialty: str, failures: Mapping[str, Any]) -> str:
+    """The failure table as JSON, carrying the two bounds as fields.
+
+    A separate schema rather than reusing area_json: this export answers "which codes report", not "what is
+    in this field", and pretending otherwise is how the first version ended up passing a list where a
+    summary mapping was expected - a 500 on a URL the parameter validator accepted.
+    """
+    shape = dict(failures or {})
+    names = shape.get("names") or {}
+    return _json_payload(
+        "area_failures",
+        specialty=specialty,
+        codes=int(shape.get("codes") or 0),
+        reports=int(shape.get("total") or 0),
+        by_event=shape.get("by_event") or {},
+        by_year=shape.get("by_year") or {},
+        by_code=[{"product_code": item.get("code"),
+                  "device_name": str(names.get(str(item.get("code"))) or ""),
+                  "reports": int(item.get("reports") or 0)}
+                 for item in (shape.get("by_code") or [])],
+        bounds=[
+            "报告数不是故障率：MAUDE 靠自愿上报，产品用得越多、上报的人越多，数字就越大。",
+            "失效索引扫的是最近的报告文件，年份分布反映我们的扫描窗口，不是领域趋势。",
+        ])
+
+
 def area_failures_csv(specialty: str, failures: Mapping[str, Any]) -> str:
     """The failure table as its own file.
 
@@ -748,7 +774,7 @@ def field_papers_json(specialty: str, papers: Sequence[Mapping[str, Any]],
                 "出版日期在未来的期刊预填记录已排除。"])
 
 
-__all__ = ["area_csv", "area_failures_csv", "area_json", "area_markdown", "areas_csv", "areas_json", "areas_markdown",
+__all__ = ["area_csv", "area_failures_csv", "area_failures_json", "area_json", "area_markdown", "areas_csv", "areas_json", "areas_markdown",
            "company_csv", "company_json", "company_markdown", "compare_csv", "compare_json",
            "compare_markdown", "device_csv", "device_json", "device_markdown",
            "field_papers_json", "field_papers_markdown"]

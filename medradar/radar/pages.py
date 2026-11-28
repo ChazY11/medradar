@@ -461,7 +461,8 @@ def _field_topics_line(timeline: Any) -> str:
             f'<div class="chips">{chips}</div>')
 
 
-def device_dossier(timeline: Any, *, query: str, store: Any = None) -> str:
+def device_dossier(timeline: Any, *, query: str, store: Any = None,
+                   substituted_from: str = "") -> str:
     refs = timeline.refs
     if not refs:
         body = (f'<h1>没有找到「{esc(query)}」</h1>'
@@ -611,11 +612,19 @@ def device_dossier(timeline: Any, *, query: str, store: Any = None) -> str:
     except Exception:  # noqa: BLE001 - a census that fails is a line fewer, not a broken page
         shelf = ""
 
+    # The substitution is printed, not hidden: a reader who typed 美敦力 must see that the page is about
+    # Medtronic, and that the Chinese name is a convenience, not register content.
+    substitution_note = (
+        f'<p class="small muted">「{esc(query)}」按英文法定名称「{esc(substituted_from)}」查询'
+        '<span class="muted">（中文名对照只是方便输入，不是注册表内容）</span></p>'
+        if substituted_from else "")
+
     gaps = "".join(gap_note(code) for code in dict.fromkeys(timeline.gaps or []))
 
     body = f"""
 <p class="small muted"><a href="/">← 重新查询</a></p>
 <h1>{esc(head.brand_name or head.version_or_model or query)}</h1>
+{substitution_note}
 <p class="lede"><a href="/company?q={esc(head.company_name or '')}">{esc(head.company_name or "厂商未知")}</a>
 {('· 型号 ' + esc(head.version_or_model)) if head.version_or_model else ''}</p>
 <div class="chips">{_identifier_chips(head)}</div>
@@ -2490,8 +2499,29 @@ def pages_router(service: Any, *, endpoints: Mapping[str, Any] | None = None) ->
             corpus = service.paths.corpus
             timeline = build_view(store, query, limit=width, detail_for=1,
                                   corpus_root=corpus if corpus.is_dir() else None)
+            # A Chinese company name used to dead-end: the page knew the mapping (it printed 试试：Medtronic
+            # as a hint) and still said 没有找到. The register holds English legal names, so resolve through
+            # the alias table and report the substitution, the same way /compare does.
+            substituted_from = ""
+            if not timeline.refs and _looks_chinese(query):
+                try:
+                    from .aliases import lookup
+
+                    for hit in lookup(query):
+                        target = str(hit.get("search_as") or "")
+                        if not target:
+                            continue
+                        candidate = build_view(store, target, limit=width, detail_for=1,
+                                               corpus_root=corpus if corpus.is_dir() else None)
+                        if candidate.refs:
+                            timeline = candidate
+                            substituted_from = target
+                            break
+                except Exception:  # noqa: BLE001 - a failed alias lookup is the old behaviour
+                    substituted_from = ""
             try:
-                return device_dossier(timeline, query=query, store=store)
+                return device_dossier(timeline, query=query, store=store,
+                                      substituted_from=substituted_from)
             finally:
                 store.close()
 
@@ -2714,12 +2744,12 @@ def pages_router(service: Any, *, endpoints: Mapping[str, Any] | None = None) ->
                     media, suffix = "text/markdown; charset=utf-8", "md"
                 stem = f"medradar-area-{_slug(name)}"
             elif kind == "area_failures":
-                # Its own file: a CSV holds one table, and the caveats live in the markdown and JSON.
+                # Its own file: a CSV holds one table, and the caveats live in the JSON's bounds.
                 from .specialty import failure_shape as read_failures
 
                 failures = read_failures(store, name)
                 if format == "json":
-                    body = export_mod.area_json(name, one(store, name) or [], [], failures=failures)
+                    body = export_mod.area_failures_json(name, failures)
                     media, suffix = "application/json; charset=utf-8", "json"
                 else:
                     body = export_mod.area_failures_csv(name, failures)
