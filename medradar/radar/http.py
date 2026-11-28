@@ -206,6 +206,25 @@ class NotFound(FetchError):
     kind = "NOT_FOUND"
 
 
+def _error_body_snippet(error: object, *, limit: int = 200) -> str:
+    """The start of an error response body, for the failure record.
+
+    Never raises: a body that cannot be read is worth less than the status code that already arrived.
+    """
+    try:
+        raw = error.read()  # type: ignore[attr-defined]
+    except Exception:  # noqa: BLE001 - no body, no snippet
+        return ""
+    if not raw:
+        return ""
+    if isinstance(raw, bytes):
+        text = raw[:limit].decode("utf-8", "replace")
+    else:
+        text = str(raw)[:limit]
+    text = " ".join(text.split())
+    return f" | body: {text}" if text else ""
+
+
 class TransientHttpError(FetchError):
     retryable = True
     kind = "HTTP_ERROR"
@@ -523,7 +542,15 @@ class PoliteFetcher:
                     last_error = RateLimited("429 Too Many Requests", url=url, status=status,
                                              retry_after=retry_after)
                 elif status in RETRYABLE_STATUSES:
-                    last_error = TransientHttpError(f"{status} {error.reason}", url=url, status=status)
+                    # Keep what the server actually said. Measured 2026-11-28: europepmc answered a
+                    # single request 200 while the scheduler's burst was recorded as "503 " with no body,
+                    # which left the two observations impossible to reconcile. The first 200 bytes and
+                    # the attempt number now travel with the failure.
+                    snippet = _error_body_snippet(error)
+                    last_error = TransientHttpError(
+                        f"{status} {error.reason}{snippet} [attempt {attempt}]" +
+                        (f" {url}" if url else ""),
+                        url=url, status=status)
                 else:
                     raise FetchError(f"{status} {error.reason}", url=url, status=status) from error
             except (urllib.error.URLError, TimeoutError, OSError,

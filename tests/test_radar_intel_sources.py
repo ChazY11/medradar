@@ -5401,6 +5401,38 @@ def test_a_source_that_cannot_succeed_is_not_retried_every_five_minutes(tmp_path
     assert scheduler._is_due("europepmc") is False     # 500 failures -> capped hold
 
 
+def test_a_transient_failure_keeps_what_the_server_said():
+    """The 503 record was "503 " with no body and no URL, so a failure could not be reconciled with a
+    request that worked from the same host."""
+    from medradar.radar.http import _error_body_snippet
+
+    class WithBody:
+        def read(self):
+            return b"<html>503 Service Unavailable</html>"
+
+    class Empty:
+        def read(self):
+            return b""
+
+    class Broken:
+        def read(self):
+            raise OSError("socket gone")
+
+    assert _error_body_snippet(WithBody()) == " | body: <html>503 Service Unavailable</html>"
+    # An unreadable body is worth less than the status that already arrived; it must not raise.
+    assert _error_body_snippet(Empty()) == ""
+    assert _error_body_snippet(Broken()) == ""
+
+    # And the message built for a retryable status carries the snippet, the attempt and the URL.
+    import inspect
+
+    from medradar.radar import http as http_mod
+
+    source = inspect.getsource(http_mod)
+    assert "_error_body_snippet(error)" in source
+    assert "[attempt {attempt}]" in source
+
+
 def test_a_pre_digitisation_filing_is_never_requested(tmp_path):
     """Measured: 0 of 60 sampled filings from 1998-2009 have a PDF at any path shape.
 
