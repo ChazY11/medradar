@@ -3074,20 +3074,24 @@ def pages_router(service: Any, *, endpoints: Mapping[str, Any] | None = None) ->
 
                     monthly = monthly_counts(store, name)
                     field_topics = read_topics(store, name)
+                    from .paper_passes import emerging_terms_cached
+
+                    emerging = emerging_terms_cached(store, name)
                 except Exception:  # noqa: BLE001 - no literature yet is a stated gap
                     monthly = []
                     field_topics = []
+                    emerging = {}
                 if format == "csv":
                     body = export_mod.area_csv(companies)
                     media, suffix = "text/csv; charset=utf-8", "csv"
                 elif format == "json":
                     body = export_mod.area_json(name, summary, companies,
                                                 failures=failures, monthly=monthly,
-                                                topics=field_topics)
+                                                topics=field_topics, emerging=emerging)
                     media, suffix = "application/json; charset=utf-8", "json"
                 else:
                     body = export_mod.area_markdown(name, summary, companies, failures=failures,
-                                                    topics=field_topics)
+                                                    topics=field_topics, emerging=emerging)
                     media, suffix = "text/markdown; charset=utf-8", "md"
                 stem = f"medradar-area-{_slug(name)}"
             elif kind == "area_failures":

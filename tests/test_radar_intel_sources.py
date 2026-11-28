@@ -5810,6 +5810,32 @@ def test_rising_terms_compare_two_windows_by_share_not_volume(tmp_path):
     assert "只统计我们抓到的这批" in page
 
 
+def test_the_two_term_lists_stay_two_lists_in_the_exports():
+    """A forwarded document is where "rising" is most likely to be read as "important"."""
+    import json
+
+    from medradar.radar import export as export_mod
+
+    emerging = {
+        "terms": [{"term": "plaque", "recent": 11, "baseline": 2, "lift": 5.5}],
+        "new": [{"term": "cautery", "recent": 6, "baseline": 0}],
+        "recent": 83, "baseline": 35, "recent_days": 90,
+    }
+    summary = {"devices": 10, "codes": 2, "companies": 3}
+    markdown = export_mod.area_markdown("Cardiovascular", summary, [], emerging=emerging)
+    assert "近 90 天相对上升的说法" in markdown
+    assert "近 90 天新出现的说法" in markdown          # separate heading, not one merged table
+    assert "词频，不是我们的技术判断" in markdown
+    assert "可能是新方向，也可能只是一个仪器品牌或作者名" in markdown
+
+    payload = json.loads(export_mod.area_json("Cardiovascular", summary, [], emerging=emerging))
+    # Named fields, so a consumer cannot merge them by accident.
+    assert [item["term"] for item in payload["terms_rising"]] == ["plaque"]
+    assert [item["term"] for item in payload["terms_new"]] == ["cautery"]
+    assert payload["terms_window"]["recent_papers"] == 83
+    assert "词频" in payload["terms_bounds"]
+
+
 def test_a_pre_digitisation_filing_is_never_requested(tmp_path):
     """Measured: 0 of 60 sampled filings from 1998-2009 have a PDF at any path shape.
 

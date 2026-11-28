@@ -437,7 +437,8 @@ def field_papers_markdown(specialty: str, papers: Sequence[Mapping[str, Any]],
 def area_markdown(specialty: str, summary: Mapping[str, Any],
                   companies: Sequence[Mapping[str, Any]],
                   *, failures: Mapping[str, Any] | None = None,
-                  topics: Sequence[Mapping[str, Any]] | None = None) -> str:
+                  topics: Sequence[Mapping[str, Any]] | None = None,
+                  emerging: Mapping[str, Any] | None = None) -> str:
     """One specialty's leaders and failure record, with the sampling and reporting caveats kept."""
     lines = [f"# {specialty}", "", f"> 导出于 {_stamp()}。{SOURCE_LINE}", ""]
     lines.append(f"> {int(summary.get('devices') or 0):,} 台设备 · "
@@ -512,6 +513,38 @@ def area_markdown(specialty: str, summary: Mapping[str, Any],
         for item in topic_rows:
             lines.append(f"| {item.get('term')} | {int(item.get('papers') or 0):,}/"
                          f"{int(item.get('held') or 0):,} | {int(item.get('count') or 0):,} |")
+    # The two lists stay two lists in the file, with their different meanings printed beside them: a
+    # forwarded document is where a reader is most likely to take "rising" for "important".
+    trend = dict(emerging or {})
+    rising = list(trend.get("terms") or [])
+    fresh = list(trend.get("new") or [])
+    if rising or fresh:
+        recent = int(trend.get("recent") or 0)
+        baseline = int(trend.get("baseline") or 0)
+        lines.append("")
+        lines.append("## 近 90 天相对上升的说法")
+        lines.append("")
+        lines.append(f"> 本领域近 {int(trend.get('recent_days') or 90)} 天的 {recent:,} 篇，"
+                     f"对比之前一年的 {baseline:,} 篇，比每个词在两边各占多少篇。"
+                     "**这是词频，不是我们的技术判断**，而且只统计我们抓到的这批论文。")
+        lines.append("")
+        if rising:
+            lines.append("| 说法 | 类型 | 近 90 天 | 之前一年 | 涨幅 |")
+            lines.append("| --- | --- | ---: | ---: | ---: |")
+            for item in rising:
+                lines.append(f"| {item.get('term')} | 已存在 | {int(item.get('recent') or 0)}/{recent} | "
+                             f"{int(item.get('baseline') or 0)}/{baseline} | {item.get('lift')}× |")
+        if fresh:
+            lines.append("")
+            lines.append("### 近 90 天新出现的说法")
+            lines.append("")
+            lines.append("> 这些词在之前一年里一次都没出现。**可能是新方向，也可能只是一个仪器品牌或"
+                         "作者名**——按出现的篇数排，判断它是不是真方向要读原文。")
+            lines.append("")
+            lines.append("| 说法 | 类型 | 近 90 天 | 之前一年 |")
+            lines.append("| --- | --- | ---: | ---: |")
+            for item in fresh:
+                lines.append(f"| {item.get('term')} | 新出现 | {int(item.get('recent') or 0)}/{recent} | 0/{baseline} |")
     elif int(shape.get("codes") or 0):
         # Checked and empty is an answer; an absent section would read as "not looked at".
         lines.append("")
@@ -689,7 +722,8 @@ def area_json(specialty: str, summary: Mapping[str, Any],
               companies: Sequence[Mapping[str, Any]],
               *, failures: Mapping[str, Any] | None = None,
               monthly: Sequence[Mapping[str, Any]] | None = None,
-              topics: Sequence[Mapping[str, Any]] | None = None) -> str:
+              topics: Sequence[Mapping[str, Any]] | None = None,
+              emerging: Mapping[str, Any] | None = None) -> str:
     """One specialty, machine-readable, with the bounds as fields rather than as prose.
 
     A JSON consumer will not read a Chinese sentence in a document header, so each caveat is a named
@@ -706,6 +740,17 @@ def area_json(specialty: str, summary: Mapping[str, Any],
                     "devices": int(item.get("devices") or 0)} for item in companies],
         companies_kept=len(companies),
         companies_total=int(summary.get("companies") or 0),
+        # Two named fields, not one list: a consumer that merges them would rank a brand-new instrument name
+        # above a real trend, which is the defect round 106 fixed on the page.
+        terms_rising=[{"term": item.get("term"), "recent": int(item.get("recent") or 0),
+                       "baseline": int(item.get("baseline") or 0), "lift": item.get("lift")}
+                      for item in ((emerging or {}).get("terms") or [])],
+        terms_new=[{"term": item.get("term"), "recent": int(item.get("recent") or 0),
+                    "baseline": 0} for item in ((emerging or {}).get("new") or [])],
+        terms_window={"recent_days": int((emerging or {}).get("recent_days") or 90),
+                      "recent_papers": int((emerging or {}).get("recent") or 0),
+                      "baseline_papers": int((emerging or {}).get("baseline") or 0)},
+        terms_bounds="词频，不是技术判断；只统计我们抓到的这批论文；新出现的词可能是仪器品牌或作者名",
         failures={"codes": int(shape.get("codes") or 0),
                   "reports": int(shape.get("total") or 0),
                   "by_event": shape.get("by_event") or {},
