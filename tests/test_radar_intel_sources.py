@@ -5069,6 +5069,42 @@ def test_a_chinese_company_name_resolves_on_the_device_page_and_says_so():
     assert "按英文法定名称" not in pages_mod.device_dossier(Timeline(), query="K213506")
 
 
+def test_the_field_list_can_be_sorted_by_how_recent_its_literature_is(tmp_path):
+    """Percentages from a capped corpus are a density signal - if the cap is stated."""
+    from medradar.radar.pages import areas_page
+    from medradar.radar.paper_passes import recency_by_specialty
+    from medradar.radar.papers_index import ensure_tables
+    from medradar.radar.paper_passes import ensure_table as ensure_paper_field
+    from medradar.radar.reference import UdiReference
+
+    store = UdiReference(tmp_path / "ref.db")
+    ensure_tables(store)
+    ensure_paper_field(store)
+    for pid, when in (("A", "2026-11-01"), ("B", "2026-10-01"), ("C", "2019-01-01")):
+        store.conn.execute("INSERT OR REPLACE INTO paper_meta (paper_id, title, journal,"
+                           " published_at) VALUES (?,?,?,?)", (pid, "t", "j", when))
+        store.conn.execute("INSERT OR REPLACE INTO paper_field (paper_id, specialty, added_at)"
+                           " VALUES (?,?,?)", (pid, "Dental", "2026-11-28T00:00:00+00:00"))
+    store.conn.commit()
+
+    recency = recency_by_specialty(store, days=90, today="2026-11-28")
+    store.close()
+    assert recency["Dental"] == {"held": 3, "recent": 2, "pct": 67}
+
+    page = areas_page(data={
+        "items": [{"specialty": "Dental", "codes": 295, "devices": 900, "companies": 50},
+                  {"specialty": "Hematology", "codes": 100, "devices": 500, "companies": 20}],
+        "recency": {"Dental": recency["Dental"],
+                    "Hematology": {"held": 120, "recent": 92, "pct": 77}},
+        "sort": "recent", "updated_at": "2026-11-28T00:00:00Z"})
+    assert "近 90 天占比" in page
+    assert "67%" in page and "2/3" in page
+    # Sorted by recency, so the 77% field comes first.
+    assert page.index("Hematology") < page.index("Dental")
+    # The cap that makes the ratio a density signal rather than an output count is stated.
+    assert "只保留最新的 120 篇" in page
+
+
 def test_a_pre_digitisation_filing_is_never_requested(tmp_path):
     """Measured: 0 of 60 sampled filings from 1998-2009 have a PDF at any path shape.
 

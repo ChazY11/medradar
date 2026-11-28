@@ -1950,8 +1950,18 @@ def areas_page(*, data: Mapping[str, Any]) -> str:
         entry = literature.get(specialty) or {}
         return int(entry.get("papers") or entry.get("stored") or 0)
 
+    recency = data.get("recency") or {}
+
+    def _recency_pct(specialty: str) -> int:
+        return int((recency.get(specialty) or {}).get("pct") or 0)
+
     order = str(data.get("sort") or "devices")
-    if order == "papers":
+    if order == "recent":
+        # Where the literature is moving, not where it is largest. The ratio is bounded by the crawler's
+        # 120-per-field cap, which the note under the table states.
+        items = sorted(items, key=lambda item: (-_recency_pct(str(item.get("specialty"))),
+                                               -int(item.get("devices") or 0)))
+    elif order == "papers":
         items = sorted(items, key=lambda item: (-_paper_count(str(item.get("specialty"))),
                                                -int(item.get("devices") or 0)))
     elif order == "pending":
@@ -1967,13 +1977,24 @@ def areas_page(*, data: Mapping[str, Any]) -> str:
     tabs = "".join(
         f'<a class="tab{" on" if key == order else ""}" href="/areas?sort={key}">{esc(label)}</a>'
         for key, label in (("devices", "按设备数"), ("companies", "按公司数"),
-                           ("papers", "按已抓论文"), ("pending", "按未抓取优先")))
+                           ("papers", "按已抓论文"), ("recent", "按近 90 天占比"),
+                           ("pending", "按未抓取优先")))
     order_note = {
         "devices": "按注册设备数排序：市场铺得最广的领域在前。",
         "companies": "按公司数排序：挤进来的厂商最多的领域在前。",
         "papers": "按已归档论文数排序：文献线目前投得最多的领域在前。",
+        "recent": ("按「近 90 天发表占比」排序：每个领域我们只保留最新的 120 篇，"
+                   "占比高说明这个领域近期产出密集到把这个名额填满。"),
         "pending": "还没被文献线抓到过的领域排在最前，再按设备数——这是待办队列，不是阅读顺序。",
     }.get(order, "")
+
+    def _recent_cell(specialty: str) -> str:
+        entry = recency.get(specialty) or {}
+        if not entry:
+            return '<span class="muted">—</span>'
+        pct = int(entry.get("pct") or 0)
+        return (f'{pct}%<span class="muted small"> {int(entry.get("recent") or 0)}/'
+                f'{int(entry.get("held") or 0)}</span>')
 
     def lit_cell(specialty: str) -> str:
         """What the literature lane has done for this field - and nothing it has not.
@@ -2018,6 +2039,7 @@ def areas_page(*, data: Mapping[str, Any]) -> str:
             f'<td class="num">{n(item.get("companies"))}</td>'
             f'<td>{company_list or "<span class=\'muted\'>—</span>"}</td>'
             f'<td>{lit_cell(str(item.get("specialty")))}</td>'
+            f'<td class="num">{_recent_cell(str(item.get("specialty")))}</td>'
             f'<td><span class="bar" style="width:{share}%"></span></td></tr>')
     body = f"""
 <h1>技术领域分布</h1>
@@ -2032,8 +2054,8 @@ def areas_page(*, data: Mapping[str, Any]) -> str:
 不是论文、不是专利。一家公司在某领域设备多，说明它在那里铺得广，不说明它技术领先。
 「设备数」按注册条目计，同一台设备有多个产品码时会分别计入各领域，所以各行相加会大于总设备数。</div>
 <div class="card"><table>
-<thead><tr><th>技术领域</th><th>产品码</th><th>设备数</th><th>公司数</th><th>设备最多的公司</th><th>文献抓取</th>
-<th>规模</th></tr></thead>
+<thead><tr><th>技术领域</th><th>产品码</th><th>设备数</th><th>公司数</th><th>设备最多的公司</th>
+<th>文献抓取</th><th>近 90 天占比</th><th>规模</th></tr></thead>
 <tbody>{''.join(rows)}</tbody></table></div>
 <p class="small muted">数据更新于 {esc(str(data.get("updated_at") or "未知")[:16])}，
 由夜间任务重算（全库聚合约 29 秒，不实时计算）。</p>
@@ -2702,6 +2724,12 @@ def pages_router(service: Any, *, endpoints: Mapping[str, Any] | None = None) ->
 
                 data = read_specialties(store)
                 items = data.get("items") or []
+                try:
+                    from .paper_passes import recency_by_specialty
+
+                    data["recency"] = recency_by_specialty(store)
+                except Exception:  # noqa: BLE001 - no literature is an empty column, not a broken page
+                    data["recency"] = {}
                 if format == "csv":
                     body = export_mod.areas_csv(items)
                     media, suffix = "text/csv; charset=utf-8", "csv"
@@ -2871,7 +2899,7 @@ def pages_router(service: Any, *, endpoints: Mapping[str, Any] | None = None) ->
     def areas_view(sort: str = Query("devices", max_length=16)) -> Any:
         # Sorting is the answer to "which field do I look at first", and the three orders answer three
         # different questions: biggest, most researched, and not researched at all.
-        order = sort if sort in ("devices", "papers", "pending", "companies") else "devices"
+        order = sort if sort in ("devices", "papers", "pending", "companies", "recent") else "devices"
 
         def render() -> str:
             store = _store()
@@ -2882,6 +2910,17 @@ def pages_router(service: Any, *, endpoints: Mapping[str, Any] | None = None) ->
                 from .specialty import read as read_specialties
 
                 data = dict(read_specialties(store))
+                # The order has to travel inside the data: areas_page reads data["sort"], and without this
+                # the tab highlighted 按近 90 天占比 while the table stayed in register order.
+                data["sort"] = order
+                # Same for the recency column. This is computed here, in the page's own render, not in the
+                # download branch - the first attempt put it there and every cell rendered as a dash.
+                try:
+                    from .paper_passes import recency_by_specialty
+
+                    data["recency"] = recency_by_specialty(store)
+                except Exception:  # noqa: BLE001 - an empty column, not a broken page
+                    data["recency"] = {}
                 if not data.get("available"):
                     data["gap"] = "specialty_stats_absent"
                 # What the literature lane has actually done per field. Empty is a legitimate answer
