@@ -2805,6 +2805,17 @@ def area_page(*, specialty: str, summary: Mapping[str, Any] | None,
     """
     data = data or {}
     if summary is None:
+        # A table that exists and cannot be read is not "this is not an FDA name". Audit 14 broke a store by
+        # renaming one column: /area?name=Dental answered "技术领域用的是 FDA 的英文分类名" about a name that
+        # is exactly an FDA name.
+        if str(data.get("lookup_gap") or "") == "specialty_stats_unreadable":
+            return layout(
+                title="技术领域 · MedRadar",
+                body=(f'<h1>{esc(specialty)}</h1>'
+                      + gap_note("specialty_stats_unreadable")
+                      + '<p class="small muted"><a href="/areas">← 全部技术领域</a> · '
+                        '<a href="/sources">物化表状态</a></p>'),
+                active="areas")
         # The field exists under its English name. Saying only "统计表缺失" would report our vocabulary
         # as missing data - the same mistake as answering 美敦力 with "不在注册表里".
         from .aliases import lookup_specialty
@@ -3898,7 +3909,15 @@ def pages_router(service: Any, *, endpoints: Mapping[str, Any] | None = None) ->
                 except Exception:  # noqa: BLE001 - an empty column, not a broken page
                     data["recency"] = {}
                 if not data.get("available"):
-                    data["gap"] = "specialty_stats_absent"
+                    # `read_specialties` reports "unavailable" for both a missing table and an unreadable one.
+                    # Audit 14's broken store showed the difference matters: the reader was told to run the
+                    # build tool for a table that exists.
+                    from .materialised import table_status
+
+                    state = table_status(store, "specialty_stats")
+                    data["gap"] = ("specialty_stats_absent" if not state.get("present")
+                                   else "specialty_stats_unreadable")
+                    data["gap_detail"] = str(state.get("error") or "")
                 # What the literature lane has actually done per field. Empty is a legitimate answer
                 # and the page distinguishes "never crawled" from "crawled, nothing new".
                 try:
@@ -3907,9 +3926,18 @@ def pages_router(service: Any, *, endpoints: Mapping[str, Any] | None = None) ->
                     data["literature"] = by_specialty(store)
                 except Exception:  # noqa: BLE001 - no paper_pass table yet
                     data["literature"] = {}
-            except Exception:  # noqa: BLE001 - an absent table is a gap, not a crash
+            except Exception as error:  # noqa: BLE001 - an absent table is a gap, not a crash
+                # "还没有生成" is only true when the table is absent. Audit 14 broke the store by renaming a
+                # column: the table was there, the read failed, and this branch told the reader to run a tool
+                # that would not have helped.
+                from .materialised import table_status
+
+                state = table_status(store, "specialty_stats")
                 data = {"available": False, "items": [], "updated_at": None,
-                        "gap": "specialty_stats_absent"}
+                        "gap": ("specialty_stats_absent" if not state.get("present")
+                                else "specialty_stats_unreadable"),
+                        "gap_detail": ("" if state.get("readable")
+                                       else str(state.get("error") or type(error).__name__))}
             finally:
                 store.close()
             data["sort"] = order
@@ -3956,6 +3984,15 @@ def pages_router(service: Any, *, endpoints: Mapping[str, Any] | None = None) ->
                         candidate = one(store, str(row[0]))
                         if candidate is not None:
                             summary, resolved_from, resolved_name = candidate, str(name), str(row[0])
+                if summary is None:
+                    # Before guessing at the name, find out whether the table could be read at all.
+                    from .materialised import table_status
+
+                    state = table_status(store, "specialty_stats")
+                    if state.get("present") and not state.get("readable"):
+                        resolved_name = name
+                        return area_page(specialty=str(name), summary=None, companies=[],
+                                         data={"lookup_gap": "specialty_stats_unreadable"})
                 if summary is None:
                     # A Chinese field name is a different spelling of a field we hold, not a missing
                     # field. Resolve it explicitly rather than only telling the reader to retype - and

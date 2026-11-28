@@ -64,6 +64,12 @@ GAP_TEXT: dict[str, str] = {
     "radar_sources_absent": "雷达源清单为空：这台部署没有配置任何追踪源",
     "no_papers_for_this_specialty": "这个领域还一篇论文都没抓进来：它的查询还没轮到，或者抓到了但没有全文",
     "specialty_stats_absent": "技术领域分布表还没有生成（运行 tools/specialty_stats.py --refresh）",
+    # Same table, different state: it exists but its columns have moved. Telling the reader to run the build
+    # tool would send them to a fix that does not apply - audit 14 broke a store by renaming a column and this
+    # is the sentence the page printed.
+    "specialty_stats_unreadable": ("技术领域分布表存在，但当前按页面的列读不出来——"
+                                   "通常是表结构变了（重算工具与页面版本不一致）。"
+                                   "重建一次可修好：tools/specialty_stats.py --refresh"),
     # --- should never appear
     "no_data": "这一项没有数据，而且没有记录原因（不该发生）",
 }

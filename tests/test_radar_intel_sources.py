@@ -6921,6 +6921,30 @@ def test_a_company_sees_its_rank_inside_its_own_codes(tmp_path):
     assert _company_rank_block({}, 5) == ""
 
 
+def test_a_broken_table_does_not_send_the_reader_to_the_wrong_fix():
+    """Audit 14's runnable test: rename one column in a copy of the store and load the pages. /areas said the
+    table "还没有生成" and told the reader to run a build tool that would not have helped; /area?name=Dental said
+    Dental "用的是 FDA 的英文分类名" - about a name that is exactly an FDA name."""
+    from medradar.radar.pages import area_page, areas_page
+
+    broken = areas_page(data={"items": [], "gap": "specialty_stats_unreadable",
+                              "gap_detail": "no such column: top_companies"})
+    assert "结构变了" in broken
+    assert "specialty_stats_unreadable" in broken
+    # The absent-table sentence is still used for an absent table.
+    absent = areas_page(data={"items": [], "gap": "specialty_stats_absent"})
+    assert "还没有生成" in absent
+    assert "结构变了" not in absent
+
+    field = area_page(specialty="Dental", summary=None, companies=[],
+                      data={"lookup_gap": "specialty_stats_unreadable"})
+    assert "读不出来" in field
+    assert "用的是 FDA 的英文分类名" not in field
+    # And an unknown name that is genuinely unknown keeps the name hint.
+    unknown = area_page(specialty="zzzzq", summary=None, companies=[], data={})
+    assert "用的是 FDA 的英文分类名" in unknown
+
+
 def test_a_pre_digitisation_filing_is_never_requested(tmp_path):
     """Measured: 0 of 60 sampled filings from 1998-2009 have a PDF at any path shape.
 
