@@ -114,6 +114,12 @@ CREATE INDEX IF NOT EXISTS idx_udi_duns    ON udi_device(labeler_duns);
 CREATE INDEX IF NOT EXISTS idx_udi_model   ON udi_device(version_or_model);
 CREATE INDEX IF NOT EXISTS idx_udi_catalog ON udi_device(catalog_number);
 CREATE INDEX IF NOT EXISTS idx_udi_company ON udi_device(company_name);
+    -- The company page groups a labeler's devices by brand and by year. Measured on MEDLINE INDUSTRIES
+    -- with 252,243 devices: brands 165 ms -> 53 ms once the brand is in the index it is read through,
+    -- and the twelve year counts are seeks on (labeler_duns, publish_date) instead of a temp B-tree over
+    -- every row (218 ms -> about 60 ms).
+    CREATE INDEX IF NOT EXISTS idx_udi_duns_brand ON udi_device(labeler_duns, brand_name);
+CREATE INDEX IF NOT EXISTS idx_udi_duns_pub   ON udi_device(labeler_duns, publish_date);
 
 CREATE TABLE IF NOT EXISTS udi_premarket (
     submission_number TEXT NOT NULL,

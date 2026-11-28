@@ -4625,6 +4625,20 @@ def test_a_comparison_shows_who_is_registering_more_recently():
     assert "注册登记按年" not in no_years
 
 
+def test_the_company_groupings_have_indexes_behind_them(tmp_path):
+    """brands and the year counts read udi_device by labeler; without the composite index they sort."""
+    from medradar.radar.reference import UdiReference
+
+    store = UdiReference(tmp_path / "ref.db")
+    try:
+        names = {row[0] for row in store.conn.execute(
+            "SELECT name FROM sqlite_master WHERE type='index' AND tbl_name='udi_device'")}
+    finally:
+        store.close()
+    assert "idx_udi_duns_brand" in names
+    assert "idx_udi_duns_pub" in names
+
+
 def test_a_pre_digitisation_filing_is_never_requested(tmp_path):
     """Measured: 0 of 60 sampled filings from 1998-2009 have a PDF at any path shape.
 
