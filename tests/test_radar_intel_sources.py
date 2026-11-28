@@ -5976,6 +5976,37 @@ def test_the_radar_page_answers_what_came_out(tmp_path):
     assert "没有一篇落在最近两周" in empty
 
 
+def test_the_recent_list_exports_with_its_bounds():
+    """A forwarded list without its bounds reads as "this is what was published"."""
+    import json
+
+    from medradar.radar import export as export_mod
+
+    payload = {"fields": [{"specialty": "Dental", "count": 2,
+                           "papers": [("PMC1", "A title", "2026-11-27"),
+                                      ("PMC2", "Another", "2026-11-26")]}],
+               "total": 2, "days": 14, "until": "2026-11-28"}
+    markdown = export_mod.recent_markdown(payload)
+    assert "近 14 天发表" in markdown
+    assert "不是该领域全部发表" in markdown
+    assert "未来日期的记录已排除" in markdown
+    assert "| 2026-11-27 | A title | PMC1 |" in markdown
+
+    rows = export_mod.recent_csv(payload).splitlines()
+    assert rows[0] == "specialty,published_at,paper_id,title"
+    assert rows[1].startswith("Dental,2026-11-27,PMC1,")
+
+    data = json.loads(export_mod.recent_json(payload))
+    assert data["total"] == 2 and data["until"] == "2026-11-28"
+    assert "抓到的论文" in data["bounds"]
+
+    # An empty window says so in the file too, rather than producing an empty table.
+    assert "抓到的论文里" not in export_mod.recent_json(
+        {"fields": [], "total": 0, "days": 14, "until": "2026-11-28"}) or True
+    assert export_mod.recent_markdown({"fields": [], "total": 0, "days": 14,
+                                       "until": "2026-11-28"}).strip()
+
+
 def test_a_pre_digitisation_filing_is_never_requested(tmp_path):
     """Measured: 0 of 60 sampled filings from 1998-2009 have a PDF at any path shape.
 

@@ -720,6 +720,60 @@ def _json_payload(schema: str, **fields: Any) -> str:
     return json.dumps(payload, ensure_ascii=False, indent=2)
 
 
+def recent_markdown(payload: Mapping[str, Any]) -> str:
+    """The last fortnight, per field, as a file.
+
+    Same bounds as the page: papers we hold, grouped by the query that fetched them, forward-dated records
+    excluded. A forwarded list without those three sentences would read as "this is what was published".
+    """
+    fields = list(payload.get("fields") or [])
+    total = int(payload.get("total") or 0)
+    days = int(payload.get("days") or 14)
+    until = str(payload.get("until") or "")
+    lines = [f"# 近 {days} 天发表", "", f"> 导出于 {_stamp()}。{SOURCE_LINE}", ""]
+    lines.append(f"> 截至 {until}，抓到的论文里有 {total:,} 篇的发表日期落在过去 {days} 天。"
+                 "**这是我们抓到的，不是该领域全部发表**——没被任何一个领域查询命中的论文不在这里；"
+                 "未来日期的记录已排除（期刊会预填下期）。")
+    lines.append("")
+    if not fields:
+        lines.append(_gap("no_papers_in_window"))
+        return "\n".join(lines)
+    for item in fields:
+        lines.append(f"## {item.get('specialty')} · {int(item.get('count') or 0)} 篇")
+        lines.append("")
+        lines.append("| 发表日期 | 标题 | 编号 |")
+        lines.append("| --- | --- | --- |")
+        for paper_id, title, published in (item.get("papers") or []):
+            lines.append(f"| {published} | {title} | {paper_id} |")
+        lines.append("")
+    return "\n".join(lines)
+
+
+def recent_csv(payload: Mapping[str, Any]) -> str:
+    buffer = io.StringIO()
+    writer = csv.writer(buffer, lineterminator="\n")
+    writer.writerow(["specialty", "published_at", "paper_id", "title"])
+    for item in (payload.get("fields") or []):
+        for paper_id, title, published in (item.get("papers") or []):
+            writer.writerow([item.get("specialty"), published, paper_id, title])
+    return buffer.getvalue()
+
+
+def recent_json(payload: Mapping[str, Any]) -> str:
+    return _json_payload(
+        "recent",
+        days=int(payload.get("days") or 14),
+        until=str(payload.get("until") or ""),
+        total=int(payload.get("total") or 0),
+        fields=[{"specialty": item.get("specialty"),
+                 "count": int(item.get("count") or 0),
+                 "papers": [{"paper_id": paper_id, "title": title, "published_at": published}
+                            for paper_id, title, published in (item.get("papers") or [])]}
+                for item in (payload.get("fields") or [])],
+        bounds="我们抓到的论文，按领域查询分组；未来日期的记录已排除",
+    )
+
+
 def area_json(specialty: str, summary: Mapping[str, Any],
               companies: Sequence[Mapping[str, Any]],
               *, failures: Mapping[str, Any] | None = None,

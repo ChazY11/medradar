@@ -2291,7 +2291,11 @@ def _recent_publications_block(payload: Mapping[str, Any]) -> str:
             f'<p class="muted small">截至 {esc(until)}，我们抓到的论文里有 {n(total)} 篇的发表日期落在过去 '
             f'{days} 天，按领域分组，每个领域列最新的几篇。'
             '<b>这是我们抓到的，不是该领域全部发表</b>——没被任何一个领域查询命中的论文不会出现在这里；'
-            '未来日期的记录已排除（期刊会预填下期）。</p>'
+            '未来日期的记录已排除（期刊会预填下期）。'
+            '<br>导出：'
+            '<a href="/download?kind=recent&format=md">Markdown</a> · '
+            '<a href="/download?kind=recent&format=csv">CSV</a> · '
+            '<a href="/download?kind=recent&format=json">JSON</a></p>'
             f'<div class="cards">{"" .join(cards)}</div>')
 
 
@@ -3076,7 +3080,7 @@ def pages_router(service: Any, *, endpoints: Mapping[str, Any] | None = None) ->
     def download(q: str = Query("", max_length=240),
                  name: str = Query("", max_length=120),
                  kind: str = Query("device",
-                          pattern="^(device|compare|areas|area|area_failures|company|papers)$"),
+                          pattern="^(device|compare|areas|area|area_failures|company|papers|recent)$"),
                  format: str = Query("md", pattern="^(md|csv|json)$")) -> Any:
         """One dossier, one comparison, the whole field map, or one specialty - as a file.
 
@@ -3201,6 +3205,22 @@ def pages_router(service: Any, *, endpoints: Mapping[str, Any] | None = None) ->
                     body = export_mod.field_papers_markdown(name, items, held=held)
                     media, suffix = "text/markdown; charset=utf-8", "md"
                 stem = f"medradar-papers-{_slug(name)}"
+            elif kind == "recent":
+                # The last fortnight per field, as a file: the same bounds the page prints, because a
+                # forwarded list without them reads as "this is what was published".
+                from .paper_passes import recent_publications
+
+                payload = recent_publications(store)
+                if format == "csv":
+                    body = export_mod.recent_csv(payload)
+                    media, suffix = "text/csv; charset=utf-8", "csv"
+                elif format == "json":
+                    body = export_mod.recent_json(payload)
+                    media, suffix = "application/json; charset=utf-8", "json"
+                else:
+                    body = export_mod.recent_markdown(payload)
+                    media, suffix = "text/markdown; charset=utf-8", "md"
+                stem = "medradar-recent"
             elif kind == "company":
                 snapshot = _snapshot()
                 data = _company_data(store, q, snapshot=snapshot)
