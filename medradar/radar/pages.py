@@ -1081,6 +1081,44 @@ def company_page(*, data: Mapping[str, Any]) -> str:
 
     from .watermark import utc_today
 
+    # What the company's brands have reported. Placed after the scale block and before the fields,
+    # because an engineer deciding whether to trust a supplier wants this next to their volume.
+    brand_shape = data.get("brand_failures") or {}
+    if int(brand_shape.get("total") or 0):
+        events = brand_shape.get("by_event") or {}
+        order = [("Malfunction", "故障"), ("Injury", "伤害"), ("Death", "死亡")]
+        bits = " · ".join(f'{label} {n(int(events.get(k) or 0))}'
+                          for k, label in order if events.get(k))
+        other = int(brand_shape.get("total") or 0) - sum(int(events.get(k) or 0) for k, _ in order)
+        if other > 0:
+            bits += f' · 其他/未标注 {n(other)}'
+        rows = "".join(
+            f'<tr><td>{esc(str(item["brand"]))}</td>'
+            f'<td class="num">{n(item["reports"])}</td></tr>'
+            for item in (brand_shape.get("by_brand") or []))
+        brand_failures_block = (
+            '<h2>它的品牌报过哪些失效</h2>'
+            f'<p class="muted small">用注册表里这家公司的全部 {n(brand_shape.get("brands"))} 个'
+            f'品牌名称去匹配 FDA MAUDE，共 {n(brand_shape.get("total"))} 条 —— {bits}。'
+            '<b>这是名称匹配，不是法定主体归属</b>：MAUDE 的品牌字段是上报人手写的自由文本，'
+            '同一集团的不同法人、同一品牌的不同型号都会混在一起；'
+            '而且上报是自愿的，数字大小取决于有多少人在报，不是故障率。要确认某台设备，'
+            '看设备档案里按产品码统计的那一份。</p>'
+            f'<div class="card"><table><thead><tr><th>品牌</th><th>报告数</th></tr></thead>'
+            f'<tbody>{rows}</tbody></table></div>')
+    elif int(brand_shape.get("brands") or 0):
+        # Nothing matched, and that is not the same as "nothing failed". Measured on Stryker GmbH: 59
+        # brand names, 18,269 devices, zero matches - the reports for Stryker products sit under the
+        # brand strings of its other legal entities, which this page does not claim.
+        brand_failures_block = (
+            '<h2>它的品牌报过哪些失效</h2>'
+            f'<p class="muted small">用注册表里这家公司法人的 {n(brand_shape.get("brands"))} 个品牌'
+            '名称去匹配 FDA MAUDE，<b>一条也没有匹配到</b>。这不等于没有失效：MAUDE 的品牌字段记的是'
+            '被匹配上的那台设备的品牌，同一集团的其他法人、其他产品线会记在别的品牌名下。'
+            '要按产品码看这类报告，去对应的技术领域页。</p>')
+    else:
+        brand_failures_block = ""
+
     # Registered devices by year, above the field block: it is the company's own record, not a lead.
     #
     # Drawn as a table, not bars. Measured on Medtronic: one backfill year holds 20,440 devices and the
@@ -1153,6 +1191,7 @@ def company_page(*, data: Mapping[str, Any]) -> str:
 <p class="muted small">来自科技地图：每个方向一条，点进去看具体出处。</p>
 {topic_html}
 
+{brand_failures_block}
 {years_block}
 <h2>2b · 它在哪些技术领域注册了产品</h2>
 <p class="muted small">按 FDA 产品码分类统计——<b>这是"注册了什么"，不是"发表了什么"</b>，
@@ -1280,6 +1319,60 @@ def _company_data(store: Any, query: str, *, snapshot: Mapping[str, Any]) -> dic
         ]
     except Exception:  # noqa: BLE001
         out["brands"] = []
+
+    # What the brands we just listed have reported to MAUDE. Name matching, not attribution: MAUDE brand
+    # strings are free text typed by reporters, so a match is a lead to check against the device's own
+    # record. Measured on MEDLINE INDUSTRIES: 326 reports across its 12 listed brands in 1 ms, and one of
+    # the matches was NAMIC - a brand it owns, next to the ones a reader would expect, which is exactly
+    # why the label has to say what the match is.
+    # Both sides have to be normalised the same way. Measured on MEDTRONIC SOFAMOR DANEK: its brands are
+    # stored as "CD HORIZON® Spinal System" and "CD Horizon™ ModuLeX™ Spinal System", while MAUDE holds a
+    # normalised key - so a plain IN(...) match returned 0 for a company with 45,433 devices. The registry
+    # side is normalised with the same function the failure index uses on its side.
+    try:
+        # normalise_brand, not normalise_model: the index keeps word boundaries (MAUDE holds
+        # "CD HORIZON") while a model key drops every separator. Using the model function matched nothing
+        # for a company with 45,433 devices.
+        #
+        # Every brand name the labeler uses, not the twelve on display. Measured on MEDTRONIC SOFAMOR
+        # DANEK: 416 distinct names, and matching all of them is 2 ms - while the twelve most common
+        # missed whole families, because a brand can appear on one device and still carry reports.
+        from .failure_index import normalise_brand
+
+        raw_brands = [str(row[0]) for row in store.conn.execute(
+            "SELECT DISTINCT brand_name FROM udi_device WHERE labeler_duns = ?"
+            " AND brand_name IS NOT NULL AND brand_name <> ''", (duns,))]
+        brand_names = sorted({normalise_brand(name) for name in raw_brands})
+        # A one-word placeholder is not a name anyone can match on; "N/A" is literally stored as a brand
+        # by some labelers and would sweep in unrelated reports.
+        brand_names = [name for name in brand_names
+                       if len(name) >= 6 and name not in ("NA", "NONE", "UNKNOWN", "NOTAPPLICABLE")]
+        out["brand_names_total"] = len(brand_names)
+        brand_names = brand_names[:2000]
+    except Exception:  # noqa: BLE001 - without the normaliser, match on the raw names
+        brand_names = [str(item["brand"]) for item in (out.get("brands") or [])]
+        out["brand_names_total"] = len(brand_names)
+    brand_shape: dict[str, Any] = {"brands": int(out.get("brand_names_total") or len(brand_names)),
+                                   "total": 0, "by_brand": [], "by_event": {}}
+    if brand_names:
+        marks = ",".join("?" for _ in brand_names)
+        try:
+            brand_shape["total"] = scalar(
+                f"SELECT COUNT(*) FROM maude_failure_index WHERE brand_norm IN ({marks})",
+                brand_names)
+            brand_shape["by_brand"] = [
+                {"brand": str(r[0]), "reports": int(r[1] or 0)}
+                for r in store.conn.execute(
+                    f"SELECT brand_norm, COUNT(*) AS n FROM maude_failure_index"
+                    f" WHERE brand_norm IN ({marks}) GROUP BY 1 ORDER BY n DESC LIMIT 6",
+                    brand_names)]
+            brand_shape["by_event"] = {
+                str(r[0] or "未标注"): int(r[1] or 0) for r in store.conn.execute(
+                    f"SELECT event_type, COUNT(*) FROM maude_failure_index"
+                    f" WHERE brand_norm IN ({marks}) GROUP BY 1", brand_names)}
+        except Exception:  # noqa: BLE001 - no failure index is a stated gap
+            brand_shape = {"brands": len(brand_names), "total": 0, "by_brand": [], "by_event": {}}
+    out["brand_failures"] = brand_shape
 
     # The registry holds the legal entity ("MEDTRONIC SOFAMOR DANEK, INC."); registry sponsors are
     # filed under the group ("Medtronic"). Try the full name, then the first distinctive token, and

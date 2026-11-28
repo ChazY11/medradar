@@ -4765,6 +4765,41 @@ def test_a_field_shows_its_failure_reports_and_says_they_are_not_rates(tmp_path)
         companies=[], data={})
 
 
+def test_a_company_shows_what_its_brands_reported_and_calls_it_name_matching():
+    """MAUDE brand strings are free text; a match is a lead, not an attribution."""
+    from medradar.radar.pages import company_page
+
+    base = {
+        "found": True, "company_name": "ACME", "query": "Acme", "devices": 100, "clearances": 3,
+        "failures": 0, "trials": 0, "patents": 0, "papers": 0, "product_codes": [], "topics": {},
+        "specialties": [], "specialty_examples": {}, "device_years": [],
+        "brands": [{"brand": "MEDLINE", "devices": 10}],
+        "brand_failures": {"brands": 12, "total": 326,
+                           "by_brand": [{"brand": "MEDLINE", "reports": 325}],
+                           "by_event": {"Malfunction": 300, "Injury": 26}},
+    }
+    page = company_page(data=base)
+    assert "它的品牌报过哪些失效" in page
+    assert "326" in page and "MEDLINE" in page
+    assert "全部 12 个品牌名称" in page          # every name, not just the twelve on display
+    assert "故障 300" in page
+    # Both bounds: the match is by name, and the numbers are voluntary reports.
+    assert "这是名称匹配，不是法定主体归属" in page
+    assert "不是故障率" in page
+    # And it points the reader at the attribution that is solid.
+    assert "看设备档案里按产品码统计的那一份" in page
+
+    # No match is not "nothing failed": said in the page, with the reason.
+    none_matched = dict(base, brand_failures={"brands": 59, "total": 0, "by_brand": [], "by_event": {}})
+    page_none = company_page(data=none_matched)
+    assert "一条也没有匹配到" in page_none
+    assert "这不等于没有失效" in page_none
+
+    # A company with no brand names at all has nothing to match on, so the section stays off.
+    quiet = dict(base, brand_failures={"brands": 0, "total": 0, "by_brand": [], "by_event": {}})
+    assert "它的品牌报过哪些失效" not in company_page(data=quiet)
+
+
 def test_a_pre_digitisation_filing_is_never_requested(tmp_path):
     """Measured: 0 of 60 sampled filings from 1998-2009 have a PDF at any path shape.
 
