@@ -3169,6 +3169,21 @@ def pages_router(service: Any, *, endpoints: Mapping[str, Any] | None = None) ->
                 resolved_name = name
                 resolved_from = ""
                 if summary is None:
+                    # Case and spacing are not a different field. Measured 2026-11-28: /area?name=dental
+                    # answered 500 (a NameError, fixed above) and then a "not an FDA name" hint, although
+                    # "Dental" was one keystroke away. Try the same name case-insensitively first.
+                    try:
+                        row = store.conn.execute(
+                            "SELECT medical_specialty FROM product_code_class"
+                            " WHERE LOWER(medical_specialty) = LOWER(?) LIMIT 1",
+                            (" ".join(str(name).split()),)).fetchone()
+                    except Exception:  # noqa: BLE001 - no table, no match
+                        row = None
+                    if row and row[0]:
+                        candidate = one(store, str(row[0]))
+                        if candidate is not None:
+                            summary, resolved_from, resolved_name = candidate, str(name), str(row[0])
+                if summary is None:
                     # A Chinese field name is a different spelling of a field we hold, not a missing
                     # field. Resolve it explicitly rather than only telling the reader to retype - and
                     # say on the page which name was used, so nothing changes silently.
@@ -3186,6 +3201,12 @@ def pages_router(service: Any, *, endpoints: Mapping[str, Any] | None = None) ->
                 field_recent: list[dict[str, Any]] = []
                 field_monthly: list[dict[str, Any]] = []
                 field_failures: dict[str, Any] = {}
+                # Declared with the others, not inside the branch below. They were assigned only when the
+                # name resolved, so an unknown field raised NameError - a 500 for a typo, on a page every
+                # field page links to. Found by audit 10 asking /area for "dental", "dentistry" and
+                # "Dental Implants": all three 500, while 牙科 (which resolves through the alias table) worked.
+                field_recency: dict[str, Any] = {}
+                literature_coverage: dict[str, Any] = {}
                 if summary:
                     try:
                         from .paper_passes import field_topics as read_topics, papers_for
@@ -3207,7 +3228,6 @@ def pages_router(service: Any, *, endpoints: Mapping[str, Any] | None = None) ->
                     except Exception:  # noqa: BLE001 - no failure index is a stated gap
                         field_failures = {}
                     # The same measure /areas sorts by, computed once per field page (5 ms).
-                    field_recency: dict[str, Any] = {}
                     try:
                         from .paper_passes import field_coverage, recency_by_specialty
 

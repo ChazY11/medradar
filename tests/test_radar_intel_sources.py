@@ -5602,6 +5602,28 @@ def test_observed_papers_are_grouped_by_the_field_their_query_covers(tmp_path):
     assert grouped == {"Anesthesiology": ["PMC1", "PMC2"]}
 
 
+def test_an_unknown_field_name_answers_with_a_page_not_a_server_error(tmp_path):
+    """Audit 10: /area?name=dental, dentistry and "Dental Implants" all answered 500. The data= call
+    referenced field_recency, which was only assigned when the name resolved."""
+    import inspect
+
+    from medradar.radar import pages as pages_mod
+    from medradar.radar.pages import area_page
+
+    source = inspect.getsource(pages_mod.pages_router)
+    # Both variables are declared before the branch that computes them.
+    head = source[source.index("def area_view"):source.index("if summary:")]
+    assert "field_recency: dict[str, Any] = {}" in head
+    assert "literature_coverage: dict[str, Any] = {}" in head
+    # And a case variant is tried before giving up.
+    assert "LOWER(medical_specialty) = LOWER(?)" in source
+
+    # The page itself explains an unknown field rather than showing an empty shell.
+    page = area_page(specialty="dentistry", summary=None, companies=[], data={})
+    assert "技术领域用的是 FDA 的英文分类名" in page
+    assert "/areas" in page
+
+
 def test_a_pre_digitisation_filing_is_never_requested(tmp_path):
     """Measured: 0 of 60 sampled filings from 1998-2009 have a PDF at any path shape.
 
