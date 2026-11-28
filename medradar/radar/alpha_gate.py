@@ -47,6 +47,8 @@ PUBLIC_PAGES = frozenset({"/", "/device", "/device/", "/map", "/map/",
 # /search is a redirector the front page posts to; without it the one-box front door 401s.
 "/search", "/search/",
                           "/sources", "/sources/",
+                          # The list of papers we know and cannot read; reachable from /sources.
+                          "/preprints", "/preprints/",
                           "/radar", "/radar/", "/radar/live", "/radar/live/", "/radar/technology-map",
                           "/radar/technology-map/"})
 #: Exact non-page paths that the app itself needs.

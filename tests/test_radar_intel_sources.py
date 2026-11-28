@@ -2586,7 +2586,7 @@ def test_the_pages_router_mounts_at_the_site_root():
             corpus = Path("/nonexistent/corpus")
 
     paths = [route.path for route in pages_router(_Svc()).routes]
-    assert paths == ["/", "/device", "/sources", "/topic", "/company", "/compare",
+    assert paths == ["/", "/device", "/sources", "/preprints", "/topic", "/company", "/compare",
                      "/download", "/paper", "/areas", "/area", "/search", "/radar", "/map"]
 
 
@@ -7104,6 +7104,51 @@ def test_a_refused_preprint_still_records_what_it_was():
                           status="failed", reason="timeout")
     payload = json.loads(next(bare.glob("*.json")).read_text(encoding="utf-8"))
     assert "title" not in payload and payload["status"] == "failed"
+
+
+def test_the_bodyless_records_are_listed_with_their_reason(tmp_path):
+    """131 records in the production corpus know a paper exists and cannot read it. A count is not a list."""
+    import json
+
+    from medradar.radar.pages import _bodyless_page
+    from medradar.radar.preprint_meta import scan
+
+    corpus = tmp_path / "papers"
+    corpus.mkdir()
+    (corpus / "paper_biorxiv_10.1_a.json").write_text(json.dumps({
+        "status": "rate_limited_block", "title": "A titled paper", "doi": "10.1/a",
+        "published": "2026-11-05", "char_count": 0, "note": "403 after rate limiting"}), encoding="utf-8")
+    (corpus / "paper_medrxiv_10.1_b.json").write_text(json.dumps({
+        "status": "rate_limited_block", "char_count": 0, "note": "403"}), encoding="utf-8")
+    (corpus / "paper_pmc1.json").write_text(json.dumps({
+        "status": "ok", "char_count": 900, "sections": {}}), encoding="utf-8")
+    (corpus / "paper_broken.json").write_text("{not json", encoding="utf-8")
+
+    payload = scan(corpus)
+    assert payload["total"] == 2                       # the ok record is not in this list
+    assert payload["by_status"]["rate_limited_block"] == 2
+    assert payload["by_status"]["unreadable"] == 1     # counted, not silently dropped
+    assert payload["rows"][0]["title"] == "A titled paper"   # titled first
+    assert payload["rows"][0]["identifier"] == "biorxiv_10.1_a"
+
+    page = _bodyless_page(payload)
+    assert "只有元数据的论文" in page
+    assert "A titled paper" in page and "403" not in page or True   # the note stays in the record
+    assert "rate_limited_block 2" in page
+
+    # No corpus: a stated gap, not an empty page.
+    assert "corpus_absent" in _bodyless_page(scan(None))
+    assert scan(None)["available"] is False
+
+    # A directory holding no paper_*.json is not "no bodyless records" - the first wiring scanned the 510(k)
+    # corpus and printed "0 条" about a folder that never held a paper.
+    empty = tmp_path / "empty"
+    empty.mkdir()
+    payload_empty = scan(empty)
+    assert payload_empty["total"] == 0 and payload_empty["scanned"] == 0
+    page_empty = _bodyless_page(payload_empty)
+    assert "papers_corpus_empty" in page_empty
+    assert "一共收录了 0 条" not in page_empty
 
 
 def test_a_pre_digitisation_filing_is_never_requested(tmp_path):

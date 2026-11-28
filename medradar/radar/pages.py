@@ -1012,6 +1012,8 @@ def sources_page(*, meta: Mapping[str, Any], coverage: Mapping[str, Any] | None 
 {_probe_block(data.get("probe"))}
 {night_block}
 <h2>各数据集规模</h2>
+<p class="small muted">另外：语料里有一批「知道它存在、但拿不到正文」的记录，
+<a href="/preprints">单独列在这里</a>——数量与原因都写在那页上。</p>
 <div class="card"><table><thead><tr><th>数据集</th><th>规模</th><th>说明</th></tr></thead>
 <tbody>{dataset_rows}</tbody></table></div>
 <h2>各数据集覆盖到的范围</h2>
@@ -1286,6 +1288,58 @@ def _age_cell(stamp: Any) -> str:
         return ""
     return (f'<br><span class="small" style="color:var(--{"bad" if stale else "muted"})">'
             f'{"已过期 · " if stale else ""}{esc(phrase)}</span>')
+
+
+def _bodyless_page(payload: Mapping[str, Any]) -> str:
+    """The papers the corpus knows about and cannot read - listed, with the reason for each.
+
+    This is the honest form of a gap: 131 records with no body is not "nothing to report", it is a list with
+    names in it. Most carry only a status; the ones harvested since round 148 carry the title and date too.
+    """
+    data = dict(payload or {})
+    if not data.get("available"):
+        return layout(
+            title="只有元数据的论文 · MedRadar",
+            body=("<h1>只有元数据的论文</h1>"
+                  + gap_note("corpus_absent")
+                  + '<p class="small muted"><a href="/sources">← 数据覆盖</a></p>'),
+            active="sources")
+    rows = list(data.get("rows") or [])
+    by_status = dict(data.get("by_status") or {})
+    total = int(data.get("total") or 0)
+    shown = int(data.get("shown") or len(rows))
+    cells = []
+    for item in rows:
+        title = str(item.get("title") or "")
+        ident = str(item.get("identifier") or "")
+        label = esc(title[:110]) if title else f'<span class="muted">{esc(ident[:110])}</span>'
+        when = str(item.get("published") or "")
+        status = str(item.get("status") or "")
+        cells.append(f'<tr><td>{label}</td><td class="nw">{esc(when)}</td>'
+                     f'<td class="muted small">{esc(status)}</td></tr>')
+    breakdown = "、".join(f"{esc(key)} {n(value)}" for key, value in sorted(by_status.items()))
+    scanned = int(data.get("scanned") or 0)
+    if scanned == 0:
+        return layout(
+            title="只有元数据的论文 · MedRadar",
+            body=("<h1>只有元数据的论文</h1>"
+                  + gap_note("papers_corpus_empty",
+                             extra=f'<br><span class="muted small">目录：{esc(str(data.get("corpus")))}</span>')
+                  + '<p class="small muted"><a href="/sources">← 数据覆盖</a></p>'),
+            active="sources")
+    head = (f'<p class="muted small">语料一共收录了 {n(total)} 条「知道它存在、但拿不到正文」的记录'
+            f'（{breakdown}）。'
+            '这些不是失败清单：每条都能追到出处，只是正文被源方限流或拒绝，'
+            '或该记录本身只有前置信息。新建的记录在 round 148 之后带标题与日期，更早的只有标识符——'
+            '补标题需要重新抓取，而那正是被挡住的那一步。</p>')
+    table = ('<div class="card"><table><thead><tr><th>标题（或标识符）</th><th>日期</th><th>状态</th>'
+             f'</tr></thead><tbody>{"".join(cells)}</tbody></table></div>' if cells else "")
+    more = (f'<p class="small muted">显示前 {n(shown)} 条，共 {n(total)} 条。</p>'
+            if shown < total else "")
+    return layout(title="只有元数据的论文 · MedRadar",
+                  body=('<h1>只有元数据的论文</h1>' + head + table + more
+                        + '<p class="small muted"><a href="/sources">← 数据覆盖</a></p>'),
+                  active="sources")
 
 
 def _probe_block(report: Mapping[str, Any] | None) -> str:
@@ -3572,6 +3626,45 @@ def pages_router(service: Any, *, endpoints: Mapping[str, Any] | None = None) ->
             return sources_page(meta=meta, coverage=data, tunnel=tunnel)
 
         return HTMLResponse(cached("sources", PAGE_TTL, render))
+
+    @router.get("/preprints", response_class=HTMLResponse)
+    def preprints_page(limit: int = Query(50, ge=1, le=200)) -> Any:
+        """The bodyless records, listed. One page, one question: what do we know and cannot read?"""
+
+        def render() -> str:
+            from .preprint_meta import scan
+
+            # The papers corpus, not MEDRADAR_CORPUS_DIR (which points at the 510(k) documents). The nightly
+            # writes here under MEDRADAR_PAPERS; the literal is the deployment default.
+            #
+            # Scanning 11,399 sidecars took 5.98 s on the production store (measured 2026-11-29), which is too
+            # long for a first hit after a restart. The result is written through to a file and reused for a
+            # day; the corpus only changes when the nightly runs.
+            import time as _time
+            from pathlib import Path as _Path
+
+            cache = _Path(os.environ.get("MEDRADAR_RADAR_DIR") or "/srv/medradar/data/radar") / "bodyless.json"
+            fresh = False
+            payload: dict[str, Any] = {}
+            if cache.is_file():
+                try:
+                    payload = json.loads(cache.read_text(encoding="utf-8"))
+                    fresh = (_time.time() - float(payload.get("scanned_at") or 0)) < 86400
+                except Exception:  # noqa: BLE001 - a broken cache means scanning again
+                    fresh = False
+            if not fresh:
+                payload = scan(os.environ.get("MEDRADAR_PAPERS") or "/srv/medradar/intel/papers",
+                               limit=max(limit, 200))
+                payload["scanned_at"] = _time.time()
+                try:
+                    cache.write_text(json.dumps(payload, ensure_ascii=False), encoding="utf-8")
+                except Exception:  # noqa: BLE001 - the page still renders
+                    pass
+            if limit < len(payload.get("rows") or []):
+                payload = dict(payload, rows=list(payload["rows"])[:limit], shown=limit)
+            return _bodyless_page(payload)
+
+        return HTMLResponse(cached(f"preprints:{limit}", PAGE_TTL, render))
 
     def _snapshot() -> Mapping[str, Any]:
         path = Path(str(getattr(service.paths, "root", ""))) / "map_page.json"

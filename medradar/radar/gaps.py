@@ -67,6 +67,9 @@ GAP_TEXT: dict[str, str] = {
     # Same table, different state: it exists but its columns have moved. Telling the reader to run the build
     # tool would send them to a fix that does not apply - audit 14 broke a store by renaming a column and this
     # is the sentence the page printed.
+    "papers_corpus_empty": ("论文语料目录里没有任何 paper_*.json——要么目录指错了，要么还没抓过；"
+                            "这不是\"没有只有元数据的论文\""),
+    "corpus_absent": "论文语料目录不在这台机器上（MEDRADAR_CORPUS_DIR 未指向已抓取的语料）",
     "specialty_stats_unreadable": ("技术领域分布表存在，但当前按页面的列读不出来——"
                                    "通常是表结构变了（重算工具与页面版本不一致）。"
                                    "重建一次可修好：tools/specialty_stats.py --refresh"),
