@@ -1557,6 +1557,43 @@ def compare_page(*, companies: Sequence[Mapping[str, Any]],
         year_table = ""
     year_block = (f'<h2>注册登记按年</h2>{year_table}' if year_table else "")
 
+    # What each company's brands have reported. Kept out of the metrics table above, because those are
+    # counts of the company's own records while these are name matches into someone else's free text -
+    # putting them in the same table would imply they are the same kind of number.
+    reports = []
+    for company in found:
+        shape = company.get("brand_failures") or {}
+        reports.append({
+            "name": str(company.get("company_name") or company.get("query") or ""),
+            "brands": int(shape.get("brands") or 0),
+            "total": int(shape.get("total") or 0),
+            "events": shape.get("by_event") or {},
+        })
+    if any(item["total"] for item in reports):
+        rows = []
+        for item in reports:
+            events = item["events"]
+            if item["total"]:
+                cells = "".join(
+                    f'<td class="num">{n(int(events.get(k) or 0))}</td>'
+                    for k in ("Malfunction", "Injury", "Death"))
+                rows.append(f'<tr><td>{esc(item["name"])}</td><td class="num">{n(item["total"])}</td>'
+                            f'{cells}</tr>')
+            else:
+                # Zero matches is not zero reports: say which one it is.
+                rows.append(f'<tr><td>{esc(item["name"])}</td>'
+                            f'<td class="num" colspan="4">— 按 {n(item["brands"])} 个品牌名未匹配到</td></tr>')
+        brand_table = (
+            '<div class="card"><table><thead><tr><th>公司</th><th>报告数</th><th>故障</th>'
+            '<th>伤害</th><th>死亡</th></tr></thead>'
+            f'<tbody>{"".join(rows)}</tbody></table></div>'
+            '<p class="muted small">按各公司在注册表里的全部品牌名称匹配 FDA MAUDE。'
+            '<b>这是名称匹配，不是法定主体归属</b>，也不跨法人合并：同一集团的不同公司各算各的。'
+            '上报是自愿的，数字大小取决于有多少人在报，<b>不是故障率，不能用来比较谁更安全</b>。</p>')
+    else:
+        brand_table = ""
+    brand_block = (f'<h2>品牌报告（名称匹配）</h2>{brand_table}' if brand_table else "")
+
     # Technology areas side by side: where two companies both register devices is where they compete.
     # A row is a specialty, a cell is how many of that company's product codes fall in it. This uses
     # the FDA classification, so it is "registered in", not "leads in" - the note says so.
@@ -1635,6 +1672,7 @@ def compare_page(*, companies: Sequence[Mapping[str, Any]],
 <h2>规模与产出</h2>
 {table}
 {year_block}
+{brand_block}
 <h2>技术领域对比</h2>
 {area_table}
 <h2>竞争面</h2>

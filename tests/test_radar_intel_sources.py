@@ -4800,6 +4800,36 @@ def test_a_company_shows_what_its_brands_reported_and_calls_it_name_matching():
     assert "它的品牌报过哪些失效" not in company_page(data=quiet)
 
 
+def test_a_comparison_keeps_name_matched_reports_out_of_the_hard_numbers():
+    """Devices are the company's own records; MAUDE brand matches are not the same kind of number."""
+    from medradar.radar.pages import compare_page
+
+    def company(name, devices, brands, total, events):
+        return {"found": True, "company_name": name, "devices": devices, "clearances": 3,
+                "failures": 0, "trials": 0, "patents": 0, "papers": 0, "brands": [],
+                "product_codes": ["KTT"], "specialties": [{"specialty": "Orthopedic", "codes": 2}],
+                "device_years": [],
+                "brand_failures": {"brands": brands, "total": total, "by_brand": [],
+                                   "by_event": events}}
+
+    page = compare_page(companies=[
+        company("ACME", 100, 12, 326, {"Malfunction": 300, "Injury": 26}),
+        company("BETA", 200, 59, 0, {}),
+    ])
+    assert "品牌报告（名称匹配）" in page
+    assert "326" in page
+    # A company whose names matched nothing says so rather than showing a zero that reads as "clean".
+    assert "按 59 个品牌名未匹配到" in page
+    assert "这是名称匹配，不是法定主体归属" in page
+    assert "不能用来比较谁更安全" in page
+    assert "也不跨法人合并" in page
+    # The block is a separate section: the hard metrics table still has its own heading.
+    assert page.index("规模与产出") < page.index("品牌报告（名称匹配）")
+
+    nobody = compare_page(companies=[company("GAMMA", 10, 0, 0, {})])
+    assert "品牌报告（名称匹配）" not in nobody
+
+
 def test_a_pre_digitisation_filing_is_never_requested(tmp_path):
     """Measured: 0 of 60 sampled filings from 1998-2009 have a PDF at any path shape.
 
