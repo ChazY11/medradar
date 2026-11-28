@@ -7067,6 +7067,45 @@ def test_the_home_counts_say_why_they_fell_back_to_counting_live():
     assert "库存计数更新于" in healthy
 
 
+def test_a_refused_preprint_still_records_what_it_was():
+    """Round 147 found the preprints step blocked by rate limiting. A refused record used to say only that it
+    was refused; the index had already told us the title, date and DOI, and those cost nothing to keep."""
+    import importlib.util
+    import json
+    import tempfile
+    from pathlib import Path as _Path
+
+    root = _Path(__file__).resolve().parents[1]
+    spec = importlib.util.spec_from_file_location("fulltext_meta", root / "tools" / "fulltext.py")
+    module = importlib.util.module_from_spec(spec)
+    assert spec.loader is not None
+    spec.loader.exec_module(module)
+
+    out = _Path(tempfile.mkdtemp())
+    module._store_failure(out, "medrxiv:10.1/x", url="http://example/1",
+                          status="rate_limited_block", reason="403 after rate limiting",
+                          meta={"title": "A study of something", "doi": "10.1/x",
+                                "server": "medrxiv", "published": "2026-11-05",
+                                "authors": "Zhang; Li"})
+    files = list(out.glob("*.json"))
+    assert len(files) == 1
+    payload = json.loads(files[0].read_text(encoding="utf-8"))
+    assert payload["title"] == "A study of something"
+    assert payload["published"] == "2026-11-05"
+    assert payload["doi"] == "10.1/x"
+    # Still honest about not having the body.
+    assert payload["status"] == "rate_limited_block"
+    assert payload["char_count"] == 0
+    assert "403" in payload["note"]
+
+    # Without metadata the record gains no keys it cannot vouch for.
+    bare = _Path(tempfile.mkdtemp())
+    module._store_failure(bare, "medrxiv:10.2/y", url="http://example/2",
+                          status="failed", reason="timeout")
+    payload = json.loads(next(bare.glob("*.json")).read_text(encoding="utf-8"))
+    assert "title" not in payload and payload["status"] == "failed"
+
+
 def test_a_pre_digitisation_filing_is_never_requested(tmp_path):
     """Measured: 0 of 60 sampled filings from 1998-2009 have a PDF at any path shape.
 

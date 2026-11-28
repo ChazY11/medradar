@@ -137,7 +137,8 @@ def _store(out_dir: Path, identifier: str, *, url: str, journal: str, licence: s
     return payload
 
 
-def _store_failure(out_dir: Path, identifier: str, *, url: str, status: str, reason: str) -> None:
+def _store_failure(out_dir: Path, identifier: str, *, url: str, status: str, reason: str,
+                   meta: dict[str, Any] | None = None) -> None:
     """Record why a record has no full text, in a vocabulary that says which kind of absence it is.
 
     ``failed`` is a fault in this tool or a transient upstream problem. ``access_restricted`` is
@@ -150,6 +151,11 @@ def _store_failure(out_dir: Path, identifier: str, *, url: str, status: str, rea
     out_dir.mkdir(parents=True, exist_ok=True)
     payload = {"kind": "paper", "identifier": identifier, "url": url, "status": status,
                "sections": {}, "char_count": 0, "note": reason}
+    # What the index told us before the body was refused: enough for a reader to know the paper exists and to
+    # find it themselves. Without this a refused record is indistinguishable from one we never heard of.
+    for key, value in dict(meta or {}).items():
+        if value not in (None, ""):
+            payload.setdefault(key, value)
     _out_path(out_dir, identifier).write_text(
         json.dumps(payload, ensure_ascii=False), encoding="utf-8")
 
@@ -354,7 +360,12 @@ def fetch_preprints(fetcher: PoliteFetcher, out_dir: Path, days: int, limit: int
                     _store_failure(
                         out_dir, identifier, url=jats, status=status,
                         reason=("publisher answered 403 after rate limiting; our pacing, not a "
-                                f"stated refusal: {error}"))
+                                f"stated refusal: {error}"),
+                        meta={"title": str(row.get("title") or "").strip(),
+                              "doi": doi,
+                              "server": server,
+                              "published": str(row.get("date") or "").strip(),
+                              "authors": str(row.get("authors") or "").strip()})
                     stats["access_restricted"] += 1
                     refusals += 1
                     if refusals >= REFUSAL_BREAKER:

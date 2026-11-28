@@ -75,7 +75,9 @@ tail -12 $WORK/step_preprints.log
 # "stored 0" alone reads as "nothing was published". Measured 2026-11-29: all six candidates from
 # bioRxiv/medRxiv came back 403 after rate limiting, so the night wrote six failure records and no bodies.
 # The note carries the reason, not only the count.
-mark "preprints" ok "$(num '"stored": [0-9]+' $WORK/step_preprints.log) 条入库 · 限流拒绝 $(num '"access_restricted": [0-9]+' $WORK/step_preprints.log) 条（正文抓不到，不是没有新论文）"
+# The corpus keeps a record for every refused fetch, now with the title and date the index gave us, so the
+# count of "known by metadata only" is a number the page can state instead of an absence.
+mark "preprints" ok "$(num '"stored": [0-9]+' $WORK/step_preprints.log) 条入库 · 限流拒绝 $(num '"access_restricted": [0-9]+' $WORK/step_preprints.log) 条（正文抓不到，不是没有新论文）· 语料里 $(grep -l rate_limited_block "$OUT"/paper_*.json 2>/dev/null | wc -l | tr -d ' ') 条只有元数据"
 
 # Patents: Google Patents answers in bursts - 12 companies filled 263 patents at 0.5 req/s, and the
 # next batch thirty minutes later returned 503 to every company (measured 2026-11-25). So the job
