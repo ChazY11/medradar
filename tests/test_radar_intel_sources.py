@@ -5255,6 +5255,24 @@ def test_the_field_exports_carry_the_topic_list_with_its_coverage():
         "X", {"devices": 1, "codes": 1, "companies": 1}, [])
 
 
+def test_the_device_page_counts_papers_too_not_only_the_field_page():
+    """Round 87 changed the unit on the field page; this line kept showing hits, so one word carried
+    two different numbers on two pages."""
+    from medradar.radar.pages import _field_topics_line
+
+    class Timeline:
+        field_topics = [{"term": "edentulous", "count": 290, "papers": 59, "held": 120}]
+        field_specialty = "Dental"
+
+    line = _field_topics_line(Timeline())
+    assert "59/120 篇" in line
+    assert "290 次命中" in line                     # hits stay, as a tooltip
+    assert "10 个以上领域都出现的通用词已去掉" in line
+    assert "出现在多少篇里" in line
+
+    assert _field_topics_line(type("T", (), {"field_topics": [], "field_specialty": ""})()) == ""
+
+
 def test_a_pre_digitisation_filing_is_never_requested(tmp_path):
     """Measured: 0 of 60 sampled filings from 1998-2009 have a PDF at any path shape.
 

@@ -10,6 +10,8 @@ can be reported per field instead of as one number that means "some papers about
 
 from __future__ import annotations
 
+import os
+
 from typing import Any, Sequence
 
 #: One query per specialty the classification table uses. Deliberately narrow: a broad query returns
@@ -173,6 +175,33 @@ def by_specialty(reference) -> dict[str, dict[str, Any]]:
         row["papers"] = archived.get(specialty, 0)
         row["matched"] = linked.get(specialty, 0)
     return passes
+
+
+_TOPICS_CACHE: dict[tuple[str, float, str], list[dict[str, Any]]] = {}
+
+
+def field_topics_cached(reference, specialty: str, *, limit: int = 12) -> list[dict[str, Any]]:
+    """field_topics with a per-store cache.
+
+    The device page shows the vocabulary of up to two fields, and each call is a grouped query over 120
+    papers (47 ms measured). Two fields on every dossier would cost 0.1 s on a page that answers in 0.45 s,
+    so the result is cached against the register's path, mtime and the specialty.
+    """
+    try:
+        path = str(reference.path)
+        key = (path, os.path.getmtime(path), specialty)
+    except Exception:  # noqa: BLE001 - no cache key, still answer
+        return field_topics(reference, specialty, limit=limit)
+    hit = _TOPICS_CACHE.get(key)
+    if hit is not None:
+        return hit
+    value = field_topics(reference, specialty, limit=limit)
+    if value:
+        # Only successful answers are cached: an empty result may mean the literature lane has not run
+        # yet, and caching that would keep the field blank after it does.
+        _TOPICS_CACHE.clear()
+        _TOPICS_CACHE[key] = value
+    return value
 
 
 def field_topics(reference, specialty: str, *, limit: int = 12) -> list[dict[str, Any]]:
@@ -372,6 +401,7 @@ def recent_any(reference, *, limit: int = 8, today: str | None = None) -> list[d
              "published_at": str(row[3] or "")[:10], "specialty": row[4] or ""} for row in rows]
 
 
-__all__ = ["QUERIES", "by_specialty", "dates_for", "monthly_counts", "recency_by_specialty",
+__all__ = ["QUERIES", "by_specialty", "dates_for", "field_topics", "field_topics_cached",
+           "monthly_counts", "recency_by_specialty",
            "recent_any", "ensure_table", "field_topics", "next_queries", "papers_for",
            "read_passes", "record_field", "record_pass", "recent_for"]

@@ -450,14 +450,18 @@ def _field_topics_line(timeline: Any) -> str:
     specialty = str(getattr(timeline, "field_specialty", "") or "")
     if not topics or not specialty:
         return ""
+    # Same unit and same rule as the field page: coverage over repetition, and the cross-field filter
+    # stated. This line kept showing hit counts after round 87 changed the field page, so the same word
+    # carried two different numbers on two pages.
     chips = "".join(
-        f'<span class="chip">{esc(str(item.get("term")))}'
-        f'<span class="muted small"> {n(item.get("count"))}</span></span>'
+        f'<span class="chip" title="{n(item.get("count"))} 次命中">{esc(str(item.get("term")))}'
+        f'<span class="muted small"> {n(item.get("papers"))}/{n(item.get("held"))} 篇</span></span>'
         for item in topics)
     return (f'<p class="small" style="margin:10px 0 0">'
             f'<b>{esc(specialty)}</b> 这个领域的文献在谈什么'
             f'（<a href="/area?name={esc(specialty)}">看该领域</a>）'
-            f'<span class="muted small"> · 本领域已归档论文的词频，不是技术判断</span></p>'
+            f'<span class="muted small"> · 论文里出现的词，不是技术判断；'
+            '虚词与在 10 个以上领域都出现的通用词已去掉。数字是「出现在多少篇里」</span></p>'
             f'<div class="chips">{chips}</div>')
 
 
