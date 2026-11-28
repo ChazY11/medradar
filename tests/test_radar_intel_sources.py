@@ -4865,6 +4865,41 @@ def test_the_field_export_carries_the_failure_record_and_its_bounds():
         [{"rank": 1, "company_name": "ACME", "devices": 1}])
 
 
+def test_the_company_and_compare_exports_carry_the_new_sections():
+    """A forwarded file loses the page: both new blocks, and their bounds, travel with it."""
+    from medradar.radar.export import company_markdown, compare_markdown
+
+    company = {
+        "found": True, "company_name": "ACME", "query": "acme", "matched_by": "exact",
+        "labeler_duns": "123", "devices": 1000, "clearances": 5, "failures": 10, "trials": 2,
+        "patents": 3, "papers": 4, "brands": [{"brand": "CD HORIZON", "devices": 500}],
+        "product_codes": ["KTT"], "specialties": [],
+        "device_years": [{"year": "2024", "n": 800}, {"year": "2025", "n": 200}],
+        "brand_failures": {"brands": 337, "total": 6843,
+                           "by_brand": [{"brand": "CD HORIZON SPINAL SYSTEM", "reports": 2658}],
+                           "by_event": {"Malfunction": 4495, "Injury": 2329, "Death": 14}},
+    }
+    md = company_markdown(company)
+    assert "## 它的品牌报过哪些失效" in md
+    assert "这是名称匹配，不是法定主体归属" in md
+    assert "## 注册登记按年" in md
+    assert "不是研发时间" in md
+    assert "| 2024 | 800 |" in md
+
+    quiet = dict(company, brand_failures={"brands": 59, "total": 0, "by_brand": [], "by_event": {}})
+    assert "一条也没有匹配到" in company_markdown(quiet)
+
+    other = dict(company, company_name="BETA", devices=200,
+                 brand_failures={"brands": 59, "total": 0, "by_brand": [], "by_event": {}})
+    cmp_md = compare_markdown([company, other])
+    assert "## 品牌报告（名称匹配）" in cmp_md
+    assert "也不跨法人合并" in cmp_md
+    assert "不能用来比较谁更安全" in cmp_md
+    assert "按 59 个品牌名未匹配到" in cmp_md
+    # The hard numbers stay above it, in their own table.
+    assert cmp_md.index("| 注册设备 |") < cmp_md.index("## 品牌报告（名称匹配）")
+
+
 def test_a_pre_digitisation_filing_is_never_requested(tmp_path):
     """Measured: 0 of 60 sampled filings from 1998-2009 have a PDF at any path shape.
 

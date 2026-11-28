@@ -234,6 +234,53 @@ def company_markdown(data: Mapping[str, Any]) -> str:
             lines.append(f"| … | 共 {len(brands):,} 个品牌 |")
         lines.append("")
 
+    # Failure reports matched by brand name, with the same bound the page carries. A file that dropped
+    # this would show a company's scale and leave the reader thinking nothing has ever been reported.
+    brand_shape = data.get("brand_failures") or {}
+    if int(brand_shape.get("total") or 0):
+        events = brand_shape.get("by_event") or {}
+        ordered = [("Malfunction", "故障"), ("Injury", "伤害"), ("Death", "死亡")]
+        split = " · ".join(f"{label} {int(events.get(k) or 0):,}"
+                           for k, label in ordered if events.get(k))
+        other = int(brand_shape.get("total") or 0) - sum(int(events.get(k) or 0) for k, _ in ordered)
+        if other > 0:
+            split += f" · 其他/未标注 {other:,}"
+        lines.append("## 它的品牌报过哪些失效")
+        lines.append("")
+        lines.append(f"> 用这家公司法人在注册表里的全部 {int(brand_shape.get('brands') or 0):,} 个品牌"
+                     f"名称匹配 FDA MAUDE，共 {int(brand_shape.get('total') or 0):,} 条——{split}。")
+        lines.append("> **这是名称匹配，不是法定主体归属**：MAUDE 的品牌字段是上报人手写的自由文本，"
+                     "同一集团的不同法人、同一品牌的不同型号都会混在一起；而且上报是自愿的，"
+                     "数字大小取决于有多少人在报，不是故障率。")
+        lines.append("")
+        lines.append("| 品牌 | 报告数 |")
+        lines.append("| --- | ---: |")
+        for item in (brand_shape.get("by_brand") or []):
+            lines.append(f"| {str(item.get('brand') or '')} | {int(item.get('reports') or 0):,} |")
+        lines.append("")
+    elif int(brand_shape.get("brands") or 0):
+        lines.append("## 它的品牌报过哪些失效")
+        lines.append("")
+        lines.append(f"> 用这家公司法人的 {int(brand_shape.get('brands') or 0):,} 个品牌名称匹配 FDA MAUDE，"
+                     "一条也没有匹配到。这不等于没有失效：MAUDE 的品牌字段记的是被匹配上的那台设备的"
+                     "品牌，同一集团的其他法人、其他产品线会记在别的品牌名下。")
+        lines.append("")
+
+    # Registered devices by year: the company's own record, so no name-matching caveat - only the one
+    # about what a UDI publish date means.
+    years = data.get("device_years") or []
+    if years:
+        lines.append("## 注册登记按年")
+        lines.append("")
+        lines.append("> 按 UDI 发布日期统计。**这是 GUDID 的收录时间，不是研发时间**：登记可以晚于上市，"
+                     "早年设备也可能被集中补录，当前年份未满。")
+        lines.append("")
+        lines.append("| 年份 | 注册台数 |")
+        lines.append("| --- | ---: |")
+        for item in years:
+            lines.append(f"| {item.get('year')} | {int(item.get('n') or 0):,} |")
+        lines.append("")
+
     topics = data.get("topics") or []
     if topics:
         lines.append("## 科技地图里的方向")
@@ -478,6 +525,31 @@ def compare_markdown(companies: Sequence[Mapping[str, Any]]) -> str:
             cells = " | ".join(f"{mapping.get(name):,}" if mapping.get(name) else ""
                                for mapping in areas)
             lines.append(f"| {name} | {cells} |")
+    # Brand reports, kept out of the metrics table above for the same reason they are a separate
+    # section on the page: devices are the company's own records, these are name matches.
+    reports = [c.get("brand_failures") or {} for c in found]
+    if any(int(shape.get("total") or 0) for shape in reports):
+        lines.append("")
+        lines.append("## 品牌报告（名称匹配）")
+        lines.append("")
+        lines.append("> 按各公司在注册表里的全部品牌名称匹配 FDA MAUDE。**这是名称匹配，不是法定主体"
+                     "归属**，也不跨法人合并：同一集团的不同公司各算各的。上报是自愿的，数字大小取决于"
+                     "有多少人在报，**不是故障率，不能用来比较谁更安全**。")
+        lines.append("")
+        lines.append("| 公司 | 报告数 | 故障 | 伤害 | 死亡 |")
+        lines.append("| --- | ---: | ---: | ---: | ---: |")
+        for company, shape in zip(found, reports):
+            total = int(shape.get("total") or 0)
+            if total:
+                events = shape.get("by_event") or {}
+                cells = " | ".join(f"{int(events.get(k) or 0):,}"
+                                   for k in ("Malfunction", "Injury", "Death"))
+                lines.append(f"| {company.get('company_name')} | {total:,} | {cells} |")
+            else:
+                # Zero matches is not zero reports, and a bare 0 would say the opposite.
+                lines.append(f"| {company.get('company_name')} | "
+                             f"— 按 {int(shape.get('brands') or 0):,} 个品牌名未匹配到 | | | |")
+
     lines.append("")
     lines.append(f"共同覆盖的产品码 {len(shared)} 个（合计 {len(union)} 个，"
                  f"重合度 {(100.0 * len(shared) / len(union)) if union else 0:.0f}%）："
