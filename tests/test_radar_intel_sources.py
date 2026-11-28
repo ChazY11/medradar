@@ -6043,6 +6043,48 @@ def test_a_device_page_shows_what_is_rising_in_its_field(tmp_path):
     assert "最近上升的词" not in _field_topics_line(Timeline())
 
 
+def test_the_device_export_carries_the_rising_term_with_its_bound():
+    """A forwarded dossier is where a number is quoted without the sentence that bounds it."""
+    from medradar.radar import export as export_mod
+
+    class Head:
+        brand_name = "X"
+        version_or_model = ""
+        company_name = "C"
+        di = ""
+        device_key = "k"
+        labeler_duns = ""
+        product_codes: list = []
+        gmdn_name = ""
+        device_description = ""
+        catalog_number = ""
+
+    class Timeline:
+        refs = [Head()]
+        clearances: dict = {}
+        specs: dict = {}
+        failures: dict = {}
+        trials: dict = {}
+        patents: dict = {}
+        papers: dict = {}
+        gaps: list = []
+
+    emerging = {"term": "gingival", "recent": 17, "baseline": 1, "lift": 14.53,
+                "computed_at": "2026-11-28"}
+    markdown = export_mod.device_markdown(Timeline(), query="K1", emerging=emerging)
+    assert "## 这个领域最近上升的词" in markdown
+    assert "gingival" in markdown and "14.53" in markdown
+    # No denominator in the file: the materialised row does not keep the window size, and "17/? 篇" reads
+    # like a broken number.
+    assert "17/?" not in markdown
+    assert "近 90 天有 17 篇用到" in markdown
+    assert "算于 2026-11-28" in markdown
+    # The bound a forwarded file needs, in the same paragraph as the number.
+    assert "不是对这台设备的评价" in markdown
+    # No trend, no section - not an empty heading.
+    assert "最近上升的词" not in export_mod.device_markdown(Timeline(), query="K1")
+
+
 def test_a_pre_digitisation_filing_is_never_requested(tmp_path):
     """Measured: 0 of 60 sampled filings from 1998-2009 have a PDF at any path shape.
 

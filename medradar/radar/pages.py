@@ -3260,8 +3260,23 @@ def pages_router(service: Any, *, endpoints: Mapping[str, Any] | None = None) ->
                     shelf = product_code_census(store)
                 except Exception:  # noqa: BLE001 - no census is a line fewer, not a failed export
                     shelf = {}
+                # The rising term of the device's field, from the materialised table, so the file says what
+                # is moving around this product rather than only how many records it has.
+                emerging: dict[str, Any] = {}
+                try:
+                    from .paper_passes import field_trends
+
+                    specialty = str(getattr(timeline, "field_specialty", "") or "")
+                    row = field_trends(store).get(specialty) if specialty else None
+                    if row and row.get("term"):
+                        emerging = dict(row)
+                        emerging["term"] = row.get("term")
+                        emerging["recent_total"] = None
+                except Exception:  # noqa: BLE001 - one section fewer
+                    emerging = {}
                 if format == "md":
-                    body = export_mod.device_markdown(timeline, query=q, shelf=shelf)
+                    body = export_mod.device_markdown(timeline, query=q, shelf=shelf,
+                                                      emerging=emerging)
                     media, suffix = "text/markdown; charset=utf-8", "md"
                 elif format == "csv":
                     body = export_mod.device_csv(timeline, query=q, shelf=shelf)

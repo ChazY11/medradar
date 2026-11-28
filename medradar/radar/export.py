@@ -40,7 +40,8 @@ def _gap(code: str) -> str:
 
 
 def device_markdown(timeline: Any, *, query: str,
-                    shelf: Mapping[str, int] | None = None) -> str:
+                    shelf: Mapping[str, int] | None = None,
+                    emerging: Mapping[str, Any] | None = None) -> str:
     refs = timeline.refs
     lines: list[str] = []
     if not refs:
@@ -134,6 +135,21 @@ def device_markdown(timeline: Any, *, query: str,
             "只统计申请人字段为本公司的记录；按名字搜到的另计，不计入。")
     section("5 · 相关论文", "papers", "相关论文",
             "论文提到名称不等于研究这台设备；公司级匹配已标注。")
+
+    # What is rising in this device's field, from the same materialised table the page reads. A forwarded
+    # dossier is where a number is most likely to be quoted without the sentence that bounds it, so the
+    # bound travels in the same paragraph.
+    trend = dict(emerging or {})
+    if trend.get("term"):
+        lines.append("## 这个领域最近上升的词")
+        lines.append("")
+        # No denominator here: the materialised row keeps the term's counts, not the window size, and a
+        # "17/? 篇" reads like a broken number. The field page prints the window; this file prints what it has.
+        lines.append(f"> {trend.get('term')} · 近 90 天有 {trend.get('recent')} 篇用到"
+                     f"（之前一年 {trend.get('baseline')} 篇）· {trend.get('lift')}×"
+                     f" · 算于 {trend.get('computed_at') or '未知'}")
+        lines.append("> 这是词频，不是我们的技术判断，也不是对这台设备的评价；只统计我们抓到的这批论文。")
+        lines.append("")
 
     gaps = list(dict.fromkeys(timeline.gaps or []))
     if gaps:
