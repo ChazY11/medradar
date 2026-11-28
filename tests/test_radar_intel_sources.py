@@ -6117,6 +6117,36 @@ def test_a_company_page_shows_the_trend_of_its_main_field():
     assert _company_trend_line("Dental", {"term": ""}) == ""
 
 
+def test_the_index_can_be_ordered_by_how_fast_a_field_is_moving():
+    """A reader who wants "where is it moving" should not have to sort by register size and read a column."""
+    import re
+
+    from medradar.radar.pages import TREND_SMALL_WINDOW, areas_page
+
+    items = [{"specialty": name, "codes": 1, "devices": devices, "companies": 1, "top_companies": []}
+             for name, devices in (("Dental", 100), ("Orthopedic", 900), ("Radiology", 500),
+                                   ("Neurology", 50))]
+    trends = {
+        "Dental": {"term": "gingival", "recent": 17, "recent_total": 62, "lift": 14.53,
+                   "computed_at": "2026-11-28"},
+        # A small window: every other surface warns about it, so it must not win this order.
+        "Orthopedic": {"term": "centrifuge", "recent": 3, "recent_total": 40, "lift": 4.95,
+                       "computed_at": "2026-11-28"},
+        "Radiology": {"term": "microcatheter", "recent": 7, "recent_total": 80, "lift": 2.89,
+                      "computed_at": "2026-11-28"},
+    }
+    page = areas_page(data={"items": items, "trends": trends, "sort": "trend",
+                            "updated_at": "2026-11-28"})
+    order = re.findall(r"<tr><td>([^<]+)</td>", page)
+    assert order[:2] == ["Dental", "Radiology"]      # by lift among reliable windows
+    assert "Orthopedic" in order[2:]                  # small window, sent to the end
+    assert "按上升幅度" in page
+    assert str(TREND_SMALL_WINDOW) in page            # the threshold is stated, not hidden
+    # The default order is untouched.
+    default = areas_page(data={"items": items, "trends": trends, "sort": "devices"})
+    assert re.findall(r"<tr><td>([^<]+)</td>", default)[0] == "Orthopedic"
+
+
 def test_a_pre_digitisation_filing_is_never_requested(tmp_path):
     """Measured: 0 of 60 sampled filings from 1998-2009 have a PDF at any path shape.
 

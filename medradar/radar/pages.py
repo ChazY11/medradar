@@ -2209,6 +2209,18 @@ def areas_page(*, data: Mapping[str, Any]) -> str:
                                                -int(item.get("devices") or 0)))
     elif order == "companies":
         items = sorted(items, key=lambda item: -int(item.get("companies") or 0))
+    elif order == "trend":
+        # Fields whose recent window is too small carry a warning everywhere else; here they go to the end
+        # rather than inventing an order out of three papers.
+        def _lift(entry: Mapping[str, Any]) -> float:
+            row = trends.get(str(entry.get("specialty"))) or {}
+            if not row.get("term"):
+                return -1.0
+            if int(row.get("recent_total") or 0) < TREND_SMALL_WINDOW:
+                return -1.0
+            return float(row.get("lift") or 0)
+
+        items = sorted(items, key=lambda item: (-_lift(item), -int(item.get("devices") or 0)))
     else:
         items = sorted(items, key=lambda item: -int(item.get("devices") or 0))
 
@@ -2216,13 +2228,16 @@ def areas_page(*, data: Mapping[str, Any]) -> str:
         f'<a class="tab{" on" if key == order else ""}" href="/areas?sort={key}">{esc(label)}</a>'
         for key, label in (("devices", "按设备数"), ("companies", "按公司数"),
                            ("papers", "按已抓论文"), ("recent", "按近 90 天占比"),
-                           ("pending", "按未抓取优先")))
+                           ("trend", "按上升幅度"), ("pending", "按未抓取优先")))
     order_note = {
         "devices": "按注册设备数排序：市场铺得最广的领域在前。",
         "companies": "按公司数排序：挤进来的厂商最多的领域在前。",
         "papers": "按已归档论文数排序：文献线目前投得最多的领域在前。",
         "recent": ("按「近 90 天发表占比」排序：每个领域我们只保留最新的 120 篇，"
                    "占比高说明这个领域近期产出密集到把这个名额填满。"),
+        "trend": ("按「上升最快的词」的涨幅排序。只排近 90 天样本达到 "
+                  f"{TREND_SMALL_WINDOW} 篇的领域——样本更小的领域涨幅容易被个别论文拉高，"
+                  "排在最后而不是参与排序。涨幅大不等于重要，它是词频变化。"),
         "pending": "还没被文献线抓到过的领域排在最前，再按设备数——这是待办队列，不是阅读顺序。",
     }.get(order, "")
 
@@ -3419,7 +3434,8 @@ def pages_router(service: Any, *, endpoints: Mapping[str, Any] | None = None) ->
     def areas_view(sort: str = Query("devices", max_length=16)) -> Any:
         # Sorting is the answer to "which field do I look at first", and the three orders answer three
         # different questions: biggest, most researched, and not researched at all.
-        order = sort if sort in ("devices", "papers", "pending", "companies", "recent") else "devices"
+        order = sort if sort in ("devices", "papers", "pending", "companies", "recent",
+                                 "trend") else "devices"
 
         def render() -> str:
             store = _store()
