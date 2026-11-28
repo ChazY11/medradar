@@ -6617,6 +6617,36 @@ def test_every_materialised_table_says_whether_it_is_missing_or_broken():
     assert table_status(empty, "nope")["error"] == "unknown table"
 
 
+def test_a_comparison_does_not_print_zero_for_an_uncovered_patent_lane():
+    """Audit 13's second question: which numbers have a basis the reader cannot see. The patent lane covers
+    92 applicants, so a 0 in that column read as "holds no patents"."""
+    import re
+
+    from medradar.radar.pages import compare_page
+
+    def company(name, **over):
+        base = {"query": name, "found": True, "company_name": name, "devices": 100, "clearances": 5,
+                "failures": 9, "trials": 0, "patents": 0, "papers": 2, "product_codes": [],
+                "specialties": [], "topics": [], "yearly": []}
+        base.update(over)
+        return base
+
+    page = compare_page(companies=[
+        company("MEDTRONIC", patent_gap="patent_only_searched_not_recorded"),
+        company("STRYKER", patents=7, patent_gap=None),
+    ], substitutions=[])
+
+    # The marker is the cell, not the sentence: the note always mentions the word.
+    assert "—<span class=\"small\"> 未收录</span>" in page
+    # The covered company keeps its number rather than a dash.
+    assert re.search(r'<td class="num[^"]*">7</td>', page)
+    # Both rows now carry the sentence their zero needs.
+    assert "我们还没抓" in page and "不等于研究这家" in page
+    # A plain zero with no gap recorded still prints as a zero.
+    plain = compare_page(companies=[company("A"), company("B", patents=3)], substitutions=[])
+    assert "—<span class=\"small\"> 未收录</span>" not in plain
+
+
 def test_a_pre_digitisation_filing_is_never_requested(tmp_path):
     """Measured: 0 of 60 sampled filings from 1998-2009 have a PDF at any path shape.
 

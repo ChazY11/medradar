@@ -1845,16 +1845,39 @@ def compare_page(*, companies: Sequence[Mapping[str, Any]],
         f'{esc(item.get("company_name"))}</a></th>'
         for item in found)
 
+    # A zero is only a zero when we looked. The patent lane covers 92 applicants out of the whole register,
+    # so "专利 0" for a company outside it reads as "it holds no patents" - which is a claim we cannot make.
+    # The per-company lookup already records which case it is; the comparison used to drop that.
+    gap_by_key = {"patents": "patent_gap", "trials": "trial_gap"}
+
+    def _cell_for(item: Mapping[str, Any], key: str, top: Any) -> str:
+        value = item.get(key) or 0
+        gap = gap_by_key.get(key)
+        cover_less = (gap and int(value) == 0 and item.get(gap) == "patent_only_searched_not_recorded")
+        if cover_less:
+            # Searched and absent is still a real answer; it is the *coverage* that is partial, so the cell
+            # says so rather than printing a zero that will be compared.
+            return ('<td class="num muted" title="专利库只覆盖已抓取的受让人，'
+                    '这家公司按名称搜过但没有入库记录">—<span class="small"> 未收录</span></td>')
+        lead = " lead" if top is not None and value == top else ""
+        return f'<td class="num{lead}">{n(value)}</td>'
+
     rows = []
     for label, key in metrics:
         values = [item.get(key) or 0 for item in found]
         top = max(values) if values and max(values) > 0 else None
-        cells = "".join(
-            f'<td class="num{" lead" if top is not None and value == top else ""}">{n(value)}</td>'
-            for value in values)
+        cells = "".join(_cell_for(item, key, top) for item in found)
         rows.append(f"<tr><td>{esc(label)}</td>{cells}</tr>")
     table = (f'<div class="card"><table><thead><tr><th>指标</th>{header}</tr></thead>'
-             f'<tbody>{"".join(rows)}</tbody></table></div>')
+             f'<tbody>{"".join(rows)}</tbody></table></div>'
+             # The two rows whose zero needs a sentence. Without them the patent row reads as a comparison of
+             # patent holdings, and the paper row as a comparison of research, in a register where one of the
+             # two lanes covers 92 applicants and the other only archived full texts.
+             '<p class="muted small"><b>专利列</b>：只统计申请人字段为本公司的记录。专利库目前只覆盖已抓取的'
+             '受让人，不在覆盖范围内的公司显示「未收录」而不是 0——那是"我们还没抓"，不是"它没有专利"；'
+             '按名字搜到但未计入的记录单独标注。</p>'
+             '<p class="muted small"><b>论文列</b>：按注册品牌名称在已归档全文中匹配。提到名称不等于研究这家'
+             '公司或这台设备，而且索引只含已归档全文——摘要与付费墙后的正文不在内。</p>')
 
     # Registrations by year, side by side: the only column here that says whether a company is moving.
     # Table, not bars - one company's backfill year (Medtronic 2015: 20,440) flattens every other bar to
