@@ -4830,6 +4830,41 @@ def test_a_comparison_keeps_name_matched_reports_out_of_the_hard_numbers():
     assert "品牌报告（名称匹配）" not in nobody
 
 
+def test_the_field_export_carries_the_failure_record_and_its_bounds():
+    """A forwarded file loses the page around it, so the caveats travel inside the document."""
+    from medradar.radar.export import area_markdown
+
+    shape = {"codes": 295, "total": 12428,
+             "by_code": [{"code": "DZE", "reports": 1653}],
+             "by_event": {"Malfunction": 5263, "Injury": 7149},
+             "names": {"DZE": "Screw endosteal dental implant"},
+             "by_year": {"2025": 863, "2026": 5457}}
+    with_companies = area_markdown(
+        "Dental", {"devices": 100, "codes": 295, "companies": 50},
+        [{"rank": 1, "company_name": "ACME", "devices": 10}], failures=shape)
+    assert "| 1 | ACME | 10 |" in with_companies
+    assert "## 这个领域报过哪些失效" in with_companies
+    assert "1,653" in with_companies
+    assert "不是故障率" in with_companies                     # voluntary reporting, stated
+    assert "扫的是最近的报告文件" in with_companies            # our window, stated
+    assert "这不是该领域变得更危险了" in with_companies
+
+    # A field with no company table still exports its failure record: the early return used to drop it.
+    without = area_markdown("Dental", {"devices": 0, "codes": 1, "companies": 0}, [], failures=shape)
+    assert "## 这个领域报过哪些失效" in without
+
+    # Checked and empty is an answer, and it is written down: Medical Genetics has 6 codes and 0 reports.
+    empty = area_markdown("Medical Genetics", {"devices": 1, "codes": 6, "companies": 1},
+                          [{"rank": 1, "company_name": "ACME", "devices": 1}],
+                          failures={"codes": 6, "total": 0, "by_code": [], "by_event": {}})
+    assert "一条也没有匹配到" in empty
+
+    # A field with no classified codes has nothing to say here at all.
+    assert "这个领域报过哪些失效" not in area_markdown(
+        "Dental", {"devices": 1, "codes": 1, "companies": 1},
+        [{"rank": 1, "company_name": "ACME", "devices": 1}])
+
+
 def test_a_pre_digitisation_filing_is_never_requested(tmp_path):
     """Measured: 0 of 60 sampled filings from 1998-2009 have a PDF at any path shape.
 

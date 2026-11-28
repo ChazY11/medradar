@@ -361,8 +361,9 @@ def field_papers_markdown(specialty: str, papers: Sequence[Mapping[str, Any]],
 
 
 def area_markdown(specialty: str, summary: Mapping[str, Any],
-                  companies: Sequence[Mapping[str, Any]]) -> str:
-    """One specialty's leaders, with the sampling caveat kept."""
+                  companies: Sequence[Mapping[str, Any]],
+                  *, failures: Mapping[str, Any] | None = None) -> str:
+    """One specialty's leaders and failure record, with the sampling and reporting caveats kept."""
     lines = [f"# {specialty}", "", f"> 导出于 {_stamp()}。{SOURCE_LINE}", ""]
     lines.append(f"> {int(summary.get('devices') or 0):,} 台设备 · "
                  f"{int(summary.get('codes') or 0):,} 个产品码 · "
@@ -375,14 +376,60 @@ def area_markdown(specialty: str, summary: Mapping[str, Any],
         lines.append(f"> 下面是设备数最多的 {kept} 家（全领域共 {total:,} 家）。"
                      f"没上榜不等于规模为零。")
         lines.append("")
-    if not companies:
+    if companies:
+        lines.append("| # | 公司 | 该领域设备数 |")
+        lines.append("| ---: | --- | ---: |")
+        for item in companies:
+            lines.append(f"| {item.get('rank')} | {item.get('company_name')} | "
+                         f"{int(item.get('devices') or 0):,} |")
+    else:
+        # No companies is not a reason to stop: a small field can still have a failure record, and the
+        # first version returned here, which dropped the whole failure section for exactly those fields.
         lines.append(_gap("no_company_in_this_specialty"))
-        return "\n".join(lines)
-    lines.append("| # | 公司 | 该领域设备数 |")
-    lines.append("| ---: | --- | ---: |")
-    for item in companies:
-        lines.append(f"| {item.get('rank')} | {item.get('company_name')} | "
-                     f"{int(item.get('devices') or 0):,} |")
+
+    # The failure record travels with the file. A document gets forwarded without the page around it, so
+    # the two bounds - voluntary reporting and our sweep window - are written into the document itself.
+    shape = dict(failures or {})
+    if int(shape.get("total") or 0):
+        events = shape.get("by_event") or {}
+        lines.append("")
+        lines.append("## 这个领域报过哪些失效")
+        lines.append("")
+        ordered = [("Malfunction", "故障"), ("Injury", "伤害"), ("Death", "死亡")]
+        split = " · ".join(f"{label} {int(events.get(key) or 0):,}"
+                           for key, label in ordered if events.get(key))
+        other = int(shape.get("total") or 0) - sum(int(events.get(k) or 0) for k, _ in ordered)
+        if other > 0:
+            split += f" · 其他/未标注 {other:,}"
+        lines.append(f"> 本领域 {int(shape.get('codes') or 0):,} 个产品码下共 "
+                     f"{int(shape.get('total') or 0):,} 条 FDA MAUDE 报告——{split}。")
+        lines.append("> **这是报告数，不是故障率**：MAUDE 靠自愿上报，产品用得越多、上报的人越多，"
+                     "数字就越大；不能用来比较两个产品谁更安全。")
+        years = shape.get("by_year") or {}
+        if years:
+            keys = sorted(years)
+            total_year = sum(int(v or 0) for v in years.values()) or 1
+            top_key = max(years, key=lambda k: int(years[k] or 0))
+            share = 100.0 * int(years[top_key] or 0) / total_year
+            lines.append(f"> 报告日期 {keys[0]}–{keys[-1]}，其中 {top_key} 年占 {share:.0f}%——"
+                         "因为我们的失效索引扫的是最近的报告文件，所以近年偏多；"
+                         "这不是该领域变得更危险了。")
+        lines.append("")
+        lines.append("| 产品码 | 器械类别 | 报告数 |")
+        lines.append("| --- | --- | ---: |")
+        names = shape.get("names") or {}
+        for item in (shape.get("by_code") or []):
+            code = str(item.get("code") or "")
+            lines.append(f"| {code} | {str(names.get(code) or '').strip()} | "
+                         f"{int(item.get('reports') or 0):,} |")
+    elif int(shape.get("codes") or 0):
+        # Checked and empty is an answer; an absent section would read as "not looked at".
+        lines.append("")
+        lines.append("## 这个领域报过哪些失效")
+        lines.append("")
+        lines.append(f"> 这个领域的 {int(shape.get('codes') or 0):,} 个产品码下，"
+                     "我们扫过的 MAUDE 报告里一条也没有匹配到。"
+                     "这不等于没有上报：可能是这些码的报告文件还没扫到。")
     return "\n".join(lines)
 
 

@@ -2148,6 +2148,13 @@ def area_page(*, specialty: str, summary: Mapping[str, Any] | None,
                 f'其中 {esc(top_key)} 年占 {share:.0f}%——'
                 '<b>因为我们的失效索引扫的是最近的报告文件</b>，所以近年偏多；'
                 '这不是该领域变得更危险了。</p>')
+    elif int(shape.get("codes") or 0):
+        # Checked and empty: say so, because an absent section reads as "not looked at".
+        failures_block = (
+            '<h2>这个领域报过哪些失效</h2>'
+            f'<p class="muted small">这个领域的 {n(shape.get("codes"))} 个产品码下，'
+            '我们扫过的 MAUDE 报告里一条也没有匹配到。这不等于没有上报：'
+            '可能是这些码的报告文件还没扫到。</p>')
     else:
         failures_block = ""
 
@@ -2671,11 +2678,19 @@ def pages_router(service: Any, *, endpoints: Mapping[str, Any] | None = None) ->
 
                 summary = one(store, name) or {}
                 companies = companies_in_specialty(store, name)
+                # The failure record goes into the export too: the page has carried it since round 71,
+                # and a document that omits it would report a field without its reports.
+                try:
+                    from .specialty import failure_shape as read_failures
+
+                    failures = read_failures(store, name)
+                except Exception:  # noqa: BLE001 - no failure index is a stated gap
+                    failures = {}
                 if format == "csv":
                     body = export_mod.area_csv(companies)
                     media, suffix = "text/csv; charset=utf-8", "csv"
                 else:
-                    body = export_mod.area_markdown(name, summary, companies)
+                    body = export_mod.area_markdown(name, summary, companies, failures=failures)
                     media, suffix = "text/markdown; charset=utf-8", "md"
                 stem = f"medradar-area-{_slug(name)}"
             elif kind == "papers":
