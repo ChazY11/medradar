@@ -4716,6 +4716,50 @@ def test_a_budgeted_scan_says_so_instead_of_claiming_absence():
     assert once.count("不在设备注册表里") == 1     # no duplicate when there is no extra gap
 
 
+def test_a_field_shows_its_failure_reports_and_says_they_are_not_rates(tmp_path):
+    """MAUDE counts by product code, with the report-rate caveat attached."""
+    from medradar.radar.pages import area_page
+    from medradar.radar.reference import UdiReference
+    from medradar.radar.specialty import ensure_table, failure_shape
+
+    store = UdiReference(tmp_path / "ref.db")
+    ensure_table(store)
+    store.conn.executescript("""
+        CREATE TABLE IF NOT EXISTS maude_failure_index (
+            product_code TEXT, model_norm TEXT, brand_norm TEXT,
+            event_type TEXT, date_received TEXT);
+        CREATE TABLE IF NOT EXISTS product_code_class (
+            product_code TEXT PRIMARY KEY, device_name TEXT, medical_specialty TEXT,
+            regulation_number TEXT, device_class TEXT);
+    """)
+    store.conn.executemany("INSERT OR REPLACE INTO product_code_class VALUES (?,?,?,?,?)",
+                           [("DZE", "Screw endosteal dental implant", "Dental", "872.3640", "2")])
+    store.conn.executemany("INSERT INTO maude_failure_index VALUES (?,?,?,?,?)", [
+        ("DZE", "m", "b", "Malfunction", "2026-01-01"),
+        ("DZE", "m", "b", "Injury", "2026-02-01"),
+        ("DZE", "m", "b", "Injury", "2026-03-01"),
+    ])
+    store.conn.commit()
+
+    shape = failure_shape(store, "Dental")
+    store.close()
+    assert shape["total"] == 3
+    assert shape["by_code"][0] == {"code": "DZE", "reports": 3}
+    assert shape["by_event"]["Injury"] == 2
+
+    page = area_page(specialty="Dental",
+                     summary={"specialty": "Dental", "codes": 1, "devices": 2, "companies": 3},
+                     companies=[], data={"field_failures": shape})
+    assert "这个领域报过哪些失效" in page
+    assert "伤害 2" in page
+    # The bound has to be there: reports are voluntary and are not a safety comparison.
+    assert "不是故障率" in page
+
+    assert "这个领域报过哪些失效" not in area_page(
+        specialty="Dental", summary={"specialty": "Dental", "codes": 1, "devices": 1, "companies": 1},
+        companies=[], data={})
+
+
 def test_a_pre_digitisation_filing_is_never_requested(tmp_path):
     """Measured: 0 of 60 sampled filings from 1998-2009 have a PDF at any path shape.
 

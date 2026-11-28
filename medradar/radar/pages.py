@@ -1975,6 +1975,34 @@ def area_page(*, specialty: str, summary: Mapping[str, Any] | None,
     else:
         topics_block = ('<h2>这个领域的文献在谈什么</h2>'
                         + gap_note("no_papers_for_this_specialty"))
+    # What goes wrong in this field, from MAUDE. Counts of reports, not rates: MAUDE is voluntary, so a
+    # popular code has more reports partly because it has more devices in use and more reporters.
+    shape = data.get("field_failures") or {}
+    if int(shape.get("total") or 0):
+        events = shape.get("by_event") or {}
+        order = [("Malfunction", "故障"), ("Injury", "伤害"), ("Death", "死亡")]
+        event_bits = " · ".join(
+            f'{label} {n(int(events.get(key) or 0))}' for key, label in order if events.get(key))
+        other = int(shape.get("total") or 0) - sum(
+            int(events.get(key) or 0) for key, _ in order)
+        if other > 0:
+            event_bits += f' · 其他/未标注 {n(other)}'
+        rows = "".join(
+            f'<tr><td>{esc(item["code"])}'
+            f'<span class="muted small"> {esc(str((shape.get("names") or {}).get(item["code"]) or "")[:52])}</span>'
+            f'</td><td class="num">{n(item["reports"])}</td></tr>'
+            for item in (shape.get("by_code") or []))
+        failures_block = (
+            '<h2>这个领域报过哪些失效</h2>'
+            f'<p class="muted small">按 FDA MAUDE 报告统计：本领域 {n(shape.get("codes"))} 个产品码下'
+            f'共 {n(shape.get("total"))} 条报告 —— {event_bits}。'
+            '<b>这是报告数，不是故障率</b>：MAUDE 靠自愿上报，产品用得越多、上报的人越多，'
+            '数字就越大；不能用来比较两个产品谁更安全。</p>'
+            f'<div class="card"><table><thead><tr><th>产品码</th><th>报告数</th></tr></thead>'
+            f'<tbody>{rows}</tbody></table></div>')
+    else:
+        failures_block = ""
+
     # Monthly shape. The corpus is one crawl, made now, so the series says when our papers were
     # published - not how much the field publishes. The sentence under the bars states that.
     monthly = data.get("field_monthly") or []
@@ -2032,6 +2060,7 @@ def area_page(*, specialty: str, summary: Mapping[str, Any] | None,
 会在各领域分别计入；一家公司在这里设备多，说明它铺得广，不说明它领先。</div>
 {topics_block}
 {monthly_block}
+{failures_block}
 {recent_block}
 {coverage}
 {table}
@@ -2671,6 +2700,7 @@ def pages_router(service: Any, *, endpoints: Mapping[str, Any] | None = None) ->
                 field_papers: list[str] = []
                 field_recent: list[dict[str, Any]] = []
                 field_monthly: list[dict[str, Any]] = []
+                field_failures: dict[str, Any] = {}
                 if summary:
                     try:
                         from .paper_passes import field_topics as read_topics, papers_for
@@ -2683,11 +2713,20 @@ def pages_router(service: Any, *, endpoints: Mapping[str, Any] | None = None) ->
                         field_monthly = monthly_counts(store, resolved_name)
                     except Exception:  # noqa: BLE001 - no literature yet is a stated gap
                         field_topics, field_papers, field_monthly, field_recent = [], [], [], []
+                    # Reports are independent of the literature: a field with no papers still has a
+                    # failure record, so this is computed outside the literature try.
+                    try:
+                        from .specialty import failure_shape
+
+                        field_failures = failure_shape(store, resolved_name)
+                    except Exception:  # noqa: BLE001 - no failure index is a stated gap
+                        field_failures = {}
             finally:
                 store.close()
             return area_page(specialty=resolved_name, summary=summary, companies=companies,
                              data={"field_topics": field_topics, "field_papers": field_papers,
                                    "field_recent": field_recent, "field_monthly": field_monthly,
+                                   "field_failures": field_failures,
                                    "resolved_from": resolved_from})
 
         return HTMLResponse(cached(f"area:{name}", 300.0, render))
