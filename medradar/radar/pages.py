@@ -1921,6 +1921,11 @@ def compare_page(*, companies: Sequence[Mapping[str, Any]],
 
     def _missing_line(item: Mapping[str, Any]) -> str:
         typed = esc(item.get("query"))
+        # A device identifier in a comparison of companies: name the shape and offer the page that holds it,
+        # before the suggestion list (which will be empty or irrelevant for an identifier).
+        wrong_box = _wrong_box_hint(str(item.get("query") or ""))
+        if wrong_box:
+            return wrong_box.replace("不是公司名", "不是公司名，这里只比公司") 
         names = item.get("suggestions") or []
         if not names:
             return f'<p class="small muted">「{typed}」没有匹配到公司，未参与对比。</p>'

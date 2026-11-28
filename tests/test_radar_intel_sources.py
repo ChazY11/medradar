@@ -6377,6 +6377,32 @@ def test_the_company_box_sends_a_device_identifier_to_the_device_box():
     assert "不是公司名" not in plain
 
 
+def test_a_comparison_sends_a_device_identifier_to_the_device_page():
+    """The fourth box: /compare answered "没有匹配到公司，未参与对比" for a K number."""
+    from medradar.radar.pages import compare_page
+
+    def company(**over):
+        base = {"query": "Medtronic", "found": True, "company_name": "MEDTRONIC",
+                "device_count": 45433, "clearances": 121, "failures": 53128, "trials": 200,
+                "patents": 0, "papers": 2, "product_codes": [], "specialties": [],
+                "topics": [], "yearly": []}
+        base.update(over)
+        return base
+
+    page = compare_page(companies=[{"query": "K213506", "found": False, "suggestions": []},
+                                   company()], substitutions=[])
+    assert "不是公司名，这里只比公司" in page
+    assert "/device?query=K213506" in page
+    # The real column is still there beside it.
+    assert "MEDTRONIC" in page
+
+    # A genuine company miss keeps its own wording.
+    plain = compare_page(companies=[{"query": "zzzzq", "found": False, "suggestions": []},
+                                    company()], substitutions=[])
+    assert "不是公司名" not in plain
+    assert "没有匹配到公司，未参与对比" in plain
+
+
 def test_a_pre_digitisation_filing_is_never_requested(tmp_path):
     """Measured: 0 of 60 sampled filings from 1998-2009 have a PDF at any path shape.
 
