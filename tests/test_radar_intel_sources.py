@@ -4598,6 +4598,33 @@ def test_a_company_shows_registrations_by_year_and_what_the_axis_means():
     assert "注册登记按年" not in company_page(data=dict(base, device_years=[]))
 
 
+def test_a_comparison_shows_who_is_registering_more_recently():
+    """The compare page had scale columns and nothing about direction."""
+    from medradar.radar.pages import compare_page
+
+    def company(name, devices, years):
+        return {"found": True, "company_name": name, "devices": devices, "clearances": 3,
+                "failures": 0, "trials": 0, "patents": 0, "papers": 0, "brands": [],
+                "product_codes": ["KTT"], "specialties": [{"specialty": "Orthopedic", "codes": 2}],
+                "device_years": [{"year": year, "n": count} for year, count in years]}
+
+    page = compare_page(companies=[
+        company("ACME", 100, [("2024", 10), ("2025", 30)]),
+        company("BETA", 200, [("2024", 50), ("2025", 5)]),
+    ])
+    assert "注册登记按年" in page
+    assert "2024" in page and "2025" in page
+    # Same bound as the single-company block: GUDID record date, not R&D.
+    assert "不是研发投入的曲线" in page
+
+    # A company without a series still compares; the section falls back to a stated gap.
+    no_years = compare_page(companies=[{"found": True, "company_name": "GAMMA", "devices": 1,
+                                        "clearances": 0, "failures": 0, "trials": 0, "patents": 0,
+                                        "papers": 0, "brands": [], "product_codes": [],
+                                        "specialties": [], "device_years": []}])
+    assert "注册登记按年" not in no_years
+
+
 def test_a_pre_digitisation_filing_is_never_requested(tmp_path):
     """Measured: 0 of 60 sampled filings from 1998-2009 have a PDF at any path shape.
 

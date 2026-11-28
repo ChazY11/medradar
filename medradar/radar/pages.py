@@ -1358,6 +1358,8 @@ def compare_page(*, companies: Sequence[Mapping[str, Any]],
     ``substitutions`` maps a name the reader typed to the one that was looked up; it is printed so a
     reader who typed 美敦力 knows they are looking at Medtronic and not at something else.
     """
+    from .watermark import utc_today
+
     swapped = dict(substitutions or {})
     found = [item for item in companies if item.get("found")]
     if not found:
@@ -1390,6 +1392,32 @@ def compare_page(*, companies: Sequence[Mapping[str, Any]],
         rows.append(f"<tr><td>{esc(label)}</td>{cells}</tr>")
     table = (f'<div class="card"><table><thead><tr><th>指标</th>{header}</tr></thead>'
              f'<tbody>{"".join(rows)}</tbody></table></div>')
+
+    # Registrations by year, side by side: the only column here that says whether a company is moving.
+    # Table, not bars - one company's backfill year (Medtronic 2015: 20,440) flattens every other bar to
+    # a stub, which is exactly what the single-company block was changed away from last round.
+    year_maps = [{str(item.get("year")): int(item.get("n") or 0)
+                  for item in (company.get("device_years") or [])} for company in found]
+    year_names = sorted({year for mapping in year_maps for year in mapping}, reverse=True)[:12]
+    if year_names:
+        this_year = str(utc_today())[:4]
+        year_rows = []
+        for year in year_names:
+            values = [mapping.get(year) or 0 for mapping in year_maps]
+            top = max(values) if values and max(values) > 0 else None
+            cells = "".join(
+                f'<td class="num{" lead" if top is not None and value == top else ""}">'
+                f'{n(value) if value else "—"}</td>' for value in values)
+            label = year + ("<span class=\"muted small\">·未满</span>" if year == this_year else "")
+            year_rows.append(f"<tr><td>{label}</td>{cells}</tr>")
+        year_table = (f'<div class="card"><table><thead><tr><th>年份</th>{header}</tr></thead>'
+                      f'<tbody>{"".join(year_rows)}</tbody></table></div>'
+                      '<p class="muted small">按 UDI 发布日期统计的注册台数，只列最近 12 个有记录的年份。'
+                      '<b>这是 GUDID 的收录时间，不是研发时间</b>：登记可以晚于上市，早年设备也可能被'
+                      '集中补录，当前年份未满。所以它说明记录节奏，不是研发投入的曲线。</p>')
+    else:
+        year_table = ""
+    year_block = (f'<h2>注册登记按年</h2>{year_table}' if year_table else "")
 
     # Technology areas side by side: where two companies both register devices is where they compete.
     # A row is a specialty, a cell is how many of that company's product codes fall in it. This uses
@@ -1468,6 +1496,7 @@ def compare_page(*, companies: Sequence[Mapping[str, Any]],
 {missing_html}
 <h2>规模与产出</h2>
 {table}
+{year_block}
 <h2>技术领域对比</h2>
 {area_table}
 <h2>竞争面</h2>
