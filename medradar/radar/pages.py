@@ -702,10 +702,10 @@ def sources_page(*, meta: Mapping[str, Any], coverage: Mapping[str, Any] | None 
                 f'<td class="muted small">{esc(note)}</td></tr>')
 
     def data_row(item: Mapping[str, Any]) -> str:
-        note = str(item.get("note") or "")
-        beside = str(item.get("beside") or "")
-        if beside:
-            note = f'{note}；{beside}' if note else beside
+        # Sentences, joined with a space. Joining with ； produced "无法检索。；按发表日期：" - two
+        # complete sentences with a semicolon between them, which reads as a typo.
+        pieces = [str(item.get(k) or "").strip() for k in ("note", "beside", "years")]
+        note = " ".join(piece for piece in pieces if piece)
         return row(str(item["label"]), item["count"], note)
 
     dataset_rows = "".join(data_row(item) for item in datasets)

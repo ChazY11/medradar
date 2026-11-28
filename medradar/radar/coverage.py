@@ -175,6 +175,25 @@ def coverage(reference, *, corpus_dir: str | Path | None = None,
             if files and files > indexed:
                 item["beside"] = (f'语料目录里还有 {files - indexed} 个文件没有被索引：'
                                   f'它们没有命中注册表词表的词，无法检索。')
+            # Which years the corpus actually covers. Measured 2026-11-28: 4,676 of 5,485 are 2026 and
+            # 4 are dated 2027 (journal pre-fills). A reader comparing "论文 5,485" with another source
+            # needs to know that this is one recent crawl, not a decade of the literature.
+            try:
+                years = reference.conn.execute(
+                    "SELECT substr(published_at,1,4) AS y, COUNT(*) FROM paper_meta"
+                    " WHERE COALESCE(published_at,'') <> '' GROUP BY y ORDER BY y DESC"
+                ).fetchall()
+            except Exception:  # noqa: BLE001 - no index yet
+                years = []
+            if years:
+                # Not `parts`: that name is the shape mapping used further down this function, and
+                # rebinding it here made every later `parts.get(...)` fail on a list.
+                year_parts = [f'{str(y)} 年 {int(nn):,}' for y, nn in years[:4]]
+                older = int(sum(int(nn) for y, nn in years[4:]))
+                if older:
+                    year_parts.append(f'更早 {older:,}')
+                item["years"] = ("按发表日期：" + " · ".join(year_parts)
+                                 + "（一轮抓取的结果，年份集中）")
         datasets.append(item)
 
     # Gaps are computed, not remembered: each one names what is missing and why.

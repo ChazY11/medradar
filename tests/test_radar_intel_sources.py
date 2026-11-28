@@ -4639,6 +4639,34 @@ def test_the_company_groupings_have_indexes_behind_them(tmp_path):
     assert "idx_udi_duns_pub" in names
 
 
+def test_the_paper_row_says_which_years_the_corpus_covers(tmp_path):
+    """5,485 papers means one recent crawl; the page has to say so next to the number."""
+    from medradar.radar.coverage import coverage
+    from medradar.radar.papers_index import ensure_tables
+    from medradar.radar.reference import UdiReference
+
+    store = UdiReference(tmp_path / "ref.db")
+    ensure_tables(store)
+    # Five distinct years, so the tail bucket is exercised: the row lists the newest four and sums the
+    # rest, which is what a reader needs when the corpus spans more years than fit.
+    for pid, when in (("A", "2026-05-01"), ("B", "2026-06-01"), ("C", "2025-02-01"),
+                      ("D", "2024-01-01"), ("E", "2019-01-01"), ("F", "2017-01-01")):
+        store.conn.execute("INSERT OR REPLACE INTO paper_meta (paper_id, title, journal,"
+                           " published_at) VALUES (?,?,?,?)", (pid, "t", "j", when))
+    store.conn.commit()
+
+    data = coverage(store)
+    store.close()
+    papers = next(item for item in data["datasets"] if item["key"] == "papers")
+    years = papers.get("years") or ""
+    assert "2026 年 2" in years
+    assert "2025 年 1" in years
+    # The row lists the newest four years and sums everything older into one bucket.
+    assert "2026 年 2" in years and "2019 年 1" in years
+    assert "更早 1" in years                     # 2017
+    assert "一轮抓取" in years                    # and the shape is labelled as ours
+
+
 def test_a_pre_digitisation_filing_is_never_requested(tmp_path):
     """Measured: 0 of 60 sampled filings from 1998-2009 have a PDF at any path shape.
 
