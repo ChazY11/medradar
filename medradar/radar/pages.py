@@ -28,6 +28,7 @@ Design rules, learned from what went wrong
 from __future__ import annotations
 
 import os
+from urllib.parse import quote
 
 import html
 import json
@@ -287,6 +288,15 @@ def landing(*, stats: Mapping[str, Any], examples: Sequence[tuple[str, str]],
         recent_block = ""
     body = f"""
 <h1>查一台器械，看完它整个公开生命</h1>
+<!-- One box first: the site can tell a paper id from a field name from a device identifier, so the reader does
+     not have to choose a form before asking. -->
+<form class="search" method="get" action="/search" style="margin-bottom:14px">
+  <input type="search" name="q" placeholder="一个框查全部：K 号 / DI / DUNS / 型号 / 品牌 / 公司 / PMC 编号 / DOI / 技术领域"
+         aria-label="搜索">
+  <button type="submit">查</button>
+</form>
+<p class="muted small" style="margin-top:-6px">按内容分流：论文编号进论文页，技术领域名进领域页，
+其余进器械查询。分流规则写在 <a href="/sources">数据覆盖</a> 的说明里。</p>
 <p class="lede">输入 K 号、DI、DUNS、型号、品牌或公司名。批文正文、厂家自己写的规格、现场失效、
 在研试验、专利、相关论文——一次查完，全部来自本地数据，不联网、不等待。</p>
 <form class="search" method="get" action="/device">
@@ -2165,6 +2175,29 @@ def paper_page(*, record: Mapping[str, Any] | None, terms: Sequence[Mapping[str,
     return layout(title=f"{record.get('title') or paper_id} · MedRadar", body=body, active="device")
 
 
+def _looks_like_paper_id(text: str) -> bool:
+    """Paper identifiers the paper page can accept, recognised by shape rather than by asking the database.
+
+    A shape test is a claim about the string, not about the corpus: `PMC99999999` looks like a paper id and the
+    paper page will say it does not hold it. That is the right division - this function only decides which page
+    answers, never whether an answer exists.
+    """
+    import re
+
+    token = text.strip()
+    if re.fullmatch(r"PMC\d{4,9}", token, re.IGNORECASE):
+        return True
+    # A bare number is ambiguous and the two candidates have fixed lengths: a DUNS is exactly nine digits, and
+    # PubMed identifiers are currently at most eight. Nine digits therefore belongs to the device search, where
+    # a DUNS resolves to a company; sending it to the paper page would answer "no such paper" about a company
+    # identifier, which is a wrong answer rather than a miss.
+    if re.fullmatch(r"\d{7,8}", token):                       # a bare PMID
+        return True
+    if re.fullmatch(r"10\.\d{4,9}/\S+", token):              # a DOI
+        return True
+    return False
+
+
 def order_area_items(items: Sequence[Mapping[str, Any]], order: str, *,
                      trends: Mapping[str, Any] | None = None,
                      recency: Mapping[str, Any] | None = None,
@@ -2844,7 +2877,7 @@ def pages_router(service: Any, *, endpoints: Mapping[str, Any] | None = None) ->
     types or shares. Registered before the SPA catch-all, so a specific path wins.
     """
     from fastapi import APIRouter, Query
-    from fastapi.responses import HTMLResponse
+    from fastapi.responses import HTMLResponse, RedirectResponse
 
     from .device_view import build as build_view
     from .reference import UdiReference
@@ -3636,6 +3669,53 @@ def pages_router(service: Any, *, endpoints: Mapping[str, Any] | None = None) ->
                                    "resolved_from": resolved_from})
 
         return HTMLResponse(cached(f"area:{name}", 300.0, render))
+
+    @router.get("/search")
+    def search_view(q: str = Query("", max_length=200)) -> Any:
+        """One box for everything the site can answer.
+
+        The front page had two: a device box and a paper box. A reader holding "PMC13788955", "Dental" or
+        "Medtronic" has to know which one applies before they can ask - and the site knows the answer to that
+        question already, from the shape of the string.
+
+        The route decides and redirects; it never guesses silently, because every destination states what it
+        matched. Anything unrecognised goes to the device search, which resolves brands and companies and whose
+        miss page explains what the box accepts.
+        """
+        text = " ".join(str(q or "").split())
+        if not text:
+            return RedirectResponse("/", status_code=303)
+
+        # A paper identifier is unambiguous: PMC ids, bare PMIDs, and DOIs.
+        if _looks_like_paper_id(text):
+            return RedirectResponse(f"/paper?id={quote(text)}", status_code=303)
+
+        # A field name goes to the field page, not to the device search - "Dental" sent to /device matched a
+        # brand called Ceramill TEMP, which answers a question nobody asked. Two ways to recognise one: the
+        # Chinese alias table, and the register's own English names.
+        try:
+            from .aliases import lookup_specialty
+
+            if lookup_specialty(text):
+                return RedirectResponse(f"/area?name={quote(text)}", status_code=303)
+        except Exception:  # noqa: BLE001 - no alias table, try the register
+            pass
+        try:
+            store = _store()
+            if store is not None:
+                try:
+                    row = store.conn.execute(
+                        "SELECT medical_specialty FROM product_code_class"
+                        " WHERE LOWER(medical_specialty) = LOWER(?) LIMIT 1",
+                        (text,)).fetchone()
+                finally:
+                    store.close()
+                if row and row[0]:
+                    return RedirectResponse(f"/area?name={quote(str(row[0]))}", status_code=303)
+        except Exception:  # noqa: BLE001 - no register, fall through to the device search
+            pass
+
+        return RedirectResponse(f"/device?query={quote(text)}", status_code=303)
 
     @router.get("/radar", response_class=HTMLResponse)
     def radar_view() -> Any:

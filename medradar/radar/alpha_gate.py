@@ -44,6 +44,8 @@ DEFAULT_ITERATIONS = 240_000
 PUBLIC_PAGES = frozenset({"/", "/device", "/device/", "/map", "/map/",
                           "/topic", "/topic/", "/company", "/company/",
                           "/compare", "/compare/", "/download", "/paper", "/paper/", "/areas", "/areas/", "/area", "/area/",
+# /search is a redirector the front page posts to; without it the one-box front door 401s.
+"/search", "/search/",
                           "/sources", "/sources/",
                           "/radar", "/radar/", "/radar/live", "/radar/live/", "/radar/technology-map",
                           "/radar/technology-map/"})

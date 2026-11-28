@@ -2587,7 +2587,7 @@ def test_the_pages_router_mounts_at_the_site_root():
 
     paths = [route.path for route in pages_router(_Svc()).routes]
     assert paths == ["/", "/device", "/sources", "/topic", "/company", "/compare",
-                     "/download", "/paper", "/areas", "/area", "/radar", "/map"]
+                     "/download", "/paper", "/areas", "/area", "/search", "/radar", "/map"]
 
 
 def test_the_alpha_gate_lets_the_new_pages_through_and_nothing_else():
@@ -6229,6 +6229,35 @@ def test_the_trend_threshold_has_one_source():
     ranked = trend_rank({"A": {"term": "x", "recent": 5, "recent_total": TREND_MIN_PAPERS - 1,
                                "lift": 9.0}}, "A")
     assert ranked["rank"] is None and ranked["min_total"] == TREND_MIN_PAPERS
+
+
+def test_one_search_box_routes_by_what_was_typed():
+    """The front page had two boxes; a reader holding a PMC id, a field name or a DUNS had to choose first."""
+    from medradar.radar.pages import _looks_like_paper_id
+
+    assert _looks_like_paper_id("PMC13788955")
+    assert _looks_like_paper_id("pmc13788955")            # case-insensitive in practice
+    assert _looks_like_paper_id("10.1016/j.ijporl.2026.113077")
+    assert _looks_like_paper_id("12345678")               # eight digits: a PMID
+    # Nine digits is a DUNS, not a PMID: sending it to the paper page would answer "no such paper" about a
+    # company identifier, which is a wrong answer rather than a miss.
+    assert not _looks_like_paper_id("830350380")
+    assert not _looks_like_paper_id("K213506")
+    assert not _looks_like_paper_id("Medtronic")
+    assert not _looks_like_paper_id("Dental")
+
+    import inspect
+
+    from medradar.radar import pages as pages_mod
+
+    source = inspect.getsource(pages_mod.pages_router)
+    # The route decides and redirects; it never renders a guess.
+    assert '@router.get("/search")' in source
+    assert 'RedirectResponse(f"/paper?id={quote(text)}"' in source
+    assert 'RedirectResponse(f"/area?name={quote(text)}"' in source
+    assert 'RedirectResponse(f"/device?query={quote(text)}"' in source
+    # And the front page offers it.
+    assert 'action="/search"' in inspect.getsource(pages_mod)
 
 
 def test_a_pre_digitisation_filing_is_never_requested(tmp_path):
