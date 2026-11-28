@@ -5199,6 +5199,19 @@ def test_a_word_that_appears_in_every_field_is_not_a_field_topic():
     assert GENERIC_FIELD_SPREAD == 10
 
 
+def test_the_paper_page_uses_the_same_cross_field_rule_as_the_field_pages():
+    """Three surfaces show terms; they must not disagree about what counts as noise."""
+    import inspect
+
+    from medradar.radar import pages as pages_mod
+
+    source = inspect.getsource(pages_mod.pages_router)
+    assert "term_field_spread(store)" in source
+    assert 'is_generic(str(item["term"]), spread)' in source
+    # And it asks for more than it shows, so filtering cannot empty the row.
+    assert "paper_terms(store, id, limit=120)" in source
+
+
 def test_a_pre_digitisation_filing_is_never_requested(tmp_path):
     """Measured: 0 of 60 sampled filings from 1998-2009 have a PDF at any path shape.
 

@@ -2946,7 +2946,17 @@ def pages_router(service: Any, *, endpoints: Mapping[str, Any] | None = None) ->
                               body=gap_note("device_index_absent"), active="device")
             try:
                 record = paper_record(store, id)
-                terms = paper_terms(store, id, limit=60)
+                # The same cross-field rule the field pages use: a word that appears in ten or more of
+                # the twenty fields says nothing about this paper either. Measured on PMC13788955: the
+                # list led with implants, prosthetic, children, bone, growth, treatment, years, clinical.
+                try:
+                    from .papers_index import is_generic, term_field_spread
+
+                    spread = term_field_spread(store)
+                    terms = [item for item in paper_terms(store, id, limit=120)
+                             if not is_generic(str(item["term"]), spread)][:24]
+                except Exception:  # noqa: BLE001 - the unfiltered list is the old behaviour
+                    terms = paper_terms(store, id, limit=60)
                 # Only words that can name a product: a paper is indexed under "with" and "the" too,
                 # and every brand would share those.
                 kept, _generic = distinctive_terms(store, [t["term"] for t in terms])
