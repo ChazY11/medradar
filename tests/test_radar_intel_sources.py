@@ -4523,10 +4523,16 @@ def test_the_warm_up_primes_the_rendered_pages_not_only_the_data():
     source = inspect.getsource(pages_mod.warmup)
     assert "_PAGE_ROUTES" in source            # the warm-up actually walks the registry
     assert "primed" in source                  # and reports what it primed
+    # Every field page, spaced out: measured 0.3-1.35 s for the first visit to each field, and priming
+    # them in a burst made real requests slower.
+    assert "primed_areas" in source
+    assert "time.sleep(" in source
     # The routes are registered with their canonical arguments, not left for the reader to supply.
     register_source = inspect.getsource(pages_mod.pages_router)
     for name in ("sources", "radar", "company", "compare"):
         assert f'"{name}": lambda' in register_source, name
+    # The priming call has to use the shape the browser sends, or it warms a key nobody asks for.
+    assert 'compare_view(["Medtronic,Stryker"])' in register_source
 
 
 def test_a_pre_digitisation_filing_is_never_requested(tmp_path):

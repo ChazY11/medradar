@@ -1562,6 +1562,34 @@ def warmup(service: Any) -> dict[str, Any]:
             except Exception as error:  # noqa: BLE001 - a page that cannot warm still serves
                 report["errors"].append(f"prime:{name}: {type(error).__name__}")
         report["primed"] = primed
+
+        # Every field page, staggered.
+        #
+        # Measured: the first /area for a field that has not been read in this process costs 0.3-1.35 s
+        # and every later one 0.26-0.34 s, because that field's rows come off disk then. Touring all
+        # twenty fields paid it twenty times. Priming them all at once was measured to be worse than
+        # useless - the burst competed with real requests and /compare went from 1.76 s to 4.6 s - so
+        # they are spread out, one every two seconds, and the loop stops if the process is shutting down.
+        #
+        # This runs last: a reader who arrives during it has every page except the field they asked for.
+        try:
+            from .specialty import read as read_specialties
+
+            names = [str(item.get("specialty") or "") for item in
+                     (read_specialties(store).get("items") or [])]
+            staggered: list[str] = []
+            for name in names:
+                if not name or _AREA_PRIMER is None:
+                    continue
+                try:
+                    _AREA_PRIMER(name=name)
+                    staggered.append(name)
+                except Exception as error:  # noqa: BLE001 - one field must not stop the rest
+                    report["errors"].append(f"prime:area:{name}: {type(error).__name__}")
+                time.sleep(2.0)
+            report["primed_areas"] = len(staggered)
+        except Exception as error:  # noqa: BLE001
+            report["errors"].append(f"prime:areas: {type(error).__name__}")
         report["warmed"] = warmed
     except Exception as error:  # noqa: BLE001
         report["errors"].append(f"{type(error).__name__}: {error}")
@@ -1982,6 +2010,13 @@ def radar_page(*, feed: Mapping[str, Any], stats: Mapping[str, Any]) -> str:
 # restart: /compare 1.76 s, and the audit recorded the cause but not the fix. Calling the route functions
 # themselves primes the entry the reader will ask for.
 _PAGE_ROUTES: dict[str, Any] = {}
+
+#: The field-page handler, registered by pages_router() so warmup() can prime every field.
+#:
+#: area_view is a local function inside pages_router, so warmup() could not see it: the first attempt
+#: referenced it by name, raised NameError inside a try/except, and silently primed nothing - the fields
+#: still cost about a second each on first visit.
+_AREA_PRIMER: Any = None
 
 
 def pages_router(service: Any, *, endpoints: Mapping[str, Any] | None = None) -> Any:
@@ -2521,7 +2556,10 @@ def pages_router(service: Any, *, endpoints: Mapping[str, Any] | None = None) ->
                 feed = {"items": [], "note": f"读不到雷达台账：{type(error).__name__}"}
             return radar_page(feed=feed, stats=stats)
 
-        return HTMLResponse(cached("radar", 60.0, render))
+        # 60 s was shorter than the thing it caches: the scheduler cycle is 300 s, so the feed could not
+        # change between two refresh intervals, and priming it at startup was wasted - measured /radar at
+        # 1.06 s a hundred seconds after a restart, i.e. after its own warm entry had expired.
+        return HTMLResponse(cached("radar", 300.0, render))
 
     @router.get("/map", response_class=HTMLResponse)
     def map_view() -> Any:
@@ -2555,12 +2593,17 @@ def pages_router(service: Any, *, endpoints: Mapping[str, Any] | None = None) ->
     # Only the pages that are expensive cold. Measured on the 2-vCPU box: priming all seven made the
     # first requests *slower* (compare 4.6 s, radar 3.9 s) because the warm-up thread was competing with
     # them for both cores. home, areas and map answer in 0.27-0.39 s cold and need nothing.
+    global _AREA_PRIMER
+    _AREA_PRIMER = area_view
     _PAGE_ROUTES.clear()
     _PAGE_ROUTES.update({
         "sources": lambda: sources_view(),
         "radar": lambda: radar_view(),
         "company": lambda: company_view("Medtronic"),
-        "compare": lambda: compare_view(["Medtronic", "Stryker"]),
+        # The cache key is built from the raw q values, so the priming call must use the shape a browser
+        # sends: one comma-separated string. Passing two list items produced the key "Medtronic|Stryker"
+        # while the page asks for "Medtronic,Stryker" - primed under a name nobody requests.
+        "compare": lambda: compare_view(["Medtronic,Stryker"]),
     })
 
     return router
