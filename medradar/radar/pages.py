@@ -461,7 +461,7 @@ def _field_topics_line(timeline: Any) -> str:
             f'<div class="chips">{chips}</div>')
 
 
-def device_dossier(timeline: Any, *, query: str) -> str:
+def device_dossier(timeline: Any, *, query: str, store: Any = None) -> str:
     refs = timeline.refs
     if not refs:
         body = (f'<h1>没有找到「{esc(query)}」</h1>'
@@ -584,6 +584,28 @@ def device_dossier(timeline: Any, *, query: str) -> str:
     else:
         paper_html = gap_note(getattr(papers, "gap", "") or "no_paper_mentions_this_device")
 
+    # How big is the same-product-code shelf? DZE holds 321 devices in the cleared-device census, which
+    # is the context a reader wants before treating one registration as the category.
+    shelf = ""
+    try:
+        from .code_census import product_code_census
+
+        # The codes come off the matched device reference and the census off the store the route
+        # already holds; the timeline carries neither, so both are passed in rather than guessed at.
+        codes = [str(c) for c in (getattr(refs[0], "product_codes", None) or [])][:3]
+        census = product_code_census(store) if (codes and store is not None) else {}
+        rows = "".join(
+            f'<span class="chip">{esc(code)}<span class="muted small"> '
+            f'{n(census.get(code) or 0)} 台</span></span>'
+            for code in codes if census.get(code))
+        if rows:
+            shelf = (
+                '<p class="small muted" style="margin-top:8px">同类规模：这些产品码下已关联 510(k) 批文的'
+                f'设备台数 —— {rows}。'
+                '<b>只统计带批文的设备</b>，不等于整个注册表的全部同类产品。</p>')
+    except Exception:  # noqa: BLE001 - a census that fails is a line fewer, not a broken page
+        shelf = ""
+
     gaps = "".join(gap_note(code) for code in dict.fromkeys(timeline.gaps or []))
 
     body = f"""
@@ -594,6 +616,7 @@ def device_dossier(timeline: Any, *, query: str) -> str:
 <div class="chips">{_identifier_chips(head)}</div>
 {_area_line(timeline)}
 {_field_topics_line(timeline)}
+{shelf}
 <div class="grid" style="margin-top:22px">{summary_cards}</div>
 
 <h2>1 · 批文与规格</h2>
@@ -2269,13 +2292,13 @@ def pages_router(service: Any, *, endpoints: Mapping[str, Any] | None = None) ->
                     body=(f'<h1>这台部署没有设备库</h1>'
                           + gap_note("device_not_in_udi_register")),
                     active="device")
+            corpus = service.paths.corpus
+            timeline = build_view(store, query, limit=width, detail_for=1,
+                                  corpus_root=corpus if corpus.is_dir() else None)
             try:
-                corpus = service.paths.corpus
-                timeline = build_view(store, query, limit=width, detail_for=1,
-                                      corpus_root=corpus if corpus.is_dir() else None)
+                return device_dossier(timeline, query=query, store=store)
             finally:
                 store.close()
-            return device_dossier(timeline, query=query)
 
         return HTMLResponse(cached(f"device:{query}:{limit}", 120.0, render))
 

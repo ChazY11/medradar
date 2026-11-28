@@ -8,12 +8,36 @@ This module exists so both the pipeline and any future caller share one implemen
 """
 from __future__ import annotations
 
+import os
+
 import json
 from typing import Any
 
 
+#: Census results by (database path, mtime, size). One call is 167 ms on the live store - fine once,
+#: wasteful on every device page - and the answer cannot change until the register is rewritten, which
+#: moves the mtime.
+_CENSUS_CACHE: dict[tuple[str, float, int], dict[str, int]] = {}
+
+
 def product_code_census(reference) -> dict[str, int]:
     """How many registered devices sit behind each product code, in one JOIN."""
+    try:
+        path = str(reference.path)
+        key = (path, os.path.getmtime(path), os.path.getsize(path))
+        cached_census = _CENSUS_CACHE.get(key)
+        if cached_census is not None:
+            return cached_census
+    except Exception:  # noqa: BLE001 - no path, no mtime, no cache; the census still runs
+        key = None
+    result = _census_uncached(reference)
+    if key is not None:
+        _CENSUS_CACHE.clear()
+        _CENSUS_CACHE[key] = result
+    return result
+
+
+def _census_uncached(reference) -> dict[str, int]:
     counts: dict[str, int] = {}
     cursor = reference.conn.execute(
         """
