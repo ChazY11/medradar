@@ -167,5 +167,55 @@ echo "$(date -Is) failure sweep"
 tail -2 $WORK/step_sweep.log
 mark "failure sweep" ok "$(grab '"swept": [0-9]+' $WORK/step_sweep.log)"
 
+# The radar lane and the field index are two pipelines that only met by hand until round 98: `radar run`
+# recorded papers into the ledger, the field pages read this directory, and nothing carried one into the
+# other. Measured 2026-11-28: 190 observed records carried a PMCID and none was in the corpus.
+#
+# The chain is now a step: collect, fetch the full text of what was observed, index it, and link each paper
+# to the field whose query found it. Every part is bounded and idempotent - a paper already in the corpus
+# is skipped, and a link is a no-op the second time.
+echo "[$(date -Is)] radar observation pass"
+"$PY" -m medradar radar run --source europepmc --no-ai > $WORK/step_radar.log 2>&1 || true
+tail -2 $WORK/step_radar.log
+mark "radar run" ok "$(grep -cE '^europepmc' $WORK/step_radar.log 2>/dev/null || echo 0) source line(s)"
+
+# Which PMCIDs the ledger has observed but the corpus does not hold. Capped at forty: the Open Access
+# mirror is fast but this runs on the same night as everything else.
+echo "[$(date -Is)] observed full text"
+OBSERVED=$(MEDRADAR_RADAR_DIR=${MEDRADAR_RADAR_DIR:-/srv/medradar/data/radar} "$PY" - "$OUT" <<'PYEOF' 2>/dev/null
+import sys
+from pathlib import Path
+from tools.link_observed import observed_papers
+
+out = Path(sys.argv[1])
+ids = [pmcid for group in observed_papers(Path(
+    "/srv/medradar/data/radar/radar.db")).values() for pmcid in group]
+missing = [pmcid for pmcid in dict.fromkeys(ids) if not (out / f"paper_{pmcid}.json").exists()]
+print(",".join(missing[:40]))
+PYEOF
+)
+if [ -n "$OBSERVED" ]; then
+  "$PY" "$REL/tools/fulltext.py" --pmcids "$OBSERVED" --limit 40 --out "$OUT" \
+    > $WORK/step_observed.log 2>&1 || true
+  mark "observed full text" ok "$(grab '"stored":[ ]*[0-9]+' $WORK/step_observed.log) stored"
+else
+  mark "observed full text" ok "nothing new observed"
+fi
+
+echo "[$(date -Is)] index papers"
+"$PY" "$REL/tools/papers_index.py" --corpus "$OUT" \
+  --reference "${MEDRADAR_REFERENCE_DB:-/srv/medradar/reference_slim.db}" \
+  > $WORK/step_index.log 2>&1 || true
+tail -2 $WORK/step_index.log
+mark "paper index" ok "$(grab '"papers_indexed":[ ]*[0-9]+' $WORK/step_index.log) indexed"
+
+echo "[$(date -Is)] link observed papers to fields"
+"$PY" "$REL/tools/link_observed.py" \
+  --radar "${MEDRADAR_RADAR_DIR:-/srv/medradar/data/radar}/radar.db" \
+  --reference "${MEDRADAR_REFERENCE_DB:-/srv/medradar/reference_slim.db}" \
+  > $WORK/step_link.log 2>&1 || true
+tail -2 $WORK/step_link.log
+mark "field links" ok "$(grab 'linked [0-9]+ observations' $WORK/step_link.log) linked"
+
 mark "done" ok "$(ls "$OUT"/*.json 2>/dev/null | wc -l) records"
 exit 0
