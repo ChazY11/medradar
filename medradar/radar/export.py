@@ -143,10 +143,16 @@ def device_markdown(timeline: Any, *, query: str,
     if trend.get("term"):
         lines.append("## 这个领域最近上升的词")
         lines.append("")
-        # No denominator here: the materialised row keeps the term's counts, not the window size, and a
-        # "17/? 篇" reads like a broken number. The field page prints the window; this file prints what it has.
-        lines.append(f"> {trend.get('term')} · 近 90 天有 {trend.get('recent')} 篇用到"
-                     f"（之前一年 {trend.get('baseline')} 篇）· {trend.get('lift')}×"
+        # The share, not just the count: the row now keeps both window sizes, so the file says 17/83 the way the
+        # field page does. An unqualified count invites "17 papers mention it" to be read as a rate.
+        recent_total = int(trend.get("recent_total") or 0)
+        baseline_total = int(trend.get("baseline_total") or 0)
+        recent_text = (f"{int(trend.get('recent') or 0)}/{recent_total} 篇"
+                       if recent_total else f"{int(trend.get('recent') or 0)} 篇")
+        baseline_text = (f"{int(trend.get('baseline') or 0)}/{baseline_total} 篇"
+                         if baseline_total else f"{int(trend.get('baseline') or 0)} 篇")
+        lines.append(f"> {trend.get('term')} · 近 90 天 {recent_text}用到"
+                     f"（之前一年 {baseline_text}）· {trend.get('lift')}×"
                      f" · 算于 {trend.get('computed_at') or '未知'}")
         lines.append("> 这是词频，不是我们的技术判断，也不是对这台设备的评价；只统计我们抓到的这批论文。")
         lines.append("")

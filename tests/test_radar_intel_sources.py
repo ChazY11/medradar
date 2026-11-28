@@ -5877,6 +5877,9 @@ def test_the_index_page_reads_a_materialised_trend_table(tmp_path):
     table = field_trends(store)
     assert table["Dental"]["term"] in {"gingival", "edentulous"}
     assert table["Dental"]["computed_at"] == "2026-11-28"
+    # The window sizes travel with the term, so an export can print a share instead of a bare count.
+    assert table["Dental"]["recent_total"] == 4
+    assert table["Dental"]["baseline_total"] == 4
     store.conn.close()
 
     page = areas_page(data={
@@ -6016,8 +6019,9 @@ def test_a_device_page_shows_what_is_rising_in_its_field(tmp_path):
     path = tmp_path / "dev_trend.db"
     conn = sqlite3.connect(path)
     conn.execute("CREATE TABLE field_trend (specialty TEXT PRIMARY KEY, term TEXT, recent INTEGER,"
-                 " baseline INTEGER, lift REAL, computed_at TEXT)")
-    conn.execute("INSERT INTO field_trend VALUES ('Dental','gingival',17,1,14.53,'2026-11-28')")
+                 " baseline INTEGER, lift REAL, computed_at TEXT,"
+                 " recent_total INTEGER, baseline_total INTEGER)")
+    conn.execute("INSERT INTO field_trend VALUES ('Dental','gingival',17,1,14.53,'2026-11-28',83,35)")
     conn.commit()
     conn.close()
 
@@ -6037,6 +6041,7 @@ def test_a_device_page_shows_what_is_rising_in_its_field(tmp_path):
     assert "这个领域最近上升的词" in line
     assert "gingival" in line
     assert "算于 2026-11-28" in line                  # the table's own stamp travels with it
+    assert "17/83 篇" in line                          # the share, not a bare count
     assert "词频不是技术判断" in line
 
     # Without a store or a table the chips still render; the trend line is simply absent.
@@ -6077,7 +6082,11 @@ def test_the_device_export_carries_the_rising_term_with_its_bound():
     # No denominator in the file: the materialised row does not keep the window size, and "17/? 篇" reads
     # like a broken number.
     assert "17/?" not in markdown
-    assert "近 90 天有 17 篇用到" in markdown
+    # Without a stored window size the file says a count; with it, it says a share.
+    assert "近 90 天 17 篇用到" in markdown
+    with_total = export_mod.device_markdown(
+        Timeline(), query="K1", emerging={**emerging, "recent_total": 83, "baseline_total": 35})
+    assert "近 90 天 17/83 篇用到（之前一年 1/35 篇）" in with_total
     assert "算于 2026-11-28" in markdown
     # The bound a forwarded file needs, in the same paragraph as the number.
     assert "不是对这台设备的评价" in markdown

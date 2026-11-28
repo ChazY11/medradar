@@ -469,9 +469,12 @@ def _field_topics_line(timeline: Any, store: Any = None) -> str:
     except Exception:  # noqa: BLE001 - no table, no line
         entry = {}
     if entry.get("term"):
+        total = int(entry.get("recent_total") or 0)
+        share = (f' {int(entry.get("recent") or 0)}/{total} 篇' if total
+                 else f' {int(entry.get("recent") or 0)} 篇')
         trend = (f'<p class="small">这个领域最近上升的词：'
                  f'<a href="/area?name={esc(specialty)}">{esc(str(entry.get("term")))}</a>'
-                 f'<span class="muted small"> {esc(str(entry.get("lift")))}× · 算于 '
+                 f'<span class="muted small">{share} · {esc(str(entry.get("lift")))}× · 算于 '
                  f'{esc(str(entry.get("computed_at")) or "未知")} · 词频不是技术判断</span></p>')
     return (f'<p class="small" style="margin:10px 0 0">'
             f'<b>{esc(specialty)}</b> 这个领域的文献在谈什么'
@@ -2204,8 +2207,11 @@ def areas_page(*, data: Mapping[str, Any]) -> str:
         term = str(entry.get("term") or "")
         if not term:
             return '<span class="muted small">无</span>' if entry else '<span class="muted">—</span>'
+        total = int(entry.get("recent_total") or 0)
+        share = (f' {int(entry.get("recent") or 0)}/{total} 篇' if total
+                 else f' {int(entry.get("recent") or 0)} 篇')
         return (f'<a href="/area?name={esc(specialty)}">{esc(term)}</a>'
-                f'<span class="muted small"> {int(entry.get("lift") or 0)}×</span>')
+                f'<span class="muted small">{share} · {int(entry.get("lift") or 0)}×</span>')
 
     def lit_cell(specialty: str) -> str:
         """What the literature lane has done for this field - and nothing it has not.
@@ -3269,9 +3275,9 @@ def pages_router(service: Any, *, endpoints: Mapping[str, Any] | None = None) ->
                     specialty = str(getattr(timeline, "field_specialty", "") or "")
                     row = field_trends(store).get(specialty) if specialty else None
                     if row and row.get("term"):
+                        # The window sizes travel with the row now, so the file prints 17/62 the way the page
+                        # does. Round 114 blanked recent_total here because the table had no such column.
                         emerging = dict(row)
-                        emerging["term"] = row.get("term")
-                        emerging["recent_total"] = None
                 except Exception:  # noqa: BLE001 - one section fewer
                     emerging = {}
                 if format == "md":
