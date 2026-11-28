@@ -6178,6 +6178,35 @@ def test_the_areas_export_carries_the_order_and_the_trend():
     assert [item["specialty"] for item in order_area_items(items, "trend", trends=trends)] == ["Dental"]
 
 
+def test_a_field_page_says_where_it_sits_in_the_trend_order(tmp_path):
+    """"Is 14x a lot?" is the question a single field page provokes and cannot answer alone."""
+    from medradar.radar.pages import _emerging_block
+    from medradar.radar.paper_passes import trend_rank
+
+    trends = {
+        "Dental": {"term": "gingival", "recent": 17, "recent_total": 62, "lift": 14.53},
+        "Radiology": {"term": "microcatheter", "recent": 7, "recent_total": 80, "lift": 2.89},
+        # Below the threshold: every other surface warns about it, so it must not be ranked.
+        "Orthopedic": {"term": "centrifuge", "recent": 3, "recent_total": 40, "lift": 4.95},
+    }
+    dental = trend_rank(trends, "Dental", min_total=60)
+    assert dental["rank"] == 1 and dental["of"] == 2
+    assert trend_rank(trends, "Radiology", min_total=60)["rank"] == 2
+    ortho = trend_rank(trends, "Orthopedic", min_total=60)
+    assert ortho["rank"] is None                     # not ranked, and it says why
+    assert trend_rank(trends, "Neurology", min_total=60)["rank"] is None
+
+    ranked = _emerging_block({"terms": [{"term": "gingival", "recent": 17, "baseline": 1,
+                                         "lift": 14.53}], "new": [], "recent": 62,
+                              "baseline": 53, "until": "2026-11-28"}, dental)
+    assert "第 1" in ranked and "/areas?sort=trend" in ranked
+
+    unranked = _emerging_block({"terms": [{"term": "centrifuge", "recent": 3, "baseline": 1,
+                                           "lift": 4.95}], "new": [], "recent": 40,
+                                "baseline": 66}, ortho)
+    assert "不参与排名" in unranked
+
+
 def test_a_pre_digitisation_filing_is_never_requested(tmp_path):
     """Measured: 0 of 60 sampled filings from 1998-2009 have a PDF at any path shape.
 

@@ -329,6 +329,28 @@ def emerging_terms(reference, specialty: str, *, recent_days: int = 90, baseline
 _EMERGING_CACHE: dict[tuple[str, float, str], dict[str, Any]] = {}
 
 
+def trend_rank(trends: Mapping[str, Any], specialty: str,
+               *, min_total: int = 60) -> dict[str, Any]:
+    """Where this field sits when the fields are ordered by how fast their vocabulary is moving.
+
+    The same rule as `order_area_items`: only fields whose recent window reaches `min_total` papers take part,
+    because a small window produces a large lift out of three papers. A field that does not qualify says so -
+    a rank computed against an unreliable lift would be worse than no rank.
+    """
+    eligible = {name: row for name, row in (trends or {}).items()
+                if str(row.get("term") or "") and int(row.get("recent_total") or 0) >= min_total}
+    if str(specialty) not in eligible:
+        row = (trends or {}).get(str(specialty)) or {}
+        return {"rank": None, "of": len(eligible), "lift": row.get("lift"),
+                "recent_total": int(row.get("recent_total") or 0), "min_total": min_total}
+    ordered = sorted(eligible.items(), key=lambda item: -float(item[1].get("lift") or 0))
+    names = [name for name, _row in ordered]
+    return {"rank": names.index(str(specialty)) + 1, "of": len(eligible),
+            "lift": eligible[str(specialty)].get("lift"),
+            "recent_total": int(eligible[str(specialty)].get("recent_total") or 0),
+            "min_total": min_total}
+
+
 def recent_publications(reference, *, days: int = 14, per_field: int = 3,
                         max_fields: int = 8, today: str | None = None) -> dict[str, Any]:
     """What has been published in each field in the last few days.
