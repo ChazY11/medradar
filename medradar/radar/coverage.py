@@ -114,6 +114,12 @@ def source_health(service: Any) -> dict[str, Any]:
             "last_success": last_success,
             "hours_since_success": hours,
             "consecutive_failures": int(row.get("consecutive_failures") or 0),
+            # A failure counter only ever grows: it never resets until a run succeeds, so "1,143 failures"
+            # reads as "broken now" even when the last attempt was hours ago and the endpoint has since
+            # recovered (measured 2026-11-28: europepmc showed 1,143 while the same query answered 200 from
+            # this host). The watermark is the number a reader actually needs - how current is the data.
+            "last_failure_at": row.get("last_failure_at"),
+            "watermark": row.get("watermark"),
             "reason": str(row.get("last_failure_message") or row.get("access_reason") or ""),
             "access_state": str(row.get("access_state") or ""),
             "observations": int(row.get("observations_total") or 0),

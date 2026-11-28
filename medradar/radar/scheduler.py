@@ -198,7 +198,13 @@ class RadarScheduler:
                 # A missing flag means "unknown", which is treated as retryable - the conservative side.
                 if flag is not None and not int(flag):
                     return elapsed >= 24 * 3600
-            # Retry a *transient* failure sooner, but never faster than every 15 minutes.
+                # Repeated 503s are a rate limit, not a blip. Measured 2026-11-28: europepmc answered a
+                # single request 200 (three times, twelve times, sixteen parallel) while the scheduler,
+                # firing eight queries every five minutes, recorded 1,147 failures. Backing off is the
+                # only action that can work; retrying more often is what produced the number.
+                if failures >= 3 and str(latest[0].get("kind") or "") == "HTTP_ERROR":
+                    return elapsed >= min(24.0, max(0.5, cadence * (1 + failures / 10.0))) * 3600
+            # A one-off transient failure is retried sooner, but never faster than every 15 minutes.
             cadence = min(cadence, max(0.25, cadence / max(1, failures)))
         return elapsed >= cadence * 3600
 

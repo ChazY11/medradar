@@ -5392,6 +5392,14 @@ def test_a_source_that_cannot_succeed_is_not_retried_every_five_minutes(tmp_path
     # A transient failure keeps the old behaviour and is retried sooner.
     assert scheduler._is_due("europepmc") is True
 
+    # But a repeated 503 is a rate limit: back off instead of firing more often.
+    class RateLimitedLedger(FakeLedger):
+        def failures(self, *, source=None, limit=20):
+            return [{"retryable": 1, "kind": "HTTP_ERROR"}]
+
+    scheduler.ledger = RateLimitedLedger(1)
+    assert scheduler._is_due("europepmc") is False     # 500 failures -> capped hold
+
 
 def test_a_pre_digitisation_filing_is_never_requested(tmp_path):
     """Measured: 0 of 60 sampled filings from 1998-2009 have a PDF at any path shape.

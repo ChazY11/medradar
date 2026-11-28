@@ -785,12 +785,29 @@ def sources_page(*, meta: Mapping[str, Any], coverage: Mapping[str, Any] | None 
             status, "var(--bad)") if status in {"OK", "WARN", "STALE"} else "var(--bad)"
         return f'<span style="color:{colour};font-weight:600">{esc(status)}</span>'
 
+    def _watermark_cell(item: Mapping[str, Any]) -> str:
+        """How current the data is, in the source's own clock.
+
+        A failure counter only grows - it never resets until a run succeeds - so "1,143 次" reads as
+        "broken right now" long after the endpoint has recovered (measured 2026-11-28: europepmc showed
+        1,143 while the identical query answered 200 from this host). The watermark is the number that
+        answers the reader's real question: how far has this source reached?
+        """
+        stamp = str(item.get("watermark") or "")[:10]
+        if stamp:
+            return f'<td class="num small">{esc(stamp)}</td>'
+        return '<td class="num muted small">—</td>'
+
     health_table = "".join(
         f'<tr><td>{esc(item.get("source_id"))}</td><td>{_status_chip(str(item.get("status")))}</td>'
-        f'<td class="num">{n(item.get("consecutive_failures"))}</td>'
+        f'<td class="num">{n(item.get("consecutive_failures"))}'
+        + (f'<span class="muted small"> 自 {esc(str(item.get("last_failure_at"))[:16])}</span>'
+           if item.get("last_failure_at") and int(item.get("consecutive_failures") or 0) else "")
+        + f'</td>'
         f'<td class="num">{esc(str(item.get("hours_since_success") or "—")[:6])}</td>'
         f'<td>{esc(str(item.get("last_success") or "从未成功")[:19])}</td>'
-        f'<td class="muted small">{esc(str(item.get("reason") or "")[:70])}</td></tr>'
+        + _watermark_cell(item)
+        + f'<td class="muted small">{esc(str(item.get("reason") or "")[:70])}</td></tr>'
         for item in health_rows)
     # The banner is the whole point: a frozen graph that looks alive is the failure mode here.
     if health.get("stale"):
@@ -805,7 +822,7 @@ def sources_page(*, meta: Mapping[str, Any], coverage: Mapping[str, Any] | None 
                   f'台账打不开（{esc(str(health.get("reason") or "原因未记录"))}），'
                   f'所以无法判断图谱数据是否新鲜。</div>')
     health_block = (f'<div class="card"><table><thead><tr><th>源</th><th>状态</th>'
-                    f'<th>连续失败</th><th>距上次成功(h)</th><th>最后成功</th><th>原因</th>'
+                    f'<th>连续失败</th><th>距上次成功(h)</th><th>最后成功</th><th>数据到</th><th>原因</th>'
                     f'</tr></thead><tbody>{health_table}</tbody></table></div>'
                     if health_table else gap_note("radar_health_unavailable"))
 
@@ -847,7 +864,9 @@ def sources_page(*, meta: Mapping[str, Any], coverage: Mapping[str, Any] | None 
 <div class="card"><ul class="small">{gap_items}</ul></div>
 {tunnel_block}
 <h2>雷达源</h2>
-<p class="muted small">每个源的最近一次成功、连续失败次数与失败原因。状态读自台账，不推断。</p>
+<p class="muted small">每个源的最近一次成功、连续失败次数、<b>数据抓到哪一天</b>与失败原因。状态读自台账，不推断。
+连续失败次数只增不减，直到有一次成功才归零——它说明"这个源最近不好用"，不等于"现在坏了"；
+判断新鲜度看「数据到」那一列。</p>
 {health_block}
 {sources_block}
 <h2>明确不做的事</h2>
