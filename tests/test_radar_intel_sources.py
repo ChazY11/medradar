@@ -5137,6 +5137,25 @@ def test_the_field_exports_carry_the_recency_column():
     assert "| — |" in areas_markdown(items)
 
 
+def test_a_field_page_states_its_own_recency_share():
+    """/areas sorts by 近 90 天占比; the field page says its own, in the same units."""
+    from medradar.radar.pages import area_page
+
+    data = {"field_monthly": [{"ym": "2026-%02d" % m, "n": m * 3} for m in range(1, 7)],
+            "field_recency": {"held": 120, "recent": 68, "pct": 57}}
+    page = area_page(specialty="Dental",
+                     summary={"specialty": "Dental", "codes": 295, "devices": 1, "companies": 1},
+                     companies=[], data=data)
+    assert "其中近 90 天发表 68 篇（57%）" in page
+    # The same bound as the list page: a capped corpus makes this density, not output.
+    assert "衡量的是产出密度，不是产量" in page
+
+    plain = area_page(specialty="X",
+                      summary={"specialty": "X", "codes": 1, "devices": 1, "companies": 1},
+                      companies=[], data={"field_monthly": [{"ym": "2026-01", "n": 1}]})
+    assert "近 90 天发表" not in plain
+
+
 def test_a_pre_digitisation_filing_is_never_requested(tmp_path):
     """Measured: 0 of 60 sampled filings from 1998-2009 have a PDF at any path shape.
 

@@ -2202,10 +2202,18 @@ def area_page(*, specialty: str, summary: Mapping[str, Any] | None,
             f' title="{esc(str(item.get("ym")))}：{n(item.get("n"))} 篇"></div>'
             f'<span class="muted small">{esc(str(item.get("ym"))[2:])}</span></div>'
             for item in monthly)
+        # The same measure /areas sorts by, stated here so the field page answers "is this field busy"
+        # without the reader going back to the list.
+        recent_note = ""
+        recency = data.get("field_recency") or {}
+        if recency:
+            recent_note = (f'其中近 90 天发表 {n(int(recency.get("recent") or 0))} 篇'
+                           f'（{int(recency.get("pct") or 0)}%）——'
+                           '每个领域我们只保留最新的 120 篇，这个比例衡量的是产出密度，不是产量。')
         monthly_block = (
             '<h2>按月分布</h2>'
             f'<p class="muted small">本领域已归档论文按发表日期统计，近 {n(len(monthly))} 个月，'
-            f'最高一个月 {n(peak)} 篇。'
+            f'最高一个月 {n(peak)} 篇。{recent_note}'
             '<b>这反映的是我们这批论文的发表时间</b>，不是该领域的总发表量——'
             '语料是一轮抓取的结果，年份集中在抓取时可见的近几年。</p>'
             f'<div class="months">{bars}</div>')
@@ -3010,12 +3018,21 @@ def pages_router(service: Any, *, endpoints: Mapping[str, Any] | None = None) ->
                         field_failures = failure_shape(store, resolved_name)
                     except Exception:  # noqa: BLE001 - no failure index is a stated gap
                         field_failures = {}
+                    # The same measure /areas sorts by, computed once per field page (5 ms).
+                    field_recency: dict[str, Any] = {}
+                    try:
+                        from .paper_passes import recency_by_specialty
+
+                        field_recency = recency_by_specialty(store).get(resolved_name) or {}
+                    except Exception:  # noqa: BLE001 - no literature is an empty note
+                        field_recency = {}
             finally:
                 store.close()
             return area_page(specialty=resolved_name, summary=summary, companies=companies,
                              data={"field_topics": field_topics, "field_papers": field_papers,
                                    "field_recent": field_recent, "field_monthly": field_monthly,
                                    "field_failures": field_failures,
+                                   "field_recency": field_recency,
                                    "resolved_from": resolved_from})
 
         return HTMLResponse(cached(f"area:{name}", 300.0, render))
