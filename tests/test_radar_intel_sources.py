@@ -5785,8 +5785,13 @@ def test_rising_terms_compare_two_windows_by_share_not_volume(tmp_path):
     # the list before this, which reads as a broken feature.
     from medradar.radar.papers_index import FUNCTION_WORDS
 
+    from medradar.radar.papers_index import METHOD_WORDS
+
     for item in result["terms"]:
         assert item["term"] not in FUNCTION_WORDS
+        # Method vocabulary cannot be a research direction. Measured 2026-11-28: "sequential" rose in three
+        # fields, so an "appears in 10+ fields" rule never catches it.
+        assert item["term"] not in METHOD_WORDS
     # Forward-dated records must not count as "recent".
     assert all(item["recent"] <= 4 for item in result["terms"])
     store.conn.close()

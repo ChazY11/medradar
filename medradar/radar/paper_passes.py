@@ -280,14 +280,14 @@ def emerging_terms(reference, specialty: str, *, recent_days: int = 90, baseline
     # "multiple 32x", "factors 30.8x", "effect 29x" - generic English that says nothing about the field, and
     # a reader would rightly stop trusting the block. Measured 2026-11-28 on Dental: those five words were
     # the entire first screen.
-    from .papers_index import FUNCTION_WORDS, is_generic, term_field_spread
+    from .papers_index import FUNCTION_WORDS, METHOD_WORDS, is_generic, term_field_spread
 
     spread = term_field_spread(reference)
     terms: list[dict[str, Any]] = []
     for term, recent_n in recent_counts.items():
         if recent_n < 3:
             continue
-        if term in FUNCTION_WORDS or is_generic(term, spread):
+        if term in FUNCTION_WORDS or term in METHOD_WORDS or is_generic(term, spread):
             continue
         # "1272" is not a word, and a 3-of-40 term is noise rather than a direction. Measured 2026-11-28:
         # Orthopedic (40 recent papers) produced "1272 4.95x", "spark 4.95x", "quanta 4.95x" - all artefacts

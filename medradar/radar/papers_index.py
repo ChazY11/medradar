@@ -146,6 +146,30 @@ def _store_key(reference) -> tuple[str, float] | None:
 _TOKEN = re.compile(r"[a-z0-9][a-z0-9\-]{2,}", re.IGNORECASE)
 
 
+#: Method and statistics vocabulary, plus corpus artefacts that are not terms at all.
+#
+# Anything in here describes *how* a paper was done rather than what it is about, so it cannot be a
+# research direction. The field-spread filter cannot catch these: measured 2026-11-28 across all 20 fields,
+# "sequential" rose in three of them and nothing else rose in more than three, so a "appears in 10+ fields"
+# rule never fires. This list is evidence-led - every word here was seen in a real rising-terms list - and
+# short on purpose: a word wrongly listed hides a real signal, so borderline entries stay out.
+METHOD_WORDS = frozenset({
+    # how it was measured
+    "sequential", "sequent", "retrospective", "prospective", "longitudinal", "crosssectional",
+    "randomised", "randomized", "multivariate", "univariate", "logistic", "regression", "significance",
+    "statistically", "scoring", "score", "scores", "grading", "grade", "classification",
+    "sensitivity", "specificity", "blinded", "placebo", "followup", "follow",
+    # what a paper has
+    "study", "studies", "trial", "trials", "cohort", "patients", "subjects", "cases", "group", "groups",
+    "baseline", "outcome", "outcomes", "endpoint", "endpoints", "results", "methods", "conclusion",
+    "background", "objective", "purpose", "aim", "review", "analysis", "analyses", "evaluated",
+    "assessed", "performed", "included", "observed", "reported", "compared", "comparison", "versus",
+    "respectively", "however", "therefore", "although", "further", "additional", "current", "recent",
+    # corpus artefacts: line-break hyphenation and affiliation names
+    "tween", "carlsbad",
+})
+
+
 def tokens(text: str) -> list[str]:
     """Lower-cased alphanumeric tokens of length >= MIN_TOKEN, de-duplicated in order."""
     seen: dict[str, None] = {}
