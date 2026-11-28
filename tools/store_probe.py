@@ -92,6 +92,7 @@ def _paths() -> dict[str, Callable[[Any], Any]]:
         # What the device page actually does: read, then ask the table its state when the answer is empty.
         # Kept separate from the raw read so the difference is visible rather than assumed.
         "device:peers(page)": lambda store: _peers_as_the_page_does(store, leaders_for),
+        "home:counts(page)": lambda store: _counts_as_the_page_does(store),
         "radar:recent": lambda store: recent_publications(store, days=14, today="2026-11-28"),
         "radar:recent(page)": lambda store: _recent_as_the_page_does(store, recent_publications),
     }
@@ -105,15 +106,32 @@ BREAKAGES: dict[str, tuple[str, str]] = {
     # `specialty` is the column the recent-window query joins on; `added_at` is not read by it at all, and a
     # breakage of a column nobody selects proves nothing.
     "paper_field": ("specialty", "specialty_moved"),
+    "store_stats": ("value", "value_moved"),
 }
 
 #: Which path reads which table, so a breakage is only judged against the paths that use it.
 READERS: dict[str, tuple[str, ...]] = {
     "specialty_stats": ("areas:sizes",),
+    "store_stats": ("home:counts(page)",),
     "field_trend": ("areas:trends", "areas:trends(page)"),
     "code_leader": ("device:peers", "device:peers(page)"),
     "paper_field": ("radar:recent", "radar:recent(page)"),
 }
+
+
+def _counts_as_the_page_does(store: Any) -> dict[str, Any]:
+    """The home page's materialised counts, with the table's own reason when it cannot be read."""
+    from medradar.radar.materialised import table_status
+    from medradar.radar.store_stats import read
+
+    try:
+        stored = read(store)
+    except Exception as error:  # noqa: BLE001 - the page falls back to counting live
+        state = table_status(store, "store_stats")
+        if state.get("present") and not state.get("readable"):
+            return {"gap": str(state.get("error") or type(error).__name__)}
+        return {"gap": "store_stats_absent"}
+    return dict(stored or {})
 
 
 def _recent_as_the_page_does(store: Any, recent_publications: Any) -> dict[str, Any]:

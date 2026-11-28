@@ -7031,7 +7031,26 @@ def test_the_store_probe_says_whether_a_page_went_silent():
     assert page_level and all(row["verdict"] != "silent" for row in page_level)
     # Every table's page-level path is covered, not only the two that existed when the tool was written.
     covered = {row["table"] for row in page_level}
-    assert {"field_trend", "code_leader", "paper_field"} <= covered
+    assert {"field_trend", "code_leader", "paper_field", "store_stats"} <= covered
+
+
+def test_the_home_counts_say_why_they_fell_back_to_counting_live():
+    """store_stats broken used to print "还没有物化" - a different problem with a different fix."""
+    from medradar.radar.pages import sources_page
+
+    base = {"datasets": [], "shape": {}, "gaps": [], "nightly": {}}
+    broken = sources_page(meta={}, coverage=dict(base, counts_error="no such column: value"),
+                          tunnel={})
+    assert "库存计数读不出来" in broken
+    assert "no such column: value" in broken
+    assert "还没有物化" not in broken
+
+    absent = sources_page(meta={}, coverage=dict(base), tunnel={})
+    assert "还没有物化" in absent
+    assert "读不出来" not in absent
+
+    healthy = sources_page(meta={}, coverage=dict(base, updated_at="2026-11-28T09:00:00"), tunnel={})
+    assert "库存计数更新于" in healthy
 
 
 def test_a_pre_digitisation_filing_is_never_requested(tmp_path):

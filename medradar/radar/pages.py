@@ -997,7 +997,10 @@ def sources_page(*, meta: Mapping[str, Any], coverage: Mapping[str, Any] | None 
     stamp = (f'<p class="small muted">库存计数更新于 {esc(str(data.get("updated_at"))[:16])}，'
              f'与首页同一份，所以两边不会互相矛盾。</p>'
              if data.get("updated_at") else
-             '<p class="small muted">库存计数还没有物化，本次为实时统计。</p>')
+             ('<p class="small muted">库存计数读不出来（' + esc(str(data.get("counts_error") or "")[:70])
+              + '），本次为实时统计——数字仍是对的，只是慢。</p>'
+              if data.get("counts_error") else
+              '<p class="small muted">库存计数还没有物化，本次为实时统计。</p>'))
 
     body = f"""
 <h1>数据覆盖</h1>
@@ -3508,6 +3511,13 @@ def pages_router(service: Any, *, endpoints: Mapping[str, Any] | None = None) ->
                 if store is not None:
                     data = dict(data or {})
                     data["materialised"] = materialised_status(store)
+                    # "Not materialised" and "materialised but unreadable" are different sentences; the first
+                    # version printed the former for both.
+                    from .materialised import table_status as _one_state
+
+                    _counts_state = _one_state(store, "store_stats")
+                    if _counts_state.get("present") and not _counts_state.get("readable"):
+                        data["counts_error"] = str(_counts_state.get("error") or "store_stats_unreadable")
                     # The nightly's store probe, written beside the counts.
                     try:
                         radar_dir = getattr(service, "radar_dir", None) or os.environ.get("MEDRADAR_RADAR_DIR")
