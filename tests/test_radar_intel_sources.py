@@ -4900,6 +4900,43 @@ def test_the_company_and_compare_exports_carry_the_new_sections():
     assert cmp_md.index("| 注册设备 |") < cmp_md.index("## 品牌报告（名称匹配）")
 
 
+def test_the_device_export_carries_the_shelf_as_a_sentence_and_as_a_column():
+    """The page has shown the shelf since round 68; a forwarded file showed one device and no context."""
+    from medradar.radar.export import device_csv, device_markdown
+
+    class Ref:
+        device_key = "k"
+        brand_name = "ARUM"
+        version_or_model = "NB1"
+        company_name = "ACME"
+        di = "08800055700571"
+        labeler_duns = "1"
+        product_codes = ["DZE", "KTT"]
+
+    class Timeline:
+        refs = [Ref()]
+        clearances: dict = {}
+        specs: dict = {}
+        failures: dict = {}
+        trials: dict = {}
+        patents: dict = {}
+        papers: dict = {}
+        gaps: list = []
+
+    md = device_markdown(Timeline(), query="K213506", shelf={"DZE": 321, "KTT": 124})
+    assert "同类规模" in md
+    assert "DZE 321 台" in md
+    assert "只统计带批文的设备" in md          # the bound, inside the document
+
+    rows = device_csv(Timeline(), query="K213506", shelf={"DZE": 321, "KTT": 124})
+    header = rows.splitlines()[0]
+    assert "code_devices" in header             # a machine reads a column, not a sentence
+    assert "DZE:321" in rows
+
+    # No census, no claim.
+    assert "同类规模" not in device_markdown(Timeline(), query="x", shelf={})
+
+
 def test_a_pre_digitisation_filing_is_never_requested(tmp_path):
     """Measured: 0 of 60 sampled filings from 1998-2009 have a PDF at any path shape.
 

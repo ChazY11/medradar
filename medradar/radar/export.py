@@ -39,7 +39,8 @@ def _gap(code: str) -> str:
     return f"`{code}` — {GAP_TEXT.get(code, code)}"
 
 
-def device_markdown(timeline: Any, *, query: str) -> str:
+def device_markdown(timeline: Any, *, query: str,
+                    shelf: Mapping[str, int] | None = None) -> str:
     refs = timeline.refs
     lines: list[str] = []
     if not refs:
@@ -64,6 +65,17 @@ def device_markdown(timeline: Any, *, query: str) -> str:
     lines.append(f"> 导出于 {_stamp()}。{SOURCE_LINE}")
     lines.append("> 每个空缺都写明原因：「没有数据」和「查过确实没有」不是一回事。")
     lines.append("")
+
+    # The shelf the device sits on. The page has shown this since round 68 and the file never did, so a
+    # reader who received the file saw one registration with no sense of the category.
+    shelf = dict(shelf or {})
+    owned = [(str(code), int(shelf.get(str(code)) or 0))
+             for code in (getattr(head, "product_codes", None) or []) if int(shelf.get(str(code)) or 0)]
+    if owned:
+        listed = " · ".join(f"{code} {count:,} 台" for code, count in owned[:3])
+        lines.append("> 同类规模：这些产品码下已关联 510(k) 批文的设备台数 —— "
+                     f"{listed}。**只统计带批文的设备**，不等于整个注册表的全部同类产品。")
+        lines.append("")
 
     lines.append("## 1 · 批文与规格")
     lines.append("")
@@ -133,12 +145,14 @@ def device_markdown(timeline: Any, *, query: str) -> str:
     return "\n".join(lines)
 
 
-def device_csv(timeline: Any, *, query: str) -> str:
+def device_csv(timeline: Any, *, query: str, shelf: Mapping[str, int] | None = None) -> str:
     buffer = io.StringIO()
     writer = csv.writer(buffer, lineterminator="\n")
+    # The shelf travels as a column, not a sentence: a CSV is read by a machine as often as by a person.
     writer.writerow(["query", "device_key", "brand", "model", "company", "di", "duns",
-                     "product_codes", "clearances", "specs", "failures", "trials",
+                     "product_codes", "code_devices", "clearances", "specs", "failures", "trials",
                      "patents", "papers", "gaps"])
+    shelf = dict(shelf or {})
     specs_total = sum(int((b or {}).get("count") or 0)
                       for b in (timeline.specs or {}).values())
     for ref in timeline.refs:
@@ -151,6 +165,8 @@ def device_csv(timeline: Any, *, query: str) -> str:
             query, key, ref.brand_name or "", ref.version_or_model or "",
             ref.company_name or "", ref.di or "", ref.labeler_duns or "",
             ";".join(ref.product_codes or []),
+            ";".join(f"{code}:{shelf.get(str(code))}"
+                     for code in (ref.product_codes or []) if shelf.get(str(code))),
             len(timeline.clearances), specs_total,
             int(getattr(failures, "total", 0) or 0) if failures else "",
             int(getattr(trials, "trials", 0) or 0) if trials else "",

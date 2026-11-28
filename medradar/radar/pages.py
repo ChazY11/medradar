@@ -2719,11 +2719,18 @@ def pages_router(service: Any, *, endpoints: Mapping[str, Any] | None = None) ->
                 corpus = service.paths.corpus
                 timeline = build_view(store, q, limit=25,
                                       corpus_root=corpus if corpus.is_dir() else None)
+                shelf: dict[str, int] = {}
+                try:
+                    from .code_census import product_code_census
+
+                    shelf = product_code_census(store)
+                except Exception:  # noqa: BLE001 - no census is a line fewer, not a failed export
+                    shelf = {}
                 if format == "md":
-                    body = export_mod.device_markdown(timeline, query=q)
+                    body = export_mod.device_markdown(timeline, query=q, shelf=shelf)
                     media, suffix = "text/markdown; charset=utf-8", "md"
                 elif format == "csv":
-                    body = export_mod.device_csv(timeline, query=q)
+                    body = export_mod.device_csv(timeline, query=q, shelf=shelf)
                     media, suffix = "text/csv; charset=utf-8", "csv"
                 else:
                     body = export_mod.device_json(timeline, query=q)
