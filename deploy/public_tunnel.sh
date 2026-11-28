@@ -24,11 +24,18 @@
 # A stable address needs a custom domain plan, or a named Cloudflare tunnel plus a domain, or the
 # Lighthouse firewall opened for 443 - all of which are operator actions.
 #
+# Every address change is appended to HISTORY_FILE, one "timestamp<TAB>url" line per change. Measured
+# 2026-11-28: during a reconnect the relay answers 502 for the old address, which looks like a broken
+# site until you know the tunnel re-established. /sources reads this file so the reader can tell the
+# difference between "the tunnel rotated" and "the service is down".
+#
 # The alpha gate stays in front: the tunnel is transport only, and an anonymous request still gets
 # 401 (measured through the public URL, not just on loopback).
 set -u
 TARGET=${TARGET:-127.0.0.1:8791}
 URL_FILE=${URL_FILE:-/srv/medradar/data/radar/public_url.txt}
+HISTORY_FILE=${HISTORY_FILE:-/srv/medradar/data/radar/public_url_history.tsv}
+HISTORY_KEEP=${HISTORY_KEEP:-40}
 
 ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null \
     -o ServerAliveInterval=30 -o ServerAliveCountMax=3 \
@@ -37,7 +44,17 @@ ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null \
   printf '%s %s\n' "$(date -Is)" "$line"
   case "$line" in
     *https://*.lhr.life*)
-      printf '%s\n' "$(printf '%s' "$line" | grep -oE 'https://[a-z0-9]+\.app\.lhr\.life' | head -1)" > "$URL_FILE"
+      NEW_URL=$(printf '%s' "$line" | grep -oE 'https://[a-z0-9]+\.app\.lhr\.life' | head -1)
+      [ -n "$NEW_URL" ] || continue
+      OLD_URL=$(cat "$URL_FILE" 2>/dev/null || true)
+      printf '%s\n' "$NEW_URL" > "$URL_FILE"
+      # Only a real change is history; a reconnect that keeps the same address is not an event.
+      if [ "$NEW_URL" != "$OLD_URL" ]; then
+        printf '%s\t%s\n' "$(date -Is)" "$NEW_URL" >> "$HISTORY_FILE" 2>/dev/null || true
+        # Keep the file small without needing a temp-file dance: tail to a new file, then move.
+        tail -n "$HISTORY_KEEP" "$HISTORY_FILE" > "$HISTORY_FILE.tmp" 2>/dev/null && \
+          mv "$HISTORY_FILE.tmp" "$HISTORY_FILE" 2>/dev/null || true
+      fi
       ;;
   esac
 done

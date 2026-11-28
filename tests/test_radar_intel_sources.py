@@ -5335,6 +5335,37 @@ def test_a_field_page_states_how_much_of_the_corpus_it_speaks_for(tmp_path):
     assert "不是全库" in page
 
 
+def test_the_public_entry_point_is_stated_with_its_rotations(tmp_path):
+    """Round 91 saw 502s during a tunnel reconnect. A reader needs to be able to tell that apart from
+    the service being down, so the address and its rotation history are on the coverage page."""
+    from medradar.radar.pages import sources_page
+    from medradar.radar.tunnel import state
+
+    url_file = tmp_path / "public_url.txt"
+    history = tmp_path / "public_url_history.tsv"
+    url_file.write_text("https://new.app.lhr.life\n", encoding="utf-8")
+    history.write_text("2026-11-28T15:00:00+08:00\thttps://old.app.lhr.life\n"
+                       "2026-11-28T16:00:00+08:00\thttps://new.app.lhr.life\n", encoding="utf-8")
+
+    tunnel = state(url_file, history)
+    assert tunnel["available"] is True
+    assert tunnel["url"].endswith("new.app.lhr.life")
+    assert tunnel["rotations"] == 2
+    assert tunnel["history"][0]["url"].endswith("new.app.lhr.life")   # newest first
+
+    page = sources_page(meta={"sources": []}, coverage={}, tunnel=tunnel)
+    assert "公网入口" in page
+    assert "https://new.app.lhr.life" in page
+    assert "最近记录到 2 次地址变更" in page
+    # The 502 window is explained rather than left as an unexplained error.
+    assert "看起来像站点挂了，其实是在重连" in page
+
+    # No file, no invented address: the gap says why.
+    missing = state(tmp_path / "absent.txt", tmp_path / "absent.tsv")
+    assert missing["available"] is False and missing["url"] == ""
+    assert "隧道没有启动" in sources_page(meta={"sources": []}, coverage={}, tunnel=missing)
+
+
 def test_a_pre_digitisation_filing_is_never_requested(tmp_path):
     """Measured: 0 of 60 sampled filings from 1998-2009 have a PDF at any path shape.
 

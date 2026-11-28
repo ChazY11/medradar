@@ -27,6 +27,8 @@ Design rules, learned from what went wrong
 
 from __future__ import annotations
 
+import os
+
 import html
 import json
 import time
@@ -669,7 +671,8 @@ def device_dossier(timeline: Any, *, query: str, store: Any = None,
     return layout(title=f"{head.brand_name or query} · MedRadar", body=body, active="device")
 
 
-def sources_page(*, meta: Mapping[str, Any], coverage: Mapping[str, Any] | None = None) -> str:
+def sources_page(*, meta: Mapping[str, Any], coverage: Mapping[str, Any] | None = None,
+                 tunnel: Mapping[str, Any] | None = None) -> str:
     """What this deployment holds, how wide each set reaches, and what is still missing.
 
     Rewritten after the first audit found the page printing raw JSON, an empty source table, and a
@@ -714,6 +717,32 @@ def sources_page(*, meta: Mapping[str, Any], coverage: Mapping[str, Any] | None 
                        '第一次记录会在下一个 04:20 之后出现。</p>')
     else:
         night_block = ""
+
+    # The public address rotates, and during a reconnect the relay answers 502. Saying so here turns an
+    # unexplained error into a known event with a timestamp.
+    tunnel_state = dict(tunnel or {})
+    if tunnel_state.get("available"):
+        rotations = int(tunnel_state.get("rotations") or 0)
+        history_rows = "".join(
+            f'<tr><td class="small">{esc(str(item.get("at") or ""))}</td>'
+            f'<td class="small"><code>{esc(str(item.get("url") or ""))}</code></td></tr>'
+            for item in (tunnel_state.get("history") or []))
+        tunnel_block = (
+            '<h2>公网入口</h2>'
+            f'<p class="small">当前地址：<code>{esc(str(tunnel_state.get("url")))}</code></p>'
+            '<p class="muted small">隧道是<b>出站</b> ssh 连接（localhost.run 免费档），'
+            '中继在自己的域名上终结 TLS 再转发到本机 8791。免费档会周期性换子域，'
+            '换的瞬间中继对旧地址回 502——看起来像站点挂了，其实是在重连。'
+            f'最近记录到 {n(rotations)} 次地址变更，下面是最新的几次；'
+            '重连后自动恢复，不需要人工干预。</p>'
+            + (f'<div class="card"><table><thead><tr><th>时间</th><th>新地址</th></tr></thead>'
+               f'<tbody>{history_rows}</tbody></table></div>' if history_rows else
+               '<p class="muted small">还没有记录到地址变更。</p>'))
+    elif tunnel:
+        tunnel_block = ('<h2>公网入口</h2>'
+                        + gap_note("public_url_absent"))
+    else:
+        tunnel_block = ""
 
     def row(label: str, value: Any, note: str = "") -> str:
         return (f'<tr><td>{esc(label)}</td><td class="num">{n(value)}</td>'
@@ -816,6 +845,7 @@ def sources_page(*, meta: Mapping[str, Any], coverage: Mapping[str, Any] | None 
 <tbody>{shape_rows}</tbody></table></div>
 <h2>还没做到的</h2>
 <div class="card"><ul class="small">{gap_items}</ul></div>
+{tunnel_block}
 <h2>雷达源</h2>
 <p class="muted small">每个源的最近一次成功、连续失败次数与失败原因。状态读自台账，不推断。</p>
 {health_block}
@@ -2668,7 +2698,21 @@ def pages_router(service: Any, *, endpoints: Mapping[str, Any] | None = None) ->
                 data["nightly"] = summary_for_page(getattr(service.paths, "radar", None))
             except Exception:  # noqa: BLE001 - a missing ledger is not a page failure
                 pass
-            return sources_page(meta=meta, coverage=data)
+            # The tunnel's own state, from the files its shell script writes. Absent files are reported
+            # as a gap, not as an empty address.
+            try:
+                from .tunnel import state as tunnel_state
+
+                # The service does not carry the radar directory on `paths`; it resolves it once at
+                # startup and exposes it to the app. Asking `paths` returned nothing and the page
+                # printed the "tunnel not started" gap while the tunnel was running.
+                radar_dir = getattr(service, "radar_dir", None) or os.environ.get("MEDRADAR_RADAR_DIR")
+                tunnel = (tunnel_state(Path(str(radar_dir)) / "public_url.txt",
+                                       Path(str(radar_dir)) / "public_url_history.tsv")
+                          if radar_dir else {"available": False})
+            except Exception:  # noqa: BLE001 - the coverage page renders without it
+                tunnel = {"available": False}
+            return sources_page(meta=meta, coverage=data, tunnel=tunnel)
 
         return HTMLResponse(cached("sources", 300.0, render))
 
