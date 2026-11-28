@@ -1495,7 +1495,8 @@ def _company_data(store: Any, query: str, *, snapshot: Mapping[str, Any]) -> dic
 
 
 def compare_page(*, companies: Sequence[Mapping[str, Any]],
-                 substitutions: Mapping[str, str] | None = None) -> str:
+                 substitutions: Mapping[str, str] | None = None,
+                 data_recency: Mapping[str, Mapping[str, Any]] | None = None) -> str:
     """Two to four companies side by side.
 
     Built on the same per-company lookups the dossier uses, not on /api/radar/compare: that endpoint
@@ -1566,6 +1567,44 @@ def compare_page(*, companies: Sequence[Mapping[str, Any]],
     else:
         year_table = ""
     year_block = (f'<h2>注册登记按年</h2>{year_table}' if year_table else "")
+
+    # How active the literature is in the fields each company sits in. A weighted mean over the company's
+    # own product codes, so it answers "is this company's area moving", not "does this company publish".
+    field_recency = data_recency if isinstance(data_recency, Mapping) else {}
+    if field_recency:
+        recency_rows = []
+        for company in found:
+            pairs = [(str(item["specialty"]), int(item["codes"]))
+                     for item in (company.get("specialties") or []) if item.get("codes")]
+            weighted, weight = 0.0, 0
+            for name, codes in pairs:
+                entry = field_recency.get(name) or {}
+                if entry:
+                    weighted += float(entry.get("pct") or 0) * codes
+                    weight += codes
+            if not weight:
+                recency_rows.append(f'<tr><td>{esc(str(company.get("company_name") or ""))}</td>'
+                                    f'<td class="num muted">—</td>'
+                                    f'<td class="muted small">它的产品码没有落在已抓文献的领域里</td></tr>')
+                continue
+            mean = int(round(weighted / weight))
+            top = sorted(((name, field_recency[name]) for name, _ in pairs if name in field_recency),
+                         key=lambda pair: -int(pair[1].get("pct") or 0))[:3]
+            detail = "；".join(f'{esc(name)} {int(entry.get("pct") or 0)}%'
+                              for name, entry in top)
+            recency_rows.append(f'<tr><td>{esc(str(company.get("company_name") or ""))}</td>'
+                                f'<td class="num">{mean}%</td>'
+                                f'<td class="muted small">{detail}</td></tr>')
+        recency_block = (
+            '<h2>所在领域的文献活跃度</h2>'
+            '<div class="card"><table><thead><tr><th>公司</th><th>近 90 天文献占比</th>'
+            '<th>它的主要领域</th></tr></thead>'
+            f'<tbody>{"".join(recency_rows)}</tbody></table></div>'
+            '<p class="muted small">按公司各产品码所在领域的「近 90 天发表占比」加权平均。'
+            '<b>这衡量的是它所在赛道的文献活跃度，不是这家公司的产出</b>：'
+            '一家公司自己发不发论文，这个数字都说明不了；它只说这个领域的近期工作在变多还是变少。</p>')
+    else:
+        recency_block = ""
 
     # What each company's brands have reported. Kept out of the metrics table above, because those are
     # counts of the company's own records while these are name matches into someone else's free text -
@@ -1683,6 +1722,7 @@ def compare_page(*, companies: Sequence[Mapping[str, Any]],
 <h2>规模与产出</h2>
 {table}
 {year_block}
+{recency_block}
 {brand_block}
 <h2>技术领域对比</h2>
 {area_table}
@@ -2684,13 +2724,20 @@ def pages_router(service: Any, *, endpoints: Mapping[str, Any] | None = None) ->
                 return layout(title="设备库不存在 · MedRadar",
                               body=gap_note("device_not_in_udi_register"), active="company")
             snapshot = _snapshot()
+            field_recency: dict[str, Any] = {}
             try:
                 names = _compare_names(store, raw, snapshot)
                 names, substitutions = _resolve_compare_names(store, names, snapshot)
                 data = [_company_data(store, name, snapshot=snapshot) for name in names]
+                # The literature-activity column needs the per-field recency map; 5 ms, computed here
+                # rather than inside the page so the page stays a pure function of its data.
+                from .paper_passes import recency_by_specialty
+
+                field_recency = recency_by_specialty(store)
             finally:
                 store.close()
-            return compare_page(companies=data, substitutions=substitutions)
+            return compare_page(companies=data, substitutions=substitutions,
+                                data_recency=field_recency)
 
         return HTMLResponse(cached(f"compare:{key}", 300.0, render))
 

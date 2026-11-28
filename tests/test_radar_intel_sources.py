@@ -5156,6 +5156,33 @@ def test_a_field_page_states_its_own_recency_share():
     assert "近 90 天发表" not in plain
 
 
+def test_a_comparison_shows_how_active_the_literature_is_in_each_company_area():
+    """Weighted over the company's own product codes, and labelled as the field's activity, not theirs."""
+    from medradar.radar.pages import compare_page
+
+    def company(name, specialties):
+        return {"found": True, "company_name": name, "devices": 100, "clearances": 3, "failures": 0,
+                "trials": 0, "patents": 0, "papers": 0, "brands": [], "product_codes": [],
+                "specialties": specialties, "device_years": []}
+
+    page = compare_page(
+        companies=[company("ACME", [{"specialty": "Orthopedic", "codes": 30},
+                                    {"specialty": "Dental", "codes": 10}]),
+                   company("BETA", [])],
+        data_recency={"Orthopedic": {"held": 120, "recent": 40, "pct": 33},
+                      "Dental": {"held": 120, "recent": 64, "pct": 53}})
+    assert "近 90 天文献占比" in page
+    assert "所在领域的文献活跃度" in page        # an unlabelled table between two sections
+    # (33*30 + 53*10) / 40 = 38
+    assert ">38%<" in page
+    # A company whose codes fall outside the crawled fields says so instead of scoring 0%.
+    assert "它的产品码没有落在已抓文献的领域里" in page
+    # The bound: this is the field's activity, not the company's output.
+    assert "这衡量的是它所在赛道的文献活跃度，不是这家公司的产出" in page
+
+    assert "近 90 天文献占比" not in compare_page(companies=[company("ACME", [])])
+
+
 def test_a_pre_digitisation_filing_is_never_requested(tmp_path):
     """Measured: 0 of 60 sampled filings from 1998-2009 have a PDF at any path shape.
 
