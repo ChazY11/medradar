@@ -34,6 +34,8 @@ DRY_FLAG=""
 RUN=$(MEDRADAR_RADAR_DIR=${MEDRADAR_RADAR_DIR:-/srv/medradar/data/radar} "$PY" "$LOG" start $DRY_FLAG 2>/dev/null || date -Is)
 mark() { MEDRADAR_RADAR_DIR=${MEDRADAR_RADAR_DIR:-/srv/medradar/data/radar} "$PY" "$LOG" mark "$1" "$2" "$RUN" "$3" 2>/dev/null || true; }
 grab() { grep -oE "$1" "$2" 2>/dev/null | head -1 | tr -d '\n'; }
+# The number inside a "key": N pair, for notes that read as prose rather than as JSON.
+num() { grab "$1" "$2" | tr -dc '0-9'; }
 
 # Two crawls must never run at once.
 #
@@ -70,7 +72,10 @@ fi
 echo "[$(date -Is)] preprint pass"
 "$PY" "$REL/tools/fulltext.py" --source preprints --days 21 --limit 200 --out "$OUT" > $WORK/step_preprints.log 2>&1
 tail -12 $WORK/step_preprints.log
-mark "preprints" ok "$(grab '"stored": [0-9]+' $WORK/step_preprints.log)"
+# "stored 0" alone reads as "nothing was published". Measured 2026-11-29: all six candidates from
+# bioRxiv/medRxiv came back 403 after rate limiting, so the night wrote six failure records and no bodies.
+# The note carries the reason, not only the count.
+mark "preprints" ok "$(num '"stored": [0-9]+' $WORK/step_preprints.log) 条入库 · 限流拒绝 $(num '"access_restricted": [0-9]+' $WORK/step_preprints.log) 条（正文抓不到，不是没有新论文）"
 
 # Patents: Google Patents answers in bursts - 12 companies filled 263 patents at 0.5 req/s, and the
 # next batch thirty minutes later returned 503 to every company (measured 2026-11-25). So the job
