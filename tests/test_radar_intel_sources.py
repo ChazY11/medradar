@@ -6330,6 +6330,33 @@ def test_a_paper_miss_distinguishes_a_missing_paper_from_a_non_identifier():
     assert "不在索引里" in short_id and "不像论文编号" not in short_id
 
 
+def test_a_device_miss_distinguishes_an_absent_identifier_from_a_non_identifier():
+    """The same sentence covered "we do not hold this K number" and "zzzzq is not a K number"."""
+    from medradar.radar.pages import _device_id_shape, device_dossier
+
+    assert _device_id_shape("K213506") == "K 号"
+    assert _device_id_shape("k999999") == "K 号"
+    assert _device_id_shape("830350380") == "DUNS"
+    assert _device_id_shape("08800055700571") == "DI"
+    assert _device_id_shape("DZE") == "产品码"
+    assert _device_id_shape("zzzzq") == ""
+    assert _device_id_shape("Medtronic") == ""       # a name, resolved by the register not by shape
+
+    class Timeline:
+        refs: list = []
+        gaps = ["device_not_in_udi_register"]
+
+    identifier = device_dossier(Timeline(), query="K999999")
+    assert "看起来是「K 号」" in identifier
+    # And the bound: absent here is not absent from the FDA.
+    assert "不代表 FDA 从未发出过它" in identifier
+    assert "不像 K 号" not in identifier
+
+    other = device_dossier(Timeline(), query="zzzzq")
+    assert "不像 K 号" in other
+    assert "注册表里没有这个号码" not in other
+
+
 def test_a_pre_digitisation_filing_is_never_requested(tmp_path):
     """Measured: 0 of 60 sampled filings from 1998-2009 have a PDF at any path shape.
 

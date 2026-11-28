@@ -507,13 +507,46 @@ def _suggestion_block(names: Sequence[str]) -> str:
             '<span class="muted small">按名称包含匹配，不是拼写纠正——点一个直接查。</span></div>')
 
 
+def _device_id_shape(text: str) -> str:
+    """Which register identifier this string looks like, if any.
+
+    The miss page said "这个标识不在设备注册表里" for every input - for a K number that genuinely is not in the
+    register, and for "zzzzq", which is not an identifier at all. Those are different statements: one is about
+    coverage, the other about what the box accepts.
+    """
+    import re
+
+    token = text.strip()
+    if re.fullmatch(r"[Kk]\d{6}", token):
+        return "K 号"
+    if re.fullmatch(r"\d{9}", token):
+        return "DUNS"
+    if re.fullmatch(r"\d{14}", token):
+        return "DI"
+    if re.fullmatch(r"[A-Za-z]{3}", token):
+        return "产品码"
+    return ""
+
+
 def device_dossier(timeline: Any, *, query: str, store: Any = None,
                    substituted_from: str = "", suggestions: Sequence[str] = (),
                    routed_from: str = "") -> str:
     refs = timeline.refs
     if not refs:
+        shape = _device_id_shape(query)
+        # Two different misses. An identifier-shaped string that is absent is a coverage statement; anything
+        # else was never an identifier, and "not in the register" would be a claim about nothing.
+        shape_note = (f'<div class="gap"><b>「{esc(query)}」看起来是「{esc(shape)}」，但注册表里没有这个号码。</b>'
+                      '注册表是 FDA 公开文件的镜像，没有这个号码意味着我们这边没有，'
+                      '不代表 FDA 从未发出过它——只说明它不在本次镜像里。</div>'
+                      if shape else
+                      f'<div class="gap"><b>「{esc(query)}」不像 K 号、DI、DUNS 或产品码。</b>'
+                      '已经按型号、品牌和公司名查过，也没有匹配。'
+                      '如果手上是完整注册名（英文），可以直接输入；'
+                      '中文公司名会先经别名表转换，再由公司名反查设备。</div>')
         body = (f'<h1>没有找到「{esc(query)}」</h1>'
                 '<p class="lede">可以输入 K 号、DI、DUNS、型号、品牌或公司名。</p>'
+                + shape_note
                 # A Chinese name cannot match an English legal name, and saying only "not in the
                 # register" leaves the reader thinking the product has never heard of the company.
                 + (_cjk_hint(query, action="/device") if _looks_chinese(query) else "")
