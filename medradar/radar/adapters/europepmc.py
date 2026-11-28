@@ -166,6 +166,14 @@ class EuropePmcAdapter:
         ) or {}
         rows = _results(data)
         records = [record for row in rows if (record := _record(row))]
+        # Which query found this paper, carried with the observation.
+        #
+        # The field index needs that answer to link a paper to a specialty: without it a paper the radar
+        # collected could never appear on a field page (measured 2026-11-28 - 190 observed records with a
+        # PMCID and no way to say which of the twelve queries produced any of them). It is part of what we
+        # observed, so it belongs in the payload rather than in a side table.
+        for record in records:
+            record.payload["medradar_query"] = query_id
         hit_count = int(data.get("hitCount") or 0)
         next_cursor = None
         following = str(data.get("nextCursorMark") or "")

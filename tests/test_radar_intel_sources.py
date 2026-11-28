@@ -5546,6 +5546,62 @@ def test_observed_pmcids_can_be_fetched_by_identity(tmp_path):
     assert stats["stored"] == 2
 
 
+def test_an_observation_records_which_query_found_the_paper():
+    """Without the query, a radar-collected paper can never be linked to a specialty."""
+    import inspect
+
+    from medradar.radar.adapters import europepmc as ep_mod
+
+    source = inspect.getsource(ep_mod)
+    assert 'record.payload["medradar_query"] = query_id' in source
+
+    # And the payload really does carry it through the record's hash, so two queries that find the same
+    # paper are different observations rather than silently identical.
+    from medradar.radar.records import RawRecord
+
+    def record(query: str) -> RawRecord:
+        row = RawRecord(source="europepmc", source_record_id="PMC1", record_type="publication",
+                        title="t", payload={"id": "1"})
+        row.payload["medradar_query"] = query
+        return row
+
+    assert record("respiratory").payload_hash != record("dental").payload_hash
+
+
+def test_observed_papers_are_grouped_by_the_field_their_query_covers(tmp_path):
+    """The query-to-specialty mapping is our editorial statement, so it must be explicit and testable."""
+    import json
+    import sqlite3
+
+    from tools.link_observed import SPECIALTY_BY_QUERY, observed_papers
+
+    assert SPECIALTY_BY_QUERY["cardiovascular_devices"] == "Cardiovascular"
+    assert SPECIALTY_BY_QUERY["respiratory"] == "Anesthesiology"
+
+    path = tmp_path / "radar.db"
+    conn = sqlite3.connect(path)
+    conn.execute("CREATE TABLE observation (observation_id TEXT, source TEXT)")
+    conn.execute("CREATE TABLE observation_version (observation_id TEXT, payload TEXT)")
+    conn.execute("INSERT INTO observation VALUES ('o1','europepmc')")
+    conn.execute("INSERT INTO observation_version VALUES ('o1',?)",
+                 (json.dumps({"pmcid": "PMC1", "medradar_query": "respiratory"}),))
+    conn.execute("INSERT INTO observation VALUES ('o2','europepmc')")
+    conn.execute("INSERT INTO observation_version VALUES ('o2',?)",
+                 (json.dumps({"pmcid": "PMC2", "medradar_query": "respiratory"}),))
+    # No PMCID: a DOI-only record cannot be fetched as full text, so it is not linked.
+    conn.execute("INSERT INTO observation VALUES ('o3','europepmc')")
+    conn.execute("INSERT INTO observation_version VALUES ('o3',?)",
+                 (json.dumps({"pmcid": "", "medradar_query": "respiratory"}),))
+    conn.execute("INSERT INTO observation VALUES ('o4','crossref')")
+    conn.execute("INSERT INTO observation_version VALUES ('o4',?)",
+                 (json.dumps({"pmcid": "PMC9", "medradar_query": "respiratory"}),))
+    conn.commit()
+    conn.close()
+
+    grouped = observed_papers(path)
+    assert grouped == {"Anesthesiology": ["PMC1", "PMC2"]}
+
+
 def test_a_pre_digitisation_filing_is_never_requested(tmp_path):
     """Measured: 0 of 60 sampled filings from 1998-2009 have a PDF at any path shape.
 
