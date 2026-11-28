@@ -785,6 +785,19 @@ def sources_page(*, meta: Mapping[str, Any], coverage: Mapping[str, Any] | None 
             status, "var(--bad)") if status in {"OK", "WARN", "STALE"} else "var(--bad)"
         return f'<span style="color:{colour};font-weight:600">{esc(status)}</span>'
 
+    def _reason_text(value: Any) -> str:
+        """The failure reason, keeping the part that explains it.
+
+        A flat 70-character cut removed exactly the sentence that made a failure diagnosable (measured
+        2026-11-28: the body carried "Search service is temporarily unavailable"). The URL goes first,
+        then the body is kept whole up to a longer limit.
+        """
+        text = str(value or "")
+        if "| body:" in text:
+            head, _, body = text.partition("| body:")
+            text = f"{head.strip()} · {body.strip()}"
+        return text[:160]
+
     def _watermark_cell(item: Mapping[str, Any]) -> str:
         """How current the data is, in the source's own clock.
 
@@ -807,7 +820,7 @@ def sources_page(*, meta: Mapping[str, Any], coverage: Mapping[str, Any] | None 
         f'<td class="num">{esc(str(item.get("hours_since_success") or "—")[:6])}</td>'
         f'<td>{esc(str(item.get("last_success") or "从未成功")[:19])}</td>'
         + _watermark_cell(item)
-        + f'<td class="muted small">{esc(str(item.get("reason") or "")[:70])}</td></tr>'
+        + f'<td class="muted small">{esc(_reason_text(item.get("reason")))}</td></tr>'
         for item in health_rows)
     # The banner is the whole point: a frozen graph that looks alive is the failure mode here.
     if health.get("stale"):
