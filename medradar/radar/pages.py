@@ -1304,6 +1304,33 @@ def _field_codes_block(codes: Mapping[str, Any], specialty: str,
             f'</thead><tbody>{rows}</tbody></table></details>')
 
 
+def _company_rank_block(ranks: Mapping[str, Mapping[str, Any]], codes_total: int) -> str:
+    """Where this company sits inside its own product codes - the other side of the leader board.
+
+    A dossier said how many devices it registered in total; this says whether it is the biggest registrant in
+    the categories it competes in. The table keeps the top five per code, so an absent code means "not in the
+    top five", and the note says that rather than implying it registers nothing there.
+    """
+    rows = dict(ranks or {})
+    if not rows:
+        return ""
+    cells = "".join(
+        f'<tr><td><a href="/device?query={esc(code)}">{esc(code)}</a></td>'
+        f'<td class="num">{n(item.get("rank"))}</td>'
+        f'<td class="num">{n(item.get("devices"))}</td></tr>'
+        for code, item in sorted(rows.items(), key=lambda pair: (pair[1].get("rank") or 99, pair[0])))
+    stamp = str(next(iter(rows.values())).get("computed_at") or "")
+    covered = len(rows)
+    more = (f'这家公司有 {n(codes_total)} 个产品码，其中 {n(covered)} 个进了前 5 名'
+            if codes_total > covered else f'这家公司的 {n(covered)} 个产品码都进了前 5 名')
+    return ('<h2>它在这些产品码里的名次</h2>'
+            f'<p class="muted small">{more}；其余产品码不在前 5 名里，'
+            '<b>不等于它没有注册</b>。按注册设备数排，同一台设备带多个产品码时各码分别计入。'
+            f'{("算于 " + esc(stamp)) if stamp else ""}</p>'
+            f'<div class="card"><table><thead><tr><th>产品码</th><th>名次</th><th>该码下设备数</th>'
+            f'</tr></thead><tbody>{cells}</tbody></table></div>')
+
+
 def _company_trend_line(specialty: str, trend: Mapping[str, Any]) -> str:
     """What is rising in the field this company registers most in.
 
@@ -1569,6 +1596,8 @@ def company_page(*, data: Mapping[str, Any], suggestions: Sequence[str] = ()) ->
 <p class="muted small">按 FDA 产品码分类统计——<b>这是"注册了什么"，不是"发表了什么"</b>，
 和上面那段（科技地图）回答的是不同的问题，不能混用。</p>
 {area_html}
+
+{_company_rank_block(data.get("code_ranks") or {}, len(codes))}
 
 {field_block}
 <h2>3 · 在研试验</h2>
@@ -3456,6 +3485,15 @@ def pages_router(service: Any, *, endpoints: Mapping[str, Any] | None = None) ->
                     data["field_trend"] = (field_trends(store).get(primary) or {}) if primary else {}
                 except Exception:  # noqa: BLE001 - one line fewer
                     data["field_trend"] = {}
+                # Where it sits inside its own product codes, from the leader table.
+                try:
+                    from .code_leaders import ranks_for_company
+
+                    data["code_ranks"] = ranks_for_company(
+                        store, str(data.get("company_name") or q),
+                        list(data.get("product_codes") or [])[:400])
+                except Exception:  # noqa: BLE001 - one block fewer
+                    data["code_ranks"] = {}
                 # A miss used to end at "company_not_in_register" while the register held MEDTRONIC under
                 # a longer legal name. Same net as /device, cheaper to build: 12,392 names in 1.5 s, primed
                 # during warm-up.

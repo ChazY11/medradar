@@ -93,6 +93,34 @@ def leaders_for(reference: Any, codes: Iterable[str], *,
     return out
 
 
+def ranks_for_company(reference: Any, company_name: str,
+                       codes: Iterable[str] | None = None) -> dict[str, dict[str, Any]]:
+    """This company's rank inside each of its own product codes.
+
+    The table keeps the top five per code, so a company outside the top five of a code it registers in is
+    absent - which means "not in the top five", not "not there". The caller says so; this returns only what it
+    knows.
+    """
+    name = str(company_name or "").strip()
+    if not name:
+        return {}
+    params: list[Any] = [name]
+    clause = ""
+    wanted = [str(code) for code in (codes or []) if str(code).strip()]
+    if wanted:
+        clause = f" AND code IN ({','.join('?' for _ in wanted)})"
+        params.extend(wanted)
+    try:
+        rows = reference.conn.execute(
+            "SELECT code, rank, devices, computed_at FROM code_leader"
+            f" WHERE company_name = ? COLLATE NOCASE{clause} ORDER BY rank", tuple(params)).fetchall()
+    except Exception:  # noqa: BLE001 - no table, nothing to rank
+        return {}
+    return {str(code): {"rank": int(rank), "devices": int(devices or 0),
+                        "computed_at": str(stamp or "")}
+            for code, rank, devices, stamp in rows}
+
+
 def status(reference: Any) -> dict[str, Any]:
     """Present, readable, rows, stamp - the same question `materialised.py` asks of every table."""
     try:

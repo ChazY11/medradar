@@ -6886,6 +6886,41 @@ def test_the_field_export_names_each_codes_leader():
     assert "已关联 510(k) 批文的注册条目" in markdown
 
 
+def test_a_company_sees_its_rank_inside_its_own_codes(tmp_path):
+    """The other side of the leader board: a dossier said how much it registered, not whether it leads."""
+    import sqlite3
+
+    from medradar.radar.code_leaders import ranks_for_company
+    from medradar.radar.pages import _company_rank_block
+
+    class Store:
+        def __init__(self, conn):
+            self.conn = conn
+
+    conn = sqlite3.connect(":memory:")
+    conn.execute("CREATE TABLE code_leader (code TEXT, rank INTEGER, company_name TEXT,"
+                 " devices INTEGER, computed_at TEXT)")
+    conn.executemany("INSERT INTO code_leader VALUES (?,?,?,?,?)", [
+        ("DZE", 1, "Acme", 26, "2026-11-28"), ("DZE", 2, "Beta", 24, "2026-11-28"),
+        ("EIH", 3, "ACME", 5, "2026-11-28"), ("NHA", 1, "Gamma", 57, "2026-11-28")])
+    store = Store(conn)
+
+    ranks = ranks_for_company(store, "Acme")     # case-insensitive
+    assert ranks["DZE"]["rank"] == 1 and ranks["EIH"]["rank"] == 3
+    assert ranks_for_company(store, "Acme", ["EIH"]) == {"EIH": ranks["EIH"]}
+    # Outside the top five is absent, not zero.
+    assert ranks_for_company(store, "Delta") == {}
+    assert ranks_for_company(Store(sqlite3.connect(":memory:")), "Acme") == {}
+
+    html = _company_rank_block(ranks, codes_total=5)
+    assert "它在这些产品码里的名次" in html
+    assert "DZE" in html and "26" in html
+    assert "不等于它没有注册" in html
+    assert "2 个进了前 5 名" in html
+    # Nothing to rank: no heading.
+    assert _company_rank_block({}, 5) == ""
+
+
 def test_a_pre_digitisation_filing_is_never_requested(tmp_path):
     """Measured: 0 of 60 sampled filings from 1998-2009 have a PDF at any path shape.
 
