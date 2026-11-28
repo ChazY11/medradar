@@ -193,11 +193,21 @@ def codes_for_specialty(reference, specialty: str, *, limit: int = 40) -> dict[s
         # A zero here would read as "this code has no devices", which is a different claim from "we could not
         # count". None travels to the page, which prints a dash.
         census = None
+    # Who is biggest in each code, from the table the night builds. A code's size and its leader are two
+    # different answers: a big code can be split across many companies, a small one dominated by one.
+    leaders: dict[str, Any] = {}
+    try:
+        from .code_leaders import leaders_for
+
+        leaders = leaders_for(reference, [str(row[0]) for row in rows], limit=1)
+    except Exception:  # noqa: BLE001 - no leader table, one column fewer
+        leaders = {}
     items = [{"product_code": str(row[0]),
               "device_name": str(row[1] or ""),
               "regulation_number": str(row[2] or ""),
               "device_class": str(row[3] or ""),
-              "devices": (int(census.get(str(row[0])) or 0) if census is not None else None)}
+              "devices": (int(census.get(str(row[0])) or 0) if census is not None else None),
+              "leader": (list(leaders.get(str(row[0])) or []) or [{}])[0]}
              for row in rows]
     items.sort(key=lambda item: (-(item["devices"] or 0), item["product_code"]))
     return {"codes": items[:max(1, limit)], "total": len(items)}

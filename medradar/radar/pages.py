@@ -1249,6 +1249,16 @@ def _materialised_block(statuses: Sequence[Mapping[str, Any]]) -> str:
               f'<tbody>{body_rows}</tbody></table></div>')
 
 
+def _leader_cell(leader: Mapping[str, Any] | None) -> str:
+    """The biggest registrant under one code - or a dash when the leader table has not been built."""
+    entry = dict(leader or {})
+    name = str(entry.get("company_name") or "")
+    if not name:
+        return '<span class="muted">—</span>'
+    return (f'<a href="/company?q={esc(name)}">{esc(name[:38])}</a>'
+            f'<span class="muted small"> {n(entry.get("devices"))}</span>')
+
+
 def _field_codes_block(codes: Mapping[str, Any], specialty: str,
                        failures: Mapping[str, Any] | None = None,
                        order: str = "devices") -> str:
@@ -1276,18 +1286,21 @@ def _field_codes_block(codes: Mapping[str, Any], specialty: str,
         f'<td>{esc(str(item.get("device_name") or "")[:64])}</td>'
         f'<td class="muted small">{esc(str(item.get("regulation_number") or ""))}</td>'
         f'<td class="num">{n(item.get("devices")) if item.get("devices") is not None else "—"}</td>'
-        f'<td class="num">{n(reports.get(str(item.get("product_code")), 0)) if reports else "—"}</td></tr>'
+        f'<td class="num">{n(reports.get(str(item.get("product_code")), 0)) if reports else "—"}</td>'
+        f'<td>{_leader_cell(item.get("leader"))}</td></tr>'
         for item in items)
     more = (f'，按注册设备数排序列出前 {n(len(items))} 个，共 {n(total)} 个'
             if total > len(items) else f'，共 {n(total)} 个')
     return ('<h2>这个领域由哪些产品码组成</h2>'
             f'<p class="small">{tab("devices", "按设备数")} {tab("reports", "按失效报告数")}</p>'
             f'<details><summary>展开 {esc(specialty)} 的产品码{more}</summary>'
-            '<p class="small muted">产品码来自 FDA 分类库；设备数按注册条目计，'
+            '<p class="small muted">产品码来自 FDA 分类库。设备数与「该码下注册最多」都只统计'
+            '<b>已关联 510(k) 批文</b>的注册条目（不是全部注册），两边口径相同——'
+            '所以头名不会大于码下的总数。'
             '一台设备带多个产品码时会在各码下分别计入。点产品码直接查该码下的设备。'
             '设备数为「—」表示这次没能统计（不是没有设备）。</p>'
             '<table><thead><tr><th>产品码</th><th>分类名</th><th>法规号</th><th>设备数</th>'
-            '<th>失效报告</th></tr>'
+            '<th>失效报告</th><th>该码下注册最多</th></tr>'
             f'</thead><tbody>{rows}</tbody></table></details>')
 
 

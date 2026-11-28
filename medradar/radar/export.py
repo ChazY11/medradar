@@ -652,7 +652,8 @@ def area_markdown(specialty: str, summary: Mapping[str, Any],
         lines.append("## 这个领域由哪些产品码组成")
         lines.append("")
         lines.append(f"> 按注册设备数排序列出前 {len(code_rows)} 个，共 {total_codes:,} 个。"
-                     "设备数为「—」表示这次没能统计，不是没有设备。")
+                     "设备数只统计已关联 510(k) 批文的注册条目，不是全部注册；"
+                     "「—」表示这次没能统计，不是没有设备。")
         lines.append("")
         lines.append("| 产品码 | 分类名 | 法规号 | 设备数 |")
         lines.append("| --- | --- | --- | ---: |")

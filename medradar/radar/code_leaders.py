@@ -39,9 +39,13 @@ def store_leaders(reference: Any, *, top: int = 5, at: str | None = None) -> dic
     stamp = str(at or utc_today())
     reference.conn.executescript(_TABLE)
     try:
+        # Joined to udi_premarket like `product_code_census`, so a leader's device count and a code's device
+        # count measure the same population. Without the join the field page showed "DZE 321 台" beside
+        # "头名 2,157" on one row - the leader appearing to own more devices than the code contains.
         rows = reference.conn.execute(
             "SELECT j.value AS code, d.company_name, COUNT(*) AS n"
-            " FROM udi_device d, json_each(d.product_codes) j"
+            " FROM udi_premarket p"
+            " JOIN udi_device d ON d.device_key = p.device_key, json_each(d.product_codes) j"
             " WHERE d.company_name IS NOT NULL AND d.company_name <> ''"
             " GROUP BY code, d.company_name").fetchall()
     except Exception:  # noqa: BLE001 - no json1 or no table: an empty leader table, reported by the caller

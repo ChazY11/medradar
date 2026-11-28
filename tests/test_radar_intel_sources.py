@@ -6479,7 +6479,9 @@ def test_the_field_export_carries_the_product_codes():
     assert "## 这个领域由哪些产品码组成" in markdown
     assert "| D351 | Prosthesis, Crown | 872.3640 | 1,234 |" in markdown
     assert "| EIH | Powder, Porcelain | 872.6660 | — |" in markdown
-    assert "设备数为「—」表示这次没能统计" in markdown
+    # The basis is stated: only entries with a 510(k), not every registration.
+    assert "已关联 510(k) 批文的注册条目" in markdown
+    assert "「—」表示这次没能统计" in markdown
 
     data = json.loads(export_mod.area_json("Dental", summary, [], codes=codes))
     assert data["product_codes_total"] == 2
@@ -6700,10 +6702,14 @@ def test_a_device_page_names_the_other_registrants_in_its_code(tmp_path):
 
     conn = sqlite3.connect(":memory:")
     conn.execute("CREATE TABLE udi_device (device_key TEXT, company_name TEXT, product_codes TEXT)")
+    conn.execute("CREATE TABLE udi_premarket (device_key TEXT, submission_number TEXT)")
     conn.executemany("INSERT INTO udi_device VALUES (?,?,?)", [
         ("1", "Acme", '["DZE","EIH"]'), ("2", "Acme", '["DZE"]'), ("3", "Beta", '["DZE"]'),
         ("4", "Beta", '["DZE"]'), ("5", "Gamma", '["EIH"]'), ("6", "", '["DZE"]'),
     ])
+    # The leader table counts only devices with a premarket record, the same population as the census.
+    conn.executemany("INSERT INTO udi_premarket VALUES (?,?)",
+                     [(key, "K1") for key in ("1", "2", "3", "4", "5", "6")])
     store = Store(conn)
 
     # The empty company name is not a registrant and must not appear.
@@ -6777,6 +6783,80 @@ def test_the_device_export_carries_the_peer_list():
     plain = json.loads(export_mod.device_json(Timeline(), query="K1"))
     assert plain["code_peers"] is None
     assert "同一产品码下还有谁" not in export_mod.device_markdown(Timeline(), query="K1")
+
+
+def test_a_leader_counts_the_same_population_as_the_code(tmp_path):
+    """The first version counted all devices, next to a code count that only counted cleared ones: one row read
+    "DZE 321 台" beside "头名 2,157" - the leader owning more than the code contains."""
+    import sqlite3
+
+    from medradar.radar.code_leaders import leaders_for, store_leaders
+
+    class Store:
+        def __init__(self, conn):
+            self.conn = conn
+
+    conn = sqlite3.connect(":memory:")
+    conn.execute("CREATE TABLE udi_device (device_key TEXT, company_name TEXT, product_codes TEXT)")
+    conn.execute("CREATE TABLE udi_premarket (device_key TEXT, submission_number TEXT)")
+    conn.executemany("INSERT INTO udi_device VALUES (?,?,?)", [
+        ("1", "Acme", '["DZE"]'), ("2", "Acme", '["DZE"]'),
+        ("3", "Beta", '["DZE"]'), ("4", "Gamma", '["DZE"]')])
+    # Only two of the four have a 510(k); the leader table must see the same two the census sees.
+    conn.executemany("INSERT INTO udi_premarket VALUES (?,?)", [("1", "K1"), ("3", "K2")])
+    store = Store(conn)
+
+    store_leaders(store, top=2, at="2026-11-29")
+    leaders = leaders_for(store, ["DZE"])
+    assert sorted(item["company_name"] for item in leaders["DZE"]) == ["Acme", "Beta"]
+    assert all(item["devices"] == 1 for item in leaders["DZE"])   # two devices total, not four
+
+
+def test_the_code_table_says_who_leads_each_code(tmp_path):
+    """A code's size and its leader are two different answers: a big code can be split, a small one dominated."""
+    import sqlite3
+
+    from medradar.radar.pages import _field_codes_block, _leader_cell
+    from medradar.radar.product_codes import codes_for_specialty
+
+    path = tmp_path / "lead.db"
+    conn = sqlite3.connect(path)
+    conn.execute("CREATE TABLE product_code_class (product_code TEXT, device_name TEXT,"
+                 " medical_specialty TEXT, regulation_number TEXT, device_class TEXT, fetched_at TEXT)")
+    conn.execute("CREATE TABLE udi_device (device_key TEXT, di TEXT, brand_name TEXT, company_name TEXT,"
+                 " labeler_duns TEXT, version_or_model TEXT, catalog_number TEXT, product_codes TEXT,"
+                 " gmdn_name TEXT, publish_date TEXT)")
+    conn.execute("CREATE TABLE udi_premarket (device_key TEXT, submission_number TEXT)")
+    conn.execute("CREATE TABLE code_leader (code TEXT, rank INTEGER, company_name TEXT,"
+                 " devices INTEGER, computed_at TEXT)")
+    conn.executemany("INSERT INTO product_code_class VALUES (?,?,?,?,?,?)", [
+        ("DZE", "Implant, Endosseous", "Dental", "872.3640", "2", "x"),
+        ("EIH", "Powder, Porcelain", "Dental", "872.6660", "2", "x")])
+    conn.executemany("INSERT INTO udi_device VALUES (?,?,?,?,?,?,?,?,?,?)", [
+        ("k1", "d1", "b", "Acme", "l", "m", "c", '["DZE"]', "g", "2026-01-01")])
+    conn.execute("INSERT INTO udi_premarket VALUES ('k1','K1')")
+    conn.executemany("INSERT INTO code_leader VALUES (?,?,?,?,?)", [
+        ("DZE", 1, "Osstem Implant Co., Ltd.", 2157, "2026-11-28")])
+    conn.commit()
+    conn.close()
+
+    class Store:
+        def __init__(self):
+            self.conn = sqlite3.connect(path)
+            self.path = path
+
+    store = Store()
+    result = codes_for_specialty(store, "Dental")
+    store.conn.close()
+    by_code = {item["product_code"]: item for item in result["codes"]}
+    assert by_code["DZE"]["leader"]["company_name"] == "Osstem Implant Co., Ltd."
+    # A code with no leader row keeps an empty leader rather than borrowing the other one's.
+    assert not by_code["EIH"].get("leader")
+
+    html = _field_codes_block(result, "Dental")
+    assert "该码下注册最多" in html
+    assert "Osstem" in html and "2,157" in html
+    assert _leader_cell(None) == '<span class="muted">—</span>'
 
 
 def test_a_pre_digitisation_filing_is_never_requested(tmp_path):
