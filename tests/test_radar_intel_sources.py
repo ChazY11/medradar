@@ -5674,6 +5674,46 @@ def test_a_miss_offers_the_registers_own_spellings(tmp_path):
     assert "不是拼写纠正" in page
 
 
+def test_a_company_miss_offers_registered_company_names(tmp_path):
+    """Measured 2026-11-28: /company?q=Medtronix ended at company_not_in_register while the register held
+    MEDTRONIC under a longer legal name. 12,392 distinct company names, 1.5 s to build, cached."""
+    from medradar.radar.pages import company_page
+    from medradar.radar.reference import UdiReference
+    from medradar.radar.suggestions import suggest_companies
+
+    store = UdiReference(tmp_path / "ref2.db")
+    for name in ("MEDTRONIC INC", "MEDTRONIC SOFAMOR DANEK", "STRYKER CORPORATION", "ZIMMER BIOMET"):
+        store.conn.execute(
+            "INSERT INTO udi_device (company_name, first_observed_at) VALUES (?, ?)",
+            (name, "2026-11-28T00:00:00+00:00"))
+    store.conn.commit()
+    # A typo matches no registered name as a substring; near-miss matching is what helps there. The legal
+    # suffix drags the ratio down, so the ranking compares against the head of the name.
+    store.conn.execute(
+        "INSERT INTO udi_device (company_name, first_observed_at) VALUES (?, ?)",
+        ("MEDTRONIC, INC.", "2026-11-28T00:00:00+00:00"))
+    store.conn.commit()
+    hits = suggest_companies(store, "Medtronix")
+    assert hits and hits[0].upper().startswith("MEDTRONIC")
+    # A name nothing resembles still gets nothing: no invention.
+    assert suggest_companies(store, "zzzzqqq") == []
+    hits = suggest_companies(store, "Medtron")
+    assert hits[0].upper().startswith("MEDTRON") and len(hits) >= 2
+    store.close()
+
+    page = company_page(data={"found": False, "query": "Medtronix"},
+                        suggestions=["MEDTRONIC INC", "MEDTRONIC SOFAMOR DANEK"])
+    assert "注册表里有这些相近的品牌名" in page
+    assert "/device?query=MEDTRONIC" in page
+
+    import inspect
+
+    from medradar.radar import pages as pages_mod
+
+    assert "suggest_companies(store, q)" in inspect.getsource(pages_mod.pages_router)
+    assert 'suggest_companies(store, "medtronic")' in inspect.getsource(pages_mod.warmup)
+
+
 def test_a_pre_digitisation_filing_is_never_requested(tmp_path):
     """Measured: 0 of 60 sampled filings from 1998-2009 have a PDF at any path shape.
 

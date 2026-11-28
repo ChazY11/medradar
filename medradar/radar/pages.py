@@ -1058,7 +1058,7 @@ def topic_page(*, payload: Mapping[str, Any], topic_id: str,
     return layout(title=f"{topic.get('label_zh') or topic_id} · MedRadar", body=body, active="map")
 
 
-def company_page(*, data: Mapping[str, Any]) -> str:
+def company_page(*, data: Mapping[str, Any], suggestions: Sequence[str] = ()) -> str:
     """One company: how much it has registered, filed, failed, is trialling, owns, and publishes."""
     name = data.get("company_name") or data.get("query") or ""
     if not data.get("found"):
@@ -1070,6 +1070,7 @@ def company_page(*, data: Mapping[str, Any]) -> str:
                   '<p class="lede">在设备注册表里按公司名匹配（先精确、后包含）。</p>'
                   + (_cjk_hint(missing, action="/company") if _looks_chinese(missing) else "")
                   + gap_note("company_not_in_register")
+                  + _suggestion_block(suggestions)
                   + '<p class="small muted"><a href="/">← 回到查询</a></p>'),
             active="company")
 
@@ -1898,9 +1899,10 @@ def warmup(service: Any) -> dict[str, Any]:
         # The suggestion table is 339,101 brand names and 1.3 s to build; a miss page must not be the
         # first caller.
         try:
-            from .suggestions import suggest_brands
+            from .suggestions import suggest_brands, suggest_companies
 
             suggest_brands(store, "medtronic")
+            suggest_companies(store, "medtronic")
             warmed["suggestions"] = True
         except Exception as error:  # noqa: BLE001
             report["errors"].append(f"suggestions: {type(error).__name__}")
@@ -2857,9 +2859,20 @@ def pages_router(service: Any, *, endpoints: Mapping[str, Any] | None = None) ->
                               body=gap_note("device_not_in_udi_register"), active="company")
             try:
                 data = _company_data(store, q, snapshot=_snapshot())
+                # A miss used to end at "company_not_in_register" while the register held MEDTRONIC under
+                # a longer legal name. Same net as /device, cheaper to build: 12,392 names in 1.5 s, primed
+                # during warm-up.
+                suggestions: list[str] = []
+                if not data.get("found"):
+                    try:
+                        from .suggestions import suggest_companies
+
+                        suggestions = suggest_companies(store, q)
+                    except Exception:  # noqa: BLE001 - one block fewer
+                        suggestions = []
             finally:
                 store.close()
-            return company_page(data=data)
+            return company_page(data=data, suggestions=suggestions)
 
         return HTMLResponse(cached(f"company:{q}", 300.0, render))
 
