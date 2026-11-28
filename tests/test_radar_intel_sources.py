@@ -6945,6 +6945,36 @@ def test_a_broken_table_does_not_send_the_reader_to_the_wrong_fix():
     assert "用的是 FDA 的英文分类名" in unknown
 
 
+def test_a_materialised_table_says_how_long_ago_it_was_rebuilt():
+    """A timestamp alone does not tell a reader whether it is fine or two days old - and a nightly step that has
+    been failing silently shows up here first."""
+    from medradar.radar.pages import _age_cell, _age_phrase
+
+    now = "2026-11-29T03:00:00+00:00"
+    assert _age_phrase("2026-11-29T02:30:00", now=now) == ("30 分钟前", False)
+    assert _age_phrase("2026-11-28T20:00:00", now=now) == ("7 小时前", False)
+    # The nightly runs every 24 h; missing one night is normal, two is a signal.
+    assert _age_phrase("2026-11-26T09:00:00", now=now) == ("2 天前", True)
+    # A date-only stamp still yields an age rather than nothing.
+    phrase, stale = _age_phrase("2026-11-28", now=now)
+    assert phrase.endswith("小时前") and stale is False
+    # No stamp, no claim.
+    assert _age_phrase("", now=now) == ("", False)
+    assert _age_cell("") == ""
+
+    stale_cell = _age_cell("2026-11-26T09:00:00")
+    assert "已过期" in stale_cell
+    assert "已过期" not in _age_cell("2026-11-29T02:30:00")
+
+    # The page-level mark, which is what caught specialty_stats being three days old: no nightly step
+    # rebuilt it, and the page printed a bare timestamp that read as "recent enough".
+    from medradar.radar.pages import _stale_mark
+
+    assert "已过期" in _stale_mark("2026-11-25T18:22:00")
+    assert "已过期" not in _stale_mark("2026-11-29T02:30:00")
+    assert _stale_mark("") == ""
+
+
 def test_a_pre_digitisation_filing_is_never_requested(tmp_path):
     """Measured: 0 of 60 sampled filings from 1998-2009 have a PDF at any path shape.
 

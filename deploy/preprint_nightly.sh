@@ -145,6 +145,11 @@ echo "[$(date -Is)] materialised counts"
 tail -2 $WORK/step_stats.log
 mark "counts" ok "$(grab '"papers": [0-9]+' $WORK/step_stats.log)"
 
+echo "[$(date -Is)] specialty stats"
+"$PY" "$REL/tools/specialty_stats.py" --refresh --reference "${MEDRADAR_REFERENCE_DB:-/srv/medradar/reference_slim.db}" > $WORK/step_specialty.log 2>&1 || true
+tail -2 $WORK/step_specialty.log
+mark "specialty stats" ok "$(grab '"specialties": [0-9]+' $WORK/step_specialty.log) fields"
+
 echo "[$(date -Is)] done: $(ls "$OUT"/*.json 2>/dev/null | wc -l) records"
 # Coverage has to advance or the caveat on /sources becomes a standing apology: the failure
 # index covered 838 of 5,229 product codes and nothing in the deployment moved that number.

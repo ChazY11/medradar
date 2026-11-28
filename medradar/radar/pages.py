@@ -1211,6 +1211,69 @@ def _trend_text(trend: Mapping[str, Any]) -> str:
     return text + ' · 词频不是技术判断</span>'
 
 
+def _age_phrase(stamp: str, *, now: str | None = None) -> tuple[str, bool]:
+    """How long ago a materialised table was rebuilt, and whether that is long enough to call stale.
+
+    A timestamp alone does not tell a reader whether it is fine or two days old - and a nightly step that has
+    been failing silently shows up here first. The threshold is 48 h: the nightly runs every 24, so missing one
+    night is normal after a deploy, two is a signal.
+    """
+    from datetime import datetime, timezone
+
+    text = str(stamp or "").strip()
+    if not text:
+        return "", False
+    moment: datetime | None = None
+    for pattern in ("%Y-%m-%dT%H:%M:%S", "%Y-%m-%d %H:%M:%S", "%Y-%m-%d"):
+        try:
+            moment = datetime.strptime(text[:len("2026-11-28T09:28:00")], pattern)
+            break
+        except ValueError:
+            continue
+    if moment is None:
+        try:
+            moment = datetime.fromisoformat(text)
+        except ValueError:
+            return "", False
+    if moment.tzinfo is None:
+        moment = moment.replace(tzinfo=timezone.utc)
+    reference = datetime.fromisoformat(now) if now else datetime.now(timezone.utc)
+    if reference.tzinfo is None:
+        reference = reference.replace(tzinfo=timezone.utc)
+    seconds = (reference - moment).total_seconds()
+    if seconds < 0:
+        return "刚刚", False
+    minutes = seconds / 60
+    if minutes < 90:
+        return f"{int(minutes)} 分钟前", False
+    hours = minutes / 60
+    if hours < 48:
+        return f"{int(hours)} 小时前", False
+    return f"{int(hours // 24)} 天前", True
+
+
+def _stale_mark(stamp: Any) -> str:
+    """Say when the numbers on this page have run past two nights.
+
+    Measured 2026-11-29: `specialty_stats` was three days old, because no nightly step rebuilt it - the page
+    printed the timestamp and nothing else, which reads as "recent enough".
+    """
+    phrase, stale = _age_phrase(str(stamp or ""))
+    if not phrase:
+        return ""
+    return (f'<b style="color:var(--{"bad" if stale else "muted"})">'
+            f'{" · 已过期（" + esc(phrase) + "）" if stale else "（" + esc(phrase) + "）"}</b>')
+
+
+def _age_cell(stamp: Any) -> str:
+    """The age beside the timestamp, marked when it has run past two nights."""
+    phrase, stale = _age_phrase(str(stamp or ""))
+    if not phrase:
+        return ""
+    return (f'<br><span class="small" style="color:var(--{"bad" if stale else "muted"})">'
+            f'{"已过期 · " if stale else ""}{esc(phrase)}</span>')
+
+
 def _materialised_block(statuses: Sequence[Mapping[str, Any]]) -> str:
     """Which materialised tables a page depends on are absent, stale or unreadable.
 
@@ -1237,7 +1300,8 @@ def _materialised_block(statuses: Sequence[Mapping[str, Any]]) -> str:
         f'<td>{("—" if item.get("present") else "缺")}</td>'
         f'<td>{"✓" if item.get("readable") else "✗"}</td>'
         f'<td class="num">{n(item.get("rows"))}</td>'
-        f'<td class="muted small">{esc(str(item.get("stamp") or "")[:16])}</td>'
+        f'<td class="muted small">{esc(str(item.get("stamp") or "")[:16])}'
+        f'{_age_cell(item.get("stamp"))}</td>'
         f'<td class="muted small">{esc(str(item.get("error") or ""))[:70]}</td></tr>'
         for item in rows)
     return ('<h2>物化表状态</h2>'
@@ -2670,7 +2734,7 @@ def areas_page(*, data: Mapping[str, Any]) -> str:
 <thead><tr><th>技术领域</th><th>产品码</th><th>设备数</th><th>公司数</th><th>设备最多的公司</th>
 <th>文献抓取</th><th>近 90 天占比</th><th>上升最快的词</th><th>规模</th></tr></thead>
 <tbody>{''.join(rows)}</tbody></table></div>
-<p class="small muted">数据更新于 {esc(str(data.get("updated_at") or "未知")[:16])}，
+<p class="small muted">数据更新于 {esc(str(data.get("updated_at") or "未知")[:16])}{_stale_mark(data.get("updated_at"))}，
 由夜间任务重算（全库聚合约 29 秒，不实时计算）。
 「上升最快的词」也由同一趟夜间任务算（二十个领域约 3.3 秒），算于 {esc(_trend_stamp(trends, data.get("trend_status")))}；
 词频不是技术判断，点进领域看两栏明细。</p>
