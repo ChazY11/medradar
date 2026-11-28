@@ -43,7 +43,8 @@ def _gap(code: str) -> str:
 
 def device_markdown(timeline: Any, *, query: str,
                     shelf: Mapping[str, int] | None = None,
-                    emerging: Mapping[str, Any] | None = None) -> str:
+                    emerging: Mapping[str, Any] | None = None,
+                    code_peers: Mapping[str, Sequence[Mapping[str, Any]]] | None = None) -> str:
     refs = timeline.refs
     lines: list[str] = []
     if not refs:
@@ -137,6 +138,31 @@ def device_markdown(timeline: Any, *, query: str,
             "只统计申请人字段为本公司的记录；按名字搜到的另计，不计入。")
     section("5 · 相关论文", "papers", "相关论文",
             "论文提到名称不等于研究这台设备；公司级匹配已标注。")
+
+    # Who else registers under these codes. The page has carried it since round 135; the file is what gets
+    # forwarded, and a peer list without its bound invites "biggest = best".
+    peers = dict(code_peers or {})
+    peer_lines: list[str] = []
+    for code, rows in peers.items():
+        if not rows:
+            continue
+        peer_lines.append("")
+        peer_lines.append(f"### 产品码 {code} 下注册最多的公司")
+        peer_lines.append("")
+        stamp = str((rows[0] or {}).get("computed_at") or "")
+        peer_lines.append(f"> 按注册设备数排前 {len(rows)} 位"
+                          + (f"，算于 {stamp}" if stamp else "")
+                          + "。这是「注册了什么」，不是销量、不是市场份额。")
+        peer_lines.append("")
+        peer_lines.append("| # | 公司 | 设备数 |")
+        peer_lines.append("| ---: | --- | ---: |")
+        for item in rows:
+            peer_lines.append(f"| {int(item.get('rank') or 0)} | {item.get('company_name')} | "
+                              f"{int(item.get('devices') or 0):,} |")
+    if peer_lines:
+        lines.append("")
+        lines.append("## 同一产品码下还有谁")
+        lines.extend(peer_lines)
 
     # What is rising in this device's field, from the same materialised table the page reads. A forwarded
     # dossier is where a number is most likely to be quoted without the sentence that bounds it, so the
@@ -758,12 +784,23 @@ def compare_csv(companies: Sequence[Mapping[str, Any]]) -> str:
     return buffer.getvalue()
 
 
-def device_json(timeline: Any, *, query: str) -> str:
+def device_json(timeline: Any, *, query: str,
+                code_peers: Mapping[str, Sequence[Mapping[str, Any]]] | None = None) -> str:
     to_dict = getattr(timeline, "to_dict", None)
     payload = to_dict() if callable(to_dict) else {"query": query, "refs": []}
     payload["schema"] = "medradar.radar.device.export.v1"
     payload["exported_at"] = _stamp()
     payload["gaps_explained"] = {code: GAP_TEXT.get(code, code) for code in (timeline.gaps or [])}
+    # Who else registers under the same codes; null when the caller had none, so a consumer can tell
+    # "not provided" from "nobody".
+    peers = dict(code_peers or {})
+    payload["code_peers"] = ({code: [{"rank": int(item.get("rank") or 0),
+                                      "company_name": item.get("company_name"),
+                                      "devices": int(item.get("devices") or 0)}
+                                     for item in rows]
+                              for code, rows in peers.items()} if peers else None)
+    payload["code_peers_bounds"] = ("按注册设备数排序，不是销量或市场份额；"
+                                    "同一台设备带多个产品码时会在各码下分别计入。")
     return json.dumps(payload, ensure_ascii=False, indent=2)
 
 

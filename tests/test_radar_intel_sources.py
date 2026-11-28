@@ -6729,6 +6729,56 @@ def test_a_device_page_names_the_other_registrants_in_its_code(tmp_path):
     assert leaders_for(Store(sqlite3.connect(":memory:")), ["DZE"]) == {}
 
 
+def test_the_device_export_carries_the_peer_list():
+    """Round 135 put the peer list on the page; the file is what gets forwarded."""
+    import json
+
+    from medradar.radar import export as export_mod
+
+    class Head:
+        brand_name = "X"
+        version_or_model = ""
+        company_name = "C"
+        di = ""
+        device_key = "k"
+        labeler_duns = ""
+        product_codes = ["DZE"]
+        gmdn_name = ""
+        device_description = ""
+        catalog_number = ""
+
+    class Timeline:
+        refs = [Head()]
+        clearances: dict = {}
+        specs: dict = {}
+        failures: dict = {}
+        trials: dict = {}
+        patents: dict = {}
+        papers: dict = {}
+        gaps: list = []
+
+        def to_dict(self):
+            return {"query": "K1", "refs": []}
+
+    peers = {"DZE": [{"rank": 1, "company_name": "Acme", "devices": 2157,
+                      "computed_at": "2026-11-28"}]}
+
+    markdown = export_mod.device_markdown(Timeline(), query="K1", code_peers=peers)
+    assert "## 同一产品码下还有谁" in markdown
+    assert "| 1 | Acme | 2,157 |" in markdown
+    assert "不是销量、不是市场份额" in markdown
+    assert "算于 2026-11-28" in markdown
+
+    data = json.loads(export_mod.device_json(Timeline(), query="K1", code_peers=peers))
+    assert data["code_peers"]["DZE"][0]["company_name"] == "Acme"
+    assert "不是销量" in data["code_peers_bounds"]
+
+    # Not provided is null, so a consumer can tell it apart from "nobody else registers".
+    plain = json.loads(export_mod.device_json(Timeline(), query="K1"))
+    assert plain["code_peers"] is None
+    assert "同一产品码下还有谁" not in export_mod.device_markdown(Timeline(), query="K1")
+
+
 def test_a_pre_digitisation_filing_is_never_requested(tmp_path):
     """Measured: 0 of 60 sampled filings from 1998-2009 have a PDF at any path shape.
 

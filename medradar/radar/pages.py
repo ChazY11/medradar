@@ -3695,6 +3695,15 @@ def pages_router(service: Any, *, endpoints: Mapping[str, Any] | None = None) ->
                     shelf = {}
                 # The rising term of the device's field, from the materialised table, so the file says what
                 # is moving around this product rather than only how many records it has.
+                # The same leader table the device page reads; one indexed query per code.
+                peers: dict[str, Any] = {}
+                try:
+                    from .code_leaders import leaders_for
+
+                    if timeline.refs:
+                        peers = leaders_for(store, list(timeline.refs[0].product_codes or [])[:4])
+                except Exception:  # noqa: BLE001 - one section fewer
+                    peers = {}
                 emerging: dict[str, Any] = {}
                 try:
                     from .paper_passes import field_trends
@@ -3709,13 +3718,13 @@ def pages_router(service: Any, *, endpoints: Mapping[str, Any] | None = None) ->
                     emerging = {}
                 if format == "md":
                     body = export_mod.device_markdown(timeline, query=q, shelf=shelf,
-                                                      emerging=emerging)
+                                                      emerging=emerging, code_peers=peers)
                     media, suffix = "text/markdown; charset=utf-8", "md"
                 elif format == "csv":
                     body = export_mod.device_csv(timeline, query=q, shelf=shelf)
                     media, suffix = "text/csv; charset=utf-8", "csv"
                 else:
-                    body = export_mod.device_json(timeline, query=q)
+                    body = export_mod.device_json(timeline, query=q, code_peers=peers)
                     media, suffix = "application/json; charset=utf-8", "json"
                 stem = f"medradar-device-{_slug(q)}"
             else:
