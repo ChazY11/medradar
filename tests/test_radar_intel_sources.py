@@ -6859,6 +6859,33 @@ def test_the_code_table_says_who_leads_each_code(tmp_path):
     assert _leader_cell(None) == '<span class="muted">—</span>'
 
 
+def test_the_field_export_names_each_codes_leader():
+    """Round 137 added the column to the page; the export is what gets forwarded."""
+    import json
+
+    from medradar.radar import export as export_mod
+
+    summary = {"devices": 10, "codes": 2, "companies": 3}
+    codes = {"codes": [
+        {"product_code": "DZE", "device_name": "Implant", "regulation_number": "872.3640",
+         "devices": 321, "leader": {"company_name": "Acme", "devices": 26}},
+        # No leader row: null, not an invented one.
+        {"product_code": "EIH", "device_name": "Powder", "regulation_number": "872.6660",
+         "devices": 1491},
+    ], "total": 2}
+
+    markdown = export_mod.area_markdown("Dental", summary, [], codes=codes)
+    assert "该码下注册最多" in markdown
+    assert "| DZE | Implant | 872.3640 | 321 | Acme (26) |" in markdown
+    assert "| EIH | Powder | 872.6660 | 1,491 | — |" in markdown
+
+    data = json.loads(export_mod.area_json("Dental", summary, [], codes=codes))
+    assert data["product_codes"][0]["leader"] == {"company_name": "Acme", "devices": 26}
+    assert data["product_codes"][1]["leader"] is None
+    # The basis is still stated: only entries with a 510(k).
+    assert "已关联 510(k) 批文的注册条目" in markdown
+
+
 def test_a_pre_digitisation_filing_is_never_requested(tmp_path):
     """Measured: 0 of 60 sampled filings from 1998-2009 have a PDF at any path shape.
 

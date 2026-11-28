@@ -655,13 +655,17 @@ def area_markdown(specialty: str, summary: Mapping[str, Any],
                      "设备数只统计已关联 510(k) 批文的注册条目，不是全部注册；"
                      "「—」表示这次没能统计，不是没有设备。")
         lines.append("")
-        lines.append("| 产品码 | 分类名 | 法规号 | 设备数 |")
-        lines.append("| --- | --- | --- | ---: |")
+        lines.append("| 产品码 | 分类名 | 法规号 | 设备数 | 该码下注册最多 |")
+        lines.append("| --- | --- | --- | ---: | --- |")
         for item in code_rows:
             devices = item.get("devices")
+            leader = dict(item.get("leader") or {})
+            leader_cell = (f"{leader.get('company_name')} ({int(leader.get('devices') or 0):,})"
+                           if leader.get("company_name") else "—")
             lines.append(f"| {item.get('product_code')} | {item.get('device_name') or ''} | "
                          f"{item.get('regulation_number') or ''} | "
-                         f"{f'{int(devices):,}' if devices is not None else '—'} |")
+                         f"{f'{int(devices):,}' if devices is not None else '—'} | "
+                         f"{leader_cell} |")
     return "\n".join(lines)
 
 
@@ -943,7 +947,11 @@ def area_json(specialty: str, summary: Mapping[str, Any],
              "regulation_number": item.get("regulation_number") or "",
              "device_class": item.get("device_class") or "",
              # None, not 0: an uncounted code is not an empty one.
-             "devices": (None if item.get("devices") is None else int(item.get("devices") or 0))}
+             "devices": (None if item.get("devices") is None else int(item.get("devices") or 0)),
+             # The biggest registrant under this code, on the same population as `devices`.
+             "leader": (None if not (item.get("leader") or {}).get("company_name") else
+                        {"company_name": (item.get("leader") or {}).get("company_name"),
+                         "devices": int((item.get("leader") or {}).get("devices") or 0)})}
             for item in ((codes or {}).get("codes") or [])],
         product_codes_total=int((codes or {}).get("total") or 0),
         # Two named fields, not one list: a consumer that merges them would rank a brand-new instrument name
