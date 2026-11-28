@@ -261,8 +261,8 @@ def emerging_terms(reference, specialty: str, *, recent_days: int = 90, baseline
         elif day >= baseline_start:
             baseline_ids.add(str(paper_id))
     if not recent_ids or not baseline_ids:
-        return {"terms": [], "recent": len(recent_ids), "baseline": len(baseline_ids),
-                "recent_days": recent_days, "baseline_days": baseline_days}
+        return {"terms": [], "new": [], "recent": len(recent_ids), "baseline": len(baseline_ids),
+                "recent_days": recent_days, "baseline_days": baseline_days, "until": end.isoformat()}
 
     def counts(ids_subset: set[str]) -> dict[str, int]:
         wanted = sorted(ids_subset)[:900]
@@ -318,9 +318,12 @@ def emerging_terms(reference, specialty: str, *, recent_days: int = 90, baseline
     fresh.sort(key=lambda item: item["recent"], reverse=True)
     fresh = [item for item in fresh
              if item["recent"] >= 3 and item["recent_share"] >= 0.08]
+    # The window has an end date and the page prints it: "近 90 天" means nothing without knowing which day
+    # the window closed on, and this corpus grows every night.
     return {"terms": rising[:limit], "new": fresh[:max(3, limit // 2)],
             "recent": len(recent_ids), "baseline": len(baseline_ids),
-            "recent_days": recent_days, "baseline_days": baseline_days}
+            "recent_days": recent_days, "baseline_days": baseline_days,
+            "until": end.isoformat()}
 
 
 _EMERGING_CACHE: dict[tuple[str, float, str], dict[str, Any]] = {}

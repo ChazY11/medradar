@@ -524,7 +524,9 @@ def area_markdown(specialty: str, summary: Mapping[str, Any],
         lines.append("")
         lines.append("## 近 90 天相对上升的说法")
         lines.append("")
-        lines.append(f"> 本领域近 {int(trend.get('recent_days') or 90)} 天的 {recent:,} 篇，"
+        until = str(trend.get("until") or "")
+        lines.append(f"> 本领域近 {int(trend.get('recent_days') or 90)} 天"
+                     + (f"（截至 {until}）" if until else "") + f"的 {recent:,} 篇，"
                      f"对比之前一年的 {baseline:,} 篇，比每个词在两边各占多少篇。"
                      "**这是词频，不是我们的技术判断**，而且只统计我们抓到的这批论文。")
         lines.append("")
@@ -749,7 +751,8 @@ def area_json(specialty: str, summary: Mapping[str, Any],
                     "baseline": 0} for item in ((emerging or {}).get("new") or [])],
         terms_window={"recent_days": int((emerging or {}).get("recent_days") or 90),
                       "recent_papers": int((emerging or {}).get("recent") or 0),
-                      "baseline_papers": int((emerging or {}).get("baseline") or 0)},
+                      "baseline_papers": int((emerging or {}).get("baseline") or 0),
+                      "until": (emerging or {}).get("until") or ""},
         terms_bounds="词频，不是技术判断；只统计我们抓到的这批论文；新出现的词可能是仪器品牌或作者名",
         failures={"codes": int(shape.get("codes") or 0),
                   "reports": int(shape.get("total") or 0),

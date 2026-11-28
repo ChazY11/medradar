@@ -5781,6 +5781,8 @@ def test_rising_terms_compare_two_windows_by_share_not_volume(tmp_path):
     # Flat across both windows: present, but not rising.
     assert by_term["edentulous"]["lift"] == 1.0
     assert result["recent"] == 4 and result["baseline"] == 4
+    # The window carries its own end date: "近 90 天" means nothing without knowing which day it closed on.
+    assert result["until"] == "2026-11-28"
     # Two different claims, kept apart: "clearaligner" never appeared before, so it is a candidate, not a
     # trend, and mixing the two put an instrument brand beside real signals.
     # "clearaligner" is used by every recent paper and none of the older ones: a candidate, not a trend.

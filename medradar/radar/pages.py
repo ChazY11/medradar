@@ -2279,8 +2279,10 @@ def _emerging_block(emerging: Mapping[str, Any]) -> str:
             '点开几篇原文看比看这个列表可靠。</p>'
             '<div class="card"><table><thead><tr><th>说法</th><th>类型</th><th>近 90 天</th>'
             f'<th>之前一年</th><th>涨幅</th></tr></thead><tbody>{fresh_rows}</tbody></table></div>')
+    until = str(emerging.get("until") or "")
+    anchor = f'（截至 {esc(until)}）' if until else ""
     return (f'<h2>近 {n(emerging.get("recent_days") or 90)} 天相对上升的说法</h2>'
-            f'<p class="muted small">拿本领域近 {n(emerging.get("recent_days") or 90)} 天的 '
+            f'<p class="muted small">拿本领域近 {n(emerging.get("recent_days") or 90)} 天{anchor}的 '
             f'{n(recent)} 篇，对比之前一年的 {n(baseline)} 篇：算每个词在两边各占多少篇，再看占比涨了多少倍。'
             + (f'<b>样本偏小：近 90 天只有 {n(recent)} 篇，倍数容易被个别论文拉高，请结合右边绝对篇数看。</b>'
                if recent < 60 else '')
