@@ -43,6 +43,18 @@ from .resources import ResourceGuard, set_low_priority
 from .taxonomy import Taxonomy
 
 #: Per-host politeness, taken from config/radar/sources.json.
+#: Europe PMC's search endpoint answers 503 "Search service is temporarily unavailable" in windows longer
+#: than a 2 s + 4 s retry can cover. Measured 2026-11-28: the same 134-character query returned 200 three
+#: times in a row from this host while the scheduler recorded 1,151 failures, and the body of one failure
+#: said so in the server's own words. Four attempts with a 3 s base and a 60 s cap absorbs a window up to
+#: roughly 45 s without changing any other host's pacing.
+_EBIPMC_BACKOFF: dict[str, Any] = {
+    "max_attempts": 4,
+    "backoff_base_seconds": 3.0,
+    "backoff_cap_seconds": 60.0,
+}
+
+
 def build_fetcher(taxonomy: Taxonomy, *, max_requests: int = 400) -> PoliteFetcher:
     policies: dict[str, HostPolicy] = {}
     for source in taxonomy.sources():
@@ -50,11 +62,13 @@ def build_fetcher(taxonomy: Taxonomy, *, max_requests: int = 400) -> PoliteFetch
         kind = source.get("kind")
         url = str(((source.get("access") or {}).get("read_path")) or "")
         for token in ("api.fda.gov", "eutils.ncbi.nlm.nih.gov", "api.crossref.org",
+                      "www.ebi.ac.uk",
                       "www.philips.com", "www.draeger.com", "www.gehealthcare.com"):
             if token in url:
                 policies[token] = HostPolicy(
                     requests_per_second=float(rate),
                     timeout_seconds=45.0 if kind == "html" else 30.0,
+                    **(_EBIPMC_BACKOFF if token == "www.ebi.ac.uk" else {}),
                 )
     return PoliteFetcher(
         user_agent=str((taxonomy.sources_doc.get("policy") or {}).get("user_agent")

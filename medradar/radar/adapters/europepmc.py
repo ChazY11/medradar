@@ -134,7 +134,16 @@ class EuropePmcAdapter:
         if query is None:
             raise ValueError(f"unknown Europe PMC query {query_id!r}")
         start, end = self._window(ctx)
-        page = int(cursor or 0)
+        # The cursor carries two things: how many pages we have taken, and Europe PMC's own opaque
+        # ``nextCursorMark``. Passing the page number as the mark made the endpoint answer
+        # 503 "Search service is temporarily unavailable" - a misleading error for a bad parameter.
+        # Measured 2026-11-28: ``cursorMark=*`` 200/hitCount 160, ``cursorMark=1`` 503, same query.
+        page_text, _, mark = str(cursor or "0|*").partition("|")
+        try:
+            page = int(page_text)
+        except ValueError:
+            page = 0
+        mark = mark or "*"
         if page * self.page_size >= self.max_results:
             return Page(records=[], next_cursor=None, watermark=end,
                         note=f"query {query_id}: page cap reached")
@@ -151,7 +160,7 @@ class EuropePmcAdapter:
                 "format": "json",
                 "pageSize": self.page_size,
                 "resultType": "core",
-                "cursorMark": "*" if page == 0 else cursor,
+                "cursorMark": "*" if page == 0 else mark,
             },
             allow_not_found=True,
         ) or {}
@@ -159,9 +168,10 @@ class EuropePmcAdapter:
         records = [record for row in rows if (record := _record(row))]
         hit_count = int(data.get("hitCount") or 0)
         next_cursor = None
-        if len(rows) >= self.page_size and (page + 1) * self.page_size < min(hit_count,
-                                                                            self.max_results):
-            next_cursor = str(page + 1)
+        following = str(data.get("nextCursorMark") or "")
+        if (len(rows) >= self.page_size and following
+                and (page + 1) * self.page_size < min(hit_count, self.max_results)):
+            next_cursor = f"{page + 1}|{following}"
         return Page(
             records=records,
             next_cursor=next_cursor,

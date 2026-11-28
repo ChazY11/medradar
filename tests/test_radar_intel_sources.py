@@ -5433,6 +5433,72 @@ def test_a_transient_failure_keeps_what_the_server_said():
     assert "[attempt {attempt}]" in source
 
 
+def test_europe_pmc_gets_a_longer_retry_than_other_hosts():
+    """Its 503 windows outlast 2 s + 4 s, and the body said so in the server's own words."""
+    from medradar.radar.scheduler import _EBIPMC_BACKOFF, build_fetcher
+
+    assert _EBIPMC_BACKOFF["max_attempts"] == 4
+    assert _EBIPMC_BACKOFF["backoff_cap_seconds"] == 60.0
+
+    class FakeTaxonomy:
+        sources_doc = {"policy": {"user_agent": "test-agent"}}
+
+        def sources(self):
+            return [{"id": "europepmc", "kind": "api", "rate_limit": {"requests_per_second": 0.5},
+                     "access": {"read_path": "https://www.ebi.ac.uk/europepmc/webservices/rest/search"}},
+                    {"id": "crossref", "kind": "api", "rate_limit": {"requests_per_second": 1.0},
+                     "access": {"read_path": "https://api.crossref.org/works"}}]
+
+    fetcher = build_fetcher(FakeTaxonomy())
+    ebi = fetcher.policies.get("www.ebi.ac.uk")
+    cr = fetcher.policies.get("api.crossref.org")
+    assert ebi is not None and ebi.max_attempts == 4 and ebi.backoff_cap_seconds == 60.0
+    # Every other host keeps the default pacing: one host's trouble is not a global slowdown.
+    assert cr is not None and cr.max_attempts == 3 and cr.backoff_cap_seconds == 30.0
+
+
+def test_europe_pmc_paginates_with_its_own_cursor_mark_not_the_page_number():
+    """Measured 2026-11-28: cursorMark=* -> 200/hitCount 160; cursorMark=1 -> 503, same query. The
+    adapter was sending the page number as the mark, so every page after the first failed."""
+    from medradar.radar.adapters.europepmc import EuropePmcAdapter
+
+    calls: list[dict] = []
+
+    class Fetcher:
+        def get_json(self, url, *, params=None, allow_not_found=False):
+            calls.append(dict(params or {}))
+            page = len(calls)
+            # A full page, so the adapter has a reason to offer the next cursor.
+            rows = [{"id": f"P{i}", "source": "MED", "title": f"t{i}"} for i in range(100)]
+            return {"hitCount": 500, "nextCursorMark": "MARK" + str(page),
+                    "resultList": {"result": rows}}
+
+    class Ctx:
+        fetcher = Fetcher()
+        watermark = None
+
+    class Scope:
+        scope_id = "query:respiratory"
+
+    class Taxonomy:
+        sources_doc = {"policy": {}}
+
+        def source(self, source_id):
+            return {}
+
+    adapter = EuropePmcAdapter(Taxonomy())
+    adapter._by_id = {"respiratory": {"term": "ventilator"}}
+
+    first = adapter.fetch_page(Ctx(), Scope(), None)
+    assert calls[0]["cursorMark"] == "*"
+    assert first.next_cursor and "|" in first.next_cursor
+    # The mark travels with the page count; the page number alone was never a valid mark.
+    second_cursor = first.next_cursor
+    adapter.fetch_page(Ctx(), Scope(), second_cursor)
+    assert calls[1]["cursorMark"].startswith("MARK")
+    assert second_cursor.split("|")[0] == "1"
+
+
 def test_a_pre_digitisation_filing_is_never_requested(tmp_path):
     """Measured: 0 of 60 sampled filings from 1998-2009 have a PDF at any path shape.
 
