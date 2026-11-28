@@ -189,31 +189,39 @@ def field_topics(reference, specialty: str, *, limit: int = 12) -> list[dict[str
         return []
     placeholders = ",".join("?" for _ in ids[:900])
     try:
+        # Distinct papers as well as hits. "in 42 of 120 papers" is a coverage statement a reader can
+        # check; "1,032 hits" depends on how often a paper repeats a word, which nobody can interpret.
         rows = reference.conn.execute(
-            f"SELECT term, SUM(hits) AS n FROM paper_term WHERE paper_id IN ({placeholders})"
-            f" GROUP BY term ORDER BY n DESC LIMIT 800", tuple(ids[:900])).fetchall()
+            f"SELECT term, SUM(hits) AS n, COUNT(DISTINCT paper_id) AS papers"
+            f" FROM paper_term WHERE paper_id IN ({placeholders})"
+            # Ordered by coverage, because the chip labels coverage. Sorting by hits while showing papers
+            # made the row read as unsorted: mandibular 51/120 came before abutment 57/120.
+            f" GROUP BY term ORDER BY papers DESC, n DESC LIMIT 800",
+            tuple(ids[:900])).fetchall()
     except Exception:  # noqa: BLE001 - no term table yet
         return []
     # A word that appears in most fields is not evidence about this one. Measured on Dental: the static
     # list alone left clinical, implant, that, this, with, bone at the top; the spread filter leaves
     # edentulous, abutment, occlusal, mandibular, osteotomy.
     spread = term_field_spread(reference)
-    candidates: list[tuple[str, int]] = []
-    for term, count in rows:
+    candidates: list[tuple[str, int, int]] = []
+    for term, count, papers in rows:
         text = str(term or "")
         # The same word list the paper page uses. It was STRUCTURAL_WORDS here and FUNCTION_WORDS
         # there, so a field's topic chips still led with "which 1,704" while the paper page had been
         # cleaned - one question, two standards.
         if len(text) < MIN_TOPIC_LENGTH or text in FUNCTION_WORDS or is_generic(text, spread):
             continue
-        candidates.append((text, int(count or 0)))
+        candidates.append((text, int(count or 0), int(papers or 0)))
     # The share is renormalised over what survived. It used to be taken against every term in the field,
     # which was fine while the list was dominated by clinical/implant/that; once those are filtered out the
     # remaining domain words look small and a 0.4% floor emptied the row entirely.
-    total = sum(count for _, count in candidates) or 1
+    total = sum(count for _, count, _ in candidates) or 1
+    held = len(ids)
     kept: list[dict[str, Any]] = []
-    for text, count in candidates[:limit]:
-        kept.append({"term": text, "count": count, "share": round(100.0 * count / total, 1)})
+    for text, count, papers in candidates[:limit]:
+        kept.append({"term": text, "count": count, "papers": papers, "held": held,
+                     "share": round(100.0 * count / total, 1)})
     return kept
 
 

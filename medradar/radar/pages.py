@@ -2168,15 +2168,18 @@ def area_page(*, specialty: str, summary: Mapping[str, Any] | None,
     topics = data.get("field_topics") or []
     field_papers = data.get("field_papers") or []
     if topics:
+        # "in 42 of 120 papers" is checkable; a hit count is not, because it depends on how often a paper
+        # repeats a word. The hits stay in the tooltip for anyone who wants them.
         chips = "".join(
-            f'<span class="chip">{esc(str(item["term"]))}'
-            f'<span class="muted small"> {n(item["count"])}</span></span>'
+            f'<span class="chip" title="{n(item.get("count"))} 次命中">{esc(str(item["term"]))}'
+            f'<span class="muted small"> {n(item.get("papers"))}/{n(item.get("held"))} 篇</span></span>'
             for item in topics)
         topics_block = (
             '<h2>这个领域的文献在谈什么</h2>'
             f'<p class="muted small">从本领域查询抓进来的 {n(len(field_papers))} 篇全文中统计词频。'
             '这是「论文里出现的词」，不是我们的技术判断。两条过滤：结构性虚词按词表去掉，'
-            '同时在 10 个以上领域都出现的词也去掉——到处都有的词说明不了这个领域。</p>'
+            '同时在 10 个以上领域都出现的词也去掉——到处都有的词说明不了这个领域。'
+            '数字是「出现在这 120 篇里的多少篇」，不是出现次数。</p>'
             f'<div class="chips">{chips}</div>')
     else:
         topics_block = ('<h2>这个领域的文献在谈什么</h2>'

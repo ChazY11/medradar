@@ -5212,6 +5212,24 @@ def test_the_paper_page_uses_the_same_cross_field_rule_as_the_field_pages():
     assert "paper_terms(store, id, limit=120)" in source
 
 
+def test_a_topic_chip_counts_papers_not_repetitions():
+    """'in 42 of 120 papers' is checkable; a hit count depends on how often a paper repeats a word."""
+    from medradar.radar.pages import area_page
+
+    data = {"field_topics": [{"term": "mandibular", "count": 476, "papers": 42, "held": 120,
+                              "share": 9.1}],
+            "field_papers": ["P"] * 120, "field_recent": []}
+    page = area_page(specialty="Dental",
+                     summary={"specialty": "Dental", "codes": 295, "devices": 1, "companies": 1},
+                     companies=[], data=data)
+    assert "42/120 篇" in page
+    # The row is ordered by what the chip labels - coverage - not by the hit count behind it.
+    assert "ORDER BY papers DESC" in open(
+        "medradar/radar/paper_passes.py", encoding="utf-8").read()
+    assert "476 次命中" in page                  # the hits survive as a tooltip, not as the label
+    assert "不是出现次数" in page
+
+
 def test_a_pre_digitisation_filing_is_never_requested(tmp_path):
     """Measured: 0 of 60 sampled filings from 1998-2009 have a PDF at any path shape.
 
