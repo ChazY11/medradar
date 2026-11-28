@@ -5714,6 +5714,27 @@ def test_a_company_miss_offers_registered_company_names(tmp_path):
     assert 'suggest_companies(store, "medtronic")' in inspect.getsource(pages_mod.warmup)
 
 
+def test_a_mistyped_company_in_a_comparison_offers_the_corrected_comparison():
+    """Measured 2026-11-28: "Medtronic,Strykr" compared one company and said nothing about fixing it."""
+    from medradar.radar.pages import compare_page
+
+    companies = [
+        {"found": True, "company_name": "MEDTRONIC", "query": "Medtronic"},
+        {"found": False, "company_name": "", "query": "Strykr",
+         "suggestions": ["Stryker GmbH", "STRYKER CORPORATION"]},
+    ]
+    page = compare_page(companies=companies, substitutions=[], data_recency={})
+    assert "「Strykr」没有匹配到公司，未参与对比。" in page
+    # The correction keeps the other column: one name replaced, not the whole query.
+    assert "/compare?q=Medtronic,Stryker GmbH" in page
+    assert "点一个用正确名称重新对比" in page
+
+    # No suggestions, no invented ones.
+    page = compare_page(companies=[{"found": False, "company_name": "", "query": "zzzzqqq"}],
+                        substitutions=[], data_recency={})
+    assert "相近公司" not in page
+
+
 def test_a_pre_digitisation_filing_is_never_requested(tmp_path):
     """Measured: 0 of 60 sampled filings from 1998-2009 have a PDF at any path shape.
 

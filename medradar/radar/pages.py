@@ -1785,9 +1785,28 @@ def compare_page(*, companies: Sequence[Mapping[str, Any]],
             f'</table></div>')
 
     missing = [item for item in companies if not item.get("found")]
-    missing_html = "".join(
-        f'<p class="small muted">「{esc(item.get("query"))}」没有匹配到公司，未参与对比。</p>'
-        for item in missing)
+
+    def _corrected_link(item: Mapping[str, Any], replacement: str) -> str:
+        """The same comparison with one name replaced, so the reader keeps the other columns."""
+        names = [str(entry.get("query") or "") for entry in companies]
+        for index, entry in enumerate(companies):
+            if entry is item:
+                names[index] = replacement
+        query = ",".join(name for name in names if name)
+        return f'/compare?q={esc(query)}'
+
+    def _missing_line(item: Mapping[str, Any]) -> str:
+        typed = esc(item.get("query"))
+        names = item.get("suggestions") or []
+        if not names:
+            return f'<p class="small muted">「{typed}」没有匹配到公司，未参与对比。</p>'
+        links = "、".join(
+            f'<a href="{_corrected_link(item, name)}">{esc(name)}</a>' for name in names[:3])
+        return (f'<p class="small muted">「{typed}」没有匹配到公司，未参与对比。'
+                f'注册表里的相近公司：{links}'
+                f'<span class="muted">（点一个用正确名称重新对比）</span></p>')
+
+    missing_html = "".join(_missing_line(item) for item in missing)
     # A swapped name is printed, not hidden: a reader who typed 美敦力 must be able to see that the
     # column is Medtronic and not a different company with a similar name.
     swapped_html = "".join(
@@ -2902,6 +2921,17 @@ def pages_router(service: Any, *, endpoints: Mapping[str, Any] | None = None) ->
                 names = _compare_names(store, raw, snapshot)
                 names, substitutions = _resolve_compare_names(store, names, snapshot)
                 data = [_company_data(store, name, snapshot=snapshot) for name in names]
+                # A typed name that matched nothing is where a suggestion belongs: the page already says it
+                # did not take part, and every other column is still there to keep. Measured 2026-11-28:
+                # "Medtronic,Strykr" silently compared one company.
+                try:
+                    from .suggestions import suggest_companies
+
+                    for item in data:
+                        if not item.get("found"):
+                            item["suggestions"] = suggest_companies(store, item.get("query") or "")
+                except Exception:  # noqa: BLE001 - no suggestions is one line fewer
+                    pass
                 # The literature-activity column needs the per-field recency map; 5 ms, computed here
                 # rather than inside the page so the page stays a pure function of its data.
                 from .paper_passes import recency_by_specialty
