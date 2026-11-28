@@ -6580,6 +6580,43 @@ def test_the_front_page_strip_points_at_the_full_window():
     assert "按领域分组看全部" not in small
 
 
+def test_every_materialised_table_says_whether_it_is_missing_or_broken():
+    """Audit 14's first question: the other three tables had audit 13's blind spot."""
+    import sqlite3
+
+    from medradar.radar.materialised import all_status, table_status, worst
+    from medradar.radar.pages import _materialised_block
+
+    class Store:
+        def __init__(self, conn):
+            self.conn = conn
+
+    empty = Store(sqlite3.connect(":memory:"))
+    assert worst(all_status(empty)) == "missing"
+    assert all(not item["present"] for item in all_status(empty))
+    assert "还没建" in _materialised_block(all_status(empty))
+
+    # One table present and healthy, one with a moved schema, the rest absent.
+    conn = sqlite3.connect(":memory:")
+    conn.execute("CREATE TABLE store_stats (key TEXT, value TEXT, updated_at TEXT)")
+    conn.execute("INSERT INTO store_stats VALUES ('devices','1','2026-11-28')")
+    conn.execute("CREATE TABLE specialty_stats (specialty TEXT, codes INTEGER)")   # missing columns
+    mixed = Store(conn)
+    statuses = {item["table"]: item for item in all_status(mixed)}
+    assert statuses["store_stats"]["readable"] is True
+    assert statuses["store_stats"]["stamp"] == "2026-11-28"
+    assert statuses["specialty_stats"]["present"] is True
+    assert statuses["specialty_stats"]["readable"] is False
+    assert "devices" in statuses["specialty_stats"]["error"]
+    # One broken table makes the summary broken, not "mostly fine".
+    assert worst(all_status(mixed)) == "broken"
+    block_html = _materialised_block(all_status(mixed))
+    assert "读不出来" in block_html and "no such column: devices" in block_html
+
+    # An unknown table name is reported, not guessed at.
+    assert table_status(empty, "nope")["error"] == "unknown table"
+
+
 def test_a_pre_digitisation_filing_is_never_requested(tmp_path):
     """Measured: 0 of 60 sampled filings from 1998-2009 have a PDF at any path shape.
 

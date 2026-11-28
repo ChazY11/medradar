@@ -960,6 +960,7 @@ def sources_page(*, meta: Mapping[str, Any], coverage: Mapping[str, Any] | None 
 与首页用的是同一份物化计数。</p>
 {banner}
 {stamp}
+{_materialised_block(data.get("materialised") or [])}
 {night_block}
 <h2>各数据集规模</h2>
 <div class="card"><table><thead><tr><th>数据集</th><th>规模</th><th>说明</th></tr></thead>
@@ -1173,6 +1174,44 @@ def _trend_text(trend: Mapping[str, Any]) -> str:
     if total and total < TREND_SMALL_WINDOW:
         text += f' · <b>样本偏小</b>（该领域近 90 天只有 {total} 篇，倍数容易被个别论文拉高）'
     return text + ' · 词频不是技术判断</span>'
+
+
+def _materialised_block(statuses: Sequence[Mapping[str, Any]]) -> str:
+    """Which materialised tables a page depends on are absent, stale or unreadable.
+
+    Every one of these reads is wrapped in `except Exception` so a page degrades instead of failing - which
+    used to make "broken" and "empty" the same thing. This block is where the difference is visible.
+    """
+    rows = list(statuses or [])
+    if not rows:
+        return ""
+    bad = [item for item in rows if item.get("present") and not item.get("readable")]
+    missing = [item for item in rows if not item.get("present")]
+    if bad:
+        lead = ('<div class="gap"><b>有物化表读不出来。</b>这些表的读取都被宽泛地捕获了，'
+                '所以页面会安静地少一块内容，而不是报错——下面是具体是哪张、为什么。'
+                '这是"空还是坏"里"坏"的那一半。</div>')
+    elif missing:
+        lead = ('<div class="gap"><b>有物化表还没建。</b>页面会显示"从未算过"之类，'
+                '这是"没算"而不是"算出来是空"。</div>')
+    else:
+        lead = ""
+    body_rows = "".join(
+        f'<tr><td>{esc(str(item.get("table")))}</td>'
+        f'<td class="muted small">{esc(str(item.get("what") or ""))}</td>'
+        f'<td>{("—" if item.get("present") else "缺")}</td>'
+        f'<td>{"✓" if item.get("readable") else "✗"}</td>'
+        f'<td class="num">{n(item.get("rows"))}</td>'
+        f'<td class="muted small">{esc(str(item.get("stamp") or "")[:16])}</td>'
+        f'<td class="muted small">{esc(str(item.get("error") or ""))[:70]}</td></tr>'
+        for item in rows)
+    return ('<h2>物化表状态</h2>'
+            '<p class="muted small">这些表由夜间任务重算，页面直接读它们。'
+            '「缺」= 还没建；「读不出」= 表在，但按页面的列读不出来（通常是结构变了）。</p>'
+            + lead
+            + '<div class="card"><table><thead><tr><th>表</th><th>谁在用</th><th>存在</th>'
+              '<th>可读</th><th>行数</th><th>重算于</th><th>原因</th></tr></thead>'
+              f'<tbody>{body_rows}</tbody></table></div>')
 
 
 def _field_codes_block(codes: Mapping[str, Any], specialty: str,
@@ -3222,6 +3261,18 @@ def pages_router(service: Any, *, endpoints: Mapping[str, Any] | None = None) ->
                     meta["sources"] = payload.get("sources") or []
             except Exception:  # noqa: BLE001 - the coverage page must render even if meta fails
                 meta["sources"] = []
+            # Which materialised tables a page depends on are missing, stale or unreadable. Every one of these
+            # reads is wrapped in `except Exception` so a page degrades instead of failing - which used to make
+            # "broken" and "empty" the same thing. Audit 14's first question; the same fix as audit 13's
+            # field_trend, applied to the other three.
+            try:
+                from .materialised import all_status as materialised_status
+
+                if store is not None:
+                    data = dict(data or {})
+                    data["materialised"] = materialised_status(store)
+            except Exception:  # noqa: BLE001 - no status block is the old page
+                pass
             # What the last nightly run did, so a step that silently did nothing is visible here.
             try:
                 from .nightly import summary_for_page
