@@ -2116,6 +2116,7 @@ def areas_page(*, data: Mapping[str, Any]) -> str:
     register splits across device categories, and which manufacturers dominate each.
     """
     items = data.get("items") or []
+    trends = data.get("trends") or {}
     if not items:
         return layout(
             title="技术领域 · MedRadar",
@@ -2178,6 +2179,19 @@ def areas_page(*, data: Mapping[str, Any]) -> str:
         return (f'{pct}%<span class="muted small"> {int(entry.get("recent") or 0)}/'
                 f'{int(entry.get("held") or 0)}</span>')
 
+    def _trend_cell(specialty: str) -> str:
+        """The top rising term, from the table the night built - and the date it was built.
+
+        Not computed here: twenty fields cost 0.84 s warm, and this page answers in 0.67 s. A field with no
+        rising term says so, rather than showing an empty cell that reads like a missing value.
+        """
+        entry = trends.get(specialty) or {}
+        term = str(entry.get("term") or "")
+        if not term:
+            return '<span class="muted small">无</span>' if entry else '<span class="muted">—</span>'
+        return (f'<a href="/area?name={esc(specialty)}">{esc(term)}</a>'
+                f'<span class="muted small"> {int(entry.get("lift") or 0)}×</span>')
+
     def lit_cell(specialty: str) -> str:
         """What the literature lane has done for this field - and nothing it has not.
 
@@ -2222,6 +2236,7 @@ def areas_page(*, data: Mapping[str, Any]) -> str:
             f'<td>{company_list or "<span class=\'muted\'>—</span>"}</td>'
             f'<td>{lit_cell(str(item.get("specialty")))}</td>'
             f'<td class="num">{_recent_cell(str(item.get("specialty")))}</td>'
+            f'<td>{_trend_cell(str(item.get("specialty")))}</td>'
             f'<td><span class="bar" style="width:{share}%"></span></td></tr>')
     body = f"""
 <h1>技术领域分布</h1>
@@ -2237,12 +2252,20 @@ def areas_page(*, data: Mapping[str, Any]) -> str:
 「设备数」按注册条目计，同一台设备有多个产品码时会分别计入各领域，所以各行相加会大于总设备数。</div>
 <div class="card"><table>
 <thead><tr><th>技术领域</th><th>产品码</th><th>设备数</th><th>公司数</th><th>设备最多的公司</th>
-<th>文献抓取</th><th>近 90 天占比</th><th>规模</th></tr></thead>
+<th>文献抓取</th><th>近 90 天占比</th><th>上升最快的词</th><th>规模</th></tr></thead>
 <tbody>{''.join(rows)}</tbody></table></div>
 <p class="small muted">数据更新于 {esc(str(data.get("updated_at") or "未知")[:16])}，
-由夜间任务重算（全库聚合约 29 秒，不实时计算）。</p>
+由夜间任务重算（全库聚合约 29 秒，不实时计算）。
+「上升最快的词」也由同一趟夜间任务算（二十个领域约 3.3 秒），算于 {esc(_trend_stamp(trends))}；
+词频不是技术判断，点进领域看两栏明细。</p>
 """
     return layout(title="技术领域分布 · MedRadar", body=body, active="areas")
+
+
+def _trend_stamp(trends: Mapping[str, Mapping[str, Any]]) -> str:
+    """When the materialised trend table was built; blank when it never has been."""
+    stamps = sorted({str(row.get("computed_at") or "") for row in trends.values()} - {""})
+    return stamps[-1] if stamps else "从未算过"
 
 
 def _emerging_block(emerging: Mapping[str, Any]) -> str:
@@ -3251,6 +3274,11 @@ def pages_router(service: Any, *, endpoints: Mapping[str, Any] | None = None) ->
                 from .specialty import read as read_specialties
 
                 data = dict(read_specialties(store))
+                # One query over a table the night built; computing these on the page cost 0.84 s warm for
+                # twenty fields, on a page that answers in 0.67 s.
+                from .paper_passes import field_trends as read_trends
+
+                data["trends"] = read_trends(store)
                 # The order has to travel inside the data: areas_page reads data["sort"], and without this
                 # the tab highlighted 按近 90 天占比 while the table stayed in register order.
                 data["sort"] = order

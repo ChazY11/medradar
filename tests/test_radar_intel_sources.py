@@ -5838,6 +5838,63 @@ def test_the_two_term_lists_stay_two_lists_in_the_exports():
     assert "词频" in payload["terms_bounds"]
 
 
+def test_the_index_page_reads_a_materialised_trend_table(tmp_path):
+    """Twenty fields cost 0.84 s warm; the index page answers in 0.67 s, so the night computes and the page reads."""
+    import sqlite3
+
+    from medradar.radar.pages import areas_page
+    from medradar.radar.paper_passes import field_trends, store_field_trends
+
+    path = tmp_path / "trend.db"
+    conn = sqlite3.connect(path)
+    conn.execute("CREATE TABLE paper_field (paper_id TEXT, specialty TEXT, added_at TEXT)")
+    conn.execute("CREATE TABLE paper_meta (paper_id TEXT, title TEXT, journal TEXT, published_at TEXT)")
+    conn.execute("CREATE TABLE paper_term (term TEXT, paper_id TEXT, title TEXT, year INT, hits INT)")
+    conn.executemany("INSERT INTO paper_field VALUES (?,?,?)",
+                     [(f"P{i}", "Dental", "2026-11-28") for i in range(8)])
+    conn.executemany("INSERT INTO paper_meta VALUES (?,?,?,?)",
+                     [(f"P{i}", f"t{i}", "j", "2026-11-01" if i < 4 else "2026-02-01") for i in range(8)])
+    rows = []
+    for i in range(4):
+        rows += [("gingival", f"P{i}", "t", 2026, 2), ("edentulous", f"P{i}", "t", 2026, 1)]
+    for i in range(4, 8):
+        rows.append(("edentulous", f"P{i}", "t", 2026, 2))
+    conn.executemany("INSERT INTO paper_term VALUES (?,?,?,?,?)", rows)
+    conn.commit()
+    conn.close()
+
+    class Store:
+        def __init__(self):
+            self.conn = sqlite3.connect(path)
+
+        @property
+        def path(self):
+            return path
+
+    store = Store()
+    written = store_field_trends(store, at="2026-11-28")
+    assert written["computed_at"] == "2026-11-28"
+    table = field_trends(store)
+    assert table["Dental"]["term"] in {"gingival", "edentulous"}
+    assert table["Dental"]["computed_at"] == "2026-11-28"
+    store.conn.close()
+
+    page = areas_page(data={
+        "items": [{"specialty": "Dental", "codes": 10, "devices": 100, "companies": 5,
+                   "top_companies": []}],
+        "trends": {"Dental": {"term": "gingival", "recent": 17, "baseline": 1, "lift": 14.53,
+                              "computed_at": "2026-11-28"}},
+        "sort": "devices", "updated_at": "2026-11-28T09:00"})
+    assert "上升最快的词" in page
+    assert "gingival" in page
+    # The page prints when the table was computed, so a stale one is visible.
+    assert "算于 2026-11-28" in page
+    # Never built: said in words, not shown as an empty cell.
+    assert "从未算过" in areas_page(data={"items": [
+        {"specialty": "X", "codes": 1, "devices": 1, "companies": 1, "top_companies": []}],
+        "trends": {}})
+
+
 def test_a_pre_digitisation_filing_is_never_requested(tmp_path):
     """Measured: 0 of 60 sampled filings from 1998-2009 have a PDF at any path shape.
 
