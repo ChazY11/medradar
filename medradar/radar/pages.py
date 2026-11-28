@@ -1152,7 +1152,9 @@ def _trend_text(trend: Mapping[str, Any]) -> str:
     return text + ' · 词频不是技术判断</span>'
 
 
-def _field_codes_block(codes: Mapping[str, Any], specialty: str) -> str:
+def _field_codes_block(codes: Mapping[str, Any], specialty: str,
+                       failures: Mapping[str, Any] | None = None,
+                       order: str = "devices") -> str:
     """Which product codes make up this field - the register's own structure, not our summary of it.
 
     The page printed "产品码 295" and nothing else. Codes are what a regulatory reader works in: they file,
@@ -1162,21 +1164,33 @@ def _field_codes_block(codes: Mapping[str, Any], specialty: str) -> str:
     total = int(codes.get("total") or 0)
     if not items:
         return ""
+    # A reader hunting safety problems wants the codes ranked by reports, not by size. The two orders answer
+    # different questions, so both are offered and the table says which one is active.
+    reports = {str(item.get("code")): int(item.get("reports") or 0)
+               for item in ((failures or {}).get("by_code") or [])}
+    if order == "reports":
+        items.sort(key=lambda item: (-reports.get(str(item.get("product_code")), 0),
+                                     -(item.get("devices") or 0)))
+    tab = (lambda key, label: f'<a class="tab{" on" if key == order else ""}" '
+                              f'href="/area?name={quote(specialty)}&amp;codes={key}">{esc(label)}</a>')
     rows = "".join(
         f'<tr><td><a href="/device?query={esc(item["product_code"])}">'
         f'{esc(item["product_code"])}</a></td>'
         f'<td>{esc(str(item.get("device_name") or "")[:64])}</td>'
         f'<td class="muted small">{esc(str(item.get("regulation_number") or ""))}</td>'
-        f'<td class="num">{n(item.get("devices")) if item.get("devices") is not None else "—"}</td></tr>'
+        f'<td class="num">{n(item.get("devices")) if item.get("devices") is not None else "—"}</td>'
+        f'<td class="num">{n(reports.get(str(item.get("product_code")), 0)) if reports else "—"}</td></tr>'
         for item in items)
     more = (f'，按注册设备数排序列出前 {n(len(items))} 个，共 {n(total)} 个'
             if total > len(items) else f'，共 {n(total)} 个')
     return ('<h2>这个领域由哪些产品码组成</h2>'
+            f'<p class="small">{tab("devices", "按设备数")} {tab("reports", "按失效报告数")}</p>'
             f'<details><summary>展开 {esc(specialty)} 的产品码{more}</summary>'
             '<p class="small muted">产品码来自 FDA 分类库；设备数按注册条目计，'
             '一台设备带多个产品码时会在各码下分别计入。点产品码直接查该码下的设备。'
             '设备数为「—」表示这次没能统计（不是没有设备）。</p>'
-            '<table><thead><tr><th>产品码</th><th>分类名</th><th>法规号</th><th>设备数</th></tr>'
+            '<table><thead><tr><th>产品码</th><th>分类名</th><th>法规号</th><th>设备数</th>'
+            '<th>失效报告</th></tr>'
             f'</thead><tbody>{rows}</tbody></table></details>')
 
 
@@ -2700,7 +2714,9 @@ def area_page(*, specialty: str, summary: Mapping[str, Any] | None,
         topics_block = ('<h2>这个领域的文献在谈什么</h2>'
                         + gap_note("no_papers_for_this_specialty"))
     # Outside the literature branch: the codes are the register's structure, not a property of the papers.
-    topics_block += _field_codes_block(data.get("field_codes") or {}, str(specialty or ""))
+    topics_block += _field_codes_block(data.get("field_codes") or {}, str(specialty or ""),
+                                       data.get("field_failures") or {},
+                                       str(data.get("codes_order") or "devices"))
     # What goes wrong in this field, from MAUDE. Counts of reports, not rates: MAUDE is voluntary, so a
     # popular code has more reports partly because it has more devices in use and more reporters.
     shape = data.get("field_failures") or {}
@@ -3685,7 +3701,9 @@ def pages_router(service: Any, *, endpoints: Mapping[str, Any] | None = None) ->
         return HTMLResponse(cached(f"areas:{order}", 300.0, render))
 
     @router.get("/area", response_class=HTMLResponse)
-    def area_view(name: str | None = Query(None, max_length=120)) -> Any:
+    def area_view(name: str | None = Query(None, max_length=120),
+                  codes: str = Query("devices",
+                                     pattern="^(devices|reports)$")) -> Any:
         if not name:
             return HTMLResponse(layout(
                 title="技术领域 · MedRadar",
@@ -3800,10 +3818,12 @@ def pages_router(service: Any, *, endpoints: Mapping[str, Any] | None = None) ->
                                    "field_emerging": field_emerging,
                                    "field_rank": field_rank,
                                    "field_codes": field_codes,
+                                   "codes_order": codes,
                                    "literature_coverage": literature_coverage,
                                    "resolved_from": resolved_from})
 
-        return HTMLResponse(cached(f"area:{name}", 300.0, render))
+        # The order belongs in the key: without it the first render is served to both tabs.
+        return HTMLResponse(cached(f"area:{name}:{codes}", 300.0, render))
 
     @router.get("/search")
     def search_view(q: str = Query("", max_length=200)) -> Any:

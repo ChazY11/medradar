@@ -6492,6 +6492,33 @@ def test_the_field_export_carries_the_product_codes():
     assert "这个领域由哪些产品码组成" not in export_mod.area_markdown("Dental", summary, [])
 
 
+def test_the_code_table_can_be_ordered_by_failure_reports():
+    """Two orders answer different questions: which code is biggest, and which code has most reports."""
+    import re
+
+    from medradar.radar.pages import _field_codes_block
+
+    codes = {"codes": [
+        {"product_code": "A1", "device_name": "n1", "regulation_number": "r1", "devices": 900},
+        {"product_code": "B2", "device_name": "n2", "regulation_number": "r2", "devices": 10},
+    ], "total": 2}
+    failures = {"by_code": [{"code": "B2", "reports": 500}, {"code": "A1", "reports": 1}]}
+
+    def codes_in_order(html):
+        return re.findall(r'<tr><td><a href="/device\?query=([^"]+)"', html)
+
+    assert codes_in_order(_field_codes_block(codes, "Dental", failures, "devices")) == ["A1", "B2"]
+    assert codes_in_order(_field_codes_block(codes, "Dental", failures, "reports")) == ["B2", "A1"]
+
+    html = _field_codes_block(codes, "Dental", failures, "reports")
+    assert "按设备数" in html and "按失效报告数" in html
+    assert "500" in html                      # the reports column is populated
+
+    # No failure shape: the column is a dash, and the default order still works.
+    plain = _field_codes_block(codes, "Dental")
+    assert codes_in_order(plain) == ["A1", "B2"]
+
+
 def test_a_pre_digitisation_filing_is_never_requested(tmp_path):
     """Measured: 0 of 60 sampled filings from 1998-2009 have a PDF at any path shape.
 
