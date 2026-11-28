@@ -6519,6 +6519,47 @@ def test_the_code_table_can_be_ordered_by_failure_reports():
     assert codes_in_order(plain) == ["A1", "B2"]
 
 
+def test_an_unreadable_trend_table_is_not_reported_as_never_computed(tmp_path):
+    """Audit 13: every failure returned an empty mapping, so a schema that moved read as "no rising terms"."""
+    import sqlite3
+
+    from medradar.radar.pages import _trend_stamp
+    from medradar.radar.paper_passes import field_trends, field_trends_status
+
+    class Store:
+        def __init__(self, conn):
+            self.conn = conn
+
+    # No table at all: not built yet, and the page says so.
+    missing = Store(sqlite3.connect(":memory:"))
+    status = field_trends_status(missing)
+    assert status["present"] is False and status["readable"] is False
+    assert status["error"] == ""
+    assert _trend_stamp({}, status) == "从未算过"
+
+    # A table whose schema moved: it exists, and the eight-column read fails.
+    old = sqlite3.connect(":memory:")
+    old.execute("CREATE TABLE field_trend (specialty TEXT PRIMARY KEY, term TEXT)")
+    old.execute("INSERT INTO field_trend VALUES ('Dental','gingival')")
+    stale = Store(old)
+    assert field_trends(stale) == {}                     # the read still degrades
+    status = field_trends_status(stale)
+    assert status["present"] is True and status["readable"] is False
+    assert "recent" in status["error"]                   # the reason travels
+    stamp = _trend_stamp({}, status)
+    assert "读不出来" in stamp and "从未算过" not in stamp
+
+    # A healthy table.
+    good = sqlite3.connect(":memory:")
+    good.execute("CREATE TABLE field_trend (specialty TEXT PRIMARY KEY, term TEXT, recent INTEGER,"
+                 " baseline INTEGER, lift REAL, computed_at TEXT, recent_total INTEGER,"
+                 " baseline_total INTEGER)")
+    good.execute("INSERT INTO field_trend VALUES ('Dental','gingival',17,1,14.53,'2026-11-28',62,53)")
+    healthy = field_trends_status(Store(good))
+    assert healthy["readable"] is True and healthy["rows"] == 1
+    assert healthy["computed_at"] == "2026-11-28"
+
+
 def test_a_pre_digitisation_filing_is_never_requested(tmp_path):
     """Measured: 0 of 60 sampled filings from 1998-2009 have a PDF at any path shape.
 

@@ -336,6 +336,40 @@ _EMERGING_CACHE: dict[tuple[str, float, str], dict[str, Any]] = {}
 TREND_MIN_PAPERS = 60
 
 
+def field_trends_status(reference) -> dict[str, Any]:
+    """Whether the materialised trend table can be read, and why not if it cannot.
+
+    `field_trends` returns an empty mapping for every failure, so a schema that moved - a column added, a table
+    rebuilt by an older tool - is indistinguishable from "no field has a rising term". The pages then print
+    "从未算过" (never computed) about a table that exists and is merely unreadable, which is a different claim.
+    Audit 13 found this by asking which broad except guards a schema-dependent read.
+    """
+    try:
+        # The same columns `field_trends` reads, not COUNT(*): a table whose schema moved answers COUNT(*) and
+        # fails the real select, and this probe exists to catch exactly that.
+        reference.conn.execute(
+            "SELECT specialty, term, recent, baseline, lift, computed_at, recent_total, baseline_total"
+            " FROM field_trend LIMIT 1").fetchall()
+    except Exception as error:  # noqa: BLE001 - the reason is the payload here
+        message = str(error) or type(error).__name__
+        missing = "no such table" in message.lower()
+        return {"present": not missing, "readable": False, "rows": 0, "computed_at": "",
+                "error": "" if missing else message}
+    try:
+        rows = reference.conn.execute("SELECT COUNT(*) FROM field_trend").fetchone()
+    except Exception:  # noqa: BLE001 - counted below as zero
+        rows = None
+    count = int(rows[0]) if rows else 0
+    stamp = ""
+    try:
+        row = reference.conn.execute(
+            "SELECT MAX(computed_at) FROM field_trend").fetchone()
+        stamp = str(row[0] or "") if row else ""
+    except Exception:  # noqa: BLE001 - an older table has no stamp column
+        stamp = ""
+    return {"present": True, "readable": True, "rows": count, "computed_at": stamp, "error": ""}
+
+
 def trend_rank(trends: Mapping[str, Any], specialty: str,
                *, min_total: int | None = None) -> dict[str, Any]:
     """Where this field sits when the fields are ordered by how fast their vocabulary is moving.

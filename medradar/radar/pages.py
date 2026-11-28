@@ -36,10 +36,10 @@ import time
 from pathlib import Path
 from typing import Any, Mapping, Sequence
 
-#: Rendered technology map, keyed by nothing but the clock: the answer cannot change faster than
-#: the scheduler cycle (300 s), so five minutes of staleness costs nothing and saves a minute's wait.
-_MAP_CACHE: dict[str, Any] = {}
-_MAP_TTL = 300.0
+# The technology map is served from a written snapshot, not from a rendered-page cache: the live call walks
+# 122k nodes and took over two minutes cold, so `tools/build_map.py` writes it and the nightly refreshes it.
+# Two unused symbols lived here for months after that change (_MAP_CACHE, _MAP_TTL); audit 13 removed them, since
+# a dead constant with the live value (300.0) is the kind of thing a later reader "fixes" in good faith.
 
 CSS = """
 :root{color-scheme:light dark;--bg:#fff;--fg:#111827;--muted:#6b7280;--line:#e5e7eb;
@@ -1129,6 +1129,11 @@ def topic_page(*, payload: Mapping[str, Any], topic_id: str,
 from .paper_passes import TREND_MIN_PAPERS as _TREND_MIN_PAPERS  # noqa: E402 - module constant reused
 
 TREND_SMALL_WINDOW = _TREND_MIN_PAPERS  # one source: paper_passes.TREND_MIN_PAPERS
+
+#: How long a rendered page is reused. Every page uses the scheduler's own cycle, because no answer can change
+#: between two cycles - audit 13 counted the same 300.0 written at nine call sites, which is the audit-12 defect
+#: (a policy value typed many times) one round later.
+PAGE_TTL = 300.0
 
 
 def _trend_text(trend: Mapping[str, Any]) -> str:
@@ -2510,7 +2515,7 @@ def areas_page(*, data: Mapping[str, Any]) -> str:
 <tbody>{''.join(rows)}</tbody></table></div>
 <p class="small muted">数据更新于 {esc(str(data.get("updated_at") or "未知")[:16])}，
 由夜间任务重算（全库聚合约 29 秒，不实时计算）。
-「上升最快的词」也由同一趟夜间任务算（二十个领域约 3.3 秒），算于 {esc(_trend_stamp(trends))}；
+「上升最快的词」也由同一趟夜间任务算（二十个领域约 3.3 秒），算于 {esc(_trend_stamp(trends, data.get("trend_status")))}；
 词频不是技术判断，点进领域看两栏明细。</p>
 """
     return layout(title="技术领域分布 · MedRadar", body=body, active="areas")
@@ -2553,10 +2558,17 @@ def _recent_publications_block(payload: Mapping[str, Any]) -> str:
             f'<div class="cards">{"" .join(cards)}</div>')
 
 
-def _trend_stamp(trends: Mapping[str, Mapping[str, Any]]) -> str:
+def _trend_stamp(trends: Mapping[str, Mapping[str, Any]],
+                 status: Mapping[str, Any] | None = None) -> str:
     """When the materialised trend table was built; blank when it never has been."""
     stamps = sorted({str(row.get("computed_at") or "") for row in trends.values()} - {""})
-    return stamps[-1] if stamps else "从未算过"
+    if stamps:
+        return stamps[-1]
+    info = dict(status or {})
+    if info.get("present") and not info.get("readable"):
+        # Exists, unreadable: the nightly tooling and the page disagree about the schema.
+        return f'读不出来（{str(info.get("error") or "结构不匹配")[:60]}）'
+    return "从未算过"
 
 
 def _emerging_block(emerging: Mapping[str, Any], rank: Mapping[str, Any] | None = None) -> str:
@@ -3104,7 +3116,7 @@ def pages_router(service: Any, *, endpoints: Mapping[str, Any] | None = None) ->
             return landing(stats=stats, examples=examples,
                            data=_landing_literature(store))
 
-        return HTMLResponse(cached("home", 300.0, render))
+        return HTMLResponse(cached("home", PAGE_TTL, render))
 
     @router.get("/device", response_class=HTMLResponse)
     def device_page_view(query: str | None = Query(None, max_length=120),
@@ -3216,7 +3228,7 @@ def pages_router(service: Any, *, endpoints: Mapping[str, Any] | None = None) ->
                 tunnel = {"available": False}
             return sources_page(meta=meta, coverage=data, tunnel=tunnel)
 
-        return HTMLResponse(cached("sources", 300.0, render))
+        return HTMLResponse(cached("sources", PAGE_TTL, render))
 
     def _snapshot() -> Mapping[str, Any]:
         path = Path(str(getattr(service.paths, "root", ""))) / "map_page.json"
@@ -3270,7 +3282,7 @@ def pages_router(service: Any, *, endpoints: Mapping[str, Any] | None = None) ->
                 store.close()
             return topic_page(payload=payload, topic_id=id, data=literature)
 
-        return HTMLResponse(cached(f"topic:{id}", 300.0, render))
+        return HTMLResponse(cached(f"topic:{id}", PAGE_TTL, render))
 
     @router.get("/company", response_class=HTMLResponse)
     def company_view(q: str | None = Query(None, max_length=120)) -> Any:
@@ -3309,7 +3321,7 @@ def pages_router(service: Any, *, endpoints: Mapping[str, Any] | None = None) ->
                 store.close()
             return company_page(data=data, suggestions=suggestions)
 
-        return HTMLResponse(cached(f"company:{q}", 300.0, render))
+        return HTMLResponse(cached(f"company:{q}", PAGE_TTL, render))
 
     @router.get("/compare", response_class=HTMLResponse)
     def compare_view(q: list[str] | None = Query(None)) -> Any:
@@ -3358,7 +3370,7 @@ def pages_router(service: Any, *, endpoints: Mapping[str, Any] | None = None) ->
             return compare_page(companies=data, substitutions=substitutions,
                                 data_recency=field_recency)
 
-        return HTMLResponse(cached(f"compare:{key}", 300.0, render))
+        return HTMLResponse(cached(f"compare:{key}", PAGE_TTL, render))
 
     @router.get("/download")
     def download(q: str = Query("", max_length=240),
@@ -3646,7 +3658,7 @@ def pages_router(service: Any, *, endpoints: Mapping[str, Any] | None = None) ->
             return paper_page(record=record, terms=terms, brands=brands, paper_id=id,
                               suggestions=suggestions, title_matches=title_matches)
 
-        return HTMLResponse(cached(f"paper:{id}", 300.0, render))
+        return HTMLResponse(cached(f"paper:{id}", PAGE_TTL, render))
 
     @router.get("/areas", response_class=HTMLResponse)
     def areas_view(sort: str = Query("devices", max_length=16)) -> Any:
@@ -3669,6 +3681,14 @@ def pages_router(service: Any, *, endpoints: Mapping[str, Any] | None = None) ->
                 from .paper_passes import field_trends as read_trends
 
                 data["trends"] = read_trends(store)
+                # A table that exists and cannot be read is not "never computed"; saying so would be a
+                # different claim about the same empty column.
+                try:
+                    from .paper_passes import field_trends_status
+
+                    data["trend_status"] = field_trends_status(store)
+                except Exception:  # noqa: BLE001 - no status is the old wording
+                    data["trend_status"] = {}
                 # The order has to travel inside the data: areas_page reads data["sort"], and without this
                 # the tab highlighted 按近 90 天占比 while the table stayed in register order.
                 data["sort"] = order
@@ -3698,7 +3718,7 @@ def pages_router(service: Any, *, endpoints: Mapping[str, Any] | None = None) ->
             data["sort"] = order
             return areas_page(data=data)
 
-        return HTMLResponse(cached(f"areas:{order}", 300.0, render))
+        return HTMLResponse(cached(f"areas:{order}", PAGE_TTL, render))
 
     @router.get("/area", response_class=HTMLResponse)
     def area_view(name: str | None = Query(None, max_length=120),
@@ -3823,7 +3843,7 @@ def pages_router(service: Any, *, endpoints: Mapping[str, Any] | None = None) ->
                                    "resolved_from": resolved_from})
 
         # The order belongs in the key: without it the first render is served to both tabs.
-        return HTMLResponse(cached(f"area:{name}:{codes}", 300.0, render))
+        return HTMLResponse(cached(f"area:{name}:{codes}", PAGE_TTL, render))
 
     @router.get("/search")
     def search_view(q: str = Query("", max_length=200)) -> Any:
@@ -3912,7 +3932,7 @@ def pages_router(service: Any, *, endpoints: Mapping[str, Any] | None = None) ->
         # 60 s was shorter than the thing it caches: the scheduler cycle is 300 s, so the feed could not
         # change between two refresh intervals, and priming it at startup was wasted - measured /radar at
         # 1.06 s a hundred seconds after a restart, i.e. after its own warm entry had expired.
-        return HTMLResponse(cached("radar", 300.0, render))
+        return HTMLResponse(cached("radar", PAGE_TTL, render))
 
     @router.get("/map", response_class=HTMLResponse)
     def map_view() -> Any:
