@@ -2537,6 +2537,21 @@ def area_page(*, specialty: str, summary: Mapping[str, Any] | None,
     return layout(title=f"{specialty} · MedRadar", body=body, active="areas")
 
 
+def _exact_company(store: Any, name: str) -> bool:
+    """Is this string a registered company name exactly? One indexed read, not a name scan.
+
+    `udi_company.company_name` is indexed and the lookup is NOCASE, so a false answer costs a B-tree seek
+    rather than the ~1 s scan `_company_data` performs when a company is not in the register.
+    """
+    try:
+        row = store.conn.execute(
+            "SELECT 1 FROM udi_company WHERE company_name = ? COLLATE NOCASE LIMIT 1",
+            (" ".join(str(name).split()),)).fetchone()
+    except Exception:  # noqa: BLE001 - no table, no match
+        return False
+    return row is not None
+
+
 def _compare_names(store: Any, raw: Sequence[str], snapshot: Mapping[str, Any]) -> list[str]:
     """Which companies the URL asked for.
 
@@ -2548,7 +2563,11 @@ def _compare_names(store: Any, raw: Sequence[str], snapshot: Mapping[str, Any]) 
     values = [str(value).strip() for value in raw if str(value).strip()]
     if len(values) == 1 and "," in values[0]:
         whole = values[0]
-        if _company_data(store, whole, snapshot=snapshot).get("found"):
+        # The whole-string test used to be a full `_company_data`, which costs about a second when it misses -
+        # and it nearly always misses here, because the string is a list. An exact indexed lookup answers the
+        # same question without the scan. Measured 2026-11-28: /compare with five names took 6.57 s, of which
+        # one second was this probe and one second was the fifth name that the cap then threw away.
+        if _exact_company(store, whole):
             return [whole]
         parts = [part.strip() for part in whole.split(",") if part.strip()]
         return list(dict.fromkeys(parts))[:4]

@@ -5895,6 +5895,42 @@ def test_the_index_page_reads_a_materialised_trend_table(tmp_path):
         "trends": {}})
 
 
+def test_comparing_more_names_than_the_page_shows_does_not_scan_each_one(tmp_path):
+    """Audit 11: /compare with five names took 6.57 s - one second for the whole-string probe and one for the
+    fifth name the cap then discarded."""
+    from medradar.radar.pages import _compare_names
+
+    class Rows:
+        def __init__(self, rows):
+            self._rows = rows
+
+        def fetchone(self):
+            return self._rows[0] if self._rows else None
+
+    class Store:
+        def __init__(self, known):
+            self.known = {name.upper() for name in known}
+            self.lookups = 0
+            self.conn = self
+
+        def execute(self, sql, params=()):
+            self.lookups += 1
+            needle = str(params[0]).upper() if params else ""
+            return Rows([(1,)] if needle in self.known else [])
+
+    # A single comma string: one indexed probe, then split and capped at four before anything is resolved.
+    store = Store({"GLOBUS MEDICAL, INC."})
+    assert _compare_names(store, ["A,B,C,D,E,F"], {}) == ["A", "B", "C", "D"]
+    assert store.lookups == 1        # the exact probe only; no per-name scan
+
+    # A real company whose registered name contains a comma still resolves as one company.
+    store2 = Store({"GLOBUS MEDICAL, INC."})
+    assert _compare_names(store2, ["GLOBUS MEDICAL, INC."], {}) == ["GLOBUS MEDICAL, INC."]
+
+    # Repeated q values (what /area's checkboxes send) keep their order and are capped too.
+    assert _compare_names(Store(set()), ["a", "b", "c", "d", "e"], {}) == ["a", "b", "c", "d"]
+
+
 def test_a_pre_digitisation_filing_is_never_requested(tmp_path):
     """Measured: 0 of 60 sampled filings from 1998-2009 have a PDF at any path shape.
 
