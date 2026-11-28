@@ -2790,6 +2790,13 @@ def _recent_publications_block(payload: Mapping[str, Any]) -> str:
     total = int(payload.get("total") or 0)
     days = int(payload.get("days") or 14)
     until = str(payload.get("until") or "")
+    if payload.get("error"):
+        # "No papers in the window" and "the field table cannot be read" are different sentences, and the first
+        # one is false when the second is true.
+        return ('<h2>近两周发表</h2>'
+                '<div class="gap"><b>这段时间的论文列表暂时读不出来。</b>'
+                '论文与领域的关联表按页面的列读不出来（通常是表结构变了），'
+                f'所以这里没有内容——不是这段时间没有发表。原因：{esc(str(payload.get("error"))[:80])}</div>')
     if not total:
         return ('<h2>近两周发表</h2><p class="muted small">这段时间我们抓到的论文里，'
                 '按发表日期没有一篇落在最近两周。语料还在补，这不代表这两个月没有研究。</p>')

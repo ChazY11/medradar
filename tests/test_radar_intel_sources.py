@@ -7029,6 +7029,9 @@ def test_the_store_probe_says_whether_a_page_went_silent():
     rows = module.probe()
     page_level = [row for row in rows if row["path"].endswith("(page)")]
     assert page_level and all(row["verdict"] != "silent" for row in page_level)
+    # Every table's page-level path is covered, not only the two that existed when the tool was written.
+    covered = {row["table"] for row in page_level}
+    assert {"field_trend", "code_leader", "paper_field"} <= covered
 
 
 def test_a_pre_digitisation_filing_is_never_requested(tmp_path):

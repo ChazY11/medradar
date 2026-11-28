@@ -415,8 +415,12 @@ def recent_publications(reference, *, days: int = 14, per_field: int = 3,
             " WHERE m.published_at >= date(?, ?) AND m.published_at <= date(?)"
             " ORDER BY m.published_at DESC",
             (stamp, start, stamp)).fetchall()
-    except Exception:  # noqa: BLE001 - no tables, nothing to list
-        return {"fields": [], "total": 0, "days": days, "until": stamp}
+    except Exception as error:  # noqa: BLE001 - the reason is the payload
+        # A zero here would read as "nothing was published in the last fortnight". The page says so instead;
+        # tools/store_probe.py flagged this path as a silent zero, which is the same defect audits 13 and 14
+        # found one table at a time.
+        return {"fields": [], "total": 0, "days": days, "until": stamp,
+                "error": str(error) or type(error).__name__}
     grouped: dict[str, list[tuple[str, str, str]]] = {}
     for specialty, paper_id, title, published in rows:
         grouped.setdefault(str(specialty), []).append(

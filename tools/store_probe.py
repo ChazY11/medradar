@@ -93,6 +93,7 @@ def _paths() -> dict[str, Callable[[Any], Any]]:
         # Kept separate from the raw read so the difference is visible rather than assumed.
         "device:peers(page)": lambda store: _peers_as_the_page_does(store, leaders_for),
         "radar:recent": lambda store: recent_publications(store, days=14, today="2026-11-28"),
+        "radar:recent(page)": lambda store: _recent_as_the_page_does(store, recent_publications),
     }
 
 
@@ -101,7 +102,9 @@ BREAKAGES: dict[str, tuple[str, str]] = {
     "specialty_stats": ("top_companies", "top_companies_moved"),
     "field_trend": ("recent_total", "recent_total_moved"),
     "code_leader": ("company_name", "company_name_moved"),
-    "paper_field": ("added_at", "added_at_moved"),
+    # `specialty` is the column the recent-window query joins on; `added_at` is not read by it at all, and a
+    # breakage of a column nobody selects proves nothing.
+    "paper_field": ("specialty", "specialty_moved"),
 }
 
 #: Which path reads which table, so a breakage is only judged against the paths that use it.
@@ -109,8 +112,16 @@ READERS: dict[str, tuple[str, ...]] = {
     "specialty_stats": ("areas:sizes",),
     "field_trend": ("areas:trends", "areas:trends(page)"),
     "code_leader": ("device:peers", "device:peers(page)"),
-    "paper_field": ("radar:recent",),
+    "paper_field": ("radar:recent", "radar:recent(page)"),
 }
+
+
+def _recent_as_the_page_does(store: Any, recent_publications: Any) -> dict[str, Any]:
+    """The /radar assembly: the window, and the table's own reason when it could not be read."""
+    payload = recent_publications(store, days=14, today="2026-11-28")
+    if payload.get("error"):
+        return {"gap": payload["error"]}
+    return dict(payload)
 
 
 def _trends_as_the_page_does(store: Any, field_trends: Any) -> dict[str, Any]:
@@ -139,17 +150,36 @@ def _peers_as_the_page_does(store: Any, leaders_for: Any) -> dict[str, Any]:
     return {}
 
 
-def _looks_empty(value: Any) -> bool:
+def _content(value: Any) -> int:
+    """How much a path actually said, as a number the verdict can compare.
+
+    A dict is not "empty" merely because it has keys: `{"fields": [], "total": 0, "days": 14}` is a page saying
+    "nothing happened", and that is exactly what must not be said when the read failed. Counting list lengths and
+    totals is crude and sufficient.
+    """
     if isinstance(value, dict):
-        if value.get("available") is False or value.get("present") is False:
-            return True
-        return not value
-    return not value
+        total = 0
+        for key, item in value.items():
+            if key in {"days", "until", "error", "gap", "lookup_gap", "available", "present"}:
+                continue
+            if isinstance(item, (list, tuple, dict, str)):
+                total += len(item)
+            elif isinstance(item, (int, float)):
+                total += int(item)
+        return total
+    if isinstance(value, (list, tuple, str)):
+        return len(value)
+    return 1 if value else 0
+
+
+def _looks_empty(value: Any) -> bool:
+    return _content(value) == 0 and not _mentions_gap(value)
 
 
 def _mentions_gap(value: Any) -> bool:
     if isinstance(value, dict):
-        if value.get("gap") or value.get("lookup_gap") or value.get("available") is False:
+        if (value.get("gap") or value.get("lookup_gap") or value.get("error")
+                or value.get("available") is False):
             return True
     return False
 
@@ -193,7 +223,7 @@ def probe() -> list[dict[str, Any]]:
                     verdict = "honest"
                 elif _looks_empty(value) and _looks_empty(good.get(name)):
                     verdict = "honest"          # it was empty before the breakage too
-                elif _looks_empty(value):
+                elif _content(value) < _content(good.get(name)) and _looks_empty(value):
                     verdict = "silent"          # content vanished with no explanation
                 else:
                     verdict = "honest"
