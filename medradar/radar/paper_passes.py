@@ -177,6 +177,38 @@ def by_specialty(reference) -> dict[str, dict[str, Any]]:
     return passes
 
 
+_COVERAGE_CACHE: dict[tuple[str, float], dict[str, int]] = {}
+
+
+def field_coverage(reference) -> dict[str, int]:
+    """How much of the indexed corpus is split into fields at all.
+
+    Measured 2026-11-28: 5,485 papers indexed, 2,336 linked to a field - 43%. The rest matched no field's
+    query, so a field page speaks for the papers its own query brought in, not for the whole corpus. That
+    proportion is the reason a field page can say "120 papers" without it meaning "the field has 120".
+    """
+    try:
+        path = str(reference.path)
+        key = (path, os.path.getmtime(path))
+        hit = _COVERAGE_CACHE.get(key)
+        if hit is not None:
+            return hit
+    except Exception:  # noqa: BLE001 - no cache key, still answer
+        key = None
+    out: dict[str, int] = {}
+    try:
+        indexed = reference.conn.execute("SELECT COUNT(*) FROM paper_meta").fetchone()[0]
+        linked = reference.conn.execute(
+            "SELECT COUNT(DISTINCT paper_id) FROM paper_field").fetchone()[0]
+        out = {"indexed": int(indexed or 0), "field_linked": int(linked or 0)}
+    except Exception:  # noqa: BLE001 - no index yet
+        return {}
+    if key is not None and out:
+        _COVERAGE_CACHE.clear()
+        _COVERAGE_CACHE[key] = out
+    return out
+
+
 _TOPICS_CACHE: dict[tuple[str, float, str], list[dict[str, Any]]] = {}
 
 
@@ -401,7 +433,8 @@ def recent_any(reference, *, limit: int = 8, today: str | None = None) -> list[d
              "published_at": str(row[3] or "")[:10], "specialty": row[4] or ""} for row in rows]
 
 
-__all__ = ["QUERIES", "by_specialty", "dates_for", "field_topics", "field_topics_cached",
+__all__ = ["QUERIES", "by_specialty", "dates_for", "field_coverage", "field_topics",
+           "field_topics_cached",
            "monthly_counts", "recency_by_specialty",
            "recent_any", "ensure_table", "field_topics", "next_queries", "papers_for",
            "read_passes", "record_field", "record_pass", "recent_for"]

@@ -2200,6 +2200,15 @@ def area_page(*, specialty: str, summary: Mapping[str, Any] | None,
     if topics:
         # "in 42 of 120 papers" is checkable; a hit count is not, because it depends on how often a paper
         # repeats a word. The hits stay in the tooltip for anyone who wants them.
+        # How much of the corpus the field pages speak for. Audit 09 asked for this: 120 papers is a
+        # sample of the field's literature, and 43% of the corpus is split into fields at all.
+        coverage = data.get("literature_coverage") or {}
+        coverage_note = ""
+        if coverage.get("indexed") and coverage.get("field_linked"):
+            share = int(round(100.0 * int(coverage["field_linked"]) / int(coverage["indexed"])))
+            coverage_note = (f'全部 {n(coverage["indexed"])} 篇已索引论文里，'
+                             f'{n(coverage["field_linked"])} 篇（{share}%）被分进了某个领域；'
+                             '其余没有命中任何领域的查询，所以领域页说的是它自己那批，不是全库。')
         chips = "".join(
             f'<span class="chip" title="{n(item.get("count"))} 次命中">{esc(str(item["term"]))}'
             f'<span class="muted small"> {n(item.get("papers"))}/{n(item.get("held"))} 篇</span></span>'
@@ -2209,7 +2218,7 @@ def area_page(*, specialty: str, summary: Mapping[str, Any] | None,
             f'<p class="muted small">从本领域查询抓进来的 {n(len(field_papers))} 篇全文中统计词频。'
             '这是「论文里出现的词」，不是我们的技术判断。两条过滤：结构性虚词按词表去掉，'
             '同时在 10 个以上领域都出现的词也去掉——到处都有的词说明不了这个领域。'
-            '数字是「出现在这 120 篇里的多少篇」，不是出现次数。</p>'
+            f'数字是「出现在这 {n(len(field_papers))} 篇里的多少篇」，不是出现次数。{coverage_note}</p>'
             f'<div class="chips">{chips}</div>')
     else:
         topics_block = ('<h2>这个领域的文献在谈什么</h2>'
@@ -3122,11 +3131,14 @@ def pages_router(service: Any, *, endpoints: Mapping[str, Any] | None = None) ->
                     # The same measure /areas sorts by, computed once per field page (5 ms).
                     field_recency: dict[str, Any] = {}
                     try:
-                        from .paper_passes import recency_by_specialty
+                        from .paper_passes import field_coverage, recency_by_specialty
 
                         field_recency = recency_by_specialty(store).get(resolved_name) or {}
+                        # How much of the corpus the field pages speak for at all: audit 09 asked for it.
+                        literature_coverage = field_coverage(store)
                     except Exception:  # noqa: BLE001 - no literature is an empty note
                         field_recency = {}
+                        literature_coverage = {}
             finally:
                 store.close()
             return area_page(specialty=resolved_name, summary=summary, companies=companies,
@@ -3134,6 +3146,7 @@ def pages_router(service: Any, *, endpoints: Mapping[str, Any] | None = None) ->
                                    "field_recent": field_recent, "field_monthly": field_monthly,
                                    "field_failures": field_failures,
                                    "field_recency": field_recency,
+                                   "literature_coverage": literature_coverage,
                                    "resolved_from": resolved_from})
 
         return HTMLResponse(cached(f"area:{name}", 300.0, render))

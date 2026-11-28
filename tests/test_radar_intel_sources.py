@@ -5307,6 +5307,34 @@ def test_a_title_typed_into_the_paper_box_finds_candidates(tmp_path):
     assert "也可以输入标题里的几个词" in empty
 
 
+def test_a_field_page_states_how_much_of_the_corpus_it_speaks_for(tmp_path):
+    """Audit 09: 120 papers is a sample; 2,336 of 5,485 indexed papers reach a field at all."""
+    from medradar.radar.pages import area_page
+    from medradar.radar.paper_passes import field_coverage
+    from medradar.radar.reference import UdiReference
+
+    store = UdiReference(tmp_path / "ref.db")
+    store.conn.execute("CREATE TABLE IF NOT EXISTS paper_meta (paper_id TEXT PRIMARY KEY,"
+                       " title TEXT, journal TEXT, published_at TEXT)")
+    store.conn.execute("CREATE TABLE IF NOT EXISTS paper_field (paper_id TEXT, specialty TEXT,"
+                       " added_at TEXT)")
+    for pid in ("A", "B", "C"):
+        store.conn.execute("INSERT INTO paper_meta VALUES (?,?,?,?)", (pid, "t", "j", "2026-01-01"))
+    store.conn.execute("INSERT INTO paper_field VALUES ('A','Dental','2026-11-28T00:00:00+00:00')")
+    store.conn.commit()
+    coverage = field_coverage(store)
+    store.close()
+    assert coverage == {"indexed": 3, "field_linked": 1}
+
+    page = area_page(specialty="Dental",
+                     summary={"specialty": "Dental", "codes": 295, "devices": 1, "companies": 1},
+                     companies=[],
+                     data={"field_topics": [{"term": "x", "count": 1, "papers": 1, "held": 3}],
+                           "field_papers": ["A"], "literature_coverage": coverage})
+    assert "1 篇（33%）被分进了某个领域" in page
+    assert "不是全库" in page
+
+
 def test_a_pre_digitisation_filing_is_never_requested(tmp_path):
     """Measured: 0 of 60 sampled filings from 1998-2009 have a PDF at any path shape.
 
