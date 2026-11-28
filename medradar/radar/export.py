@@ -359,7 +359,9 @@ def company_csv(data: Mapping[str, Any]) -> str:
 
 
 def areas_markdown(items: Sequence[Mapping[str, Any]], *, updated_at: str | None = None,
-                   recency: Mapping[str, Mapping[str, int]] | None = None) -> str:
+                   recency: Mapping[str, Mapping[str, int]] | None = None,
+                   trends: Mapping[str, Mapping[str, Any]] | None = None,
+                   order: str = "devices") -> str:
     """The whole-register split by specialty, with the caveats the page prints.
 
     An export that loses the caveat is worse than no export: the file travels alone, so the reader
@@ -379,35 +381,70 @@ def areas_markdown(items: Sequence[Mapping[str, Any]], *, updated_at: str | None
         lines.append("> 近 90 天占比：每个领域只保留最新的 120 篇，占比高说明这个领域近期产出密集到把"
                      "这个名额填满——是密度信号，不是产量。")
         lines.append("")
-    lines.append("| 技术领域 | 产品码 | 设备数 | 公司数 | 设备最多的公司 | 近 90 天占比 |")
-    lines.append("| --- | ---: | ---: | ---: | --- | ---: |")
+    order_note = {
+        "devices": "按注册设备数排序。",
+        "companies": "按公司数排序。",
+        "papers": "按已归档论文数排序。",
+        "recent": "按近 90 天发表占比排序。",
+        "pending": "还没被文献线抓到过的领域排在最前，再按设备数——待办队列，不是阅读顺序。",
+        "trend": ("按「上升最快的词」的涨幅排序；只排近 90 天样本达到 60 篇的领域，"
+                  "样本更小的排在最后。涨幅是词频变化，不是重要性判断。"),
+    }.get(order, "")
+    if order_note:
+        lines.append(f"> 排序：{order_note}")
+        lines.append("")
+    has_trend = bool(trends)
+    header = (["技术领域", "产品码", "设备数", "公司数", "设备最多的公司", "近 90 天占比"]
+              + (["上升最快的词"] if has_trend else []))
+    lines.append("| " + " | ".join(header) + " |")
+    lines.append("| --- | ---: | ---: | ---: | --- | ---: |" + (" --- |" if has_trend else ""))
     for item in items:
         leaders = item.get("top_companies") or []
         names = "；".join(f"{lead.get('company')} {int(lead.get('devices') or 0):,}"
                           for lead in leaders[:4])
         entry = (recency or {}).get(str(item.get("specialty"))) or {}
         share = (f"{int(entry['pct'])}%" if entry else "—")
-        lines.append(f"| {item.get('specialty')} | {int(item.get('codes') or 0):,} | "
-                     f"{int(item.get('devices') or 0):,} | {int(item.get('companies') or 0):,} | "
-                     f"{names or '—'} | {share} |")
+        cells = [str(item.get("specialty")), f"{int(item.get('codes') or 0):,}",
+                 f"{int(item.get('devices') or 0):,}", f"{int(item.get('companies') or 0):,}",
+                 names or "—", share]
+        if has_trend:
+            trend = (trends or {}).get(str(item.get("specialty"))) or {}
+            term = str(trend.get("term") or "")
+            if term:
+                total = int(trend.get("recent_total") or 0)
+                cells.append(f"{term} {int(trend.get('recent') or 0)}"
+                             + (f"/{total} 篇" if total else " 篇")
+                             + f" · {trend.get('lift')}×")
+            else:
+                cells.append("—")
+        lines.append("| " + " | ".join(cells) + " |")
     return "\n".join(lines)
 
 
 def areas_csv(items: Sequence[Mapping[str, Any]],
-              recency: Mapping[str, Mapping[str, int]] | None = None) -> str:
+              recency: Mapping[str, Mapping[str, int]] | None = None,
+              trends: Mapping[str, Mapping[str, Any]] | None = None) -> str:
     buffer = io.StringIO()
     writer = csv.writer(buffer, lineterminator="\n")
-    writer.writerow(["specialty", "product_codes", "devices", "companies", "top_company",
-                     "top_company_devices", "papers_held", "papers_last_90d", "recent_pct"])
+    header = ["specialty", "product_codes", "devices", "companies", "top_company",
+              "top_company_devices", "papers_held", "papers_last_90d", "recent_pct"]
+    if trends:
+        header += ["trend_term", "trend_recent", "trend_recent_total", "trend_lift"]
+    writer.writerow(header)
     for item in items:
         leaders = item.get("top_companies") or []
         lead = leaders[0] if leaders else {}
         entry = (recency or {}).get(str(item.get("specialty"))) or {}
-        writer.writerow([item.get("specialty"), int(item.get("codes") or 0),
-                         int(item.get("devices") or 0), int(item.get("companies") or 0),
-                         lead.get("company") or "", int(lead.get("devices") or 0),
-                         int(entry.get("held") or 0), int(entry.get("recent") or 0),
-                         int(entry.get("pct") or 0)])
+        cells = [item.get("specialty"), int(item.get("codes") or 0),
+                 int(item.get("devices") or 0), int(item.get("companies") or 0),
+                 lead.get("company") or "", int(lead.get("devices") or 0),
+                 int(entry.get("held") or 0), int(entry.get("recent") or 0),
+                 int(entry.get("pct") or 0)]
+        if trends:
+            trend = (trends or {}).get(str(item.get("specialty"))) or {}
+            cells += [trend.get("term") or "", int(trend.get("recent") or 0),
+                      int(trend.get("recent_total") or 0), trend.get("lift") or 0]
+        writer.writerow(cells)
     return buffer.getvalue()
 
 
@@ -907,7 +944,9 @@ def compare_json(companies: Sequence[Mapping[str, Any]]) -> str:
 
 
 def areas_json(items: Sequence[Mapping[str, Any]], *, updated_at: str | None = None,
-               recency: Mapping[str, Mapping[str, int]] | None = None) -> str:
+               recency: Mapping[str, Mapping[str, int]] | None = None,
+               trends: Mapping[str, Mapping[str, Any]] | None = None,
+               order: str = "devices") -> str:
     rows = []
     for item in items:
         entry = (recency or {}).get(str(item.get("specialty"))) or {}
@@ -925,10 +964,21 @@ def areas_json(items: Sequence[Mapping[str, Any]], *, updated_at: str | None = N
             "matched": int(item.get("matched") or 0),
             "papers_last_90d": int(entry.get("recent") or 0),
             "recent_pct": int(entry.get("pct") or 0),
+            # Null when the field has no rising term, so a consumer can tell "no signal" from "not computed".
+            "trend": (None if not (trends or {}).get(str(item.get("specialty"))) else {
+                "term": ((trends or {}).get(str(item.get("specialty"))) or {}).get("term") or "",
+                "recent": int(((trends or {}).get(str(item.get("specialty"))) or {}).get("recent") or 0),
+                "recent_total": int(((trends or {}).get(str(item.get("specialty"))) or {})
+                                    .get("recent_total") or 0),
+                "lift": ((trends or {}).get(str(item.get("specialty"))) or {}).get("lift") or 0,
+                "computed_at": ((trends or {}).get(str(item.get("specialty"))) or {})
+                               .get("computed_at") or "",
+            }),
         })
     return _json_payload(
         "areas",
         updated_at=updated_at,
+        order=order,
         specialties=rows,
         bounds=["数字按注册条目计，一台设备带多个产品码时会在各领域分别计入。",
                 "recent_pct 建立在每领域 120 篇的上限上：它是产出密度的信号，不是产量。"])

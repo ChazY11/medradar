@@ -6147,6 +6147,37 @@ def test_the_index_can_be_ordered_by_how_fast_a_field_is_moving():
     assert re.findall(r"<tr><td>([^<]+)</td>", default)[0] == "Orthopedic"
 
 
+def test_the_areas_export_carries_the_order_and_the_trend():
+    """The page can be ordered by trend; a file that cannot is a different answer to the same question."""
+    import json
+
+    from medradar.radar import export as export_mod
+    from medradar.radar.pages import order_area_items
+
+    items = [{"specialty": "Dental", "codes": 1, "devices": 10, "companies": 2, "top_companies": []}]
+    trends = {"Dental": {"term": "gingival", "recent": 17, "recent_total": 62, "lift": 14.53,
+                         "computed_at": "2026-11-28"}}
+
+    markdown = export_mod.areas_markdown(items, recency={"Dental": {"pct": 50}},
+                                         trends=trends, order="trend")
+    assert "上升最快的词" in markdown
+    assert "gingival 17/62 篇" in markdown
+    assert "按「上升最快的词」的涨幅排序" in markdown
+
+    rows = export_mod.areas_csv(items, recency={}, trends=trends).splitlines()
+    assert rows[0].endswith("trend_lift")
+    assert rows[1].split(",")[-1] == "14.53"
+
+    data = json.loads(export_mod.areas_json(items, recency={}, trends=trends, order="trend"))
+    assert data["order"] == "trend"
+    assert data["specialties"][0]["trend"]["term"] == "gingival"
+    # Without a trend table the field is null, so a consumer can tell "no signal" from "not computed".
+    assert json.loads(export_mod.areas_json(items, recency={}))["specialties"][0]["trend"] is None
+
+    # One ordering function for the page and the file.
+    assert [item["specialty"] for item in order_area_items(items, "trend", trends=trends)] == ["Dental"]
+
+
 def test_a_pre_digitisation_filing_is_never_requested(tmp_path):
     """Measured: 0 of 60 sampled filings from 1998-2009 have a PDF at any path shape.
 

@@ -2163,6 +2163,51 @@ def paper_page(*, record: Mapping[str, Any] | None, terms: Sequence[Mapping[str,
     return layout(title=f"{record.get('title') or paper_id} · MedRadar", body=body, active="device")
 
 
+def order_area_items(items: Sequence[Mapping[str, Any]], order: str, *,
+                     trends: Mapping[str, Any] | None = None,
+                     recency: Mapping[str, Any] | None = None,
+                     literature: Mapping[str, Any] | None = None) -> list[Mapping[str, Any]]:
+    """The five orders of /areas, in one place.
+
+    Two callers need them - the page and the export - and five orders implemented twice is how the file and
+    the page end up disagreeing about which field comes first. The export had no orders at all before this.
+    """
+    trends = trends or {}
+    recency = recency or {}
+    literature = literature or {}
+
+    def _paper_count(specialty: str) -> int:
+        entry = literature.get(specialty) or {}
+        return int(entry.get("papers") or entry.get("stored") or 0)
+
+    def _recency_pct(specialty: str) -> int:
+        return int((recency.get(specialty) or {}).get("pct") or 0)
+
+    def _lift(entry: Mapping[str, Any]) -> float:
+        row = trends.get(str(entry.get("specialty"))) or {}
+        if not row.get("term"):
+            return -1.0
+        if int(row.get("recent_total") or 0) < TREND_SMALL_WINDOW:
+            return -1.0
+        return float(row.get("lift") or 0)
+
+    rows = list(items)
+    if order == "recent":
+        return sorted(rows, key=lambda item: (-_recency_pct(str(item.get("specialty"))),
+                                              -int(item.get("devices") or 0)))
+    if order == "papers":
+        return sorted(rows, key=lambda item: (-_paper_count(str(item.get("specialty"))),
+                                              -int(item.get("devices") or 0)))
+    if order == "pending":
+        return sorted(rows, key=lambda item: (str(item.get("specialty")) in literature,
+                                              -int(item.get("devices") or 0)))
+    if order == "companies":
+        return sorted(rows, key=lambda item: -int(item.get("companies") or 0))
+    if order == "trend":
+        return sorted(rows, key=lambda item: (-_lift(item), -int(item.get("devices") or 0)))
+    return sorted(rows, key=lambda item: -int(item.get("devices") or 0))
+
+
 def areas_page(*, data: Mapping[str, Any]) -> str:
     """Every medical specialty in the register: how big, and who is crowded into it.
 
@@ -2194,35 +2239,7 @@ def areas_page(*, data: Mapping[str, Any]) -> str:
         return int((recency.get(specialty) or {}).get("pct") or 0)
 
     order = str(data.get("sort") or "devices")
-    if order == "recent":
-        # Where the literature is moving, not where it is largest. The ratio is bounded by the crawler's
-        # 120-per-field cap, which the note under the table states.
-        items = sorted(items, key=lambda item: (-_recency_pct(str(item.get("specialty"))),
-                                               -int(item.get("devices") or 0)))
-    elif order == "papers":
-        items = sorted(items, key=lambda item: (-_paper_count(str(item.get("specialty"))),
-                                               -int(item.get("devices") or 0)))
-    elif order == "pending":
-        # Fields the literature lane has not reached at all come first, largest register first:
-        # that is the work queue, not the reading list.
-        items = sorted(items, key=lambda item: (str(item.get("specialty")) in literature,
-                                               -int(item.get("devices") or 0)))
-    elif order == "companies":
-        items = sorted(items, key=lambda item: -int(item.get("companies") or 0))
-    elif order == "trend":
-        # Fields whose recent window is too small carry a warning everywhere else; here they go to the end
-        # rather than inventing an order out of three papers.
-        def _lift(entry: Mapping[str, Any]) -> float:
-            row = trends.get(str(entry.get("specialty"))) or {}
-            if not row.get("term"):
-                return -1.0
-            if int(row.get("recent_total") or 0) < TREND_SMALL_WINDOW:
-                return -1.0
-            return float(row.get("lift") or 0)
-
-        items = sorted(items, key=lambda item: (-_lift(item), -int(item.get("devices") or 0)))
-    else:
-        items = sorted(items, key=lambda item: -int(item.get("devices") or 0))
+    items = order_area_items(items, order, trends=trends, recency=recency, literature=literature)
 
     tabs = "".join(
         f'<a class="tab{" on" if key == order else ""}" href="/areas?sort={key}">{esc(label)}</a>'
@@ -3162,7 +3179,9 @@ def pages_router(service: Any, *, endpoints: Mapping[str, Any] | None = None) ->
                  name: str = Query("", max_length=120),
                  kind: str = Query("device",
                           pattern="^(device|compare|areas|area|area_failures|company|papers|recent)$"),
-                 format: str = Query("md", pattern="^(md|csv|json)$")) -> Any:
+                 format: str = Query("md", pattern="^(md|csv|json)$"),
+                 sort: str = Query("devices",
+                          pattern="^(devices|papers|pending|companies|recent|trend)$")) -> Any:
         """One dossier, one comparison, the whole field map, or one specialty - as a file.
 
         A reader who has to send the answer onward was previously limited to a screenshot, which
@@ -3195,29 +3214,33 @@ def pages_router(service: Any, *, endpoints: Mapping[str, Any] | None = None) ->
 
                 data = read_specialties(store)
                 items = data.get("items") or []
-                try:
-                    from .paper_passes import recency_by_specialty
-
-                    data["recency"] = recency_by_specialty(store)
-                except Exception:  # noqa: BLE001 - no literature is an empty column, not a broken page
-                    data["recency"] = {}
-                # The recency column travels with the file: the page can show it, so the export must.
+                # One recency computation, not two: the first version called recency_by_specialty twice in
+                # this branch, once for the page data and once for the export.
                 try:
                     from .paper_passes import recency_by_specialty
 
                     recency = recency_by_specialty(store)
                 except Exception:  # noqa: BLE001 - an empty column, not a failed export
                     recency = {}
+                try:
+                    from .paper_passes import field_trends as read_trends
+
+                    trends = read_trends(store)
+                except Exception:  # noqa: BLE001 - an empty column
+                    trends = {}
+                # The order travels with the file, and it is the same function the page uses.
+                items = order_area_items(items, sort, trends=trends, recency=recency,
+                                         literature=data.get("literature") or {})
                 if format == "csv":
-                    body = export_mod.areas_csv(items, recency=recency)
+                    body = export_mod.areas_csv(items, recency=recency, trends=trends)
                     media, suffix = "text/csv; charset=utf-8", "csv"
                 elif format == "json":
                     body = export_mod.areas_json(items, updated_at=data.get("updated_at"),
-                                                 recency=recency)
+                                                 recency=recency, trends=trends, order=sort)
                     media, suffix = "application/json; charset=utf-8", "json"
                 else:
                     body = export_mod.areas_markdown(items, updated_at=data.get("updated_at"),
-                                                     recency=recency)
+                                                     recency=recency, trends=trends, order=sort)
                     media, suffix = "text/markdown; charset=utf-8", "md"
                 stem = "medradar-areas"
             elif kind == "area":
